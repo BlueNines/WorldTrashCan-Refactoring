@@ -5,8 +5,9 @@
 ## 产物
 
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
+- `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已接入旧功能入口并完成编译打包；当前本机没有 1.13-1.15 测试服，尚未做启动验证。
 - `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已完成编译打包；当前本机没有 1.16+ 测试服，尚未做启动验证。
-- `bukkit-1_13_1_15` 与 `folia-1_20` 当前保留模块边界，避免后续把版本实现塞回同一份 jar。
+- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已接入旧功能入口和 Folia 全局调度入口并完成编译打包；当前本机没有 Folia 测试服，尚未做启动验证，也尚未完成全链路 region-safe 实服复核。
 
 ## 模块
 
@@ -15,9 +16,13 @@
 - `bl-world-trashcan-storage`：世界垃圾桶存储模型。
 - `bl-world-trashcan-shared-bukkit`：版本中立的 Bukkit 功能层、GUI、调度适配、路由服务。
 - `bl-world-trashcan-platform-legacy-1_12`：1.12 平台能力、旧告示牌、无 PDC 物品标记。
+- `bl-world-trashcan-platform-bukkit-1_13_1_15`：1.13-1.15 平台能力、现代告示牌、无 PDC 物品标记，避免 1.13 缺 PDC API。
 - `bl-world-trashcan-platform-paper-1_16_1_20`：现代 Paper 平台能力、PDC 玩家掉落标记。
+- `bl-world-trashcan-platform-folia-1_20`：Folia 平台能力、PDC 玩家掉落标记、Folia 全局调度入口。
 - `bl-world-trashcan-plugin-legacy-1_12`：1.12 插件入口和命令。
+- `bl-world-trashcan-plugin-bukkit-1_13_1_15`：1.13-1.15 插件入口、Vault 和 PlaceholderAPI 适配。
 - `bl-world-trashcan-plugin-paper-1_16_1_20`：现代 Paper 插件入口、Vault 和 PlaceholderAPI 适配。
+- `bl-world-trashcan-plugin-folia-1_20`：Folia 插件入口、Vault 和 PlaceholderAPI 适配。
 
 ## 配置文件
 
@@ -106,7 +111,9 @@
 
 PAPI 变量：
 
+- Bukkit 1.13-1.15 产物提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
 - Paper 1.16-1.20 产物提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
+- Folia 1.20 产物提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
 - Legacy 1.12 产物当前不注册 PAPI 变量。
 
 发包变量：
@@ -115,13 +122,17 @@ PAPI 变量：
 
 ## 验证记录
 
-本机 `mvn` 不在 PATH，本轮使用 `javac` 手工编译并用 JDK 21 `jar.exe` 打包。跨版本构建必须按目标运行时指定 `--release`：1.12 Legacy 相关模块使用 `--release 8`，现代 Paper 产物使用 `--release 17`，否则 1.12.2 Java 8 测试服会出现 `UnsupportedClassVersionError`。
+本机 `mvn` 不在 PATH，本轮使用 `javac` 手工编译并用 JDK 21 `jar.exe` 打包。跨版本构建必须按目标运行时指定 `--release`：1.12 Legacy 与 Bukkit 1.13-1.15 相关模块使用 `--release 8`，现代 Paper 和 Folia 产物使用 `--release 17`，否则旧 Java 8 测试服会出现 `UnsupportedClassVersionError`。
 
 已通过：
 
-- `core -> config -> storage -> shared-bukkit -> platform-legacy -> plugin-legacy -> platform-paper -> plugin-paper`
+- `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
+- Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
+- Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
+- Paper 1.16-1.20 产物主类 class major version 为 61，确认面向 Java 17。
+- Folia 1.20 产物主类 class major version 为 61，确认面向 Java 17。
 - RCON 验证 `platform`、`stats`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
 - 旧功能补齐验证覆盖：防丢弃模式、look 查询、单世界黑名单 GUI、公共黑名单 GUI、聊天/命令限频、不可拾取箭矢清理、防踩踏农田、经验球/实体清理、实体白名单/黑名单、世界实体数量限制、密集实体限制、公共垃圾桶日志、公共垃圾桶按清理次数刷新、定时清理倒计时通知
@@ -140,8 +151,15 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-fullregression-final-stop-latest-20260601.log`
 - `paper-1.12.2-test-server/ai-blwtc-fullregression-debugplayer-client-stdout-20260531.log`
 - `paper-1.12.2-test-server/ai-blwtc-fullregression-debugplayer-client-stderr-20260531.log`
+- `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-smoke-rcon-smoke.log`
+- `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-smoke-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-smoke-stop-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-resmoke-rcon-smoke-2.log`
+- `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-resmoke-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-resmoke-rcon-stop.log`
 
 已知测试环境噪声：
 
 - 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BLWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
 - 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError` 或插件启用失败。
+- Bukkit 1.13-1.15 与 Folia 1.20 当前完成编译和打包验证，但缺少对应实服启动验证；后续拿到测试服后要补 `plugins`、`platform`、`stats`、GUI、三类路由和定时清理回归。

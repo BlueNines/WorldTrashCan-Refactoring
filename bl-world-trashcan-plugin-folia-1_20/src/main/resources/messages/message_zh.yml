@@ -1,0 +1,8 @@
+# 插件前缀。
+prefix: "&7[&bBLWorldTrashCan&7] "
+
+# 通用无权限提示。
+no-permission: "{prefix}&c你没有权限执行该命令。"
+
+# 重载成功提示。
+reload-success: "{prefix}&a配置已重载。"

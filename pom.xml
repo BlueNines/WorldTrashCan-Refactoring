@@ -31,6 +31,7 @@
         <java.legacy.version>1.8</java.legacy.version>
         <java.modern.version>17</java.modern.version>
         <paper.legacy.version>1.12.2-R0.1-SNAPSHOT</paper.legacy.version>
+        <spigot.bukkit.version>1.13.2-R0.1-SNAPSHOT</spigot.bukkit.version>
         <paper.modern.version>1.20.4-R0.1-SNAPSHOT</paper.modern.version>
         <folia.version>1.20.1-R0.1-SNAPSHOT</folia.version>
     </properties>
@@ -71,6 +72,16 @@
             <dependency>
                 <groupId>pixeltech.bluenine</groupId>
                 <artifactId>bl-world-trashcan-platform-paper-1_16_1_20</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-platform-bukkit-1_13_1_15</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-platform-folia-1_20</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

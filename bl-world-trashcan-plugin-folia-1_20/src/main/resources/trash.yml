@@ -1,0 +1,46 @@
+# 世界垃圾桶设置。
+world-trash:
+  # 是否启用世界垃圾桶。
+  enabled: true
+  # 玩家创建世界垃圾桶时告示牌需要填写的文本。
+  sign-create-text: "[世界垃圾桶]"
+  # 创建成功后告示牌显示的文本。
+  sign-created-text: "&b[&c世界垃圾桶&b]"
+  # 普通玩家每个世界默认可创建的垃圾桶数量。
+  default-max-count: 3
+  # 禁止创建世界垃圾桶的世界名。
+  banned-worlds:
+    - "world"
+    - "DIM-1"
+    - "DIM1"
+
+# 公共垃圾桶设置。
+global-trash:
+  # 是否启用公共垃圾桶。
+  enabled: true
+  # 最大页数。
+  max-pages: 5
+  # 拿取冷却，单位毫秒。
+  take-delay-millis: 500
+  # 是否允许玩家把背包物品手动放入公共垃圾桶。
+  allow-player-put: true
+  # 每多少次清理后刷新公共垃圾桶；-1 表示永不自动刷新。
+  clear-every-cleanups: 3
+  # 是否记录玩家从公共垃圾桶拿取、放入物品的日志。
+  log-enabled: true
+  # 不允许进入公共垃圾桶的物品类型。
+  banned-materials:
+    - "EGG"
+    - "DIRT"
+
+# 个人垃圾桶设置。
+personal-trash:
+  # 是否启用个人垃圾桶。
+  enabled: true
+  # 是否追踪玩家主动丢弃物品。
+  # paper-1.16-1.20 支持 PDC，因此该项可完整生效。
+  track-player-dropped-items: true
+  # 个人垃圾桶满时是否自动清空旧内容，再尝试放入新物品。
+  auto-clear-when-full: true
+  # 玩家从个人垃圾桶取出物品时扣除的 Vault 金额；-1 表示不扣费。
+  take-cost: -1

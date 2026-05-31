@@ -1,11 +1,11 @@
 # 当前产物的平台线。
-# legacy-1.12 产物固定使用 Paper/Spigot 1.12 实现，不会装入 Bukkit 1.13、modern Paper 或 Folia 大块实现。
-target: "legacy-1.12"
+# folia-1.20 产物固定使用 Folia 实现，不会装入 legacy、Bukkit 1.13 或普通 Paper 大块实现。
+target: "folia-1.20"
 
 # 是否严格检查功能所需能力。
 # 默认 true；能力不足时功能会拒绝启用并输出原因，不会静默半启用。
 strict-capability-check: true
 
 # 手动禁用的平台能力。
-# 默认留空；仅排查兼容问题时使用。1.12 兼容产物默认不启用 item-pdc-tag。
+# 默认留空；仅排查兼容问题时使用，例如禁用 item-pdc-tag。
 disabled-capabilities: []

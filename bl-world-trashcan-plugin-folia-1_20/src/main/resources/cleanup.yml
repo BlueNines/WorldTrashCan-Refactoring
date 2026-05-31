@@ -1,0 +1,48 @@
+# 清理周期，单位秒。
+# 默认 360 秒；设为 0 时只允许管理员手动触发清理。
+interval-seconds: 360
+
+# 跳过清理的世界名。
+# 默认示例为 testWorld；留空请写 []。
+ignored-worlds:
+  - "testWorld"
+
+# 不回收也不删除的物品类型。
+# 使用当前版本平台标准化后的 Material 名称。
+ignored-materials:
+  - "DIAMOND"
+
+# 显示名包含以下片段时跳过清理。
+# 可用于保护特殊商店、祭坛、任务物品。
+ignored-name-fragments:
+  - "shopLocation"
+  - "ALTAR"
+
+# lore 包含以下片段时跳过清理。
+# 默认保护 QuickShop 一类带位置 lore 的物品。
+ignored-lore-fragments:
+  - "shopLocation"
+
+# 实体清理规则。
+entities:
+  # 是否清理经验球。
+  clear-experience-orbs: true
+  # 是否清理怪物。
+  clear-monsters: true
+  # 是否清理动物或普通生物。
+  clear-animals: false
+  # 是否清理投射物。
+  clear-projectiles: true
+  # 是否清理带自定义名的实体。
+  clear-named-entities: false
+  # 是否跳过船内实体。
+  ignore-entities-in-boat: false
+  # 实体白名单；命中后不清理，支持 * 通配。
+  whitelist:
+    - "VILLAGER"
+    - "*golem*"
+    - "WITHER"
+    - "Ender Dragon"
+  # 实体黑名单；命中后强制清理，支持 * 通配。白名单优先级更高。
+  blacklist:
+    - "FLAMMPFEIL.SLASHBLADE_BLADESTAND"

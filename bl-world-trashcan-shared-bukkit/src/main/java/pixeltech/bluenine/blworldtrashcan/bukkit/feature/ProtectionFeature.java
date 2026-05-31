@@ -298,7 +298,8 @@ public final class ProtectionFeature implements Feature, Listener {
             return false;
         }
         Material type = block.getType();
-        return type == Material.SOIL || "FARMLAND".equals(type.name());
+        String name = type.name();
+        return "SOIL".equals(name) || "FARMLAND".equals(name) || "LEGACY_SOIL".equals(name);
     }
 
     /** 转换颜色代码。 */

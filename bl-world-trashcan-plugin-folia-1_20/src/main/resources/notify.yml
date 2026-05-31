@@ -1,0 +1,73 @@
+# 聊天栏提醒。
+chat:
+  # 是否启用聊天提醒。
+  enabled: true
+  # 是否同步输出到控制台。
+  console-log: true
+  # 清理完成消息点击后执行的命令。
+  click-command: "/worldlisttrashcan globaltrash"
+  # 倒计时聊天提醒，格式：剩余秒数;内容。
+  messages:
+    - "60;&d还剩下 60 秒清理物品和实体"
+    - "30;&d还剩下 30 秒清理物品和实体"
+    - "10;&d还剩下 10 秒清理物品和实体"
+    - "5;&c5秒"
+    - "3;&c3秒"
+    - "2;&c2秒"
+    - "1;&c1秒"
+    - "0;&a清理成功，有%DealItemSum%个物品被回收，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理 &6(点我打开垃圾桶)"
+
+# ActionBar 提醒。
+actionbar:
+  # 是否启用 ActionBar。
+  enabled: true
+  # 倒计时 ActionBar 提醒，格式：剩余秒数;内容。
+  messages:
+    - "60;&d&l还剩下 60 秒清理物品和实体"
+    - "30;&d&l还剩下 30 秒清理物品和实体"
+    - "10;&d&l还剩下 10 秒清理物品和实体"
+    - "5;&c&l5秒"
+    - "3;&c&l3秒"
+    - "2;&c&l2秒"
+    - "1;&c&l1秒"
+    - "0;&a清理成功，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理"
+
+# BossBar 提醒。
+bossbar:
+  # 是否启用 BossBar。
+  enabled: false
+
+# Title 提醒。
+title:
+  # 是否启用 Title。
+  enabled: false
+  # 倒计时 Title 提醒，格式：剩余秒数;主标题;副标题。
+  messages:
+    - "60;&d还剩下 60 秒;清理物品和实体"
+    - "30;&d还剩下 30 秒;清理物品和实体"
+    - "10;&d还剩下 10 秒;清理物品和实体"
+    - "5;&c5秒;"
+    - "3;&c3秒;"
+    - "2;&c2秒;"
+    - "1;&c1秒;"
+    - "0;&a清理成功;有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理"
+
+# 声音提醒。
+sound:
+  # 是否启用提示音。
+  enabled: true
+  # 倒计时声音提醒，格式：剩余秒数;声音名,音量,音调。
+  messages:
+    - "5;entity.experience_orb.pickup,0.4,0.2"
+    - "3;entity.experience_orb.pickup,0.4,0.4"
+    - "2;entity.experience_orb.pickup,0.4,0.6"
+    - "1;entity.experience_orb.pickup,0.4,0.8"
+    - "0;entity.experience_orb.pickup,0.4,1"
+
+# 控制台命令提醒。
+command:
+  # 是否启用倒计时命令。
+  enabled: false
+  # 倒计时命令，格式：剩余秒数;命令1;命令2。
+  commands:
+    - "0;say &amm怪物已清理成功"
