@@ -1,11 +1,11 @@
-package pixeltech.bluenine.blworldtrashcan.plugin;
+package pixeltech.bluenine.blworldtrashcan.plugin.legacy;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,38 +17,35 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
-import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PaymentService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.NoPaymentService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundleLoader;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
-import pixeltech.bluenine.blworldtrashcan.platform.paper.PaperPlatform;
+import pixeltech.bluenine.blworldtrashcan.platform.legacy.LegacyPlatform;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-/** Paper 1.16-1.20 产物入口。 */
-public final class BLWorldTrashCanPlugin extends JavaPlugin {
+/** Legacy 1.12 产物入口。 */
+public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     private FeatureRegistry featureRegistry;
     private ServerPlatform platform;
     private ConfigBundle configBundle;
     private CleanupFeature cleanupFeature;
     private TrashFeature trashFeature;
     private WorldTrashRouter trashRouter;
-    private GlobalTrashService globalTrashService;
-    private PersonalTrashService personalTrashService;
-    private BLWorldTrashCanExpansion expansion;
 
-    /** 启动插件并注册当前产物的平台能力。 */
+    /** 启动插件。 */
     @Override
     public void onEnable() {
         saveDefaultConfigs();
         this.configBundle = loadConfigBundle();
-        this.platform = new PaperPlatform(this);
+        this.platform = new LegacyPlatform(this);
         this.featureRegistry = new FeatureRegistry();
         Supplier<ConfigBundle> configSupplier = new Supplier<ConfigBundle>() {
             /** 返回最新配置集合。 */
@@ -57,9 +54,8 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
                 return configBundle;
             }
         };
-        PaymentService paymentService = VaultPaymentService.create(this);
-        this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash());
-        this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), paymentService);
+        GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash());
+        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService());
         this.trashRouter = new WorldTrashRouter(
                 this,
                 new BukkitYamlWorldTrashStorage(new File(getDataFolder(), "data/worlds.yml")),
@@ -72,12 +68,11 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
         registerCommands();
-        registerPlaceholderApi();
         logCapabilities();
         featureRegistry.enableAll();
     }
 
-    /** 禁用插件并按顺序释放功能模块。 */
+    /** 禁用插件。 */
     @Override
     public void onDisable() {
         if (featureRegistry != null) {
@@ -85,7 +80,7 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         }
     }
 
-    /** 重载插件配置和功能模块。 */
+    /** 重载插件。 */
     public void reloadPlugin() {
         reloadConfig();
         this.configBundle = loadConfigBundle();
@@ -94,97 +89,28 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         }
     }
 
-    /** 返回当前平台实现。 */
+    /** 返回平台实现。 */
     public ServerPlatform getPlatform() {
         return platform;
     }
 
-    /** 立即执行一次后台清理。 */
+    /** 立即执行清理。 */
     public CleanupFeature.CleanupStats runCleanupNow() {
         return cleanupFeature.runNow();
     }
 
-    /** 保存新架构默认配置文件。 */
-    private void saveDefaultConfigs() {
-        saveDefaultConfig();
-        saveResourceIfMissing("platform.yml");
-        saveResourceIfMissing("cleanup.yml");
-        saveResourceIfMissing("trash.yml");
-        saveResourceIfMissing("notify.yml");
-        saveResourceIfMissing("entity-limits.yml");
-        saveResourceIfMissing("protections.yml");
-        saveResourceIfMissing("messages/message_zh.yml");
-        saveResourceIfMissing("data/worlds.yml");
-    }
-
-    /** 仅在文件不存在时保存资源。 */
-    private void saveResourceIfMissing(String path) {
-        if (!getDataFolder().toPath().resolve(path).toFile().exists()) {
-            saveResource(path, false);
-        }
-    }
-
-    /** 读取拆分后的配置文件。 */
-    private ConfigBundle loadConfigBundle() {
-        ConfigBundleLoader loader = new ConfigBundleLoader();
-        return loader.load(
-                new BukkitConfigurationSource(getConfig()),
-                new BukkitConfigurationSource(loadYaml("cleanup.yml")),
-                new BukkitConfigurationSource(loadYaml("trash.yml"))
-        );
-    }
-
-    /** 从插件数据目录读取 YAML。 */
-    private YamlConfiguration loadYaml(String path) {
-        return YamlConfiguration.loadConfiguration(new File(getDataFolder(), path));
-    }
-
-    /** 注册主命令和旧命令别名。 */
-    private void registerCommands() {
-        BLWorldTrashCanCommand executor = new BLWorldTrashCanCommand(this);
-        registerCommand("blworldtrashcan", executor);
-        registerCommand("blwtc", executor);
-        registerCommand("WorldListTrashCan", executor);
-        registerCommand("wtc", executor);
-    }
-
-    /** 注册 PlaceholderAPI 变量。 */
-    private void registerPlaceholderApi() {
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            getLogger().info("[PlaceholderAPI] 未检测到 PlaceholderAPI，跳过变量注册。");
-            return;
-        }
-        this.expansion = new BLWorldTrashCanExpansion(this);
-        if (expansion.register()) {
-            getLogger().info("[PlaceholderAPI] 已注册变量: %Wtc_ClearTime%");
-        }
-    }
-
-    /** 注册单个命令执行器。 */
-    private void registerCommand(String name, BLWorldTrashCanCommand executor) {
-        PluginCommand command = getCommand(name);
-        if (command != null) {
-            command.setExecutor(executor);
-            command.setTabCompleter(executor);
-        }
-    }
-
-    /** 输出当前产物能力报告。 */
-    private void logCapabilities() {
-        getLogger().info("Platform: " + platform.id());
-        for (Capability capability : Capability.values()) {
-            String state = platform.capabilities().has(capability) ? "enabled" : "disabled";
-            getLogger().info("Capability " + capability.name().toLowerCase().replace('_', '-') + ": " + state);
-        }
+    /** 返回最近一次清理统计。 */
+    public CleanupFeature.CleanupStats getLastCleanupStats() {
+        return cleanupFeature == null ? CleanupFeature.CleanupStats.empty() : cleanupFeature.getLastStats();
     }
 
     /** 打开公共垃圾桶。 */
-    public void openGlobalTrash(org.bukkit.entity.Player player) {
+    public void openGlobalTrash(Player player) {
         trashFeature.openGlobal(player);
     }
 
     /** 打开个人垃圾桶。 */
-    public void openPersonalTrash(org.bukkit.entity.Player player) {
+    public void openPersonalTrash(Player player) {
         trashFeature.openPersonal(player);
     }
 
@@ -193,23 +119,18 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         return cleanupFeature == null ? 0L : cleanupFeature.getRemainingSeconds();
     }
 
-    /** 返回最近一次清理统计。 */
-    public CleanupFeature.CleanupStats getLastCleanupStats() {
-        return cleanupFeature == null ? CleanupFeature.CleanupStats.empty() : cleanupFeature.getLastStats();
-    }
-
     /** 返回公共垃圾桶页数。 */
     public int getGlobalTrashPageCount() {
         return trashFeature == null ? 0 : trashFeature.getGlobalPageCount();
     }
 
-    /** 返回已加载的个人垃圾桶数量。 */
+    /** 返回已加载个人垃圾桶数量。 */
     public int getPersonalTrashInventoryCount() {
         return trashFeature == null ? 0 : trashFeature.getPersonalInventoryCount();
     }
 
-    /** 调整当前世界垃圾桶数量上限。 */
-    public int addWorldTrashMax(org.bukkit.World world, int delta) {
+    /** 调整当前世界垃圾桶上限。 */
+    public int addWorldTrashMax(World world, int delta) {
         return trashRouter.addMaxCount(world, delta, configBundle.getTrashConfig().getWorldTrash().getDefaultMaxCount());
     }
 
@@ -293,5 +214,67 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
             }
         }
         return null;
+    }
+
+    /** 保存默认配置文件。 */
+    private void saveDefaultConfigs() {
+        saveDefaultConfig();
+        saveResourceIfMissing("platform.yml");
+        saveResourceIfMissing("cleanup.yml");
+        saveResourceIfMissing("trash.yml");
+        saveResourceIfMissing("notify.yml");
+        saveResourceIfMissing("entity-limits.yml");
+        saveResourceIfMissing("protections.yml");
+        saveResourceIfMissing("messages/message_zh.yml");
+        saveResourceIfMissing("data/worlds.yml");
+    }
+
+    /** 仅在文件不存在时保存资源。 */
+    private void saveResourceIfMissing(String path) {
+        if (!getDataFolder().toPath().resolve(path).toFile().exists()) {
+            saveResource(path, false);
+        }
+    }
+
+    /** 读取配置集合。 */
+    private ConfigBundle loadConfigBundle() {
+        ConfigBundleLoader loader = new ConfigBundleLoader();
+        return loader.load(
+                new BukkitConfigurationSource(getConfig()),
+                new BukkitConfigurationSource(loadYaml("cleanup.yml")),
+                new BukkitConfigurationSource(loadYaml("trash.yml"))
+        );
+    }
+
+    /** 读取 YAML 文件。 */
+    private YamlConfiguration loadYaml(String path) {
+        return YamlConfiguration.loadConfiguration(new File(getDataFolder(), path));
+    }
+
+    /** 注册命令。 */
+    private void registerCommands() {
+        BLWorldTrashCanLegacyCommand executor = new BLWorldTrashCanLegacyCommand(this);
+        registerCommand("blworldtrashcan", executor);
+        registerCommand("blwtc", executor);
+        registerCommand("WorldListTrashCan", executor);
+        registerCommand("wtc", executor);
+    }
+
+    /** 注册单个命令。 */
+    private void registerCommand(String name, BLWorldTrashCanLegacyCommand executor) {
+        PluginCommand command = getCommand(name);
+        if (command != null) {
+            command.setExecutor(executor);
+            command.setTabCompleter(executor);
+        }
+    }
+
+    /** 输出平台能力。 */
+    private void logCapabilities() {
+        getLogger().info("Platform: " + platform.id());
+        for (Capability capability : Capability.values()) {
+            String state = platform.capabilities().has(capability) ? "enabled" : "disabled";
+            getLogger().info("Capability " + capability.name().toLowerCase().replace('_', '-') + ": " + state);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package pixeltech.bluenine.blworldtrashcan.plugin;
+package pixeltech.bluenine.blworldtrashcan.plugin.legacy;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
+import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 
 import java.util.ArrayList;
@@ -16,18 +16,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-/** 新架构主命令，当前只提供架构验证命令。 */
-public final class BLWorldTrashCanCommand implements CommandExecutor, TabCompleter {
+/** Legacy 1.12 主命令。 */
+public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugsummary");
-    private final BLWorldTrashCanPlugin plugin;
+    private final BLWorldTrashCanLegacyPlugin plugin;
 
     /** 创建命令执行器。 */
-    public BLWorldTrashCanCommand(BLWorldTrashCanPlugin plugin) {
+    public BLWorldTrashCanLegacyCommand(BLWorldTrashCanLegacyPlugin plugin) {
         this.plugin = plugin;
     }
 
-    /** 处理主命令。 */
+    /** 处理命令。 */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String sub = args.length == 0 ? "help" : args[0].toLowerCase();
@@ -61,19 +61,11 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
             if (!requirePlayer(sender)) {
                 return true;
             }
-            if (!sender.hasPermission("blworldtrashcan.global.open") && !sender.hasPermission("WorldListTrashCan.GlobalTrashOpen")) {
-                sender.sendMessage("§c你没有权限打开公共垃圾桶。");
-                return true;
-            }
             plugin.openGlobalTrash((Player) sender);
             return true;
         }
         if ("personal".equals(sub) || "playertrash".equals(sub)) {
             if (!requirePlayer(sender)) {
-                return true;
-            }
-            if (!sender.hasPermission("blworldtrashcan.personal.open") && !sender.hasPermission("WorldListTrashCan.PlayerTrash")) {
-                sender.sendMessage("§c你没有权限打开个人垃圾桶。");
                 return true;
             }
             plugin.openPersonalTrash((Player) sender);
@@ -111,7 +103,7 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         return true;
     }
 
-    /** 处理命令补全。 */
+    /** 处理补全。 */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
@@ -123,7 +115,7 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         return Collections.emptyList();
     }
 
-    /** 发送帮助信息。 */
+    /** 发送帮助。 */
     private void sendHelp(CommandSender sender) {
         sender.sendMessage("§b/blwtc help §7- 查看帮助");
         sender.sendMessage("§b/blwtc platform §7- 查看当前版本产物能力");
@@ -140,7 +132,16 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         sender.sendMessage("§b/blwtc reload §7- 重载插件");
     }
 
-    /** 发送运行统计。 */
+    /** 发送平台信息。 */
+    private void sendPlatform(CommandSender sender) {
+        sender.sendMessage("§a当前平台: §f" + plugin.getPlatform().id());
+        for (Capability capability : Capability.values()) {
+            String state = plugin.getPlatform().capabilities().has(capability) ? "§a启用" : "§7禁用";
+            sender.sendMessage("§7- §f" + capability.name().toLowerCase().replace('_', '-') + "§7: " + state);
+        }
+    }
+
+    /** 发送统计信息。 */
     private void sendStats(CommandSender sender) {
         CleanupFeature.CleanupStats stats = plugin.getLastCleanupStats();
         sender.sendMessage("§a清理统计:");
@@ -156,7 +157,7 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         sender.sendMessage("§7- §f下次清理剩余秒数: §a" + plugin.getRemainingClearSeconds());
     }
 
-    /** 处理增加世界垃圾桶上限命令。 */
+    /** 处理上限增加。 */
     private void handleAdd(CommandSender sender, String[] args) {
         if (!requirePlayer(sender)) {
             return;
@@ -288,16 +289,7 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         }
     }
 
-    /** 发送平台能力信息。 */
-    private void sendPlatform(CommandSender sender) {
-        sender.sendMessage("§a当前平台: §f" + plugin.getPlatform().id());
-        for (Capability capability : Capability.values()) {
-            String state = plugin.getPlatform().capabilities().has(capability) ? "§a启用" : "§7禁用";
-            sender.sendMessage("§7- §f" + capability.name().toLowerCase().replace('_', '-') + "§7: " + state);
-        }
-    }
-
-    /** 要求命令发送者必须是玩家。 */
+    /** 要求发送者为玩家。 */
     private boolean requirePlayer(CommandSender sender) {
         if (sender instanceof Player) {
             return true;
@@ -357,7 +349,7 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         }
     }
 
-    /** 按前缀过滤补全项。 */
+    /** 按前缀过滤补全。 */
     private List<String> filter(List<String> values, String prefix) {
         String lower = prefix == null ? "" : prefix.toLowerCase();
         List<String> result = new ArrayList<>();

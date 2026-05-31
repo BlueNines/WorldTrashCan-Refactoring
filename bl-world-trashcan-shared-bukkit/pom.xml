@@ -16,6 +16,14 @@
             <artifactId>bl-world-trashcan-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>pixeltech.bluenine</groupId>
+            <artifactId>bl-world-trashcan-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pixeltech.bluenine</groupId>
+            <artifactId>bl-world-trashcan-storage</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>${paper.legacy.version}</version>

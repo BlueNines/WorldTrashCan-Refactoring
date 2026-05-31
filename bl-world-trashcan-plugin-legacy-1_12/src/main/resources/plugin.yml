@@ -1,7 +1,6 @@
 name: BLWorldTrashCan
 version: ${project.version}
-main: pixeltech.bluenine.blworldtrashcan.plugin.BLWorldTrashCanPlugin
-api-version: '1.16'
+main: pixeltech.bluenine.blworldtrashcan.plugin.legacy.BLWorldTrashCanLegacyPlugin
 author: BlueNine
 softdepend:
   - Vault
