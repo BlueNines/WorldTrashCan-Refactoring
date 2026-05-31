@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pixeltech.bluenine</groupId>
+    <artifactId>bl-world-trashcan-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>BLWorldTrashCan Parent</name>
+
+    <modules>
+        <module>bl-world-trashcan-core</module>
+        <module>bl-world-trashcan-config</module>
+        <module>bl-world-trashcan-storage</module>
+        <module>bl-world-trashcan-shared-bukkit</module>
+        <module>bl-world-trashcan-platform-legacy-1_12</module>
+        <module>bl-world-trashcan-platform-bukkit-1_13_1_15</module>
+        <module>bl-world-trashcan-platform-paper-1_16_1_20</module>
+        <module>bl-world-trashcan-platform-folia-1_20</module>
+        <module>bl-world-trashcan-plugin-legacy-1_12</module>
+        <module>bl-world-trashcan-plugin-bukkit-1_13_1_15</module>
+        <module>bl-world-trashcan-plugin-paper-1_16_1_20</module>
+        <module>bl-world-trashcan-plugin-folia-1_20</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.legacy.version>1.8</java.legacy.version>
+        <java.modern.version>17</java.modern.version>
+        <paper.legacy.version>1.12.2-R0.1-SNAPSHOT</paper.legacy.version>
+        <paper.modern.version>1.20.4-R0.1-SNAPSHOT</paper.modern.version>
+        <folia.version>1.20.1-R0.1-SNAPSHOT</folia.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-storage</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-shared-bukkit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-platform-paper-1_16_1_20</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

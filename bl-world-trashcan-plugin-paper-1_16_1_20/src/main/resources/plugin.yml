@@ -1,0 +1,25 @@
+name: BLWorldTrashCan
+version: ${project.version}
+main: pixeltech.bluenine.blworldtrashcan.plugin.BLWorldTrashCanPlugin
+api-version: '1.16'
+author: BlueNine
+softdepend:
+  - Vault
+  - PlaceholderAPI
+commands:
+  blworldtrashcan:
+    description: BLWorldTrashCan 主命令
+    aliases:
+      - blwtc
+  WorldListTrashCan:
+    description: WorldListTrashCan 旧命令兼容入口
+    aliases:
+      - WTC
+      - wtc
+permissions:
+  blworldtrashcan.admin:
+    description: 允许重载插件并查看调试信息
+    default: op
+  blworldtrashcan.use:
+    description: 允许使用基础垃圾桶功能
+    default: true

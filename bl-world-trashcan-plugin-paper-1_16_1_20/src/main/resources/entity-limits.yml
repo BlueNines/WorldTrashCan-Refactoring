@@ -1,0 +1,26 @@
+# 每个世界的实体数量限制。
+world-limits:
+  # 是否启用世界实体数量限制。
+  enabled: false
+  # 不受限制的世界名。
+  ignored-worlds:
+    - "testWorld"
+  # 默认限制列表。
+  defaults:
+    - entity: "VILLAGER"
+      max-count: 10
+    - entity: "CHICKEN"
+      max-count: 20
+
+# 密集实体清理。
+gather-limits:
+  # 是否启用密集实体清理。
+  enabled: false
+  # 清理密集实体时是否掉落物品。
+  drop-items: true
+  # 默认密集限制列表。
+  defaults:
+    - entity: "VILLAGER"
+      max-count: 10
+      radius: 8
+      remove-count: 5

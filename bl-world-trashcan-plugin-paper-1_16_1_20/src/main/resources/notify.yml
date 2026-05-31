@@ -1,0 +1,28 @@
+# 聊天栏提醒。
+chat:
+  # 是否启用聊天提醒。
+  enabled: true
+  # 是否同步输出到控制台。
+  console-log: true
+  # 清理完成消息点击后执行的命令。
+  click-command: "/worldlisttrashcan globaltrash"
+
+# ActionBar 提醒。
+actionbar:
+  # 是否启用 ActionBar。
+  enabled: true
+
+# BossBar 提醒。
+bossbar:
+  # 是否启用 BossBar。
+  enabled: false
+
+# Title 提醒。
+title:
+  # 是否启用 Title。
+  enabled: false
+
+# 声音提醒。
+sound:
+  # 是否启用提示音。
+  enabled: true

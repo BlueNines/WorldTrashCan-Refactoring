@@ -1,0 +1,8 @@
+manual-build/
+target/
+*/target/
+.idea/
+*.iml
+*.log
+dist/*
+!dist/.gitkeep
