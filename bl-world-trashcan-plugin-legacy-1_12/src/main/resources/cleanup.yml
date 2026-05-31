@@ -25,6 +25,8 @@ ignored-lore-fragments:
 
 # 实体清理规则。
 entities:
+  # 是否清理经验球。
+  clear-experience-orbs: true
   # 是否清理怪物。
   clear-monsters: true
   # 是否清理动物或普通生物。
@@ -35,3 +37,12 @@ entities:
   clear-named-entities: false
   # 是否跳过船内实体。
   ignore-entities-in-boat: false
+  # 实体白名单；命中后不清理，支持 * 通配。
+  whitelist:
+    - "VILLAGER"
+    - "*golem*"
+    - "WITHER"
+    - "Ender Dragon"
+  # 实体黑名单；命中后强制清理，支持 * 通配。白名单优先级更高。
+  blacklist:
+    - "FLAMMPFEIL.SLASHBLADE_BLADESTAND"

@@ -2,23 +2,31 @@ package pixeltech.bluenine.blworldtrashcan.config;
 
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
 
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** 把拆分后的 YAML 配置读取为类型化配置对象。 */
 public final class ConfigBundleLoader {
     /** 读取完整配置集合。 */
-    public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash) {
+    public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
+                             ConfigurationSource protections, ConfigurationSource entityLimits,
+                             ConfigurationSource notify) {
         CleanupSettings cleanupSettings = new CleanupSettings(
                 toSet(cleanup.getStringList("ignored-materials")),
                 toSet(cleanup.getStringList("ignored-name-fragments")),
                 toSet(cleanup.getStringList("ignored-lore-fragments")),
+                cleanup.getBoolean("entities.clear-experience-orbs", true),
                 cleanup.getBoolean("entities.clear-monsters", true),
                 cleanup.getBoolean("entities.clear-animals", false),
                 cleanup.getBoolean("entities.clear-projectiles", true),
                 cleanup.getBoolean("entities.clear-named-entities", false),
-                cleanup.getBoolean("entities.ignore-entities-in-boat", false)
+                cleanup.getBoolean("entities.ignore-entities-in-boat", false),
+                toSet(cleanup.getStringList("entities.whitelist")),
+                toSet(cleanup.getStringList("entities.blacklist"))
         );
         CleanupConfig cleanupConfig = new CleanupConfig(
                 cleanup.getInt("interval-seconds", 360),
@@ -38,7 +46,9 @@ public final class ConfigBundleLoader {
                         trash.getInt("global-trash.max-pages", 5),
                         trash.getInt("global-trash.take-delay-millis", 500),
                         trash.getInt("global-trash.clear-every-cleanups", 3),
-                        trash.getBoolean("global-trash.allow-player-put", true)
+                        trash.getBoolean("global-trash.allow-player-put", true),
+                        trash.getBoolean("global-trash.log-enabled", true),
+                        toSet(trash.getStringList("global-trash.banned-materials"))
                 ),
                 new TrashConfig.PersonalTrashConfig(
                         trash.getBoolean("personal-trash.enabled", true),
@@ -47,9 +57,43 @@ public final class ConfigBundleLoader {
                         trash.getDouble("personal-trash.take-cost", -1D)
                 )
         );
+        ProtectionConfig protectionConfig = new ProtectionConfig(
+                new ProtectionConfig.RateLimitConfig(
+                        protections.getBoolean("chat-rate-limit.enabled", true),
+                        protections.getDouble("chat-rate-limit.interval-seconds", 0.7D),
+                        protections.getString("chat-rate-limit.message", "&c请不要刷屏"),
+                        protections.getString("chat-rate-limit.command", "")
+                ),
+                new ProtectionConfig.CommandRateLimitConfig(
+                        protections.getBoolean("command-rate-limit.enabled", true),
+                        protections.getDouble("command-rate-limit.interval-seconds", 0.7D),
+                        protections.getString("command-rate-limit.message", "&c请不要频繁使用指令"),
+                        protections.getString("command-rate-limit.command", ""),
+                        toSet(protections.getStringList("command-rate-limit.whitelist"))
+                ),
+                protections.getBoolean("drop-protection.enabled", true),
+                protections.getBoolean("simple-optimize.remove-unpickable-arrow", true),
+                protections.getBoolean("simple-optimize.prevent-farmland-trampling", true)
+        );
+        EntityLimitConfig entityLimitConfig = new EntityLimitConfig(
+                new EntityLimitConfig.WorldLimitConfig(
+                        entityLimits.getBoolean("world-limits.enabled", false),
+                        toSet(entityLimits.getStringList("world-limits.ignored-worlds")),
+                        parseWorldLimits(entityLimits.getMapList("world-limits.defaults"))
+                ),
+                new EntityLimitConfig.GatherLimitConfig(
+                        entityLimits.getBoolean("gather-limits.enabled", false),
+                        entityLimits.getBoolean("gather-limits.drop-items", true),
+                        toSet(entityLimits.getStringList("gather-limits.ignored-worlds")),
+                        parseGatherLimits(entityLimits.getMapList("gather-limits.defaults"))
+                )
+        );
         return new ConfigBundle(
                 cleanupConfig,
                 trashConfig,
+                protectionConfig,
+                entityLimitConfig,
+                loadNotifyConfig(notify),
                 main.getString("language", "message_zh.yml"),
                 main.getBoolean("debug", false)
         );
@@ -58,5 +102,173 @@ public final class ConfigBundleLoader {
     /** 把列表转成集合。 */
     private Set<String> toSet(List<String> values) {
         return values == null ? new HashSet<String>() : new HashSet<>(values);
+    }
+
+    /** 解析世界实体限制列表。 */
+    private Map<String, Integer> parseWorldLimits(List<Map<?, ?>> values) {
+        Map<String, Integer> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (Map<?, ?> value : values) {
+            String entity = stringValue(value.get("entity"));
+            int maxCount = intValue(value.get("max-count"), 0);
+            if (!entity.isEmpty() && maxCount > 0) {
+                result.put(entity, maxCount);
+            }
+        }
+        return result;
+    }
+
+    /** 解析密集实体限制列表。 */
+    private Map<String, EntityLimitConfig.GatherRule> parseGatherLimits(List<Map<?, ?>> values) {
+        Map<String, EntityLimitConfig.GatherRule> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (Map<?, ?> value : values) {
+            String entity = stringValue(value.get("entity"));
+            int maxCount = intValue(value.get("max-count"), 0);
+            int radius = intValue(value.get("radius"), 8);
+            int removeCount = intValue(value.get("remove-count"), 1);
+            if (!entity.isEmpty() && maxCount > 0) {
+                result.put(entity, new EntityLimitConfig.GatherRule(maxCount, radius, removeCount));
+            }
+        }
+        return result;
+    }
+
+    /** 把对象转成字符串。 */
+    private String stringValue(Object value) {
+        return value == null ? "" : String.valueOf(value).trim();
+    }
+
+    /** 把对象转成整数。 */
+    private int intValue(Object value, int fallback) {
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+        try {
+            return Integer.parseInt(stringValue(value));
+        } catch (NumberFormatException ignored) {
+            return fallback;
+        }
+    }
+
+    /** 读取通知配置。 */
+    private NotifyConfig loadNotifyConfig(ConfigurationSource notify) {
+        return new NotifyConfig(
+                notify.getBoolean("chat.enabled", true),
+                notify.getBoolean("chat.console-log", true),
+                notify.getString("chat.click-command", "/worldlisttrashcan globaltrash"),
+                parseTextMessages(notify.getStringList("chat.messages")),
+                notify.getBoolean("actionbar.enabled", true),
+                parseTextMessages(notify.getStringList("actionbar.messages")),
+                notify.getBoolean("command.enabled", false),
+                parseCommandMessages(notify.getStringList("command.commands")),
+                notify.getBoolean("title.enabled", false),
+                parseTitleMessages(notify.getStringList("title.messages")),
+                notify.getBoolean("sound.enabled", true),
+                parseSoundMessages(notify.getStringList("sound.messages"))
+        );
+    }
+
+    /** 解析 count;text 格式的文本通知。 */
+    private Map<Integer, String> parseTextMessages(List<String> values) {
+        Map<Integer, String> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (String value : values) {
+            String[] parts = split(value, 2);
+            if (parts.length >= 2) {
+                result.put(intValue(parts[0], Integer.MIN_VALUE), parts[1]);
+            }
+        }
+        result.remove(Integer.MIN_VALUE);
+        return result;
+    }
+
+    /** 解析 count;command1;command2 格式的命令通知。 */
+    private Map<Integer, List<String>> parseCommandMessages(List<String> values) {
+        Map<Integer, List<String>> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (String value : values) {
+            String[] parts = split(value, 0);
+            if (parts.length < 2) {
+                continue;
+            }
+            int count = intValue(parts[0], Integer.MIN_VALUE);
+            if (count == Integer.MIN_VALUE) {
+                continue;
+            }
+            List<String> commands = new ArrayList<>();
+            for (int index = 1; index < parts.length; index++) {
+                if (!parts[index].trim().isEmpty()) {
+                    commands.add(parts[index]);
+                }
+            }
+            if (!commands.isEmpty()) {
+                result.put(count, commands);
+            }
+        }
+        return result;
+    }
+
+    /** 解析 count;title;subtitle 格式的 Title 通知。 */
+    private Map<Integer, NotifyConfig.TitleMessage> parseTitleMessages(List<String> values) {
+        Map<Integer, NotifyConfig.TitleMessage> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (String value : values) {
+            String[] parts = split(value, 3);
+            if (parts.length >= 2) {
+                result.put(intValue(parts[0], Integer.MIN_VALUE),
+                        new NotifyConfig.TitleMessage(parts[1], parts.length >= 3 ? parts[2] : ""));
+            }
+        }
+        result.remove(Integer.MIN_VALUE);
+        return result;
+    }
+
+    /** 解析 count;sound,volume,pitch 格式的声音通知。 */
+    private Map<Integer, NotifyConfig.SoundMessage> parseSoundMessages(List<String> values) {
+        Map<Integer, NotifyConfig.SoundMessage> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (String value : values) {
+            String[] parts = split(value, 2);
+            if (parts.length < 2) {
+                continue;
+            }
+            String[] soundParts = parts[1].split(",");
+            String sound = soundParts.length > 0 ? soundParts[0] : "";
+            float volume = soundParts.length > 1 ? floatValue(soundParts[1], 1F) : 1F;
+            float pitch = soundParts.length > 2 ? floatValue(soundParts[2], 1F) : 1F;
+            result.put(intValue(parts[0], Integer.MIN_VALUE), new NotifyConfig.SoundMessage(sound, volume, pitch));
+        }
+        result.remove(Integer.MIN_VALUE);
+        return result;
+    }
+
+    /** 切分分号配置。 */
+    private String[] split(String value, int limit) {
+        if (value == null) {
+            return new String[0];
+        }
+        return limit > 0 ? value.split(";", limit) : value.split(";");
+    }
+
+    /** 把对象转成浮点数。 */
+    private float floatValue(Object value, float fallback) {
+        try {
+            return Float.parseFloat(stringValue(value));
+        } catch (NumberFormatException ignored) {
+            return fallback;
+        }
     }
 }

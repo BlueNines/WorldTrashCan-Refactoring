@@ -44,3 +44,45 @@ permissions:
   blworldtrashcan.personal.put:
     description: 允许向个人垃圾桶放入物品
     default: true
+  blworldtrashcan.dropmode:
+    description: 允许切换防丢弃模式
+    default: true
+  blworldtrashcan.look:
+    description: 允许查询手持物品和实体类型
+    default: op
+  WorldListTrashCan.Main:
+    description: 旧权限：允许创建世界垃圾桶
+    default: true
+  WorldListTrashCan.BanGui:
+    description: 旧权限：打开世界黑名单 GUI
+    default: true
+  WorldListTrashCan.GlobalTrashOpen:
+    description: 旧权限：打开公共垃圾桶
+    default: true
+  WorldListTrashCan.GlobalTrashTakeItem:
+    description: 旧权限：从公共垃圾桶取出物品
+    default: true
+  WorldListTrashCan.GlobalTrashPutItem:
+    description: 旧权限：向公共垃圾桶放入物品
+    default: true
+  WorldListTrashCan.PersonalTrashTakeItem:
+    description: 旧权限：从个人垃圾桶取出物品
+    default: true
+  WorldListTrashCan.PersonalTrashPutItem:
+    description: 旧权限：向个人垃圾桶放入物品
+    default: true
+  WorldListTrashCan.help:
+    description: 旧权限：查看帮助
+    default: true
+  WorldListTrashCan.GlobalBan:
+    description: 旧权限：公共垃圾桶黑名单 GUI
+    default: false
+  WorldListTrashCan.Look:
+    description: 旧权限：查询实体类型
+    default: false
+  WorldListTrashCan.DropMode:
+    description: 旧权限：防丢弃模式
+    default: true
+  WorldListTrashCan.PlayerTrash:
+    description: 旧权限：打开个人垃圾桶
+    default: true

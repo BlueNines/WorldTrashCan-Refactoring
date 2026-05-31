@@ -84,15 +84,20 @@ public final class TrashConfig {
         private final int takeDelayMillis;
         private final int clearEveryCleanups;
         private final boolean allowPlayerPut;
+        private final boolean logEnabled;
+        private final Set<String> bannedMaterials;
 
         /** 创建公共垃圾桶配置。 */
         public GlobalTrashConfig(boolean enabled, int maxPages, int takeDelayMillis,
-                                 int clearEveryCleanups, boolean allowPlayerPut) {
+                                 int clearEveryCleanups, boolean allowPlayerPut,
+                                 boolean logEnabled, Set<String> bannedMaterials) {
             this.enabled = enabled;
             this.maxPages = Math.max(1, maxPages);
             this.takeDelayMillis = Math.max(0, takeDelayMillis);
             this.clearEveryCleanups = clearEveryCleanups;
             this.allowPlayerPut = allowPlayerPut;
+            this.logEnabled = logEnabled;
+            this.bannedMaterials = normalizeMaterialSet(bannedMaterials);
         }
 
         /** 判断公共垃圾桶是否启用。 */
@@ -118,6 +123,21 @@ public final class TrashConfig {
         /** 判断是否允许玩家手动放入公共垃圾桶。 */
         public boolean isAllowPlayerPut() {
             return allowPlayerPut;
+        }
+
+        /** 判断是否记录公共垃圾桶拿取和放入日志。 */
+        public boolean isLogEnabled() {
+            return logEnabled;
+        }
+
+        /** 判断物品是否禁止进入公共垃圾桶。 */
+        public boolean isBannedMaterial(String materialName) {
+            return bannedMaterials.contains(normalizeMaterial(materialName));
+        }
+
+        /** 返回公共垃圾桶物品黑名单。 */
+        public Set<String> getBannedMaterials() {
+            return bannedMaterials;
         }
     }
 
@@ -181,5 +201,30 @@ public final class TrashConfig {
     /** 标准化比较字符串。 */
     private static String normalize(String value) {
         return value == null ? "" : value.trim().toLowerCase(Locale.ROOT);
+    }
+
+    /** 标准化 Material 集合。 */
+    private static Set<String> normalizeMaterialSet(Set<String> values) {
+        if (values == null || values.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<String> result = new HashSet<>();
+        for (String value : values) {
+            String normalized = normalizeMaterial(value);
+            if (!normalized.isEmpty()) {
+                result.add(normalized);
+            }
+        }
+        return Collections.unmodifiableSet(result);
+    }
+
+    /** 标准化 Material 名称。 */
+    private static String normalizeMaterial(String value) {
+        return value == null ? "" : value.trim().toUpperCase(Locale.ROOT);
+    }
+
+    /** 返回公共垃圾桶物品黑名单。 */
+    public Set<String> getGlobalTrashBannedMaterials() {
+        return globalTrash.getBannedMaterials();
     }
 }

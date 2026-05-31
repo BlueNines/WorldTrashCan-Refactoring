@@ -18,10 +18,13 @@ public final class CorePolicySelfTest {
                 new HashSet<>(Collections.singletonList("ALTAR")),
                 new HashSet<>(Collections.singletonList("shopLocation")),
                 true,
+                true,
                 false,
                 true,
                 false,
-                true
+                true,
+                new HashSet<>(Collections.singletonList("VILLAGER")),
+                new HashSet<>(Collections.singletonList("FLAMMPFEIL*"))
         );
         DefaultCleanupPolicy policy = new DefaultCleanupPolicy(settings);
         assertRoute("ignored material", policy.decideItem(
@@ -42,6 +45,15 @@ public final class CorePolicySelfTest {
         assertEntity("boat skip", policy.decideEntity(
                 new EntitySnapshot("ZOMBIE", "Zombie", "", true, true, false, true)),
                 EntityCleanupAction.SKIP);
+        assertEntity("whitelist skip", policy.decideEntity(
+                new EntitySnapshot("VILLAGER", "Villager", "", true, false, false, false)),
+                EntityCleanupAction.SKIP);
+        assertEntity("blacklist remove", policy.decideEntity(
+                new EntitySnapshot("FLAMMPFEIL.SLASHBLADE_BLADESTAND", "BladeStand", "", false, false, false, false)),
+                EntityCleanupAction.REMOVE);
+        assertEntity("experience orb remove", policy.decideEntity(
+                new EntitySnapshot("EXPERIENCE_ORB", "Experience Orb", "", false, false, false, false)),
+                EntityCleanupAction.REMOVE);
         System.out.println("CorePolicySelfTest passed");
     }
 

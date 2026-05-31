@@ -18,6 +18,9 @@ gather-limits:
   enabled: false
   # 清理密集实体时是否掉落物品。
   drop-items: true
+  # 不受密集实体限制的世界名。
+  ignored-worlds:
+    - "testWorld"
   # 默认密集限制列表。
   defaults:
     - entity: "VILLAGER"

@@ -1,6 +1,10 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.feature;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -8,9 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
+import pixeltech.bluenine.blworldtrashcan.config.NotifyConfig;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
@@ -27,16 +33,21 @@ public final class CleanupFeature implements Feature {
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
     private final TrashRouter trashRouter;
+    private final GlobalTrashService globalTrashService;
     private TaskHandle taskHandle;
     private CleanupStats lastStats = CleanupStats.empty();
     private long nextRunAtMillis;
+    private int cleanupRunsSinceGlobalClear;
+    private int countdownSeconds;
 
     /** 创建后台清理功能。 */
-    public CleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier, TrashRouter trashRouter) {
+    public CleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
+                          TrashRouter trashRouter, GlobalTrashService globalTrashService) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
+        this.globalTrashService = globalTrashService;
     }
 
     /** 返回功能 ID。 */
@@ -65,6 +76,7 @@ public final class CleanupFeature implements Feature {
             taskHandle.cancel();
             taskHandle = null;
         }
+        countdownSeconds = 0;
     }
 
     /** 立即执行一次清理。 */
@@ -79,13 +91,15 @@ public final class CleanupFeature implements Feature {
             }
             cleanWorld(world, policy, stats);
         }
+        handleGlobalTrashRefresh(bundle, stats);
         lastStats = stats;
         plugin.getLogger().info("[Cleanup] worlds=" + stats.worlds
                 + ", itemsRouted=" + stats.itemsRouted
                 + ", itemsRemoved=" + stats.itemsRemoved
                 + ", itemsSkipped=" + stats.itemsSkipped
                 + ", entitiesRemoved=" + stats.entitiesRemoved
-                + ", entitiesSkipped=" + stats.entitiesSkipped);
+                + ", entitiesSkipped=" + stats.entitiesSkipped
+                + ", globalTrashRefreshed=" + stats.globalTrashRefreshed);
         return stats;
     }
 
@@ -110,16 +124,34 @@ public final class CleanupFeature implements Feature {
             return;
         }
         long ticks = Math.max(20L, interval * 20L);
-        nextRunAtMillis = System.currentTimeMillis() + ticks * 50L;
+        countdownSeconds = interval;
+        nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
         taskHandle = platform.scheduler().runRepeating(new Runnable() {
-            /** 执行定时清理。 */
+            /** 执行倒计时或定时清理。 */
             @Override
             public void run() {
-                nextRunAtMillis = System.currentTimeMillis() + ticks * 50L;
-                runNow();
+                tickCountdown();
             }
-        }, ticks, ticks);
+        }, 20L, 20L);
         plugin.getLogger().info("[Cleanup] 定时清理已启动，间隔 " + interval + " 秒。");
+    }
+
+    /** 推进一秒倒计时。 */
+    private void tickCountdown() {
+        int interval = configSupplier.get().getCleanupConfig().getIntervalSeconds();
+        if (interval <= 0) {
+            return;
+        }
+        if (countdownSeconds <= 0) {
+            CleanupStats stats = runNow();
+            sendNotify(0, stats);
+            countdownSeconds = interval;
+            nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
+            return;
+        }
+        sendNotify(countdownSeconds, CleanupStats.empty());
+        countdownSeconds--;
+        nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
     }
 
     /** 清理单个世界。 */
@@ -195,6 +227,20 @@ public final class CleanupFeature implements Feature {
         }
     }
 
+    /** 按清理次数刷新公共垃圾桶。 */
+    private void handleGlobalTrashRefresh(ConfigBundle bundle, CleanupStats stats) {
+        int interval = bundle.getTrashConfig().getGlobalTrash().getClearEveryCleanups();
+        if (interval < 0 || globalTrashService == null || !globalTrashService.isEnabled()) {
+            return;
+        }
+        cleanupRunsSinceGlobalClear++;
+        if (interval == 0 || cleanupRunsSinceGlobalClear >= interval) {
+            globalTrashService.clearContent();
+            cleanupRunsSinceGlobalClear = 0;
+            stats.globalTrashRefreshed = true;
+        }
+    }
+
     /** 清理单个非物品实体。 */
     private void cleanEntity(Entity entity, CleanupPolicy policy, CleanupStats stats) {
         EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
@@ -204,6 +250,105 @@ public final class CleanupFeature implements Feature {
             return;
         }
         stats.entitiesSkipped++;
+    }
+
+    /** 按配置发送倒计时通知。 */
+    private void sendNotify(int count, CleanupStats stats) {
+        NotifyConfig notifyConfig = configSupplier.get().getNotifyConfig();
+        sendChatNotify(notifyConfig, count, stats);
+        sendActionBarNotify(notifyConfig, count, stats);
+        sendTitleNotify(notifyConfig, count, stats);
+        sendSoundNotify(notifyConfig, count);
+        runCommandNotify(notifyConfig, count, stats);
+    }
+
+    /** 发送聊天通知。 */
+    private void sendChatNotify(NotifyConfig notifyConfig, int count, CleanupStats stats) {
+        if (!notifyConfig.isChatEnabled() || !notifyConfig.getChatMessages().containsKey(count)) {
+            return;
+        }
+        String message = applyStats(notifyConfig.getChatMessages().get(count), stats);
+        boolean clickable = count == 0 && !notifyConfig.getChatClickCommand().trim().isEmpty();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (clickable) {
+                TextComponent component = new TextComponent(color(message));
+                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, notifyConfig.getChatClickCommand()));
+                player.spigot().sendMessage(component);
+            } else {
+                player.sendMessage(color(message));
+            }
+        }
+        if (notifyConfig.isChatConsoleLog()) {
+            Bukkit.getConsoleSender().sendMessage(color(message));
+        }
+    }
+
+    /** 发送 ActionBar 通知。 */
+    private void sendActionBarNotify(NotifyConfig notifyConfig, int count, CleanupStats stats) {
+        if (!notifyConfig.isActionBarEnabled() || !notifyConfig.getActionBarMessages().containsKey(count)) {
+            return;
+        }
+        TextComponent component = new TextComponent(color(applyStats(notifyConfig.getActionBarMessages().get(count), stats)));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
+        }
+    }
+
+    /** 发送 Title 通知。 */
+    private void sendTitleNotify(NotifyConfig notifyConfig, int count, CleanupStats stats) {
+        if (!notifyConfig.isTitleEnabled() || !notifyConfig.getTitleMessages().containsKey(count)) {
+            return;
+        }
+        NotifyConfig.TitleMessage message = notifyConfig.getTitleMessages().get(count);
+        String title = color(applyStats(message.getTitle(), stats));
+        String subtitle = color(applyStats(message.getSubtitle(), stats));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle(title, subtitle, 10, 70, 20);
+        }
+    }
+
+    /** 发送声音通知。 */
+    private void sendSoundNotify(NotifyConfig notifyConfig, int count) {
+        if (!notifyConfig.isSoundEnabled() || !notifyConfig.getSoundMessages().containsKey(count)) {
+            return;
+        }
+        NotifyConfig.SoundMessage message = notifyConfig.getSoundMessages().get(count);
+        if (message.getSound().trim().isEmpty()) {
+            return;
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playSound(player.getLocation(), message.getSound(), message.getVolume(), message.getPitch());
+        }
+    }
+
+    /** 执行倒计时命令。 */
+    private void runCommandNotify(NotifyConfig notifyConfig, int count, CleanupStats stats) {
+        if (!notifyConfig.isCommandEnabled() || !notifyConfig.getCommandMessages().containsKey(count)) {
+            return;
+        }
+        for (String command : notifyConfig.getCommandMessages().get(count)) {
+            String finalCommand = ChatColor.stripColor(color(applyStats(command, stats)));
+            if (!finalCommand.trim().isEmpty()) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+            }
+        }
+    }
+
+    /** 替换通知中的统计占位符。 */
+    private String applyStats(String message, CleanupStats stats) {
+        int dealItemSum = stats.getItemsRouted() + stats.getItemsRemoved();
+        int clearEvery = configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups();
+        int clearRemain = clearEvery <= 0 ? 0 : Math.max(0, clearEvery - cleanupRunsSinceGlobalClear);
+        return (message == null ? "" : message)
+                .replace("%DealItemSum%", String.valueOf(dealItemSum))
+                .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
+                .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
+                .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
+    }
+
+    /** 转换颜色代码。 */
+    private String color(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
     }
 
     /** 清理统计。 */
@@ -217,6 +362,7 @@ public final class CleanupFeature implements Feature {
         private int itemsSkipped;
         private int entitiesRemoved;
         private int entitiesSkipped;
+        private boolean globalTrashRefreshed;
 
         /** 创建空统计。 */
         public static CleanupStats empty() {
@@ -266,6 +412,11 @@ public final class CleanupFeature implements Feature {
         /** 返回跳过实体数量。 */
         public int getEntitiesSkipped() {
             return entitiesSkipped;
+        }
+
+        /** 判断本轮是否刷新了公共垃圾桶。 */
+        public boolean isGlobalTrashRefreshed() {
+            return globalTrashRefreshed;
         }
     }
 }

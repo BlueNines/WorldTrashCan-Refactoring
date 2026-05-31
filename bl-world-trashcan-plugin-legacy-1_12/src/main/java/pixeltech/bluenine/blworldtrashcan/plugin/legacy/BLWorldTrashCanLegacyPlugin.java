@@ -11,8 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
+import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
+import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
@@ -38,6 +41,8 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     private ConfigBundle configBundle;
     private CleanupFeature cleanupFeature;
     private TrashFeature trashFeature;
+    private ProtectionFeature protectionFeature;
+    private BanGuiFeature banGuiFeature;
     private WorldTrashRouter trashRouter;
 
     /** 启动插件。 */
@@ -64,9 +69,14 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
                 configBundle.getTrashConfig()
         );
         this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService);
-        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter);
+        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService);
+        this.protectionFeature = new ProtectionFeature(this, platform, configSupplier);
+        this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter);
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
+        featureRegistry.register(protectionFeature);
+        featureRegistry.register(banGuiFeature);
+        featureRegistry.register(new EntityLimitFeature(this, configSupplier));
         registerCommands();
         logCapabilities();
         featureRegistry.enableAll();
@@ -112,6 +122,32 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     /** 打开个人垃圾桶。 */
     public void openPersonalTrash(Player player) {
         trashFeature.openPersonal(player);
+    }
+
+    /** 切换玩家防丢弃模式。 */
+    public boolean toggleDropProtection(Player player) {
+        return protectionFeature != null && protectionFeature.toggleDropProtection(player);
+    }
+
+    /** 让玩家进入实体和手持物查询模式。 */
+    public void armLook(Player player) {
+        if (protectionFeature != null) {
+            protectionFeature.armLook(player);
+        }
+    }
+
+    /** 打开当前世界物品黑名单 GUI。 */
+    public void openWorldBan(Player player) {
+        if (banGuiFeature != null) {
+            banGuiFeature.openWorldBan(player);
+        }
+    }
+
+    /** 打开公共垃圾桶物品黑名单 GUI。 */
+    public void openGlobalBan(Player player) {
+        if (banGuiFeature != null) {
+            banGuiFeature.openGlobalBan(player);
+        }
     }
 
     /** 返回下一次清理剩余秒数。 */
@@ -242,7 +278,10 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         return loader.load(
                 new BukkitConfigurationSource(getConfig()),
                 new BukkitConfigurationSource(loadYaml("cleanup.yml")),
-                new BukkitConfigurationSource(loadYaml("trash.yml"))
+                new BukkitConfigurationSource(loadYaml("trash.yml")),
+                new BukkitConfigurationSource(loadYaml("protections.yml")),
+                new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
+                new BukkitConfigurationSource(loadYaml("notify.yml"))
         );
     }
 

@@ -26,6 +26,12 @@ global-trash:
   allow-player-put: true
   # 每多少次清理后刷新公共垃圾桶；-1 表示永不自动刷新。
   clear-every-cleanups: 3
+  # 是否记录玩家从公共垃圾桶拿取、放入物品的日志。
+  log-enabled: true
+  # 不允许进入公共垃圾桶的物品类型。
+  banned-materials:
+    - "EGG"
+    - "DIRT"
 
 # 个人垃圾桶设置。
 personal-trash:

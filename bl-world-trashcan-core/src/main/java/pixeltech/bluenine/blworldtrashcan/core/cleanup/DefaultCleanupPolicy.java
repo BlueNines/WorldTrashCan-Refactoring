@@ -51,6 +51,15 @@ public final class DefaultCleanupPolicy implements CleanupPolicy {
         if (settings.isIgnoreEntitiesInBoat() && entity.isInsideBoat()) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "inside-boat");
         }
+        if (settings.matchesEntityWhitelist(entity.getTypeKey(), entity.getName())) {
+            return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-whitelist");
+        }
+        if (settings.matchesEntityBlacklist(entity.getTypeKey(), entity.getName())) {
+            return new EntityCleanupDecision(EntityCleanupAction.REMOVE, "entity-blacklist");
+        }
+        if (isExperienceOrb(entity.getTypeKey()) && settings.isClearExperienceOrb()) {
+            return new EntityCleanupDecision(EntityCleanupAction.REMOVE, "experience-orb");
+        }
         if (!settings.isClearNamedEntity() && !entity.getCustomName().isEmpty()) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "named-entity");
         }
@@ -64,5 +73,11 @@ public final class DefaultCleanupPolicy implements CleanupPolicy {
             return new EntityCleanupDecision(EntityCleanupAction.REMOVE, "living");
         }
         return new EntityCleanupDecision(EntityCleanupAction.SKIP, "not-matched");
+    }
+
+    /** 判断实体类型是否是经验球。 */
+    private boolean isExperienceOrb(String typeKey) {
+        String normalized = typeKey == null ? "" : typeKey.trim().toUpperCase();
+        return "EXPERIENCE_ORB".equals(normalized) || "XP_ORB".equals(normalized);
     }
 }

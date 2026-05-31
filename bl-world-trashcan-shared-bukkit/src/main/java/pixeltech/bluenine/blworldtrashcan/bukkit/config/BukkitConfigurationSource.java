@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigurationSource;
 
 import java.util.List;
+import java.util.Map;
 
 /** Bukkit FileConfiguration 的配置来源适配器。 */
 public final class BukkitConfigurationSource implements ConfigurationSource {
@@ -42,5 +43,11 @@ public final class BukkitConfigurationSource implements ConfigurationSource {
     @Override
     public List<String> getStringList(String path) {
         return configuration.getStringList(path);
+    }
+
+    /** 读取映射列表配置。 */
+    @Override
+    public List<Map<?, ?>> getMapList(String path) {
+        return configuration.getMapList(path);
     }
 }

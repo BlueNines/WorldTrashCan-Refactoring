@@ -1,6 +1,7 @@
 package pixeltech.bluenine.blworldtrashcan.config;
 
 import java.util.List;
+import java.util.Map;
 
 /** 配置读取来源，隔离 Bukkit FileConfiguration 和核心配置解析。 */
 public interface ConfigurationSource {
@@ -18,4 +19,7 @@ public interface ConfigurationSource {
 
     /** 读取字符串列表。 */
     List<String> getStringList(String path);
+
+    /** 读取映射列表。 */
+    List<Map<?, ?>> getMapList(String path);
 }

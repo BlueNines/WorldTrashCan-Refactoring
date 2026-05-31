@@ -1,4 +1,5 @@
 manual-build/
+build/
 target/
 */target/
 .idea/

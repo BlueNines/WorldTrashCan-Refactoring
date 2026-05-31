@@ -11,7 +11,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +66,9 @@ public final class GlobalTrashService {
     /** 判断是否有容量放入指定物品。 */
     public boolean hasSpace(ItemStack itemStack) {
         if (!isEnabled()) {
+            return false;
+        }
+        if (itemStack != null && config.isBannedMaterial(itemStack.getType().name())) {
             return false;
         }
         for (Inventory page : pages) {
@@ -177,10 +188,15 @@ public final class GlobalTrashService {
         Map<Integer, ItemStack> leftovers = player.getInventory().addItem(itemStack.clone());
         lastTakeMillis.put(player.getUniqueId(), System.currentTimeMillis());
         if (leftovers.isEmpty()) {
+            logGlobalTrash(player, "-global", itemStack, itemStack.getAmount());
             inventory.clear(slot);
             return;
         }
         ItemStack remaining = leftovers.values().iterator().next();
+        int moved = itemStack.getAmount() - remaining.getAmount();
+        if (moved > 0) {
+            logGlobalTrash(player, "-global", itemStack, moved);
+        }
         itemStack.setAmount(remaining.getAmount());
         inventory.setItem(slot, itemStack);
     }
@@ -194,7 +210,9 @@ public final class GlobalTrashService {
         if (InventorySlotUtil.isEmpty(itemStack)) {
             return;
         }
+        int amount = itemStack.getAmount();
         if (addItem(itemStack)) {
+            logGlobalTrash(player, "+global", itemStack, amount);
             itemStack.setAmount(0);
         }
     }
@@ -261,6 +279,25 @@ public final class GlobalTrashService {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    /** 写入公共垃圾桶操作日志。 */
+    private void logGlobalTrash(Player player, String action, ItemStack itemStack, int amount) {
+        if (config == null || !config.isLogEnabled() || itemStack == null || amount <= 0) {
+            return;
+        }
+        String day = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String line = time + " " + player.getName() + " " + action + " " + itemStack.getType().name() + "x" + amount;
+        Path logDir = plugin.getDataFolder().toPath().resolve("logs");
+        Path logFile = logDir.resolve("global-trash-" + day + ".log");
+        try {
+            Files.createDirectories(logDir);
+            Files.write(logFile, Collections.singletonList(line), StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException exception) {
+            plugin.getLogger().warning("[GlobalTrash] 写入公共垃圾桶日志失败: " + exception.getMessage());
+        }
     }
 
     /** 匹配物品类型。 */

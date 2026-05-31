@@ -19,7 +19,7 @@ import java.util.Locale;
 /** Legacy 1.12 主命令。 */
 public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugsummary");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugsummary");
     private final BLWorldTrashCanLegacyPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -75,6 +75,22 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             sendStats(sender);
             return true;
         }
+        if ("dropmode".equals(sub)) {
+            handleDropMode(sender);
+            return true;
+        }
+        if ("look".equals(sub)) {
+            handleLook(sender);
+            return true;
+        }
+        if ("ban".equals(sub)) {
+            handleWorldBan(sender);
+            return true;
+        }
+        if ("globalban".equals(sub)) {
+            handleGlobalBan(sender);
+            return true;
+        }
         if ("add".equals(sub)) {
             handleAdd(sender, args);
             return true;
@@ -97,6 +113,10 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         }
         if ("debugsummary".equals(sub)) {
             handleDebugSummary(sender, args);
+            return true;
+        }
+        if ("debugplayer".equals(sub)) {
+            handleDebugPlayer(sender, args);
             return true;
         }
         sendHelp(sender);
@@ -122,6 +142,10 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         sender.sendMessage("§b/blwtc clear §7- 立即执行一次后台清理");
         sender.sendMessage("§b/blwtc global §7- 打开公共垃圾桶");
         sender.sendMessage("§b/blwtc personal §7- 打开个人垃圾桶");
+        sender.sendMessage("§b/blwtc dropmode §7- 切换防丢弃模式");
+        sender.sendMessage("§b/blwtc look §7- 查询手持物品和右键实体类型");
+        sender.sendMessage("§b/blwtc ban §7- 打开当前世界垃圾桶物品黑名单");
+        sender.sendMessage("§b/blwtc globalban §7- 打开公共垃圾桶物品黑名单");
         sender.sendMessage("§b/blwtc stats §7- 查看清理和垃圾桶统计");
         sender.sendMessage("§b/blwtc add <数量> §7- 增加当前世界可创建的世界垃圾桶数量");
         sender.sendMessage("§b/blwtc debugopen <玩家> <global|personal> §7- 后台测试打开 GUI");
@@ -129,6 +153,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         sender.sendMessage("§b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> §7- 后台测试指定路由");
         sender.sendMessage("§b/blwtc debugdrop <玩家> <Material> <数量> [owner] §7- 后台生成测试掉落物");
         sender.sendMessage("§b/blwtc debugsummary <玩家> §7- 查看后台测试摘要");
+        sender.sendMessage("§b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> §7- 后台测试玩家入口");
         sender.sendMessage("§b/blwtc reload §7- 重载插件");
     }
 
@@ -178,6 +203,54 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         Player player = (Player) sender;
         int next = plugin.addWorldTrashMax(player.getWorld(), delta);
         sender.sendMessage("§a当前世界垃圾桶上限已调整为 §f" + next + "§a。");
+    }
+
+    /** 处理防丢弃模式切换。 */
+    private void handleDropMode(CommandSender sender) {
+        if (!requirePlayer(sender)) {
+            return;
+        }
+        if (!sender.hasPermission("blworldtrashcan.dropmode") && !sender.hasPermission("WorldListTrashCan.DropMode")) {
+            sender.sendMessage("§c你没有权限使用防丢弃模式。");
+            return;
+        }
+        plugin.toggleDropProtection((Player) sender);
+    }
+
+    /** 处理 look 查询。 */
+    private void handleLook(CommandSender sender) {
+        if (!requirePlayer(sender)) {
+            return;
+        }
+        if (!sender.hasPermission("blworldtrashcan.look") && !sender.hasPermission("WorldListTrashCan.Look")) {
+            sender.sendMessage("§c你没有权限使用查询功能。");
+            return;
+        }
+        plugin.armLook((Player) sender);
+    }
+
+    /** 处理世界黑名单 GUI。 */
+    private void handleWorldBan(CommandSender sender) {
+        if (!requirePlayer(sender)) {
+            return;
+        }
+        if (!sender.hasPermission("WorldListTrashCan.BanGui") && !sender.hasPermission("blworldtrashcan.admin")) {
+            sender.sendMessage("§c你没有权限打开世界黑名单。");
+            return;
+        }
+        plugin.openWorldBan((Player) sender);
+    }
+
+    /** 处理公共垃圾桶黑名单 GUI。 */
+    private void handleGlobalBan(CommandSender sender) {
+        if (!requirePlayer(sender)) {
+            return;
+        }
+        if (!sender.hasPermission("WorldListTrashCan.GlobalBan") && !sender.hasPermission("blworldtrashcan.admin")) {
+            sender.sendMessage("§c你没有权限打开公共垃圾桶黑名单。");
+            return;
+        }
+        plugin.openGlobalBan((Player) sender);
     }
 
     /** 后台测试打开指定玩家 GUI。 */
@@ -287,6 +360,44 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         for (String line : plugin.debugSummary(player)) {
             sender.sendMessage(line);
         }
+    }
+
+    /** 后台测试需要真实玩家对象的入口。 */
+    private void handleDebugPlayer(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("blworldtrashcan.admin")) {
+            sender.sendMessage("§c你没有权限执行该命令。");
+            return;
+        }
+        if (args.length < 3) {
+            sender.sendMessage("§c用法: /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>");
+            return;
+        }
+        Player player = requireOnlinePlayer(sender, args[1]);
+        if (player == null) {
+            return;
+        }
+        String action = args[2].toLowerCase(Locale.ROOT);
+        if ("dropmode".equals(action)) {
+            plugin.toggleDropProtection(player);
+            sender.sendMessage("§a已切换玩家防丢弃模式。");
+            return;
+        }
+        if ("look".equals(action)) {
+            plugin.armLook(player);
+            sender.sendMessage("§a已触发玩家 look 查询。");
+            return;
+        }
+        if ("ban".equals(action)) {
+            plugin.openWorldBan(player);
+            sender.sendMessage("§a已为玩家打开世界黑名单 GUI。");
+            return;
+        }
+        if ("globalban".equals(action)) {
+            plugin.openGlobalBan(player);
+            sender.sendMessage("§a已为玩家打开公共黑名单 GUI。");
+            return;
+        }
+        sender.sendMessage("§c类型必须是 dropmode、look、ban 或 globalban。");
     }
 
     /** 要求发送者为玩家。 */

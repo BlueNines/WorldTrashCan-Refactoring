@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -200,6 +201,32 @@ public final class WorldTrashRouter implements TrashRouter {
             }
         }
         return count;
+    }
+
+    /** 返回单世界物品黑名单。 */
+    public Set<String> getWorldBannedMaterials(World world) {
+        WorldTrashData data = getData(world);
+        if (data == null) {
+            return Collections.emptySet();
+        }
+        return new LinkedHashSet<>(data.getBannedMaterials());
+    }
+
+    /** 保存单世界物品黑名单。 */
+    public boolean setWorldBannedMaterials(World world, Set<String> materials, int defaultMaxCount) {
+        if (world == null) {
+            return false;
+        }
+        WorldTrashData data = getOrCreateData(world, defaultMaxCount);
+        Set<String> normalized = new LinkedHashSet<>();
+        if (materials != null) {
+            for (String material : materials) {
+                if (material != null && !material.trim().isEmpty()) {
+                    normalized.add(material.trim().toUpperCase(Locale.ROOT));
+                }
+            }
+        }
+        return save(new WorldTrashData(data.getWorldName(), data.getLocations(), normalized, data.getMaxTrashCanCount()));
     }
 
     /** 获取单世界数据。 */
