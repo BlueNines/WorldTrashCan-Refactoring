@@ -49,7 +49,14 @@ public final class GlobalTrashService {
         this.config = nextConfig;
         this.backItem = createItem(Material.ARROW, "&a上一页");
         this.nextItem = createItem(Material.ARROW, "&a下一页");
-        this.backgroundItem = createItem(matchMaterial("BLACK_STAINED_GLASS_PANE", Material.STAINED_GLASS_PANE), " ");
+        this.backgroundItem = createItem(matchMaterial(
+                "BLACK_STAINED_GLASS_PANE",
+                "STAINED_GLASS_PANE",
+                "LEGACY_STAINED_GLASS_PANE",
+                "GRAY_STAINED_GLASS_PANE",
+                "GLASS_PANE",
+                "THIN_GLASS"
+        ), " ");
         pages.clear();
         int maxPages = nextConfig == null ? 1 : nextConfig.getMaxPages();
         for (int index = 0; index < maxPages; index++) {
@@ -300,10 +307,15 @@ public final class GlobalTrashService {
         }
     }
 
-    /** 匹配物品类型。 */
-    private Material matchMaterial(String name, Material fallback) {
-        Material material = Material.matchMaterial(name);
-        return material == null ? fallback : material;
+    /** 按顺序匹配跨版本物品类型。 */
+    private Material matchMaterial(String... names) {
+        for (String name : names) {
+            Material material = Material.matchMaterial(name);
+            if (material != null) {
+                return material;
+            }
+        }
+        return Material.STONE;
     }
 
     /** 转换颜色代码。 */

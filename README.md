@@ -6,7 +6,7 @@
 
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已接入旧功能入口并完成编译打包；当前本机没有 1.13-1.15 测试服，尚未做启动验证。
-- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已完成编译打包；当前本机没有 1.16+ 测试服，尚未做启动验证。
+- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已在 `paper-1.20.4-test-server` 完成启动 smoke 和 RCON 命令验证。
 - `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已接入旧功能入口和 Folia 全局调度入口并完成编译打包；当前本机没有 Folia 测试服，尚未做启动验证，也尚未完成全链路 region-safe 实服复核。
 
 ## 模块
@@ -133,6 +133,8 @@ PAPI 变量：
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
 - Paper 1.16-1.20 产物主类 class major version 为 61，确认面向 Java 17。
 - Folia 1.20 产物主类 class major version 为 61，确认面向 Java 17。
+- Paper 1.20.4 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`，`platform` 显示 `paper-1.16-1.20`，`stats` 和 `clear` 正常返回。
+- `Material.STAINED_GLASS_PANE` 跨版本修复后，Legacy 1.12 测试服重新加载新产物，`platform` 显示 `legacy-1.12`，`stats` 和 `clear` 正常返回。
 - RCON 验证 `platform`、`stats`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
 - 旧功能补齐验证覆盖：防丢弃模式、look 查询、单世界黑名单 GUI、公共黑名单 GUI、聊天/命令限频、不可拾取箭矢清理、防踩踏农田、经验球/实体清理、实体白名单/黑名单、世界实体数量限制、密集实体限制、公共垃圾桶日志、公共垃圾桶按清理次数刷新、定时清理倒计时通知
@@ -157,9 +159,15 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-resmoke-rcon-smoke-2.log`
 - `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-resmoke-latest.log`
 - `paper-1.12.2-test-server/ai-blwtc-platforms-20260601-legacy-resmoke-rcon-stop.log`
+- `paper-1.20.4-test-server/ai-blwtc-paper1204-smoke-rcon-main.log`
+- `paper-1.20.4-test-server/ai-blwtc-paper1204-smoke-latest.log`
+- `paper-1.20.4-test-server/ai-blwtc-paper1204-smoke-rcon-stop.log`
+- `paper-1.12.2-test-server/ai-blwtc-material-legacy-resmoke-20260602-042235-rcon-main.log`
+- `paper-1.12.2-test-server/ai-blwtc-material-legacy-resmoke-20260602-042235-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-material-legacy-resmoke-20260602-042235-rcon-stop.log`
 
 已知测试环境噪声：
 
 - 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BLWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
-- 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError` 或插件启用失败。
+- 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
 - Bukkit 1.13-1.15 与 Folia 1.20 当前完成编译和打包验证，但缺少对应实服启动验证；后续拿到测试服后要补 `plugins`、`platform`、`stats`、GUI、三类路由和定时清理回归。
