@@ -49,6 +49,9 @@ public final class ConfigBundleLoader {
                         trash.getInt("global-trash.clear-every-cleanups", 3),
                         trash.getBoolean("global-trash.allow-player-put", true),
                         trash.getBoolean("global-trash.log-enabled", true),
+                        trash.getInt("global-trash.gui.back-model-id", -1),
+                        trash.getInt("global-trash.gui.next-model-id", -1),
+                        trash.getInt("global-trash.gui.background-model-id", -1),
                         toSet(trash.getStringList("global-trash.banned-materials"))
                 ),
                 new TrashConfig.PersonalTrashConfig(
@@ -179,6 +182,8 @@ public final class ConfigBundleLoader {
                 parseTextMessages(notify.getStringList("chat.messages")),
                 notify.getBoolean("actionbar.enabled", true),
                 parseTextMessages(notify.getStringList("actionbar.messages")),
+                notify.getBoolean("bossbar.enabled", false),
+                parseBossBarMessages(notify.getStringList("bossbar.messages")),
                 notify.getBoolean("command.enabled", false),
                 parseCommandMessages(notify.getStringList("command.commands")),
                 notify.getBoolean("title.enabled", false),
@@ -201,6 +206,28 @@ public final class ConfigBundleLoader {
             }
         }
         result.remove(Integer.MIN_VALUE);
+        return result;
+    }
+
+    /** 解析 count;text;style;color 格式的 BossBar 通知。 */
+    private Map<Integer, NotifyConfig.BossBarMessage> parseBossBarMessages(List<String> values) {
+        Map<Integer, NotifyConfig.BossBarMessage> result = new HashMap<>();
+        if (values == null) {
+            return result;
+        }
+        for (String value : values) {
+            String[] parts = split(value, 4);
+            if (parts.length < 2) {
+                continue;
+            }
+            int count = intValue(parts[0], Integer.MIN_VALUE);
+            if (count == Integer.MIN_VALUE) {
+                continue;
+            }
+            String style = parts.length >= 3 ? parts[2] : "SOLID";
+            String color = parts.length >= 4 ? parts[3] : "GREEN";
+            result.put(count, new NotifyConfig.BossBarMessage(parts[1], style, color));
+        }
         return result;
     }
 

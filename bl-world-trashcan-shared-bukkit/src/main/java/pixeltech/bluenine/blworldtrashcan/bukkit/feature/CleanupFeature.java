@@ -6,6 +6,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -37,6 +40,8 @@ public final class CleanupFeature implements Feature {
     private final TrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
     private TaskHandle taskHandle;
+    private TaskHandle bossBarRemoveTask;
+    private BossBar bossBar;
     private CleanupStats lastStats = CleanupStats.empty();
     private long nextRunAtMillis;
     private int cleanupRunsSinceGlobalClear;
@@ -78,6 +83,8 @@ public final class CleanupFeature implements Feature {
             taskHandle.cancel();
             taskHandle = null;
         }
+        cancelBossBarRemoval();
+        removeBossBar();
         countdownSeconds = 0;
     }
 
@@ -171,6 +178,7 @@ public final class CleanupFeature implements Feature {
         if (countdownSeconds <= 0) {
             CleanupStats stats = runNow();
             sendNotify(0, stats);
+            sendNotify(stats.isGlobalTrashRefreshed() ? -2 : -1, stats);
             countdownSeconds = interval;
             nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
             return;
@@ -283,6 +291,7 @@ public final class CleanupFeature implements Feature {
         NotifyConfig notifyConfig = configSupplier.get().getNotifyConfig();
         sendChatNotify(notifyConfig, count, stats);
         sendActionBarNotify(notifyConfig, count, stats);
+        sendBossBarNotify(notifyConfig, count, stats);
         sendTitleNotify(notifyConfig, count, stats);
         sendSoundNotify(notifyConfig, count);
         runCommandNotify(notifyConfig, count, stats);
@@ -317,6 +326,37 @@ public final class CleanupFeature implements Feature {
         TextComponent component = new TextComponent(color(applyStats(notifyConfig.getActionBarMessages().get(count), stats)));
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
+        }
+    }
+
+    /** 发送 BossBar 通知。 */
+    private void sendBossBarNotify(NotifyConfig notifyConfig, int count, CleanupStats stats) {
+        if (!notifyConfig.isBossBarEnabled()) {
+            cancelBossBarRemoval();
+            removeBossBar();
+            return;
+        }
+        NotifyConfig.BossBarMessage message = notifyConfig.getBossBarMessages().get(count);
+        if (message == null) {
+            if (count <= 0) {
+                scheduleBossBarRemoval();
+            }
+            return;
+        }
+        BossBar current = bossBar();
+        current.setTitle(color(applyStats(message.getText(), stats)));
+        current.setStyle(parseBossBarStyle(message.getStyle()));
+        current.setColor(parseBossBarColor(message.getColor()));
+        current.setProgress(bossBarProgress(count, notifyConfig));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!current.getPlayers().contains(player)) {
+                current.addPlayer(player);
+            }
+        }
+        if (count <= 0) {
+            scheduleBossBarRemoval();
+        } else {
+            cancelBossBarRemoval();
         }
     }
 
@@ -357,6 +397,74 @@ public final class CleanupFeature implements Feature {
             if (!finalCommand.trim().isEmpty()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
             }
+        }
+    }
+
+    /** 返回可复用 BossBar 实例。 */
+    private BossBar bossBar() {
+        if (bossBar == null) {
+            bossBar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
+        }
+        return bossBar;
+    }
+
+    /** 计算 BossBar 进度。 */
+    private double bossBarProgress(int count, NotifyConfig notifyConfig) {
+        int max = 0;
+        for (Integer key : notifyConfig.getBossBarMessages().keySet()) {
+            if (key != null && key > max) {
+                max = key;
+            }
+        }
+        if (count <= 0 || max <= 0) {
+            return 1D;
+        }
+        return Math.max(0D, Math.min(1D, count / (double) max));
+    }
+
+    /** 解析 BossBar 颜色，配置错误时使用绿色。 */
+    private BarColor parseBossBarColor(String value) {
+        try {
+            return BarColor.valueOf((value == null ? "" : value.trim()).toUpperCase(Locale.ROOT));
+        } catch (RuntimeException ignored) {
+            return BarColor.GREEN;
+        }
+    }
+
+    /** 解析 BossBar 样式，配置错误时使用实心样式。 */
+    private BarStyle parseBossBarStyle(String value) {
+        try {
+            return BarStyle.valueOf((value == null ? "" : value.trim()).toUpperCase(Locale.ROOT));
+        } catch (RuntimeException ignored) {
+            return BarStyle.SOLID;
+        }
+    }
+
+    /** 延迟移除完成后的 BossBar。 */
+    private void scheduleBossBarRemoval() {
+        cancelBossBarRemoval();
+        bossBarRemoveTask = platform.scheduler().runLater(new Runnable() {
+            /** 执行 BossBar 延迟移除。 */
+            @Override
+            public void run() {
+                removeBossBar();
+                bossBarRemoveTask = null;
+            }
+        }, 90L);
+    }
+
+    /** 取消等待中的 BossBar 移除任务。 */
+    private void cancelBossBarRemoval() {
+        if (bossBarRemoveTask != null) {
+            bossBarRemoveTask.cancel();
+            bossBarRemoveTask = null;
+        }
+    }
+
+    /** 从所有玩家屏幕移除 BossBar。 */
+    private void removeBossBar() {
+        if (bossBar != null) {
+            bossBar.removeAll();
         }
     }
 

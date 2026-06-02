@@ -171,6 +171,12 @@ public final class BukkitLegacyConfigMigrator {
         copyInt(oldConfig, target, "Set.GlobalTrash.Delay", "global-trash.take-delay-millis", plan);
         copyInt(oldConfig, target, "Set.GlobalTrash.EveryClearGlobalTrash", "global-trash.clear-every-cleanups", plan);
         copyBoolean(oldConfig, target, "Set.GlobalTrash.Log.Enable", "global-trash.log-enabled", plan);
+        copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackItem.ModelId",
+                "global-trash.gui.back-model-id", plan);
+        copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.NextItem.ModelId",
+                "global-trash.gui.next-model-id", plan);
+        copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackgroundItem.ModelId",
+                "global-trash.gui.background-model-id", plan);
         copyStringList(oldConfig, target, "GlobalBanItem", "global-trash.banned-materials", plan);
         copyString(oldConfig, target, "Set.SighCheckName", "world-trash.sign-create-text", plan);
         copyString(oldConfig, target, "Set.SighCheckedName", "world-trash.sign-created-text", plan);
@@ -205,6 +211,7 @@ public final class BukkitLegacyConfigMigrator {
         copyBoolean(oldConfig, target, "Set.SoundFlag", "sound.enabled", plan);
         copyStringList(oldConfig, target, "Set.SoundForCount", "sound.messages", plan);
         copyBoolean(oldConfig, target, "Set.BossBarFlag", "bossbar.enabled", plan);
+        copyStringList(oldConfig, target, "Set.BossBarMessageForCount", "bossbar.messages", plan);
         saveTarget(target, "notify.yml");
     }
 
@@ -262,14 +269,7 @@ public final class BukkitLegacyConfigMigrator {
 
     /** 记录当前新实现尚不能自动承接的旧字段。 */
     private void recordUnsupportedKeys(YamlConfiguration oldConfig, LegacyMigrationPlan plan) {
-        addManualIfPresent(oldConfig, plan, "Set.GlobalTrash.GlobalItems.BackItem.ModelId",
-                "公共垃圾桶上一页按钮 CustomModelData 当前未实现");
-        addManualIfPresent(oldConfig, plan, "Set.GlobalTrash.GlobalItems.NextItem.ModelId",
-                "公共垃圾桶下一页按钮 CustomModelData 当前未实现");
-        addManualIfPresent(oldConfig, plan, "Set.GlobalTrash.GlobalItems.BackgroundItem.ModelId",
-                "公共垃圾桶背景 CustomModelData 当前未实现");
-        addManualIfPresent(oldConfig, plan, "Set.BossBarMessageForCount",
-                "BossBar 倒计时内容当前只迁移开关，消息未接入运行逻辑");
+        // 当前已确认的旧配置残留会在这里集中记录，避免报告漏掉人工处理项。
     }
 
     /** 迁移旧仙人掌、岩浆损坏回收模式。 */

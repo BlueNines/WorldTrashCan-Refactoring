@@ -32,6 +32,14 @@ global-trash:
   clear-every-cleanups: 3
   # 是否记录玩家从公共垃圾桶拿取、放入物品的日志。
   log-enabled: true
+  # 公共垃圾桶 GUI 外观设置。
+  gui:
+    # 上一页按钮的 CustomModelData；-1 表示不设置，低版本会自动忽略该外观字段。
+    back-model-id: -1
+    # 下一页按钮的 CustomModelData；-1 表示不设置，低版本会自动忽略该外观字段。
+    next-model-id: -1
+    # 背景按钮的 CustomModelData；-1 表示不设置，低版本会自动忽略该外观字段。
+    background-model-id: -1
   # 不允许进入公共垃圾桶的物品类型。
   banned-materials:
     - "EGG"

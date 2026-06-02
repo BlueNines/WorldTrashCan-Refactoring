@@ -92,18 +92,25 @@ public final class TrashConfig {
         private final int clearEveryCleanups;
         private final boolean allowPlayerPut;
         private final boolean logEnabled;
+        private final int backItemModelId;
+        private final int nextItemModelId;
+        private final int backgroundItemModelId;
         private final Set<String> bannedMaterials;
 
         /** 创建公共垃圾桶配置。 */
         public GlobalTrashConfig(boolean enabled, int maxPages, int takeDelayMillis,
                                  int clearEveryCleanups, boolean allowPlayerPut,
-                                 boolean logEnabled, Set<String> bannedMaterials) {
+                                 boolean logEnabled, int backItemModelId, int nextItemModelId,
+                                 int backgroundItemModelId, Set<String> bannedMaterials) {
             this.enabled = enabled;
             this.maxPages = Math.max(1, maxPages);
             this.takeDelayMillis = Math.max(0, takeDelayMillis);
             this.clearEveryCleanups = clearEveryCleanups;
             this.allowPlayerPut = allowPlayerPut;
             this.logEnabled = logEnabled;
+            this.backItemModelId = backItemModelId;
+            this.nextItemModelId = nextItemModelId;
+            this.backgroundItemModelId = backgroundItemModelId;
             this.bannedMaterials = normalizeMaterialSet(bannedMaterials);
         }
 
@@ -135,6 +142,21 @@ public final class TrashConfig {
         /** 判断是否记录公共垃圾桶拿取和放入日志。 */
         public boolean isLogEnabled() {
             return logEnabled;
+        }
+
+        /** 返回上一页按钮 CustomModelData；负数表示不设置。 */
+        public int getBackItemModelId() {
+            return backItemModelId;
+        }
+
+        /** 返回下一页按钮 CustomModelData；负数表示不设置。 */
+        public int getNextItemModelId() {
+            return nextItemModelId;
+        }
+
+        /** 返回背景按钮 CustomModelData；负数表示不设置。 */
+        public int getBackgroundItemModelId() {
+            return backgroundItemModelId;
         }
 
         /** 判断物品是否禁止进入公共垃圾桶。 */

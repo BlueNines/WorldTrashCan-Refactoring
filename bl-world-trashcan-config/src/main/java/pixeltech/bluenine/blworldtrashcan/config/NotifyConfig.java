@@ -12,6 +12,8 @@ public final class NotifyConfig {
     private final Map<Integer, String> chatMessages;
     private final boolean actionBarEnabled;
     private final Map<Integer, String> actionBarMessages;
+    private final boolean bossBarEnabled;
+    private final Map<Integer, BossBarMessage> bossBarMessages;
     private final boolean commandEnabled;
     private final Map<Integer, List<String>> commandMessages;
     private final boolean titleEnabled;
@@ -22,7 +24,8 @@ public final class NotifyConfig {
     /** 创建通知配置。 */
     public NotifyConfig(boolean chatEnabled, boolean chatConsoleLog, String chatClickCommand,
                         Map<Integer, String> chatMessages, boolean actionBarEnabled,
-                        Map<Integer, String> actionBarMessages, boolean commandEnabled,
+                        Map<Integer, String> actionBarMessages, boolean bossBarEnabled,
+                        Map<Integer, BossBarMessage> bossBarMessages, boolean commandEnabled,
                         Map<Integer, List<String>> commandMessages, boolean titleEnabled,
                         Map<Integer, TitleMessage> titleMessages, boolean soundEnabled,
                         Map<Integer, SoundMessage> soundMessages) {
@@ -32,6 +35,8 @@ public final class NotifyConfig {
         this.chatMessages = safeMap(chatMessages);
         this.actionBarEnabled = actionBarEnabled;
         this.actionBarMessages = safeMap(actionBarMessages);
+        this.bossBarEnabled = bossBarEnabled;
+        this.bossBarMessages = safeMap(bossBarMessages);
         this.commandEnabled = commandEnabled;
         this.commandMessages = safeMap(commandMessages);
         this.titleEnabled = titleEnabled;
@@ -70,6 +75,16 @@ public final class NotifyConfig {
         return actionBarMessages;
     }
 
+    /** 判断 BossBar 通知是否启用。 */
+    public boolean isBossBarEnabled() {
+        return bossBarEnabled;
+    }
+
+    /** 返回 BossBar 通知映射。 */
+    public Map<Integer, BossBarMessage> getBossBarMessages() {
+        return bossBarMessages;
+    }
+
     /** 判断命令通知是否启用。 */
     public boolean isCommandEnabled() {
         return commandEnabled;
@@ -103,6 +118,35 @@ public final class NotifyConfig {
     /** 返回不可变映射。 */
     private static <K, V> Map<K, V> safeMap(Map<K, V> value) {
         return value == null ? Collections.<K, V>emptyMap() : Collections.unmodifiableMap(value);
+    }
+
+    /** BossBar 通知内容。 */
+    public static final class BossBarMessage {
+        private final String text;
+        private final String style;
+        private final String color;
+
+        /** 创建 BossBar 通知。 */
+        public BossBarMessage(String text, String style, String color) {
+            this.text = text == null ? "" : text;
+            this.style = style == null || style.trim().isEmpty() ? "SOLID" : style.trim();
+            this.color = color == null || color.trim().isEmpty() ? "GREEN" : color.trim();
+        }
+
+        /** 返回 BossBar 文本。 */
+        public String getText() {
+            return text;
+        }
+
+        /** 返回 BossBar 样式名。 */
+        public String getStyle() {
+            return style;
+        }
+
+        /** 返回 BossBar 颜色名。 */
+        public String getColor() {
+            return color;
+        }
     }
 
     /** Title 通知内容。 */

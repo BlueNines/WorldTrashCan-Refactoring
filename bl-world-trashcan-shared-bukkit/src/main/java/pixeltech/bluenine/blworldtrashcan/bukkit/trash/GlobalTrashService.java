@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,8 +48,11 @@ public final class GlobalTrashService {
     public void reload(TrashConfig.GlobalTrashConfig nextConfig) {
         List<ItemStack> oldItems = snapshotContent();
         this.config = nextConfig;
-        this.backItem = createItem(Material.ARROW, "&a上一页");
-        this.nextItem = createItem(Material.ARROW, "&a下一页");
+        int backModelId = nextConfig == null ? -1 : nextConfig.getBackItemModelId();
+        int nextModelId = nextConfig == null ? -1 : nextConfig.getNextItemModelId();
+        int backgroundModelId = nextConfig == null ? -1 : nextConfig.getBackgroundItemModelId();
+        this.backItem = createItem(Material.ARROW, "&a上一页", backModelId);
+        this.nextItem = createItem(Material.ARROW, "&a下一页", nextModelId);
         this.backgroundItem = createItem(matchMaterial(
                 "BLACK_STAINED_GLASS_PANE",
                 "STAINED_GLASS_PANE",
@@ -56,7 +60,7 @@ public final class GlobalTrashService {
                 "GRAY_STAINED_GLASS_PANE",
                 "GLASS_PANE",
                 "THIN_GLASS"
-        ), " ");
+        ), " ", backgroundModelId);
         pages.clear();
         int maxPages = nextConfig == null ? 1 : nextConfig.getMaxPages();
         for (int index = 0; index < maxPages; index++) {
@@ -278,14 +282,30 @@ public final class GlobalTrashService {
     }
 
     /** 创建 GUI 物品。 */
-    private ItemStack createItem(Material material, String name) {
+    private ItemStack createItem(Material material, String name, int modelId) {
         ItemStack itemStack = new ItemStack(material == null ? Material.STONE : material);
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(color(name));
+            applyCustomModelData(meta, modelId);
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    /** 尝试设置 CustomModelData，旧版本没有该 API 时自动忽略。 */
+    private void applyCustomModelData(ItemMeta meta, int modelId) {
+        if (meta == null || modelId < 0) {
+            return;
+        }
+        try {
+            Method method = meta.getClass().getMethod("setCustomModelData", Integer.class);
+            method.invoke(meta, Integer.valueOf(modelId));
+        } catch (ReflectiveOperationException ignored) {
+            // 1.12 没有 CustomModelData，保持旧版本可加载。
+        } catch (RuntimeException ignored) {
+            // 反射目标来自服务端实现，异常时只跳过外观字段，不影响 GUI 可用性。
+        }
     }
 
     /** 写入公共垃圾桶操作日志。 */

@@ -32,7 +32,7 @@
 - `cleanup.yml`：后台清理周期、忽略世界、物品保护、实体清理规则。
 - `trash.yml`：世界垃圾桶、公共垃圾桶、个人垃圾桶配置。
 - `platform.yml`：版本能力说明。
-- `notify.yml`：清理倒计时通知，支持 Chat、ActionBar、Title、Sound、Command。
+- `notify.yml`：清理倒计时通知，支持 Chat、ActionBar、BossBar、Title、Sound、Command。
 - `entity-limits.yml`：世界实体数量限制和密集实体限制。
 - `protections.yml`：聊天/命令限频、防丢弃模式、不可拾取箭矢清理、防踩踏农田。
 - `messages/message_zh.yml`：中文消息预留。
@@ -54,7 +54,9 @@ migration-legacy-folder: "WorldListTrashCan"
 - 迁移完成后会生成 `legacy-migration-report.md`，后续启动看到该报告就不会重复迁移。
 - 如果旧配置在当前 `plugins/BLWorldTrashCan` 目录，迁移前会先备份到 `legacy-migration-backup/`。
 - 当前会自动迁移主配置、清理配置、通知配置、保护配置、实体限制配置、公共/个人/世界垃圾桶配置，以及旧 `data/data.yml` 中的世界垃圾桶运行数据。
-- 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”，例如公共垃圾桶 GUI 的 `ModelId`、BossBar 倒计时具体文本等。
+- 公共垃圾桶 GUI 的旧 `ModelId` 会迁移到 `global-trash.gui.*-model-id`；低版本没有 `CustomModelData` API 时会自动忽略外观字段，不影响 GUI 打开。
+- 旧 `BossBarFlag` 和 `BossBarMessageForCount` 会迁移到 `bossbar.enabled` 与 `bossbar.messages`，格式仍为 `剩余秒数;内容;样式;颜色`。
+- 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”。
 
 ## 命令
 
@@ -148,6 +150,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
+- 最终产物大小：Legacy `139294` bytes，Bukkit `142194` bytes，Paper `142405` bytes，Folia `146775` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -165,6 +168,8 @@ PAPI 变量：
 - 世界垃圾桶强制加载区块问题已按 `docs/世界垃圾桶区块加载性能方案.md` 落地默认保护；`world-trash.allow-load-unloaded-chunks` 默认 `false`，真实测试服已验证未加载区块会被跳过并降级路由。
 - 旧插件仙人掌/岩浆损坏回收的 `UseModel/Delay` 已自动迁移为 `personal-trash.damage-recovery.mode/delay-seconds`，默认仍为关闭，开启后只在短时间内追踪玩家主动丢弃物，避免长期占用内存；后台测试入口为 `/blwtc debugdamage <玩家> <Material> <数量>`。
 - 仙人掌/岩浆损坏回收已在 `paper-1.12.2-test-server` 使用真实 Forge 1.12.2 客户端验证：客户端发送 `/blwtc debugdamage AIClientAlpha STONE 2`，服务端日志出现 `debugDamageRecovery ... recovered=true`，`/blwtc debugstock` 显示公共垃圾桶物品 `2`、堆叠 `1`。
+- 公共垃圾桶 GUI `ModelId` 和 BossBar 旧配置已补齐：四个平台默认 `trash.yml` 增加 `global-trash.gui.back/next/background-model-id`，默认 `notify.yml` 增加 `bossbar.messages`；迁移器不再把这些字段列为人工确认。
+- BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BLWorldTrashCan 自身异常。测试后已恢复临时 `notify.yml` 和 `cleanup.yml`。
 
 本轮关键日志：
 
@@ -206,6 +211,12 @@ PAPI 变量：
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-latest.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-trash-test.yml`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-worlds-test.yml`
+- `paper-1.12.2-test-server/ai-blwtc-bossbar-20260602-rcon-start.log`
+- `paper-1.12.2-test-server/ai-blwtc-bossbar-20260602-rcon-wait-client.log`
+- `paper-1.12.2-test-server/ai-blwtc-bossbar-20260602-rcon-clear-online.log`
+- `paper-1.12.2-test-server/ai-blwtc-bossbar-20260602-final-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-20260602-bossbar-modelid-smoke-backup/`
+- `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
 
 已知测试环境噪声：
 
