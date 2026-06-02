@@ -152,6 +152,19 @@ PAPI 变量：
 
 - 当前不提供 CoreBridge / EasyCore / 龙核 / 萌芽发包变量。
 
+## bStats
+
+插件已接入 bStats，沿用旧插件 serviceId `24350`。
+
+统计项：
+
+- `players`：当前在线玩家数。
+- `servers`：固定上报 `1`。
+- `players_and_servers`：同时上报 `servers` 与 `players`。
+- `platform`：当前重构产物标识，例如 `legacy-1.12`、`bukkit-1.13-1.15`、`paper-1.16-1.20`、`folia-1.20`。
+
+bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供单独统计开关，也不会创建第二套统计配置。bStats 官方模板保留全局 `enabled` 关闭项；不能通过修改 Metrics 类绕过或隐藏该 opt-out，否则不符合 bStats 使用规则。
+
 ## 验证记录
 
 本机 `mvn` 不在 PATH，本轮使用 `javac` 手工编译并用 JDK 21 `jar.exe` 打包。跨版本构建必须按目标运行时指定 `--release`：1.12 Legacy 与 Bukkit 1.13-1.15 相关模块使用 `--release 8`，现代 Paper 和 Folia 产物使用 `--release 17`，否则旧 Java 8 测试服会出现 `UnsupportedClassVersionError`。
@@ -160,7 +173,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `164935` bytes，Bukkit `166472` bytes，Paper `166643` bytes，Folia `222821` bytes。
+- 最终产物大小：Legacy `191651` bytes，Bukkit `193190` bytes，Paper `193660` bytes，Folia `249860` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -196,6 +209,7 @@ PAPI 变量：
 - 世界垃圾桶 `/blwtc add <世界名> <数量>` 写入的 `data/worlds.yml` 上限现在会参与正式创建限制：`WorldTrashRouter` 使用单世界运行数据计算有效上限，告示牌创建的 OP 路径会按旧插件行为绕过数量上限。1.12.2 测试服使用真实 Forge 客户端 `AIClientAlpha` 进服后，RCON 通过在线 `Player` 对象连续执行 `debugworldtrash`：上限 5 时新增到 5 成功、第 6 个失败；执行 `blwtc add world 1` 后上限变 6，再新增 1 个成功、第 7 个失败。最终 `data/worlds.yml` 落盘为 `world.max-count: 6` 且 6 个位置，窄匹配未发现 BLWorldTrashCan 自身异常。
 - 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BLWorldTrashCan 自身异常。
 - Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
+- bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit 主类仍为 class major 52，Paper/Folia 主类仍为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
 
 本轮关键日志：
 
@@ -252,6 +266,8 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-legacy-papi-20260602-final-latest.log`
 - `paper-1.13.2-test-server/ai-blwtc-papi-bukkit113-20260602-rcon.log`
 - `paper-1.20.4-test-server/ai-blwtc-papi-paper1204-20260602-rcon.log`
+- `paper-1.20.4-test-server/ai-blwtc-bstats-20260603-rcon-main-2.log`
+- `paper-1.20.4-test-server/ai-blwtc-bstats-20260603-final-latest-2.log`
 - `folia-1.20.1-test-server/ai-blwtc-papi-folia1201-20260602-console.log`
 - `folia-1.20.1-test-server/ai-blwtc-papi-folia1201-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-rcon.log`

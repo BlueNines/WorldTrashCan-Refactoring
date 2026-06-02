@@ -10,6 +10,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.BStatsMetricsService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.Metrics;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
@@ -50,6 +52,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     private BLWorldTrashCanLegacyExpansion expansion;
     private BukkitMessageService messageService;
     private DropOwnerTracker dropOwnerTracker;
+    private Metrics metrics;
 
     /** 启动插件。 */
     @Override
@@ -60,6 +63,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         this.messageService = new BukkitMessageService(this);
         this.messageService.reload(configBundle.getLanguageFile());
         this.platform = new LegacyPlatform(this);
+        this.metrics = BStatsMetricsService.start(this, platform.id());
         this.featureRegistry = new FeatureRegistry();
         Supplier<ConfigBundle> configSupplier = new Supplier<ConfigBundle>() {
             /** 返回最新配置集合。 */
@@ -105,6 +109,10 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     public void onDisable() {
         if (featureRegistry != null) {
             featureRegistry.disableAll();
+        }
+        if (metrics != null) {
+            metrics.shutdown();
+            metrics = null;
         }
     }
 
