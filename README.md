@@ -38,6 +38,24 @@
 - `messages/message_zh.yml`：中文消息预留。
 - `data/worlds.yml`：世界垃圾桶运行数据。
 
+## 旧配置迁移
+
+插件启动时默认会尝试执行一次旧 `WorldListTrashCan` 配置迁移。迁移器优先识别当前 `plugins/BLWorldTrashCan` 目录中的旧结构；如果当前目录不是旧结构，则读取相邻旧目录 `plugins/WorldListTrashCan`。
+
+可在 `config.yml` 调整：
+
+```yaml
+migration-enabled: true
+migration-legacy-folder: "WorldListTrashCan"
+```
+
+- `migration-enabled`：是否允许迁移，默认 `true`。
+- `migration-legacy-folder`：旧插件数据目录名或绝对路径，默认 `WorldListTrashCan`。
+- 迁移完成后会生成 `legacy-migration-report.md`，后续启动看到该报告就不会重复迁移。
+- 如果旧配置在当前 `plugins/BLWorldTrashCan` 目录，迁移前会先备份到 `legacy-migration-backup/`。
+- 当前会自动迁移主配置、清理配置、通知配置、保护配置、实体限制配置、公共/个人/世界垃圾桶配置，以及旧 `data/data.yml` 中的世界垃圾桶运行数据。
+- 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”，例如公共垃圾桶 GUI 的 `ModelId`、仙人掌/岩浆原版物品回收模式和延迟、BossBar 倒计时具体文本等。
+
 ## 命令
 
 正式命令：
@@ -135,6 +153,7 @@ PAPI 变量：
 - Folia 1.20 产物主类 class major version 为 61，确认面向 Java 17。
 - Paper 1.20.4 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`，`platform` 显示 `paper-1.16-1.20`，`stats` 和 `clear` 正常返回。
 - `Material.STAINED_GLASS_PANE` 跨版本修复后，Legacy 1.12 测试服重新加载新产物，`platform` 显示 `legacy-1.12`，`stats` 和 `clear` 正常返回。
+- 旧配置迁移器已在独立 `paper-1.12.2-migration-test-server` 验证相邻旧目录和当前插件目录旧结构两种入口；迁移后 `legacy-migration-report.md`、`legacy-migration-backup/`、`trash.yml`、`cleanup.yml`、`data/worlds.yml` 均符合预期。
 - RCON 验证 `platform`、`stats`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
 - 旧功能补齐验证覆盖：防丢弃模式、look 查询、单世界黑名单 GUI、公共黑名单 GUI、聊天/命令限频、不可拾取箭矢清理、防踩踏农田、经验球/实体清理、实体白名单/黑名单、世界实体数量限制、密集实体限制、公共垃圾桶日志、公共垃圾桶按清理次数刷新、定时清理倒计时通知
@@ -165,6 +184,10 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-material-legacy-resmoke-20260602-042235-rcon-main.log`
 - `paper-1.12.2-test-server/ai-blwtc-material-legacy-resmoke-20260602-042235-latest.log`
 - `paper-1.12.2-test-server/ai-blwtc-material-legacy-resmoke-20260602-042235-rcon-stop.log`
+- `paper-1.12.2-migration-test-server/ai-blwtc-migration-adjacent-20260602-1726-rcon-main.log`
+- `paper-1.12.2-migration-test-server/ai-blwtc-migration-adjacent-20260602-1726-latest.log`
+- `paper-1.12.2-migration-test-server/ai-blwtc-migration-current-20260602-1732-rcon-main.log`
+- `paper-1.12.2-migration-test-server/ai-blwtc-migration-current-20260602-1732-latest.log`
 
 已知测试环境噪声：
 

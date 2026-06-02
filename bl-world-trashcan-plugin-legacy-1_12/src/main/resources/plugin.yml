@@ -1,5 +1,5 @@
 name: BLWorldTrashCan
-version: ${project.version}
+version: 0.1.0-SNAPSHOT
 main: pixeltech.bluenine.blworldtrashcan.plugin.legacy.BLWorldTrashCanLegacyPlugin
 author: BlueNine
 softdepend:

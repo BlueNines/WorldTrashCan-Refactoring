@@ -58,7 +58,7 @@ public final class WorldTrashRouter implements TrashRouter {
         return !data.getBannedMaterials().contains(itemStack.getType().name());
     }
 
-    /** 当前阶段个人垃圾桶尚未接入。 */
+    /** 判断个人垃圾桶是否有容量。 */
     @Override
     public boolean hasPersonalTrash(UUID ownerUuid, ItemStack itemStack) {
         return personalTrashService != null && personalTrashService.hasSpace(ownerUuid, itemStack);

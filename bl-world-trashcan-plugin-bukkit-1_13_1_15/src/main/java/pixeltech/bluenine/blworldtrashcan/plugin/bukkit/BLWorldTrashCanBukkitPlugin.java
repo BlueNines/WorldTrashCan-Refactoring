@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
+import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
@@ -52,6 +53,7 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfigs();
+        new BukkitLegacyConfigMigrator(this).migrateIfNeeded();
         this.configBundle = loadConfigBundle();
         this.platform = new BukkitPlatform(this);
         this.featureRegistry = new FeatureRegistry();
