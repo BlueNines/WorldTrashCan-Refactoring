@@ -39,6 +39,7 @@ public final class ConfigBundleLoader {
                         trash.getString("world-trash.sign-create-text", "[世界垃圾桶]"),
                         trash.getString("world-trash.sign-created-text", "&b[&c世界垃圾桶&b]"),
                         trash.getInt("world-trash.default-max-count", 3),
+                        trash.getBoolean("world-trash.allow-load-unloaded-chunks", false),
                         toSet(trash.getStringList("world-trash.banned-worlds"))
                 ),
                 new TrashConfig.GlobalTrashConfig(

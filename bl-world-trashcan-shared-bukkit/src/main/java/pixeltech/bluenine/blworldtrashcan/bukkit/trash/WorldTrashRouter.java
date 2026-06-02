@@ -33,6 +33,7 @@ public final class WorldTrashRouter implements TrashRouter {
     private final PersonalTrashService personalTrashService;
     private final Map<String, WorldTrashData> worldData = new HashMap<>();
     private TrashConfig trashConfig;
+    private int skippedUnloadedChunkAccesses;
 
     /** 创建世界垃圾桶路由器。 */
     public WorldTrashRouter(Plugin plugin, WorldTrashStorage storage, GlobalTrashService globalTrashService,
@@ -105,12 +106,16 @@ public final class WorldTrashRouter implements TrashRouter {
     public void reload(TrashConfig nextTrashConfig) {
         this.trashConfig = nextTrashConfig;
         worldData.clear();
+        skippedUnloadedChunkAccesses = 0;
         try {
             Collection<WorldTrashData> all = storage.loadAll();
             for (WorldTrashData data : all) {
                 worldData.put(normalize(data.getWorldName()), data);
             }
             plugin.getLogger().info("[TrashRouter] 已加载 " + worldData.size() + " 个世界垃圾桶数据。");
+            if (isAllowLoadUnloadedChunks()) {
+                plugin.getLogger().warning("[TrashRouter] world-trash.allow-load-unloaded-chunks 已开启，清理任务可能同步加载未加载区块。");
+            }
         } catch (IOException exception) {
             plugin.getLogger().warning("[TrashRouter] 加载世界垃圾桶数据失败: " + exception.getMessage());
         }
@@ -212,6 +217,11 @@ public final class WorldTrashRouter implements TrashRouter {
         return new LinkedHashSet<>(data.getBannedMaterials());
     }
 
+    /** 返回因为未加载区块而跳过的容器访问次数。 */
+    public int getSkippedUnloadedChunkAccesses() {
+        return skippedUnloadedChunkAccesses;
+    }
+
     /** 保存单世界物品黑名单。 */
     public boolean setWorldBannedMaterials(World world, Set<String> materials, int defaultMaxCount) {
         if (world == null) {
@@ -270,11 +280,25 @@ public final class WorldTrashRouter implements TrashRouter {
         if (world == null) {
             return null;
         }
+        if (!isAllowLoadUnloadedChunks() && !isChunkLoaded(world, location)) {
+            skippedUnloadedChunkAccesses++;
+            return null;
+        }
         BlockState state = world.getBlockAt(location.getX(), location.getY(), location.getZ()).getState();
         if (state instanceof InventoryHolder) {
             return ((InventoryHolder) state).getInventory();
         }
         return null;
+    }
+
+    /** 判断世界垃圾桶配置是否允许加载未加载区块。 */
+    private boolean isAllowLoadUnloadedChunks() {
+        return trashConfig != null && trashConfig.getWorldTrash().isAllowLoadUnloadedChunks();
+    }
+
+    /** 判断位置所在区块是否已经加载。 */
+    private boolean isChunkLoaded(World world, TrashLocation location) {
+        return world.isChunkLoaded(location.getX() >> 4, location.getZ() >> 4);
     }
 
     /** 统计背包内物品总数量。 */

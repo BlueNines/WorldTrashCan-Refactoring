@@ -108,6 +108,7 @@ public final class CleanupFeature implements Feature {
                 + ", itemsSkipped=" + stats.itemsSkipped
                 + ", entitiesRemoved=" + stats.entitiesRemoved
                 + ", entitiesSkipped=" + stats.entitiesSkipped
+                + ", worldTrashSkippedUnloadedChunks=" + trashRouter.getSkippedUnloadedChunkAccesses()
                 + ", globalTrashRefreshed=" + stats.globalTrashRefreshed);
         return stats;
     }

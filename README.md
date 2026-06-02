@@ -156,6 +156,7 @@ PAPI 变量：
 - 旧配置迁移器已在独立 `paper-1.12.2-migration-test-server` 验证相邻旧目录和当前插件目录旧结构两种入口；迁移后 `legacy-migration-report.md`、`legacy-migration-backup/`、`trash.yml`、`cleanup.yml`、`data/worlds.yml` 均符合预期。
 - Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BLWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 未声明 `FOLIA_REGION_SAFE` 时关闭定时世界扫描，并让 `/blwtc clear` 明确拒绝执行，复测未再出现该异常。
+- 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
 - 旧功能补齐验证覆盖：防丢弃模式、look 查询、单世界黑名单 GUI、公共黑名单 GUI、聊天/命令限频、不可拾取箭矢清理、防踩踏农田、经验球/实体清理、实体白名单/黑名单、世界实体数量限制、密集实体限制、公共垃圾桶日志、公共垃圾桶按清理次数刷新、定时清理倒计时通知
@@ -197,6 +198,10 @@ PAPI 变量：
 - `paper-1.13.2-test-server/ai-blwtc-bukkit113-guard-resmoke-20260602-1830-error.log`
 - `folia-1.20.1-test-server/ai-blwtc-folia1201-smoke-20260602-1853-latest.log`
 - `folia-1.20.1-test-server/ai-blwtc-folia1201-guarded-console-smoke-20260602-1803-latest.log`
+- `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-rcon-main-2.log`
+- `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-latest.log`
+- `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-trash-test.yml`
+- `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-worlds-test.yml`
 
 已知测试环境噪声：
 
@@ -204,3 +209,4 @@ PAPI 变量：
 - 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
 - Folia 1.20 当前只是安全拒绝危险世界扫描入口，并不等于已经完成 region-safe 清理；后续若要恢复 Folia 清理功能，必须把实体扫描改为 region/entity scheduler 分段执行后再做实服回归。
+- `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。

@@ -309,6 +309,7 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         lines.add("§7- §f世界垃圾桶数量: §a" + trashRouter.getWorldTrashCount(player.getWorld()));
         lines.add("§7- §f世界垃圾桶物品: §a" + trashRouter.getWorldTrashStoredItemAmount(player.getWorld())
                 + " §7(堆叠 " + trashRouter.getWorldTrashStoredStackCount(player.getWorld()) + ")");
+        lines.add("§7- §f跳过未加载区块: §a" + trashRouter.getSkippedUnloadedChunkAccesses());
         lines.add("§7- §f公共垃圾桶物品: §a" + trashFeature.getGlobalStoredItemAmount()
                 + " §7(堆叠 " + trashFeature.getGlobalStoredStackCount() + ")");
         lines.add("§7- §f个人垃圾桶物品: §a" + trashFeature.getPersonalStoredItemAmount(player.getUniqueId())

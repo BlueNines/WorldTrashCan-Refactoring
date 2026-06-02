@@ -22,4 +22,7 @@ public interface TrashRouter {
 
     /** 重载路由数据。 */
     void reload();
+
+    /** 返回因为未加载区块而跳过的世界垃圾桶容器访问次数。 */
+    int getSkippedUnloadedChunkAccesses();
 }

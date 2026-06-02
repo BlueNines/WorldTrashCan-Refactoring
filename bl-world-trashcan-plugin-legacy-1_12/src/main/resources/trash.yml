@@ -8,6 +8,10 @@ world-trash:
   sign-created-text: "&b[&c世界垃圾桶&b]"
   # 普通玩家每个世界默认可创建的垃圾桶数量。
   default-max-count: 3
+  # 是否允许清理任务写入未加载区块里的世界垃圾桶。
+  # 默认 false：清理时只访问已加载区块里的世界垃圾桶，未加载位置会跳过并降级到个人或公共垃圾桶，避免同步加载区块造成卡顿。
+  # 改为 true：会尽量保持旧插件行为，但可能在后台清理时同步加载远处区块，垃圾桶多或磁盘慢时会明显影响性能。
+  allow-load-unloaded-chunks: false
   # 禁止创建世界垃圾桶的世界名。
   banned-worlds:
     - "world"

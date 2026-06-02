@@ -39,15 +39,17 @@ public final class TrashConfig {
         private final String signCreateText;
         private final String signCreatedText;
         private final int defaultMaxCount;
+        private final boolean allowLoadUnloadedChunks;
         private final Set<String> bannedWorlds;
 
         /** 创建世界垃圾桶配置。 */
         public WorldTrashConfig(boolean enabled, String signCreateText, String signCreatedText,
-                                int defaultMaxCount, Set<String> bannedWorlds) {
+                                int defaultMaxCount, boolean allowLoadUnloadedChunks, Set<String> bannedWorlds) {
             this.enabled = enabled;
             this.signCreateText = defaultString(signCreateText, "[世界垃圾桶]");
             this.signCreatedText = defaultString(signCreatedText, "&b[&c世界垃圾桶&b]");
             this.defaultMaxCount = Math.max(0, defaultMaxCount);
+            this.allowLoadUnloadedChunks = allowLoadUnloadedChunks;
             this.bannedWorlds = normalizeSet(bannedWorlds);
         }
 
@@ -69,6 +71,11 @@ public final class TrashConfig {
         /** 返回默认最大数量。 */
         public int getDefaultMaxCount() {
             return defaultMaxCount;
+        }
+
+        /** 判断是否允许写入未加载区块里的世界垃圾桶。 */
+        public boolean isAllowLoadUnloadedChunks() {
+            return allowLoadUnloadedChunks;
         }
 
         /** 判断世界是否禁止创建世界垃圾桶。 */
