@@ -35,16 +35,18 @@ public final class BanGuiFeature implements Feature, Listener {
     private final Supplier<ConfigBundle> configSupplier;
     private final WorldTrashRouter trashRouter;
     private final BukkitMessageService messages;
+    private final Runnable reloadCallback;
     private final Map<Inventory, BanContext> contexts = Collections.synchronizedMap(new IdentityHashMap<Inventory, BanContext>());
     private boolean registered;
 
     /** 创建黑名单 GUI 功能。 */
     public BanGuiFeature(Plugin plugin, Supplier<ConfigBundle> configSupplier, WorldTrashRouter trashRouter,
-                         BukkitMessageService messages) {
+                         BukkitMessageService messages, Runnable reloadCallback) {
         this.plugin = plugin;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
         this.messages = messages;
+        this.reloadCallback = reloadCallback;
     }
 
     /** 返回功能 ID。 */
@@ -134,11 +136,19 @@ public final class BanGuiFeature implements Feature, Listener {
         yaml.set("global-trash.banned-materials", new ArrayList<>(materials));
         try {
             yaml.save(file);
-            player.sendMessage(message("ban-gui.global-save-success", "&a已保存公共垃圾桶黑名单，数量: &f{count} &7(/blwtc reload 后完全生效)",
+            refreshAfterGlobalBanSave();
+            player.sendMessage(message("ban-gui.global-save-success", "&a已保存公共垃圾桶黑名单，数量: &f{count} &7(已立即生效)",
                     "{count}", String.valueOf(materials.size())));
         } catch (IOException exception) {
             player.sendMessage(message("ban-gui.global-save-fail", "&c保存公共垃圾桶黑名单失败，请查看后台日志。"));
             plugin.getLogger().warning("[BanGui] 保存公共垃圾桶黑名单失败: " + exception.getMessage());
+        }
+    }
+
+    /** 保存公共黑名单后刷新运行期配置。 */
+    private void refreshAfterGlobalBanSave() {
+        if (reloadCallback != null) {
+            reloadCallback.run();
         }
     }
 

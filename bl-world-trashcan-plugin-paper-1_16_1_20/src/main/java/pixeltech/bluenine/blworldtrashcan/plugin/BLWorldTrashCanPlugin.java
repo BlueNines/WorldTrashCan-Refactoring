@@ -81,7 +81,13 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService);
         this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService);
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
-        this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService);
+        this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
+            /** 刷新公共黑名单等运行期配置。 */
+            @Override
+            public void run() {
+                reloadPlugin();
+            }
+        });
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);

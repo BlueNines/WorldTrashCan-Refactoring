@@ -52,7 +52,7 @@ ban-gui:
   # 世界黑名单保存失败。
   world-save-fail: "{prefix}&cNo se pudo guardar la lista negra del mundo. Revisa los logs."
   # 公共黑名单保存成功，{count} 为物品数量。
-  global-save-success: "{prefix}&aLista negra global guardada, objetos: &f{count} &7(/blwtc reload requerido)"
+  global-save-success: "{prefix}&aLista negra global guardada, objetos: &f{count} &7(aplicado inmediatamente)"
   # 公共黑名单保存失败。
   global-save-fail: "{prefix}&cNo se pudo guardar la lista negra global. Revisa los logs."
 

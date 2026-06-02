@@ -52,7 +52,7 @@ ban-gui:
   # 世界黑名单保存失败。
   world-save-fail: "{prefix}&c保存世界垃圾桶黑名单失败，请查看后台日志。"
   # 公共黑名单保存成功，{count} 为物品数量。
-  global-save-success: "{prefix}&a已保存公共垃圾桶黑名单，数量: &f{count} &7(/blwtc reload 后完全生效)"
+  global-save-success: "{prefix}&a已保存公共垃圾桶黑名单，数量: &f{count} &7(已立即生效)"
   # 公共黑名单保存失败。
   global-save-fail: "{prefix}&c保存公共垃圾桶黑名单失败，请查看后台日志。"
 

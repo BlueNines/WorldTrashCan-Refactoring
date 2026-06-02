@@ -52,7 +52,7 @@ ban-gui:
   # 世界黑名单保存失败。
   world-save-fail: "{prefix}&cFailed to save world trash blacklist. Check server logs."
   # 公共黑名单保存成功，{count} 为物品数量。
-  global-save-success: "{prefix}&aSaved global trash blacklist, items: &f{count} &7(/blwtc reload required)"
+  global-save-success: "{prefix}&aSaved global trash blacklist, items: &f{count} &7(applied immediately)"
   # 公共黑名单保存失败。
   global-save-fail: "{prefix}&cFailed to save global trash blacklist. Check server logs."
 
