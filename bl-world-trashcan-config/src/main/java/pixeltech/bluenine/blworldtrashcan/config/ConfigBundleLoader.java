@@ -19,6 +19,7 @@ public final class ConfigBundleLoader {
                 toSet(cleanup.getStringList("ignored-materials")),
                 toSet(cleanup.getStringList("ignored-name-fragments")),
                 toSet(cleanup.getStringList("ignored-lore-fragments")),
+                cleanup.getBoolean("entities.enabled", true),
                 cleanup.getBoolean("entities.clear-experience-orbs", true),
                 cleanup.getBoolean("entities.clear-monsters", true),
                 cleanup.getBoolean("entities.clear-animals", false),

@@ -10,6 +10,7 @@ public final class CleanupSettings {
     private final Set<String> ignoredMaterialKeys;
     private final Set<String> ignoredNameFragments;
     private final Set<String> ignoredLoreFragments;
+    private final boolean entityCleanupEnabled;
     private final boolean clearExperienceOrb;
     private final boolean clearMonster;
     private final boolean clearAnimals;
@@ -21,13 +22,14 @@ public final class CleanupSettings {
 
     /** 创建清理配置快照。 */
     public CleanupSettings(Set<String> ignoredMaterialKeys, Set<String> ignoredNameFragments,
-                           Set<String> ignoredLoreFragments, boolean clearExperienceOrb,
+                           Set<String> ignoredLoreFragments, boolean entityCleanupEnabled, boolean clearExperienceOrb,
                            boolean clearMonster, boolean clearAnimals, boolean clearProjectile,
                            boolean clearNamedEntity, boolean ignoreEntitiesInBoat,
                            Set<String> entityWhitePatterns, Set<String> entityBlackPatterns) {
         this.ignoredMaterialKeys = normalizeSet(ignoredMaterialKeys);
         this.ignoredNameFragments = normalizeSet(ignoredNameFragments);
         this.ignoredLoreFragments = normalizeSet(ignoredLoreFragments);
+        this.entityCleanupEnabled = entityCleanupEnabled;
         this.clearExperienceOrb = clearExperienceOrb;
         this.clearMonster = clearMonster;
         this.clearAnimals = clearAnimals;
@@ -59,6 +61,11 @@ public final class CleanupSettings {
             }
         }
         return false;
+    }
+
+    /** 判断是否启用实体清理总开关。 */
+    public boolean isEntityCleanupEnabled() {
+        return entityCleanupEnabled;
     }
 
     /** 判断是否清理怪物。 */

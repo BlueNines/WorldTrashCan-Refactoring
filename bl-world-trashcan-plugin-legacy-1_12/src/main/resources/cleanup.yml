@@ -25,6 +25,9 @@ ignored-lore-fragments:
 
 # 实体清理规则。
 entities:
+  # 是否启用实体清理总开关。
+  # 默认 true；改为 false 时，经验球、怪物、动物、投射物、实体黑名单等实体清理规则都会整体跳过。
+  enabled: true
   # 是否清理经验球。
   clear-experience-orbs: true
   # 是否清理怪物。

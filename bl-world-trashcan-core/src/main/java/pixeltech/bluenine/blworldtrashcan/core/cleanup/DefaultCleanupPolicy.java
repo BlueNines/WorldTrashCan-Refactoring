@@ -48,6 +48,9 @@ public final class DefaultCleanupPolicy implements CleanupPolicy {
         if (entity == null) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-null");
         }
+        if (!settings.isEntityCleanupEnabled()) {
+            return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-cleanup-disabled");
+        }
         if (settings.isIgnoreEntitiesInBoat() && entity.isInsideBoat()) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "inside-boat");
         }

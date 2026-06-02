@@ -152,6 +152,7 @@ public final class BukkitLegacyConfigMigrator {
         copyStringList(oldConfig, target, "Set.NoClearContainerType", "ignored-materials", plan);
         copyStringList(oldConfig, target, "Set.NoClearContainerName", "ignored-name-fragments", plan);
         copyStringList(oldConfig, target, "Set.NoClearContainerLore", "ignored-lore-fragments", plan);
+        copyBoolean(oldConfig, target, "Set.ClearEntity.Flag", "entities.enabled", plan);
         copyBoolean(oldConfig, target, "Set.ClearEntity.ClearExpBottle", "entities.clear-experience-orbs", plan);
         copyBoolean(oldConfig, target, "Set.ClearEntity.ClearMonster", "entities.clear-monsters", plan);
         copyBoolean(oldConfig, target, "Set.ClearEntity.ClearAnimals", "entities.clear-animals", plan);

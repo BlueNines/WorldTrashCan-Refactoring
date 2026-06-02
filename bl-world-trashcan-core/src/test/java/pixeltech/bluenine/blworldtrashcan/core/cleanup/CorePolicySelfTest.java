@@ -19,6 +19,7 @@ public final class CorePolicySelfTest {
                 new HashSet<>(Collections.singletonList("shopLocation")),
                 true,
                 true,
+                true,
                 false,
                 true,
                 false,
@@ -54,6 +55,24 @@ public final class CorePolicySelfTest {
         assertEntity("experience orb remove", policy.decideEntity(
                 new EntitySnapshot("EXPERIENCE_ORB", "Experience Orb", "", false, false, false, false)),
                 EntityCleanupAction.REMOVE);
+        CleanupSettings disabledEntitySettings = new CleanupSettings(
+                Collections.<String>emptySet(),
+                Collections.<String>emptySet(),
+                Collections.<String>emptySet(),
+                false,
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                Collections.<String>emptySet(),
+                new HashSet<>(Collections.singletonList("ZOMBIE"))
+        );
+        DefaultCleanupPolicy disabledEntityPolicy = new DefaultCleanupPolicy(disabledEntitySettings);
+        assertEntity("entity cleanup disabled", disabledEntityPolicy.decideEntity(
+                new EntitySnapshot("ZOMBIE", "Zombie", "", true, true, false, false)),
+                EntityCleanupAction.SKIP);
         System.out.println("CorePolicySelfTest passed");
     }
 

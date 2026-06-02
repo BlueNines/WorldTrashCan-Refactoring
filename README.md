@@ -160,7 +160,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `160643` bytes，Bukkit `162185` bytes，Paper `162365` bytes，Folia `218209` bytes。
+- 最终产物大小：Legacy `160843` bytes，Bukkit `162385` bytes，Paper `162565` bytes，Folia `218409` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -190,6 +190,7 @@ PAPI 变量：
 - 多语言消息服务已接入四个平台产物并完成 Legacy 1.12 smoke：临时把测试服 `plugins/BLWorldTrashCan/config.yml` 的 `language` 改为 `message_en.yml`，启动后日志显示 `[Message] 已加载语言文件: messages/message_en.yml`，RCON 执行 `blwtc reload/help/platform/stats` 均返回英文文案；测试后 config 已恢复为 `message_zh.yml`，日志和生成的语言文件保留。
 - Legacy 1.12 命令类已补齐公共/个人垃圾桶打开权限校验：`global/globaltrash/trash` 同时接受 `blworldtrashcan.global.open` 与旧权限 `WorldListTrashCan.GlobalTrashOpen`，`personal/playertrash` 同时接受 `blworldtrashcan.personal.open` 与旧权限 `WorldListTrashCan.PlayerTrash`。本轮 1.12.2 smoke 验证 `WorldListTrashCan`、`WTC`、`wtc` 兼容入口可用，控制台打开 GUI 分支仍返回“该命令只能由玩家执行”，且日志未发现 BLWorldTrashCan 自身异常。
 - 公共黑名单 GUI 保存后已改为即时刷新运行期配置：关闭 `/blwtc globalban` GUI 保存 `trash.yml` 后会调用插件自身 reload 流程，立即刷新 `ConfigBundle`、公共垃圾桶黑名单和路由服务；四个平台语言文件的保存提示已从“需要 reload”改为“已立即生效”。本轮重新打包四个平台，并在 1.12.2 测试服验证新 Legacy jar 正常加载、`platform/stats/reload` 正常返回。
+- 旧配置 `Set.ClearEntity.Flag` 已补齐迁移到 `cleanup.yml` 的 `entities.enabled`，默认值为 `true`。关闭该总开关时，经验球、怪物、动物、投射物和实体黑名单都会整体跳过；`CorePolicySelfTest` 已覆盖关闭语义，1.12.2 测试服验证新 Legacy jar 正常加载、`platform/stats/reload/clear` 与 `%Wtc_ClearTime%` 正常返回。
 
 本轮关键日志：
 
@@ -262,6 +263,11 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-globalban-instant-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-globalban-instant-20260602-stop.log`
 - `paper-1.12.2-test-server/ai-blwtc-globalban-instant-20260602-final-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-entity-toggle-20260602-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-entity-toggle-20260602-disabled-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-entity-toggle-20260602-disabled-rcon-2.log`
+- `paper-1.12.2-test-server/ai-blwtc-entity-toggle-20260602-restore-stop-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-entity-toggle-20260602-final-latest.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
 
 已知测试环境噪声：
@@ -272,3 +278,4 @@ PAPI 变量：
 - Folia 1.20 当前已经完成世界清理、专用实体限制和通知后台 smoke，但仍不等于整产物 `FOLIA_REGION_SAFE`；BossBar、Title、Sound 等通知尚未做 Folia 客户端视觉验收，密集实体限制为了避免跨 region 查询，目前只覆盖当前 chunk 内实体。
 - 本机 PlaceholderAPI 2.11.6 不支持 Folia，Folia PAPI 变量仍需换用支持 Folia 的 PlaceholderAPI 前置后再验收；不能用普通 Paper 的 PAPI 验证结果替代 Folia。
 - `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。
+- 1.12.2 控制台直接执行 `summon Zombie 0 64 0` 会返回 `Cannot summon the object out of the world`，因此本轮未用原版 summon 完成“关闭 `entities.enabled` 后实体仍保留”的运行态子用例；该语义已由核心自测和字节码检查覆盖。
