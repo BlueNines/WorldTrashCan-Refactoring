@@ -145,11 +145,17 @@ public final class WorldTrashRouter implements TrashRouter {
 
     /** 添加世界垃圾桶位置。 */
     public boolean addWorldTrash(Block block, int defaultMaxCount) {
+        return addWorldTrash(block, defaultMaxCount, false);
+    }
+
+    /** 添加世界垃圾桶位置，可由 OP 创建路径绕过数量上限。 */
+    public boolean addWorldTrash(Block block, int defaultMaxCount, boolean bypassMaxCount) {
         if (block == null || block.getWorld() == null) {
             return false;
         }
         WorldTrashData data = getOrCreateData(block.getWorld(), defaultMaxCount);
-        if (data.getMaxTrashCanCount() > 0 && data.getLocations().size() >= data.getMaxTrashCanCount()) {
+        int maxCount = getEffectiveMaxTrashCanCount(block.getWorld(), defaultMaxCount);
+        if (!bypassMaxCount && maxCount > 0 && data.getLocations().size() >= maxCount) {
             return false;
         }
         Set<TrashLocation> locations = new HashSet<>(data.getLocations());
@@ -196,6 +202,18 @@ public final class WorldTrashRouter implements TrashRouter {
     public int getWorldTrashCount(World world) {
         WorldTrashData data = getData(world);
         return data == null ? 0 : data.getLocations().size();
+    }
+
+    /** 返回指定世界当前生效的垃圾桶数量上限。 */
+    public int getEffectiveMaxTrashCanCount(World world, int defaultMaxCount) {
+        if (world == null) {
+            return Math.max(0, defaultMaxCount);
+        }
+        WorldTrashData data = getData(world);
+        if (data == null || data.getMaxTrashCanCount() <= 0) {
+            return Math.max(0, defaultMaxCount);
+        }
+        return data.getMaxTrashCanCount();
     }
 
     /** 返回单个世界垃圾桶内的物品总数量。 */

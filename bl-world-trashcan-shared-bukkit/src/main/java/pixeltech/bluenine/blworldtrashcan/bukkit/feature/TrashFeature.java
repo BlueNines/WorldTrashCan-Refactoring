@@ -119,7 +119,7 @@ public final class TrashFeature implements Feature, Listener {
             player.sendMessage(message("world-trash.create-reach-limit", "&c该世界的世界垃圾桶数量已达到上限。"));
             return;
         }
-        if (trashRouter.addWorldTrash(containerBlock, worldConfig.getDefaultMaxCount())) {
+        if (trashRouter.addWorldTrash(containerBlock, worldConfig.getDefaultMaxCount(), player.isOp())) {
             event.setLine(matchedLine, color(worldConfig.getSignCreatedText()));
             player.sendMessage(message("world-trash.create-success", "&a已在世界 &f{world} &a创建世界垃圾桶。",
                     "{world}", world.getName()));
@@ -248,7 +248,7 @@ public final class TrashFeature implements Feature, Listener {
     /** 判断当前世界是否还能继续创建。 */
     private boolean canCreateMore(World world, TrashConfig.WorldTrashConfig worldConfig) {
         int current = trashRouter.getWorldTrashCount(world);
-        int max = worldConfig.getDefaultMaxCount();
+        int max = trashRouter.getEffectiveMaxTrashCanCount(world, worldConfig.getDefaultMaxCount());
         return max <= 0 || current < max;
     }
 
