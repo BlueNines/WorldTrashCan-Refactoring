@@ -160,7 +160,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `160987` bytes，Bukkit `162529` bytes，Paper `162709` bytes，Folia `218553` bytes。
+- 最终产物大小：Legacy `161178` bytes，Bukkit `162712` bytes，Paper `162895` bytes，Folia `218739` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -192,6 +192,7 @@ PAPI 变量：
 - 公共黑名单 GUI 保存后已改为即时刷新运行期配置：关闭 `/blwtc globalban` GUI 保存 `trash.yml` 后会调用插件自身 reload 流程，立即刷新 `ConfigBundle`、公共垃圾桶黑名单和路由服务；四个平台语言文件的保存提示已从“需要 reload”改为“已立即生效”。本轮重新打包四个平台，并在 1.12.2 测试服验证新 Legacy jar 正常加载、`platform/stats/reload` 正常返回。
 - 旧配置 `Set.ClearEntity.Flag` 已补齐迁移到 `cleanup.yml` 的 `entities.enabled`，默认值为 `true`。关闭该总开关时，经验球、怪物、动物、投射物和实体黑名单都会整体跳过；`CorePolicySelfTest` 已覆盖关闭语义，1.12.2 测试服验证新 Legacy jar 正常加载、`platform/stats/reload/clear` 与 `%Wtc_ClearTime%` 正常返回。
 - 公共/个人垃圾桶 GUI 取出、放入物品的权限检查已恢复旧插件 OP 旁路：现在同时接受 OP、新权限节点和旧权限节点；Legacy jar 字节码已确认 `GlobalTrashService` 与 `PersonalTrashService` 均包含 `Player.isOp()` 分支，1.12.2 测试服 smoke 验证新 jar 正常加载、`platform/stats/reload/clear` 正常返回。
+- 四个平台命令类已补齐旧插件 OP 旁路：`reload/clear/add/debug*` 走 OP 或 `blworldtrashcan.admin`，`global/personal/dropmode/look/ban/globalban` 走 OP 或对应新旧权限节点。四个 jar 的命令 class 字节码均确认包含 `CommandSender.isOp()` 分支；1.12.2 测试服 RCON smoke 验证 `blwtc platform`、旧入口 `WorldListTrashCan platform`、`stats/reload/clear/add`、`%Wtc_ClearTime%` 和 `debugstock` 正常返回。本轮未做真实玩家负向权限测试，玩家专属 OP 分支以源码和最终 jar 字节码为证据。
 
 本轮关键日志：
 
@@ -271,6 +272,8 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-entity-toggle-20260602-final-latest.log`
 - `paper-1.12.2-test-server/ai-blwtc-trash-op-permission-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-trash-op-permission-20260602-final-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-command-op-permission-20260602-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-command-op-permission-20260602-final-latest.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
 
 已知测试环境噪声：

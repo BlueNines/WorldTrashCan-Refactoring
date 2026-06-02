@@ -45,7 +45,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String sub = args.length == 0 ? "help" : args[0].toLowerCase();
         if ("reload".equals(sub)) {
-            if (!sender.hasPermission("blworldtrashcan.admin")) {
+            if (!hasAdminPermission(sender)) {
                 sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
                 return true;
             }
@@ -58,7 +58,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             return true;
         }
         if ("clear".equals(sub)) {
-            if (!sender.hasPermission("blworldtrashcan.admin")) {
+            if (!hasAdminPermission(sender)) {
                 sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
                 return true;
             }
@@ -74,7 +74,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             if (!requirePlayer(sender)) {
                 return true;
             }
-            if (!sender.hasPermission("blworldtrashcan.global.open") && !sender.hasPermission("WorldListTrashCan.GlobalTrashOpen")) {
+            if (!hasAnyPermission(sender, "blworldtrashcan.global.open", "WorldListTrashCan.GlobalTrashOpen")) {
                 sender.sendMessage(message("command.no-global-open-permission", "{prefix}&c你没有权限打开公共垃圾桶。"));
                 return true;
             }
@@ -85,7 +85,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             if (!requirePlayer(sender)) {
                 return true;
             }
-            if (!sender.hasPermission("blworldtrashcan.personal.open") && !sender.hasPermission("WorldListTrashCan.PlayerTrash")) {
+            if (!hasAnyPermission(sender, "blworldtrashcan.personal.open", "WorldListTrashCan.PlayerTrash")) {
                 sender.sendMessage(message("command.no-personal-open-permission", "{prefix}&c你没有权限打开个人垃圾桶。"));
                 return true;
             }
@@ -225,7 +225,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 处理上限增加。 */
     private void handleAdd(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -271,7 +271,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!sender.hasPermission("blworldtrashcan.dropmode") && !sender.hasPermission("WorldListTrashCan.DropMode")) {
+        if (!hasAnyPermission(sender, "blworldtrashcan.dropmode", "WorldListTrashCan.DropMode")) {
             sender.sendMessage(message("command.no-dropmode-permission", "{prefix}&c你没有权限使用防丢弃模式。"));
             return;
         }
@@ -283,7 +283,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!sender.hasPermission("blworldtrashcan.look") && !sender.hasPermission("WorldListTrashCan.Look")) {
+        if (!hasAnyPermission(sender, "blworldtrashcan.look", "WorldListTrashCan.Look")) {
             sender.sendMessage(message("command.no-look-permission", "{prefix}&c你没有权限使用查询功能。"));
             return;
         }
@@ -295,7 +295,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!sender.hasPermission("WorldListTrashCan.BanGui") && !sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.BanGui", "blworldtrashcan.admin")) {
             sender.sendMessage(message("command.no-world-ban-permission", "{prefix}&c你没有权限打开世界黑名单。"));
             return;
         }
@@ -307,7 +307,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!sender.hasPermission("WorldListTrashCan.GlobalBan") && !sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.GlobalBan", "blworldtrashcan.admin")) {
             sender.sendMessage(message("command.no-global-ban-permission", "{prefix}&c你没有权限打开公共垃圾桶黑名单。"));
             return;
         }
@@ -316,7 +316,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台测试打开指定玩家 GUI。 */
     private void handleDebugOpen(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -344,7 +344,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台创建并登记测试世界垃圾桶。 */
     private void handleDebugWorldTrash(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -362,7 +362,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台测试指定垃圾桶路由。 */
     private void handleDebugRoute(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -384,7 +384,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台生成测试掉落物。 */
     private void handleDebugDrop(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -406,7 +406,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台测试仙人掌、岩浆等损坏回收。 */
     private void handleDebugDamage(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -427,7 +427,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台输出不依赖在线玩家的垃圾桶库存摘要。 */
     private void handleDebugStock(CommandSender sender) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -440,7 +440,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台输出测试摘要。 */
     private void handleDebugSummary(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -459,7 +459,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 后台测试需要真实玩家对象的入口。 */
     private void handleDebugPlayer(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("blworldtrashcan.admin")) {
+        if (!hasAdminPermission(sender)) {
             sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
@@ -504,6 +504,26 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         return false;
     }
 
+    /** 判断发送者是否拥有管理权限，兼容旧插件 OP 管理语义。 */
+    private boolean hasAdminPermission(CommandSender sender) {
+        return sender != null && (sender.isOp() || sender.hasPermission("blworldtrashcan.admin"));
+    }
+
+    /** 判断发送者是否拥有任一权限，保留旧插件 OP 旁路。 */
+    private boolean hasAnyPermission(CommandSender sender, String... permissions) {
+        if (sender == null) {
+            return false;
+        }
+        if (sender.isOp()) {
+            return true;
+        }
+        for (String permission : permissions) {
+            if (permission != null && sender.hasPermission(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
     /** 获取在线玩家，没有时直接提示。 */
     private Player requireOnlinePlayer(CommandSender sender, String playerName) {
         Player player = plugin.getServer().getPlayerExact(playerName);
