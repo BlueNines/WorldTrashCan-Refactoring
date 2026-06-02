@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
 import java.util.HashMap;
@@ -19,15 +20,23 @@ public final class PersonalTrashService {
     private final Plugin plugin;
     private final PaymentService paymentService;
     private final BukkitMessageService messages;
+    private final ItemSnapshotMapper itemSnapshotMapper;
     private final Map<UUID, Inventory> inventories = new HashMap<>();
     private TrashConfig.PersonalTrashConfig config;
 
     /** 创建个人垃圾桶服务。 */
     public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
                                 BukkitMessageService messages) {
+        this(plugin, config, paymentService, messages, null);
+    }
+
+    /** 创建个人垃圾桶服务。 */
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
+                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper) {
         this.plugin = plugin;
         this.paymentService = paymentService;
         this.messages = messages;
+        this.itemSnapshotMapper = itemSnapshotMapper;
         this.config = config;
     }
 
@@ -46,8 +55,9 @@ public final class PersonalTrashService {
         if (!isEnabled() || ownerUuid == null) {
             return false;
         }
+        ItemStack cleanItemStack = sanitize(itemStack);
         Inventory inventory = inventory(ownerUuid, "离线玩家");
-        return InventorySlotUtil.hasSpace(inventory, itemStack, 0, inventory.getSize())
+        return InventorySlotUtil.hasSpace(inventory, cleanItemStack, 0, inventory.getSize())
                 || config.isAutoClearWhenFull();
     }
 
@@ -56,11 +66,12 @@ public final class PersonalTrashService {
         if (!isEnabled() || ownerUuid == null) {
             return false;
         }
+        ItemStack cleanItemStack = sanitize(itemStack);
         Inventory inventory = inventory(ownerUuid, "离线玩家");
-        if (!InventorySlotUtil.hasSpace(inventory, itemStack, 0, inventory.getSize()) && config.isAutoClearWhenFull()) {
+        if (!InventorySlotUtil.hasSpace(inventory, cleanItemStack, 0, inventory.getSize()) && config.isAutoClearWhenFull()) {
             inventory.clear();
         }
-        return InventorySlotUtil.add(inventory, itemStack, 0, inventory.getSize());
+        return InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize());
     }
 
     /** 打开玩家自己的个人垃圾桶。 */
@@ -175,6 +186,11 @@ public final class PersonalTrashService {
     /** 判断玩家是否拥有个人垃圾桶操作权限，保留旧插件 OP 旁路。 */
     private boolean hasTrashPermission(Player player, String modernPermission, String legacyPermission) {
         return player != null && (player.isOp() || player.hasPermission(modernPermission) || player.hasPermission(legacyPermission));
+    }
+
+    /** 清理插件内部物品标记后用于入库。 */
+    private ItemStack sanitize(ItemStack itemStack) {
+        return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
     }
 
     /** 获取或创建个人垃圾桶。 */

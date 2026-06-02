@@ -267,7 +267,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return;
         }
         ItemStack routedStack = itemStack.clone();
-        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(routedStack));
+        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack);
         routeWithFallback(item, routedStack, snapshot, policy, state, stats, tracker);
     }

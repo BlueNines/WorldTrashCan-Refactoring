@@ -159,9 +159,6 @@ public final class TrashFeature implements Feature, Listener {
         if (!personalConfig.isEnabled()) {
             return;
         }
-        if (personalConfig.isTrackPlayerDroppedItems()) {
-            platform.itemSnapshotMapper().markOwner(event.getItemDrop(), event.getPlayer());
-        }
         trackDroppedItem(event.getItemDrop(), event.getPlayer(), personalConfig);
     }
 
@@ -280,6 +277,9 @@ public final class TrashFeature implements Feature, Listener {
 
     /** 记录玩家主动丢弃的物品，用于无世界垃圾桶路由和损坏回收。 */
     private void trackDroppedItem(Item item, Player player, TrashConfig.PersonalTrashConfig personalConfig) {
+        if (personalConfig.isTrackPlayerDroppedItems()) {
+            platform.itemSnapshotMapper().markOwner(item, player);
+        }
         if (dropOwnerTracker == null) {
             return;
         }

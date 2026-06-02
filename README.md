@@ -195,6 +195,7 @@ PAPI 变量：
 - 四个平台命令类已补齐旧插件 OP 旁路：`reload/clear/add/debug*` 走 OP 或 `blworldtrashcan.admin`，`global/personal/dropmode/look/ban/globalban` 走 OP 或对应新旧权限节点。四个 jar 的命令 class 字节码均确认包含 `CommandSender.isOp()` 分支；1.12.2 测试服 RCON smoke 验证 `blwtc platform`、旧入口 `WorldListTrashCan platform`、`stats/reload/clear/add`、`%Wtc_ClearTime%` 和 `debugstock` 正常返回。本轮未做真实玩家负向权限测试，玩家专属 OP 分支以源码和最终 jar 字节码为证据。
 - 世界垃圾桶 `/blwtc add <世界名> <数量>` 写入的 `data/worlds.yml` 上限现在会参与正式创建限制：`WorldTrashRouter` 使用单世界运行数据计算有效上限，告示牌创建的 OP 路径会按旧插件行为绕过数量上限。1.12.2 测试服使用真实 Forge 客户端 `AIClientAlpha` 进服后，RCON 通过在线 `Player` 对象连续执行 `debugworldtrash`：上限 5 时新增到 5 成功、第 6 个失败；执行 `blwtc add world 1` 后上限变 6，再新增 1 个成功、第 7 个失败。最终 `data/worlds.yml` 落盘为 `world.max-count: 6` 且 6 个位置，窄匹配未发现 BLWorldTrashCan 自身异常。
 - 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BLWorldTrashCan 自身异常。
+- Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
 
 本轮关键日志：
 

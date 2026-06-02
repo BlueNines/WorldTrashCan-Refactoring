@@ -68,15 +68,16 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
                 return configBundle;
             }
         };
-        GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService);
-        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService);
+        GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService, platform.itemSnapshotMapper());
+        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService, platform.itemSnapshotMapper());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,
                 new BukkitYamlWorldTrashStorage(new File(getDataFolder(), "data/worlds.yml")),
                 globalTrashService,
                 personalTrashService,
-                configBundle.getTrashConfig()
+                configBundle.getTrashConfig(),
+                platform.itemSnapshotMapper()
         );
         this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService, dropOwnerTracker);
         this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService, dropOwnerTracker);

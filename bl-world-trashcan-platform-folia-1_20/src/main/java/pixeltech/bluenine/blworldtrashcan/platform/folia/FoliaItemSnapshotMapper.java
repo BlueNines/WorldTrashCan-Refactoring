@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-/** Folia 物品快照映射器，支持 PDC 玩家标记。 */
+/** Folia 物品快照映射器，使用掉落实体 PDC 保存玩家标记。 */
 public final class FoliaItemSnapshotMapper implements ItemSnapshotMapper {
     private final NamespacedKey ownerKey;
 
@@ -36,28 +36,63 @@ public final class FoliaItemSnapshotMapper implements ItemSnapshotMapper {
         return new ItemSnapshot(itemStack.getType().name(), itemStack.getAmount(), displayName, lore, ownerUuid);
     }
 
-    /** 给玩家主动丢弃的物品写入 PDC 所属玩家标记。 */
+    /** 将掉落实体转成核心快照，优先读取实体 PDC，兼容旧 ItemStack PDC。 */
+    @Override
+    public ItemSnapshot toSnapshot(Item item) {
+        if (item == null) {
+            return toSnapshot((ItemStack) null);
+        }
+        ItemSnapshot snapshot = toSnapshot(item.getItemStack());
+        UUID ownerUuid = readOwnerUuid(item);
+        return ownerUuid == null ? snapshot : snapshot.withOwnerUuid(ownerUuid);
+    }
+
+    /** 给玩家主动丢弃的实体写入 PDC 所属玩家标记，不污染 ItemStack 叠加。 */
     @Override
     public void markOwner(Item item, Player player) {
         if (item == null || player == null) {
             return;
         }
-        ItemStack itemStack = item.getItemStack();
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return;
-        }
-        meta.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, player.getUniqueId().toString());
-        itemStack.setItemMeta(meta);
-        item.setItemStack(itemStack);
+        item.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, player.getUniqueId().toString());
     }
 
-    /** 从 PDC 读取玩家 UUID。 */
+    /** 清理旧版本写入 ItemStack 的 owner PDC，避免入库后影响物品叠加。 */
+    @Override
+    public ItemStack sanitizeForStorage(ItemStack itemStack) {
+        if (itemStack == null) {
+            return null;
+        }
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null || !meta.getPersistentDataContainer().has(ownerKey, PersistentDataType.STRING)) {
+            return itemStack;
+        }
+        ItemStack clean = itemStack.clone();
+        ItemMeta cleanMeta = clean.getItemMeta();
+        if (cleanMeta != null) {
+            cleanMeta.getPersistentDataContainer().remove(ownerKey);
+            clean.setItemMeta(cleanMeta);
+        }
+        return clean;
+    }
+
+    /** 从掉落实体 PDC 读取玩家 UUID。 */
+    private UUID readOwnerUuid(Item item) {
+        if (item == null) {
+            return null;
+        }
+        return parseOwnerUuid(item.getPersistentDataContainer().get(ownerKey, PersistentDataType.STRING));
+    }
+
+    /** 从旧 ItemStack PDC 读取玩家 UUID。 */
     private UUID readOwnerUuid(ItemMeta meta) {
         if (meta == null) {
             return null;
         }
-        String raw = meta.getPersistentDataContainer().get(ownerKey, PersistentDataType.STRING);
+        return parseOwnerUuid(meta.getPersistentDataContainer().get(ownerKey, PersistentDataType.STRING));
+    }
+
+    /** 解析玩家 UUID 字符串。 */
+    private UUID parseOwnerUuid(String raw) {
         if (raw == null || raw.trim().isEmpty()) {
             return null;
         }

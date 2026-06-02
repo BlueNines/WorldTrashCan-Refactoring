@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ public final class GlobalTrashService {
     private static final int INVENTORY_SIZE = 54;
     private final Plugin plugin;
     private final BukkitMessageService messages;
+    private final ItemSnapshotMapper itemSnapshotMapper;
     private final List<Inventory> pages = new ArrayList<>();
     private final Map<UUID, Long> lastTakeMillis = new HashMap<>();
     private TrashConfig.GlobalTrashConfig config;
@@ -42,8 +44,15 @@ public final class GlobalTrashService {
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages) {
+        this(plugin, config, messages, null);
+    }
+
+    /** 创建公共垃圾桶服务。 */
+    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
+                              ItemSnapshotMapper itemSnapshotMapper) {
         this.plugin = plugin;
         this.messages = messages;
+        this.itemSnapshotMapper = itemSnapshotMapper;
         reload(config);
     }
 
@@ -82,11 +91,12 @@ public final class GlobalTrashService {
         if (!isEnabled()) {
             return false;
         }
-        if (itemStack != null && config.isBannedMaterial(itemStack.getType().name())) {
+        ItemStack cleanItemStack = sanitize(itemStack);
+        if (cleanItemStack != null && config.isBannedMaterial(cleanItemStack.getType().name())) {
             return false;
         }
         for (Inventory page : pages) {
-            if (InventorySlotUtil.hasSpace(page, itemStack, 0, CONTENT_SIZE)) {
+            if (InventorySlotUtil.hasSpace(page, cleanItemStack, 0, CONTENT_SIZE)) {
                 return true;
             }
         }
@@ -95,11 +105,12 @@ public final class GlobalTrashService {
 
     /** 向公共垃圾桶放入物品。 */
     public boolean addItem(ItemStack itemStack) {
-        if (!hasSpace(itemStack)) {
+        ItemStack cleanItemStack = sanitize(itemStack);
+        if (!hasSpace(cleanItemStack)) {
             return false;
         }
         for (Inventory page : pages) {
-            if (InventorySlotUtil.add(page, itemStack, 0, CONTENT_SIZE)) {
+            if (InventorySlotUtil.add(page, cleanItemStack, 0, CONTENT_SIZE)) {
                 return true;
             }
         }
@@ -250,6 +261,11 @@ public final class GlobalTrashService {
         player.sendMessage(message("global-trash.take-cooldown", "&c公共垃圾桶拿取冷却剩余 {time} 秒。",
                 "{time}", String.valueOf(Math.max(1L, remain / 100L) / 10D)));
         return true;
+    }
+
+    /** 清理插件内部物品标记后用于入库。 */
+    private ItemStack sanitize(ItemStack itemStack) {
+        return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
     }
 
     /** 创建单页 GUI。 */

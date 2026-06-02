@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.storage.TrashLocation;
@@ -32,6 +33,7 @@ public final class WorldTrashRouter implements TrashRouter {
     private final WorldTrashStorage storage;
     private final GlobalTrashService globalTrashService;
     private final PersonalTrashService personalTrashService;
+    private final ItemSnapshotMapper itemSnapshotMapper;
     private final Map<String, WorldTrashData> worldData = new HashMap<>();
     private TrashConfig trashConfig;
     private int skippedUnloadedChunkAccesses;
@@ -39,10 +41,18 @@ public final class WorldTrashRouter implements TrashRouter {
     /** 创建世界垃圾桶路由器。 */
     public WorldTrashRouter(Plugin plugin, WorldTrashStorage storage, GlobalTrashService globalTrashService,
                             PersonalTrashService personalTrashService, TrashConfig trashConfig) {
+        this(plugin, storage, globalTrashService, personalTrashService, trashConfig, null);
+    }
+
+    /** 创建世界垃圾桶路由器。 */
+    public WorldTrashRouter(Plugin plugin, WorldTrashStorage storage, GlobalTrashService globalTrashService,
+                            PersonalTrashService personalTrashService, TrashConfig trashConfig,
+                            ItemSnapshotMapper itemSnapshotMapper) {
         this.plugin = plugin;
         this.storage = storage;
         this.globalTrashService = globalTrashService;
         this.personalTrashService = personalTrashService;
+        this.itemSnapshotMapper = itemSnapshotMapper;
         this.trashConfig = trashConfig;
         reload(trashConfig);
     }
@@ -88,9 +98,10 @@ public final class WorldTrashRouter implements TrashRouter {
         if (data == null) {
             return false;
         }
+        ItemStack cleanItemStack = sanitize(itemStack);
         for (TrashLocation location : data.getLocations()) {
             Inventory inventory = getInventory(location);
-            if (inventory != null && InventorySlotUtil.add(inventory, itemStack, 0, inventory.getSize())) {
+            if (inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize())) {
                 return true;
             }
         }
@@ -114,8 +125,9 @@ public final class WorldTrashRouter implements TrashRouter {
         if (location == null || itemStack == null) {
             return false;
         }
+        ItemStack cleanItemStack = sanitize(itemStack);
         Inventory inventory = getInventory(location);
-        return inventory != null && InventorySlotUtil.add(inventory, itemStack, 0, inventory.getSize());
+        return inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize());
     }
 
     /** 重载存储中的世界垃圾桶数据。 */
@@ -362,6 +374,11 @@ public final class WorldTrashRouter implements TrashRouter {
             }
         }
         return count;
+    }
+
+    /** 清理插件内部物品标记后用于写入世界垃圾桶。 */
+    private ItemStack sanitize(ItemStack itemStack) {
+        return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
     }
 
     /** 标准化世界名。 */
