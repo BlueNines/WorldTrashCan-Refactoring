@@ -136,7 +136,8 @@ Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回
 
 PAPI 变量：
 
-- Legacy 1.12、Bukkit 1.13-1.15、Paper 1.16-1.20、Folia 1.20 四个产物都提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
+- Legacy 1.12、Bukkit 1.13-1.15、Paper 1.16-1.20、Folia 1.20 四个产物的代码都提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
+- Legacy 1.12、Bukkit 1.13.2、Paper 1.20.4 已使用 PlaceholderAPI 2.11.6 实服验证；Folia 需要服务器安装支持 Folia 的 PlaceholderAPI，本机 PlaceholderAPI 2.11.6 会被 Folia 拒绝加载，不能作为 Folia PAPI 验收前置。
 
 发包变量：
 
@@ -174,6 +175,8 @@ PAPI 变量：
 - 公共垃圾桶 GUI `ModelId` 和 BossBar 旧配置已补齐：四个平台默认 `trash.yml` 增加 `global-trash.gui.back/next/background-model-id`，默认 `notify.yml` 增加 `bossbar.messages`；迁移器不再把这些字段列为人工确认。
 - BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BLWorldTrashCan 自身异常。测试后已恢复临时 `notify.yml` 和 `cleanup.yml`。
 - Legacy 1.12 产物已补齐旧 `%Wtc_ClearTime%` PAPI 变量注册逻辑，已在 `paper-1.12.2-test-server` 安装 PlaceholderAPI 2.11.6 时验证：`papi parse --null %Wtc_ClearTime%` 返回 `296`，日志出现 `Successfully registered internal expansion: Wtc` 和 `[BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%`。
+- Bukkit 1.13.2 和 Paper 1.20.4 已补做 `%Wtc_ClearTime%` PAPI 验证：`papi parse --null %Wtc_ClearTime%` 分别返回 `315`、`333`；`plugins` 均显示 `BLWorldTrashCan` 和 `PlaceholderAPI` 已启用。
+- Folia 1.20.1 尝试安装本地 PlaceholderAPI 2.11.6 验证 PAPI 时，Folia 在加载阶段拒绝该前置，原因是 `PlaceholderAPI v2.11.6` 未声明支持 Folia；BLWorldTrashCan 因未检测到 PlaceholderAPI 正常跳过变量注册。本轮已将该临时 PAPI jar 改名为 disabled，避免污染后续 Folia 测试。
 - 旧命令 `/WorldListTrashCan add [世界名] <数量>` 已在新命令 `/blwtc add <世界名> <数量>` 中恢复控制台指定世界路径；`paper-1.12.2-test-server` 通过 RCON 验证 `blwtc add world 1` 成功、`blwtc add missing_world 1` 提示世界不存在、控制台 `blwtc add 1` 提示必须指定世界名，并确认 `data/worlds.yml` 落盘为 `world.max-count: 4`。
 
 本轮关键日志：
@@ -229,6 +232,10 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-20260602-bossbar-modelid-smoke-backup/`
 - `paper-1.12.2-test-server/ai-blwtc-legacy-papi-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-legacy-papi-20260602-final-latest.log`
+- `paper-1.13.2-test-server/ai-blwtc-papi-bukkit113-20260602-rcon.log`
+- `paper-1.20.4-test-server/ai-blwtc-papi-paper1204-20260602-rcon.log`
+- `folia-1.20.1-test-server/ai-blwtc-papi-folia1201-20260602-console.log`
+- `folia-1.20.1-test-server/ai-blwtc-papi-folia1201-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-stop.log`
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-final-latest.log`
@@ -240,4 +247,5 @@ PAPI 变量：
 - 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
 - Folia 1.20 当前已经完成世界清理、专用实体限制和通知后台 smoke，但仍不等于整产物 `FOLIA_REGION_SAFE`；BossBar、Title、Sound 等通知尚未做 Folia 客户端视觉验收，密集实体限制为了避免跨 region 查询，目前只覆盖当前 chunk 内实体。
+- 本机 PlaceholderAPI 2.11.6 不支持 Folia，Folia PAPI 变量仍需换用支持 Folia 的 PlaceholderAPI 前置后再验收；不能用普通 Paper 的 PAPI 验证结果替代 Folia。
 - `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。
