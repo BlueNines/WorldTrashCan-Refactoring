@@ -504,53 +504,96 @@ public final class CleanupFeature implements Feature {
         }
 
         /** 返回世界数量。 */
-        public int getWorlds() {
+        public synchronized int getWorlds() {
             return worlds;
         }
 
         /** 返回移除物品数量。 */
-        public int getItemsRemoved() {
+        public synchronized int getItemsRemoved() {
             return itemsRemoved;
         }
 
         /** 返回进入任意垃圾桶的物品数量。 */
-        public int getItemsRouted() {
+        public synchronized int getItemsRouted() {
             return itemsRouted;
         }
 
         /** 返回进入世界垃圾桶的物品数量。 */
-        public int getItemsToWorldTrash() {
+        public synchronized int getItemsToWorldTrash() {
             return itemsToWorldTrash;
         }
 
         /** 返回进入个人垃圾桶的物品数量。 */
-        public int getItemsToPersonalTrash() {
+        public synchronized int getItemsToPersonalTrash() {
             return itemsToPersonalTrash;
         }
 
         /** 返回进入公共垃圾桶的物品数量。 */
-        public int getItemsToGlobalTrash() {
+        public synchronized int getItemsToGlobalTrash() {
             return itemsToGlobalTrash;
         }
 
         /** 返回跳过物品数量。 */
-        public int getItemsSkipped() {
+        public synchronized int getItemsSkipped() {
             return itemsSkipped;
         }
 
         /** 返回移除实体数量。 */
-        public int getEntitiesRemoved() {
+        public synchronized int getEntitiesRemoved() {
             return entitiesRemoved;
         }
 
         /** 返回跳过实体数量。 */
-        public int getEntitiesSkipped() {
+        public synchronized int getEntitiesSkipped() {
             return entitiesSkipped;
         }
 
         /** 判断本轮是否刷新了公共垃圾桶。 */
-        public boolean isGlobalTrashRefreshed() {
+        public synchronized boolean isGlobalTrashRefreshed() {
             return globalTrashRefreshed;
+        }
+
+        /** 增加扫描世界数量。 */
+        public synchronized void addWorld() {
+            worlds++;
+        }
+
+        /** 增加跳过物品数量。 */
+        public synchronized void addItemsSkipped(int amount) {
+            itemsSkipped += Math.max(1, amount);
+        }
+
+        /** 增加移除物品数量。 */
+        public synchronized void addItemsRemoved(int amount) {
+            itemsRemoved += Math.max(1, amount);
+        }
+
+        /** 增加路由成功物品数量。 */
+        public synchronized void addItemsRouted(int amount, TrashRoute route) {
+            int safeAmount = Math.max(1, amount);
+            itemsRouted += safeAmount;
+            if (route == TrashRoute.WORLD_TRASH) {
+                itemsToWorldTrash += safeAmount;
+            } else if (route == TrashRoute.PERSONAL_TRASH) {
+                itemsToPersonalTrash += safeAmount;
+            } else if (route == TrashRoute.GLOBAL_TRASH) {
+                itemsToGlobalTrash += safeAmount;
+            }
+        }
+
+        /** 增加移除实体数量。 */
+        public synchronized void addEntitiesRemoved() {
+            entitiesRemoved++;
+        }
+
+        /** 增加跳过实体数量。 */
+        public synchronized void addEntitiesSkipped() {
+            entitiesSkipped++;
+        }
+
+        /** 标记公共垃圾桶已刷新。 */
+        public synchronized void markGlobalTrashRefreshed() {
+            globalTrashRefreshed = true;
         }
     }
 }

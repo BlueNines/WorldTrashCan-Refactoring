@@ -29,6 +29,7 @@ public final class FoliaPlatform implements ServerPlatform {
         this.entitySnapshotMapper = new FoliaEntitySnapshotMapper();
         this.capabilityReport = new CapabilityReport("folia-1.20", EnumSet.of(
                 Capability.SCHEDULER_GLOBAL,
+                Capability.SCHEDULER_REGION,
                 Capability.INVENTORY_BASIC,
                 Capability.ITEM_PDC_TAG,
                 Capability.RGB_MESSAGE,

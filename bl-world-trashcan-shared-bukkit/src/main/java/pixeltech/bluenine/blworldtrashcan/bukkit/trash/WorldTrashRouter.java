@@ -15,6 +15,7 @@ import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashData;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashStorage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Collection;
 import java.util.HashMap;
@@ -94,6 +95,27 @@ public final class WorldTrashRouter implements TrashRouter {
             }
         }
         return false;
+    }
+
+    /** 返回指定世界可尝试的世界垃圾桶位置快照。 */
+    public Collection<TrashLocation> getWorldTrashLocations(World world, ItemStack itemStack) {
+        WorldTrashData data = getData(world);
+        if (data == null || data.getLocations().isEmpty() || itemStack == null) {
+            return Collections.emptyList();
+        }
+        if (data.getBannedMaterials().contains(itemStack.getType().name())) {
+            return Collections.emptyList();
+        }
+        return new ArrayList<>(data.getLocations());
+    }
+
+    /** 在调用方确认线程安全的区域上下文中尝试写入单个世界垃圾桶。 */
+    public boolean routeWorldTrashAt(TrashLocation location, ItemStack itemStack) {
+        if (location == null || itemStack == null) {
+            return false;
+        }
+        Inventory inventory = getInventory(location);
+        return inventory != null && InventorySlotUtil.add(inventory, itemStack, 0, inventory.getSize());
     }
 
     /** 重载存储中的世界垃圾桶数据。 */

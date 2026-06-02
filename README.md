@@ -7,7 +7,7 @@
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
 - `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已在 `paper-1.20.4-test-server` 完成启动 smoke 和 RCON 命令验证。
-- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动 smoke；当前世界实体扫描清理尚未实现全链路 region-safe，因此定时世界扫描会关闭，`/blwtc clear` 会拒绝执行世界实体扫描。
+- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动和 region-safe 清理 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为实体数量限制功能暂未做 Folia 专用实现。
 
 ## 模块
 
@@ -18,11 +18,11 @@
 - `bl-world-trashcan-platform-legacy-1_12`：1.12 平台能力、旧告示牌、无 PDC 物品标记。
 - `bl-world-trashcan-platform-bukkit-1_13_1_15`：1.13-1.15 平台能力、现代告示牌、无 PDC 物品标记，避免 1.13 缺 PDC API。
 - `bl-world-trashcan-platform-paper-1_16_1_20`：现代 Paper 平台能力、PDC 玩家掉落标记。
-- `bl-world-trashcan-platform-folia-1_20`：Folia 平台能力、PDC 玩家掉落标记、Folia 全局调度入口。
+- `bl-world-trashcan-platform-folia-1_20`：Folia 平台能力、PDC 玩家掉落标记、Folia 全局与 region 调度入口。
 - `bl-world-trashcan-plugin-legacy-1_12`：1.12 插件入口、命令和 PlaceholderAPI 适配。
 - `bl-world-trashcan-plugin-bukkit-1_13_1_15`：1.13-1.15 插件入口、Vault 和 PlaceholderAPI 适配。
 - `bl-world-trashcan-plugin-paper-1_16_1_20`：现代 Paper 插件入口、Vault 和 PlaceholderAPI 适配。
-- `bl-world-trashcan-plugin-folia-1_20`：Folia 插件入口、Vault 和 PlaceholderAPI 适配。
+- `bl-world-trashcan-plugin-folia-1_20`：Folia 插件入口、Folia 专用清理、Vault 和 PlaceholderAPI 适配。
 
 ## 配置文件
 
@@ -77,6 +77,8 @@ migration-legacy-folder: "WorldListTrashCan"
 /blwtc add <世界名> <数量>
 /blwtc reload
 ```
+
+Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回只表示清理任务已提交，最终统计以后台 `[FoliaCleanup]` 日志或后续 `/blwtc stats` 为准。
 
 兼容旧命令入口：
 
@@ -148,7 +150,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `140838` bytes，Bukkit `142459` bytes，Paper `142686` bytes，Folia `147047` bytes。
+- 最终产物大小：Legacy `140838` bytes，Bukkit `142459` bytes，Paper `142686` bytes，Folia `173760` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -158,7 +160,8 @@ PAPI 变量：
 - `Material.STAINED_GLASS_PANE` 跨版本修复后，Legacy 1.12 测试服重新加载新产物，`platform` 显示 `legacy-1.12`，`stats` 和 `clear` 正常返回。
 - 旧配置迁移器已在独立 `paper-1.12.2-migration-test-server` 验证相邻旧目录和当前插件目录旧结构两种入口；迁移后 `legacy-migration-report.md`、`legacy-migration-backup/`、`trash.yml`、`cleanup.yml`、`data/worlds.yml` 均符合预期。
 - Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BLWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
-- Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 未声明 `FOLIA_REGION_SAFE` 时关闭定时世界扫描，并让 `/blwtc clear` 明确拒绝执行，复测未再出现该异常。
+- Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
+- Folia 产物暂不注册共享 `EntityLimitFeature`，避免 `world.getEntities()` / `getNearbyEntities()` 在 Folia 上跨 region 访问；后续需要补 Folia 专用实体限制实现后才能声明整产物 `FOLIA_REGION_SAFE`。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
@@ -207,6 +210,8 @@ PAPI 变量：
 - `paper-1.13.2-test-server/ai-blwtc-bukkit113-guard-resmoke-20260602-1830-error.log`
 - `folia-1.20.1-test-server/ai-blwtc-folia1201-smoke-20260602-1853-latest.log`
 - `folia-1.20.1-test-server/ai-blwtc-folia1201-guarded-console-smoke-20260602-1803-latest.log`
+- `folia-1.20.1-test-server/ai-blwtc-folia-region-cleanup-20260602-latest.log`
+- `folia-1.20.1-test-server/ai-blwtc-folia-region-cleanup-20260602-commands.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-rcon-main-2.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-latest.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-trash-test.yml`
@@ -228,5 +233,5 @@ PAPI 变量：
 - 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BLWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
 - 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
-- Folia 1.20 当前只是安全拒绝危险世界扫描入口，并不等于已经完成 region-safe 清理；后续若要恢复 Folia 清理功能，必须把实体扫描改为 region/entity scheduler 分段执行后再做实服回归。
+- Folia 1.20 当前已经完成世界清理的 region/entity scheduler smoke，但仍不等于整产物 `FOLIA_REGION_SAFE`；共享实体数量限制在 Folia 产物中暂时禁用，BossBar/Title/Sound 等通知也尚未做 Folia 客户端级验收。
 - `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。

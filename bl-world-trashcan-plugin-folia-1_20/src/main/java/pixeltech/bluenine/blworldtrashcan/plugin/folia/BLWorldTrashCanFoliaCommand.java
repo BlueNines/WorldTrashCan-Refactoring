@@ -55,12 +55,11 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
                 sender.sendMessage("§c当前 Folia 产物尚未启用 region-safe 清理，已拒绝执行世界实体扫描。");
                 return true;
             }
-            CleanupFeature.CleanupStats stats = plugin.runCleanupNow();
-            sender.sendMessage("§a清理完成: §f世界 " + stats.getWorlds()
-                    + "§a, 回收物品 " + stats.getItemsRouted()
-                    + "§a, 移除物品 " + stats.getItemsRemoved()
-                    + "§a, 移除实体 " + stats.getEntitiesRemoved()
-                    + "§a。");
+            if (!plugin.startCleanupNow()) {
+                sender.sendMessage("§e上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。");
+                return true;
+            }
+            sender.sendMessage("§a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /blwtc stats。");
             return true;
         }
         if ("global".equals(sub) || "trash".equals(sub) || "globaltrash".equals(sub)) {
@@ -334,7 +333,7 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
             return;
         }
         boolean created = plugin.debugCreateWorldTrash(player);
-        sender.sendMessage(created ? "§a已创建并登记测试世界垃圾桶。" : "§c创建测试世界垃圾桶失败，请查看后台日志。");
+        sender.sendMessage(created ? "§a已提交测试世界垃圾桶创建任务，请查看后台日志。" : "§c创建测试世界垃圾桶任务提交失败。");
     }
 
     /** 后台测试指定垃圾桶路由。 */
@@ -356,7 +355,7 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
             return;
         }
         boolean routed = plugin.debugRoute(player, route, material, amount);
-        sender.sendMessage(routed ? "§a路由测试成功。" : "§c路由测试失败，请检查容量、配置或世界垃圾桶登记。");
+        sender.sendMessage(routed ? "§a已提交路由测试任务，请查看后台日志。" : "§c路由测试任务提交失败，请检查玩家状态。");
     }
 
     /** 后台生成测试掉落物。 */
@@ -378,7 +377,7 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
             return;
         }
         plugin.debugDrop(player, material, amount, markOwner);
-        sender.sendMessage("§a已生成测试掉落物。");
+        sender.sendMessage("§a已提交测试掉落物生成任务，请查看后台日志。");
     }
 
     /** 后台测试仙人掌、岩浆等损坏回收。 */
@@ -399,7 +398,7 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
             return;
         }
         boolean recovered = plugin.debugDamageRecovery(player, material, amount);
-        sender.sendMessage(recovered ? "§a损坏回收测试成功。" : "§c损坏回收测试未生效，请检查 damage-recovery 配置和垃圾桶容量。");
+        sender.sendMessage(recovered ? "§a已提交损坏回收测试任务，请查看后台日志。" : "§c损坏回收测试任务提交失败，请检查玩家状态。");
     }
 
     /** 后台输出不依赖在线玩家的垃圾桶库存摘要。 */

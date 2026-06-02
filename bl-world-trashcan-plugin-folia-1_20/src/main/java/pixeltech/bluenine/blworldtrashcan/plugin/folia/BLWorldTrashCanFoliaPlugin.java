@@ -14,7 +14,6 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSourc
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
-import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
@@ -40,7 +39,7 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
     private FeatureRegistry featureRegistry;
     private ServerPlatform platform;
     private ConfigBundle configBundle;
-    private CleanupFeature cleanupFeature;
+    private FoliaRegionCleanupFeature cleanupFeature;
     private TrashFeature trashFeature;
     private ProtectionFeature protectionFeature;
     private BanGuiFeature banGuiFeature;
@@ -75,14 +74,14 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
                 configBundle.getTrashConfig()
         );
         this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService);
-        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService);
+        this.cleanupFeature = new FoliaRegionCleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService);
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter);
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
-        featureRegistry.register(new EntityLimitFeature(this, configSupplier));
+        getLogger().warning("[EntityLimit] Folia 产物暂不注册共享实体限制，避免 world.getEntities/nearbyEntities 跨 region 访问。");
         registerCommands();
         registerPlaceholderApi();
         logCapabilities();
@@ -114,6 +113,16 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
     /** 立即执行一次后台清理。 */
     public CleanupFeature.CleanupStats runCleanupNow() {
         return cleanupFeature.runNow();
+    }
+
+    /** 立即提交一次 Folia 异步清理。 */
+    public boolean startCleanupNow() {
+        return cleanupFeature != null && cleanupFeature.startNow();
+    }
+
+    /** 判断当前是否已有 Folia 清理任务在运行。 */
+    public boolean isCleanupRunning() {
+        return cleanupFeature != null && cleanupFeature.isRunning();
     }
 
     /** 判断当前 Folia 产物是否支持世界扫描清理。 */
@@ -270,59 +279,79 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
     }
 
     /** 测试用：在玩家附近创建并登记一个世界垃圾桶箱子。 */
-    public boolean debugCreateWorldTrash(Player player) {
-        Block block = findDebugChestBlock(player);
-        if (block == null) {
-            getLogger().warning("[Debug] 未找到可放置测试箱子的位置: " + player.getName());
-            return false;
-        }
-        if (block.getType() != Material.CHEST) {
-            block.setType(Material.CHEST);
-        }
-        boolean saved = trashRouter.addWorldTrash(block, configBundle.getTrashConfig().getWorldTrash().getDefaultMaxCount());
-        getLogger().info("[Debug] debugWorldTrash player=" + player.getName()
-                + ", world=" + block.getWorld().getName()
-                + ", x=" + block.getX()
-                + ", y=" + block.getY()
-                + ", z=" + block.getZ()
-                + ", saved=" + saved);
-        return saved;
+    public boolean debugCreateWorldTrash(final Player player) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在 region 创建测试世界垃圾桶。 */
+            @Override
+            public void run() {
+                Block block = findDebugChestBlock(player);
+                if (block == null) {
+                    getLogger().warning("[Debug] 未找到可放置测试箱子的位置: " + player.getName());
+                    return;
+                }
+                if (block.getType() != Material.CHEST) {
+                    block.setType(Material.CHEST);
+                }
+                boolean saved = trashRouter.addWorldTrash(block, configBundle.getTrashConfig().getWorldTrash().getDefaultMaxCount());
+                getLogger().info("[Debug] debugWorldTrash player=" + player.getName()
+                        + ", world=" + block.getWorld().getName()
+                        + ", x=" + block.getX()
+                        + ", y=" + block.getY()
+                        + ", z=" + block.getZ()
+                        + ", saved=" + saved);
+            }
+        });
     }
 
     /** 测试用：直接走垃圾桶路由服务投递物品。 */
-    public boolean debugRoute(Player player, TrashRoute route, Material material, int amount) {
-        ItemStack itemStack = new ItemStack(material, amount);
-        boolean routed = trashRouter.route(player.getWorld(), player.getUniqueId(), itemStack, route);
-        getLogger().info("[Debug] debugRoute player=" + player.getName()
-                + ", route=" + route
-                + ", material=" + material.name()
-                + ", amount=" + amount
-                + ", routed=" + routed);
-        return routed;
+    public boolean debugRoute(final Player player, final TrashRoute route, final Material material, final int amount) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在 region 执行路由测试。 */
+            @Override
+            public void run() {
+                ItemStack itemStack = new ItemStack(material, amount);
+                boolean routed = trashRouter.route(player.getWorld(), player.getUniqueId(), itemStack, route);
+                getLogger().info("[Debug] debugRoute player=" + player.getName()
+                        + ", route=" + route
+                        + ", material=" + material.name()
+                        + ", amount=" + amount
+                        + ", routed=" + routed);
+            }
+        });
     }
 
     /** 测试用：在玩家位置生成一个掉落物。 */
-    public boolean debugDrop(Player player, Material material, int amount, boolean markOwner) {
-        ItemStack itemStack = new ItemStack(material, amount);
-        Item item = player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
-        if (markOwner) {
-            platform.itemSnapshotMapper().markOwner(item, player);
-        }
-        getLogger().info("[Debug] debugDrop player=" + player.getName()
-                + ", material=" + material.name()
-                + ", amount=" + amount
-                + ", markOwner=" + markOwner);
-        return true;
+    public boolean debugDrop(final Player player, final Material material, final int amount, final boolean markOwner) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在 region 生成测试掉落物。 */
+            @Override
+            public void run() {
+                ItemStack itemStack = new ItemStack(material, amount);
+                Item item = player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                if (markOwner) {
+                    platform.itemSnapshotMapper().markOwner(item, player);
+                }
+                getLogger().info("[Debug] debugDrop player=" + player.getName()
+                        + ", material=" + material.name()
+                        + ", amount=" + amount
+                        + ", markOwner=" + markOwner);
+            }
+        });
     }
 
     /** 测试用：通过正式损坏事件验证玩家掉落物短期回收。 */
-    public boolean debugDamageRecovery(Player player, Material material, int amount) {
-        boolean recovered = trashFeature.debugDamageRecovery(player, material, amount);
-        getLogger().info("[Debug] debugDamageRecovery player=" + player.getName()
-                + ", material=" + material.name()
-                + ", amount=" + amount
-                + ", recovered=" + recovered);
-        return recovered;
+    public boolean debugDamageRecovery(final Player player, final Material material, final int amount) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在 region 执行损坏回收测试。 */
+            @Override
+            public void run() {
+                boolean recovered = trashFeature.debugDamageRecovery(player, material, amount);
+                getLogger().info("[Debug] debugDamageRecovery player=" + player.getName()
+                        + ", material=" + material.name()
+                        + ", amount=" + amount
+                        + ", recovered=" + recovered);
+            }
+        });
     }
 
     /** 测试用：生成当前玩家关联的路由状态摘要。 */
@@ -360,5 +389,20 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
             }
         }
         return null;
+    }
+
+    /** 把需要玩家实体上下文的测试逻辑提交到玩家 region。 */
+    private boolean runForPlayerRegion(final Player player, final Runnable runnable) {
+        if (player == null || runnable == null) {
+            return false;
+        }
+        Runnable retired = new Runnable() {
+            /** 玩家实体不可用时放弃本次测试任务。 */
+            @Override
+            public void run() {
+                getLogger().warning("[Debug] 玩家实体调度失败，已放弃测试任务: " + player.getName());
+            }
+        };
+        return player.getScheduler().execute(this, runnable, retired, 1L);
     }
 }
