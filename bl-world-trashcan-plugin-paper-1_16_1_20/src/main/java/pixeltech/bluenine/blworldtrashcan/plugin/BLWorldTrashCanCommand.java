@@ -19,7 +19,7 @@ import java.util.Locale;
 /** 新架构主命令，当前只提供架构验证命令。 */
 public final class BLWorldTrashCanCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugsummary");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer");
     private final BLWorldTrashCanPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -119,6 +119,14 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
             handleDebugDrop(sender, args);
             return true;
         }
+        if ("debugdamage".equals(sub)) {
+            handleDebugDamage(sender, args);
+            return true;
+        }
+        if ("debugstock".equals(sub)) {
+            handleDebugStock(sender);
+            return true;
+        }
         if ("debugsummary".equals(sub)) {
             handleDebugSummary(sender, args);
             return true;
@@ -160,6 +168,8 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         sender.sendMessage("§b/blwtc debugworldtrash <玩家> §7- 后台创建并登记测试世界垃圾桶");
         sender.sendMessage("§b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> §7- 后台测试指定路由");
         sender.sendMessage("§b/blwtc debugdrop <玩家> <Material> <数量> [owner] §7- 后台生成测试掉落物");
+        sender.sendMessage("§b/blwtc debugdamage <玩家> <Material> <数量> §7- 后台测试仙人掌/岩浆损坏回收");
+        sender.sendMessage("§b/blwtc debugstock §7- 后台查看当前垃圾桶库存");
         sender.sendMessage("§b/blwtc debugsummary <玩家> §7- 查看后台测试摘要");
         sender.sendMessage("§b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> §7- 后台测试玩家入口");
         sender.sendMessage("§b/blwtc reload §7- 重载插件");
@@ -177,6 +187,8 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         sender.sendMessage("§7- §f删除物品: §a" + stats.getItemsRemoved());
         sender.sendMessage("§7- §f删除实体: §a" + stats.getEntitiesRemoved());
         sender.sendMessage("§7- §f公共垃圾桶页数: §a" + plugin.getGlobalTrashPageCount());
+        sender.sendMessage("§7- §f公共垃圾桶当前物品: §a" + plugin.getGlobalTrashStoredItemAmount()
+                + " §7(堆叠 " + plugin.getGlobalTrashStoredStackCount() + ")");
         sender.sendMessage("§7- §f已加载个人垃圾桶: §a" + plugin.getPersonalTrashInventoryCount());
         sender.sendMessage("§7- §f下次清理剩余秒数: §a" + plugin.getRemainingClearSeconds());
     }
@@ -340,6 +352,40 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         }
         plugin.debugDrop(player, material, amount, markOwner);
         sender.sendMessage("§a已生成测试掉落物。");
+    }
+
+    /** 后台测试仙人掌、岩浆等损坏回收。 */
+    private void handleDebugDamage(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("blworldtrashcan.admin")) {
+            sender.sendMessage("§c你没有权限执行该命令。");
+            return;
+        }
+        if (args.length < 4) {
+            sender.sendMessage("§c用法: /blwtc debugdamage <玩家> <Material> <数量>");
+            return;
+        }
+        Player player = requireOnlinePlayer(sender, args[1]);
+        Material material = parseMaterial(args[2]);
+        int amount = parseAmount(args[3]);
+        if (player == null || material == null || amount <= 0) {
+            sender.sendMessage("§c参数错误，请检查玩家、Material 和数量。");
+            return;
+        }
+        boolean recovered = plugin.debugDamageRecovery(player, material, amount);
+        sender.sendMessage(recovered ? "§a损坏回收测试成功。" : "§c损坏回收测试未生效，请检查 damage-recovery 配置和垃圾桶容量。");
+    }
+
+    /** 后台输出不依赖在线玩家的垃圾桶库存摘要。 */
+    private void handleDebugStock(CommandSender sender) {
+        if (!sender.hasPermission("blworldtrashcan.admin")) {
+            sender.sendMessage("§c你没有权限执行该命令。");
+            return;
+        }
+        sender.sendMessage("§a垃圾桶库存:");
+        sender.sendMessage("§7- §f公共垃圾桶物品: §a" + plugin.getGlobalTrashStoredItemAmount()
+                + " §7(堆叠 " + plugin.getGlobalTrashStoredStackCount() + ")");
+        sender.sendMessage("§7- §f公共垃圾桶页数: §a" + plugin.getGlobalTrashPageCount());
+        sender.sendMessage("§7- §f已加载个人垃圾桶: §a" + plugin.getPersonalTrashInventoryCount());
     }
 
     /** 后台输出测试摘要。 */

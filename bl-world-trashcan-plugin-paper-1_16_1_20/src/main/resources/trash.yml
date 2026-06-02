@@ -48,3 +48,12 @@ personal-trash:
   auto-clear-when-full: true
   # 玩家从个人垃圾桶取出物品时扣除的 Vault 金额；-1 表示不扣费。
   take-cost: -1
+  # 玩家主动丢弃的物品被仙人掌、岩浆、火焰等损坏时，是否在短时间内回收到垃圾桶。
+  damage-recovery:
+    # 回收模式。
+    # disabled：不处理，等同旧配置 UseModel=3。
+    # global-trash：进入公共垃圾桶，等同旧配置 UseModel=1。
+    # personal-trash：进入玩家个人垃圾桶，等同旧配置 UseModel=2。
+    mode: disabled
+    # 玩家丢出物品后多少秒内被损坏才会尝试回收，过期后不再记录归属，避免长期占用内存。
+    delay-seconds: 6

@@ -183,6 +183,9 @@ public final class BukkitLegacyConfigMigrator {
                 "personal-trash.auto-clear-when-full", plan);
         copyDouble(oldConfig, target, "Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.Model2.Coins",
                 "personal-trash.take-cost", plan);
+        copyDamageRecoveryMode(oldConfig, target, plan);
+        copyInt(oldConfig, target, "Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.Delay",
+                "personal-trash.damage-recovery.delay-seconds", plan);
         saveTarget(target, "trash.yml");
     }
 
@@ -265,12 +268,25 @@ public final class BukkitLegacyConfigMigrator {
                 "公共垃圾桶下一页按钮 CustomModelData 当前未实现");
         addManualIfPresent(oldConfig, plan, "Set.GlobalTrash.GlobalItems.BackgroundItem.ModelId",
                 "公共垃圾桶背景 CustomModelData 当前未实现");
-        addManualIfPresent(oldConfig, plan, "Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.UseModel",
-                "仙人掌/岩浆原版物品回收模式当前未实现");
-        addManualIfPresent(oldConfig, plan, "Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.Delay",
-                "仙人掌/岩浆原版物品回收延迟当前未实现");
         addManualIfPresent(oldConfig, plan, "Set.BossBarMessageForCount",
                 "BossBar 倒计时内容当前只迁移开关，消息未接入运行逻辑");
+    }
+
+    /** 迁移旧仙人掌、岩浆损坏回收模式。 */
+    private void copyDamageRecoveryMode(YamlConfiguration oldConfig, YamlConfiguration target, LegacyMigrationPlan plan) {
+        String oldPath = "Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.UseModel";
+        if (!oldConfig.contains(oldPath)) {
+            return;
+        }
+        int mode = oldConfig.getInt(oldPath, 3);
+        String value = "disabled";
+        if (mode == 1) {
+            value = "global-trash";
+        } else if (mode == 2) {
+            value = "personal-trash";
+        }
+        target.set("personal-trash.damage-recovery.mode", value);
+        plan.addMigratedKey(oldPath + " -> personal-trash.damage-recovery.mode");
     }
 
     /** 如果旧字段存在则写入人工确认列表。 */

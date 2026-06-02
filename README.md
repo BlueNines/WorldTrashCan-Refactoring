@@ -54,7 +54,7 @@ migration-legacy-folder: "WorldListTrashCan"
 - 迁移完成后会生成 `legacy-migration-report.md`，后续启动看到该报告就不会重复迁移。
 - 如果旧配置在当前 `plugins/BLWorldTrashCan` 目录，迁移前会先备份到 `legacy-migration-backup/`。
 - 当前会自动迁移主配置、清理配置、通知配置、保护配置、实体限制配置、公共/个人/世界垃圾桶配置，以及旧 `data/data.yml` 中的世界垃圾桶运行数据。
-- 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”，例如公共垃圾桶 GUI 的 `ModelId`、仙人掌/岩浆原版物品回收模式和延迟、BossBar 倒计时具体文本等。
+- 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”，例如公共垃圾桶 GUI 的 `ModelId`、BossBar 倒计时具体文本等。
 
 ## 命令
 
@@ -90,11 +90,13 @@ migration-legacy-folder: "WorldListTrashCan"
 /blwtc debugworldtrash <玩家>
 /blwtc debugroute <玩家> <world|personal|global> <Material> <数量>
 /blwtc debugdrop <玩家> <Material> <数量> [owner]
+/blwtc debugdamage <玩家> <Material> <数量>
+/blwtc debugstock
 /blwtc debugsummary <玩家>
 /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>
 ```
 
-`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成真实掉落物，`debugroute` 会向指定垃圾桶写入测试物品，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
+`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 会在不要求玩家在线的情况下输出当前公共垃圾桶库存，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
 
 ## 权限
 
@@ -157,10 +159,12 @@ PAPI 变量：
 - Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BLWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 未声明 `FOLIA_REGION_SAFE` 时关闭定时世界扫描，并让 `/blwtc clear` 明确拒绝执行，复测未再出现该异常。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
-- RCON 验证 `platform`、`stats`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
+- RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
 - 旧功能补齐验证覆盖：防丢弃模式、look 查询、单世界黑名单 GUI、公共黑名单 GUI、聊天/命令限频、不可拾取箭矢清理、防踩踏农田、经验球/实体清理、实体白名单/黑名单、世界实体数量限制、密集实体限制、公共垃圾桶日志、公共垃圾桶按清理次数刷新、定时清理倒计时通知
-- 世界垃圾桶强制加载区块问题已先记录方案，见 `docs/世界垃圾桶区块加载性能方案.md`；本轮不直接改实现，避免在旧功能未完全闭环前扩大行为变更。
+- 世界垃圾桶强制加载区块问题已按 `docs/世界垃圾桶区块加载性能方案.md` 落地默认保护；`world-trash.allow-load-unloaded-chunks` 默认 `false`，真实测试服已验证未加载区块会被跳过并降级路由。
+- 旧插件仙人掌/岩浆损坏回收的 `UseModel/Delay` 已自动迁移为 `personal-trash.damage-recovery.mode/delay-seconds`，默认仍为关闭，开启后只在短时间内追踪玩家主动丢弃物，避免长期占用内存；后台测试入口为 `/blwtc debugdamage <玩家> <Material> <数量>`。
+- 仙人掌/岩浆损坏回收已在 `paper-1.12.2-test-server` 使用真实 Forge 1.12.2 客户端验证：客户端发送 `/blwtc debugdamage AIClientAlpha STONE 2`，服务端日志出现 `debugDamageRecovery ... recovered=true`，`/blwtc debugstock` 显示公共垃圾桶物品 `2`、堆叠 `1`。
 
 本轮关键日志：
 

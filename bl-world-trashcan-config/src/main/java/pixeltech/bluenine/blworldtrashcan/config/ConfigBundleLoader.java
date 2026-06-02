@@ -55,7 +55,9 @@ public final class ConfigBundleLoader {
                         trash.getBoolean("personal-trash.enabled", true),
                         trash.getBoolean("personal-trash.track-player-dropped-items", true),
                         trash.getBoolean("personal-trash.auto-clear-when-full", true),
-                        trash.getDouble("personal-trash.take-cost", -1D)
+                        trash.getDouble("personal-trash.take-cost", -1D),
+                        parseDamageRecoveryMode(trash.getString("personal-trash.damage-recovery.mode", "disabled")),
+                        trash.getInt("personal-trash.damage-recovery.delay-seconds", 6)
                 )
         );
         ProtectionConfig protectionConfig = new ProtectionConfig(
@@ -154,6 +156,18 @@ public final class ConfigBundleLoader {
         } catch (NumberFormatException ignored) {
             return fallback;
         }
+    }
+
+    /** 解析玩家掉落物损坏回收模式。 */
+    private TrashConfig.DamageRecoveryMode parseDamageRecoveryMode(String value) {
+        String normalized = stringValue(value).toLowerCase();
+        if ("1".equals(normalized) || "global".equals(normalized) || "global-trash".equals(normalized)) {
+            return TrashConfig.DamageRecoveryMode.GLOBAL_TRASH;
+        }
+        if ("2".equals(normalized) || "personal".equals(normalized) || "personal-trash".equals(normalized)) {
+            return TrashConfig.DamageRecoveryMode.PERSONAL_TRASH;
+        }
+        return TrashConfig.DamageRecoveryMode.DISABLED;
     }
 
     /** 读取通知配置。 */

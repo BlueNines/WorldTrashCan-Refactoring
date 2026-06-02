@@ -25,11 +25,12 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
-import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /** 玩家可见垃圾桶功能，负责告示牌、GUI、主动丢弃标记和损坏回收。 */
 public final class TrashFeature implements Feature, Listener {
@@ -39,6 +40,7 @@ public final class TrashFeature implements Feature, Listener {
     private final WorldTrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
     private final PersonalTrashService personalTrashService;
+    private final Map<UUID, UUID> recentDropOwners = new ConcurrentHashMap<>();
     private boolean registered;
 
     /** 创建垃圾桶功能。 */
@@ -81,6 +83,7 @@ public final class TrashFeature implements Feature, Listener {
     @Override
     public void disable() {
         HandlerList.unregisterAll(this);
+        recentDropOwners.clear();
         registered = false;
     }
 
@@ -146,26 +149,41 @@ public final class TrashFeature implements Feature, Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         TrashConfig.PersonalTrashConfig personalConfig = configSupplier.get().getTrashConfig().getPersonalTrash();
-        if (personalConfig.isEnabled() && personalConfig.isTrackPlayerDroppedItems()) {
+        if (!personalConfig.isEnabled()) {
+            return;
+        }
+        if (personalConfig.isTrackPlayerDroppedItems()) {
             platform.itemSnapshotMapper().markOwner(event.getItemDrop(), event.getPlayer());
         }
+        trackRecentDrop(event.getItemDrop(), event.getPlayer(), personalConfig);
     }
 
     /** 玩家丢弃物被仙人掌、岩浆等损坏时尝试收回个人或公共垃圾桶。 */
     @EventHandler
     public void onItemDamage(EntityDamageEvent event) {
+        if (!isRecoverableDamageCause(event.getCause())) {
+            return;
+        }
         Entity entity = event.getEntity();
         if (!(entity instanceof Item)) {
             return;
         }
+        TrashConfig.PersonalTrashConfig personalConfig = configSupplier.get().getTrashConfig().getPersonalTrash();
+        TrashConfig.DamageRecoveryMode mode = personalConfig.getDamageRecoveryMode();
+        if (!personalConfig.isEnabled() || mode == TrashConfig.DamageRecoveryMode.DISABLED) {
+            return;
+        }
         Item item = (Item) entity;
-        ItemSnapshot snapshot = platform.itemSnapshotMapper().toSnapshot(item.getItemStack());
-        if (snapshot.getOwnerUuid() == null) {
+        UUID ownerUuid = recentDropOwners.remove(item.getUniqueId());
+        if (ownerUuid == null) {
             return;
         }
         ItemStack itemStack = item.getItemStack();
-        if (trashRouter.route(item.getWorld(), snapshot.getOwnerUuid(), itemStack, TrashRoute.PERSONAL_TRASH)
-                || trashRouter.route(item.getWorld(), snapshot.getOwnerUuid(), itemStack, TrashRoute.GLOBAL_TRASH)) {
+        TrashRoute route = mode == TrashConfig.DamageRecoveryMode.GLOBAL_TRASH
+                ? TrashRoute.GLOBAL_TRASH
+                : TrashRoute.PERSONAL_TRASH;
+        if (trashRouter.route(item.getWorld(), ownerUuid, itemStack, route)) {
+            event.setCancelled(true);
             item.remove();
         }
     }
@@ -210,6 +228,19 @@ public final class TrashFeature implements Feature, Listener {
         return personalTrashService.getStoredStackCount(ownerUuid);
     }
 
+    /** 后台测试：创建真实掉落物并通过事件总线模拟一次岩浆损坏回收。 */
+    public boolean debugDamageRecovery(Player player, Material material, int amount) {
+        TrashConfig.PersonalTrashConfig personalConfig = configSupplier.get().getTrashConfig().getPersonalTrash();
+        if (!personalConfig.isEnabled() || personalConfig.getDamageRecoveryMode() == TrashConfig.DamageRecoveryMode.DISABLED) {
+            return false;
+        }
+        Item item = player.getWorld().dropItemNaturally(player.getLocation(), new ItemStack(material, amount));
+        trackRecentDrop(item, player, personalConfig);
+        EntityDamageEvent event = new EntityDamageEvent(item, EntityDamageEvent.DamageCause.LAVA, 1D);
+        plugin.getServer().getPluginManager().callEvent(event);
+        return event.isCancelled() || !item.isValid();
+    }
+
     /** 判断当前世界是否还能继续创建。 */
     private boolean canCreateMore(World world, TrashConfig.WorldTrashConfig worldConfig) {
         int current = trashRouter.getWorldTrashCount(world);
@@ -227,6 +258,34 @@ public final class TrashFeature implements Feature, Listener {
     /** 判断方块是否是可用容器。 */
     private boolean isContainer(Block block) {
         return block != null && block.getType() != Material.AIR && block.getState() instanceof InventoryHolder;
+    }
+
+    /** 记录玩家短时间内主动丢弃的物品，用于仙人掌、岩浆等损坏回收。 */
+    private void trackRecentDrop(Item item, Player player, TrashConfig.PersonalTrashConfig personalConfig) {
+        if (personalConfig.getDamageRecoveryMode() == TrashConfig.DamageRecoveryMode.DISABLED) {
+            return;
+        }
+        int delaySeconds = personalConfig.getDamageRecoveryDelaySeconds();
+        if (delaySeconds <= 0) {
+            return;
+        }
+        final UUID itemUuid = item.getUniqueId();
+        recentDropOwners.put(itemUuid, player.getUniqueId());
+        platform.scheduler().runLater(new Runnable() {
+            /** 清理过期的掉落物归属记录。 */
+            @Override
+            public void run() {
+                recentDropOwners.remove(itemUuid);
+            }
+        }, Math.max(1L, delaySeconds * 20L));
+    }
+
+    /** 判断损坏原因是否属于原版物品销毁类场景。 */
+    private boolean isRecoverableDamageCause(EntityDamageEvent.DamageCause cause) {
+        return cause == EntityDamageEvent.DamageCause.CONTACT
+                || cause == EntityDamageEvent.DamageCause.LAVA
+                || cause == EntityDamageEvent.DamageCause.FIRE
+                || cause == EntityDamageEvent.DamageCause.FIRE_TICK;
     }
 
     /** 查找匹配的告示牌行。 */

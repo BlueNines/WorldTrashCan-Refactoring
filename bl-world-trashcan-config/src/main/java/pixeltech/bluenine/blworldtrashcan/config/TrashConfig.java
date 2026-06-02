@@ -154,14 +154,19 @@ public final class TrashConfig {
         private final boolean trackPlayerDroppedItems;
         private final boolean autoClearWhenFull;
         private final double takeCost;
+        private final DamageRecoveryMode damageRecoveryMode;
+        private final int damageRecoveryDelaySeconds;
 
         /** 创建个人垃圾桶配置。 */
         public PersonalTrashConfig(boolean enabled, boolean trackPlayerDroppedItems,
-                                   boolean autoClearWhenFull, double takeCost) {
+                                   boolean autoClearWhenFull, double takeCost,
+                                   DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds) {
             this.enabled = enabled;
             this.trackPlayerDroppedItems = trackPlayerDroppedItems;
             this.autoClearWhenFull = autoClearWhenFull;
             this.takeCost = takeCost;
+            this.damageRecoveryMode = damageRecoveryMode == null ? DamageRecoveryMode.DISABLED : damageRecoveryMode;
+            this.damageRecoveryDelaySeconds = Math.max(0, damageRecoveryDelaySeconds);
         }
 
         /** 判断个人垃圾桶是否启用。 */
@@ -183,6 +188,23 @@ public final class TrashConfig {
         public double getTakeCost() {
             return takeCost;
         }
+
+        /** 返回仙人掌、岩浆等损坏回收模式。 */
+        public DamageRecoveryMode getDamageRecoveryMode() {
+            return damageRecoveryMode;
+        }
+
+        /** 返回玩家掉落物损坏回收有效时间，单位秒。 */
+        public int getDamageRecoveryDelaySeconds() {
+            return damageRecoveryDelaySeconds;
+        }
+    }
+
+    /** 玩家掉落物被仙人掌、岩浆等损坏时的回收模式。 */
+    public enum DamageRecoveryMode {
+        DISABLED,
+        GLOBAL_TRASH,
+        PERSONAL_TRASH
     }
 
     /** 返回非空默认字符串。 */

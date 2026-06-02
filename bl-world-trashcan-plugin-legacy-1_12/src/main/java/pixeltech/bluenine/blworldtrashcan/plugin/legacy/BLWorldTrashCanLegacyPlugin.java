@@ -162,6 +162,16 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         return trashFeature == null ? 0 : trashFeature.getGlobalPageCount();
     }
 
+    /** 返回公共垃圾桶当前物品总数量。 */
+    public int getGlobalTrashStoredItemAmount() {
+        return trashFeature == null ? 0 : trashFeature.getGlobalStoredItemAmount();
+    }
+
+    /** 返回公共垃圾桶当前堆叠数量。 */
+    public int getGlobalTrashStoredStackCount() {
+        return trashFeature == null ? 0 : trashFeature.getGlobalStoredStackCount();
+    }
+
     /** 返回已加载个人垃圾桶数量。 */
     public int getPersonalTrashInventoryCount() {
         return trashFeature == null ? 0 : trashFeature.getPersonalInventoryCount();
@@ -216,6 +226,16 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
                 + ", amount=" + amount
                 + ", markOwner=" + markOwner);
         return true;
+    }
+
+    /** 测试用：通过正式损坏事件验证玩家掉落物短期回收。 */
+    public boolean debugDamageRecovery(Player player, Material material, int amount) {
+        boolean recovered = trashFeature.debugDamageRecovery(player, material, amount);
+        getLogger().info("[Debug] debugDamageRecovery player=" + player.getName()
+                + ", material=" + material.name()
+                + ", amount=" + amount
+                + ", recovered=" + recovered);
+        return recovered;
     }
 
     /** 测试用：生成当前玩家关联的路由状态摘要。 */
