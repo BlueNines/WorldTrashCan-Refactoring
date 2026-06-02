@@ -74,11 +74,19 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             if (!requirePlayer(sender)) {
                 return true;
             }
+            if (!sender.hasPermission("blworldtrashcan.global.open") && !sender.hasPermission("WorldListTrashCan.GlobalTrashOpen")) {
+                sender.sendMessage(message("command.no-global-open-permission", "{prefix}&c你没有权限打开公共垃圾桶。"));
+                return true;
+            }
             plugin.openGlobalTrash((Player) sender);
             return true;
         }
         if ("personal".equals(sub) || "playertrash".equals(sub)) {
             if (!requirePlayer(sender)) {
+                return true;
+            }
+            if (!sender.hasPermission("blworldtrashcan.personal.open") && !sender.hasPermission("WorldListTrashCan.PlayerTrash")) {
+                sender.sendMessage(message("command.no-personal-open-permission", "{prefix}&c你没有权限打开个人垃圾桶。"));
                 return true;
             }
             plugin.openPersonalTrash((Player) sender);
