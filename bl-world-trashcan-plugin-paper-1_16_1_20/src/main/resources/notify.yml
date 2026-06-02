@@ -16,6 +16,9 @@ chat:
     - "2;&c2秒"
     - "1;&c1秒"
     - "0;&a清理成功，有%DealItemSum%个物品被回收，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理 &6(点我打开垃圾桶)"
+    # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新。
+    - "-1;&d还有%ClearGlobalCount%次清理，公共垃圾桶会刷新"
+    - "-2;&a公共垃圾桶的物品已刷新"
 
 # ActionBar 提醒。
 actionbar:
@@ -31,6 +34,9 @@ actionbar:
     - "2;&c&l2秒"
     - "1;&c&l1秒"
     - "0;&a清理成功，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理"
+    # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新。
+    - "-1;&d还有%ClearGlobalCount%次清理，公共垃圾桶会刷新"
+    - "-2;&a公共垃圾桶的物品已刷新"
 
 # BossBar 提醒。
 bossbar:
@@ -64,6 +70,9 @@ title:
     - "2;&c2秒;"
     - "1;&c1秒;"
     - "0;&a清理成功;有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理"
+    # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新。
+    - "-1;&d还有%ClearGlobalCount%次清理，公共垃圾桶会刷新;"
+    - "-2;&a公共垃圾桶的物品已刷新;"
 
 # 声音提醒。
 sound:

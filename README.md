@@ -150,7 +150,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `140838` bytes，Bukkit `142459` bytes，Paper `142686` bytes，Folia `199084` bytes。
+- 最终产物大小：Legacy `140868` bytes，Bukkit `142489` bytes，Paper `142716` bytes，Folia `199114` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -163,6 +163,7 @@ PAPI 变量：
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
 - Folia 产物已接入专用 `FoliaEntityLimitFeature`：单世界实体上限用 `EntityAddToWorldEvent` / `EntityRemoveFromWorldEvent` 维护数量缓存并用 region-safe 复算兜底，密集实体限制只扫描当前 chunk；`folia-1.20.1-test-server` 验证 PIG 第二次生成被 `current=1, max=1` 拦截，COW 密集限制移除 `1` 个实体。
 - Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见的 ActionBar、BossBar、Title、Sound 在代码中改为提交到玩家实体 scheduler，但本机没有 Folia 1.20 客户端验收资产，尚未做视觉验收。
+- 四个平台默认 `notify.yml` 已补回旧配置里的清理后 `-1/-2` 提醒：Chat、ActionBar、BossBar、Title 都默认包含“公共垃圾桶未刷新/已刷新”两类消息；包内检查确认四个 dist jar 的 `notify.yml` 均包含这些条目。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
