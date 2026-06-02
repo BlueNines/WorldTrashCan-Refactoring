@@ -1,10 +1,12 @@
 package pixeltech.bluenine.blworldtrashcan.platform.folia;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.EntitySnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
@@ -14,9 +16,11 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.capability.CapabilityReport;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 /** Folia 1.20 平台实现。 */
 public final class FoliaPlatform implements ServerPlatform {
+    private final Plugin plugin;
     private final SchedulerAdapter scheduler;
     private final ItemSnapshotMapper itemSnapshotMapper;
     private final EntitySnapshotMapper entitySnapshotMapper;
@@ -24,6 +28,7 @@ public final class FoliaPlatform implements ServerPlatform {
 
     /** 创建 Folia 平台实现。 */
     public FoliaPlatform(Plugin plugin) {
+        this.plugin = plugin;
         this.scheduler = new FoliaSchedulerAdapter(plugin);
         this.itemSnapshotMapper = new FoliaItemSnapshotMapper(plugin);
         this.entitySnapshotMapper = new FoliaEntitySnapshotMapper();
@@ -84,5 +89,29 @@ public final class FoliaPlatform implements ServerPlatform {
             }
         }
         return signBlock.getRelative(BlockFace.DOWN);
+    }
+
+    /** 通过玩家实体调度器向在线玩家发送消息。 */
+    @Override
+    public void sendMessage(UUID playerUuid, final String message) {
+        if (playerUuid == null || message == null || message.isEmpty()) {
+            return;
+        }
+        final Player player = Bukkit.getPlayer(playerUuid);
+        if (player == null) {
+            return;
+        }
+        player.getScheduler().execute(plugin, new Runnable() {
+            /** 在玩家实体上下文发送消息。 */
+            @Override
+            public void run() {
+                player.sendMessage(message);
+            }
+        }, new Runnable() {
+            /** 玩家实体不可用时跳过消息。 */
+            @Override
+            public void run() {
+            }
+        }, 1L);
     }
 }

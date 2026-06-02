@@ -6,12 +6,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,22 +26,31 @@ public final class PersonalTrashService {
     private final PaymentService paymentService;
     private final BukkitMessageService messages;
     private final ItemSnapshotMapper itemSnapshotMapper;
+    private final ServerPlatform platform;
     private final Map<UUID, Inventory> inventories = new HashMap<>();
     private TrashConfig.PersonalTrashConfig config;
 
     /** 创建个人垃圾桶服务。 */
     public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
                                 BukkitMessageService messages) {
-        this(plugin, config, paymentService, messages, null);
+        this(plugin, config, paymentService, messages, null, null);
     }
 
     /** 创建个人垃圾桶服务。 */
     public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
                                 BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, null);
+    }
+
+    /** 创建个人垃圾桶服务。 */
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
+                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
+                                ServerPlatform platform) {
         this.plugin = plugin;
         this.paymentService = paymentService;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
+        this.platform = platform;
         this.config = config;
     }
 
@@ -72,6 +86,35 @@ public final class PersonalTrashService {
             inventory.clear();
         }
         return InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize());
+    }
+
+    /** 发送单个来源进入个人垃圾桶的提示。 */
+    public void notifySingle(UUID ownerUuid, ItemStack itemStack) {
+        if (!canNotify(ownerUuid) || InventorySlotUtil.isEmpty(itemStack)) {
+            return;
+        }
+        List<ItemStack> itemStacks = new ArrayList<>();
+        itemStacks.add(itemStack.clone());
+        sendToOwner(ownerUuid, message("personal-trash.recycle.single",
+                "{prefix}&a已回收到个人垃圾桶: {items}",
+                "{items}", formatItemList(itemStacks)));
+    }
+
+    /** 按玩家发送本轮批量进入个人垃圾桶的提示。 */
+    public void notifyBatch(Map<UUID, List<ItemStack>> itemStacksByOwner) {
+        if (!isNotifyEnabled() || itemStacksByOwner == null || itemStacksByOwner.isEmpty()) {
+            return;
+        }
+        for (Map.Entry<UUID, List<ItemStack>> entry : itemStacksByOwner.entrySet()) {
+            UUID ownerUuid = entry.getKey();
+            List<ItemStack> itemStacks = entry.getValue();
+            if (!canNotify(ownerUuid) || itemStacks == null || itemStacks.isEmpty()) {
+                continue;
+            }
+            sendToOwner(ownerUuid, message("personal-trash.recycle.batch",
+                    "{prefix}&a本次清理已回收到个人垃圾桶: {items}",
+                    "{items}", formatItemList(itemStacks)));
+        }
     }
 
     /** 打开玩家自己的个人垃圾桶。 */
@@ -193,6 +236,93 @@ public final class PersonalTrashService {
         return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
     }
 
+    /** 判断是否允许给指定玩家发送个人垃圾桶提示。 */
+    private boolean canNotify(UUID ownerUuid) {
+        return ownerUuid != null && isNotifyEnabled();
+    }
+
+    /** 判断个人垃圾桶提示功能是否启用。 */
+    private boolean isNotifyEnabled() {
+        return isEnabled() && config.isNotifyWhenRouted();
+    }
+
+    /** 向在线拥有者发送消息。 */
+    private void sendToOwner(UUID ownerUuid, String text) {
+        if (platform != null) {
+            platform.sendMessage(ownerUuid, text);
+            return;
+        }
+        Player player = Bukkit.getPlayer(ownerUuid);
+        if (player != null) {
+            player.sendMessage(text);
+        }
+    }
+
+    /** 格式化个人垃圾桶提示中的物品列表。 */
+    private String formatItemList(List<ItemStack> itemStacks) {
+        List<NotificationEntry> entries = mergeEntries(itemStacks);
+        int maxDisplay = config == null ? 3 : config.getNotifyMaxDisplayItems();
+        int displayCount = entries.size() > maxDisplay ? maxDisplay : entries.size();
+        List<String> parts = new ArrayList<>();
+        for (int index = 0; index < displayCount; index++) {
+            parts.add(formatEntry(entries.get(index)));
+        }
+        if (entries.size() > maxDisplay) {
+            parts.add(message("personal-trash.recycle.ellipsis", "&7...", new String[0]));
+        }
+        String joined = join(parts, message("personal-trash.recycle.separator", "&7, ", new String[0]));
+        return message("personal-trash.recycle.list", "&7[{items}&7]", "{items}", joined);
+    }
+
+    /** 合并同名物品条目，减少批量清理提示噪声。 */
+    private List<NotificationEntry> mergeEntries(List<ItemStack> itemStacks) {
+        Map<String, NotificationEntry> entries = new LinkedHashMap<>();
+        for (ItemStack itemStack : itemStacks) {
+            if (InventorySlotUtil.isEmpty(itemStack)) {
+                continue;
+            }
+            String name = displayName(itemStack);
+            NotificationEntry entry = entries.get(name);
+            if (entry == null) {
+                entry = new NotificationEntry(name);
+                entries.put(name, entry);
+            }
+            entry.addAmount(itemStack.getAmount());
+        }
+        return new ArrayList<>(entries.values());
+    }
+
+    /** 格式化单个物品条目。 */
+    private String formatEntry(NotificationEntry entry) {
+        if (entry.getAmount() <= 1) {
+            return message("personal-trash.recycle.item-single", "&f{name}",
+                    "{name}", entry.getName());
+        }
+        return message("personal-trash.recycle.item", "&f{name}&7*&f{amount}",
+                "{name}", entry.getName(), "{amount}", String.valueOf(entry.getAmount()));
+    }
+
+    /** 返回物品显示名，没有自定义名时使用 Material 名称。 */
+    private String displayName(ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null && meta.hasDisplayName()) {
+            return meta.getDisplayName();
+        }
+        return itemStack.getType().name();
+    }
+
+    /** 拼接字符串列表。 */
+    private String join(List<String> values, String separator) {
+        StringBuilder builder = new StringBuilder();
+        for (int index = 0; index < values.size(); index++) {
+            if (index > 0) {
+                builder.append(separator);
+            }
+            builder.append(values.get(index));
+        }
+        return builder.toString();
+    }
+
     /** 获取或创建个人垃圾桶。 */
     private Inventory inventory(UUID ownerUuid, String playerName) {
         Inventory inventory = inventories.get(ownerUuid);
@@ -214,5 +344,31 @@ public final class PersonalTrashService {
     /** 返回格式化消息。 */
     private String message(String key, String fallback, String... replacements) {
         return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
+    }
+
+    /** 个人垃圾桶提示里的合并物品条目。 */
+    private static final class NotificationEntry {
+        private final String name;
+        private int amount;
+
+        /** 创建提示条目。 */
+        private NotificationEntry(String name) {
+            this.name = name;
+        }
+
+        /** 累加物品数量。 */
+        private void addAmount(int delta) {
+            amount += Math.max(1, delta);
+        }
+
+        /** 返回显示名。 */
+        private String getName() {
+            return name;
+        }
+
+        /** 返回总数量。 */
+        private int getAmount() {
+            return amount;
+        }
     }
 }

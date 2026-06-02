@@ -12,11 +12,13 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
@@ -30,7 +32,12 @@ import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoutingDecision;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 /** 后台清理功能模块，清理决策交给 core，Bukkit 层只执行结果。 */
@@ -40,6 +47,7 @@ public final class CleanupFeature implements Feature {
     private final Supplier<ConfigBundle> configSupplier;
     private final TrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
+    private final PersonalTrashService personalTrashService;
     private final DropOwnerTracker dropOwnerTracker;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
@@ -52,12 +60,13 @@ public final class CleanupFeature implements Feature {
     /** 创建后台清理功能。 */
     public CleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
                           TrashRouter trashRouter, GlobalTrashService globalTrashService,
-                          DropOwnerTracker dropOwnerTracker) {
+                          PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
         this.globalTrashService = globalTrashService;
+        this.personalTrashService = personalTrashService;
         this.dropOwnerTracker = dropOwnerTracker;
     }
 
@@ -112,6 +121,7 @@ public final class CleanupFeature implements Feature {
             cleanWorld(world, policy, stats);
         }
         handleGlobalTrashRefresh(bundle, stats);
+        sendPersonalTrashBatchNotify(stats);
         lastStats = stats;
         plugin.getLogger().info("[Cleanup] worlds=" + stats.worlds
                 + ", itemsRouted=" + stats.itemsRouted
@@ -234,11 +244,15 @@ public final class CleanupFeature implements Feature {
         boolean personalAvailable = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
         boolean globalAvailable = trashRouter.hasGlobalTrash(item.getItemStack());
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
+            ItemStack routedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
             if (trashRouter.route(item.getWorld(), snapshot.getOwnerUuid(), item.getItemStack(), decision.getRoute())) {
                 forgetTrackedOwner(item);
                 item.remove();
                 stats.itemsRouted += Math.max(1, snapshot.getAmount());
                 countRoute(stats, decision.getRoute());
+                if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {
+                    stats.addPersonalTrashItem(snapshot.getOwnerUuid(), routedItemStack);
+                }
                 return decision;
             }
             if (decision.getRoute() == TrashRoute.WORLD_TRASH) {
@@ -293,6 +307,13 @@ public final class CleanupFeature implements Feature {
             globalTrashService.clearContent();
             cleanupRunsSinceGlobalClear = 0;
             stats.globalTrashRefreshed = true;
+        }
+    }
+
+    /** 发送本轮清理进入个人垃圾桶的批量提示。 */
+    private void sendPersonalTrashBatchNotify(CleanupStats stats) {
+        if (personalTrashService != null) {
+            personalTrashService.notifyBatch(stats.snapshotPersonalTrashItemsByOwner());
         }
     }
 
@@ -518,6 +539,7 @@ public final class CleanupFeature implements Feature {
         private int entitiesRemoved;
         private int entitiesSkipped;
         private boolean globalTrashRefreshed;
+        private final Map<UUID, List<ItemStack>> personalTrashItemsByOwner = new HashMap<>();
 
         /** 创建空统计。 */
         public static CleanupStats empty() {
@@ -574,6 +596,15 @@ public final class CleanupFeature implements Feature {
             return globalTrashRefreshed;
         }
 
+        /** 返回本轮进入个人垃圾桶的物品快照。 */
+        public synchronized Map<UUID, List<ItemStack>> snapshotPersonalTrashItemsByOwner() {
+            Map<UUID, List<ItemStack>> snapshot = new HashMap<>();
+            for (Map.Entry<UUID, List<ItemStack>> entry : personalTrashItemsByOwner.entrySet()) {
+                snapshot.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+            }
+            return snapshot;
+        }
+
         /** 增加扫描世界数量。 */
         public synchronized void addWorld() {
             worlds++;
@@ -600,6 +631,19 @@ public final class CleanupFeature implements Feature {
             } else if (route == TrashRoute.GLOBAL_TRASH) {
                 itemsToGlobalTrash += safeAmount;
             }
+        }
+
+        /** 记录本轮进入个人垃圾桶的物品。 */
+        public synchronized void addPersonalTrashItem(UUID ownerUuid, ItemStack itemStack) {
+            if (ownerUuid == null || itemStack == null) {
+                return;
+            }
+            List<ItemStack> items = personalTrashItemsByOwner.get(ownerUuid);
+            if (items == null) {
+                items = new ArrayList<>();
+                personalTrashItemsByOwner.put(ownerUuid, items);
+            }
+            items.add(itemStack.clone());
         }
 
         /** 增加移除实体数量。 */

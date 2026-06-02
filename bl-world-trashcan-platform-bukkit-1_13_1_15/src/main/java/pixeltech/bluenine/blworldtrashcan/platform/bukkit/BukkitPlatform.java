@@ -1,10 +1,12 @@
 package pixeltech.bluenine.blworldtrashcan.platform.bukkit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.BukkitSchedulerAdapter;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.EntitySnapshotMapper;
@@ -15,6 +17,7 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.capability.CapabilityReport;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 /** Bukkit/Spigot 1.13-1.15 平台实现。 */
 public final class BukkitPlatform implements ServerPlatform {
@@ -81,5 +84,17 @@ public final class BukkitPlatform implements ServerPlatform {
             }
         }
         return signBlock.getRelative(BlockFace.DOWN);
+    }
+
+    /** 向在线玩家发送消息。 */
+    @Override
+    public void sendMessage(UUID playerUuid, String message) {
+        if (playerUuid == null || message == null || message.isEmpty()) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(playerUuid);
+        if (player != null) {
+            player.sendMessage(message);
+        }
     }
 }

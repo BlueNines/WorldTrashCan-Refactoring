@@ -45,7 +45,34 @@
 
 `config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会继续回退到 jar 内默认节点，避免升级后命令、GUI 或提示变成空白。
 
-当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询和手持物品/区块实体查询。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
+当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询和手持物品/区块实体查询。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
+
+## 个人垃圾桶回收提示
+
+`trash.yml` 可配置物品自动进入个人垃圾桶时是否提醒在线玩家，以及批量提示最多展示多少个完整物品条目：
+
+```yaml
+personal-trash:
+  notify:
+    enabled: true
+    max-display-items: 3
+```
+
+`messages/message_*.yml` 的 `personal-trash.recycle` 控制提示格式。`single` 用于仙人掌、岩浆、虚空等单个掉落实体损坏回收；`batch` 用于 `/blwtc clear` 或后台扫地这种一次清理多个掉落物的批量提示。`{items}` 是完整物品列表占位符，由 `list/separator/item/item-single/ellipsis` 组合生成。
+
+```yaml
+personal-trash:
+  recycle:
+    single: "{prefix}&a已回收到个人垃圾桶: {items}"
+    batch: "{prefix}&a本次清理已回收到个人垃圾桶: {items}"
+    list: "&7[{items}&7]"
+    separator: "&7, "
+    item: "&f{name}&7*&f{amount}"
+    item-single: "&f{name}"
+    ellipsis: "&7..."
+```
+
+默认 `max-display-items: 3` 时，未超过 3 类物品会完整显示，例如 `[STONE*5, COBBLESTONE*30, DIRT]`；超过 3 类物品时会追加省略标记，例如 `[STONE*5, COBBLESTONE*30, DIRT, ...]`。
 
 ## 旧配置迁移
 
@@ -173,7 +200,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `191651` bytes，Bukkit `193190` bytes，Paper `193660` bytes，Folia `249860` bytes。
+- 最终产物大小：Legacy `197741` bytes，Bukkit `199286` bytes，Paper `199758` bytes，Folia `257818` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -208,6 +235,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 四个平台命令类已补齐旧插件 OP 旁路：`reload/clear/add/debug*` 走 OP 或 `blworldtrashcan.admin`，`global/personal/dropmode/look/ban/globalban` 走 OP 或对应新旧权限节点。四个 jar 的命令 class 字节码均确认包含 `CommandSender.isOp()` 分支；1.12.2 测试服 RCON smoke 验证 `blwtc platform`、旧入口 `WorldListTrashCan platform`、`stats/reload/clear/add`、`%Wtc_ClearTime%` 和 `debugstock` 正常返回。本轮未做真实玩家负向权限测试，玩家专属 OP 分支以源码和最终 jar 字节码为证据。
 - 世界垃圾桶 `/blwtc add <世界名> <数量>` 写入的 `data/worlds.yml` 上限现在会参与正式创建限制：`WorldTrashRouter` 使用单世界运行数据计算有效上限，告示牌创建的 OP 路径会按旧插件行为绕过数量上限。1.12.2 测试服使用真实 Forge 客户端 `AIClientAlpha` 进服后，RCON 通过在线 `Player` 对象连续执行 `debugworldtrash`：上限 5 时新增到 5 成功、第 6 个失败；执行 `blwtc add world 1` 后上限变 6，再新增 1 个成功、第 7 个失败。最终 `data/worlds.yml` 落盘为 `world.max-count: 6` 且 6 个位置，窄匹配未发现 BLWorldTrashCan 自身异常。
 - 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BLWorldTrashCan 自身异常。
+- 个人垃圾桶自动回收提示已在 `paper-1.12.2-test-server` 用真实 `client-1.12.2` 客户端验证：`debugdamage babyZiXuan STONE 2` 后客户端收到 `已回收到个人垃圾桶: [STONE*2]`；三类 `debugdrop ... owner` 后 `/blwtc clear` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT]`；四类物品时按 `max-display-items: 3` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT, ...]`。RCON `debugsummary/stats` 同时确认世界/公共垃圾桶为 0，个人路由分别为 1、3、4 个堆叠；测试后已恢复临时 `config.yml`、`trash.yml`、`messages/message_zh.yml` 和 `data/worlds.yml`。
 - Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
 - bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit 主类仍为 class major 52，Paper/Folia 主类仍为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
 

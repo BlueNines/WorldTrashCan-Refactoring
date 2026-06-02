@@ -178,17 +178,22 @@ public final class TrashConfig {
         private final double takeCost;
         private final DamageRecoveryMode damageRecoveryMode;
         private final int damageRecoveryDelaySeconds;
+        private final boolean notifyWhenRouted;
+        private final int notifyMaxDisplayItems;
 
         /** 创建个人垃圾桶配置。 */
         public PersonalTrashConfig(boolean enabled, boolean trackPlayerDroppedItems,
                                    boolean autoClearWhenFull, double takeCost,
-                                   DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds) {
+                                   DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds,
+                                   boolean notifyWhenRouted, int notifyMaxDisplayItems) {
             this.enabled = enabled;
             this.trackPlayerDroppedItems = trackPlayerDroppedItems;
             this.autoClearWhenFull = autoClearWhenFull;
             this.takeCost = takeCost;
             this.damageRecoveryMode = damageRecoveryMode == null ? DamageRecoveryMode.DISABLED : damageRecoveryMode;
             this.damageRecoveryDelaySeconds = Math.max(0, damageRecoveryDelaySeconds);
+            this.notifyWhenRouted = notifyWhenRouted;
+            this.notifyMaxDisplayItems = Math.max(1, notifyMaxDisplayItems);
         }
 
         /** 判断个人垃圾桶是否启用。 */
@@ -219,6 +224,16 @@ public final class TrashConfig {
         /** 返回玩家掉落物损坏回收有效时间，单位秒。 */
         public int getDamageRecoveryDelaySeconds() {
             return damageRecoveryDelaySeconds;
+        }
+
+        /** 判断物品进入个人垃圾桶时是否提示在线玩家。 */
+        public boolean isNotifyWhenRouted() {
+            return notifyWhenRouted;
+        }
+
+        /** 返回个人垃圾桶提示中最多完整展示的物品条目数。 */
+        public int getNotifyMaxDisplayItems() {
+            return notifyMaxDisplayItems;
         }
     }
 

@@ -38,6 +38,22 @@ personal-trash:
   gui:
     # GUI 標題，{player} 為玩家名。
     title: "&8{player} 的個人垃圾桶"
+  # 自動進入個人垃圾桶時的提示文案。
+  recycle:
+    # 單個來源進入個人垃圾桶時發送，{items} 為格式化後的物品列表。
+    single: "{prefix}&a已回收到個人垃圾桶: {items}"
+    # 批量清理進入個人垃圾桶時發送，{items} 為格式化後的物品列表。
+    batch: "{prefix}&a本次清理已回收到個人垃圾桶: {items}"
+    # 物品列表整體格式，{items} 為已經拼接好的物品條目。
+    list: "&7[{items}&7]"
+    # 多個物品條目之間的分隔符。
+    separator: "&7, "
+    # 單個物品數量大於 1 時的條目格式，{name} 為物品名，{amount} 為總數量。
+    item: "&f{name}&7*&f{amount}"
+    # 單個物品數量等於 1 時的條目格式，{name} 為物品名。
+    item-single: "&f{name}"
+    # 物品條目超過 trash.yml 中 max-display-items 後追加的省略標記。
+    ellipsis: "&7..."
 
 # 黑名單 GUI 相關訊息。
 ban-gui:

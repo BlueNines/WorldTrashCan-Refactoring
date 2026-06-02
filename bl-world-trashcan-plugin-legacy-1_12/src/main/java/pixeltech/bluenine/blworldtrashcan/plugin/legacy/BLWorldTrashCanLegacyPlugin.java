@@ -73,7 +73,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
             }
         };
         GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService, platform.itemSnapshotMapper());
-        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService, platform.itemSnapshotMapper());
+        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService, platform.itemSnapshotMapper(), platform);
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,
@@ -84,7 +84,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
                 platform.itemSnapshotMapper()
         );
         this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService, dropOwnerTracker);
-        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService, dropOwnerTracker);
+        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, dropOwnerTracker);
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
             /** 刷新公共黑名单等运行期配置。 */

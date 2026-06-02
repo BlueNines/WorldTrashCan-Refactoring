@@ -189,6 +189,9 @@ public final class TrashFeature implements Feature, Listener {
         if (trashRouter.route(item.getWorld(), ownerUuid, itemStack, route)) {
             event.setCancelled(true);
             item.remove();
+            if (route == TrashRoute.PERSONAL_TRASH) {
+                personalTrashService.notifySingle(ownerUuid, itemStack);
+            }
         }
     }
 

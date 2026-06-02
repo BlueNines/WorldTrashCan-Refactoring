@@ -56,6 +56,12 @@ personal-trash:
   auto-clear-when-full: true
   # 玩家从个人垃圾桶取出物品时扣除的 Vault 金额；-1 表示不扣费。
   take-cost: -1
+  # 物品自动进入个人垃圾桶时的在线提示设置。
+  notify:
+    # 是否在垃圾进入个人垃圾桶时提示在线玩家。
+    enabled: true
+    # 批量提示中最多完整展示多少个物品条目；超过后会按语言文件里的 ellipsis 追加省略标记。
+    max-display-items: 3
   # 玩家主动丢弃的物品被仙人掌、岩浆、火焰等损坏时，是否在短时间内回收到垃圾桶。
   damage-recovery:
     # 回收模式。

@@ -22,6 +22,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
@@ -52,6 +53,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private final Supplier<ConfigBundle> configSupplier;
     private final WorldTrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
+    private final PersonalTrashService personalTrashService;
     private final DropOwnerTracker dropOwnerTracker;
     private final AtomicBoolean cleanupRunning = new AtomicBoolean(false);
     private TaskHandle taskHandle;
@@ -65,12 +67,13 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** 创建 Folia region-safe 清理功能。 */
     public FoliaRegionCleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
                                      WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
-                                     DropOwnerTracker dropOwnerTracker) {
+                                     PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
         this.globalTrashService = globalTrashService;
+        this.personalTrashService = personalTrashService;
         this.dropOwnerTracker = dropOwnerTracker;
     }
 
@@ -313,6 +316,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 forgetTrackedOwner(item);
                 item.remove();
                 stats.addItemsRouted(itemStack.getAmount(), route);
+                if (route == TrashRoute.PERSONAL_TRASH) {
+                    stats.addPersonalTrashItem(snapshot.getOwnerUuid(), itemStack);
+                }
                 return;
             }
             state.markUnavailable(route);
@@ -469,6 +475,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             @Override
             public void run() {
                 handleGlobalTrashRefresh(stats);
+                sendPersonalTrashBatchNotify(stats);
                 lastStats = stats;
                 cleanupRunning.set(false);
                 plugin.getLogger().info("[FoliaCleanup] worlds=" + stats.getWorlds()
@@ -498,6 +505,13 @@ public final class FoliaRegionCleanupFeature implements Feature {
             }
             cleanupRunsSinceGlobalClear = 0;
             stats.markGlobalTrashRefreshed();
+        }
+    }
+
+    /** 发送本轮进入个人垃圾桶的批量提示。 */
+    private void sendPersonalTrashBatchNotify(CleanupFeature.CleanupStats stats) {
+        if (personalTrashService != null) {
+            personalTrashService.notifyBatch(stats.snapshotPersonalTrashItemsByOwner());
         }
     }
 
