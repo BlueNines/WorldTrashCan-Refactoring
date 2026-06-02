@@ -49,6 +49,10 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
                 sender.sendMessage("§c你没有权限执行该命令。");
                 return true;
             }
+            if (!plugin.isCleanupScanSupported()) {
+                sender.sendMessage("§c当前 Folia 产物尚未启用 region-safe 清理，已拒绝执行世界实体扫描。");
+                return true;
+            }
             CleanupFeature.CleanupStats stats = plugin.runCleanupNow();
             sender.sendMessage("§a清理完成: §f世界 " + stats.getWorlds()
                     + "§a, 回收物品 " + stats.getItemsRouted()

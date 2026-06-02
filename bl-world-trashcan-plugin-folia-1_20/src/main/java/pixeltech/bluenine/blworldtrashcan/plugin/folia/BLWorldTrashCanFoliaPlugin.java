@@ -116,6 +116,11 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         return cleanupFeature.runNow();
     }
 
+    /** 判断当前 Folia 产物是否支持世界扫描清理。 */
+    public boolean isCleanupScanSupported() {
+        return cleanupFeature != null && cleanupFeature.isWorldScanSupported();
+    }
+
     /** 保存新架构默认配置文件。 */
     private void saveDefaultConfigs() {
         saveDefaultConfig();

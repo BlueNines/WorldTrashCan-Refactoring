@@ -21,10 +21,12 @@ import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupDecision;
+import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoutingDecision;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 /** 后台清理功能模块，清理决策交给 core，Bukkit 层只执行结果。 */
@@ -82,6 +84,13 @@ public final class CleanupFeature implements Feature {
     /** 立即执行一次清理。 */
     public CleanupStats runNow() {
         ConfigBundle bundle = configSupplier.get();
+        if (!isWorldScanSupported()) {
+            CleanupStats stats = new CleanupStats();
+            handleGlobalTrashRefresh(bundle, stats);
+            lastStats = stats;
+            plugin.getLogger().warning("[Cleanup] 当前平台未启用 region-safe 清理，已跳过世界实体扫描。");
+            return stats;
+        }
         CleanupPolicy policy = new DefaultCleanupPolicy(bundle.getCleanupSettings());
         CleanupStats stats = new CleanupStats();
         CleanupConfig cleanupConfig = bundle.getCleanupConfig();
@@ -116,11 +125,21 @@ public final class CleanupFeature implements Feature {
         return Math.max(0L, (nextRunAtMillis - System.currentTimeMillis()) / 1000L);
     }
 
+    /** 判断当前平台是否允许同步扫描世界实体。 */
+    public boolean isWorldScanSupported() {
+        return !isFoliaWithoutRegionSafe();
+    }
+
     /** 按配置启动定时任务。 */
     private void startTask() {
         int interval = configSupplier.get().getCleanupConfig().getIntervalSeconds();
         if (interval <= 0) {
             plugin.getLogger().info("[Cleanup] 定时清理已关闭，仅允许手动触发。");
+            return;
+        }
+        if (!isWorldScanSupported()) {
+            nextRunAtMillis = 0L;
+            plugin.getLogger().warning("[Cleanup] 当前 Folia 产物尚未启用 region-safe 清理，定时世界扫描已关闭。");
             return;
         }
         long ticks = Math.max(20L, interval * 20L);
@@ -134,6 +153,12 @@ public final class CleanupFeature implements Feature {
             }
         }, 20L, 20L);
         plugin.getLogger().info("[Cleanup] 定时清理已启动，间隔 " + interval + " 秒。");
+    }
+
+    /** 判断是否是尚未声明 region-safe 的 Folia 产物。 */
+    private boolean isFoliaWithoutRegionSafe() {
+        return platform.id().toLowerCase(Locale.ROOT).startsWith("folia")
+                && !platform.capabilities().has(Capability.FOLIA_REGION_SAFE);
     }
 
     /** 推进一秒倒计时。 */
