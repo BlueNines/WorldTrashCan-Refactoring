@@ -35,8 +35,17 @@
 - `notify.yml`：清理倒计时通知，支持 Chat、ActionBar、BossBar、Title、Sound、Command。
 - `entity-limits.yml`：世界实体数量限制和密集实体限制。
 - `protections.yml`：聊天/命令限频、防丢弃模式、不可拾取箭矢清理、防踩踏农田。
-- `messages/message_zh.yml`：中文消息预留。
+- `messages/message_zh.yml`：简体中文消息。
+- `messages/message_zh_TW.yml`：繁体中文消息。
+- `messages/message_en.yml`：英文消息。
+- `messages/message_es.yml`：西班牙语消息。
 - `data/worlds.yml`：世界垃圾桶运行数据。
+
+## 消息与语言
+
+`config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会继续回退到 jar 内默认节点，避免升级后命令、GUI 或提示变成空白。
+
+当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询和手持物品/区块实体查询。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
 
 ## 旧配置迁移
 
@@ -151,7 +160,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `140868` bytes，Bukkit `142489` bytes，Paper `142716` bytes，Folia `199114` bytes。
+- 最终产物大小：Legacy `159690` bytes，Bukkit `161365` bytes，Paper `161564` bytes，Folia `217388` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -178,6 +187,7 @@ PAPI 变量：
 - Bukkit 1.13.2 和 Paper 1.20.4 已补做 `%Wtc_ClearTime%` PAPI 验证：`papi parse --null %Wtc_ClearTime%` 分别返回 `315`、`333`；`plugins` 均显示 `BLWorldTrashCan` 和 `PlaceholderAPI` 已启用。
 - Folia 1.20.1 尝试安装本地 PlaceholderAPI 2.11.6 验证 PAPI 时，Folia 在加载阶段拒绝该前置，原因是 `PlaceholderAPI v2.11.6` 未声明支持 Folia；BLWorldTrashCan 因未检测到 PlaceholderAPI 正常跳过变量注册。本轮已将该临时 PAPI jar 改名为 disabled，避免污染后续 Folia 测试。
 - 旧命令 `/WorldListTrashCan add [世界名] <数量>` 已在新命令 `/blwtc add <世界名> <数量>` 中恢复控制台指定世界路径；`paper-1.12.2-test-server` 通过 RCON 验证 `blwtc add world 1` 成功、`blwtc add missing_world 1` 提示世界不存在、控制台 `blwtc add 1` 提示必须指定世界名，并确认 `data/worlds.yml` 落盘为 `world.max-count: 4`。
+- 多语言消息服务已接入四个平台产物并完成 Legacy 1.12 smoke：临时把测试服 `plugins/BLWorldTrashCan/config.yml` 的 `language` 改为 `message_en.yml`，启动后日志显示 `[Message] 已加载语言文件: messages/message_en.yml`，RCON 执行 `blwtc reload/help/platform/stats` 均返回英文文案；测试后 config 已恢复为 `message_zh.yml`，日志和生成的语言文件保留。
 
 本轮关键日志：
 
@@ -239,6 +249,9 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-rcon.log`
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-stop.log`
 - `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-final-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-message-service-20260602-console.log`
+- `paper-1.12.2-test-server/ai-blwtc-message-service-20260602-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-message-service-20260602-stop.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
 
 已知测试环境噪声：

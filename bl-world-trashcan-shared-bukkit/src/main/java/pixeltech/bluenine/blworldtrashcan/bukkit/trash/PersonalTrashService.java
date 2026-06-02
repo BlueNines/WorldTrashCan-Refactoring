@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
 import java.util.HashMap;
@@ -17,13 +18,16 @@ import java.util.UUID;
 public final class PersonalTrashService {
     private final Plugin plugin;
     private final PaymentService paymentService;
+    private final BukkitMessageService messages;
     private final Map<UUID, Inventory> inventories = new HashMap<>();
     private TrashConfig.PersonalTrashConfig config;
 
     /** 创建个人垃圾桶服务。 */
-    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService) {
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
+                                BukkitMessageService messages) {
         this.plugin = plugin;
         this.paymentService = paymentService;
+        this.messages = messages;
         this.config = config;
     }
 
@@ -62,7 +66,7 @@ public final class PersonalTrashService {
     /** 打开玩家自己的个人垃圾桶。 */
     public void open(Player player) {
         if (!isEnabled()) {
-            player.sendMessage(color("&c个人垃圾桶未启用。"));
+            player.sendMessage(message("personal-trash.disabled", "&c个人垃圾桶未启用。"));
             return;
         }
         player.openInventory(inventory(player.getUniqueId(), player.getName()));
@@ -128,7 +132,7 @@ public final class PersonalTrashService {
     /** 取出个人垃圾桶物品。 */
     private void takeItem(Player player, Inventory inventory, int slot) {
         if (!player.hasPermission("blworldtrashcan.personal.take") && !player.hasPermission("WorldListTrashCan.PersonalTrashTakeItem")) {
-            player.sendMessage(color("&c你没有权限从个人垃圾桶取出物品。"));
+            player.sendMessage(message("personal-trash.no-take-permission", "&c你没有权限从个人垃圾桶取出物品。"));
             return;
         }
         ItemStack itemStack = inventory.getItem(slot);
@@ -137,14 +141,15 @@ public final class PersonalTrashService {
         }
         double cost = config.getTakeCost();
         if (cost > 0D && !paymentService.charge(player, cost)) {
-            player.sendMessage(color("&c余额不足，无法取出该物品。"));
+            player.sendMessage(message("personal-trash.not-enough-money", "&c余额不足，无法取出该物品。"));
             return;
         }
         Map<Integer, ItemStack> leftovers = player.getInventory().addItem(itemStack.clone());
         if (leftovers.isEmpty()) {
             inventory.clear(slot);
             if (cost > 0D) {
-                player.sendMessage(color("&a已支付 " + paymentService.format(cost) + "。"));
+                player.sendMessage(message("personal-trash.pay-success", "&a已支付 {cost}。",
+                        "{cost}", paymentService.format(cost)));
             }
             return;
         }
@@ -173,7 +178,8 @@ public final class PersonalTrashService {
         if (inventory != null) {
             return inventory;
         }
-        Inventory created = Bukkit.createInventory(null, 54, color("&8" + playerName + " 的个人垃圾桶"));
+        Inventory created = Bukkit.createInventory(null, 54,
+                message("personal-trash.gui.title", "&8{player} 的个人垃圾桶", "{player}", playerName));
         inventories.put(ownerUuid, created);
         plugin.getLogger().fine("[PersonalTrash] 创建个人垃圾桶: " + ownerUuid);
         return created;
@@ -182,5 +188,10 @@ public final class PersonalTrashService {
     /** 转换颜色代码。 */
     private String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
+
+    /** 返回格式化消息。 */
+    private String message(String key, String fallback, String... replacements) {
+        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
     }
 }

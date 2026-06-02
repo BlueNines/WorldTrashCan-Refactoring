@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ProtectionConfig;
@@ -43,6 +44,7 @@ public final class ProtectionFeature implements Feature, Listener {
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
+    private final BukkitMessageService messages;
     private final Set<UUID> dropProtectedPlayers = ConcurrentHashMap.newKeySet();
     private final Set<UUID> lookPlayers = ConcurrentHashMap.newKeySet();
     private final Set<Integer> trackedArrowIds = ConcurrentHashMap.newKeySet();
@@ -51,10 +53,12 @@ public final class ProtectionFeature implements Feature, Listener {
     private boolean registered;
 
     /** 创建保护功能。 */
-    public ProtectionFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier) {
+    public ProtectionFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
+                             BukkitMessageService messages) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
+        this.messages = messages;
     }
 
     /** 返回功能 ID。 */
@@ -96,11 +100,11 @@ public final class ProtectionFeature implements Feature, Listener {
     public boolean toggleDropProtection(Player player) {
         UUID uuid = player.getUniqueId();
         if (dropProtectedPlayers.remove(uuid)) {
-            player.sendMessage(color("&a已关闭防丢弃模式。"));
+            player.sendMessage(message("protection.drop-mode-off", "&a已关闭防丢弃模式。"));
             return false;
         }
         dropProtectedPlayers.add(uuid);
-        player.sendMessage(color("&a已开启防丢弃模式。"));
+        player.sendMessage(message("protection.drop-mode-on", "&a已开启防丢弃模式。"));
         return true;
     }
 
@@ -109,7 +113,7 @@ public final class ProtectionFeature implements Feature, Listener {
         lookPlayers.add(player.getUniqueId());
         sendChunkEntitySummary(player);
         sendHandItem(player);
-        player.sendMessage(color("&a请右键一个实体以查询实体名称。"));
+        player.sendMessage(message("protection.look-prompt", "&a请右键一个实体以查询实体名称。"));
     }
 
     /** 防丢弃模式下取消玩家丢弃。 */
@@ -121,7 +125,7 @@ public final class ProtectionFeature implements Feature, Listener {
         }
         if (dropProtectedPlayers.contains(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(color("&c防丢弃模式已阻止本次丢弃。"));
+            event.getPlayer().sendMessage(message("protection.drop-blocked", "&c防丢弃模式已阻止本次丢弃。"));
         }
     }
 
@@ -221,7 +225,8 @@ public final class ProtectionFeature implements Feature, Listener {
         }
         Entity entity = event.getRightClicked();
         String name = entity.getName();
-        sendSuggest(player, color("&a实体: &f" + name + " &7(" + entity.getType().name() + ")"), name);
+        sendSuggest(player, message("protection.entity-result", "&a实体: &f{name} &7({type})",
+                "{name}", name, "{type}", entity.getType().name()), name);
     }
 
     /** 判断玩家当前操作是否应该被限频。 */
@@ -257,10 +262,10 @@ public final class ProtectionFeature implements Feature, Listener {
             String name = entity.getName();
             counts.put(name, counts.containsKey(name) ? counts.get(name) + 1 : 1);
         }
-        player.sendMessage(color("&a当前区块实体:"));
+        player.sendMessage(message("protection.chunk-entities-title", "&a当前区块实体:"));
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {
             String text = "- " + entry.getKey() + (entry.getValue() > 1 ? " *" + entry.getValue() : "");
-            sendSuggest(player, color("&a" + text), entry.getKey());
+            sendSuggest(player, message("protection.chunk-entity-line", "&a{text}", "{text}", text), entry.getKey());
         }
     }
 
@@ -268,7 +273,7 @@ public final class ProtectionFeature implements Feature, Listener {
     private void sendHandItem(Player player) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         String material = itemStack == null ? "AIR" : itemStack.getType().name();
-        sendSuggest(player, color("&a手持物品: &f" + material), material);
+        sendSuggest(player, message("protection.hand-item", "&a手持物品: &f{material}", "{material}", material), material);
     }
 
     /** 发送点击后填入聊天框的文本。 */
@@ -305,5 +310,10 @@ public final class ProtectionFeature implements Feature, Listener {
     /** 转换颜色代码。 */
     private String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
+
+    /** 返回格式化消息。 */
+    private String message(String key, String fallback, String... replacements) {
+        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
     }
 }

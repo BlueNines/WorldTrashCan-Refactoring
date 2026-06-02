@@ -29,17 +29,28 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         this.plugin = plugin;
     }
 
+    /** 返回格式化命令消息。 */
+    private String message(String key, String fallback, String... replacements) {
+        return plugin.messages().text(key, fallback, replacements);
+    }
+
+    /** 发送格式化消息列表。 */
+    private void sendMessageList(CommandSender sender, String key, List<String> fallback) {
+        for (String line : plugin.messages().list(key, fallback)) {
+            sender.sendMessage(line);
+        }
+    }
     /** 处理主命令。 */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String sub = args.length == 0 ? "help" : args[0].toLowerCase();
         if ("reload".equals(sub)) {
             if (!sender.hasPermission("blworldtrashcan.admin")) {
-                sender.sendMessage("§c你没有权限执行该命令。");
+                sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
                 return true;
             }
             plugin.reloadPlugin();
-            sender.sendMessage("§aBLWorldTrashCan 已重载。");
+            sender.sendMessage(message("command.reload-success", "{prefix}&aBLWorldTrashCan 已重载。"));
             return true;
         }
         if ("platform".equals(sub)) {
@@ -48,15 +59,15 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         }
         if ("clear".equals(sub)) {
             if (!sender.hasPermission("blworldtrashcan.admin")) {
-                sender.sendMessage("§c你没有权限执行该命令。");
+                sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
                 return true;
             }
             CleanupFeature.CleanupStats stats = plugin.runCleanupNow();
-            sender.sendMessage("§a清理完成: §f世界 " + stats.getWorlds()
-                    + "§a, 回收物品 " + stats.getItemsRouted()
-                    + "§a, 移除物品 " + stats.getItemsRemoved()
-                    + "§a, 移除实体 " + stats.getEntitiesRemoved()
-                    + "§a。");
+            sender.sendMessage(message("command.clear-success", "{prefix}&a清理完成: &f世界 {worlds}&a, 回收物品 {routed}&a, 移除物品 {items}&a, 移除实体 {entities}&a。",
+                    "{worlds}", String.valueOf(stats.getWorlds()),
+                    "{routed}", String.valueOf(stats.getItemsRouted()),
+                    "{items}", String.valueOf(stats.getItemsRemoved()),
+                    "{entities}", String.valueOf(stats.getEntitiesRemoved())));
             return true;
         }
         if ("global".equals(sub) || "trash".equals(sub) || "globaltrash".equals(sub)) {
@@ -64,7 +75,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 return true;
             }
             if (!sender.hasPermission("blworldtrashcan.global.open") && !sender.hasPermission("WorldListTrashCan.GlobalTrashOpen")) {
-                sender.sendMessage("§c你没有权限打开公共垃圾桶。");
+                sender.sendMessage(message("command.no-global-open-permission", "{prefix}&c你没有权限打开公共垃圾桶。"));
                 return true;
             }
             plugin.openGlobalTrash((Player) sender);
@@ -75,7 +86,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 return true;
             }
             if (!sender.hasPermission("blworldtrashcan.personal.open") && !sender.hasPermission("WorldListTrashCan.PlayerTrash")) {
-                sender.sendMessage("§c你没有权限打开个人垃圾桶。");
+                sender.sendMessage(message("command.no-personal-open-permission", "{prefix}&c你没有权限打开个人垃圾桶。"));
                 return true;
             }
             plugin.openPersonalTrash((Player) sender);
@@ -153,53 +164,56 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         return Collections.emptyList();
     }
 
-    /** 发送帮助信息。 */
+    /** 发送帮助。 */
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("§b/blwtc help §7- 查看帮助");
-        sender.sendMessage("§b/blwtc platform §7- 查看当前版本产物能力");
-        sender.sendMessage("§b/blwtc clear §7- 立即执行一次后台清理");
-        sender.sendMessage("§b/blwtc global §7- 打开公共垃圾桶");
-        sender.sendMessage("§b/blwtc personal §7- 打开个人垃圾桶");
-        sender.sendMessage("§b/blwtc dropmode §7- 切换防丢弃模式");
-        sender.sendMessage("§b/blwtc look §7- 查询手持物品和右键实体类型");
-        sender.sendMessage("§b/blwtc ban §7- 打开当前世界垃圾桶物品黑名单");
-        sender.sendMessage("§b/blwtc globalban §7- 打开公共垃圾桶物品黑名单");
-        sender.sendMessage("§b/blwtc stats §7- 查看清理和垃圾桶统计");
-        sender.sendMessage("§b/blwtc add <数量> §7- 增加当前世界可创建的世界垃圾桶数量");
-        sender.sendMessage("§b/blwtc add <世界名> <数量> §7- 后台增加指定世界可创建的世界垃圾桶数量");
-        sender.sendMessage("§b/blwtc debugopen <玩家> <global|personal> §7- 后台测试打开 GUI");
-        sender.sendMessage("§b/blwtc debugworldtrash <玩家> §7- 后台创建并登记测试世界垃圾桶");
-        sender.sendMessage("§b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> §7- 后台测试指定路由");
-        sender.sendMessage("§b/blwtc debugdrop <玩家> <Material> <数量> [owner] §7- 后台生成测试掉落物");
-        sender.sendMessage("§b/blwtc debugdamage <玩家> <Material> <数量> §7- 后台测试仙人掌/岩浆损坏回收");
-        sender.sendMessage("§b/blwtc debugstock §7- 后台查看当前垃圾桶库存");
-        sender.sendMessage("§b/blwtc debugsummary <玩家> §7- 查看后台测试摘要");
-        sender.sendMessage("§b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> §7- 后台测试玩家入口");
-        sender.sendMessage("§b/blwtc reload §7- 重载插件");
+        sendMessageList(sender, "command.help", Arrays.asList(
+                "&b/blwtc help &7- 查看帮助",
+                "&b/blwtc platform &7- 查看当前版本产物能力",
+                "&b/blwtc clear &7- 立即执行一次后台清理",
+                "&b/blwtc global &7- 打开公共垃圾桶",
+                "&b/blwtc personal &7- 打开个人垃圾桶",
+                "&b/blwtc dropmode &7- 切换防丢弃模式",
+                "&b/blwtc look &7- 查询手持物品和右键实体类型",
+                "&b/blwtc ban &7- 打开当前世界垃圾桶物品黑名单",
+                "&b/blwtc globalban &7- 打开公共垃圾桶物品黑名单",
+                "&b/blwtc stats &7- 查看清理和垃圾桶统计",
+                "&b/blwtc add <数量> &7- 增加当前世界可创建的世界垃圾桶数量",
+                "&b/blwtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
+                "&b/blwtc debugopen <玩家> <global|personal> &7- 后台测试打开 GUI",
+                "&b/blwtc debugworldtrash <玩家> &7- 后台创建并登记测试世界垃圾桶",
+                "&b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> &7- 后台测试指定路由",
+                "&b/blwtc debugdrop <玩家> <Material> <数量> [owner] &7- 后台生成测试掉落物",
+                "&b/blwtc debugdamage <玩家> <Material> <数量> &7- 后台测试仙人掌/岩浆损坏回收",
+                "&b/blwtc debugstock &7- 后台查看当前垃圾桶库存",
+                "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
+                "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
+                "&b/blwtc reload &7- 重载插件"));
     }
 
     /** 发送运行统计。 */
     private void sendStats(CommandSender sender) {
         CleanupFeature.CleanupStats stats = plugin.getLastCleanupStats();
-        sender.sendMessage("§a清理统计:");
-        sender.sendMessage("§7- §f世界数: §a" + stats.getWorlds());
-        sender.sendMessage("§7- §f回收物品: §a" + stats.getItemsRouted()
-                + " §7(世界 " + stats.getItemsToWorldTrash()
-                + ", 个人 " + stats.getItemsToPersonalTrash()
-                + ", 公共 " + stats.getItemsToGlobalTrash() + ")");
-        sender.sendMessage("§7- §f删除物品: §a" + stats.getItemsRemoved());
-        sender.sendMessage("§7- §f删除实体: §a" + stats.getEntitiesRemoved());
-        sender.sendMessage("§7- §f公共垃圾桶页数: §a" + plugin.getGlobalTrashPageCount());
-        sender.sendMessage("§7- §f公共垃圾桶当前物品: §a" + plugin.getGlobalTrashStoredItemAmount()
-                + " §7(堆叠 " + plugin.getGlobalTrashStoredStackCount() + ")");
-        sender.sendMessage("§7- §f已加载个人垃圾桶: §a" + plugin.getPersonalTrashInventoryCount());
-        sender.sendMessage("§7- §f下次清理剩余秒数: §a" + plugin.getRemainingClearSeconds());
+        sender.sendMessage(message("command.stats.header", "{prefix}&a清理统计:"));
+        sender.sendMessage(message("command.stats.worlds", "&7- &f世界数: &a{worlds}", "{worlds}", String.valueOf(stats.getWorlds())));
+        sender.sendMessage(message("command.stats.routed", "&7- &f回收物品: &a{routed} &7(世界 {world}, 个人 {personal}, 公共 {global})",
+                "{routed}", String.valueOf(stats.getItemsRouted()),
+                "{world}", String.valueOf(stats.getItemsToWorldTrash()),
+                "{personal}", String.valueOf(stats.getItemsToPersonalTrash()),
+                "{global}", String.valueOf(stats.getItemsToGlobalTrash())));
+        sender.sendMessage(message("command.stats.removed-items", "&7- &f删除物品: &a{items}", "{items}", String.valueOf(stats.getItemsRemoved())));
+        sender.sendMessage(message("command.stats.removed-entities", "&7- &f删除实体: &a{entities}", "{entities}", String.valueOf(stats.getEntitiesRemoved())));
+        sender.sendMessage(message("command.stats.global-pages", "&7- &f公共垃圾桶页数: &a{pages}", "{pages}", String.valueOf(plugin.getGlobalTrashPageCount())));
+        sender.sendMessage(message("command.stats.global-items", "&7- &f公共垃圾桶当前物品: &a{items} &7(堆叠 {stacks})",
+                "{items}", String.valueOf(plugin.getGlobalTrashStoredItemAmount()),
+                "{stacks}", String.valueOf(plugin.getGlobalTrashStoredStackCount())));
+        sender.sendMessage(message("command.stats.personal-loaded", "&7- &f已加载个人垃圾桶: &a{count}", "{count}", String.valueOf(plugin.getPersonalTrashInventoryCount())));
+        sender.sendMessage(message("command.stats.remaining", "&7- &f下次清理剩余秒数: &a{seconds}", "{seconds}", String.valueOf(plugin.getRemainingClearSeconds())));
     }
 
     /** 处理增加世界垃圾桶上限命令。 */
     private void handleAdd(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 2) {
@@ -211,13 +225,13 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         if (args.length >= 3) {
             targetWorld = Bukkit.getWorld(args[1]);
             if (targetWorld == null) {
-                sender.sendMessage("§c未找到世界: §f" + args[1]);
+                sender.sendMessage(message("command.world-not-found", "{prefix}&c未找到世界: &f{world}", "{world}", args[1]));
                 return;
             }
             amountIndex = 2;
         } else {
             if (!(sender instanceof Player)) {
-                sender.sendMessage("§c控制台执行 add 时必须指定世界名。");
+                sender.sendMessage(message("command.add-console-world-required", "{prefix}&c控制台执行 add 时必须指定世界名。"));
                 sendAddUsage(sender);
                 return;
             }
@@ -226,17 +240,17 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         }
         int delta = parseInt(args[amountIndex], 0);
         if (delta <= 0) {
-            sender.sendMessage("§c数量必须大于 0。");
+            sender.sendMessage(message("command.add-positive-required", "{prefix}&c数量必须大于 0。"));
             return;
         }
         int next = plugin.addWorldTrashMax(targetWorld, delta);
-        sender.sendMessage("§a世界 §f" + targetWorld.getName() + " §a垃圾桶上限已调整为 §f" + next + "§a。");
+        sender.sendMessage(message("command.add-success", "{prefix}&a世界 &f{world} &a垃圾桶上限已调整为 &f{count}&a。",
+                "{world}", targetWorld.getName(), "{count}", String.valueOf(next)));
     }
 
     /** 发送 add 命令用法。 */
     private void sendAddUsage(CommandSender sender) {
-        sender.sendMessage("§c用法: /blwtc add <数量>");
-        sender.sendMessage("§c用法: /blwtc add <世界名> <数量>");
+        sendMessageList(sender, "command.add-usage", Arrays.asList("&c用法: /blwtc add <数量>", "&c用法: /blwtc add <世界名> <数量>"));
     }
 
     /** 处理防丢弃模式切换。 */
@@ -245,7 +259,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             return;
         }
         if (!sender.hasPermission("blworldtrashcan.dropmode") && !sender.hasPermission("WorldListTrashCan.DropMode")) {
-            sender.sendMessage("§c你没有权限使用防丢弃模式。");
+            sender.sendMessage(message("command.no-dropmode-permission", "{prefix}&c你没有权限使用防丢弃模式。"));
             return;
         }
         plugin.toggleDropProtection((Player) sender);
@@ -257,7 +271,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             return;
         }
         if (!sender.hasPermission("blworldtrashcan.look") && !sender.hasPermission("WorldListTrashCan.Look")) {
-            sender.sendMessage("§c你没有权限使用查询功能。");
+            sender.sendMessage(message("command.no-look-permission", "{prefix}&c你没有权限使用查询功能。"));
             return;
         }
         plugin.armLook((Player) sender);
@@ -269,7 +283,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             return;
         }
         if (!sender.hasPermission("WorldListTrashCan.BanGui") && !sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限打开世界黑名单。");
+            sender.sendMessage(message("command.no-world-ban-permission", "{prefix}&c你没有权限打开世界黑名单。"));
             return;
         }
         plugin.openWorldBan((Player) sender);
@@ -281,7 +295,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             return;
         }
         if (!sender.hasPermission("WorldListTrashCan.GlobalBan") && !sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限打开公共垃圾桶黑名单。");
+            sender.sendMessage(message("command.no-global-ban-permission", "{prefix}&c你没有权限打开公共垃圾桶黑名单。"));
             return;
         }
         plugin.openGlobalBan((Player) sender);
@@ -290,7 +304,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台测试打开指定玩家 GUI。 */
     private void handleDebugOpen(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 3) {
@@ -318,7 +332,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台创建并登记测试世界垃圾桶。 */
     private void handleDebugWorldTrash(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 2) {
@@ -336,7 +350,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台测试指定垃圾桶路由。 */
     private void handleDebugRoute(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 5) {
@@ -358,7 +372,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台生成测试掉落物。 */
     private void handleDebugDrop(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 4) {
@@ -380,7 +394,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台测试仙人掌、岩浆等损坏回收。 */
     private void handleDebugDamage(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 4) {
@@ -401,20 +415,20 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台输出不依赖在线玩家的垃圾桶库存摘要。 */
     private void handleDebugStock(CommandSender sender) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         sender.sendMessage("§a垃圾桶库存:");
         sender.sendMessage("§7- §f公共垃圾桶物品: §a" + plugin.getGlobalTrashStoredItemAmount()
                 + " §7(堆叠 " + plugin.getGlobalTrashStoredStackCount() + ")");
-        sender.sendMessage("§7- §f公共垃圾桶页数: §a" + plugin.getGlobalTrashPageCount());
-        sender.sendMessage("§7- §f已加载个人垃圾桶: §a" + plugin.getPersonalTrashInventoryCount());
+        sender.sendMessage(message("command.stats.global-pages", "&7- &f公共垃圾桶页数: &a{pages}", "{pages}", String.valueOf(plugin.getGlobalTrashPageCount())));
+        sender.sendMessage(message("command.stats.personal-loaded", "&7- &f已加载个人垃圾桶: &a{count}", "{count}", String.valueOf(plugin.getPersonalTrashInventoryCount())));
     }
 
     /** 后台输出测试摘要。 */
     private void handleDebugSummary(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 2) {
@@ -433,7 +447,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     /** 后台测试需要真实玩家对象的入口。 */
     private void handleDebugPlayer(CommandSender sender, String[] args) {
         if (!sender.hasPermission("blworldtrashcan.admin")) {
-            sender.sendMessage("§c你没有权限执行该命令。");
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
             return;
         }
         if (args.length < 3) {
@@ -470,10 +484,14 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
 
     /** 发送平台能力信息。 */
     private void sendPlatform(CommandSender sender) {
-        sender.sendMessage("§a当前平台: §f" + plugin.getPlatform().id());
+        sender.sendMessage(message("command.platform.header", "{prefix}&a当前平台: &f{platform}", "{platform}", plugin.getPlatform().id()));
         for (Capability capability : Capability.values()) {
-            String state = plugin.getPlatform().capabilities().has(capability) ? "§a启用" : "§7禁用";
-            sender.sendMessage("§7- §f" + capability.name().toLowerCase().replace('_', '-') + "§7: " + state);
+            String state = plugin.getPlatform().capabilities().has(capability)
+                    ? message("command.platform.enabled", "&a启用")
+                    : message("command.platform.disabled", "&7禁用");
+            sender.sendMessage(message("command.platform.line", "&7- &f{capability}&7: {state}",
+                    "{capability}", capability.name().toLowerCase().replace('_', '-'),
+                    "{state}", state));
         }
     }
 
@@ -482,7 +500,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         if (sender instanceof Player) {
             return true;
         }
-        sender.sendMessage("§c该命令只能由玩家执行。");
+        sender.sendMessage(message("command.only-player", "{prefix}&c该命令只能由玩家执行。"));
         return false;
     }
 
@@ -490,7 +508,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
     private Player requireOnlinePlayer(CommandSender sender, String playerName) {
         Player player = plugin.getServer().getPlayerExact(playerName);
         if (player == null) {
-            sender.sendMessage("§c玩家不在线: " + playerName);
+            sender.sendMessage(message("command.player-offline", "{prefix}&c玩家不在线: {player}", "{player}", playerName));
             return null;
         }
         return player;

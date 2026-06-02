@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 
@@ -33,14 +34,17 @@ public final class BanGuiFeature implements Feature, Listener {
     private final Plugin plugin;
     private final Supplier<ConfigBundle> configSupplier;
     private final WorldTrashRouter trashRouter;
+    private final BukkitMessageService messages;
     private final Map<Inventory, BanContext> contexts = Collections.synchronizedMap(new IdentityHashMap<Inventory, BanContext>());
     private boolean registered;
 
     /** 创建黑名单 GUI 功能。 */
-    public BanGuiFeature(Plugin plugin, Supplier<ConfigBundle> configSupplier, WorldTrashRouter trashRouter) {
+    public BanGuiFeature(Plugin plugin, Supplier<ConfigBundle> configSupplier, WorldTrashRouter trashRouter,
+                         BukkitMessageService messages) {
         this.plugin = plugin;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
+        this.messages = messages;
     }
 
     /** 返回功能 ID。 */
@@ -75,7 +79,8 @@ public final class BanGuiFeature implements Feature, Listener {
     /** 打开当前世界的世界垃圾桶黑名单 GUI。 */
     public void openWorldBan(Player player) {
         World world = player.getWorld();
-        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE, color("&8世界黑名单: " + world.getName()));
+        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE,
+                message("ban-gui.world-title", "&8世界黑名单: {world}", "{world}", world.getName()));
         fillInventory(inventory, trashRouter.getWorldBannedMaterials(world));
         contexts.put(inventory, new BanContext(BanType.WORLD, world.getName()));
         player.openInventory(inventory);
@@ -83,7 +88,8 @@ public final class BanGuiFeature implements Feature, Listener {
 
     /** 打开公共垃圾桶黑名单 GUI。 */
     public void openGlobalBan(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE, color("&8公共垃圾桶黑名单"));
+        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE,
+                message("ban-gui.global-title", "&8公共垃圾桶黑名单"));
         fillInventory(inventory, configSupplier.get().getTrashConfig().getGlobalTrashBannedMaterials());
         contexts.put(inventory, new BanContext(BanType.GLOBAL, ""));
         player.openInventory(inventory);
@@ -109,15 +115,16 @@ public final class BanGuiFeature implements Feature, Listener {
     private void saveWorldBan(Player player, String worldName, Set<String> materials) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            player.sendMessage(color("&c世界不存在，无法保存黑名单: " + worldName));
+            player.sendMessage(message("ban-gui.world-missing", "&c世界不存在，无法保存黑名单: {world}", "{world}", worldName));
             return;
         }
         int defaultMax = configSupplier.get().getTrashConfig().getWorldTrash().getDefaultMaxCount();
         if (trashRouter.setWorldBannedMaterials(world, materials, defaultMax)) {
-            player.sendMessage(color("&a已保存世界垃圾桶黑名单，数量: &f" + materials.size()));
+            player.sendMessage(message("ban-gui.world-save-success", "&a已保存世界垃圾桶黑名单，数量: &f{count}",
+                    "{count}", String.valueOf(materials.size())));
             return;
         }
-        player.sendMessage(color("&c保存世界垃圾桶黑名单失败，请查看后台日志。"));
+        player.sendMessage(message("ban-gui.world-save-fail", "&c保存世界垃圾桶黑名单失败，请查看后台日志。"));
     }
 
     /** 保存公共垃圾桶黑名单。 */
@@ -127,9 +134,10 @@ public final class BanGuiFeature implements Feature, Listener {
         yaml.set("global-trash.banned-materials", new ArrayList<>(materials));
         try {
             yaml.save(file);
-            player.sendMessage(color("&a已保存公共垃圾桶黑名单，数量: &f" + materials.size() + " &7(/blwtc reload 后完全生效)"));
+            player.sendMessage(message("ban-gui.global-save-success", "&a已保存公共垃圾桶黑名单，数量: &f{count} &7(/blwtc reload 后完全生效)",
+                    "{count}", String.valueOf(materials.size())));
         } catch (IOException exception) {
-            player.sendMessage(color("&c保存公共垃圾桶黑名单失败，请查看后台日志。"));
+            player.sendMessage(message("ban-gui.global-save-fail", "&c保存公共垃圾桶黑名单失败，请查看后台日志。"));
             plugin.getLogger().warning("[BanGui] 保存公共垃圾桶黑名单失败: " + exception.getMessage());
         }
     }
@@ -164,6 +172,11 @@ public final class BanGuiFeature implements Feature, Listener {
     /** 转换颜色代码。 */
     private String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
+
+    /** 返回格式化消息。 */
+    private String message(String key, String fallback, String... replacements) {
+        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
     }
 
     /** 黑名单类型。 */

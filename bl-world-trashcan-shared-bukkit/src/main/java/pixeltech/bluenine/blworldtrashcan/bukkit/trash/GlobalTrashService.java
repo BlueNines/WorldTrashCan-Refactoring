@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ public final class GlobalTrashService {
     private static final int CONTENT_SIZE = 45;
     private static final int INVENTORY_SIZE = 54;
     private final Plugin plugin;
+    private final BukkitMessageService messages;
     private final List<Inventory> pages = new ArrayList<>();
     private final Map<UUID, Long> lastTakeMillis = new HashMap<>();
     private TrashConfig.GlobalTrashConfig config;
@@ -39,8 +41,9 @@ public final class GlobalTrashService {
     private ItemStack backgroundItem;
 
     /** 创建公共垃圾桶服务。 */
-    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config) {
+    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages) {
         this.plugin = plugin;
+        this.messages = messages;
         reload(config);
     }
 
@@ -51,8 +54,8 @@ public final class GlobalTrashService {
         int backModelId = nextConfig == null ? -1 : nextConfig.getBackItemModelId();
         int nextModelId = nextConfig == null ? -1 : nextConfig.getNextItemModelId();
         int backgroundModelId = nextConfig == null ? -1 : nextConfig.getBackgroundItemModelId();
-        this.backItem = createItem(Material.ARROW, "&a上一页", backModelId);
-        this.nextItem = createItem(Material.ARROW, "&a下一页", nextModelId);
+        this.backItem = createItem(Material.ARROW, message("global-trash.gui.back", "&a上一页"), backModelId);
+        this.nextItem = createItem(Material.ARROW, message("global-trash.gui.next", "&a下一页"), nextModelId);
         this.backgroundItem = createItem(matchMaterial(
                 "BLACK_STAINED_GLASS_PANE",
                 "STAINED_GLASS_PANE",
@@ -106,7 +109,7 @@ public final class GlobalTrashService {
     /** 打开公共垃圾桶首页。 */
     public void open(Player player) {
         if (!isEnabled()) {
-            player.sendMessage(color("&c公共垃圾桶未启用。"));
+            player.sendMessage(message("global-trash.disabled", "&c公共垃圾桶未启用。"));
             return;
         }
         player.openInventory(pages.get(0));
@@ -186,7 +189,7 @@ public final class GlobalTrashService {
     /** 玩家从公共垃圾桶取出物品。 */
     private void takeItem(Player player, Inventory inventory, int slot) {
         if (!player.hasPermission("blworldtrashcan.global.take") && !player.hasPermission("WorldListTrashCan.GlobalTrashTakeItem")) {
-            player.sendMessage(color("&c你没有权限从公共垃圾桶取出物品。"));
+            player.sendMessage(message("global-trash.no-take-permission", "&c你没有权限从公共垃圾桶取出物品。"));
             return;
         }
         if (isCoolingDown(player)) {
@@ -239,13 +242,16 @@ public final class GlobalTrashService {
         if (remain <= 0L) {
             return false;
         }
-        player.sendMessage(color("&c公共垃圾桶拿取冷却剩余 " + Math.max(1L, remain / 100L) / 10D + " 秒。"));
+        player.sendMessage(message("global-trash.take-cooldown", "&c公共垃圾桶拿取冷却剩余 {time} 秒。",
+                "{time}", String.valueOf(Math.max(1L, remain / 100L) / 10D)));
         return true;
     }
 
     /** 创建单页 GUI。 */
     private Inventory createPage(int pageIndex, int maxPages) {
-        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE, color("&8公共垃圾桶 " + (pageIndex + 1) + "/" + maxPages));
+        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE,
+                message("global-trash.gui.title", "&8公共垃圾桶 {page}/{max}",
+                        "{page}", String.valueOf(pageIndex + 1), "{max}", String.valueOf(maxPages)));
         for (int slot = CONTENT_SIZE; slot < INVENTORY_SIZE; slot++) {
             inventory.setItem(slot, backgroundItem);
         }
@@ -341,5 +347,10 @@ public final class GlobalTrashService {
     /** 转换颜色代码。 */
     private String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
+
+    /** 返回格式化消息。 */
+    private String message(String key, String fallback, String... replacements) {
+        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
     }
 }

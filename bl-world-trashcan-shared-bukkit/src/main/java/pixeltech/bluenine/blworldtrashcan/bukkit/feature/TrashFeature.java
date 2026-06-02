@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
@@ -40,19 +41,21 @@ public final class TrashFeature implements Feature, Listener {
     private final WorldTrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
     private final PersonalTrashService personalTrashService;
+    private final BukkitMessageService messages;
     private final Map<UUID, UUID> recentDropOwners = new ConcurrentHashMap<>();
     private boolean registered;
 
     /** 创建垃圾桶功能。 */
     public TrashFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
                         WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
-                        PersonalTrashService personalTrashService) {
+                        PersonalTrashService personalTrashService, BukkitMessageService messages) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
         this.globalTrashService = globalTrashService;
         this.personalTrashService = personalTrashService;
+        this.messages = messages;
     }
 
     /** 返回功能 ID。 */
@@ -104,23 +107,24 @@ public final class TrashFeature implements Feature, Listener {
         }
         World world = event.getBlock().getWorld();
         if (!player.isOp() && worldConfig.isBannedWorld(world.getName())) {
-            player.sendMessage(color("&c该世界禁止创建世界垃圾桶。"));
+            player.sendMessage(message("world-trash.create-banned-world", "&c该世界禁止创建世界垃圾桶。"));
             return;
         }
         Block containerBlock = platform.getAttachedContainerBlock(event.getBlock());
         if (!isContainer(containerBlock)) {
-            player.sendMessage(color("&c告示牌必须贴在容器上，或放在容器上方。"));
+            player.sendMessage(message("world-trash.create-not-container", "&c告示牌必须贴在容器上，或放在容器上方。"));
             return;
         }
         if (!player.isOp() && !canCreateMore(world, worldConfig)) {
-            player.sendMessage(color("&c该世界的世界垃圾桶数量已达到上限。"));
+            player.sendMessage(message("world-trash.create-reach-limit", "&c该世界的世界垃圾桶数量已达到上限。"));
             return;
         }
         if (trashRouter.addWorldTrash(containerBlock, worldConfig.getDefaultMaxCount())) {
             event.setLine(matchedLine, color(worldConfig.getSignCreatedText()));
-            player.sendMessage(color("&a已在世界 &f" + world.getName() + " &a创建世界垃圾桶。"));
+            player.sendMessage(message("world-trash.create-success", "&a已在世界 &f{world} &a创建世界垃圾桶。",
+                    "{world}", world.getName()));
         } else {
-            player.sendMessage(color("&c世界垃圾桶保存失败，请查看后台日志。"));
+            player.sendMessage(message("world-trash.create-save-fail", "&c世界垃圾桶保存失败，请查看后台日志。"));
         }
     }
 
@@ -251,7 +255,7 @@ public final class TrashFeature implements Feature, Listener {
     /** 如方块是已登记垃圾桶则删除登记。 */
     private void removeWorldTrashIfPresent(Player player, Block block) {
         if (block != null && trashRouter.isWorldTrashBlock(block) && trashRouter.removeWorldTrash(block)) {
-            player.sendMessage(color("&a已移除该世界垃圾桶登记。"));
+            player.sendMessage(message("world-trash.remove-success", "&a已移除该世界垃圾桶登记。"));
         }
     }
 
@@ -305,5 +309,10 @@ public final class TrashFeature implements Feature, Listener {
     /** 转换颜色代码。 */
     private String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
+
+    /** 返回格式化消息。 */
+    private String message(String key, String fallback, String... replacements) {
+        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
     }
 }

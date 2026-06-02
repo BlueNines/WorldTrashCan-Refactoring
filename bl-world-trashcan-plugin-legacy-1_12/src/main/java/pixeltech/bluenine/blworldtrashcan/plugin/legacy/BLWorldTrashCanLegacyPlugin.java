@@ -18,6 +18,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
@@ -46,6 +47,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     private BanGuiFeature banGuiFeature;
     private WorldTrashRouter trashRouter;
     private BLWorldTrashCanLegacyExpansion expansion;
+    private BukkitMessageService messageService;
 
     /** 启动插件。 */
     @Override
@@ -53,6 +55,8 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         saveDefaultConfigs();
         new BukkitLegacyConfigMigrator(this).migrateIfNeeded();
         this.configBundle = loadConfigBundle();
+        this.messageService = new BukkitMessageService(this);
+        this.messageService.reload(configBundle.getLanguageFile());
         this.platform = new LegacyPlatform(this);
         this.featureRegistry = new FeatureRegistry();
         Supplier<ConfigBundle> configSupplier = new Supplier<ConfigBundle>() {
@@ -62,8 +66,8 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
                 return configBundle;
             }
         };
-        GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash());
-        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService());
+        GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService);
+        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService);
         this.trashRouter = new WorldTrashRouter(
                 this,
                 new BukkitYamlWorldTrashStorage(new File(getDataFolder(), "data/worlds.yml")),
@@ -71,10 +75,10 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
                 personalTrashService,
                 configBundle.getTrashConfig()
         );
-        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService);
+        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService);
         this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService);
-        this.protectionFeature = new ProtectionFeature(this, platform, configSupplier);
-        this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter);
+        this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
+        this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService);
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
@@ -98,6 +102,9 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     public void reloadPlugin() {
         reloadConfig();
         this.configBundle = loadConfigBundle();
+        if (messageService != null) {
+            messageService.reload(configBundle.getLanguageFile());
+        }
         if (featureRegistry != null) {
             featureRegistry.reloadAll();
         }
@@ -111,6 +118,11 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     /** 立即执行清理。 */
     public CleanupFeature.CleanupStats runCleanupNow() {
         return cleanupFeature.runNow();
+    }
+
+    /** 返回消息服务。 */
+    public BukkitMessageService messages() {
+        return messageService;
     }
 
     /** 返回最近一次清理统计。 */
@@ -287,6 +299,9 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         saveResourceIfMissing("entity-limits.yml");
         saveResourceIfMissing("protections.yml");
         saveResourceIfMissing("messages/message_zh.yml");
+        saveResourceIfMissing("messages/message_zh_TW.yml");
+        saveResourceIfMissing("messages/message_en.yml");
+        saveResourceIfMissing("messages/message_es.yml");
         saveResourceIfMissing("data/worlds.yml");
     }
 
