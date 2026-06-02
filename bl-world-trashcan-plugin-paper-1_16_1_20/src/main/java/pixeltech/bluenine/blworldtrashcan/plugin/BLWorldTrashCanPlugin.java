@@ -121,6 +121,7 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
 
     /** 重载插件配置和功能模块。 */
     public void reloadPlugin() {
+        saveDefaultConfigs();
         reloadConfig();
         this.configBundle = loadConfigBundle();
         if (messageService != null) {
