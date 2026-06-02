@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
@@ -28,10 +29,8 @@ import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 
-import java.util.Map;
 import java.util.function.Supplier;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /** 玩家可见垃圾桶功能，负责告示牌、GUI、主动丢弃标记和损坏回收。 */
 public final class TrashFeature implements Feature, Listener {
@@ -42,13 +41,14 @@ public final class TrashFeature implements Feature, Listener {
     private final GlobalTrashService globalTrashService;
     private final PersonalTrashService personalTrashService;
     private final BukkitMessageService messages;
-    private final Map<UUID, UUID> recentDropOwners = new ConcurrentHashMap<>();
+    private final DropOwnerTracker dropOwnerTracker;
     private boolean registered;
 
     /** 创建垃圾桶功能。 */
     public TrashFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
                         WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
-                        PersonalTrashService personalTrashService, BukkitMessageService messages) {
+                        PersonalTrashService personalTrashService, BukkitMessageService messages,
+                        DropOwnerTracker dropOwnerTracker) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
@@ -56,6 +56,7 @@ public final class TrashFeature implements Feature, Listener {
         this.globalTrashService = globalTrashService;
         this.personalTrashService = personalTrashService;
         this.messages = messages;
+        this.dropOwnerTracker = dropOwnerTracker;
     }
 
     /** 返回功能 ID。 */
@@ -86,7 +87,9 @@ public final class TrashFeature implements Feature, Listener {
     @Override
     public void disable() {
         HandlerList.unregisterAll(this);
-        recentDropOwners.clear();
+        if (dropOwnerTracker != null) {
+            dropOwnerTracker.clear();
+        }
         registered = false;
     }
 
@@ -159,7 +162,7 @@ public final class TrashFeature implements Feature, Listener {
         if (personalConfig.isTrackPlayerDroppedItems()) {
             platform.itemSnapshotMapper().markOwner(event.getItemDrop(), event.getPlayer());
         }
-        trackRecentDrop(event.getItemDrop(), event.getPlayer(), personalConfig);
+        trackDroppedItem(event.getItemDrop(), event.getPlayer(), personalConfig);
     }
 
     /** 玩家丢弃物被仙人掌、岩浆等损坏时尝试收回个人或公共垃圾桶。 */
@@ -178,7 +181,7 @@ public final class TrashFeature implements Feature, Listener {
             return;
         }
         Item item = (Item) entity;
-        UUID ownerUuid = recentDropOwners.remove(item.getUniqueId());
+        UUID ownerUuid = dropOwnerTracker == null ? null : dropOwnerTracker.removeOwner(item);
         if (ownerUuid == null) {
             return;
         }
@@ -239,10 +242,21 @@ public final class TrashFeature implements Feature, Listener {
             return false;
         }
         Item item = player.getWorld().dropItemNaturally(player.getLocation(), new ItemStack(material, amount));
-        trackRecentDrop(item, player, personalConfig);
+        trackDroppedItem(item, player, personalConfig);
         EntityDamageEvent event = new EntityDamageEvent(item, EntityDamageEvent.DamageCause.LAVA, 1D);
         plugin.getServer().getPluginManager().callEvent(event);
         return event.isCancelled() || !item.isValid();
+    }
+
+    /** 测试用：让 debug 掉落物走正式掉落归属追踪。 */
+    public void trackDebugDrop(Item item, Player player) {
+        if (item == null || player == null) {
+            return;
+        }
+        TrashConfig.PersonalTrashConfig personalConfig = configSupplier.get().getTrashConfig().getPersonalTrash();
+        if (personalConfig.isEnabled()) {
+            trackDroppedItem(item, player, personalConfig);
+        }
     }
 
     /** 判断当前世界是否还能继续创建。 */
@@ -264,24 +278,29 @@ public final class TrashFeature implements Feature, Listener {
         return block != null && block.getType() != Material.AIR && block.getState() instanceof InventoryHolder;
     }
 
-    /** 记录玩家短时间内主动丢弃的物品，用于仙人掌、岩浆等损坏回收。 */
-    private void trackRecentDrop(Item item, Player player, TrashConfig.PersonalTrashConfig personalConfig) {
-        if (personalConfig.getDamageRecoveryMode() == TrashConfig.DamageRecoveryMode.DISABLED) {
+    /** 记录玩家主动丢弃的物品，用于无世界垃圾桶路由和损坏回收。 */
+    private void trackDroppedItem(Item item, Player player, TrashConfig.PersonalTrashConfig personalConfig) {
+        if (dropOwnerTracker == null) {
             return;
         }
-        int delaySeconds = personalConfig.getDamageRecoveryDelaySeconds();
-        if (delaySeconds <= 0) {
+        int ttlSeconds = ownerTrackingSeconds(personalConfig);
+        if (ttlSeconds <= 0) {
             return;
         }
-        final UUID itemUuid = item.getUniqueId();
-        recentDropOwners.put(itemUuid, player.getUniqueId());
-        platform.scheduler().runLater(new Runnable() {
-            /** 清理过期的掉落物归属记录。 */
-            @Override
-            public void run() {
-                recentDropOwners.remove(itemUuid);
-            }
-        }, Math.max(1L, delaySeconds * 20L));
+        dropOwnerTracker.track(item, player, ttlSeconds);
+    }
+
+    /** 计算短期 owner 记录保留时间，至少覆盖一轮清理间隔。 */
+    private int ownerTrackingSeconds(TrashConfig.PersonalTrashConfig personalConfig) {
+        int ttlSeconds = 0;
+        if (personalConfig.isTrackPlayerDroppedItems()) {
+            int cleanupInterval = Math.max(0, configSupplier.get().getCleanupConfig().getIntervalSeconds());
+            ttlSeconds = Math.max(ttlSeconds, Math.max(60, cleanupInterval + 5));
+        }
+        if (personalConfig.getDamageRecoveryMode() != TrashConfig.DamageRecoveryMode.DISABLED) {
+            ttlSeconds = Math.max(ttlSeconds, personalConfig.getDamageRecoveryDelaySeconds());
+        }
+        return Math.max(0, ttlSeconds);
     }
 
     /** 判断损坏原因是否属于原版物品销毁类场景。 */

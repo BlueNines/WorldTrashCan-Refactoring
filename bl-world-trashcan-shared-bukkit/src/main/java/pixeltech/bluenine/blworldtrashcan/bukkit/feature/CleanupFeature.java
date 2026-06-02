@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
@@ -39,6 +40,7 @@ public final class CleanupFeature implements Feature {
     private final Supplier<ConfigBundle> configSupplier;
     private final TrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
+    private final DropOwnerTracker dropOwnerTracker;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
     private BossBar bossBar;
@@ -49,12 +51,14 @@ public final class CleanupFeature implements Feature {
 
     /** 创建后台清理功能。 */
     public CleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
-                          TrashRouter trashRouter, GlobalTrashService globalTrashService) {
+                          TrashRouter trashRouter, GlobalTrashService globalTrashService,
+                          DropOwnerTracker dropOwnerTracker) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
         this.globalTrashService = globalTrashService;
+        this.dropOwnerTracker = dropOwnerTracker;
     }
 
     /** 返回功能 ID。 */
@@ -205,7 +209,7 @@ public final class CleanupFeature implements Feature {
 
     /** 清理单个掉落物实体。 */
     private void cleanItem(Item item, CleanupPolicy policy, CleanupStats stats) {
-        ItemSnapshot snapshot = platform.itemSnapshotMapper().toSnapshot(item.getItemStack());
+        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item.getItemStack()));
         boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), item.getItemStack());
         boolean personalTrash = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
         boolean globalTrash = trashRouter.hasGlobalTrash(item.getItemStack());
@@ -216,6 +220,7 @@ public final class CleanupFeature implements Feature {
         }
         TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats);
         if (finalDecision.getRoute() == TrashRoute.REMOVE) {
+            forgetTrackedOwner(item);
             item.remove();
             stats.itemsRemoved += Math.max(1, snapshot.getAmount());
         }
@@ -230,6 +235,7 @@ public final class CleanupFeature implements Feature {
         boolean globalAvailable = trashRouter.hasGlobalTrash(item.getItemStack());
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
             if (trashRouter.route(item.getWorld(), snapshot.getOwnerUuid(), item.getItemStack(), decision.getRoute())) {
+                forgetTrackedOwner(item);
                 item.remove();
                 stats.itemsRouted += Math.max(1, snapshot.getAmount());
                 countRoute(stats, decision.getRoute());
@@ -248,6 +254,21 @@ public final class CleanupFeature implements Feature {
             stats.itemsSkipped++;
         }
         return decision;
+    }
+
+    /** 使用短期 owner 记录补齐不支持 PDC 平台上的物品归属。 */
+    private ItemSnapshot snapshotWithTrackedOwner(Item item, ItemSnapshot snapshot) {
+        if (snapshot == null || snapshot.getOwnerUuid() != null || dropOwnerTracker == null) {
+            return snapshot;
+        }
+        return snapshot.withOwnerUuid(dropOwnerTracker.findOwner(item));
+    }
+
+    /** 清理已完成路由或删除的掉落物 owner 记录。 */
+    private void forgetTrackedOwner(Item item) {
+        if (dropOwnerTracker != null) {
+            dropOwnerTracker.removeOwner(item);
+        }
     }
 
     /** 统计物品进入的垃圾桶类型。 */

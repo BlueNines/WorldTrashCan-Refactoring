@@ -15,8 +15,8 @@
 - `bl-world-trashcan-config`：拆分配置加载和类型化配置。
 - `bl-world-trashcan-storage`：世界垃圾桶存储模型。
 - `bl-world-trashcan-shared-bukkit`：版本中立的 Bukkit 功能层、GUI、调度适配、路由服务。
-- `bl-world-trashcan-platform-legacy-1_12`：1.12 平台能力、旧告示牌、无 PDC 物品标记。
-- `bl-world-trashcan-platform-bukkit-1_13_1_15`：1.13-1.15 平台能力、现代告示牌、无 PDC 物品标记，避免 1.13 缺 PDC API。
+- `bl-world-trashcan-platform-legacy-1_12`：1.12 平台能力、旧告示牌、无 PDC 物品标记，玩家掉落 owner 由短期运行态追踪补齐。
+- `bl-world-trashcan-platform-bukkit-1_13_1_15`：1.13-1.15 平台能力、现代告示牌、无 PDC 物品标记，避免 1.13 缺 PDC API，玩家掉落 owner 由短期运行态追踪补齐。
 - `bl-world-trashcan-platform-paper-1_16_1_20`：现代 Paper 平台能力、PDC 玩家掉落标记。
 - `bl-world-trashcan-platform-folia-1_20`：Folia 平台能力、PDC 玩家掉落标记、Folia 全局与 region 调度入口。
 - `bl-world-trashcan-plugin-legacy-1_12`：1.12 插件入口、命令和 PlaceholderAPI 适配。
@@ -110,7 +110,7 @@ Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回
 /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>
 ```
 
-`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 会在不要求玩家在线的情况下输出当前公共垃圾桶库存，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
+`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成带拾取延迟的真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 会在不要求玩家在线的情况下输出当前公共垃圾桶库存，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
 
 ## 权限
 
@@ -160,7 +160,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `161339` bytes，Bukkit `162873` bytes，Paper `163056` bytes，Folia `218900` bytes。
+- 最终产物大小：Legacy `164935` bytes，Bukkit `166472` bytes，Paper `166643` bytes，Folia `222821` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -194,6 +194,7 @@ PAPI 变量：
 - 公共/个人垃圾桶 GUI 取出、放入物品的权限检查已恢复旧插件 OP 旁路：现在同时接受 OP、新权限节点和旧权限节点；Legacy jar 字节码已确认 `GlobalTrashService` 与 `PersonalTrashService` 均包含 `Player.isOp()` 分支，1.12.2 测试服 smoke 验证新 jar 正常加载、`platform/stats/reload/clear` 正常返回。
 - 四个平台命令类已补齐旧插件 OP 旁路：`reload/clear/add/debug*` 走 OP 或 `blworldtrashcan.admin`，`global/personal/dropmode/look/ban/globalban` 走 OP 或对应新旧权限节点。四个 jar 的命令 class 字节码均确认包含 `CommandSender.isOp()` 分支；1.12.2 测试服 RCON smoke 验证 `blwtc platform`、旧入口 `WorldListTrashCan platform`、`stats/reload/clear/add`、`%Wtc_ClearTime%` 和 `debugstock` 正常返回。本轮未做真实玩家负向权限测试，玩家专属 OP 分支以源码和最终 jar 字节码为证据。
 - 世界垃圾桶 `/blwtc add <世界名> <数量>` 写入的 `data/worlds.yml` 上限现在会参与正式创建限制：`WorldTrashRouter` 使用单世界运行数据计算有效上限，告示牌创建的 OP 路径会按旧插件行为绕过数量上限。1.12.2 测试服使用真实 Forge 客户端 `AIClientAlpha` 进服后，RCON 通过在线 `Player` 对象连续执行 `debugworldtrash`：上限 5 时新增到 5 成功、第 6 个失败；执行 `blwtc add world 1` 后上限变 6，再新增 1 个成功、第 7 个失败。最终 `data/worlds.yml` 落盘为 `world.max-count: 6` 且 6 个位置，窄匹配未发现 BLWorldTrashCan 自身异常。
+- 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BLWorldTrashCan 自身异常。
 
 本轮关键日志：
 
@@ -280,6 +281,11 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-effective-max-20260602-final-latest.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-effective-max-live-player/control/client-response.properties`
 - `客户端自动化测试工作区/runs/20260602-blwtc-effective-max-live-player/logs/forge-latest-before-stop.log`
+- `paper-1.12.2-test-server/ai-blwtc-drop-owner-20260603-retry-rcon-main.log`
+- `paper-1.12.2-test-server/ai-blwtc-drop-owner-20260603-retry-rcon-control.log`
+- `paper-1.12.2-test-server/ai-blwtc-drop-owner-20260603-retry-final-latest.log`
+- `客户端自动化测试工作区/runs/20260603-blwtc-drop-owner-live-player-retry/control/client-response.properties`
+- `客户端自动化测试工作区/runs/20260603-blwtc-drop-owner-live-player-retry/logs/forge-latest-before-stop.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
 
 已知测试环境噪声：

@@ -21,6 +21,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PaymentService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
@@ -50,6 +51,7 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
     private PersonalTrashService personalTrashService;
     private BLWorldTrashCanBukkitExpansion expansion;
     private BukkitMessageService messageService;
+    private DropOwnerTracker dropOwnerTracker;
 
     /** 启动插件并注册当前产物的平台能力。 */
     @Override
@@ -71,6 +73,7 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
         PaymentService paymentService = BukkitVaultPaymentService.create(this);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService);
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), paymentService, messageService);
+        this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,
                 new BukkitYamlWorldTrashStorage(new File(getDataFolder(), "data/worlds.yml")),
@@ -78,8 +81,8 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
                 personalTrashService,
                 configBundle.getTrashConfig()
         );
-        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService);
-        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService);
+        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService, dropOwnerTracker);
+        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService, dropOwnerTracker);
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
             /** 刷新公共黑名单等运行期配置。 */
@@ -321,8 +324,10 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
     public boolean debugDrop(Player player, Material material, int amount, boolean markOwner) {
         ItemStack itemStack = new ItemStack(material, amount);
         Item item = player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+        item.setPickupDelay(200);
         if (markOwner) {
             platform.itemSnapshotMapper().markOwner(item, player);
+            trashFeature.trackDebugDrop(item, player);
         }
         getLogger().info("[Debug] debugDrop player=" + player.getName()
                 + ", material=" + material.name()

@@ -46,4 +46,12 @@ public final class ItemSnapshot {
     public UUID getOwnerUuid() {
         return ownerUuid;
     }
+
+    /** 返回带有补充所属玩家 UUID 的新快照，已有标记时保持原样。 */
+    public ItemSnapshot withOwnerUuid(UUID fallbackOwnerUuid) {
+        if (ownerUuid != null || fallbackOwnerUuid == null) {
+            return this;
+        }
+        return new ItemSnapshot(materialKey, amount, displayName, lore, fallbackOwnerUuid);
+    }
 }

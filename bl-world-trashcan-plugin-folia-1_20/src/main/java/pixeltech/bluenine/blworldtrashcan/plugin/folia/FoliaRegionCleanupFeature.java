@@ -20,6 +20,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
@@ -51,6 +52,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private final Supplier<ConfigBundle> configSupplier;
     private final WorldTrashRouter trashRouter;
     private final GlobalTrashService globalTrashService;
+    private final DropOwnerTracker dropOwnerTracker;
     private final AtomicBoolean cleanupRunning = new AtomicBoolean(false);
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
@@ -62,12 +64,14 @@ public final class FoliaRegionCleanupFeature implements Feature {
 
     /** 创建 Folia region-safe 清理功能。 */
     public FoliaRegionCleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
-                                     WorldTrashRouter trashRouter, GlobalTrashService globalTrashService) {
+                                     WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
+                                     DropOwnerTracker dropOwnerTracker) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.trashRouter = trashRouter;
         this.globalTrashService = globalTrashService;
+        this.dropOwnerTracker = dropOwnerTracker;
     }
 
     /** 返回功能 ID。 */
@@ -263,7 +267,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return;
         }
         ItemStack routedStack = itemStack.clone();
-        ItemSnapshot snapshot = platform.itemSnapshotMapper().toSnapshot(routedStack);
+        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(routedStack));
         RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack);
         routeWithFallback(item, routedStack, snapshot, policy, state, stats, tracker);
     }
@@ -290,6 +294,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 return;
             }
             if (route == TrashRoute.REMOVE) {
+                forgetTrackedOwner(item);
                 item.remove();
                 stats.addItemsRemoved(itemStack.getAmount());
                 return;
@@ -305,6 +310,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 return;
             }
             if (routeVirtual(item, itemStack, snapshot.getOwnerUuid(), route)) {
+                forgetTrackedOwner(item);
                 item.remove();
                 stats.addItemsRouted(itemStack.getAmount(), route);
                 return;
@@ -344,6 +350,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             public void accept(ScheduledTask task) {
                 try {
                     if (trashRouter.routeWorldTrashAt(location, itemStack.clone())) {
+                        forgetTrackedOwner(item);
                         stats.addItemsRouted(itemStack.getAmount(), TrashRoute.WORLD_TRASH);
                         scheduleRemoveRoutedItem(item, tracker);
                     } else {
@@ -426,6 +433,21 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private boolean routeVirtual(Item item, ItemStack itemStack, UUID ownerUuid, TrashRoute route) {
         synchronized (trashRouter) {
             return trashRouter.route(item.getWorld(), ownerUuid, itemStack.clone(), route);
+        }
+    }
+
+    /** 使用短期 owner 记录补齐不支持 PDC 平台上的物品归属。 */
+    private ItemSnapshot snapshotWithTrackedOwner(Item item, ItemSnapshot snapshot) {
+        if (snapshot == null || snapshot.getOwnerUuid() != null || dropOwnerTracker == null) {
+            return snapshot;
+        }
+        return snapshot.withOwnerUuid(dropOwnerTracker.findOwner(item));
+    }
+
+    /** 清理已完成路由或删除的掉落物 owner 记录。 */
+    private void forgetTrackedOwner(Item item) {
+        if (dropOwnerTracker != null) {
+            dropOwnerTracker.removeOwner(item);
         }
     }
 
