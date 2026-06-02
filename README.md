@@ -31,10 +31,9 @@
 默认资源均带中文注释：
 
 - `config.yml`：主配置占位和全局说明。
-- `cleanup.yml`：后台清理周期、忽略世界、物品保护、实体清理规则。
+- `cleanup.yml`：后台清理周期、忽略世界、物品保护、实体清理规则、清理倒计时通知。
 - `trash.yml`：世界垃圾桶、公共垃圾桶、个人垃圾桶配置。
 - `platform.yml`：版本能力说明。
-- `notify.yml`：清理倒计时通知，支持 Chat、ActionBar、BossBar、Title、Sound、Command。
 - `entity-limits.yml`：世界实体数量限制和密集实体限制。
 - `protections.yml`：聊天/命令限频、防丢弃模式、不可拾取箭矢清理、防踩踏农田。
 - `messages/message_zh.yml`：简体中文消息。
@@ -215,7 +214,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
 - Folia 产物已接入专用 `FoliaEntityLimitFeature`：单世界实体上限用 `EntityAddToWorldEvent` / `EntityRemoveFromWorldEvent` 维护数量缓存并用 region-safe 复算兜底，密集实体限制只扫描当前 chunk；`folia-1.20.1-test-server` 验证 PIG 第二次生成被 `current=1, max=1` 拦截，COW 密集限制移除 `1` 个实体。
 - Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见的 ActionBar、BossBar、Title、Sound 在代码中改为提交到玩家实体 scheduler，但本机没有 Folia 1.20 客户端验收资产，尚未做视觉验收。
-- 四个平台默认 `notify.yml` 已补回旧配置里的清理后 `-1/-2` 提醒：Chat、ActionBar、BossBar、Title 都默认包含“公共垃圾桶未刷新/已刷新”两类消息；包内检查确认四个 dist jar 的 `notify.yml` 均包含这些条目。
+- 四个平台默认 `cleanup.yml` 的 `notify.*` 已补回旧配置里的清理后 `-1/-2` 提醒：Chat、ActionBar、BossBar、Title 都默认包含“公共垃圾桶未刷新/已刷新”两类消息；包内检查确认四个 dist jar 的 `cleanup.yml` 均包含这些条目。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
@@ -223,8 +222,8 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 世界垃圾桶强制加载区块问题已按 `docs/世界垃圾桶区块加载性能方案.md` 落地默认保护；`world-trash.allow-load-unloaded-chunks` 默认 `false`，真实测试服已验证未加载区块会被跳过并降级路由。
 - 旧插件仙人掌/岩浆损坏回收的 `UseModel/Delay` 已自动迁移为 `personal-trash.damage-recovery.mode/delay-seconds`，默认仍为关闭，开启后只在短时间内追踪玩家主动丢弃物，避免长期占用内存；后台测试入口为 `/blwtc debugdamage <玩家> <Material> <数量>`。
 - 仙人掌/岩浆损坏回收已在 `paper-1.12.2-test-server` 使用真实 Forge 1.12.2 客户端验证：客户端发送 `/blwtc debugdamage AIClientAlpha STONE 2`，服务端日志出现 `debugDamageRecovery ... recovered=true`，`/blwtc debugstock` 显示公共垃圾桶物品 `2`、堆叠 `1`。
-- 公共垃圾桶 GUI `ModelId` 和 BossBar 旧配置已补齐：四个平台默认 `trash.yml` 增加 `global-trash.gui.back/next/background-model-id`，默认 `notify.yml` 增加 `bossbar.messages`；迁移器不再把这些字段列为人工确认。
-- BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BLWorldTrashCan 自身异常。测试后已恢复临时 `notify.yml` 和 `cleanup.yml`。
+- 公共垃圾桶 GUI `ModelId` 和 BossBar 旧配置已补齐：四个平台默认 `trash.yml` 增加 `global-trash.gui.back/next/background-model-id`，默认 `cleanup.yml` 的 `notify.bossbar.messages` 增加 BossBar 消息；迁移器不再把这些字段列为人工确认。
+- BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BLWorldTrashCan 自身异常。测试后已恢复临时 `cleanup.yml`。
 - Legacy 1.12 产物已补齐旧 `%Wtc_ClearTime%` PAPI 变量注册逻辑，已在 `paper-1.12.2-test-server` 安装 PlaceholderAPI 2.11.6 时验证：`papi parse --null %Wtc_ClearTime%` 返回 `296`，日志出现 `Successfully registered internal expansion: Wtc` 和 `[BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%`。
 - Bukkit 1.13.2 和 Paper 1.20.4 已补做 `%Wtc_ClearTime%` PAPI 验证：`papi parse --null %Wtc_ClearTime%` 分别返回 `315`、`333`；`plugins` 均显示 `BLWorldTrashCan` 和 `PlaceholderAPI` 已启用。
 - Folia 1.20.1 尝试安装本地 PlaceholderAPI 2.11.6 验证 PAPI 时，Folia 在加载阶段拒绝该前置，原因是 `PlaceholderAPI v2.11.6` 未声明支持 Folia；BLWorldTrashCan 因未检测到 PlaceholderAPI 正常跳过变量注册。本轮已将该临时 PAPI jar 改名为 disabled，避免污染后续 Folia 测试。
@@ -240,7 +239,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 个人垃圾桶自动回收提示已在 `paper-1.12.2-test-server` 用真实 `client-1.12.2` 客户端验证：`debugdamage babyZiXuan STONE 2` 后客户端收到 `已回收到个人垃圾桶: [STONE*2]`；三类 `debugdrop ... owner` 后 `/blwtc clear` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT]`；四类物品时按 `max-display-items: 3` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT, ...]`。RCON `debugsummary/stats` 同时确认世界/公共垃圾桶为 0，个人路由分别为 1、3、4 个堆叠；测试后已恢复临时 `config.yml`、`trash.yml`、`messages/message_zh.yml` 和 `data/worlds.yml`。
 - Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
 - bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit 主类仍为 class major 52，Paper/Folia 主类仍为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
-- `/wtc reload` 已修复默认 yml 缺失时不会补回的问题：四个平台 `reloadPlugin()` 会先执行默认资源补齐，再读取配置和刷新功能模块。1.12.2 测试服移动 `config.yml/platform.yml/cleanup.yml/trash.yml/notify.yml/entity-limits.yml/protections.yml/messages/*.yml/data/worlds.yml` 共 12 个 yml 后执行 `wtc reload`，全部文件自动补回；随后已复制回测试前原始配置并再次 reload。
+- `/wtc reload` 已修复默认 yml 缺失时不会补回的问题：四个平台 `reloadPlugin()` 会先执行默认资源补齐，再读取配置和刷新功能模块。当前默认资源不再包含 `notify.yml`；清理通知已合并到 `cleanup.yml` 的 `notify.*` 区域。
 
 本轮关键日志：
 

@@ -153,7 +153,6 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
         saveResourceIfMissing("platform.yml");
         saveResourceIfMissing("cleanup.yml");
         saveResourceIfMissing("trash.yml");
-        saveResourceIfMissing("notify.yml");
         saveResourceIfMissing("entity-limits.yml");
         saveResourceIfMissing("protections.yml");
         saveResourceIfMissing("messages/message_zh.yml");
@@ -178,8 +177,7 @@ public final class BLWorldTrashCanPlugin extends JavaPlugin {
                 new BukkitConfigurationSource(loadYaml("cleanup.yml")),
                 new BukkitConfigurationSource(loadYaml("trash.yml")),
                 new BukkitConfigurationSource(loadYaml("protections.yml")),
-                new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
-                new BukkitConfigurationSource(loadYaml("notify.yml"))
+                new BukkitConfigurationSource(loadYaml("entity-limits.yml"))
         );
     }
 

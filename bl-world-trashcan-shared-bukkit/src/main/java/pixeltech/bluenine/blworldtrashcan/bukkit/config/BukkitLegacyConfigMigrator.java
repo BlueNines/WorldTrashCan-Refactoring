@@ -198,22 +198,22 @@ public final class BukkitLegacyConfigMigrator {
 
     /** 迁移通知配置。 */
     private void migrateNotifyConfig(YamlConfiguration oldConfig, LegacyMigrationPlan plan) throws IOException {
-        YamlConfiguration target = loadTarget("notify.yml");
-        copyBoolean(oldConfig, target, "Set.ChatFlag", "chat.enabled", plan);
-        copyBoolean(oldConfig, target, "Set.ChatConsoleLogFlag", "chat.console-log", plan);
-        copyString(oldConfig, target, "Set.ChatClickCommand", "chat.click-command", plan);
-        copyStringList(oldConfig, target, "Set.ChatMessageForCount", "chat.messages", plan);
-        copyBoolean(oldConfig, target, "Set.ActionBarFlag", "actionbar.enabled", plan);
-        copyStringList(oldConfig, target, "Set.ActionBarMessageForCount", "actionbar.messages", plan);
-        copyBoolean(oldConfig, target, "Set.CommandFlag", "command.enabled", plan);
-        copyStringList(oldConfig, target, "Set.CommandForCount", "command.commands", plan);
-        copyBoolean(oldConfig, target, "Set.TitleFlag", "title.enabled", plan);
-        copyStringList(oldConfig, target, "Set.TitleMessageForCount", "title.messages", plan);
-        copyBoolean(oldConfig, target, "Set.SoundFlag", "sound.enabled", plan);
-        copyStringList(oldConfig, target, "Set.SoundForCount", "sound.messages", plan);
-        copyBoolean(oldConfig, target, "Set.BossBarFlag", "bossbar.enabled", plan);
-        copyStringList(oldConfig, target, "Set.BossBarMessageForCount", "bossbar.messages", plan);
-        saveTarget(target, "notify.yml");
+        YamlConfiguration target = loadTarget("cleanup.yml");
+        copyBoolean(oldConfig, target, "Set.ChatFlag", "notify.chat.enabled", plan);
+        copyBoolean(oldConfig, target, "Set.ChatConsoleLogFlag", "notify.chat.console-log", plan);
+        copyString(oldConfig, target, "Set.ChatClickCommand", "notify.chat.click-command", plan);
+        copyStringList(oldConfig, target, "Set.ChatMessageForCount", "notify.chat.messages", plan);
+        copyBoolean(oldConfig, target, "Set.ActionBarFlag", "notify.actionbar.enabled", plan);
+        copyStringList(oldConfig, target, "Set.ActionBarMessageForCount", "notify.actionbar.messages", plan);
+        copyBoolean(oldConfig, target, "Set.CommandFlag", "notify.command.enabled", plan);
+        copyStringList(oldConfig, target, "Set.CommandForCount", "notify.command.commands", plan);
+        copyBoolean(oldConfig, target, "Set.TitleFlag", "notify.title.enabled", plan);
+        copyStringList(oldConfig, target, "Set.TitleMessageForCount", "notify.title.messages", plan);
+        copyBoolean(oldConfig, target, "Set.SoundFlag", "notify.sound.enabled", plan);
+        copyStringList(oldConfig, target, "Set.SoundForCount", "notify.sound.messages", plan);
+        copyBoolean(oldConfig, target, "Set.BossBarFlag", "notify.bossbar.enabled", plan);
+        copyStringList(oldConfig, target, "Set.BossBarMessageForCount", "notify.bossbar.messages", plan);
+        saveTarget(target, "cleanup.yml");
     }
 
     /** 迁移保护类配置。 */

@@ -13,8 +13,7 @@ import java.util.Set;
 public final class ConfigBundleLoader {
     /** 读取完整配置集合。 */
     public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
-                             ConfigurationSource protections, ConfigurationSource entityLimits,
-                             ConfigurationSource notify) {
+                             ConfigurationSource protections, ConfigurationSource entityLimits) {
         CleanupSettings cleanupSettings = new CleanupSettings(
                 toSet(cleanup.getStringList("ignored-materials")),
                 toSet(cleanup.getStringList("ignored-name-fragments")),
@@ -102,7 +101,7 @@ public final class ConfigBundleLoader {
                 trashConfig,
                 protectionConfig,
                 entityLimitConfig,
-                loadNotifyConfig(notify),
+                loadNotifyConfig(cleanup),
                 main.getString("language", "message_zh.yml"),
                 main.getBoolean("debug", false)
         );
@@ -177,22 +176,22 @@ public final class ConfigBundleLoader {
     }
 
     /** 读取通知配置。 */
-    private NotifyConfig loadNotifyConfig(ConfigurationSource notify) {
+    private NotifyConfig loadNotifyConfig(ConfigurationSource cleanup) {
         return new NotifyConfig(
-                notify.getBoolean("chat.enabled", true),
-                notify.getBoolean("chat.console-log", true),
-                notify.getString("chat.click-command", "/worldlisttrashcan globaltrash"),
-                parseTextMessages(notify.getStringList("chat.messages")),
-                notify.getBoolean("actionbar.enabled", true),
-                parseTextMessages(notify.getStringList("actionbar.messages")),
-                notify.getBoolean("bossbar.enabled", false),
-                parseBossBarMessages(notify.getStringList("bossbar.messages")),
-                notify.getBoolean("command.enabled", false),
-                parseCommandMessages(notify.getStringList("command.commands")),
-                notify.getBoolean("title.enabled", false),
-                parseTitleMessages(notify.getStringList("title.messages")),
-                notify.getBoolean("sound.enabled", true),
-                parseSoundMessages(notify.getStringList("sound.messages"))
+                cleanup.getBoolean("notify.chat.enabled", true),
+                cleanup.getBoolean("notify.chat.console-log", true),
+                cleanup.getString("notify.chat.click-command", "/worldlisttrashcan globaltrash"),
+                parseTextMessages(cleanup.getStringList("notify.chat.messages")),
+                cleanup.getBoolean("notify.actionbar.enabled", true),
+                parseTextMessages(cleanup.getStringList("notify.actionbar.messages")),
+                cleanup.getBoolean("notify.bossbar.enabled", false),
+                parseBossBarMessages(cleanup.getStringList("notify.bossbar.messages")),
+                cleanup.getBoolean("notify.command.enabled", false),
+                parseCommandMessages(cleanup.getStringList("notify.command.commands")),
+                cleanup.getBoolean("notify.title.enabled", false),
+                parseTitleMessages(cleanup.getStringList("notify.title.messages")),
+                cleanup.getBoolean("notify.sound.enabled", true),
+                parseSoundMessages(cleanup.getStringList("notify.sound.messages"))
         );
     }
 
