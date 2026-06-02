@@ -188,7 +188,7 @@ public final class GlobalTrashService {
 
     /** 玩家从公共垃圾桶取出物品。 */
     private void takeItem(Player player, Inventory inventory, int slot) {
-        if (!player.hasPermission("blworldtrashcan.global.take") && !player.hasPermission("WorldListTrashCan.GlobalTrashTakeItem")) {
+        if (!hasTrashPermission(player, "blworldtrashcan.global.take", "WorldListTrashCan.GlobalTrashTakeItem")) {
             player.sendMessage(message("global-trash.no-take-permission", "&c你没有权限从公共垃圾桶取出物品。"));
             return;
         }
@@ -217,7 +217,7 @@ public final class GlobalTrashService {
 
     /** 玩家手动把背包物品放入公共垃圾桶。 */
     private void putFromPlayer(Player player, InventoryClickEvent event) {
-        if (!player.hasPermission("blworldtrashcan.global.put") && !player.hasPermission("WorldListTrashCan.GlobalTrashPutItem")) {
+        if (!hasTrashPermission(player, "blworldtrashcan.global.put", "WorldListTrashCan.GlobalTrashPutItem")) {
             return;
         }
         ItemStack itemStack = event.getCurrentItem();
@@ -229,6 +229,11 @@ public final class GlobalTrashService {
             logGlobalTrash(player, "+global", itemStack, amount);
             itemStack.setAmount(0);
         }
+    }
+
+    /** 判断玩家是否拥有公共垃圾桶操作权限，保留旧插件 OP 旁路。 */
+    private boolean hasTrashPermission(Player player, String modernPermission, String legacyPermission) {
+        return player != null && (player.isOp() || player.hasPermission(modernPermission) || player.hasPermission(legacyPermission));
     }
 
     /** 判断玩家是否处于取出冷却。 */

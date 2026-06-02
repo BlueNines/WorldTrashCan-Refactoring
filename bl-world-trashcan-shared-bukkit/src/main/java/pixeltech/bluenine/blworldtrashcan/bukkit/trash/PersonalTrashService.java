@@ -131,7 +131,7 @@ public final class PersonalTrashService {
 
     /** 取出个人垃圾桶物品。 */
     private void takeItem(Player player, Inventory inventory, int slot) {
-        if (!player.hasPermission("blworldtrashcan.personal.take") && !player.hasPermission("WorldListTrashCan.PersonalTrashTakeItem")) {
+        if (!hasTrashPermission(player, "blworldtrashcan.personal.take", "WorldListTrashCan.PersonalTrashTakeItem")) {
             player.sendMessage(message("personal-trash.no-take-permission", "&c你没有权限从个人垃圾桶取出物品。"));
             return;
         }
@@ -160,7 +160,7 @@ public final class PersonalTrashService {
 
     /** 玩家手动放入个人垃圾桶。 */
     private void putFromPlayer(Player player, InventoryClickEvent event) {
-        if (!player.hasPermission("blworldtrashcan.personal.put") && !player.hasPermission("WorldListTrashCan.PersonalTrashPutItem")) {
+        if (!hasTrashPermission(player, "blworldtrashcan.personal.put", "WorldListTrashCan.PersonalTrashPutItem")) {
             return;
         }
         ItemStack itemStack = event.getCurrentItem();
@@ -170,6 +170,11 @@ public final class PersonalTrashService {
         if (addItem(player.getUniqueId(), itemStack)) {
             itemStack.setAmount(0);
         }
+    }
+
+    /** 判断玩家是否拥有个人垃圾桶操作权限，保留旧插件 OP 旁路。 */
+    private boolean hasTrashPermission(Player player, String modernPermission, String legacyPermission) {
+        return player != null && (player.isOp() || player.hasPermission(modernPermission) || player.hasPermission(legacyPermission));
     }
 
     /** 获取或创建个人垃圾桶。 */
