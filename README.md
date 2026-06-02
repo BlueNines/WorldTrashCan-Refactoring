@@ -2,6 +2,8 @@
 
 这是 `WorldListTrashCan` 的重构实现工作区。原项目只作为行为基准保留，新实现按“共同核心 + 多版本产物”拆分，避免把 Legacy、Paper、Folia 差异堆进同一个主类。
 
+面向服主的新增功能说明见 [docs/重构版新增功能说明.md](docs/重构版新增功能说明.md)。
+
 ## 产物
 
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
