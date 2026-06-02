@@ -1,9 +1,16 @@
 package pixeltech.bluenine.blworldtrashcan.plugin.folia;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -17,6 +24,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
+import pixeltech.bluenine.blworldtrashcan.config.NotifyConfig;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
@@ -29,6 +37,7 @@ import pixeltech.bluenine.blworldtrashcan.storage.TrashLocation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,6 +53,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private final GlobalTrashService globalTrashService;
     private final AtomicBoolean cleanupRunning = new AtomicBoolean(false);
     private TaskHandle taskHandle;
+    private TaskHandle bossBarRemoveTask;
+    private BossBar bossBar;
     private volatile CleanupFeature.CleanupStats lastStats = CleanupFeature.CleanupStats.empty();
     private long nextRunAtMillis;
     private int countdownSeconds;
@@ -85,6 +96,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
             taskHandle.cancel();
             taskHandle = null;
         }
+        cancelBossBarRemoval();
+        removeBossBar();
         nextRunAtMillis = 0L;
         countdownSeconds = 0;
     }
@@ -178,6 +191,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
             return;
         }
+        sendNotify(countdownSeconds, CleanupFeature.CleanupStats.empty());
         countdownSeconds--;
         nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
     }
@@ -443,6 +457,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
                         + ", entitiesSkipped=" + stats.getEntitiesSkipped()
                         + ", worldTrashSkippedUnloadedChunks=" + trashRouter.getSkippedUnloadedChunkAccesses()
                         + ", globalTrashRefreshed=" + stats.isGlobalTrashRefreshed());
+                sendNotify(0, stats);
+                sendNotify(stats.isGlobalTrashRefreshed() ? -2 : -1, stats);
             }
         });
     }
@@ -461,6 +477,262 @@ public final class FoliaRegionCleanupFeature implements Feature {
             cleanupRunsSinceGlobalClear = 0;
             stats.markGlobalTrashRefreshed();
         }
+    }
+
+    /** 按配置发送 Folia 安全通知。 */
+    private void sendNotify(int count, CleanupFeature.CleanupStats stats) {
+        NotifyConfig notifyConfig = configSupplier.get().getNotifyConfig();
+        sendChatNotify(notifyConfig, count, stats);
+        sendActionBarNotify(notifyConfig, count, stats);
+        sendBossBarNotify(notifyConfig, count, stats);
+        sendTitleNotify(notifyConfig, count, stats);
+        sendSoundNotify(notifyConfig, count);
+        runCommandNotify(notifyConfig, count, stats);
+    }
+
+    /** 发送聊天通知。 */
+    private void sendChatNotify(NotifyConfig notifyConfig, int count, CleanupFeature.CleanupStats stats) {
+        if (!notifyConfig.isChatEnabled() || !notifyConfig.getChatMessages().containsKey(count)) {
+            return;
+        }
+        final String message = applyStats(notifyConfig.getChatMessages().get(count), stats);
+        final boolean clickable = count == 0 && !notifyConfig.getChatClickCommand().trim().isEmpty();
+        final String clickCommand = notifyConfig.getChatClickCommand();
+        forEachOnlinePlayer(new PlayerAction() {
+            /** 在玩家实体上下文发送聊天消息。 */
+            @Override
+            public void run(Player player) {
+                if (clickable) {
+                    TextComponent component = new TextComponent(color(message));
+                    component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+                    player.spigot().sendMessage(component);
+                    return;
+                }
+                player.sendMessage(color(message));
+            }
+        });
+        if (notifyConfig.isChatConsoleLog()) {
+            Bukkit.getConsoleSender().sendMessage(color(message));
+        }
+    }
+
+    /** 发送 ActionBar 通知。 */
+    private void sendActionBarNotify(NotifyConfig notifyConfig, int count, CleanupFeature.CleanupStats stats) {
+        if (!notifyConfig.isActionBarEnabled() || !notifyConfig.getActionBarMessages().containsKey(count)) {
+            return;
+        }
+        final TextComponent component = new TextComponent(color(applyStats(notifyConfig.getActionBarMessages().get(count), stats)));
+        forEachOnlinePlayer(new PlayerAction() {
+            /** 在玩家实体上下文发送 ActionBar。 */
+            @Override
+            public void run(Player player) {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
+            }
+        });
+    }
+
+    /** 发送 BossBar 通知。 */
+    private void sendBossBarNotify(NotifyConfig notifyConfig, int count, CleanupFeature.CleanupStats stats) {
+        if (!notifyConfig.isBossBarEnabled()) {
+            cancelBossBarRemoval();
+            removeBossBar();
+            return;
+        }
+        NotifyConfig.BossBarMessage message = notifyConfig.getBossBarMessages().get(count);
+        if (message == null) {
+            if (count <= 0) {
+                scheduleBossBarRemoval();
+            }
+            return;
+        }
+        final BossBar current = bossBar();
+        current.setTitle(color(applyStats(message.getText(), stats)));
+        current.setStyle(parseBossBarStyle(message.getStyle()));
+        current.setColor(parseBossBarColor(message.getColor()));
+        current.setProgress(bossBarProgress(count, notifyConfig));
+        forEachOnlinePlayer(new PlayerAction() {
+            /** 在玩家实体上下文加入 BossBar。 */
+            @Override
+            public void run(Player player) {
+                current.addPlayer(player);
+            }
+        });
+        if (count <= 0) {
+            scheduleBossBarRemoval();
+            return;
+        }
+        cancelBossBarRemoval();
+    }
+
+    /** 发送 Title 通知。 */
+    private void sendTitleNotify(NotifyConfig notifyConfig, int count, CleanupFeature.CleanupStats stats) {
+        if (!notifyConfig.isTitleEnabled() || !notifyConfig.getTitleMessages().containsKey(count)) {
+            return;
+        }
+        NotifyConfig.TitleMessage message = notifyConfig.getTitleMessages().get(count);
+        final String title = color(applyStats(message.getTitle(), stats));
+        final String subtitle = color(applyStats(message.getSubtitle(), stats));
+        forEachOnlinePlayer(new PlayerAction() {
+            /** 在玩家实体上下文发送 Title。 */
+            @Override
+            public void run(Player player) {
+                player.sendTitle(title, subtitle, 10, 70, 20);
+            }
+        });
+    }
+
+    /** 发送声音通知。 */
+    private void sendSoundNotify(NotifyConfig notifyConfig, int count) {
+        if (!notifyConfig.isSoundEnabled() || !notifyConfig.getSoundMessages().containsKey(count)) {
+            return;
+        }
+        final NotifyConfig.SoundMessage message = notifyConfig.getSoundMessages().get(count);
+        if (message.getSound().trim().isEmpty()) {
+            return;
+        }
+        forEachOnlinePlayer(new PlayerAction() {
+            /** 在玩家实体上下文播放声音。 */
+            @Override
+            public void run(Player player) {
+                player.playSound(player.getLocation(), message.getSound(), message.getVolume(), message.getPitch());
+            }
+        });
+    }
+
+    /** 执行倒计时命令。 */
+    private void runCommandNotify(NotifyConfig notifyConfig, int count, CleanupFeature.CleanupStats stats) {
+        if (!notifyConfig.isCommandEnabled() || !notifyConfig.getCommandMessages().containsKey(count)) {
+            return;
+        }
+        for (String command : notifyConfig.getCommandMessages().get(count)) {
+            String finalCommand = ChatColor.stripColor(color(applyStats(command, stats)));
+            if (!finalCommand.trim().isEmpty()) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+            }
+        }
+    }
+
+    /** 遍历在线玩家并提交到玩家实体调度器。 */
+    private void forEachOnlinePlayer(final PlayerAction action) {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            Runnable retired = new Runnable() {
+                /** 玩家实体不可用时跳过本次通知。 */
+                @Override
+                public void run() {
+                }
+            };
+            player.getScheduler().execute(plugin, new Runnable() {
+                /** 在玩家实体上下文执行通知动作。 */
+                @Override
+                public void run() {
+                    action.run(player);
+                }
+            }, retired, 1L);
+        }
+    }
+
+    /** 返回可复用 BossBar 实例。 */
+    private BossBar bossBar() {
+        if (bossBar == null) {
+            bossBar = Bukkit.createBossBar("", BarColor.GREEN, BarStyle.SOLID);
+        }
+        return bossBar;
+    }
+
+    /** 计算 BossBar 进度。 */
+    private double bossBarProgress(int count, NotifyConfig notifyConfig) {
+        int max = 0;
+        for (Integer key : notifyConfig.getBossBarMessages().keySet()) {
+            if (key != null && key > max) {
+                max = key;
+            }
+        }
+        if (count <= 0 || max <= 0) {
+            return 1D;
+        }
+        return Math.max(0D, Math.min(1D, count / (double) max));
+    }
+
+    /** 解析 BossBar 颜色，配置错误时使用绿色。 */
+    private BarColor parseBossBarColor(String value) {
+        try {
+            return BarColor.valueOf((value == null ? "" : value.trim()).toUpperCase(Locale.ROOT));
+        } catch (RuntimeException ignored) {
+            return BarColor.GREEN;
+        }
+    }
+
+    /** 解析 BossBar 样式，配置错误时使用实心样式。 */
+    private BarStyle parseBossBarStyle(String value) {
+        try {
+            return BarStyle.valueOf((value == null ? "" : value.trim()).toUpperCase(Locale.ROOT));
+        } catch (RuntimeException ignored) {
+            return BarStyle.SOLID;
+        }
+    }
+
+    /** 延迟移除完成后的 BossBar。 */
+    private void scheduleBossBarRemoval() {
+        cancelBossBarRemoval();
+        bossBarRemoveTask = platform.scheduler().runLater(new Runnable() {
+            /** 执行 BossBar 延迟移除。 */
+            @Override
+            public void run() {
+                removeBossBar();
+                bossBarRemoveTask = null;
+            }
+        }, 90L);
+    }
+
+    /** 取消等待中的 BossBar 移除任务。 */
+    private void cancelBossBarRemoval() {
+        if (bossBarRemoveTask != null) {
+            bossBarRemoveTask.cancel();
+            bossBarRemoveTask = null;
+        }
+    }
+
+    /** 从所有玩家屏幕移除 BossBar。 */
+    private void removeBossBar() {
+        if (bossBar == null) {
+            return;
+        }
+        final BossBar current = bossBar;
+        forEachOnlinePlayer(new PlayerAction() {
+            /** 在玩家实体上下文移除 BossBar。 */
+            @Override
+            public void run(Player player) {
+                current.removePlayer(player);
+            }
+        });
+        try {
+            current.removeAll();
+        } catch (RuntimeException ignored) {
+            // 在线玩家会通过实体调度器移除；这里兜底处理无玩家场景。
+        }
+    }
+
+    /** 替换通知中的统计占位符。 */
+    private String applyStats(String message, CleanupFeature.CleanupStats stats) {
+        int dealItemSum = stats.getItemsRouted() + stats.getItemsRemoved();
+        int clearEvery = configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups();
+        int clearRemain = clearEvery <= 0 ? 0 : Math.max(0, clearEvery - cleanupRunsSinceGlobalClear);
+        return (message == null ? "" : message)
+                .replace("%DealItemSum%", String.valueOf(dealItemSum))
+                .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
+                .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
+                .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
+    }
+
+    /** 转换颜色代码。 */
+    private String color(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+    }
+
+    /** 玩家调度动作。 */
+    private interface PlayerAction {
+        /** 在玩家实体上下文执行。 */
+        void run(Player player);
     }
 
     /** 路由可用性状态。 */

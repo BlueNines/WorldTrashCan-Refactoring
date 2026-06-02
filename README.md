@@ -7,7 +7,7 @@
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
 - `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已在 `paper-1.20.4-test-server` 完成启动 smoke 和 RCON 命令验证。
-- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动、region-safe 清理和 Folia 专用实体限制 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 BossBar/Title/Sound 等通知链路尚未做 Folia 客户端级验收。
+- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 BossBar/Title/Sound 等通知尚未做 Folia 客户端视觉验收，且命令通知允许服主配置任意控制台命令。
 
 ## 模块
 
@@ -150,7 +150,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `140838` bytes，Bukkit `142459` bytes，Paper `142686` bytes，Folia `187351` bytes。
+- 最终产物大小：Legacy `140838` bytes，Bukkit `142459` bytes，Paper `142686` bytes，Folia `199084` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -162,6 +162,7 @@ PAPI 变量：
 - Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BLWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
 - Folia 产物已接入专用 `FoliaEntityLimitFeature`：单世界实体上限用 `EntityAddToWorldEvent` / `EntityRemoveFromWorldEvent` 维护数量缓存并用 region-safe 复算兜底，密集实体限制只扫描当前 chunk；`folia-1.20.1-test-server` 验证 PIG 第二次生成被 `current=1, max=1` 拦截，COW 密集限制移除 `1` 个实体。
+- Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见的 ActionBar、BossBar、Title、Sound 在代码中改为提交到玩家实体 scheduler，但本机没有 Folia 1.20 客户端验收资产，尚未做视觉验收。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
 - `client-1.12.2` 真实玩家 `AIAutoTest` 进服后执行玩家入口和 GUI 打开测试
@@ -214,6 +215,8 @@ PAPI 变量：
 - `folia-1.20.1-test-server/ai-blwtc-folia-region-cleanup-20260602-commands.log`
 - `folia-1.20.1-test-server/ai-blwtc-folia-entitylimit-20260602-final-latest.log`
 - `folia-1.20.1-test-server/ai-blwtc-folia-entitylimit-20260602-final-commands.log`
+- `folia-1.20.1-test-server/ai-blwtc-folia-notify-20260602-latest.log`
+- `folia-1.20.1-test-server/ai-blwtc-folia-notify-20260602-commands.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-rcon-main-2.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-latest.log`
 - `paper-1.13.2-test-server/ai-blwtc-worldtrash-chunkguard-20260602-1835-trash-test.yml`
@@ -235,5 +238,5 @@ PAPI 变量：
 - 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BLWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
 - 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
-- Folia 1.20 当前已经完成世界清理和专用实体限制 smoke，但仍不等于整产物 `FOLIA_REGION_SAFE`；BossBar、Title、Sound 等通知尚未做 Folia 客户端级验收，密集实体限制为了避免跨 region 查询，目前只覆盖当前 chunk 内实体。
+- Folia 1.20 当前已经完成世界清理、专用实体限制和通知后台 smoke，但仍不等于整产物 `FOLIA_REGION_SAFE`；BossBar、Title、Sound 等通知尚未做 Folia 客户端视觉验收，密集实体限制为了避免跨 region 查询，目前只覆盖当前 chunk 内实体。
 - `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。
