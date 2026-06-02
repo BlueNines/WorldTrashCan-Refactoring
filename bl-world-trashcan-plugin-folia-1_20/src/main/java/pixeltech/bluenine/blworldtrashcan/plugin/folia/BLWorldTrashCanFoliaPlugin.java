@@ -81,7 +81,7 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
-        getLogger().warning("[EntityLimit] Folia 产物暂不注册共享实体限制，避免 world.getEntities/nearbyEntities 跨 region 访问。");
+        featureRegistry.register(new FoliaEntityLimitFeature(this, configSupplier));
         registerCommands();
         registerPlaceholderApi();
         logCapabilities();
