@@ -19,7 +19,7 @@
 - `bl-world-trashcan-platform-bukkit-1_13_1_15`：1.13-1.15 平台能力、现代告示牌、无 PDC 物品标记，避免 1.13 缺 PDC API。
 - `bl-world-trashcan-platform-paper-1_16_1_20`：现代 Paper 平台能力、PDC 玩家掉落标记。
 - `bl-world-trashcan-platform-folia-1_20`：Folia 平台能力、PDC 玩家掉落标记、Folia 全局调度入口。
-- `bl-world-trashcan-plugin-legacy-1_12`：1.12 插件入口和命令。
+- `bl-world-trashcan-plugin-legacy-1_12`：1.12 插件入口、命令和 PlaceholderAPI 适配。
 - `bl-world-trashcan-plugin-bukkit-1_13_1_15`：1.13-1.15 插件入口、Vault 和 PlaceholderAPI 适配。
 - `bl-world-trashcan-plugin-paper-1_16_1_20`：现代 Paper 插件入口、Vault 和 PlaceholderAPI 适配。
 - `bl-world-trashcan-plugin-folia-1_20`：Folia 插件入口、Vault 和 PlaceholderAPI 适配。
@@ -74,6 +74,7 @@ migration-legacy-folder: "WorldListTrashCan"
 /blwtc ban
 /blwtc globalban
 /blwtc add <数量>
+/blwtc add <世界名> <数量>
 /blwtc reload
 ```
 
@@ -133,10 +134,7 @@ migration-legacy-folder: "WorldListTrashCan"
 
 PAPI 变量：
 
-- Bukkit 1.13-1.15 产物提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
-- Paper 1.16-1.20 产物提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
-- Folia 1.20 产物提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
-- Legacy 1.12 产物当前不注册 PAPI 变量。
+- Legacy 1.12、Bukkit 1.13-1.15、Paper 1.16-1.20、Folia 1.20 四个产物都提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
 
 发包变量：
 
@@ -150,7 +148,7 @@ PAPI 变量：
 
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
-- 最终产物大小：Legacy `139294` bytes，Bukkit `142194` bytes，Paper `142405` bytes，Folia `146775` bytes。
+- 最终产物大小：Legacy `140838` bytes，Bukkit `142459` bytes，Paper `142686` bytes，Folia `147047` bytes。
 - 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
@@ -170,6 +168,8 @@ PAPI 变量：
 - 仙人掌/岩浆损坏回收已在 `paper-1.12.2-test-server` 使用真实 Forge 1.12.2 客户端验证：客户端发送 `/blwtc debugdamage AIClientAlpha STONE 2`，服务端日志出现 `debugDamageRecovery ... recovered=true`，`/blwtc debugstock` 显示公共垃圾桶物品 `2`、堆叠 `1`。
 - 公共垃圾桶 GUI `ModelId` 和 BossBar 旧配置已补齐：四个平台默认 `trash.yml` 增加 `global-trash.gui.back/next/background-model-id`，默认 `notify.yml` 增加 `bossbar.messages`；迁移器不再把这些字段列为人工确认。
 - BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BLWorldTrashCan 自身异常。测试后已恢复临时 `notify.yml` 和 `cleanup.yml`。
+- Legacy 1.12 产物已补齐旧 `%Wtc_ClearTime%` PAPI 变量注册逻辑，已在 `paper-1.12.2-test-server` 安装 PlaceholderAPI 2.11.6 时验证：`papi parse --null %Wtc_ClearTime%` 返回 `296`，日志出现 `Successfully registered internal expansion: Wtc` 和 `[BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%`。
+- 旧命令 `/WorldListTrashCan add [世界名] <数量>` 已在新命令 `/blwtc add <世界名> <数量>` 中恢复控制台指定世界路径；`paper-1.12.2-test-server` 通过 RCON 验证 `blwtc add world 1` 成功、`blwtc add missing_world 1` 提示世界不存在、控制台 `blwtc add 1` 提示必须指定世界名，并确认 `data/worlds.yml` 落盘为 `world.max-count: 4`。
 
 本轮关键日志：
 
@@ -216,6 +216,11 @@ PAPI 变量：
 - `paper-1.12.2-test-server/ai-blwtc-bossbar-20260602-rcon-clear-online.log`
 - `paper-1.12.2-test-server/ai-blwtc-bossbar-20260602-final-latest.log`
 - `paper-1.12.2-test-server/ai-blwtc-20260602-bossbar-modelid-smoke-backup/`
+- `paper-1.12.2-test-server/ai-blwtc-legacy-papi-20260602-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-legacy-papi-20260602-final-latest.log`
+- `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-rcon.log`
+- `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-stop.log`
+- `paper-1.12.2-test-server/ai-blwtc-add-world-20260602-final-latest.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
 
 已知测试环境噪声：

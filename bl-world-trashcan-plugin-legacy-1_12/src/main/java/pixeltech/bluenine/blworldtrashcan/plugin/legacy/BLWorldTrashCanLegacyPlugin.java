@@ -45,6 +45,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     private ProtectionFeature protectionFeature;
     private BanGuiFeature banGuiFeature;
     private WorldTrashRouter trashRouter;
+    private BLWorldTrashCanLegacyExpansion expansion;
 
     /** 启动插件。 */
     @Override
@@ -80,6 +81,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         featureRegistry.register(banGuiFeature);
         featureRegistry.register(new EntityLimitFeature(this, configSupplier));
         registerCommands();
+        registerPlaceholderApi();
         logCapabilities();
         featureRegistry.enableAll();
     }
@@ -320,6 +322,18 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         registerCommand("blwtc", executor);
         registerCommand("WorldListTrashCan", executor);
         registerCommand("wtc", executor);
+    }
+
+    /** 注册 PlaceholderAPI 变量。 */
+    private void registerPlaceholderApi() {
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            getLogger().info("[PlaceholderAPI] 未检测到 PlaceholderAPI，跳过变量注册。");
+            return;
+        }
+        this.expansion = new BLWorldTrashCanLegacyExpansion(this);
+        if (expansion.register()) {
+            getLogger().info("[PlaceholderAPI] 已注册变量: %Wtc_ClearTime%");
+        }
     }
 
     /** 注册单个命令。 */

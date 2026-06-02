@@ -1,6 +1,8 @@
 package pixeltech.bluenine.blworldtrashcan.plugin.legacy;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -156,6 +158,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
         sender.sendMessage("§b/blwtc globalban §7- 打开公共垃圾桶物品黑名单");
         sender.sendMessage("§b/blwtc stats §7- 查看清理和垃圾桶统计");
         sender.sendMessage("§b/blwtc add <数量> §7- 增加当前世界可创建的世界垃圾桶数量");
+        sender.sendMessage("§b/blwtc add <世界名> <数量> §7- 后台增加指定世界可创建的世界垃圾桶数量");
         sender.sendMessage("§b/blwtc debugopen <玩家> <global|personal> §7- 后台测试打开 GUI");
         sender.sendMessage("§b/blwtc debugworldtrash <玩家> §7- 后台创建并登记测试世界垃圾桶");
         sender.sendMessage("§b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> §7- 后台测试指定路由");
@@ -196,25 +199,45 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
 
     /** 处理上限增加。 */
     private void handleAdd(CommandSender sender, String[] args) {
-        if (!requirePlayer(sender)) {
-            return;
-        }
         if (!sender.hasPermission("blworldtrashcan.admin")) {
             sender.sendMessage("§c你没有权限执行该命令。");
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("§c用法: /blwtc add <数量>");
+            sendAddUsage(sender);
             return;
         }
-        int delta = parseInt(args[1], 0);
+        World targetWorld;
+        int amountIndex;
+        if (args.length >= 3) {
+            targetWorld = Bukkit.getWorld(args[1]);
+            if (targetWorld == null) {
+                sender.sendMessage("§c未找到世界: §f" + args[1]);
+                return;
+            }
+            amountIndex = 2;
+        } else {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("§c控制台执行 add 时必须指定世界名。");
+                sendAddUsage(sender);
+                return;
+            }
+            targetWorld = ((Player) sender).getWorld();
+            amountIndex = 1;
+        }
+        int delta = parseInt(args[amountIndex], 0);
         if (delta <= 0) {
             sender.sendMessage("§c数量必须大于 0。");
             return;
         }
-        Player player = (Player) sender;
-        int next = plugin.addWorldTrashMax(player.getWorld(), delta);
-        sender.sendMessage("§a当前世界垃圾桶上限已调整为 §f" + next + "§a。");
+        int next = plugin.addWorldTrashMax(targetWorld, delta);
+        sender.sendMessage("§a世界 §f" + targetWorld.getName() + " §a垃圾桶上限已调整为 §f" + next + "§a。");
+    }
+
+    /** 发送 add 命令用法。 */
+    private void sendAddUsage(CommandSender sender) {
+        sender.sendMessage("§c用法: /blwtc add <数量>");
+        sender.sendMessage("§c用法: /blwtc add <世界名> <数量>");
     }
 
     /** 处理防丢弃模式切换。 */
