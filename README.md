@@ -48,6 +48,16 @@
 
 当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询和手持物品/区块实体查询。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
 
+## RGB 与富文本消息
+
+重构版使用 PrismaticAPI `1.5.2` 作为统一富文本渲染库，依赖从 `https://croabeast.github.io/repo/` 获取，并在四个平台产物中 shade 后 relocation 到 `pixeltech.bluenine.blworldtrashcan.libs.croabeast`，避免与服务器上其它插件的 PrismaticAPI 版本冲突。打包时会过滤 PrismaticAPI 自带 `plugin.yml`，最终插件名仍为 `BLWorldTrashCan`。
+
+正式消息入口统一走 `RichTextRenderer`，包括普通 Chat、可点击 Chat、ActionBar、Title、BossBar 标题、GUI 标题和平台层 `sendMessage(UUID, message)`。1.16.5+ 服务端可以使用 `&#RRGGBB` 这类 RGB 写法；1.12.2 和 1.13-1.15 会自动降级为传统 `&` 颜色码，不要求真实 RGB。
+
+BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
+
+PrismaticAPI 当前在 Modrinth 标注为 `GPL-3.0-only`。本项目接入它的前提是基础版后续按开源要求发布；如果未来要制作不满足 GPL-3.0-only 要求的闭源发行版，需要重新评估为外置软依赖或更换许可证兼容的 RGB 库。
+
 ## 个人垃圾桶回收提示
 
 `trash.yml` 可配置物品自动进入个人垃圾桶时是否提醒在线玩家，以及批量提示最多展示多少个完整物品条目：
@@ -240,6 +250,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
 - bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit 主类仍为 class major 52，Paper/Folia 主类仍为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
 - `/wtc reload` 已修复默认 yml 缺失时不会补回的问题：四个平台 `reloadPlugin()` 会先执行默认资源补齐，再读取配置和刷新功能模块。当前默认资源不再包含 `notify.yml`；清理通知已合并到 `cleanup.yml` 的 `notify.*` 区域。
+- PrismaticAPI RGB 消息已完成构建和多平台 smoke：四个平台 jar 均包含 relocation 后的 `pixeltech/bluenine/blworldtrashcan/libs/croabeast/prismatic/PrismaticAPI.class`，且不残留原始 `me/croabeast` 类。Paper 1.20.4 RCON 响应中出现 `§x§f§f§3§3§6§6`，证明 `&#ff3366` 已渲染为 1.16+ RGB；Paper 1.13.2 与 Paper 1.12.2 均显示 `rgb-message: 禁用` 且 `reload/stats/clear` 正常。Folia 1.20.1 能启用插件并输出定时清理汇总，`rgb-message: 启用`；该测试服 RCON 对 `blwtc` 和 `stop` 返回 `Error executing ... (null)`，因此 Folia 命令链路需要用 console/latest 或真实入口补证据。
 
 本轮关键日志：
 
@@ -334,6 +345,11 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - `客户端自动化测试工作区/runs/20260603-blwtc-drop-owner-live-player-retry/control/client-response.properties`
 - `客户端自动化测试工作区/runs/20260603-blwtc-drop-owner-live-player-retry/logs/forge-latest-before-stop.log`
 - `客户端自动化测试工作区/runs/20260602-blwtc-bossbar-real-client/control/client-response.properties`
+- `待重构插件/WorldListTrashCan重构/refactor-workspace/build/rgb-prismatic-20260605-032221/test-summary.md`
+- `paper-1.20.4-test-server/ai-blwtc-rgb-prismatic-20260605-032221-paper1204-rconhex-rcon-main.log`
+- `paper-1.13.2-test-server/ai-blwtc-rgb-prismatic-20260605-032221-bukkit113-final-rcon-main.log`
+- `paper-1.12.2-test-server/ai-blwtc-rgb-prismatic-20260605-032221-legacy112-rcon-main.log`
+- `folia-1.20.1-test-server/ai-blwtc-rgb-prismatic-20260605-032221-folia1201-latest.log`
 
 已知测试环境噪声：
 

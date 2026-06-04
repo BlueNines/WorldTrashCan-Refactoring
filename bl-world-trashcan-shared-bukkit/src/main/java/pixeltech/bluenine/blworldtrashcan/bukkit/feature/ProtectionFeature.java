@@ -1,9 +1,6 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.feature;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -28,6 +25,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ProtectionConfig;
@@ -138,7 +136,7 @@ public final class ProtectionFeature implements Feature, Listener {
             return;
         }
         event.setCancelled(true);
-        player.sendMessage(color(config.getMessage()));
+        player.sendMessage(RichTextRenderer.color(player, config.getMessage()));
         runConfiguredCommand(player, config.getCommand());
     }
 
@@ -154,7 +152,7 @@ public final class ProtectionFeature implements Feature, Listener {
             return;
         }
         event.setCancelled(true);
-        player.sendMessage(color(config.getMessage()));
+        player.sendMessage(RichTextRenderer.color(player, config.getMessage()));
         runConfiguredCommand(player, config.getCommand());
     }
 
@@ -278,9 +276,7 @@ public final class ProtectionFeature implements Feature, Listener {
 
     /** 发送点击后填入聊天框的文本。 */
     private void sendSuggest(Player player, String text, String suggest) {
-        TextComponent component = new TextComponent(text);
-        component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggest));
-        player.spigot().sendMessage(component);
+        player.spigot().sendMessage(RichTextRenderer.suggest(player, text, suggest));
     }
 
     /** 判断弓是否带无限附魔。 */
@@ -309,7 +305,7 @@ public final class ProtectionFeature implements Feature, Listener {
 
     /** 转换颜色代码。 */
     private String color(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+        return RichTextRenderer.color(text);
     }
 
     /** 返回格式化消息。 */

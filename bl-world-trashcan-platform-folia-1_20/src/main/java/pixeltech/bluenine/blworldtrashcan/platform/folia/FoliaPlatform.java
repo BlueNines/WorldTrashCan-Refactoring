@@ -8,6 +8,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.EntitySnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.SchedulerAdapter;
@@ -105,7 +106,7 @@ public final class FoliaPlatform implements ServerPlatform {
             /** 在玩家实体上下文发送消息。 */
             @Override
             public void run() {
-                player.sendMessage(message);
+                player.sendMessage(RichTextRenderer.color(player, message));
             }
         }, new Runnable() {
             /** 玩家实体不可用时跳过消息。 */

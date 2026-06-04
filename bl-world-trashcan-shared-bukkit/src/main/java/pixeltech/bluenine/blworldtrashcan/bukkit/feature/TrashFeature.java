@@ -1,6 +1,5 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.feature;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -20,6 +19,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
@@ -330,7 +330,7 @@ public final class TrashFeature implements Feature, Listener {
 
     /** 转换颜色代码。 */
     private String color(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+        return RichTextRenderer.color(text);
     }
 
     /** 返回格式化消息。 */

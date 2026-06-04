@@ -8,6 +8,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.BukkitSchedulerAdapter;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.EntitySnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
@@ -94,7 +95,7 @@ public final class BukkitPlatform implements ServerPlatform {
         }
         Player player = Bukkit.getPlayer(playerUuid);
         if (player != null) {
-            player.sendMessage(message);
+            player.sendMessage(RichTextRenderer.color(player, message));
         }
     }
 }

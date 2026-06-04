@@ -5,6 +5,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.BukkitSchedulerAdapter;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.EntitySnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
@@ -99,7 +100,7 @@ public final class LegacyPlatform implements ServerPlatform {
         }
         Player player = Bukkit.getPlayer(playerUuid);
         if (player != null) {
-            player.sendMessage(message);
+            player.sendMessage(RichTextRenderer.color(player, message));
         }
     }
 }

@@ -35,6 +35,10 @@
             <version>1.12-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.croabeast</groupId>
+            <artifactId>PrismaticAPI</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

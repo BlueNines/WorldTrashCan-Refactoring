@@ -1,10 +1,7 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.feature;
 
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -14,6 +11,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
@@ -348,15 +346,13 @@ public final class CleanupFeature implements Feature {
         boolean clickable = count == 0 && !notifyConfig.getChatClickCommand().trim().isEmpty();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (clickable) {
-                TextComponent component = new TextComponent(color(message));
-                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, notifyConfig.getChatClickCommand()));
-                player.spigot().sendMessage(component);
+                player.spigot().sendMessage(RichTextRenderer.clickable(player, message, notifyConfig.getChatClickCommand()));
             } else {
-                player.sendMessage(color(message));
+                player.sendMessage(RichTextRenderer.color(player, message));
             }
         }
         if (notifyConfig.isChatConsoleLog()) {
-            Bukkit.getConsoleSender().sendMessage(color(message));
+            Bukkit.getConsoleSender().sendMessage(RichTextRenderer.color(message));
         }
     }
 
@@ -365,9 +361,9 @@ public final class CleanupFeature implements Feature {
         if (!notifyConfig.isActionBarEnabled() || !notifyConfig.getActionBarMessages().containsKey(count)) {
             return;
         }
-        TextComponent component = new TextComponent(color(applyStats(notifyConfig.getActionBarMessages().get(count), stats)));
+        String message = applyStats(notifyConfig.getActionBarMessages().get(count), stats);
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, RichTextRenderer.components(player, message));
         }
     }
 
@@ -386,7 +382,7 @@ public final class CleanupFeature implements Feature {
             return;
         }
         BossBar current = bossBar();
-        current.setTitle(color(applyStats(message.getText(), stats)));
+        current.setTitle(RichTextRenderer.color(applyStats(message.getText(), stats)));
         current.setStyle(parseBossBarStyle(message.getStyle()));
         current.setColor(parseBossBarColor(message.getColor()));
         current.setProgress(bossBarProgress(count, notifyConfig));
@@ -408,10 +404,10 @@ public final class CleanupFeature implements Feature {
             return;
         }
         NotifyConfig.TitleMessage message = notifyConfig.getTitleMessages().get(count);
-        String title = color(applyStats(message.getTitle(), stats));
-        String subtitle = color(applyStats(message.getSubtitle(), stats));
+        String title = applyStats(message.getTitle(), stats);
+        String subtitle = applyStats(message.getSubtitle(), stats);
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle(title, subtitle, 10, 70, 20);
+            player.sendTitle(RichTextRenderer.color(player, title), RichTextRenderer.color(player, subtitle), 10, 70, 20);
         }
     }
 
@@ -435,7 +431,7 @@ public final class CleanupFeature implements Feature {
             return;
         }
         for (String command : notifyConfig.getCommandMessages().get(count)) {
-            String finalCommand = ChatColor.stripColor(color(applyStats(command, stats)));
+            String finalCommand = RichTextRenderer.stripColor(applyStats(command, stats));
             if (!finalCommand.trim().isEmpty()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
             }
@@ -520,11 +516,6 @@ public final class CleanupFeature implements Feature {
                 .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
                 .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
                 .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
-    }
-
-    /** 转换颜色代码。 */
-    private String color(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
     }
 
     /** 清理统计。 */

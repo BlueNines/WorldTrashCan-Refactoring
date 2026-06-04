@@ -34,6 +34,7 @@
         <spigot.bukkit.version>1.13.2-R0.1-SNAPSHOT</spigot.bukkit.version>
         <paper.modern.version>1.20.4-R0.1-SNAPSHOT</paper.modern.version>
         <folia.version>1.20.1-R0.1-SNAPSHOT</folia.version>
+        <prismaticapi.version>1.5.2</prismaticapi.version>
     </properties>
 
     <repositories>
@@ -44,6 +45,18 @@
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>croabeast-repo</id>
+            <url>https://croabeast.github.io/repo/</url>
+        </repository>
+        <repository>
+            <id>placeholderapi-repo</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>https://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
     </repositories>
 
@@ -83,6 +96,11 @@
                 <groupId>pixeltech.bluenine</groupId>
                 <artifactId>bl-world-trashcan-platform-folia-1_20</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>me.croabeast</groupId>
+                <artifactId>PrismaticAPI</artifactId>
+                <version>${prismaticapi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

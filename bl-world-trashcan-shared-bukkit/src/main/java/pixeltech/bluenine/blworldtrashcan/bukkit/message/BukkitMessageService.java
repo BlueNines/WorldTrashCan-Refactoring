@@ -1,7 +1,7 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.message;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -39,6 +39,11 @@ public final class BukkitMessageService {
 
     /** 返回格式化后的单行消息。 */
     public String text(String key, String fallback, String... replacements) {
+        return text(null, key, fallback, replacements);
+    }
+
+    /** 按玩家版本返回格式化后的单行消息。 */
+    public String text(Player player, String key, String fallback, String... replacements) {
         String raw = activeMessages.getString(key);
         if (raw == null) {
             raw = fallbackMessages.getString(key);
@@ -46,11 +51,16 @@ public final class BukkitMessageService {
         if (raw == null) {
             raw = bundledDefaultMessages.getString(key, fallback);
         }
-        return color(applyPlaceholders(raw, replacements));
+        return color(player, applyPlaceholders(raw, replacements));
     }
 
     /** 返回格式化后的多行消息。 */
     public List<String> list(String key, List<String> fallback, String... replacements) {
+        return list(null, key, fallback, replacements);
+    }
+
+    /** 按玩家版本返回格式化后的多行消息。 */
+    public List<String> list(Player player, String key, List<String> fallback, String... replacements) {
         List<String> raw = activeMessages.getStringList(key);
         if (raw.isEmpty()) {
             raw = fallbackMessages.getStringList(key);
@@ -63,7 +73,7 @@ public final class BukkitMessageService {
         }
         List<String> result = new ArrayList<>();
         for (String line : raw) {
-            result.add(color(applyPlaceholders(line, replacements)));
+            result.add(color(player, applyPlaceholders(line, replacements)));
         }
         return result;
     }
@@ -164,6 +174,14 @@ public final class BukkitMessageService {
 
     /** 转换颜色代码。 */
     private String color(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text == null ? "" : text);
+        return RichTextRenderer.color(text);
+    }
+
+    /** 按玩家版本转换颜色代码。 */
+    private String color(Player player, String text) {
+        if (player == null) {
+            return color(text);
+        }
+        return RichTextRenderer.color(player, text);
     }
 }
