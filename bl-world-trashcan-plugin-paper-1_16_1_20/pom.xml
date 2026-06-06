@@ -55,8 +55,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${java.modern.version}</source>
-                    <target>${java.modern.version}</target>
+                    <source>${java.legacy.version}</source>
+                    <target>${java.legacy.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

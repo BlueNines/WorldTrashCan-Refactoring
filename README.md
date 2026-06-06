@@ -8,9 +8,9 @@
 
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
-- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已在 `paper-1.20.4-test-server` 完成启动 smoke 和 RCON 命令验证。
+- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用协议客户端覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
 - `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 BossBar/Title/Sound 等通知尚未做 Folia 客户端视觉验收，且命令通知允许服主配置任意控制台命令。
-- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已用同一个 jar 在 1.12.2、1.13.2、Paper 1.20.4、Folia 1.20.1 做 console smoke。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。
+- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已用同一个 jar 在 1.12.2、1.13.2、Paper 1.16.5/1.17.1/1.18.2/1.19.4/1.20.4/1.21.11 和 Folia 1.20.1 做 smoke 或协议客户端验收。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。
 
 ## 模块
 
@@ -34,10 +34,10 @@
 
 - Folia：当 `Bukkit.getName()` 或 `Bukkit.getVersion()` 明确包含 `folia` 时，加载 `folia-1.20` 分支。
 - 1.12.x：加载 `legacy-1.12` 分支。
-- 1.13-1.15 或 Java 17 以下：加载 `bukkit-1.13-1.15` 分支。
-- 其他 Java 17+ 现代 Paper/Spigot：加载 `paper-1.16-1.20` 分支。
+- 1.13-1.15：加载 `bukkit-1.13-1.15` 分支。
+- 1.16+ 现代 Paper/Spigot：加载 `paper-1.16-1.20` 分支。
 
-通用总包主类和命令适配层保持 Java 8 class major 52，Folia/Paper 高版本类只通过反射延迟加载，避免 1.12.2 Java 8 服务端在启用阶段提前解析 Java 17 class。Paper 1.20.4 不能只因为存在 `getGlobalRegionScheduler` 就判定为 Folia；当前 Folia 判定只看服务端名称和版本文本中的 `folia` 标记。
+通用总包主类、命令适配层和 Paper 现代分支保持 Java 8 class major 52，避免 1.16.5 服主常见 Java 8/17 运行环境出现 class major 不兼容。Folia 分支保持 Java 17 class 并只在 Folia 运行时延迟加载，避免 1.12.2 Java 8 服务端在启用阶段提前解析 Java 17 class。Paper 1.20.4 不能只因为存在 `getGlobalRegionScheduler` 就判定为 Folia；当前 Folia 判定只看服务端名称和版本文本中的 `folia` 标记。
 
 ## 配置文件
 
@@ -66,6 +66,8 @@
 重构版使用 PrismaticAPI `1.5.2` 作为统一富文本渲染库，依赖从 `https://croabeast.github.io/repo/` 获取，并在四个平台产物中 shade 后 relocation 到 `pixeltech.bluenine.blworldtrashcan.libs.croabeast`，避免与服务器上其它插件的 PrismaticAPI 版本冲突。打包时会过滤 PrismaticAPI 自带 `plugin.yml`，最终插件名仍为 `BLWorldTrashCan`。
 
 正式消息入口统一走 `RichTextRenderer`，包括普通 Chat、可点击 Chat、ActionBar、Title、BossBar 标题、GUI 标题和平台层 `sendMessage(UUID, message)`。1.16.5+ 服务端可以使用 `&#RRGGBB` 这类 RGB 写法；1.12.2 和 1.13-1.15 会自动降级为传统 `&` 颜色码，不要求真实 RGB。
+
+本轮 RGB 验收使用 `minecraft-protocol` 协议客户端作为客户端侧证据，不用服务端日志判定通过。`/blwtc debugrgb <玩家>` 会向在线玩家发送 Chat、ActionBar、Title、Subtitle、BossBar、GUI 标题、物品名和 Lore 八个可见通道；协议客户端抓包要求八个 `BLWTC_RGB_DEBUG_*` 标记全部命中，并且每个可见包包含 JSON `#RRGGBB` 颜色证据。已通过矩阵：Paper 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.11 的轻量包和 universal 包，以及 Folia 1.20.1 的轻量包和 universal 包。
 
 BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
 
@@ -261,9 +263,9 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BLWorldTrashCan 自身异常。
 - 个人垃圾桶自动回收提示已在 `paper-1.12.2-test-server` 用真实 `client-1.12.2` 客户端验证：`debugdamage babyZiXuan STONE 2` 后客户端收到 `已回收到个人垃圾桶: [STONE*2]`；三类 `debugdrop ... owner` 后 `/blwtc clear` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT]`；四类物品时按 `max-display-items: 3` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT, ...]`。RCON `debugsummary/stats` 同时确认世界/公共垃圾桶为 0，个人路由分别为 1、3、4 个堆叠；测试后已恢复临时 `config.yml`、`trash.yml`、`messages/message_zh.yml` 和 `data/worlds.yml`。
 - Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
-- bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit 主类仍为 class major 52，Paper/Folia 主类仍为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
+- bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit/Paper 主类和 universal 内 Paper 分支均为 class major 52，Folia 主类为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
 - `/wtc reload` 已修复默认 yml 缺失时不会补回的问题：四个平台 `reloadPlugin()` 会先执行默认资源补齐，再读取配置和刷新功能模块。当前默认资源不再包含 `notify.yml`；清理通知已合并到 `cleanup.yml` 的 `notify.*` 区域。
-- PrismaticAPI RGB 消息已完成构建和多平台 smoke：四个平台 jar 均包含 relocation 后的 `pixeltech/bluenine/blworldtrashcan/libs/croabeast/prismatic/PrismaticAPI.class`，且不残留原始 `me/croabeast` 类。Paper 1.20.4 RCON 响应中出现 `§x§f§f§3§3§6§6`，证明 `&#ff3366` 已渲染为 1.16+ RGB；Paper 1.13.2 与 Paper 1.12.2 均显示 `rgb-message: 禁用` 且 `reload/stats/clear` 正常。Folia 1.20.1 能启用插件并输出定时清理汇总，`rgb-message: 启用`；该测试服 RCON 对 `blwtc` 和 `stop` 返回 `Error executing ... (null)`，因此 Folia 命令链路需要用 console/latest 或真实入口补证据。
+- PrismaticAPI RGB 消息已完成构建和客户端侧协议矩阵：四个平台 jar 均包含 relocation 后的 `pixeltech/bluenine/blworldtrashcan/libs/croabeast/prismatic/PrismaticAPI.class`，且不残留原始 `me/croabeast` 类。`/blwtc debugrgb <玩家>` 已用协议客户端验证 Chat、ActionBar、Title、Subtitle、BossBar、GUI 标题、物品名和 Lore 八个可见通道全部下发 JSON `#RRGGBB`。通过版本包括 Paper 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.11 的轻量包和 universal 包，以及 Folia 1.20.1 的轻量包和 universal 包。Paper 1.13.2 与 Paper 1.12.2 均显示 `rgb-message: 禁用` 且 `reload/stats/clear` 正常，符合低版本降级预期。
 - 通用总包 `BLWorldTrashCan-universal.jar` 已完成构建和四端 console smoke：同一个 jar 在 `paper-1.12.2-test-server` 识别为 `legacy-1.12`，在 `paper-1.13.2-test-server` 识别为 `bukkit-1.13-1.15`，在 `paper-1.20.4-test-server` 识别为 `paper-1.16-1.20`，在 `folia-1.20.1-test-server` 识别为 `folia-1.20`。通用总包内 PrismaticAPI 已 relocation，原始 `me/croabeast` 类数量为 0；主类 Java 8 加载 smoke 输出 `loaded-universal-main`。
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
 
@@ -365,6 +367,8 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - `paper-1.13.2-test-server/ai-blwtc-rgb-prismatic-20260605-032221-bukkit113-final-rcon-main.log`
 - `paper-1.12.2-test-server/ai-blwtc-rgb-prismatic-20260605-032221-legacy112-rcon-main.log`
 - `folia-1.20.1-test-server/ai-blwtc-rgb-prismatic-20260605-032221-folia1201-latest.log`
+- `待重构插件/WorldListTrashCan重构/refactor-workspace/build/rgb-protocol-runs/final-20260607-rgb-matrix/summary.json`
+- `待重构插件/WorldListTrashCan重构/refactor-workspace/build/rgb-protocol-runs/final-20260607-rgb-matrix/summary-table.txt`
 - `待重构插件/WorldListTrashCan重构/refactor-workspace/build/universal-console-smoke-summary-20260607-012407.txt`
 - `paper-1.12.2-test-server/ai-blwtc-universal-console-20260607-012407-legacy112.log`
 - `paper-1.13.2-test-server/ai-blwtc-universal-console-20260607-012407-bukkit113.log`

@@ -23,6 +23,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
@@ -197,6 +198,17 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
     /** 打开个人垃圾桶。 */
     public void openPersonalTrash(Player player) {
         trashFeature.openPersonal(player);
+    }
+
+    /** 测试用：向玩家发送所有 RGB 可见通道。 */
+    public boolean debugRgb(final Player player) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在上下文发送 RGB 调试消息。 */
+            @Override
+            public void run() {
+                BukkitRgbDebugSender.send(BLWorldTrashCanUniversalPlugin.this, player);
+            }
+        });
     }
 
     /** 切换玩家防丢弃模式。 */
@@ -441,7 +453,7 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         if (minor <= 12) {
             return RuntimeKind.LEGACY;
         }
-        if (minor <= 15 || !isJava17OrNewer()) {
+        if (minor <= 15) {
             return RuntimeKind.BUKKIT;
         }
         return RuntimeKind.PAPER;
@@ -474,25 +486,6 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
     /** 判断当前服务端是否是 Folia。 */
     private boolean isFoliaServer() {
         return containsFolia(Bukkit.getName()) || containsFolia(Bukkit.getVersion());
-    }
-
-    /** 判断运行 Java 是否不低于 17。 */
-    private boolean isJava17OrNewer() {
-        String version = System.getProperty("java.version", "");
-        int major = parseJavaMajor(version);
-        return major >= 17;
-    }
-
-    /** 解析 Java 主版本号。 */
-    private int parseJavaMajor(String version) {
-        if (version == null || version.trim().isEmpty()) {
-            return 8;
-        }
-        String normalized = version.trim();
-        if (normalized.startsWith("1.")) {
-            return parseLeadingNumber(normalized.substring(2), 8);
-        }
-        return parseLeadingNumber(normalized, 8);
     }
 
     /** 解析当前 Minecraft 小版本号。 */

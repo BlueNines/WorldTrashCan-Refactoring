@@ -19,6 +19,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
@@ -249,6 +250,17 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
     /** 打开个人垃圾桶。 */
     public void openPersonalTrash(org.bukkit.entity.Player player) {
         trashFeature.openPersonal(player);
+    }
+
+    /** 测试用：向玩家发送所有 RGB 可见通道。 */
+    public boolean debugRgb(final Player player) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在上下文发送 RGB 调试消息。 */
+            @Override
+            public void run() {
+                BukkitRgbDebugSender.send(BLWorldTrashCanFoliaPlugin.this, player);
+            }
+        });
     }
 
     /** 切换玩家防丢弃模式。 */
