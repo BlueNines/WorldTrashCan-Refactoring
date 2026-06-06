@@ -265,6 +265,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - `/wtc reload` 已修复默认 yml 缺失时不会补回的问题：四个平台 `reloadPlugin()` 会先执行默认资源补齐，再读取配置和刷新功能模块。当前默认资源不再包含 `notify.yml`；清理通知已合并到 `cleanup.yml` 的 `notify.*` 区域。
 - PrismaticAPI RGB 消息已完成构建和多平台 smoke：四个平台 jar 均包含 relocation 后的 `pixeltech/bluenine/blworldtrashcan/libs/croabeast/prismatic/PrismaticAPI.class`，且不残留原始 `me/croabeast` 类。Paper 1.20.4 RCON 响应中出现 `§x§f§f§3§3§6§6`，证明 `&#ff3366` 已渲染为 1.16+ RGB；Paper 1.13.2 与 Paper 1.12.2 均显示 `rgb-message: 禁用` 且 `reload/stats/clear` 正常。Folia 1.20.1 能启用插件并输出定时清理汇总，`rgb-message: 启用`；该测试服 RCON 对 `blwtc` 和 `stop` 返回 `Error executing ... (null)`，因此 Folia 命令链路需要用 console/latest 或真实入口补证据。
 - 通用总包 `BLWorldTrashCan-universal.jar` 已完成构建和四端 console smoke：同一个 jar 在 `paper-1.12.2-test-server` 识别为 `legacy-1.12`，在 `paper-1.13.2-test-server` 识别为 `bukkit-1.13-1.15`，在 `paper-1.20.4-test-server` 识别为 `paper-1.16-1.20`，在 `folia-1.20.1-test-server` 识别为 `folia-1.20`。通用总包内 PrismaticAPI 已 relocation，原始 `me/croabeast` 类数量为 0；主类 Java 8 加载 smoke 输出 `loaded-universal-main`。
+- 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
 
 本轮关键日志：
 
@@ -369,12 +370,22 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - `paper-1.13.2-test-server/ai-blwtc-universal-console-20260607-012407-bukkit113.log`
 - `paper-1.20.4-test-server/ai-blwtc-universal-console-20260607-012407-paper1204.log`
 - `folia-1.20.1-test-server/ai-blwtc-universal-console-20260607-012407-folia1201.log`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/control/client-response.properties`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/client-workflow-assertions.txt`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/logs/client-chat.log`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/logs/client-screen.log`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/logs/forge-latest.log`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/screenshots/runner_sequence_9.png`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/screenshots/runner_sequence_10.png`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/screenshots/runner_sequence_11.png`
+- `客户端自动化测试工作区/runs/20260607-031912-blwtc-client-workflow-regression/screenshots/runner_sequence_12.png`
 
 已知测试环境噪声：
 
 - 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BLWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
 - 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
 - 通用总包 1.12.2 smoke summary 里的 `ErrorPattern=true` 来自测试服其它前置插件噪声；同轮日志中 BLWorldTrashCan 已正常启用，平台识别、命令和停服流程均有证据。
+- 2026-06-07 真实客户端工作流回归中，Paper/Forge 日志只用于辅助定位；玩家可见功能结论以 `client-response.properties`、`client-workflow-assertions.txt`、`client-chat.log`、`client-screen.log` 和真实 PNG 截图为准。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
 - Folia 1.20 当前已经完成世界清理、专用实体限制和通知后台 smoke，但仍不等于整产物 `FOLIA_REGION_SAFE`；BossBar、Title、Sound 等通知尚未做 Folia 客户端视觉验收，密集实体限制为了避免跨 region 查询，目前只覆盖当前 chunk 内实体。
 - 本机 PlaceholderAPI 2.11.6 不支持 Folia，Folia PAPI 变量仍需换用支持 Folia 的 PlaceholderAPI 前置后再验收；不能用普通 Paper 的 PAPI 验证结果替代 Folia。
