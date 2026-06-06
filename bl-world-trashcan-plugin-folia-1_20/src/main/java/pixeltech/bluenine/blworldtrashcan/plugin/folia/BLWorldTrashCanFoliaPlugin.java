@@ -31,7 +31,9 @@ import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundleLoader;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
+import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaEntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaPlatform;
+import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaRegionCleanupFeature;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -24,6 +24,7 @@
         <module>bl-world-trashcan-plugin-bukkit-1_13_1_15</module>
         <module>bl-world-trashcan-plugin-paper-1_16_1_20</module>
         <module>bl-world-trashcan-plugin-folia-1_20</module>
+        <module>bl-world-trashcan-plugin-universal</module>
     </modules>
 
     <properties>
@@ -80,6 +81,11 @@
             <dependency>
                 <groupId>pixeltech.bluenine</groupId>
                 <artifactId>bl-world-trashcan-shared-bukkit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>bl-world-trashcan-platform-legacy-1_12</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

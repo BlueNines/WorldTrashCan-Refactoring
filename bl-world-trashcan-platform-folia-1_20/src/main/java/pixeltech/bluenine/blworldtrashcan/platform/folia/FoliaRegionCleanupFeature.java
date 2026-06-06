@@ -1,4 +1,4 @@
-package pixeltech.bluenine.blworldtrashcan.plugin.folia;
+package pixeltech.bluenine.blworldtrashcan.platform.folia;
 
 import net.md_5.bungee.api.ChatMessageType;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;

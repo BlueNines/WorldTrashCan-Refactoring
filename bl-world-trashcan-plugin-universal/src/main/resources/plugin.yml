@@ -1,0 +1,37 @@
+name: BLWorldTrashCan
+version: ${project.version}
+main: pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin
+folia-supported: true
+softdepend:
+  - Vault
+  - PlaceholderAPI
+commands:
+  blworldtrashcan:
+    aliases: [blwtc]
+    description: BLWorldTrashCan main command.
+  WorldListTrashCan:
+    aliases: [wtc]
+    description: Legacy WorldListTrashCan command alias.
+permissions:
+  blworldtrashcan.admin:
+    default: op
+  blworldtrashcan.use:
+    default: true
+  blworldtrashcan.world.create:
+    default: true
+  blworldtrashcan.global.open:
+    default: true
+  blworldtrashcan.global.take:
+    default: true
+  blworldtrashcan.global.put:
+    default: true
+  blworldtrashcan.personal.open:
+    default: true
+  blworldtrashcan.personal.take:
+    default: true
+  blworldtrashcan.personal.put:
+    default: true
+  blworldtrashcan.dropmode:
+    default: true
+  blworldtrashcan.look:
+    default: true

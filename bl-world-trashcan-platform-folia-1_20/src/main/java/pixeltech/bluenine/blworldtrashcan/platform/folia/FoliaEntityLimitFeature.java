@@ -1,4 +1,4 @@
-package pixeltech.bluenine.blworldtrashcan.plugin.folia;
+package pixeltech.bluenine.blworldtrashcan.platform.folia;
 
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
