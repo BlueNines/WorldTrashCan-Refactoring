@@ -17,6 +17,7 @@ BUILD_ROOT = base.REPO / "build" / "rgb-external-server-matrix"
 JAVA8_CAT = Path(r"C:\Program Files\Java\jdk-1.8\bin\java.exe")
 JAVA21 = Path(r"C:\Program Files\Java\jdk-21\bin\java.exe")
 JAVA17 = base.JAVA17
+JAVA25 = base.REPO / "build" / "tools" / "jre-25.0.3+9" / "bin" / "java.exe"
 UNIVERSAL_PLUGIN = "BLWorldTrashCan-universal.jar"
 
 
@@ -103,6 +104,40 @@ EXTERNAL_MATRIX = [
         "fileEncoding": "GBK",
         "readyTimeout": 180,
         "joinTimeout": 120,
+    },
+    {
+        "id": "external_paper2612",
+        "label": "paper-26.1.2-managed",
+        "version": "26.1.2",
+        "serverDir": SERVER_WORK / "paper-26.1.2-test-server",
+        "serverJar": "paper-26.1.2-69.jar",
+        "serverDownloadUrl": "https://fill-data.papermc.io/v1/objects/d30fae0c74092b10855f0412ca6b265c60301a013d34bc28a2a41bf5682dd80b/paper-26.1.2-69.jar",
+        "serverSha256": "d30fae0c74092b10855f0412ca6b265c60301a013d34bc28a2a41bf5682dd80b",
+        "port": 30026,
+        "java": JAVA25,
+        "plugin": UNIVERSAL_PLUGIN,
+        "expect": "rgb",
+        "quickPlay": True,
+        "direct": False,
+        "managedConfig": True,
+        "readyTimeout": 240,
+        "joinTimeout": 150,
+    },
+    {
+        "id": "external_spigot2612",
+        "label": "spigot-26.1.2-managed",
+        "version": "26.1.2",
+        "serverDir": SERVER_WORK / "spigot-26.1.2-test-server",
+        "serverJar": "spigot-26.1.2.jar",
+        "port": 30027,
+        "java": JAVA25,
+        "plugin": UNIVERSAL_PLUGIN,
+        "expect": "rgb",
+        "quickPlay": True,
+        "direct": False,
+        "managedConfig": True,
+        "readyTimeout": 240,
+        "joinTimeout": 150,
     },
 ]
 
@@ -259,6 +294,59 @@ def deploy_plugin(case: dict) -> Path:
     return target
 
 
+def ensure_managed_server_jar(case: dict) -> None:
+    """按用例配置下载 managed 服务端 jar，并校验 SHA-256。"""
+    server_dir = Path(case["serverDir"])
+    server_dir.mkdir(parents=True, exist_ok=True)
+    target = server_dir / str(case["serverJar"])
+    if not target.is_file() and case.get("serverDownloadUrl"):
+        base.download(str(case["serverDownloadUrl"]), target)
+    if not target.is_file():
+        raise RuntimeError("managed 服务端 jar 不存在: " + str(target))
+    expected_sha256 = str(case.get("serverSha256", "")).lower()
+    if expected_sha256:
+        import hashlib
+        digest = hashlib.sha256(target.read_bytes()).hexdigest()
+        if digest.lower() != expected_sha256:
+            raise RuntimeError("managed 服务端 jar SHA-256 不匹配: " + str(target) + " actual=" + digest)
+
+
+def write_managed_server_properties(case: dict) -> None:
+    """写入 managed 26.1 测试服启动所需的最小配置。"""
+    server_dir = Path(case["serverDir"])
+    path = server_dir / "server.properties"
+    values = {}
+    if path.is_file():
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            if "=" in line and not line.strip().startswith("#"):
+                key, value = line.split("=", 1)
+                values[key] = value
+    values.update({
+        "server-port": str(case["port"]),
+        "online-mode": "false",
+        "level-name": "rgb_visual_" + str(case["id"]),
+        "level-type": "minecraft:flat",
+        "generate-structures": "false",
+        "view-distance": "2",
+        "simulation-distance": "2",
+        "spawn-protection": "0",
+        "white-list": "false",
+        "enforce-secure-profile": "false",
+        "motd": "BLWTC RGB 26.1 " + str(case.get("label", case["id"])),
+    })
+    text = "\n".join(key + "=" + value for key, value in values.items()) + "\n"
+    path.write_text(text, encoding="utf-8")
+    (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
+
+
+def prepare_managed_server(case: dict) -> None:
+    """准备由本脚本托管的 26.1 测试服务端。"""
+    if not case.get("managedConfig", False):
+        return
+    ensure_managed_server_jar(case)
+    write_managed_server_properties(case)
+
+
 def server_command(case: dict) -> list[str]:
     """生成目标服务端的 Java 启动命令。"""
     java = str(Path(case["java"]))
@@ -284,6 +372,7 @@ def server_command(case: dict) -> list[str]:
 
 def launch_server(case: dict, run_dir: Path) -> subprocess.Popen:
     """启动外部服务端并等待 ready。"""
+    prepare_managed_server(case)
     deploy_plugin(case)
     server_dir = Path(case["serverDir"])
     log_path = run_dir / "logs" / (case["id"] + "-server-console.log")
@@ -409,6 +498,20 @@ def capture_channel_screenshot(case: dict, game_dir: Path, run_dir: Path) -> Pat
     return base.capture_internal_screenshot(case, game_dir, run_dir)
 
 
+def copy_screenshot(source: Path, run_dir: Path, case: dict, suffix: str) -> Path:
+    """把最近一次 F2 截图复制成稳定命名，避免后续截图覆盖证据。"""
+    target = run_dir / "screenshots" / (case["id"] + "-" + suffix + ".png")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
+    return target
+
+
+def capture_named_screenshot(case: dict, game_dir: Path, run_dir: Path, suffix: str) -> Path:
+    """截取当前客户端画面并归档为指定后缀。"""
+    source = base.capture_internal_screenshot(case, game_dir, run_dir)
+    return copy_screenshot(source, run_dir, case, suffix)
+
+
 def stop_process(process: subprocess.Popen, command: str | None = None) -> None:
     """优雅停止进程，必要时强制结束并关闭日志句柄。"""
     try:
@@ -420,7 +523,8 @@ def stop_process(process: subprocess.Popen, command: str | None = None) -> None:
 
 
 def run_basic_function_checks(case: dict, username: str, server_process: subprocess.Popen,
-                              server_log: Path, command_log: Path, run_dir: Path) -> list[dict]:
+                              server_log: Path, command_log: Path, run_dir: Path,
+                              game_dir: Path | None = None) -> list[dict]:
     """执行每个外部服务端都应覆盖的基础功能检查。"""
     checks = [
         {
@@ -519,6 +623,9 @@ def run_basic_function_checks(case: dict, username: str, server_process: subproc
             "error": error,
             "logExcerpt": text[-2000:],
         }
+        if status == "PASS" and game_dir is not None and check["name"] in ("global-gui-open", "personal-gui-open"):
+            time.sleep(0.6)
+            item["screenshot"] = str(capture_named_screenshot(case, game_dir, run_dir, check["name"] + "-f2"))
         results.append(item)
         if status != "PASS":
             write_json(run_dir / "logs" / (case["id"] + "-basic-checks.json"), results)
@@ -574,12 +681,14 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: 
             wait_debug_command_not_rejected(server_log, debug_offset)
         if channels_only:
             screenshot = capture_channel_screenshot(case, game_dir, run_dir)
+            screenshot = copy_screenshot(screenshot, run_dir, case, "rgb-channels-f2")
         else:
             screenshot = capture_debug_screenshot(case, game_dir, run_dir)
+            screenshot = copy_screenshot(screenshot, run_dir, case, "rgb-all-channels-f2")
         result["screenshot"] = str(screenshot)
         result["brightness"] = base.image_brightness(Image.open(screenshot))
         if basic_checks:
-            result["basicChecks"] = run_basic_function_checks(case, username, server_process, server_log, command_log, run_dir)
+            result["basicChecks"] = run_basic_function_checks(case, username, server_process, server_log, command_log, run_dir, game_dir)
         result["status"] = "PASS"
     except Exception as error:
         result["error"] = repr(error)
@@ -645,6 +754,7 @@ def main() -> int:
     if args.prepare_only:
         for case in cases:
             prepared_clients.setdefault(case["version"], base.ensure_client(case["version"]))
+            prepare_managed_server(case)
             deploy_plugin(case)
         write_json(run_root / "summary.json", {"status": "PREPARED", "cases": cases})
         return 0

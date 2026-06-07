@@ -10,7 +10,7 @@
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
 - `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.4、外部 Paper 1.21.8 和外部 Paper 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
 - `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 BossBar/Title/Sound 等通知尚未做 Folia 客户端视觉验收，且命令通知允许服主配置任意控制台命令。
-- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在 6 个外部服务端全部使用同一个 universal 整包完成真实客户端 RGB 三通道截图和基础功能回归。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 RGB 截图矩阵以真实客户端 F2 截图为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
+- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在 6 个外部服务端全部使用同一个 universal 整包完成真实客户端 RGB 三通道截图和基础功能回归，也已在 Paper 26.1.2 与 Spigot 26.1.2 使用同一个 universal 整包完成真实客户端 RGB 截图和 11 项基础功能复测。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 以及 26.1.2 RGB 截图矩阵以真实客户端 F2 截图为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
 
 ## 模块
 
@@ -74,6 +74,8 @@
 同一批外部服务端已补做 universal 整包复测，6 个端全部部署 `BLWorldTrashCan-universal.jar`。本轮 RGB 截图限定聊天框、ActionBar、Title/Subtitle，不再使用箱子 GUI、物品名或 Lore 作为颜色证据；每个端同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 
 针对上一轮 Title 颜色接近传统 `&a`、`&6` 的人工观感问题，已再次使用高辨识度 RGB 文案重测同一批外部服务端。Title 改为多段 `RGB TITLE FF1493`，分别使用 `#FF1493`、`#00E5FF`、`#BAFF00`，Subtitle 使用 `#7B2CFF` 与 `#FF4F00`；聊天框和 ActionBar 也显示 `RGB-FF1493`、`RGB-00E5FF`、`RGB-BAFF00`、`RGB-7B2CFF`、`RGB-FF4F00` 文本标记。6 个端仍全部使用同一个 `BLWorldTrashCan-universal.jar`，截图、日志和基础功能证据保留在 `docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
+
+26.1.2 兼容验收已补充 Paper 与 Spigot 两端：Paper 26.1.2 build 69 通过 Paper fill API 获取服务端 jar，Spigot 26.1.2 通过 BuildTools 使用 Java 25 构建。两个测试服都部署同一个 `BLWorldTrashCan-universal.jar`，使用真实原版 26.1.2 客户端 F2 截图验证 Chat、ActionBar、Title/Subtitle RGB，同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-26-1-spigot-paper-proof-20260608-005225/`。
 
 BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
 
