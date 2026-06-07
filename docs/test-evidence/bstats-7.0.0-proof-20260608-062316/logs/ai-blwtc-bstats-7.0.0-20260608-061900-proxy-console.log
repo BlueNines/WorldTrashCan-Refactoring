@@ -1,0 +1,105 @@
+Starting org.bukkit.craftbukkit.Main
+System Info: Java 17 (OpenJDK 64-Bit Server VM 17.0.19+10) Host: Windows 10 10.0 (amd64)
+Loading libraries, please wait...
+2026-06-08 06:19:34,166 ServerMain WARN Advanced terminal features are not available in this environment
+[06:19:37 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[06:19:38 INFO]: Loaded 1174 recipes
+[06:19:38 INFO]: Loaded 1271 advancements
+[06:19:38 INFO]: Starting minecraft server version 1.20.4
+[06:19:38 INFO]: Loading properties
+[06:19:38 INFO]: This server is running Paper version git-Paper-499 (MC: 1.20.4) (Implementing API version 1.20.4-R0.1-SNAPSHOT) (Git: 9de3f75 on ver/1.20.4)
+[06:19:39 INFO]: Server Ping Player Sample Count: 12
+[06:19:39 INFO]: Using 4 threads for Netty based IO
+[06:19:39 WARN]: [!] The timings profiler has been enabled but has been scheduled for removal from Paper in the future.
+    We recommend installing the spark profiler as a replacement: https://spark.lucko.me/
+    For more information please visit: https://github.com/PaperMC/Paper/issues/8948
+[06:19:39 INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 4 worker threads, and gen parallelism of 4 threads
+[06:19:39 INFO]: Default game type: SURVIVAL
+[06:19:39 INFO]: Generating keypair
+[06:19:39 INFO]: Starting Minecraft server on *:25566
+[06:19:39 INFO]: Using default channel type
+[06:19:39 INFO]: Paper: Using Java compression from Velocity.
+[06:19:39 INFO]: Paper: Using Java cipher from Velocity.
+[06:19:39 WARN]: [org.bukkit.craftbukkit.v1_20_R3.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[06:19:40 WARN]: Legacy plugin BLWorldTrashCan v7.0.0 does not specify an api-version.
+[06:19:40 INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.6
+[06:19:40 INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v7.0.0
+[06:19:40 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[06:19:40 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[06:19:40 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[06:19:40 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[06:19:40 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[06:19:40 INFO]: Preparing level "rgb_visual_paper1204"
+[06:19:41 INFO]: Preparing start region for dimension minecraft:overworld
+[06:19:41 INFO]: Time elapsed: 466 ms
+[06:19:41 INFO]: Preparing start region for dimension minecraft:the_nether
+[06:19:41 INFO]: Time elapsed: 96 ms
+[06:19:41 INFO]: Preparing start region for dimension minecraft:the_end
+[06:19:41 INFO]: Time elapsed: 7 ms
+[06:19:41 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[06:19:41 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[06:19:41 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0*
+[06:19:41 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[06:19:41 INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[06:19:41 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[06:19:41 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[06:19:41 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[06:19:41 INFO]: [BLWorldTrashCan] Universal runtime: paper
+[06:19:41 INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
+[06:19:41 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[06:19:41 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[06:19:41 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[06:19:42 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[06:19:42 INFO]: 0 placeholder hook(s) registered!
+[06:19:42 INFO]: Starting remote control listener
+[06:19:42 INFO]: Thread RCON Listener started
+[06:19:42 INFO]: RCON running on 0.0.0.0:25576
+[06:19:42 INFO]: Running delayed init tasks
+[06:19:42 INFO]: Done (3.302s)! For help, type "help"
+[06:19:42 INFO]: Timings Reset
+[06:19:42 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[06:19:42 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[06:22:57 INFO]: [PlaceholderAPI] Sent bStats metrics data: {"playerAmount":0,"onlineMode":0,"bukkitVersion":"git-Paper-499 (MC: 1.20.4)","bukkitName":"Paper","javaVersion":"17.0.19","osName":"Windows 10","osArch":"amd64","osVersion":"10.0","coreCount":16,"service":{"pluginVersion":"2.11.6","id":438,"customCharts":[{"chartId":"using_spigot","data":{"value":"yes"}},{"chartId":"using_expansion_cloud","data":{"value":"yes"}},{"chartId":"expansions_used","data":{"values":{"Wtc":1}}}]},"serverUUID":"a60e4b57-a39a-4496-ad69-4ff2fae0ee17","metricsVersion":"3.0.1"}
+[06:22:57 INFO]: [PlaceholderAPI] Sent data to bStats and received response: 
+[06:23:51 INFO]: [BLWorldTrashCan] Sent bStats metrics data: {"playerAmount":0,"onlineMode":0,"bukkitVersion":"git-Paper-499 (MC: 1.20.4)","bukkitName":"Paper","javaVersion":"17.0.19","osName":"Windows 10","osArch":"amd64","osVersion":"10.0","coreCount":16,"service":{"pluginVersion":"7.0.0","id":24350,"customCharts":[{"chartId":"players_and_servers","data":{"values":{"servers":1}}},{"chartId":"servers","data":{"value":1}},{"chartId":"platform","data":{"value":"universal-paper-1.16-1.20"}}]},"serverUUID":"a60e4b57-a39a-4496-ad69-4ff2fae0ee17","metricsVersion":"3.1.0"}
+[06:23:52 INFO]: [BLWorldTrashCan] Sent data to bStats and received response: 
+[06:25:01 INFO]: Thread RCON Client /127.0.0.1 started
+[06:25:03 INFO]: [Rcon: Stopping the server]
+[06:25:03 INFO]: Stopping server
+[06:25:03 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[06:25:03 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[06:25:03 INFO]: Saving players
+[06:25:03 INFO]: Saving worlds
+[06:25:03 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1204]'/minecraft:overworld
+[06:25:03 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1204'
+[06:25:03 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1204'
+[06:25:03 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1204'
+[06:25:03 INFO]: [ChunkHolderManager] Saved 0 block chunks, 16 entity chunks, 0 poi chunks in world 'rgb_visual_paper1204' in 0.01s
+[06:25:03 INFO]: ThreadedAnvilChunkStorage (rgb_visual_paper1204): All chunks are saved
+[06:25:03 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1204_nether]'/minecraft:the_nether
+[06:25:03 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1204_nether'
+[06:25:03 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1204_nether'
+[06:25:03 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1204_nether'
+[06:25:03 INFO]: [ChunkHolderManager] Saved 0 block chunks, 7 entity chunks, 0 poi chunks in world 'rgb_visual_paper1204_nether' in 0.00s
+[06:25:03 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[06:25:03 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1204_the_end]'/minecraft:the_end
+[06:25:03 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1204_the_end'
+[06:25:03 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1204_the_end'
+[06:25:03 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1204_the_end'
+[06:25:03 INFO]: [ChunkHolderManager] Saved 0 block chunks, 10 entity chunks, 0 poi chunks in world 'rgb_visual_paper1204_the_end' in 0.00s
+[06:25:03 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[06:25:03 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[06:25:03 INFO]: Flushing Chunk IO
+[06:25:03 INFO]: Closing Thread Pool
+2026-06-08 06:25:03,869 Log4j2-AsyncAppenderEventDispatcher-1-Async WARN Advanced terminal features are not available in this environment
+[06:25:03 INFO]: Closing Server
