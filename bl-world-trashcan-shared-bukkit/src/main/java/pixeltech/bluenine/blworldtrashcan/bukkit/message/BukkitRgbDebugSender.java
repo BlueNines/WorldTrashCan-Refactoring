@@ -16,14 +16,14 @@ import java.util.Arrays;
 
 /** 发送 RGB 调试消息，供真实客户端和协议客户端验收富文本兼容性。 */
 public final class BukkitRgbDebugSender {
-    private static final String CHAT_MESSAGE = "&#ff3366BLWTC_RGB_DEBUG_CHAT &f聊天 RGB";
-    private static final String ACTION_BAR_MESSAGE = "&#33ccffBLWTC_RGB_DEBUG_ACTIONBAR &f动作栏 RGB";
-    private static final String TITLE_MESSAGE = "&#66ff66BLWTC_RGB_DEBUG_TITLE";
-    private static final String SUBTITLE_MESSAGE = "&#ffcc33BLWTC_RGB_DEBUG_SUBTITLE";
-    private static final String BOSS_BAR_MESSAGE = "&#cc66ffBLWTC_RGB_DEBUG_BOSSBAR &fBossBar RGB";
-    private static final String GUI_TITLE = "&#ff6699BLWTC_RGB_DEBUG_GUI";
-    private static final String ITEM_NAME = "&#ffaa00BLWTC_RGB_DEBUG_ITEM";
-    private static final String ITEM_LORE = "&#00ffaaBLWTC_RGB_DEBUG_LORE";
+    private static final String CHAT_MESSAGE = "&#ff1493BLWTC_RGB_DEBUG_CHAT RGB-FF1493 &#00e5ffRGB-00E5FF &#baff00RGB-BAFF00";
+    private static final String ACTION_BAR_MESSAGE = "&#7b2cffBLWTC_RGB_DEBUG_ACTIONBAR RGB-7B2CFF &#ff4f00RGB-FF4F00";
+    private static final String TITLE_MESSAGE = "&#ff1493RGB &#00e5ffTITLE &#baff00FF1493";
+    private static final String SUBTITLE_MESSAGE = "&#7b2cffSUBTITLE &#ff4f00FF4F00";
+    private static final String BOSS_BAR_MESSAGE = "&#7b2cffBLWTC_RGB_DEBUG_BOSSBAR RGB-7B2CFF";
+    private static final String GUI_TITLE = "&#ff1493BLWTC_RGB_DEBUG_GUI";
+    private static final String ITEM_NAME = "&#00e5ffBLWTC_RGB_DEBUG_ITEM RGB-00E5FF";
+    private static final String ITEM_LORE = "&#baff00BLWTC_RGB_DEBUG_LORE RGB-BAFF00";
 
     /** 禁止实例化工具类。 */
     private BukkitRgbDebugSender() {

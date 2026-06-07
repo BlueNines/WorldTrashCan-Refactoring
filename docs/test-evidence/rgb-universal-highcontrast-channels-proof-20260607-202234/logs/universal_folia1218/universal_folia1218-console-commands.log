@@ -1,0 +1,13 @@
+[20:25:30] blwtc platform
+[20:25:30] blwtc debugrgbchannels RGBolia1218
+[20:25:34] blwtc reload
+[20:25:34] blwtc debugworldtrash RGBolia1218
+[20:25:35] blwtc debugroute RGBolia1218 global COBBLESTONE 5
+[20:25:35] blwtc debugroute RGBolia1218 personal STONE 6
+[20:25:36] blwtc debugroute RGBolia1218 world SAND 4
+[20:25:36] blwtc debugdamage RGBolia1218 SAND 3
+[20:25:37] blwtc debugdrop RGBolia1218 GRAVEL 2 owner
+[20:25:37] blwtc clear
+[20:25:38] blwtc debugsummary RGBolia1218
+[20:25:38] blwtc debugopen RGBolia1218 global
+[20:25:42] blwtc debugopen RGBolia1218 personal
