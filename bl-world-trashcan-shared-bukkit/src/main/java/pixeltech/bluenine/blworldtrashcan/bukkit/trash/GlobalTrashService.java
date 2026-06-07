@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
@@ -356,13 +357,8 @@ public final class GlobalTrashService {
 
     /** 按顺序匹配跨版本物品类型。 */
     private Material matchMaterial(String... names) {
-        for (String name : names) {
-            Material material = Material.matchMaterial(name);
-            if (material != null) {
-                return material;
-            }
-        }
-        return Material.STONE;
+        Material material = SafeMaterialMatcher.first(names);
+        return material == null ? Material.STONE : material;
     }
 
     /** 转换颜色代码。 */

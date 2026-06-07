@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
@@ -159,7 +160,7 @@ public final class BanGuiFeature implements Feature, Listener {
             if (slot >= inventory.getSize()) {
                 break;
             }
-            Material material = Material.matchMaterial(materialName);
+            Material material = SafeMaterialMatcher.match(materialName);
             if (material != null && material != Material.AIR) {
                 inventory.setItem(slot, new ItemStack(material));
                 slot++;

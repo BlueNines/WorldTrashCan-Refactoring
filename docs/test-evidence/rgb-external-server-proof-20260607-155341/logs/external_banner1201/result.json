@@ -1,0 +1,14 @@
+{
+  "id": "external_banner1201",
+  "label": "1.20.1fabric.banner",
+  "version": "1.20.1",
+  "clientVersion": "1.20.1",
+  "serverDir": "E:\\server_work\\1.20.1fabric.banner",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "expect": "rgb",
+  "status": "PASS",
+  "username": "RGBnner1201",
+  "clientPid": 24744,
+  "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260607-154320\\external_banner1201\\screenshots\\external_banner1201-debugrgb-f2.png",
+  "brightness": 54.617838541666664
+}

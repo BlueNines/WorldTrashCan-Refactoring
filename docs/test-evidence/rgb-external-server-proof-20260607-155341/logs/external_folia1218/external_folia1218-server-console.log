@@ -1,0 +1,235 @@
+Starting org.bukkit.craftbukkit.Main
+*** Warning, you've not updated in a while! ***
+*** Please download a new build from https://papermc.io/downloads/paper ***
+2026-06-07T07:47:07.351529600Z ServerMain WARN Advanced terminal features are not available in this environment
+[15:47:07 INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
+[15:47:07 INFO]: [bootstrap] Loading Folia 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) for Minecraft 1.21.8
+[15:47:07 INFO]: [PluginInitializerManager] Initializing plugins...
+[15:47:08 INFO]: [PluginInitializerManager] Initialized 3 plugins
+[15:47:08 INFO]: [PluginInitializerManager] Bukkit plugins (3):
+ - BLWorldTrashCan (0.1.0-SNAPSHOT), PlaceholderAPI (2.11.7-DEV-null), WorldListTrashCan (6.9.8)
+[15:47:11 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[15:47:12 INFO]: Loaded 1407 recipes
+[15:47:12 INFO]: Loaded 1520 advancements
+[15:47:12 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[15:47:13 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 226.9ms
+[15:47:13 INFO]: Starting minecraft server version 1.21.8
+[15:47:13 INFO]: Loading properties
+[15:47:13 INFO]: This server is running Folia version 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
+[15:47:13 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[15:47:13 INFO]: Server Ping Player Sample Count: 12
+[15:47:13 INFO]: Using 4 threads for Netty based IO
+[15:47:13 INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
+[15:47:13 INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[15:47:13 INFO]: [io.papermc.paper.threadedregions.TickRegions] Regionised ticking is enabled with 2 tick threads
+[15:47:13 INFO]: Default game type: SURVIVAL
+[15:47:13 INFO]: Generating keypair
+[15:47:13 INFO]: Starting Minecraft server on *:30004
+[15:47:13 INFO]: Using default channel type
+[15:47:13 INFO]: Paper: Using Java compression from Velocity.
+[15:47:13 INFO]: Paper: Using Java cipher from Velocity.
+[15:47:14 INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.7-DEV-null
+[15:47:14 INFO]: [WorldListTrashCan] Loading server plugin WorldListTrashCan v6.9.8
+[15:47:14 INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v0.1.0-SNAPSHOT
+[15:47:14 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[15:47:14 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[15:47:14 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[15:47:14 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[15:47:14 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[15:47:14 INFO]: Preparing level "world"
+[15:47:14 INFO]: Preparing start region for dimension minecraft:overworld
+[15:47:14 INFO]: Time elapsed: 3 ms
+[15:47:14 INFO]: Preparing start region for dimension minecraft:the_nether
+[15:47:14 INFO]: Time elapsed: 0 ms
+[15:47:14 INFO]: Preparing start region for dimension minecraft:the_end
+[15:47:14 INFO]: Time elapsed: 0 ms
+[15:47:14 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.7-DEV-null
+[15:47:14 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[15:47:14 INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v6.9.8
+[15:47:14 INFO]: 检测到服务器拥有Folia的API，正在适用目前最佳的方法
+[15:47:14 INFO]: 检测到服务器拥有Paper的API，正在适用目前最佳的方法
+[15:47:14 INFO]: 没有找到Vault插件，已自动关闭相关功能
+[15:47:14 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [1.0.0]
+[15:47:14 INFO]: 检测到服务器拥有Paper的EntityMoveEvent，正在适用目前最佳的方法
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.Main' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.BanGui' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.GlobalTrashOpen' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.GlobalTrashTakeItem' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.GlobalTrashPutItem' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.PersonalTrashTakeItem' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.PersonalTrashPutItem' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.help' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.GlobalBan' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.Look' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.DropMode' but it's already registered
+[15:47:14 WARN]: Plugin BLWorldTrashCan v0.1.0-SNAPSHOT tried to register permission 'WorldListTrashCan.PlayerTrash' but it's already registered
+[15:47:14 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v0.1.0-SNAPSHOT
+[15:47:14 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[15:47:14 INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[15:47:14 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[15:47:14 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [0.1.0-SNAPSHOT]
+[15:47:14 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[15:47:14 INFO]: [BLWorldTrashCan] Platform: folia-1.20
+[15:47:14 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability scheduler-region: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[15:47:14 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[15:47:14 INFO]: [BLWorldTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+[15:47:14 INFO]: [BLWorldTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过缓存复算任务。
+[15:47:14 INFO]: [spark] The spark plugin has been preferred but was not loaded. The bundled spark profiler will enabled instead.
+[15:47:14 INFO]: [spark] The spark profiler will not be enabled because it is currently disabled in the configuration.
+[15:47:14 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[15:47:14 INFO]: Done preparing level "world" (0.828s)
+[15:47:14 INFO]: Done (7.968s)! For help, type "help"
+[15:47:15 INFO]: 0 placeholder hook(s) registered!
+[15:47:15 INFO]: Initialising world 'world' before it can be ticked...
+[15:47:15 INFO]: Initialised world 'world'
+[15:47:15 INFO]: Initialising world 'world_nether' before it can be ticked...
+[15:47:15 INFO]: Initialised world 'world_nether'
+[15:47:15 INFO]: Initialising world 'world_the_end' before it can be ticked...
+[15:47:15 INFO]: Initialised world 'world_the_end'
+[15:47:15 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[15:47:15 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[15:47:17 INFO]: 5秒
+[15:47:18 INFO]: 5秒
+[15:47:19 INFO]: 3秒
+[15:47:20 INFO]: 3秒
+[15:47:20 INFO]: 2秒
+[15:47:21 INFO]: 2秒
+[15:47:21 INFO]: 1秒
+[15:47:22 INFO]: 1秒
+[15:47:22 INFO]: UUID of player RGBolia1218 is eea599c9-a6e7-3374-be36-45fda92be0e8
+[15:47:22 INFO]: [BLWorldTrashCan] 当前平台: folia-1.20
+[15:47:22 INFO]: - scheduler-global: 启用
+[15:47:22 INFO]: - scheduler-region: 启用
+[15:47:22 INFO]: - inventory-basic: 启用
+[15:47:22 INFO]: - item-pdc-tag: 启用
+[15:47:22 INFO]: - item-legacy-tag: 禁用
+[15:47:22 INFO]: - rgb-message: 启用
+[15:47:22 INFO]: - clickable-message: 启用
+[15:47:22 INFO]: - boss-bar: 启用
+[15:47:22 INFO]: - sign-legacy: 禁用
+[15:47:22 INFO]: - sign-modern: 启用
+[15:47:22 INFO]: - entity-move-event: 启用
+[15:47:22 INFO]: - folia-region-safe: 禁用
+[15:47:22 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有35个生物被清理 (点我打开垃圾桶)
+[15:47:23 INFO]: RGBolia1218 joined the game
+[15:47:23 INFO]: RGBolia1218[/127.0.0.1:61705] logged in with entity id 46 at ([world]17.5, 107.0, -53.5)
+[15:47:23 INFO]: 已发送 RGB 可见通道测试: RGBolia1218
+[15:47:23 INFO]: [BLWorldTrashCan] [DebugRGB] 当前平台不支持 Bukkit scheduler 延迟移除 BossBar，本轮调试 BossBar 将保留到玩家退出或插件重载。
+[15:47:23 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=3, entitiesSkipped=10, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true
+[15:47:23 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有3个生物被清理 (点我打开垃圾桶)
+[15:47:23 INFO]: 公共垃圾桶的物品已刷新
+[15:47:25 INFO]: 公共垃圾桶的物品已刷新
+[15:47:26 INFO]: 5秒
+[15:47:28 INFO]: 3秒
+[15:47:29 INFO]: 2秒
+[15:47:30 INFO]: 1秒
+[15:47:31 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=96, entitiesSkipped=73, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true
+[15:47:31 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有96个生物被清理 (点我打开垃圾桶)
+[15:47:31 INFO]: 公共垃圾桶的物品已刷新
+[15:47:31 INFO]: 5秒
+[15:47:33 INFO]: 3秒
+[15:47:34 INFO]: 5秒
+[15:47:34 INFO]: 2秒
+[15:47:35 INFO]: 1秒
+[15:47:36 INFO]: 3秒
+[15:47:36 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有99个生物被清理 (点我打开垃圾桶)
+[15:47:37 INFO]: 2秒
+[15:47:38 INFO]: 1秒
+[15:47:39 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=96, entitiesSkipped=73, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true
+[15:47:39 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有96个生物被清理 (点我打开垃圾桶)
+[15:47:39 INFO]: 公共垃圾桶的物品已刷新
+[15:47:39 INFO]: 公共垃圾桶的物品已刷新
+[15:47:42 INFO]: 5秒
+[15:47:44 INFO]: 3秒
+[15:47:45 INFO]: 2秒
+[15:47:45 INFO]: 5秒
+[15:47:46 INFO]: 1秒
+[15:47:47 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=96, entitiesSkipped=73, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true
+[15:47:47 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有96个生物被清理 (点我打开垃圾桶)
+[15:47:47 INFO]: 公共垃圾桶的物品已刷新
+[15:47:47 INFO]: 3秒
+[15:47:48 INFO]: 2秒
+[15:47:49 INFO]: 1秒
+[15:47:50 INFO]: 5秒
+[15:47:50 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有95个生物被清理 (点我打开垃圾桶)
+[15:47:52 INFO]: 3秒
+[15:47:53 INFO]: 2秒
+[15:47:53 INFO]: 公共垃圾桶的物品已刷新
+[15:47:54 INFO]: 1秒
+[15:47:55 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=95, entitiesSkipped=73, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true
+[15:47:55 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有95个生物被清理 (点我打开垃圾桶)
+[15:47:55 INFO]: 公共垃圾桶的物品已刷新
+[15:47:58 INFO]: 5秒
+[15:47:59 INFO]: RGBolia1218 lost connection: Disconnected
+[15:47:59 INFO]: RGBolia1218 left the game
+[15:47:59 INFO]: Stopping the server
+[15:47:59 INFO]: [RegionShutdownThread] Awaiting scheduler termination for 60s...
+[15:47:59 INFO]: [RegionShutdownThread] Scheduler halted
+[15:47:59 INFO]: Stopping server
+[15:47:59 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v0.1.0-SNAPSHOT
+[15:47:59 INFO]: [WorldListTrashCan] Disabling WorldListTrashCan v6.9.8
+[15:47:59 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.7-DEV-null
+[15:47:59 INFO]: [RegionShutdownThread] Halting chunk systems...
+[15:47:59 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[15:47:59 INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[15:47:59 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[15:47:59 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[15:47:59 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[15:47:59 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[15:47:59 INFO]: [RegionShutdownThread] Halted chunk systems
+[15:47:59 INFO]: [RegionShutdownThread] Finishing pending teleports...
+[15:47:59 INFO]: [RegionShutdownThread] Finished pending teleports
+[15:47:59 INFO]: [RegionShutdownThread] Saving all worlds
+[15:47:59 INFO]: [RegionShutdownThread] Saving world data for world 'world'
+[15:47:59 INFO]: [RegionShutdownThread] Closing player inventories...
+[15:47:59 INFO]: [RegionShutdownThread] Closed player inventories
+[15:47:59 INFO]: [RegionShutdownThread] Saving chunks...
+[15:47:59 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [1, -4] in world 'world'
+[15:48:00 INFO]: [ChunkHolderManager] Saved 625 block chunks, 625 entity chunks, 0 poi chunks in world 'world' in 0.38s
+[15:48:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
+[15:48:00 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
+[15:48:00 INFO]: [RegionShutdownThread] Saved chunks
+[15:48:00 INFO]: [RegionShutdownThread] Saving level data...
+[15:48:00 INFO]: [RegionShutdownThread] Saved level data
+[15:48:00 INFO]: [RegionShutdownThread] Saved world data for world 'world'
+[15:48:00 INFO]: [RegionShutdownThread] Saving world data for world 'world_nether'
+[15:48:00 INFO]: [RegionShutdownThread] Closing player inventories...
+[15:48:00 INFO]: [RegionShutdownThread] Closed player inventories
+[15:48:00 INFO]: [RegionShutdownThread] Saving chunks...
+[15:48:00 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_nether'
+[15:48:00 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_nether' in 0.04s
+[15:48:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
+[15:48:00 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
+[15:48:00 INFO]: [RegionShutdownThread] Saved chunks
+[15:48:00 INFO]: [RegionShutdownThread] Saving level data...
+[15:48:00 INFO]: [RegionShutdownThread] Saved level data
+[15:48:00 INFO]: [RegionShutdownThread] Saved world data for world 'world_nether'
+[15:48:00 INFO]: [RegionShutdownThread] Saving world data for world 'world_the_end'
+[15:48:00 INFO]: [RegionShutdownThread] Closing player inventories...
+[15:48:00 INFO]: [RegionShutdownThread] Closed player inventories
+[15:48:00 INFO]: [RegionShutdownThread] Saving chunks...
+[15:48:00 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_the_end'
+[15:48:00 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_the_end' in 0.02s
+[15:48:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
+[15:48:00 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
+[15:48:00 INFO]: [RegionShutdownThread] Saved chunks
+[15:48:00 INFO]: [RegionShutdownThread] Saving level data...
+[15:48:00 INFO]: [RegionShutdownThread] Saved level data
+[15:48:00 INFO]: [RegionShutdownThread] Saved world data for world 'world_the_end'
+[15:48:00 INFO]: [RegionShutdownThread] Saved all worlds
+[15:48:00 INFO]: [RegionShutdownThread] Saving all player data...
+[15:48:00 INFO]: [RegionShutdownThread] Saved all player data
+[15:48:00 INFO]: Waiting for all RegionFile I/O tasks to complete...
+[15:48:00 INFO]: All RegionFile I/O tasks to complete
+[15:48:00 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+[15:48:00 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...

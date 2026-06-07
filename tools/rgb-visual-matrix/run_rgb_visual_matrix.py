@@ -855,6 +855,23 @@ def capture_window(case: dict, run_dir: Path) -> Path:
     return path
 
 
+def png_file_ready(path: Path) -> bool:
+    """判断 Minecraft F2 截图文件是否已经完整写成 PNG。"""
+    if not path.is_file():
+        return False
+    first_size = path.stat().st_size
+    if first_size <= 8:
+        return False
+    try:
+        header = path.read_bytes()[:8]
+    except OSError:
+        return False
+    if header != b"\x89PNG\r\n\x1a\n":
+        return False
+    time.sleep(0.25)
+    return path.is_file() and path.stat().st_size == first_size
+
+
 def capture_internal_screenshot(case: dict, game_dir: Path, run_dir: Path) -> Path:
     """按 F2 让 Minecraft 自己生成截图并归档。"""
     screenshots = game_dir / "screenshots"
@@ -869,8 +886,11 @@ def capture_internal_screenshot(case: dict, game_dir: Path, run_dir: Path) -> Pa
     while time.time() < deadline:
         current = set(screenshots.glob("*.png")) if screenshots.is_dir() else set()
         created = sorted(current - before, key=lambda path: path.stat().st_mtime, reverse=True)
-        if created:
-            newest = created[0]
+        for path in created:
+            if png_file_ready(path):
+                newest = path
+                break
+        if newest is not None:
             break
         time.sleep(0.5)
     if newest is None:

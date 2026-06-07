@@ -5,5 +5,8 @@ target/
 .idea/
 *.iml
 *.log
+!docs/test-evidence/**/*.log
+__pycache__/
+*.pyc
 dist/*
 !dist/.gitkeep

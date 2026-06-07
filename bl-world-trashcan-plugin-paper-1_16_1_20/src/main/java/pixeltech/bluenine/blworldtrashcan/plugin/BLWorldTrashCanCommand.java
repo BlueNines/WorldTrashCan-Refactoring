@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -562,7 +563,7 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
         if (value == null || value.trim().isEmpty()) {
             return null;
         }
-        return Material.matchMaterial(value.trim().toUpperCase(Locale.ROOT));
+        return SafeMaterialMatcher.match(value);
     }
 
     /** 解析测试路由类型。 */

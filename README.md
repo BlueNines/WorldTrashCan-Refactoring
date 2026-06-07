@@ -8,9 +8,9 @@
 
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
-- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.4 的 RGB 可见通道；文件名暂沿用重构阶段命名。
+- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.4、外部 Paper 1.21.8 和外部 Paper 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
 - `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 BossBar/Title/Sound 等通知尚未做 Folia 客户端视觉验收，且命令通知允许服主配置任意控制台命令。
-- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 RGB 截图矩阵以各版本对应轻量 jar 为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
+- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在外部 Arclight NeoForge 1.21.1 与 Banner/Fabric 1.20.1 服务端用真实客户端截图验证 RGB 可见通道。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 RGB 截图矩阵以各版本对应轻量 jar 为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
 
 ## 模块
 
@@ -68,6 +68,8 @@
 正式消息入口统一走 `RichTextRenderer`，包括普通 Chat、可点击 Chat、ActionBar、Title、BossBar 标题、GUI 标题和平台层 `sendMessage(UUID, message)`。1.16.5+ 服务端可以使用 `&#RRGGBB` 这类 RGB 写法；1.12.2 和 1.13-1.15 会自动降级为传统 `&` 颜色码，不要求真实 RGB。
 
 本轮 RGB 视觉验收使用真实原版客户端生成的 F2 截图，不用服务端日志或协议抓包替代截图结论。`/blwtc debugrgb <玩家>` 会向在线玩家发送 Chat、ActionBar、Title、Subtitle、BossBar、GUI 标题、物品名和 Lore 八个可见通道；截图矩阵覆盖 Paper 1.12.2、1.13.2、1.14.4、1.15.2、1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.4。其中 1.12.2-1.15.2 为传统颜色降级证据，1.16.5-1.21.4 为 RGB 视觉证据。可提交截图证明保留在 `docs/test-evidence/rgb-visual-proof-20260607-104606/`，本机原始运行缓存保留在 `build/rgb-visual-matrix/runs/rgb-visual-proof-20260607-104606/`，汇总文件为 `build/rgb-visual-matrix/latest-visual-proof.json`。
+
+外部服务端补充矩阵同样使用真实客户端 F2 截图，并额外校验 `blwtc platform` 确实被插件接收，避免把插件未加载或命令未注册误判为通过。覆盖 `E:\server_work\server_1.21.8_0`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\folia1.21.8`、`E:\server_work\1.21.11spigot`、`E:\server_work\1.21.11arclight-neoforge` 和 `E:\server_work\1.20.1fabric.banner`，6/6 PASS。可提交截图和日志证据保留在 `docs/test-evidence/rgb-external-server-proof-20260607-155341/`。
 
 BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
 

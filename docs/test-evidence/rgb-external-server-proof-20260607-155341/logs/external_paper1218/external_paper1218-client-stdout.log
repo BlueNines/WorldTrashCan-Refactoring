@@ -1,0 +1,67 @@
+[15:54:04] [Datafixer Bootstrap/INFO]: 269 Datafixer optimizations took 437 milliseconds
+[15:54:07] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[15:54:07] [Render thread/INFO]: Setting user: RGBaper1218
+[15:54:07] [Render thread/INFO]: Backend library: LWJGL version 3.3.3+5
+[15:54:08] [Render thread/INFO]: Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access
+[15:54:08] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[15:54:08] [Worker-Main-10/INFO]: Found unifont_pua-16.0.03.hex, loading
+[15:54:08] [Worker-Main-9/INFO]: Found unifont_all_no_pua-16.0.03.hex, loading
+[15:54:08] [Worker-Main-2/INFO]: Found unifont_jp_patch-16.0.03.hex, loading
+[15:54:08] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on 扬声器 (USB Audio Device)
+[15:54:08] [Render thread/INFO]: Sound engine started
+[15:54:09] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[15:54:09] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[15:54:09] [Render thread/INFO]: Connecting to 127.0.0.1, 30001
+[15:54:10] [Render thread/INFO]: [System] [CHAT] RGBaper1218 joined the game
+[15:54:10] [Render thread/INFO]: Loaded 2 advancements
+[15:54:10] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[15:54:11] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[15:54:11] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[15:54:11] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[15:54:11] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[15:54:11] [Render thread/INFO]: [System] [CHAT] BLWTC_RGB_DEBUG_CHAT 聊天 RGB
+[15:54:12] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[15:54:12] [Render thread/INFO]: [System] [CHAT] 还剩下 10 秒清理物品和实体
+[15:54:12] [Render thread/INFO]: [System] [CHAT] 还剩下 10 秒清理物品和实体
+[15:54:13] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 128 reached during a single frame. New capacity will be 256.
+[15:54:14] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 256 reached during a single frame. New capacity will be 512.
+[15:54:16] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 512 reached during a single frame. New capacity will be 1024.
+[15:54:17] [Render thread/INFO]: [System] [CHAT] 5秒
+[15:54:17] [Render thread/INFO]: [System] [CHAT] 5秒
+[15:54:19] [Render thread/INFO]: [System] [CHAT] 3秒
+[15:54:19] [Render thread/INFO]: [System] [CHAT] 3秒
+[15:54:20] [Render thread/INFO]: [System] [CHAT] 2秒
+[15:54:20] [Render thread/INFO]: [System] [CHAT] 2秒
+[15:54:21] [Render thread/INFO]: [System] [CHAT] 1秒
+[15:54:21] [Render thread/INFO]: [System] [CHAT] 1秒
+[15:54:22] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-07_15.54.22.png
+[15:54:22] [Render thread/INFO]: [System] [CHAT] 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有70个生物被清理 (点我打开垃圾桶)
+[15:54:22] [Render thread/INFO]: [System] [CHAT] 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)
+[15:54:22] [Render thread/INFO]: [System] [CHAT] 还有2次清理，公共垃圾桶
+[15:54:22] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-07_15.54.22_2.png
+[15:54:25] [Render thread/INFO]: [System] [CHAT] 还有2次清理，公共垃圾桶
+[15:54:32] [Render thread/INFO]: [System] [CHAT] 还剩下 10 秒清理物品和实体
+[15:54:33] [Render thread/INFO]: [System] [CHAT] 还剩下 10 秒清理物品和实体
+[15:54:37] [Render thread/INFO]: [System] [CHAT] 5秒
+[15:54:38] [Render thread/INFO]: [System] [CHAT] 5秒
+[15:54:39] [Render thread/INFO]: [System] [CHAT] 3秒
+[15:54:40] [Render thread/INFO]: [System] [CHAT] 2秒
+[15:54:40] [Render thread/INFO]: [System] [CHAT] 3秒
+[15:54:41] [Render thread/INFO]: [System] [CHAT] 1秒
+[15:54:41] [Render thread/INFO]: [System] [CHAT] 2秒
+[15:54:42] [Render thread/INFO]: [System] [CHAT] 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有70个生物被清理 (点我打开垃圾桶)
+[15:54:42] [Render thread/INFO]: [System] [CHAT] 1秒
+[15:54:43] [Render thread/INFO]: [System] [CHAT] 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有26个生物被清理 (点我打开垃圾桶)
+[15:54:43] [Render thread/INFO]: [System] [CHAT] 还有1次清理，公共垃圾桶
+[15:54:45] [Render thread/INFO]: [System] [CHAT] 还有1次清理，公共垃圾桶
