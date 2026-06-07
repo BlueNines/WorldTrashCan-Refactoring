@@ -1,0 +1,17 @@
+{
+  "run": "20260608-072705",
+  "results": [
+    {
+      "id": "paper1204",
+      "version": "1.20.4",
+      "expect": "rgb",
+      "status": "PASS",
+      "username": "RGBaper1204",
+      "clientPid": 6600,
+      "desktopScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-visual-matrix\\runs\\20260608-072705\\paper1204\\screenshots\\paper1204-debugrgb.png",
+      "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-visual-matrix\\runs\\20260608-072705\\paper1204\\screenshots\\paper1204-debugrgb-f2.png",
+      "brightness": 191.84537760416666
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-visual-matrix\\runs\\20260608-072705\\rgb-visual-contact-sheet.png"
+}

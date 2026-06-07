@@ -939,9 +939,25 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path) -> dict:
         time.sleep(28)
         connect_via_gui(case, username, run_dir)
         wait_player_online(case, username, run_dir)
-        run_rcon(case, ["blwtc platform", "blwtc debugrgb " + username], run_dir / "logs" / (case["id"] + "-rcon.log"))
+        if case.get("channelsOnly"):
+            hwnd = find_minecraft_window(case["version"])
+            rect = focus_window(hwnd)
+            click_game(hwnd, rect, 0.50, 0.56)
+        commands = ["wtc reload", "blwtc platform"]
+        if case.get("channelsOnly"):
+            commands.extend([
+                "gamemode creative " + username,
+                "effect give " + username + " minecraft:resistance 30 255 true",
+                "setblock 0 80 0 minecraft:stone",
+                "tp " + username + " 0 81 0",
+                "blwtc debugrgbchannels " + username,
+            ])
+        else:
+            commands.append("blwtc debugrgb " + username)
+        run_rcon(case, commands, run_dir / "logs" / (case["id"] + "-rcon.log"))
         time.sleep(2.5)
-        hover_debug_item(case)
+        if not case.get("channelsOnly"):
+            hover_debug_item(case)
         screenshot = capture_internal_screenshot(case, game_dir, run_dir)
         try:
             result["desktopScreenshot"] = str(capture_window(case, run_dir))
@@ -1007,10 +1023,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--case", default="")
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--channels-only", action="store_true")
     args = parser.parse_args()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     run_root = BUILD_ROOT / "runs" / run_id
-    cases = selected_cases(args.case or None)
+    cases = [dict(case) for case in selected_cases(args.case or None)]
+    if args.channels_only:
+        for case in cases:
+            case["channelsOnly"] = True
     run_root.mkdir(parents=True, exist_ok=True)
     prepared_clients = {}
     if args.prepare_only:

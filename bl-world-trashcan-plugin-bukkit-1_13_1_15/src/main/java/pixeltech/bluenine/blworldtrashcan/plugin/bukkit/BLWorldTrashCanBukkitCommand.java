@@ -22,7 +22,7 @@ import java.util.Locale;
 /** 新架构主命令，当前只提供架构验证命令。 */
 public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanBukkitPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -153,6 +153,10 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             handleDebugRgb(sender, args);
             return true;
         }
+        if ("debugrgbchannels".equals(sub)) {
+            handleDebugRgbChannels(sender, args);
+            return true;
+        }
         sendHelp(sender);
         return true;
     }
@@ -193,6 +197,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
                 "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
                 "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
+                "&b/blwtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB/降级色通道",
                 "&b/blwtc reload &7- 重载插件"));
     }
 
@@ -504,6 +509,24 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         }
         plugin.debugRgb(player);
         sender.sendMessage("§a已发送 RGB/降级色可见通道测试: §f" + player.getName());
+    }
+
+    /** 处理聊天、ActionBar 和 Title RGB/降级色通道测试命令。 */
+    private void handleDebugRgbChannels(CommandSender sender, String[] args) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage("§c用法: /blwtc debugrgbchannels <玩家>");
+            return;
+        }
+        Player player = requireOnlinePlayer(sender, args[1]);
+        if (player == null) {
+            return;
+        }
+        plugin.debugRgbChannels(player);
+        sender.sendMessage("§a已发送 RGB/降级色通道测试: §f" + player.getName());
     }
 
     /** 发送平台能力信息。 */

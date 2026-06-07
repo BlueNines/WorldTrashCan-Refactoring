@@ -1,0 +1,115 @@
+Starting org.bukkit.craftbukkit.Main
+*** Warning, you've not updated in a while! ***
+*** Please download a new build as per instructions from https://papermc.io/downloads/paper ***
+System Info: Java 17 (OpenJDK 64-Bit Server VM 17.0.19+10) Host: Windows 10 10.0 (amd64)
+Loading libraries, please wait...
+2026-06-08 07:27:06,974 ServerMain WARN Advanced terminal features are not available in this environment
+[07:27:10 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[07:27:11 INFO]: Loaded 1174 recipes
+[07:27:11 INFO]: Loaded 1271 advancements
+[07:27:11 INFO]: Starting minecraft server version 1.20.4
+[07:27:11 INFO]: Loading properties
+[07:27:11 INFO]: This server is running Paper version git-Paper-499 (MC: 1.20.4) (Implementing API version 1.20.4-R0.1-SNAPSHOT) (Git: 9de3f75 on ver/1.20.4)
+[07:27:11 INFO]: Server Ping Player Sample Count: 12
+[07:27:11 INFO]: Using 4 threads for Netty based IO
+[07:27:11 WARN]: [!] The timings profiler has been enabled but has been scheduled for removal from Paper in the future.
+    We recommend installing the spark profiler as a replacement: https://spark.lucko.me/
+    For more information please visit: https://github.com/PaperMC/Paper/issues/8948
+[07:27:11 INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 4 worker threads, and gen parallelism of 4 threads
+[07:27:12 INFO]: Default game type: SURVIVAL
+[07:27:12 INFO]: Generating keypair
+[07:27:12 INFO]: Starting Minecraft server on *:25566
+[07:27:12 INFO]: Using default channel type
+[07:27:12 INFO]: Paper: Using Java compression from Velocity.
+[07:27:12 INFO]: Paper: Using Java cipher from Velocity.
+[07:27:12 INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.6
+[07:27:12 INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v7.0.0
+[07:27:12 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[07:27:12 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[07:27:12 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[07:27:12 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[07:27:12 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[07:27:12 INFO]: Preparing level "rgb_visual_paper1204"
+[07:27:12 INFO]: Preparing start region for dimension minecraft:overworld
+[07:27:12 INFO]: Time elapsed: 458 ms
+[07:27:12 INFO]: Preparing start region for dimension minecraft:the_nether
+[07:27:12 INFO]: Time elapsed: 30 ms
+[07:27:12 INFO]: Preparing start region for dimension minecraft:the_end
+[07:27:12 INFO]: Time elapsed: 13 ms
+[07:27:12 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[07:27:13 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[07:27:13 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[07:27:13 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[07:27:13 INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[07:27:13 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[07:27:13 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[07:27:13 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[07:27:13 INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
+[07:27:13 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[07:27:13 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[07:27:13 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[07:27:13 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[07:27:13 INFO]: Starting remote control listener
+[07:27:13 INFO]: Thread RCON Listener started
+[07:27:13 INFO]: RCON running on 0.0.0.0:25576
+[07:27:13 INFO]: Running delayed init tasks
+[07:27:13 INFO]: 0 placeholder hook(s) registered!
+[07:27:13 INFO]: Done (1.921s)! For help, type "help"
+[07:27:13 INFO]: Timings Reset
+[07:27:14 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[07:27:14 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[07:27:20 INFO]: UUID of player RGBaper1204 is d5da7284-6fd1-344d-b6fc-acf4595267dd
+[07:27:21 INFO]: RGBaper1204 joined the game
+[07:27:21 INFO]: RGBaper1204[/127.0.0.1:63195] logged in with entity id 42 at ([rgb_visual_paper1204]0.5, 81.0, 0.5)
+[07:27:42 INFO]: Thread RCON Client /127.0.0.1 started
+[07:27:43 INFO]: Thread RCON Client /127.0.0.1 shutting down
+[07:27:43 INFO]: Thread RCON Client /127.0.0.1 started
+[07:27:43 INFO]: Thread RCON Client /127.0.0.1 shutting down
+[07:27:45 INFO]: Thread RCON Client /127.0.0.1 started
+[07:27:45 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[07:27:45 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[07:27:45 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[07:27:47 INFO]: [Rcon: Applied effect Resistance to RGBaper1204]
+[07:27:49 INFO]: [Rcon: Teleported RGBaper1204 to 0.500000, 81.000000, 0.500000]
+[07:27:50 INFO]: Thread RCON Client /127.0.0.1 shutting down
+[07:28:20 INFO]: RGBaper1204 lost connection: Disconnected
+[07:28:20 INFO]: RGBaper1204 left the game
+[07:28:20 INFO]: Stopping the server
+[07:28:21 INFO]: Stopping server
+[07:28:21 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[07:28:21 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[07:28:21 INFO]: Saving players
+[07:28:21 INFO]: Saving worlds
+[07:28:21 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1204]'/minecraft:overworld
+[07:28:21 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1204'
+[07:28:21 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1204'
+[07:28:21 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1204'
+[07:28:21 INFO]: [ChunkHolderManager] Saved 121 block chunks, 121 entity chunks, 0 poi chunks in world 'rgb_visual_paper1204' in 0.10s
+[07:28:21 INFO]: ThreadedAnvilChunkStorage (rgb_visual_paper1204): All chunks are saved
+[07:28:21 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1204_nether]'/minecraft:the_nether
+[07:28:21 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1204_nether'
+[07:28:21 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1204_nether'
+[07:28:21 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1204_nether'
+[07:28:21 INFO]: [ChunkHolderManager] Saved 121 block chunks, 121 entity chunks, 0 poi chunks in world 'rgb_visual_paper1204_nether' in 0.14s
+[07:28:21 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[07:28:21 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1204_the_end]'/minecraft:the_end
+[07:28:21 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1204_the_end'
+[07:28:21 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1204_the_end'
+[07:28:21 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1204_the_end'
+[07:28:21 INFO]: [ChunkHolderManager] Saved 121 block chunks, 121 entity chunks, 0 poi chunks in world 'rgb_visual_paper1204_the_end' in 0.04s
+[07:28:21 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[07:28:21 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[07:28:21 INFO]: Flushing Chunk IO
+[07:28:21 INFO]: Closing Thread Pool
+2026-06-08 07:28:21,589 Log4j2-AsyncAppenderEventDispatcher-1-Async WARN Advanced terminal features are not available in this environment
+[07:28:21 INFO]: Closing Server

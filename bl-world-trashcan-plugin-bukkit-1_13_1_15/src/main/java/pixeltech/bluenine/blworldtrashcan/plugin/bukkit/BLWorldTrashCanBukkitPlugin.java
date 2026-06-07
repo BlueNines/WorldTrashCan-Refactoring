@@ -241,6 +241,11 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
         BukkitRgbDebugSender.send(this, player);
     }
 
+    /** 测试用：只向玩家发送聊天、ActionBar 和 Title RGB 或降级色可见通道。 */
+    public void debugRgbChannels(Player player) {
+        BukkitRgbDebugSender.sendChatActionTitle(player);
+    }
+
     /** 切换玩家防丢弃模式。 */
     public boolean toggleDropProtection(Player player) {
         return protectionFeature != null && protectionFeature.toggleDropProtection(player);

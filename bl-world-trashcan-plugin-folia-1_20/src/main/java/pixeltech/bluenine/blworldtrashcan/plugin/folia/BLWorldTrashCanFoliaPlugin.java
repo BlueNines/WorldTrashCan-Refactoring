@@ -263,6 +263,17 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         });
     }
 
+    /** 测试用：只向玩家发送聊天、ActionBar 和 Title RGB 可见通道。 */
+    public boolean debugRgbChannels(final Player player) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在上下文发送 RGB 通道调试消息。 */
+            @Override
+            public void run() {
+                BukkitRgbDebugSender.sendChatActionTitle(player);
+            }
+        });
+    }
+
     /** 切换玩家防丢弃模式。 */
     public boolean toggleDropProtection(Player player) {
         return protectionFeature != null && protectionFeature.toggleDropProtection(player);

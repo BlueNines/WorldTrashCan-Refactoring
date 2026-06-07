@@ -5,7 +5,7 @@ world-trash:
   # 玩家创建世界垃圾桶时告示牌需要填写的文本。
   sign-create-text: "[世界垃圾桶]"
   # 创建成功后告示牌显示的文本。
-  sign-created-text: "&b[&c世界垃圾桶&b]"
+  sign-created-text: "&#5AC8FA[&#FFD166世界垃圾桶&#5AC8FA]"
   # 普通玩家每个世界默认可创建的垃圾桶数量。
   default-max-count: 3
   # 是否允许清理任务写入未加载区块里的世界垃圾桶。
