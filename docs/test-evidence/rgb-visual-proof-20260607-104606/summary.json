@@ -1,0 +1,97 @@
+{
+    "status":  "PASS",
+    "created":  "2026-06-07 10:46:06",
+    "cases":  [
+                  {
+                      "id":  "paper1122",
+                      "version":  "1.12.2",
+                      "expect":  "downgrade",
+                      "run":  "20260607-094001",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.12.2-paper1122-downgrade.png",
+                      "brightness":  30.595052083333332,
+                      "username":  "RGBaper1122"
+                  },
+                  {
+                      "id":  "paper1132",
+                      "version":  "1.13.2",
+                      "expect":  "downgrade",
+                      "run":  "20260607-094207",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.13.2-paper1132-downgrade.png",
+                      "brightness":  65.763671875,
+                      "username":  "RGBaper1132"
+                  },
+                  {
+                      "id":  "paper1144",
+                      "version":  "1.14.4",
+                      "expect":  "downgrade",
+                      "run":  "20260607-094632",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.14.4-paper1144-downgrade.png",
+                      "brightness":  70.06998697916667,
+                      "username":  "RGBaper1144"
+                  },
+                  {
+                      "id":  "paper1152",
+                      "version":  "1.15.2",
+                      "expect":  "downgrade",
+                      "run":  "20260607-102058",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.15.2-paper1152-downgrade.png",
+                      "brightness":  49.454427083333336,
+                      "username":  "RGBaper1152"
+                  },
+                  {
+                      "id":  "paper1165",
+                      "version":  "1.16.5",
+                      "expect":  "rgb",
+                      "run":  "20260607-102247",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.16.5-paper1165-rgb.png",
+                      "brightness":  70.12760416666667,
+                      "username":  "RGBaper1165"
+                  },
+                  {
+                      "id":  "paper1171",
+                      "version":  "1.17.1",
+                      "expect":  "rgb",
+                      "run":  "20260607-102715",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.17.1-paper1171-rgb.png",
+                      "brightness":  69.64680989583333,
+                      "username":  "RGBaper1171"
+                  },
+                  {
+                      "id":  "paper1182",
+                      "version":  "1.18.2",
+                      "expect":  "rgb",
+                      "run":  "20260607-102840",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.18.2-paper1182-rgb.png",
+                      "brightness":  70.71061197916667,
+                      "username":  "RGBaper1182"
+                  },
+                  {
+                      "id":  "paper1194",
+                      "version":  "1.19.4",
+                      "expect":  "rgb",
+                      "run":  "20260607-103018",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.19.4-paper1194-rgb.png",
+                      "brightness":  69.66438802083333,
+                      "username":  "RGBaper1194"
+                  },
+                  {
+                      "id":  "paper1204",
+                      "version":  "1.20.4",
+                      "expect":  "rgb",
+                      "run":  "20260607-103743",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.20.4-paper1204-rgb.png",
+                      "brightness":  70.1689453125,
+                      "username":  "RGBaper1204"
+                  },
+                  {
+                      "id":  "paper1214",
+                      "version":  "1.21.4",
+                      "expect":  "rgb",
+                      "run":  "20260607-103914",
+                      "screenshot":  "docs/test-evidence/rgb-visual-proof-20260607-104606/screenshots/1.21.4-paper1214-rgb.png",
+                      "brightness":  70.373046875,
+                      "username":  "RGBaper1214"
+                  }
+              ],
+    "contactSheet":  "docs/test-evidence/rgb-visual-proof-20260607-104606/rgb-visual-proof-contact-sheet.png"
+}

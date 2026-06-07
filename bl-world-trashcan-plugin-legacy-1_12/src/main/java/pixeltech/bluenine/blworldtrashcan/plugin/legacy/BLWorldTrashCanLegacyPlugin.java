@@ -20,6 +20,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
@@ -157,6 +158,11 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     /** 打开个人垃圾桶。 */
     public void openPersonalTrash(Player player) {
         trashFeature.openPersonal(player);
+    }
+
+    /** 测试用：向玩家发送所有 RGB 或降级色可见通道。 */
+    public void debugRgb(Player player) {
+        BukkitRgbDebugSender.send(this, player);
     }
 
     /** 切换玩家防丢弃模式。 */

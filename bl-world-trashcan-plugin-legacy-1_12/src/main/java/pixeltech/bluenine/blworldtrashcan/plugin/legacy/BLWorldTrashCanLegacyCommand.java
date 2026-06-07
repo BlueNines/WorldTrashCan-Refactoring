@@ -21,7 +21,7 @@ import java.util.Locale;
 /** Legacy 1.12 主命令。 */
 public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb");
     private final BLWorldTrashCanLegacyPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -148,6 +148,10 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             handleDebugPlayer(sender, args);
             return true;
         }
+        if ("debugrgb".equals(sub)) {
+            handleDebugRgb(sender, args);
+            return true;
+        }
         sendHelp(sender);
         return true;
     }
@@ -187,6 +191,7 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
                 "&b/blwtc debugstock &7- 后台查看当前垃圾桶库存",
                 "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
                 "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
+                "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
                 "&b/blwtc reload &7- 重载插件"));
     }
 
@@ -493,6 +498,24 @@ public final class BLWorldTrashCanLegacyCommand implements CommandExecutor, TabC
             return;
         }
         sender.sendMessage("§c类型必须是 dropmode、look、ban 或 globalban。");
+    }
+
+    /** 处理 RGB/降级色可见通道测试命令。 */
+    private void handleDebugRgb(CommandSender sender, String[] args) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage("§c用法: /blwtc debugrgb <玩家>");
+            return;
+        }
+        Player player = requireOnlinePlayer(sender, args[1]);
+        if (player == null) {
+            return;
+        }
+        plugin.debugRgb(player);
+        sender.sendMessage("§a已发送 RGB/降级色可见通道测试: §f" + player.getName());
     }
 
     /** 要求发送者为玩家。 */
