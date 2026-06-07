@@ -34,11 +34,19 @@ public final class BukkitRgbDebugSender {
         if (plugin == null || player == null) {
             return;
         }
-        player.sendMessage(RichTextRenderer.color(player, CHAT_MESSAGE));
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, RichTextRenderer.components(player, ACTION_BAR_MESSAGE));
-        player.sendTitle(RichTextRenderer.color(player, TITLE_MESSAGE), RichTextRenderer.color(player, SUBTITLE_MESSAGE), 5, 60, 10);
+        sendChatActionTitle(player);
         sendBossBar(plugin, player);
         openInventory(player);
+    }
+
+    /** 仅发送聊天、ActionBar 和 Title，供不允许 GUI 遮挡的 RGB 截图矩阵使用。 */
+    public static void sendChatActionTitle(Player player) {
+        if (player == null) {
+            return;
+        }
+        player.sendMessage(RichTextRenderer.color(player, CHAT_MESSAGE));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, RichTextRenderer.components(player, ACTION_BAR_MESSAGE));
+        player.sendTitle(RichTextRenderer.color(player, TITLE_MESSAGE), RichTextRenderer.color(player, SUBTITLE_MESSAGE), 5, 80, 20);
     }
 
     /** 发送带 RGB 标题的 BossBar，并在短延迟后移除。 */

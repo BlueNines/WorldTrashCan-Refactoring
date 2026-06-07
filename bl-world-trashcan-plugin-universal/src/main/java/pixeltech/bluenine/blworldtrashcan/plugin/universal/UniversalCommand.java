@@ -22,7 +22,7 @@ import java.util.Locale;
 /** universal 总包主命令，兼容现有轻量包命令行为。 */
 public final class UniversalCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanUniversalPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -112,6 +112,10 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         }
         if ("debugrgb".equals(sub)) {
             handleDebugRgb(sender, args);
+            return true;
+        }
+        if ("debugrgbchannels".equals(sub)) {
+            handleDebugRgbChannels(sender, args);
             return true;
         }
         sendHelp(sender);
@@ -231,6 +235,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
                 "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
                 "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
                 "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB 可见通道",
+                "&b/blwtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB 通道",
                 "&b/blwtc reload &7- 重载插件"));
     }
 
@@ -552,6 +557,26 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(submitted
                 ? "§a已发送 RGB 可见通道测试: §f" + player.getName()
                 : "§cRGB 可见通道测试提交失败: " + player.getName());
+    }
+
+    /** 处理不带 GUI 的 RGB 通道测试命令。 */
+    private void handleDebugRgbChannels(CommandSender sender, String[] args) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage("§c用法: /blwtc debugrgbchannels <玩家>");
+            return;
+        }
+        Player player = requireOnlinePlayer(sender, args[1]);
+        if (player == null) {
+            return;
+        }
+        boolean submitted = plugin.debugRgbChannels(player);
+        sender.sendMessage(submitted
+                ? "§a已发送 RGB 三通道测试: §f" + player.getName()
+                : "§cRGB 三通道测试提交失败: " + player.getName());
     }
 
     /** 发送平台能力信息。 */

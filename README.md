@@ -10,7 +10,7 @@
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
 - `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.4、外部 Paper 1.21.8 和外部 Paper 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
 - `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 `folia-1.20.1-test-server` 完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 BossBar/Title/Sound 等通知尚未做 Folia 客户端视觉验收，且命令通知允许服主配置任意控制台命令。
-- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在外部 Arclight NeoForge 1.21.1 与 Banner/Fabric 1.20.1 服务端用真实客户端截图验证 RGB 可见通道。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 RGB 截图矩阵以各版本对应轻量 jar 为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
+- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在 6 个外部服务端全部使用同一个 universal 整包完成真实客户端 RGB 三通道截图和基础功能回归。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 RGB 截图矩阵以真实客户端 F2 截图为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
 
 ## 模块
 
@@ -70,6 +70,8 @@
 本轮 RGB 视觉验收使用真实原版客户端生成的 F2 截图，不用服务端日志或协议抓包替代截图结论。`/blwtc debugrgb <玩家>` 会向在线玩家发送 Chat、ActionBar、Title、Subtitle、BossBar、GUI 标题、物品名和 Lore 八个可见通道；截图矩阵覆盖 Paper 1.12.2、1.13.2、1.14.4、1.15.2、1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.4。其中 1.12.2-1.15.2 为传统颜色降级证据，1.16.5-1.21.4 为 RGB 视觉证据。可提交截图证明保留在 `docs/test-evidence/rgb-visual-proof-20260607-104606/`，本机原始运行缓存保留在 `build/rgb-visual-matrix/runs/rgb-visual-proof-20260607-104606/`，汇总文件为 `build/rgb-visual-matrix/latest-visual-proof.json`。
 
 外部服务端补充矩阵同样使用真实客户端 F2 截图，并额外校验 `blwtc platform` 确实被插件接收，避免把插件未加载或命令未注册误判为通过。覆盖 `E:\server_work\server_1.21.8_0`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\folia1.21.8`、`E:\server_work\1.21.11spigot`、`E:\server_work\1.21.11arclight-neoforge` 和 `E:\server_work\1.20.1fabric.banner`，6/6 PASS。可提交截图和日志证据保留在 `docs/test-evidence/rgb-external-server-proof-20260607-155341/`。
+
+同一批外部服务端已补做 universal 整包复测，6 个端全部部署 `BLWorldTrashCan-universal.jar`。本轮 RGB 截图限定聊天框、ActionBar、Title/Subtitle，不再使用箱子 GUI、物品名或 Lore 作为颜色证据；每个端同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 
 BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
 
@@ -270,6 +272,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - PrismaticAPI RGB 消息已完成构建和客户端侧视觉矩阵：四个平台 jar 均包含 relocation 后的 `pixeltech/bluenine/blworldtrashcan/libs/croabeast/prismatic/PrismaticAPI.class`，且不残留原始 `me/croabeast` 类。`/blwtc debugrgb <玩家>` 已用真实原版客户端 F2 截图验证 GUI 标题、聊天文本、物品名和 Lore 等可见内容。通过版本包括 Paper 1.12.2、1.13.2、1.14.4、1.15.2、1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.4；低版本为降级色，1.16.5+ 为 RGB。截图证据目录：`docs/test-evidence/rgb-visual-proof-20260607-104606/`。
 - 通用总包 `BLWorldTrashCan-universal.jar` 已完成构建和四端 console smoke：同一个 jar 在 `paper-1.12.2-test-server` 识别为 `legacy-1.12`，在 `paper-1.13.2-test-server` 识别为 `bukkit-1.13-1.15`，在 `paper-1.20.4-test-server` 识别为 `paper-1.16-1.20`，在 `folia-1.20.1-test-server` 识别为 `folia-1.20`。通用总包内 PrismaticAPI 已 relocation，原始 `me/croabeast` 类数量为 0；主类 Java 8 加载 smoke 输出 `loaded-universal-main`。
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
+- 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `BLWorldTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 
 本轮关键日志：
 

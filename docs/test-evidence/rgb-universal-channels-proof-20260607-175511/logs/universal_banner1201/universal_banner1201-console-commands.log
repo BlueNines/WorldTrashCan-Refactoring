@@ -1,0 +1,13 @@
+[17:48:37] blwtc platform
+[17:48:38] blwtc debugrgbchannels RGBnner1201
+[17:48:41] blwtc reload
+[17:48:41] blwtc debugworldtrash RGBnner1201
+[17:48:42] blwtc debugroute RGBnner1201 global COBBLESTONE 5
+[17:48:42] blwtc debugroute RGBnner1201 personal STONE 6
+[17:48:43] blwtc debugroute RGBnner1201 world SAND 4
+[17:48:43] blwtc debugdamage RGBnner1201 SAND 3
+[17:48:44] blwtc debugdrop RGBnner1201 GRAVEL 2 owner
+[17:48:44] blwtc clear
+[17:48:45] blwtc debugsummary RGBnner1201
+[17:48:45] blwtc debugopen RGBnner1201 global
+[17:48:49] blwtc debugopen RGBnner1201 personal

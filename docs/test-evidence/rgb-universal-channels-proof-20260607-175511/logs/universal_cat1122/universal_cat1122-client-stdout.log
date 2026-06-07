@@ -1,0 +1,1304 @@
+Completely ignored arguments: [legacy]
+[17:54:10] [Client thread/INFO]: Setting user: RGB_cat1122
+[17:54:11] [Client thread/INFO]: LWJGL Version: 2.9.4
+[17:54:11] [Client thread/INFO]: Reloading ResourceManager: Default
+[17:54:11] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[17:54:11] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[17:54:11] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[17:54:11] [Thread-3/INFO]: OpenAL initialized.
+[17:54:12] [Sound Library Loader/INFO]: Sound engine started
+[17:54:12] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[17:54:13] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[17:54:13] [Client thread/INFO]: Connecting to 127.0.0.1, 25565
+[17:54:18] [Client thread/INFO]: [CHAT] RGB_cat1122 joined the game
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:18] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:23] [Client thread/INFO]: [CHAT] BLWTC_RGB_DEBUG_CHAT 聊天 RGB
+[17:54:25] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:26] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-07_17.54.26.png
+[17:54:26] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-07_17.54.26_2.png
+[17:54:29] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 已回收到个人垃圾桶: [SAND*3]
+[17:54:30] [Client thread/INFO]: [CHAT] 还剩下 10 秒清理物品和实体
+[17:54:30] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:31] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:32] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:32] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:32] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:32] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:32] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:35] [Client thread/INFO]: [CHAT] 5秒
+[17:54:37] [Client thread/INFO]: [CHAT] 3秒
+[17:54:38] [Client thread/INFO]: [CHAT] 2秒
+[17:54:39] [Client thread/INFO]: [CHAT] 1秒
+[17:54:40] [Client thread/INFO]: [CHAT] §a清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有23个生物被清理 §6(点我打开垃圾桶)
+[17:54:40] [Client thread/INFO]: [CHAT] 还剩下 30 秒清理物品和实体
+[17:54:41] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:41] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:41] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:41] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:41] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:41] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:42] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:43] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:43] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:43] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:43] [Client thread/INFO]: [CHAT] 还有2次清理，公共垃圾桶
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:45] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:54:49] [Client thread/FATAL]: Error executing task
+java.util.concurrent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]
+	at h.a(SourceFile:47) [1.12.2.jar:?]
+	at bib.az(SourceFile:991) [1.12.2.jar:?]
+	at bib.a(SourceFile:419) [1.12.2.jar:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]
+Caused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!
+	at wj.<init>(SourceFile:21) ~[1.12.2.jar:?]
+	at brz.a(SourceFile:1744) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:70) ~[1.12.2.jar:?]
+	at kv.a(SourceFile:15) ~[1.12.2.jar:?]
+	at hv$1.run(SourceFile:13) ~[1.12.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]
+	at h.a(SourceFile:46) ~[1.12.2.jar:?]
+	... 3 more
+[17:55:00] [Client thread/INFO]: [CHAT] 还剩下 10 秒清理物品和实体

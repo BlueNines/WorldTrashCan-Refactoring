@@ -211,6 +211,18 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         });
     }
 
+    /** 测试用：只向玩家发送聊天、ActionBar 和 Title RGB 可见通道。 */
+    public boolean debugRgbChannels(final Player player) {
+        return runForPlayerRegion(player, new Runnable() {
+            /** 在玩家所在上下文发送不带 GUI 的 RGB 调试消息。 */
+            @Override
+            public void run() {
+                BukkitRgbDebugSender.sendChatActionTitle(player);
+                getLogger().info("[DebugRGB] channels player=" + player.getName());
+            }
+        });
+    }
+
     /** 切换玩家防丢弃模式。 */
     public boolean toggleDropProtection(Player player) {
         return protectionFeature != null && protectionFeature.toggleDropProtection(player);
@@ -327,8 +339,12 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         lines.add("§7- §f平台: §a" + platform.id() + " §7(universal)");
         lines.add("§7- §f世界: §a" + player.getWorld().getName());
         lines.add("§7- §f世界垃圾桶数量: §a" + trashRouter.getWorldTrashCount(player.getWorld()));
-        lines.add("§7- §f世界垃圾桶物品: §a" + trashRouter.getWorldTrashStoredItemAmount(player.getWorld())
-                + " §7(堆叠 " + trashRouter.getWorldTrashStoredStackCount(player.getWorld()) + ")");
+        if (isFoliaRuntime()) {
+            lines.add("§7- §f世界垃圾桶物品: §eFolia 下跳过同步方块库存读取");
+        } else {
+            lines.add("§7- §f世界垃圾桶物品: §a" + trashRouter.getWorldTrashStoredItemAmount(player.getWorld())
+                    + " §7(堆叠 " + trashRouter.getWorldTrashStoredStackCount(player.getWorld()) + ")");
+        }
         lines.add("§7- §f跳过未加载区块: §a" + trashRouter.getSkippedUnloadedChunkAccesses());
         lines.add("§7- §f公共垃圾桶物品: §a" + trashFeature.getGlobalStoredItemAmount()
                 + " §7(堆叠 " + trashFeature.getGlobalStoredStackCount() + ")");
@@ -608,18 +624,33 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
     /** 查找测试箱子可使用的位置。 */
     private Block findDebugChestBlock(Player player) {
         Location base = player.getLocation();
-        int[][] offsets = new int[][]{
-                {1, 0, 0},
-                {-1, 0, 0},
-                {0, 0, 1},
-                {0, 0, -1},
-                {2, 0, 0},
-                {0, 0, 2}
-        };
-        for (int[] offset : offsets) {
-            Block block = base.getWorld().getBlockAt(base.getBlockX() + offset[0], base.getBlockY() + offset[1], base.getBlockZ() + offset[2]);
-            if (block.getType() == Material.AIR || block.getType() == Material.CHEST) {
-                return block;
+        int[] yOffsets = new int[]{0, 1, -1, 2};
+        for (int yOffset : yOffsets) {
+            for (int radius = 1; radius <= 3; radius++) {
+                Block block = findDebugChestBlockAtRadius(base, radius, yOffset);
+                if (block != null) {
+                    return block;
+                }
+            }
+        }
+        return null;
+    }
+
+    /** 在指定半径边缘查找测试箱子可用方块。 */
+    private Block findDebugChestBlockAtRadius(Location base, int radius, int yOffset) {
+        World world = base.getWorld();
+        if (world == null) {
+            return null;
+        }
+        for (int xOffset = -radius; xOffset <= radius; xOffset++) {
+            for (int zOffset = -radius; zOffset <= radius; zOffset++) {
+                if (Math.abs(xOffset) != radius && Math.abs(zOffset) != radius) {
+                    continue;
+                }
+                Block block = world.getBlockAt(base.getBlockX() + xOffset, base.getBlockY() + yOffset, base.getBlockZ() + zOffset);
+                if (block.getType() == Material.AIR || block.getType() == Material.CHEST) {
+                    return block;
+                }
             }
         }
         return null;

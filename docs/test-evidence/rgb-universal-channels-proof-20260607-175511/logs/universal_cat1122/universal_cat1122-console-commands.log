@@ -1,0 +1,13 @@
+[17:54:20] blwtc platform
+[17:54:23] blwtc debugrgbchannels RGB_cat1122
+[17:54:27] blwtc reload
+[17:54:27] blwtc debugworldtrash RGB_cat1122
+[17:54:28] blwtc debugroute RGB_cat1122 global COBBLESTONE 5
+[17:54:28] blwtc debugroute RGB_cat1122 personal STONE 6
+[17:54:29] blwtc debugroute RGB_cat1122 world SAND 4
+[17:54:29] blwtc debugdamage RGB_cat1122 SAND 3
+[17:54:30] blwtc debugdrop RGB_cat1122 GRAVEL 2 owner
+[17:54:30] blwtc clear
+[17:54:31] blwtc debugsummary RGB_cat1122
+[17:54:31] blwtc debugopen RGB_cat1122 global
+[17:54:35] blwtc debugopen RGB_cat1122 personal

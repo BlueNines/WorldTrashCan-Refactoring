@@ -1,0 +1,13 @@
+[17:52:57] blwtc platform
+[17:52:58] blwtc debugrgbchannels RGBaper1218
+[17:53:01] blwtc reload
+[17:53:02] blwtc debugworldtrash RGBaper1218
+[17:53:02] blwtc debugroute RGBaper1218 global COBBLESTONE 5
+[17:53:03] blwtc debugroute RGBaper1218 personal STONE 6
+[17:53:03] blwtc debugroute RGBaper1218 world SAND 4
+[17:53:04] blwtc debugdamage RGBaper1218 SAND 3
+[17:53:04] blwtc debugdrop RGBaper1218 GRAVEL 2 owner
+[17:53:05] blwtc clear
+[17:53:05] blwtc debugsummary RGBaper1218
+[17:53:06] blwtc debugopen RGBaper1218 global
+[17:53:10] blwtc debugopen RGBaper1218 personal

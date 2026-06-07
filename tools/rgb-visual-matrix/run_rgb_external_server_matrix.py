@@ -17,6 +17,7 @@ BUILD_ROOT = base.REPO / "build" / "rgb-external-server-matrix"
 JAVA8_CAT = Path(r"C:\Program Files\Java\jdk-1.8\bin\java.exe")
 JAVA21 = Path(r"C:\Program Files\Java\jdk-21\bin\java.exe")
 JAVA17 = base.JAVA17
+UNIVERSAL_PLUGIN = "BLWorldTrashCan-universal.jar"
 
 
 EXTERNAL_MATRIX = [
@@ -138,6 +139,19 @@ def selected_cases(case_id: str | None) -> list[dict]:
     raise RuntimeError("未知外部服务端用例: " + case_id)
 
 
+def universal_case(case: dict) -> dict:
+    """把外部服务端用例转换成 universal 整包测试用例。"""
+    copied = dict(case)
+    source_id = str(copied["id"])
+    if source_id.startswith("external_"):
+        copied["id"] = "universal_" + source_id[len("external_"):]
+    else:
+        copied["id"] = "universal_" + source_id
+    copied["sourceId"] = source_id
+    copied["plugin"] = UNIVERSAL_PLUGIN
+    return copied
+
+
 def port_open(port: int) -> bool:
     """判断本机端口是否已经可以连接。"""
     try:
@@ -165,6 +179,71 @@ def read_text_since(path: Path, offset: int) -> str:
     if offset >= len(text):
         return ""
     return text[offset:]
+
+
+def update_yaml_scalars(text: str, replacements: dict[str, str]) -> str:
+    """按简单 YAML 路径替换标量值，保留注释和其它配置。"""
+    lines = text.splitlines(True)
+    stack = []
+    result = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or ":" not in line:
+            result.append(line)
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        key = line.lstrip(" ").split(":", 1)[0].strip()
+        if not key or key.startswith("-"):
+            result.append(line)
+            continue
+        while stack and stack[-1][0] >= indent:
+            stack.pop()
+        stack.append((indent, key))
+        path = ".".join(item[1] for item in stack)
+        if path in replacements:
+            newline = "\r\n" if line.endswith("\r\n") else "\n" if line.endswith("\n") else ""
+            result.append(" " * indent + key + ": " + replacements[path] + newline)
+        else:
+            result.append(line)
+    return "".join(result)
+
+
+def prepare_test_config(case: dict, run_dir: Path) -> list[tuple[Path, Path]]:
+    """临时写入稳定测试配置并把原文件备份到证据目录。"""
+    data_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    backups = []
+    config_plan = {
+        "trash.yml": {
+            "world-trash.default-max-count": "3",
+            "personal-trash.enabled": "true",
+            "personal-trash.track-player-dropped-items": "true",
+            "personal-trash.damage-recovery.mode": "personal-trash",
+        },
+        "cleanup.yml": {
+            "interval-seconds": "0",
+        },
+    }
+    for file_name, replacements in config_plan.items():
+        target = data_dir / file_name
+        if not target.is_file():
+            continue
+        backup = run_dir / "logs" / "config-backup" / file_name
+        backup.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(target, backup)
+        original = target.read_text(encoding="utf-8", errors="replace")
+        updated = update_yaml_scalars(original, replacements)
+        if updated != original:
+            target.write_text(updated, encoding="utf-8")
+        backups.append((target, backup))
+    return backups
+
+
+def restore_test_config(backups: list[tuple[Path, Path]]) -> None:
+    """停服后恢复被测试配置临时覆盖的文件。"""
+    for target, backup in backups:
+        if backup.is_file():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(backup, target)
 
 
 def deploy_plugin(case: dict) -> Path:
@@ -280,12 +359,38 @@ def wait_debug_command_not_rejected(log_path: Path, offset: int) -> None:
         time.sleep(0.5)
 
 
+def wait_command_markers(log_path: Path, offset: int, markers: list[str], timeout: float, command: str) -> str:
+    """等待命令输出指定标记并返回新增日志片段。"""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        text = read_text_since(log_path, offset)
+        if "Unknown or incomplete command" in text or "Unknown command" in text:
+            raise RuntimeError(command + " 未被服务端识别: " + str(log_path))
+        if all(marker in text for marker in markers):
+            return text
+        time.sleep(0.5)
+    raise TimeoutError("等待命令输出超时: " + command + " markers=" + ",".join(markers))
+
+
+def wait_command_not_rejected(log_path: Path, offset: int, timeout: float, command: str) -> str:
+    """确认命令没有被服务端作为未知命令拒绝并返回新增日志。"""
+    deadline = time.time() + timeout
+    latest = ""
+    while time.time() < deadline:
+        latest = read_text_since(log_path, offset)
+        if "Unknown or incomplete command" in latest or "Unknown command" in latest:
+            raise RuntimeError(command + " 未被服务端识别: " + str(log_path))
+        time.sleep(0.5)
+    return latest
+
+
 def wait_player_online(case: dict, username: str, log_path: Path) -> None:
     """从服务端日志确认真实客户端玩家已进入服务端。"""
     deadline = time.time() + int(case.get("joinTimeout", 100))
     while time.time() < deadline:
-        text = read_text(log_path)
-        if username in text and ("joined the game" in text or "logged in with entity id" in text or "UUID of player" in text):
+        lines = read_text(log_path).splitlines()
+        if any(username in line and ("joined the game" in line or "logged in with entity id" in line) for line in lines):
+            time.sleep(1.0)
             return
         time.sleep(1)
     raise TimeoutError("等待玩家进服超时: " + username + " log=" + str(log_path))
@@ -295,6 +400,12 @@ def capture_debug_screenshot(case: dict, game_dir: Path, run_dir: Path) -> Path:
     """悬停 debugrgb 物品并使用 Minecraft F2 截图。"""
     time.sleep(float(case.get("debugWait", 3.5)))
     base.hover_debug_item(case)
+    return base.capture_internal_screenshot(case, game_dir, run_dir)
+
+
+def capture_channel_screenshot(case: dict, game_dir: Path, run_dir: Path) -> Path:
+    """等待聊天、ActionBar 和 Title 可见后使用 Minecraft F2 截图。"""
+    time.sleep(float(case.get("channelWait", 1.0)))
     return base.capture_internal_screenshot(case, game_dir, run_dir)
 
 
@@ -308,7 +419,115 @@ def stop_process(process: subprocess.Popen, command: str | None = None) -> None:
             log_file.close()
 
 
-def run_case(case: dict, prepared_clients: dict, run_root: Path) -> dict:
+def run_basic_function_checks(case: dict, username: str, server_process: subprocess.Popen,
+                              server_log: Path, command_log: Path, run_dir: Path) -> list[dict]:
+    """执行每个外部服务端都应覆盖的基础功能检查。"""
+    checks = [
+        {
+            "name": "reload",
+            "command": "blwtc reload",
+            "markers": ["[Message]"],
+            "timeout": 8,
+        },
+        {
+            "name": "world-trash-create",
+            "command": "blwtc debugworldtrash {player}",
+            "markers": ["[Debug] debugWorldTrash", "saved=true"],
+            "timeout": 12,
+        },
+        {
+            "name": "global-route",
+            "command": "blwtc debugroute {player} global COBBLESTONE 5",
+            "markers": ["[Debug] debugRoute", "route=GLOBAL_TRASH", "routed=true"],
+            "timeout": 12,
+        },
+        {
+            "name": "personal-route",
+            "command": "blwtc debugroute {player} personal STONE 6",
+            "markers": ["[Debug] debugRoute", "route=PERSONAL_TRASH", "routed=true"],
+            "timeout": 12,
+        },
+        {
+            "name": "world-route",
+            "command": "blwtc debugroute {player} world SAND 4",
+            "markers": ["[Debug] debugRoute", "route=WORLD_TRASH", "routed=true"],
+            "timeout": 12,
+        },
+        {
+            "name": "damage-recovery",
+            "command": "blwtc debugdamage {player} SAND 3",
+            "markers": ["[Debug] debugDamageRecovery"],
+            "timeout": 12,
+        },
+        {
+            "name": "owner-drop",
+            "command": "blwtc debugdrop {player} GRAVEL 2 owner",
+            "markers": ["[Debug] debugDrop", "markOwner=true"],
+            "timeout": 12,
+        },
+        {
+            "name": "manual-clear",
+            "command": "blwtc clear",
+            "markers": [case.get("clearMarker", "[Cleanup]")],
+            "timeout": float(case.get("clearTimeout", 18)),
+        },
+        {
+            "name": "summary",
+            "command": "blwtc debugsummary {player}",
+            "markers": ["BLWorldTrashCan debug summary"],
+            "timeout": 8,
+        },
+        {
+            "name": "global-gui-open",
+            "command": "blwtc debugopen {player} global",
+            "markers": [],
+            "timeout": 4,
+        },
+        {
+            "name": "personal-gui-open",
+            "command": "blwtc debugopen {player} personal",
+            "markers": [],
+            "timeout": 4,
+        },
+    ]
+    if "folia" in str(case.get("label", "")).lower() or case.get("displayVersion", "").lower().find("folia") >= 0:
+        for check in checks:
+            if check["name"] == "manual-clear":
+                check["markers"] = ["[FoliaCleanup]"]
+                check["timeout"] = 30
+    results = []
+    for check in checks:
+        command = str(check["command"]).replace("{player}", username)
+        offset = log_text_offset(server_log)
+        send_console_command(server_process, command, command_log)
+        try:
+            if check["markers"]:
+                text = wait_command_markers(server_log, offset, list(check["markers"]), float(check["timeout"]), command)
+            else:
+                text = wait_command_not_rejected(server_log, offset, float(check["timeout"]), command)
+            status = "PASS"
+            error = ""
+        except Exception as exception:
+            text = read_text_since(server_log, offset)
+            status = "FAIL"
+            error = repr(exception)
+        item = {
+            "name": check["name"],
+            "command": command,
+            "markers": list(check["markers"]),
+            "status": status,
+            "error": error,
+            "logExcerpt": text[-2000:],
+        }
+        results.append(item)
+        if status != "PASS":
+            write_json(run_dir / "logs" / (case["id"] + "-basic-checks.json"), results)
+            raise RuntimeError("基础功能检查失败: " + check["name"] + " " + error)
+    write_json(run_dir / "logs" / (case["id"] + "-basic-checks.json"), results)
+    return results
+
+
+def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: bool, basic_checks: bool) -> dict:
     """执行单个外部服务端 RGB 截图用例。"""
     log("开始外部服务端用例 " + case["id"] + " / " + case["label"])
     run_dir = run_root / case["id"]
@@ -316,6 +535,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path) -> dict:
     server_process = None
     client_process = None
     game_dir = None
+    config_backups = []
     server_log = run_dir / "logs" / (case["id"] + "-server-console.log")
     result = {
         "id": case["id"],
@@ -325,9 +545,15 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path) -> dict:
         "serverDir": str(case["serverDir"]),
         "plugin": case["plugin"],
         "expect": case["expect"],
+        "rgbEvidence": "chat-actionbar-title" if channels_only else "all-visible-channels",
+        "basicChecksRequested": basic_checks,
+        "testConfigPatched": False,
         "status": "FAIL",
     }
     try:
+        if basic_checks:
+            config_backups = prepare_test_config(case, run_dir)
+            result["testConfigPatched"] = bool(config_backups)
         server_process = launch_server(case, run_dir)
         prepared = prepared_clients[case["version"]]
         client_process, username, game_dir = base.launch_client(case, prepared, run_dir)
@@ -340,11 +566,20 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path) -> dict:
         send_console_command(server_process, "blwtc platform", command_log)
         wait_platform_command_accepted(server_log, platform_offset)
         debug_offset = log_text_offset(server_log)
-        send_console_command(server_process, "blwtc debugrgb " + username, command_log)
-        wait_debug_command_not_rejected(server_log, debug_offset)
-        screenshot = capture_debug_screenshot(case, game_dir, run_dir)
+        debug_command = "blwtc debugrgbchannels " + username if channels_only else "blwtc debugrgb " + username
+        send_console_command(server_process, debug_command, command_log)
+        if channels_only:
+            wait_command_markers(server_log, debug_offset, ["[DebugRGB] channels", username], 8, debug_command)
+        else:
+            wait_debug_command_not_rejected(server_log, debug_offset)
+        if channels_only:
+            screenshot = capture_channel_screenshot(case, game_dir, run_dir)
+        else:
+            screenshot = capture_debug_screenshot(case, game_dir, run_dir)
         result["screenshot"] = str(screenshot)
         result["brightness"] = base.image_brightness(Image.open(screenshot))
+        if basic_checks:
+            result["basicChecks"] = run_basic_function_checks(case, username, server_process, server_log, command_log, run_dir)
         result["status"] = "PASS"
     except Exception as error:
         result["error"] = repr(error)
@@ -360,6 +595,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path) -> dict:
         base.ACTIVE_CLIENT_PID = None
         if server_process is not None:
             stop_process(server_process, "stop")
+        if config_backups:
+            restore_test_config(config_backups)
     write_json(run_dir / "result.json", result)
     return result
 
@@ -394,11 +631,16 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--case", default="")
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--universal", action="store_true")
+    parser.add_argument("--channels-only", action="store_true")
+    parser.add_argument("--basic-checks", action="store_true")
     args = parser.parse_args()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     run_root = BUILD_ROOT / "runs" / run_id
     run_root.mkdir(parents=True, exist_ok=True)
     cases = selected_cases(args.case or None)
+    if args.universal:
+        cases = [universal_case(case) for case in cases]
     prepared_clients = {}
     if args.prepare_only:
         for case in cases:
@@ -409,7 +651,7 @@ def main() -> int:
     results = []
     for case in cases:
         prepared_clients.setdefault(case["version"], base.ensure_client(case["version"]))
-        results.append(run_case(case, prepared_clients, run_root))
+        results.append(run_case(case, prepared_clients, run_root, args.channels_only, args.basic_checks))
         write_json(run_root / "summary.json", {"run": run_id, "results": results, "contactSheet": ""})
         write_json(BUILD_ROOT / "last-summary.json", {"run": run_id, "results": results, "contactSheet": ""})
     contact_sheet = make_contact_sheet(results, run_root)
