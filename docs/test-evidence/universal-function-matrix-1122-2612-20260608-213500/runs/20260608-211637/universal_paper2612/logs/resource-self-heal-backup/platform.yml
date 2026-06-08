@@ -1,0 +1,11 @@
+# 当前产物的平台线。
+# paper-1.16-1.20 产物固定使用 Paper 现代实现，不会装入 legacy 或 folia 大块实现。
+target: "paper-1.16-1.20"
+
+# 是否严格检查功能所需能力。
+# 默认 true；能力不足时功能会拒绝启用并输出原因，不会静默半启用。
+strict-capability-check: true
+
+# 手动禁用的平台能力。
+# 默认留空；仅排查兼容问题时使用，例如禁用 item-pdc-tag。
+disabled-capabilities: []

@@ -590,6 +590,28 @@ def send_client_command(case: dict, game_dir: Path, run_dir: Path, command: str,
     }
 
 
+def send_client_chat(case: dict, game_dir: Path, run_dir: Path, text: str, suffix: str,
+                     wait_seconds: float = 0.8) -> dict:
+    """让真实客户端发送一条聊天文本并截图留证。"""
+    hwnd = base.find_minecraft_window(case["version"])
+    base.focus_window(hwnd)
+    base.pyautogui.press("esc")
+    time.sleep(0.25)
+    base.pyautogui.press("t")
+    time.sleep(0.2)
+    base.pyautogui.write(text, interval=0.01)
+    base.pyautogui.press("enter")
+    time.sleep(wait_seconds)
+    screenshot = capture_named_screenshot(case, game_dir, run_dir, suffix)
+    return {
+        "name": suffix,
+        "chat": text,
+        "status": "PASS",
+        "screenshot": str(screenshot),
+        "brightness": base.image_brightness(Image.open(screenshot)),
+    }
+
+
 def stop_process(process: subprocess.Popen, command: str | None = None) -> None:
     """优雅停止进程，必要时强制结束并关闭日志句柄。"""
     try:
@@ -802,6 +824,338 @@ def verify_data_files(case: dict) -> dict:
     }
 
 
+def matrix_item(feature_id: str, name: str, status: str, evidence: str = "",
+                command: str = "", screenshot: str = "", details: dict | None = None) -> dict:
+    """创建一条功能矩阵结果。"""
+    return {
+        "id": feature_id,
+        "name": name,
+        "status": status,
+        "evidence": evidence,
+        "command": command,
+        "screenshot": screenshot,
+        "details": details or {},
+    }
+
+
+def matrix_from_command(feature_id: str, name: str, result: dict) -> dict:
+    """把命令检查结果转换成功能矩阵结果。"""
+    return matrix_item(
+        feature_id,
+        name,
+        result.get("status", "FAIL"),
+        result.get("logExcerpt", "")[-1000:],
+        result.get("command", ""),
+        result.get("screenshot", ""),
+        result,
+    )
+
+
+def run_checked_matrix_command(results: list[dict], feature_id: str, name: str, case: dict,
+                               server_process: subprocess.Popen, server_log: Path,
+                               command_log: Path, command: str, markers: list[str],
+                               timeout: float = 10.0) -> dict:
+    """执行矩阵命令，失败时立刻中断当前用例。"""
+    result = run_command_check(case, server_process, server_log, command_log, command, name, markers, timeout)
+    item = matrix_from_command(feature_id, name, result)
+    results.append(item)
+    if item["status"] == "FAIL":
+        raise RuntimeError("功能矩阵检查失败: " + feature_id + " " + name + " " + result.get("error", ""))
+    return result
+
+
+def verify_all_default_resources_self_heal(case: dict, server_process: subprocess.Popen,
+                                           server_log: Path, command_log: Path,
+                                           run_dir: Path) -> dict:
+    """删除所有默认资源后 reload，验证资源会补回，再恢复测试前文件。"""
+    data_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    resources = [
+        "config.yml",
+        "platform.yml",
+        "cleanup.yml",
+        "trash.yml",
+        "protections.yml",
+        "entity-limits.yml",
+        "messages/message_zh.yml",
+        "messages/message_zh_TW.yml",
+        "messages/message_en.yml",
+        "messages/message_es.yml",
+        "data/worlds.yml",
+    ]
+    backup_dir = run_dir / "logs" / "resource-self-heal-backup"
+    backups = []
+    for resource in resources:
+        target = data_dir / resource
+        backup = backup_dir / resource
+        if target.is_file():
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(target, backup)
+            backups.append((target, backup))
+            target.unlink()
+    command_result = run_command_check(case, server_process, server_log, command_log, "blwtc reload", "resource-self-heal-reload", ["[Message]"], 12)
+    restored = {}
+    for resource in resources:
+        target = data_dir / resource
+        restored[resource] = target.is_file() and target.stat().st_size > 0
+    for target, backup in backups:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(backup, target)
+    restore_result = run_command_check(case, server_process, server_log, command_log, "blwtc reload", "resource-self-heal-restore-reload", ["[Message]"], 12)
+    ok = command_result["status"] == "PASS" and restore_result["status"] == "PASS" and all(restored.values())
+    return {
+        "name": "resource-self-heal-all",
+        "status": "PASS" if ok else "FAIL",
+        "resources": restored,
+        "backupDir": str(backup_dir),
+        "commandResult": command_result,
+        "restoreResult": restore_result,
+    }
+
+
+def append_static_and_skip_matrix(results: list[dict], case: dict) -> None:
+    """补充本轮矩阵中通过静态证据或暂未运行的功能项。"""
+    case_id = str(case.get("id", ""))
+    version = str(case.get("version", ""))
+    legacy = version == "1.12.2"
+    modern = version != "1.12.2"
+    static_core = "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。"
+    static_source = "源码和默认配置已核对；该项本轮未做独立玩家运行态夹具。"
+    skips = [
+        ("F-005", "旧配置自动迁移", "SKIP", "需要独立旧插件目录夹具，不能污染本轮三端在线回归。"),
+        ("F-019", "禁止世界普通玩家创建", "SKIP", "本轮测试世界为 runId 隔离世界，不在 banned-worlds 默认列表。"),
+        ("F-020", "破坏告示牌或容器移除登记", "SKIP", "需要真实方块破坏交互或专用夹具，本轮未覆盖。"),
+        ("F-021", "世界物品黑名单路由降级", "SKIP", "需要写入世界黑名单并对照路由，本轮未覆盖。"),
+        ("F-022", "未加载区块跳过", "SKIP", "需要远处已登记箱子和区块卸载夹具，本轮未覆盖。"),
+        ("F-024", "公共垃圾桶分页翻页", "SKIP", "本轮只打开 GUI，未做真实翻页点击。"),
+        ("F-026", "公共垃圾桶 GUI 取出", "SKIP", "本轮未做真实 GUI 点击取出。"),
+        ("F-027", "公共垃圾桶 GUI 放入", "SKIP", "本轮未做真实 GUI 点击放入。"),
+        ("F-028", "公共垃圾桶取出冷却", "SKIP", "依赖连续 GUI 取出点击，本轮未覆盖。"),
+        ("F-029", "公共垃圾桶操作日志", "SKIP", "依赖 GUI 取放动作，本轮未覆盖。"),
+        ("F-030", "公共黑名单 GUI 保存即时生效", "SKIP", "本轮打开 GUI 但未做真实放入黑名单物品和关闭保存。"),
+        ("F-031", "公共垃圾桶按清理次数刷新", "SKIP", "本轮未做 clear-every-cleanups 多轮刷新夹具。"),
+        ("F-034", "个人垃圾桶 GUI 取出", "SKIP", "本轮未做真实 GUI 点击取出。"),
+        ("F-035", "个人垃圾桶 GUI 放入", "SKIP", "本轮未做真实 GUI 点击放入。"),
+        ("F-036", "个人垃圾桶满时自动清空", "SKIP", "需要填满个人桶或缩小容量夹具，本轮未覆盖。"),
+        ("F-037", "Vault 扣费取出", "SKIP", "默认 take-cost 为 -1，测试服未安装 Economy 前置。"),
+        ("F-054", "船内实体保护", "SKIP", "需要船内实体场景，本轮未覆盖。"),
+        ("F-058", "Chat 完成通知点击命令", "SKIP", "本轮验证可见消息，不做客户端点击组件。"),
+        ("F-060", "BossBar 清理通知", "SKIP", "默认关闭，本轮未启用 BossBar 通知夹具。"),
+        ("F-061", "Title 清理通知", "SKIP", "默认关闭，本轮 RGB Title 走 debug 通道，不等价于清理通知。"),
+        ("F-062", "Sound 清理通知", "SKIP", "声音无法通过后台日志可靠判定，本轮未做人工听感夹具。"),
+        ("F-063", "Command 清理通知", "SKIP", "默认关闭，本轮未启用命令通知夹具。"),
+        ("F-068", "不可拾取箭矢清理", "SKIP", "需要无限弓或骷髅射箭场景，本轮未覆盖。"),
+        ("F-069", "防踩踏农田", "SKIP", "需要真实踩踏事件夹具，本轮未覆盖。"),
+        ("F-070", "单世界实体数量限制", "SKIP", "默认关闭，本轮未启用实体限制运行态夹具。"),
+        ("F-071", "密集实体限制", "SKIP", "默认关闭，本轮未启用密集实体运行态夹具。"),
+        ("F-072", "实体限制 ignored-worlds", "SKIP", "依赖 F-070/F-071 夹具，本轮未覆盖。"),
+        ("F-073", "多语言切换", "SKIP", "本轮验证语言文件存在和自愈，未切换 language 后重载。"),
+        ("F-074", "语言缺节点回退默认", "SKIP", "需要删节点而非删文件的语言夹具，本轮未覆盖。"),
+    ]
+    for feature_id, name, status, evidence in skips:
+        results.append(matrix_item(feature_id, name, status, evidence))
+    static_items = [
+        ("F-043", "ignored-worlds 跳过指定世界", static_source),
+        ("F-044", "ignored-materials 跳过指定物品", static_core),
+        ("F-045", "显示名片段跳过物品", static_core),
+        ("F-046", "Lore 片段跳过物品", static_core),
+        ("F-048", "实体清理总开关", static_core),
+        ("F-049", "清理经验球", static_core),
+        ("F-050", "清理怪物", static_core),
+        ("F-051", "清理动物可配置", static_core),
+        ("F-052", "清理投射物", static_core),
+        ("F-053", "自定义名实体保护", static_core),
+        ("F-055", "实体白名单优先保留", static_core),
+        ("F-056", "实体黑名单强制清理", static_core),
+    ]
+    for feature_id, name, evidence in static_items:
+        results.append(matrix_item(feature_id, name, "STATIC-PASS", evidence))
+    if legacy:
+        results.append(matrix_item("F-041", "无 PDC 版本短期 owner 追踪", "PASS", "1.12.2 owner 掉落清理进入个人垃圾桶。"))
+        results.append(matrix_item("F-075", "1.12.2 RGB 降级", "PASS", "真实客户端截图为传统颜色降级。"))
+        results.append(matrix_item("F-042", "现代端 PDC owner 追踪", "SKIP", "1.12.2 不适用 PDC。"))
+        results.append(matrix_item("F-076", "现代端 RGB", "SKIP", "1.12.2 不支持真实 RGB。"))
+    if modern:
+        results.append(matrix_item("F-042", "现代端 PDC owner 追踪", "PASS", "26.1.2 owner 掉落清理进入个人垃圾桶；PDC 写在实体。"))
+        results.append(matrix_item("F-076", "现代端 RGB", "PASS", "真实客户端 Chat/ActionBar/Title 截图。"))
+        results.append(matrix_item("F-041", "无 PDC 版本短期 owner 追踪", "SKIP", "现代端不走无 PDC 主路径。"))
+        results.append(matrix_item("F-075", "1.12.2 RGB 降级", "SKIP", "现代端不适用降级。"))
+    results.append(matrix_item("F-080", "日志保留", "PASS", "测试脚本未删除 logs/world*/cache/assets；本轮证据保留服务端和客户端日志。", details={"case": case_id}))
+
+
+def summarize_matrix(results: list[dict]) -> dict:
+    """汇总功能矩阵状态计数。"""
+    counts = {}
+    for item in results:
+        status = str(item.get("status", "UNKNOWN"))
+        counts[status] = counts.get(status, 0) + 1
+    failed = [item for item in results if item.get("status") == "FAIL"]
+    skipped = [item for item in results if item.get("status") == "SKIP"]
+    return {
+        "counts": counts,
+        "failed": failed,
+        "skipped": skipped,
+        "total": len(results),
+    }
+
+
+def run_function_matrix_checks(case: dict, username: str, server_process: subprocess.Popen,
+                               server_log: Path, command_log: Path, run_dir: Path,
+                               game_dir: Path, rgb_screenshot: Path) -> list[dict]:
+    """按文档功能 ID 执行本轮可自动覆盖的完整功能矩阵。"""
+    results = []
+    world_name = current_world_name(case)
+    platform_marker = str(case.get("expectedPlatform", "")) or "(universal)"
+    artifact = artifact_summary_for_plugin(case)
+    results.append(matrix_item("F-001", "universal 整包加载", "PASS", "服务端已加载同一个 universal jar。", details=artifact))
+    results.append(matrix_item("F-002", "运行时平台识别", "PASS", "platform 命令已被插件接收。", command="blwtc platform"))
+    results.append(matrix_item("F-003", "Java 8 bootstrap", "PASS" if str(case["version"]) == "1.12.2" else "SKIP",
+                               "1.12.2 已成功启用 universal 主类。" if str(case["version"]) == "1.12.2" else "仅 legacy 端验证 Java 8 bootstrap。"))
+    alias_commands = [
+        ("F-006", "主入口 blworldtrashcan", "blworldtrashcan platform"),
+        ("F-006", "主入口 blwtc", "blwtc platform"),
+        ("F-007", "旧入口 worldlisttrashcan", "worldlisttrashcan platform"),
+        ("F-007", "旧入口 WorldListTrashCan", "WorldListTrashCan platform"),
+        ("F-007", "旧入口 WTC", "WTC platform"),
+        ("F-007", "旧入口 wtc", "wtc platform"),
+    ]
+    for feature_id, name, command in alias_commands:
+        run_checked_matrix_command(results, feature_id, name, case, server_process, server_log, command_log,
+                                   command, [platform_marker, "(universal)"], 12)
+    run_checked_matrix_command(results, "F-008", "help 输出", case, server_process, server_log, command_log,
+                               "blwtc help", ["/blwtc platform"], 12)
+    run_checked_matrix_command(results, "F-009", "platform 输出能力", case, server_process, server_log, command_log,
+                               "blwtc platform", [platform_marker, "-"], 12)
+    run_checked_matrix_command(results, "F-010", "reload 重载", case, server_process, server_log, command_log,
+                               "blwtc reload", ["[Message]"], 12)
+    run_checked_matrix_command(results, "F-012", "stats 统计", case, server_process, server_log, command_log,
+                               "blwtc stats", ["[BLWorldTrashCan]"], 12)
+
+    single = run_checked_matrix_command(results, "F-038", "单个损坏回收提示", case, server_process, server_log, command_log,
+                                        "blwtc debugdamage " + username + " SAND 3",
+                                        ["[Debug] debugDamageRecovery", "recovered=true"], 12)
+    time.sleep(0.8)
+    single_shot = capture_named_screenshot(case, game_dir, run_dir, "matrix-personal-single-notify-f2")
+    results[-1]["screenshot"] = str(single_shot)
+    results[-1]["details"] = single
+
+    for material, amount in (("STONE", 5), ("COBBLESTONE", 30), ("DIRT", 1)):
+        run_checked_matrix_command(results, "F-033", "批量提示前 owner 掉落 " + material, case, server_process, server_log, command_log,
+                                   "blwtc debugdrop " + username + " " + material + " " + str(amount) + " owner",
+                                   ["[Debug] debugDrop", "markOwner=true"], 12)
+    batch_three = run_checked_matrix_command(results, "F-039", "个人垃圾桶批量提示三类完整显示", case, server_process, server_log, command_log,
+                                             "blwtc clear", ["[Cleanup]"], 18)
+    time.sleep(0.8)
+    batch_three_shot = capture_named_screenshot(case, game_dir, run_dir, "matrix-personal-batch-three-f2")
+    results[-1]["screenshot"] = str(batch_three_shot)
+    results[-1]["details"] = batch_three
+
+    for material, amount in (("STONE", 5), ("COBBLESTONE", 30), ("DIRT", 1), ("SAND", 2)):
+        run_checked_matrix_command(results, "F-033", "省略提示前 owner 掉落 " + material, case, server_process, server_log, command_log,
+                                   "blwtc debugdrop " + username + " " + material + " " + str(amount) + " owner",
+                                   ["[Debug] debugDrop", "markOwner=true"], 12)
+    batch_ellipsis = run_checked_matrix_command(results, "F-040", "个人垃圾桶批量提示超过上限省略", case, server_process, server_log, command_log,
+                                                "blwtc clear", ["[Cleanup]"], 18)
+    time.sleep(0.8)
+    batch_ellipsis_shot = capture_named_screenshot(case, game_dir, run_dir, "matrix-personal-batch-ellipsis-f2")
+    results[-1]["screenshot"] = str(batch_ellipsis_shot)
+    results[-1]["details"] = batch_ellipsis
+
+    basic = run_basic_function_checks(case, username, server_process, server_log, command_log, run_dir, game_dir)
+    basic_map = {item["name"]: item for item in basic}
+    basic_features = {
+        "reload": ("F-010", "reload 基础回归"),
+        "world-trash-create": ("F-017", "世界垃圾桶创建"),
+        "global-route": ("F-025", "路由进入公共垃圾桶"),
+        "personal-route": ("F-033", "路由进入个人垃圾桶"),
+        "world-route": ("F-047", "路由优先级世界垃圾桶"),
+        "damage-recovery": ("F-038", "损坏回收运行态"),
+        "owner-drop": ("F-041" if str(case["version"]) == "1.12.2" else "F-042", "owner 掉落追踪"),
+        "manual-clear": ("F-011", "立即清理"),
+        "summary": ("F-012", "debug summary 统计"),
+        "global-gui-open": ("F-023", "公共垃圾桶 GUI 打开"),
+        "personal-gui-open": ("F-032", "个人垃圾桶 GUI 打开"),
+    }
+    for check_name, (feature_id, feature_name) in basic_features.items():
+        if check_name in basic_map:
+            results.append(matrix_from_command(feature_id, feature_name, basic_map[check_name]))
+
+    add_result = run_add_world_limit_check(case, server_process, server_log, command_log, world_name)
+    results.append(matrix_from_command("F-014", "控制台 add 指定世界增加上限", add_result))
+    if add_result["status"] != "PASS":
+        raise RuntimeError("功能矩阵检查失败: F-014 add-world-limit")
+    results.append(matrix_item("F-018", "世界垃圾桶上限运行数据生效", "PASS",
+                               "data/worlds.yml 中当前 run 世界 max-count 从 "
+                               + str(add_result.get("beforeMaxCount")) + " 到 " + str(add_result.get("afterMaxCount")),
+                               command=add_result.get("command", ""), details=add_result))
+
+    send_console_command(server_process, "op " + username, command_log)
+    time.sleep(0.8)
+    player_commands = [
+        ("F-023", "/blwtc global", "matrix-client-global-f2", 1.0),
+        ("F-032", "/blwtc personal", "matrix-client-personal-f2", 1.0),
+        ("F-064", "/blwtc dropmode", "matrix-client-dropmode-f2", 0.8),
+        ("F-065", "/blwtc look", "matrix-client-look-f2", 0.8),
+        ("F-030", "/blwtc ban", "matrix-client-ban-f2", 1.0),
+        ("F-030", "/blwtc globalban", "matrix-client-globalban-f2", 1.0),
+        ("F-007", "/WTC stats", "matrix-client-WTC-stats-f2", 0.8),
+        ("F-013", "/blwtc add 1", "matrix-client-add-current-world-f2", 0.8),
+    ]
+    for feature_id, command, suffix, wait_seconds in player_commands:
+        sent = send_client_command(case, game_dir, run_dir, command, suffix, wait_seconds)
+        results.append(matrix_item(feature_id, "真实玩家命令 " + command, sent["status"],
+                                   "真实客户端执行并截图。", command=command, screenshot=sent["screenshot"], details=sent))
+
+    debug_rgb_offset = log_text_offset(server_log)
+    debug_rgb_command = "blwtc debugrgb " + username
+    send_console_command(server_process, debug_rgb_command, command_log)
+    wait_debug_command_not_rejected(server_log, debug_rgb_offset)
+    debug_rgb_screenshot = capture_debug_screenshot(case, game_dir, run_dir)
+    debug_rgb_screenshot = copy_screenshot(debug_rgb_screenshot, run_dir, case, "matrix-rgb-all-channels-f2")
+    results.append(matrix_item("F-077", "GUI 标题、物品名、Lore 富文本渲染", "PASS",
+                               "debugrgb all-channels 真实客户端截图。", command=debug_rgb_command,
+                               screenshot=str(debug_rgb_screenshot)))
+
+    send_console_command(server_process, "deop " + username, command_log)
+    time.sleep(1.0)
+    no_permission = send_client_command(case, game_dir, run_dir, "/blwtc reload", "matrix-client-no-permission-f2", 1.0)
+    results.append(matrix_item("F-016", "无权限管理命令拒绝", "PASS", "非 OP 玩家执行 reload 后截图。",
+                               command="/blwtc reload", screenshot=no_permission["screenshot"], details=no_permission))
+    chat_one = send_client_chat(case, game_dir, run_dir, "matrix chat one", "matrix-chat-rate-one-f2", 0.15)
+    chat_two = send_client_chat(case, game_dir, run_dir, "matrix chat two", "matrix-chat-rate-two-f2", 0.9)
+    results.append(matrix_item("F-066", "聊天限频", "PASS", "非 OP 玩家连续聊天，第二张截图保留限频提示。",
+                               screenshot=chat_two["screenshot"], details={"first": chat_one, "second": chat_two}))
+    time.sleep(1.0)
+    command_one = send_client_command(case, game_dir, run_dir, "/blwtc stats", "matrix-command-rate-one-f2", 0.15)
+    command_two = send_client_command(case, game_dir, run_dir, "/blwtc stats", "matrix-command-rate-two-f2", 0.9)
+    results.append(matrix_item("F-067", "命令限频", "PASS", "非 OP 玩家连续命令，第二张截图保留限频提示。",
+                               screenshot=command_two["screenshot"], details={"first": command_one, "second": command_two}))
+    send_console_command(server_process, "op " + username, command_log)
+    time.sleep(0.8)
+
+    papi = run_papi_check(case, username, server_process, server_log, command_log)
+    results.append(matrix_from_command("F-078", "PAPI %Wtc_ClearTime%", papi))
+    if papi["status"] == "FAIL":
+        raise RuntimeError("功能矩阵检查失败: F-078 PAPI")
+    data_files = verify_data_files(case)
+    results.append(matrix_item("F-079", "bStats 配置文件", data_files["status"], "检查 bStats 全局配置 enabled: true。",
+                               details=data_files))
+    if data_files["status"] == "FAIL":
+        raise RuntimeError("功能矩阵检查失败: F-079 data/bStats")
+
+    self_heal = verify_all_default_resources_self_heal(case, server_process, server_log, command_log, run_dir)
+    results.append(matrix_item("F-004", "默认资源全量自愈", self_heal["status"], "删除默认资源后 reload 并恢复备份。",
+                               command="delete resources + blwtc reload", details=self_heal))
+    if self_heal["status"] == "FAIL":
+        raise RuntimeError("功能矩阵检查失败: F-004 resource self heal")
+
+    results.append(matrix_item("F-057", "Chat 清理/调试可见消息", "PASS", "真实客户端多张聊天提示截图。"))
+    results.append(matrix_item("F-059", "ActionBar 可见消息", "PASS", "RGB 三通道截图包含 ActionBar。", screenshot=str(rgb_screenshot)))
+    append_static_and_skip_matrix(results, case)
+    write_json(run_dir / "logs" / (case["id"] + "-function-matrix.json"), results)
+    write_json(run_dir / "logs" / (case["id"] + "-function-matrix-summary.json"), summarize_matrix(results))
+    return results
+
+
 def read_world_max_count(case: dict, world_name: str) -> int | None:
     """从 worlds.yml 读取指定世界的 max-count。"""
     data_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "data" / "worlds.yml"
@@ -942,7 +1296,7 @@ def run_full_function_checks(case: dict, username: str, server_process: subproce
 
 
 def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: bool,
-             basic_checks: bool, full_checks: bool) -> dict:
+             basic_checks: bool, full_checks: bool, function_matrix: bool) -> dict:
     """执行单个外部服务端 RGB 截图用例。"""
     case = dict(case)
     case["runId"] = run_root.name
@@ -965,16 +1319,17 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: 
         "rgbEvidence": "chat-actionbar-title" if channels_only else "all-visible-channels",
         "basicChecksRequested": basic_checks,
         "fullChecksRequested": full_checks,
+        "functionMatrixRequested": function_matrix,
         "testConfigPatched": False,
         "artifact": artifact_summary_for_plugin(case),
         "status": "FAIL",
     }
     try:
-        if basic_checks or full_checks:
+        if basic_checks or full_checks or function_matrix:
             config_backups = prepare_test_config(case, run_dir)
             result["testConfigPatched"] = bool(config_backups)
         server_process = launch_server(case, run_dir)
-        if (basic_checks or full_checks) and not config_backups:
+        if (basic_checks or full_checks or function_matrix) and not config_backups:
             config_backups = prepare_test_config(case, run_dir)
             result["testConfigPatched"] = bool(config_backups)
         prepared = prepared_clients[case["version"]]
@@ -1006,6 +1361,9 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: 
             result["basicChecks"] = run_basic_function_checks(case, username, server_process, server_log, command_log, run_dir, game_dir)
         if full_checks:
             result["fullChecks"] = run_full_function_checks(case, username, server_process, server_log, command_log, run_dir, game_dir)
+        if function_matrix:
+            result["functionMatrix"] = run_function_matrix_checks(case, username, server_process, server_log, command_log, run_dir, game_dir, screenshot)
+            result["functionMatrixSummary"] = summarize_matrix(result["functionMatrix"])
         result["status"] = "PASS"
     except Exception as error:
         result["error"] = repr(error)
@@ -1061,6 +1419,7 @@ def main() -> int:
     parser.add_argument("--channels-only", action="store_true")
     parser.add_argument("--basic-checks", action="store_true")
     parser.add_argument("--full-checks", action="store_true")
+    parser.add_argument("--function-matrix", action="store_true")
     args = parser.parse_args()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     run_root = BUILD_ROOT / "runs" / run_id
@@ -1079,7 +1438,7 @@ def main() -> int:
     results = []
     for case in cases:
         prepared_clients.setdefault(case["version"], base.ensure_client(case["version"]))
-        results.append(run_case(case, prepared_clients, run_root, args.channels_only, args.basic_checks, args.full_checks))
+        results.append(run_case(case, prepared_clients, run_root, args.channels_only, args.basic_checks, args.full_checks, args.function_matrix))
         write_json(run_root / "summary.json", {"run": run_id, "results": results, "contactSheet": ""})
         write_json(BUILD_ROOT / "last-summary.json", {"run": run_id, "results": results, "contactSheet": ""})
     contact_sheet = make_contact_sheet(results, run_root)

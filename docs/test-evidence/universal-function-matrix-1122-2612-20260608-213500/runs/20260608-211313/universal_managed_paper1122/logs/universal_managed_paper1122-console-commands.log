@@ -1,0 +1,41 @@
+[21:13:22] blwtc platform
+[21:13:22] blwtc debugrgbchannels RGBaper1122
+[21:13:26] blworldtrashcan platform
+[21:13:26] blwtc platform
+[21:13:27] worldlisttrashcan platform
+[21:13:27] WorldListTrashCan platform
+[21:13:28] WTC platform
+[21:13:28] wtc platform
+[21:13:29] blwtc help
+[21:13:29] blwtc platform
+[21:13:30] blwtc reload
+[21:13:30] blwtc stats
+[21:13:31] blwtc debugdamage RGBaper1122 SAND 3
+[21:13:34] blwtc debugdrop RGBaper1122 STONE 5 owner
+[21:13:34] blwtc debugdrop RGBaper1122 COBBLESTONE 30 owner
+[21:13:35] blwtc debugdrop RGBaper1122 DIRT 1 owner
+[21:13:36] blwtc clear
+[21:13:39] blwtc debugdrop RGBaper1122 STONE 5 owner
+[21:13:39] blwtc debugdrop RGBaper1122 COBBLESTONE 30 owner
+[21:13:40] blwtc debugdrop RGBaper1122 DIRT 1 owner
+[21:13:40] blwtc debugdrop RGBaper1122 SAND 2 owner
+[21:13:41] blwtc clear
+[21:13:44] blwtc reload
+[21:13:45] blwtc debugworldtrash RGBaper1122
+[21:13:45] blwtc debugroute RGBaper1122 global COBBLESTONE 5
+[21:13:46] blwtc debugroute RGBaper1122 personal STONE 6
+[21:13:46] blwtc debugroute RGBaper1122 world SAND 4
+[21:13:47] blwtc debugdamage RGBaper1122 SAND 3
+[21:13:47] blwtc debugdrop RGBaper1122 GRAVEL 2 owner
+[21:13:48] blwtc clear
+[21:13:48] blwtc debugsummary RGBaper1122
+[21:13:49] blwtc debugopen RGBaper1122 global
+[21:13:56] blwtc debugopen RGBaper1122 personal
+[21:14:02] blwtc add rgb_visual_universal_managed_paper1122_20260608_211313 2
+[21:14:12] op RGBaper1122
+[21:14:49] blwtc debugrgb RGBaper1122
+[21:15:01] deop RGBaper1122
+[21:15:24] op RGBaper1122
+[21:15:25] papi parse RGBaper1122 %Wtc_ClearTime%
+[21:15:33] blwtc reload
+[21:15:34] blwtc reload

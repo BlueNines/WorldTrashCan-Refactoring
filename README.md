@@ -284,6 +284,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
 - 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `BLWorldTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 - 2026-06-07 已补做高辨识度 RGB 二次复测：上一轮颜色被指出接近传统 `&a`、`&6` 后，调试 Title 改为多段 RGB 的 `RGB TITLE FF1493`，Subtitle 改为 `SUBTITLE FF4F00`。同一批 6 个外部端全部使用 `BLWorldTrashCan-universal.jar` 重跑，RGB 截图仍限定聊天框、ActionBar、Title/Subtitle，每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
+- 2026-06-08 已新增 `docs/重构版完整功能与测试矩阵.md`，把重构版拆成 80 个功能项，并按功能文档执行 universal 整包真实客户端矩阵测试。被测 jar 为 `dist/BLWorldTrashCan-universal.jar`，SHA256 `9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399`，jar 内 `plugin.yml` 为 `version: 7.0.0` 且旧入口包含 `WorldListTrashCan/WTC/wtc`。Paper 1.12.2、Paper 26.1.2、Spigot 26.1.2 三端矩阵结果均为 PASS、无 FAIL；本轮仍有明确 `SKIP` 项，不能视为通过。证据目录：`docs/test-evidence/universal-function-matrix-1122-2612-20260608-213500/`。
 
 本轮关键日志：
 

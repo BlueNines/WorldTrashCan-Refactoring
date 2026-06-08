@@ -1,0 +1,118 @@
+[
+  {
+    "name": "reload",
+    "command": "blwtc reload",
+    "markers": [
+      "[Message]"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:44 INFO]: [BLWorldTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml\n[21:13:44 INFO]: [BLWorldTrashCan] [TrashRouter] �Ѽ��� 3 ����������Ͱ���ݡ�\n[21:13:44 INFO]: [BLWorldTrashCan] [Cleanup] ��ʱ�����ѹرգ��������ֶ�������\n[21:13:44 INFO]: [BLWorldTrashCan] BLWorldTrashCan �����ء�\n"
+  },
+  {
+    "name": "world-trash-create",
+    "command": "blwtc debugworldtrash RGBaper1122",
+    "markers": [
+      "[Debug] debugWorldTrash",
+      "saved=true"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:45 INFO]: [BLWorldTrashCan] [Debug] debugWorldTrash player=RGBaper1122, world=rgb_visual_universal_managed_paper1122_20260608_211313, x=1307, y=4, z=-681, saved=true\n[21:13:45 INFO]: �Ѵ������Ǽǲ�����������Ͱ��\n"
+  },
+  {
+    "name": "global-route",
+    "command": "blwtc debugroute RGBaper1122 global COBBLESTONE 5",
+    "markers": [
+      "[Debug] debugRoute",
+      "route=GLOBAL_TRASH",
+      "routed=true"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:45 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=5, routed=true\n[21:13:45 INFO]: ·�ɲ��Գɹ���\n"
+  },
+  {
+    "name": "personal-route",
+    "command": "blwtc debugroute RGBaper1122 personal STONE 6",
+    "markers": [
+      "[Debug] debugRoute",
+      "route=PERSONAL_TRASH",
+      "routed=true"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:46 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=6, routed=true\n[21:13:46 INFO]: ·�ɲ��Գɹ���\n"
+  },
+  {
+    "name": "world-route",
+    "command": "blwtc debugroute RGBaper1122 world SAND 4",
+    "markers": [
+      "[Debug] debugRoute",
+      "route=WORLD_TRASH",
+      "routed=true"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:46 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=WORLD_TRASH, material=SAND, amount=4, routed=true\n[21:13:46 INFO]: ·�ɲ��Գɹ���\n"
+  },
+  {
+    "name": "damage-recovery",
+    "command": "blwtc debugdamage RGBaper1122 SAND 3",
+    "markers": [
+      "[Debug] debugDamageRecovery"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:47 INFO]: [BLWorldTrashCan] [Debug] debugDamageRecovery player=RGBaper1122, material=SAND, amount=3, recovered=true\n[21:13:47 INFO]: �𻵻��ղ��Գɹ���\n"
+  },
+  {
+    "name": "owner-drop",
+    "command": "blwtc debugdrop RGBaper1122 GRAVEL 2 owner",
+    "markers": [
+      "[Debug] debugDrop",
+      "markOwner=true"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:47 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper1122, material=GRAVEL, amount=2, markOwner=true\n[21:13:47 INFO]: �����ɲ��Ե����\n"
+  },
+  {
+    "name": "manual-clear",
+    "command": "blwtc clear",
+    "markers": [
+      "[Cleanup]"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:48 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=2, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[21:13:48 INFO]: [BLWorldTrashCan] ������� | ���� 3, ���� 2, �Ƴ���Ʒ 0, �Ƴ�ʵ�� 0��\n"
+  },
+  {
+    "name": "summary",
+    "command": "blwtc debugsummary RGBaper1122",
+    "markers": [
+      "BLWorldTrashCan debug summary"
+    ],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:48 INFO]: BLWorldTrashCan debug summary:\n[21:13:48 INFO]: - ƽ̨: legacy-1.12 (universal)\n[21:13:48 INFO]: - ����: rgb_visual_universal_managed_paper1122_20260608_211313\n[21:13:48 INFO]: - ��������Ͱ����: 1\n[21:13:48 INFO]: - ��������Ͱ��Ʒ: 6 (�ѵ� 2)\n[21:13:48 INFO]: - ����δ��������: 0\n[21:13:48 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[21:13:48 INFO]: - ��������Ͱ��Ʒ: 86 (�ѵ� 4)\n"
+  },
+  {
+    "name": "global-gui-open",
+    "command": "blwtc debugopen RGBaper1122 global",
+    "markers": [],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:49 INFO]: ��Ϊ��Ҵ򿪹�������Ͱ: RGBaper1122\n",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211313\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-gui-open-f2.png"
+  },
+  {
+    "name": "personal-gui-open",
+    "command": "blwtc debugopen RGBaper1122 personal",
+    "markers": [],
+    "status": "PASS",
+    "error": "",
+    "logExcerpt": "[21:13:56 INFO]: ��Ϊ��Ҵ򿪸�������Ͱ: RGBaper1122\n",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211313\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-gui-open-f2.png"
+  }
+]

@@ -1,0 +1,41 @@
+[21:21:07] blwtc platform
+[21:21:07] blwtc debugrgbchannels RGBigot2612
+[21:21:11] blworldtrashcan platform
+[21:21:11] blwtc platform
+[21:21:12] worldlisttrashcan platform
+[21:21:12] WorldListTrashCan platform
+[21:21:13] WTC platform
+[21:21:13] wtc platform
+[21:21:14] blwtc help
+[21:21:14] blwtc platform
+[21:21:15] blwtc reload
+[21:21:15] blwtc stats
+[21:21:16] blwtc debugdamage RGBigot2612 SAND 3
+[21:21:19] blwtc debugdrop RGBigot2612 STONE 5 owner
+[21:21:20] blwtc debugdrop RGBigot2612 COBBLESTONE 30 owner
+[21:21:20] blwtc debugdrop RGBigot2612 DIRT 1 owner
+[21:21:21] blwtc clear
+[21:21:24] blwtc debugdrop RGBigot2612 STONE 5 owner
+[21:21:24] blwtc debugdrop RGBigot2612 COBBLESTONE 30 owner
+[21:21:25] blwtc debugdrop RGBigot2612 DIRT 1 owner
+[21:21:25] blwtc debugdrop RGBigot2612 SAND 2 owner
+[21:21:26] blwtc clear
+[21:21:29] blwtc reload
+[21:21:29] blwtc debugworldtrash RGBigot2612
+[21:21:30] blwtc debugroute RGBigot2612 global COBBLESTONE 5
+[21:21:30] blwtc debugroute RGBigot2612 personal STONE 6
+[21:21:31] blwtc debugroute RGBigot2612 world SAND 4
+[21:21:31] blwtc debugdamage RGBigot2612 SAND 3
+[21:21:32] blwtc debugdrop RGBigot2612 GRAVEL 2 owner
+[21:21:32] blwtc clear
+[21:21:33] blwtc debugsummary RGBigot2612
+[21:21:33] blwtc debugopen RGBigot2612 global
+[21:21:40] blwtc debugopen RGBigot2612 personal
+[21:21:46] blwtc add rgb_visual_universal_spigot2612_20260608_212037 2
+[21:21:56] op RGBigot2612
+[21:22:32] blwtc debugrgb RGBigot2612
+[21:22:44] deop RGBigot2612
+[21:23:06] op RGBigot2612
+[21:23:07] papi parse RGBigot2612 %Wtc_ClearTime%
+[21:23:15] blwtc reload
+[21:23:16] blwtc reload

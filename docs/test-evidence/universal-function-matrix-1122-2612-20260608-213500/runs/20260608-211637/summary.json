@@ -1,0 +1,1687 @@
+{
+  "run": "20260608-211637",
+  "results": [
+    {
+      "id": "universal_paper2612",
+      "label": "paper-26.1.2-managed",
+      "version": "26.1.2",
+      "clientVersion": "26.1.2",
+      "serverDir": "E:\\server_work\\paper-26.1.2-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "expect": "rgb",
+      "rgbEvidence": "chat-actionbar-title",
+      "basicChecksRequested": false,
+      "fullChecksRequested": false,
+      "functionMatrixRequested": true,
+      "testConfigPatched": true,
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 432254,
+        "sha256": "9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "status": "PASS",
+      "username": "RGBaper2612",
+      "clientPid": 20796,
+      "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-rgb-channels-f2.png",
+      "brightness": 111.86588541666667,
+      "functionMatrix": [
+        {
+          "id": "F-001",
+          "name": "universal 整包加载",
+          "status": "PASS",
+          "evidence": "服务端已加载同一个 universal jar。",
+          "command": "",
+          "screenshot": "",
+          "details": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+            "name": "BLWorldTrashCan-universal.jar",
+            "size": 432254,
+            "sha256": "9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399",
+            "pluginYmlVersion": "7.0.0",
+            "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+          }
+        },
+        {
+          "id": "F-002",
+          "name": "运行时平台识别",
+          "status": "PASS",
+          "evidence": "platform 命令已被插件接收。",
+          "command": "blwtc platform",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-003",
+          "name": "Java 8 bootstrap",
+          "status": "SKIP",
+          "evidence": "仅 legacy 端验证 Java 8 bootstrap。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-006",
+          "name": "主入口 blworldtrashcan",
+          "status": "PASS",
+          "evidence": "[21:17:12 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:12 INFO]: - scheduler-global: 启用\n[21:17:12 INFO]: - scheduler-region: 禁用\n[21:17:12 INFO]: - inventory-basic: 启用\n[21:17:12 INFO]: - item-pdc-tag: 启用\n[21:17:12 INFO]: - item-legacy-tag: 禁用\n[21:17:12 INFO]: - rgb-message: 启用\n[21:17:12 INFO]: - clickable-message: 启用\n[21:17:12 INFO]: - boss-bar: 启用\n[21:17:12 INFO]: - sign-legacy: 禁用\n[21:17:12 INFO]: - sign-modern: 启用\n[21:17:12 INFO]: - entity-move-event: 启用\n[21:17:12 INFO]: - folia-region-safe: 禁用\n",
+          "command": "blworldtrashcan platform",
+          "screenshot": "",
+          "details": {
+            "name": "主入口 blworldtrashcan",
+            "command": "blworldtrashcan platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "(universal)"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:12 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:12 INFO]: - scheduler-global: 启用\n[21:17:12 INFO]: - scheduler-region: 禁用\n[21:17:12 INFO]: - inventory-basic: 启用\n[21:17:12 INFO]: - item-pdc-tag: 启用\n[21:17:12 INFO]: - item-legacy-tag: 禁用\n[21:17:12 INFO]: - rgb-message: 启用\n[21:17:12 INFO]: - clickable-message: 启用\n[21:17:12 INFO]: - boss-bar: 启用\n[21:17:12 INFO]: - sign-legacy: 禁用\n[21:17:12 INFO]: - sign-modern: 启用\n[21:17:12 INFO]: - entity-move-event: 启用\n[21:17:12 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-006",
+          "name": "主入口 blwtc",
+          "status": "PASS",
+          "evidence": "[21:17:12 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:12 INFO]: - scheduler-global: 启用\n[21:17:12 INFO]: - scheduler-region: 禁用\n[21:17:12 INFO]: - inventory-basic: 启用\n[21:17:12 INFO]: - item-pdc-tag: 启用\n[21:17:12 INFO]: - item-legacy-tag: 禁用\n[21:17:12 INFO]: - rgb-message: 启用\n[21:17:12 INFO]: - clickable-message: 启用\n[21:17:12 INFO]: - boss-bar: 启用\n[21:17:12 INFO]: - sign-legacy: 禁用\n[21:17:12 INFO]: - sign-modern: 启用\n[21:17:12 INFO]: - entity-move-event: 启用\n[21:17:12 INFO]: - folia-region-safe: 禁用\n",
+          "command": "blwtc platform",
+          "screenshot": "",
+          "details": {
+            "name": "主入口 blwtc",
+            "command": "blwtc platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "(universal)"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:12 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:12 INFO]: - scheduler-global: 启用\n[21:17:12 INFO]: - scheduler-region: 禁用\n[21:17:12 INFO]: - inventory-basic: 启用\n[21:17:12 INFO]: - item-pdc-tag: 启用\n[21:17:12 INFO]: - item-legacy-tag: 禁用\n[21:17:12 INFO]: - rgb-message: 启用\n[21:17:12 INFO]: - clickable-message: 启用\n[21:17:12 INFO]: - boss-bar: 启用\n[21:17:12 INFO]: - sign-legacy: 禁用\n[21:17:12 INFO]: - sign-modern: 启用\n[21:17:12 INFO]: - entity-move-event: 启用\n[21:17:12 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-007",
+          "name": "旧入口 worldlisttrashcan",
+          "status": "PASS",
+          "evidence": "[21:17:13 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:13 INFO]: - scheduler-global: 启用\n[21:17:13 INFO]: - scheduler-region: 禁用\n[21:17:13 INFO]: - inventory-basic: 启用\n[21:17:13 INFO]: - item-pdc-tag: 启用\n[21:17:13 INFO]: - item-legacy-tag: 禁用\n[21:17:13 INFO]: - rgb-message: 启用\n[21:17:13 INFO]: - clickable-message: 启用\n[21:17:13 INFO]: - boss-bar: 启用\n[21:17:13 INFO]: - sign-legacy: 禁用\n[21:17:13 INFO]: - sign-modern: 启用\n[21:17:13 INFO]: - entity-move-event: 启用\n[21:17:13 INFO]: - folia-region-safe: 禁用\n",
+          "command": "worldlisttrashcan platform",
+          "screenshot": "",
+          "details": {
+            "name": "旧入口 worldlisttrashcan",
+            "command": "worldlisttrashcan platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "(universal)"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:13 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:13 INFO]: - scheduler-global: 启用\n[21:17:13 INFO]: - scheduler-region: 禁用\n[21:17:13 INFO]: - inventory-basic: 启用\n[21:17:13 INFO]: - item-pdc-tag: 启用\n[21:17:13 INFO]: - item-legacy-tag: 禁用\n[21:17:13 INFO]: - rgb-message: 启用\n[21:17:13 INFO]: - clickable-message: 启用\n[21:17:13 INFO]: - boss-bar: 启用\n[21:17:13 INFO]: - sign-legacy: 禁用\n[21:17:13 INFO]: - sign-modern: 启用\n[21:17:13 INFO]: - entity-move-event: 启用\n[21:17:13 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-007",
+          "name": "旧入口 WorldListTrashCan",
+          "status": "PASS",
+          "evidence": "[21:17:13 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:13 INFO]: - scheduler-global: 启用\n[21:17:13 INFO]: - scheduler-region: 禁用\n[21:17:13 INFO]: - inventory-basic: 启用\n[21:17:13 INFO]: - item-pdc-tag: 启用\n[21:17:13 INFO]: - item-legacy-tag: 禁用\n[21:17:13 INFO]: - rgb-message: 启用\n[21:17:13 INFO]: - clickable-message: 启用\n[21:17:13 INFO]: - boss-bar: 启用\n[21:17:13 INFO]: - sign-legacy: 禁用\n[21:17:13 INFO]: - sign-modern: 启用\n[21:17:13 INFO]: - entity-move-event: 启用\n[21:17:13 INFO]: - folia-region-safe: 禁用\n",
+          "command": "WorldListTrashCan platform",
+          "screenshot": "",
+          "details": {
+            "name": "旧入口 WorldListTrashCan",
+            "command": "WorldListTrashCan platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "(universal)"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:13 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:13 INFO]: - scheduler-global: 启用\n[21:17:13 INFO]: - scheduler-region: 禁用\n[21:17:13 INFO]: - inventory-basic: 启用\n[21:17:13 INFO]: - item-pdc-tag: 启用\n[21:17:13 INFO]: - item-legacy-tag: 禁用\n[21:17:13 INFO]: - rgb-message: 启用\n[21:17:13 INFO]: - clickable-message: 启用\n[21:17:13 INFO]: - boss-bar: 启用\n[21:17:13 INFO]: - sign-legacy: 禁用\n[21:17:13 INFO]: - sign-modern: 启用\n[21:17:13 INFO]: - entity-move-event: 启用\n[21:17:13 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-007",
+          "name": "旧入口 WTC",
+          "status": "PASS",
+          "evidence": "[21:17:14 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:14 INFO]: - scheduler-global: 启用\n[21:17:14 INFO]: - scheduler-region: 禁用\n[21:17:14 INFO]: - inventory-basic: 启用\n[21:17:14 INFO]: - item-pdc-tag: 启用\n[21:17:14 INFO]: - item-legacy-tag: 禁用\n[21:17:14 INFO]: - rgb-message: 启用\n[21:17:14 INFO]: - clickable-message: 启用\n[21:17:14 INFO]: - boss-bar: 启用\n[21:17:14 INFO]: - sign-legacy: 禁用\n[21:17:14 INFO]: - sign-modern: 启用\n[21:17:14 INFO]: - entity-move-event: 启用\n[21:17:14 INFO]: - folia-region-safe: 禁用\n",
+          "command": "WTC platform",
+          "screenshot": "",
+          "details": {
+            "name": "旧入口 WTC",
+            "command": "WTC platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "(universal)"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:14 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:14 INFO]: - scheduler-global: 启用\n[21:17:14 INFO]: - scheduler-region: 禁用\n[21:17:14 INFO]: - inventory-basic: 启用\n[21:17:14 INFO]: - item-pdc-tag: 启用\n[21:17:14 INFO]: - item-legacy-tag: 禁用\n[21:17:14 INFO]: - rgb-message: 启用\n[21:17:14 INFO]: - clickable-message: 启用\n[21:17:14 INFO]: - boss-bar: 启用\n[21:17:14 INFO]: - sign-legacy: 禁用\n[21:17:14 INFO]: - sign-modern: 启用\n[21:17:14 INFO]: - entity-move-event: 启用\n[21:17:14 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-007",
+          "name": "旧入口 wtc",
+          "status": "PASS",
+          "evidence": "[21:17:14 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:14 INFO]: - scheduler-global: 启用\n[21:17:14 INFO]: - scheduler-region: 禁用\n[21:17:14 INFO]: - inventory-basic: 启用\n[21:17:14 INFO]: - item-pdc-tag: 启用\n[21:17:14 INFO]: - item-legacy-tag: 禁用\n[21:17:14 INFO]: - rgb-message: 启用\n[21:17:14 INFO]: - clickable-message: 启用\n[21:17:14 INFO]: - boss-bar: 启用\n[21:17:14 INFO]: - sign-legacy: 禁用\n[21:17:14 INFO]: - sign-modern: 启用\n[21:17:14 INFO]: - entity-move-event: 启用\n[21:17:14 INFO]: - folia-region-safe: 禁用\n",
+          "command": "wtc platform",
+          "screenshot": "",
+          "details": {
+            "name": "旧入口 wtc",
+            "command": "wtc platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "(universal)"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:14 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:14 INFO]: - scheduler-global: 启用\n[21:17:14 INFO]: - scheduler-region: 禁用\n[21:17:14 INFO]: - inventory-basic: 启用\n[21:17:14 INFO]: - item-pdc-tag: 启用\n[21:17:14 INFO]: - item-legacy-tag: 禁用\n[21:17:14 INFO]: - rgb-message: 启用\n[21:17:14 INFO]: - clickable-message: 启用\n[21:17:14 INFO]: - boss-bar: 启用\n[21:17:14 INFO]: - sign-legacy: 禁用\n[21:17:14 INFO]: - sign-modern: 启用\n[21:17:14 INFO]: - entity-move-event: 启用\n[21:17:14 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-008",
+          "name": "help 输出",
+          "status": "PASS",
+          "evidence": "/blwtc global - 打开公共垃圾桶\n[21:17:15 INFO]: /blwtc personal - 打开个人垃圾桶\n[21:17:15 INFO]: /blwtc dropmode - 切换防丢弃模式\n[21:17:15 INFO]: /blwtc look - 查询手持物品和右键实体类型\n[21:17:15 INFO]: /blwtc ban - 打开当前世界垃圾桶物品黑名单\n[21:17:15 INFO]: /blwtc globalban - 打开公共垃圾桶物品黑名单\n[21:17:15 INFO]: /blwtc stats - 查看清理和垃圾桶统计\n[21:17:15 INFO]: /blwtc add <数量> - 增加当前世界可创建的世界垃圾桶数量\n[21:17:15 INFO]: /blwtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量\n[21:17:15 INFO]: /blwtc debugopen <玩家> <global|personal> - 后台测试打开 GUI\n[21:17:15 INFO]: /blwtc debugworldtrash <玩家> - 后台创建并登记测试世界垃圾桶\n[21:17:15 INFO]: /blwtc debugroute <玩家> <world|personal|global> <Material> <数量> - 后台测试指定路由\n[21:17:15 INFO]: /blwtc debugdrop <玩家> <Material> <数量> [owner] - 后台生成测试掉落物\n[21:17:15 INFO]: /blwtc debugdamage <玩家> <Material> <数量> - 后台测试仙人掌/岩浆损坏回收\n[21:17:15 INFO]: /blwtc debugstock - 后台查看当前垃圾桶库存\n[21:17:15 INFO]: /blwtc debugsummary <玩家> - 查看后台测试摘要\n[21:17:15 INFO]: /blwtc debugplayer <玩家> <dropmode|look|ban|globalban> - 后台测试玩家入口\n[21:17:15 INFO]: /blwtc reload - 重载插件\n",
+          "command": "blwtc help",
+          "screenshot": "",
+          "details": {
+            "name": "help 输出",
+            "command": "blwtc help",
+            "markers": [
+              "/blwtc platform"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:15 INFO]: /blwtc help - 查看帮助\n[21:17:15 INFO]: /blwtc platform - 查看当前版本产物能力\n[21:17:15 INFO]: /blwtc clear - 立即执行一次后台清理\n[21:17:15 INFO]: /blwtc global - 打开公共垃圾桶\n[21:17:15 INFO]: /blwtc personal - 打开个人垃圾桶\n[21:17:15 INFO]: /blwtc dropmode - 切换防丢弃模式\n[21:17:15 INFO]: /blwtc look - 查询手持物品和右键实体类型\n[21:17:15 INFO]: /blwtc ban - 打开当前世界垃圾桶物品黑名单\n[21:17:15 INFO]: /blwtc globalban - 打开公共垃圾桶物品黑名单\n[21:17:15 INFO]: /blwtc stats - 查看清理和垃圾桶统计\n[21:17:15 INFO]: /blwtc add <数量> - 增加当前世界可创建的世界垃圾桶数量\n[21:17:15 INFO]: /blwtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量\n[21:17:15 INFO]: /blwtc debugopen <玩家> <global|personal> - 后台测试打开 GUI\n[21:17:15 INFO]: /blwtc debugworldtrash <玩家> - 后台创建并登记测试世界垃圾桶\n[21:17:15 INFO]: /blwtc debugroute <玩家> <world|personal|global> <Material> <数量> - 后台测试指定路由\n[21:17:15 INFO]: /blwtc debugdrop <玩家> <Material> <数量> [owner] - 后台生成测试掉落物\n[21:17:15 INFO]: /blwtc debugdamage <玩家> <Material> <数量> - 后台测试仙人掌/岩浆损坏回收\n[21:17:15 INFO]: /blwtc debugstock - 后台查看当前垃圾桶库存\n[21:17:15 INFO]: /blwtc debugsummary <玩家> - 查看后台测试摘要\n[21:17:15 INFO]: /blwtc debugplayer <玩家> <dropmode|look|ban|globalban> - 后台测试玩家入口\n[21:17:15 INFO]: /blwtc reload - 重载插件\n"
+          }
+        },
+        {
+          "id": "F-009",
+          "name": "platform 输出能力",
+          "status": "PASS",
+          "evidence": "[21:17:15 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:15 INFO]: - scheduler-global: 启用\n[21:17:15 INFO]: - scheduler-region: 禁用\n[21:17:15 INFO]: - inventory-basic: 启用\n[21:17:15 INFO]: - item-pdc-tag: 启用\n[21:17:15 INFO]: - item-legacy-tag: 禁用\n[21:17:15 INFO]: - rgb-message: 启用\n[21:17:15 INFO]: - clickable-message: 启用\n[21:17:15 INFO]: - boss-bar: 启用\n[21:17:15 INFO]: - sign-legacy: 禁用\n[21:17:15 INFO]: - sign-modern: 启用\n[21:17:15 INFO]: - entity-move-event: 启用\n[21:17:15 INFO]: - folia-region-safe: 禁用\n",
+          "command": "blwtc platform",
+          "screenshot": "",
+          "details": {
+            "name": "platform 输出能力",
+            "command": "blwtc platform",
+            "markers": [
+              "paper-1.16-1.20",
+              "-"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:15 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:17:15 INFO]: - scheduler-global: 启用\n[21:17:15 INFO]: - scheduler-region: 禁用\n[21:17:15 INFO]: - inventory-basic: 启用\n[21:17:15 INFO]: - item-pdc-tag: 启用\n[21:17:15 INFO]: - item-legacy-tag: 禁用\n[21:17:15 INFO]: - rgb-message: 启用\n[21:17:15 INFO]: - clickable-message: 启用\n[21:17:15 INFO]: - boss-bar: 启用\n[21:17:15 INFO]: - sign-legacy: 禁用\n[21:17:15 INFO]: - sign-modern: 启用\n[21:17:15 INFO]: - entity-move-event: 启用\n[21:17:15 INFO]: - folia-region-safe: 禁用\n"
+          }
+        },
+        {
+          "id": "F-010",
+          "name": "reload 重载",
+          "status": "PASS",
+          "evidence": "[21:17:16 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[21:17:16 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。\n[21:17:16 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。\n[21:17:16 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\n",
+          "command": "blwtc reload",
+          "screenshot": "",
+          "details": {
+            "name": "reload 重载",
+            "command": "blwtc reload",
+            "markers": [
+              "[Message]"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:16 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[21:17:16 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。\n[21:17:16 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。\n[21:17:16 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\n"
+          }
+        },
+        {
+          "id": "F-012",
+          "name": "stats 统计",
+          "status": "PASS",
+          "evidence": "[21:17:16 INFO]: [BLWorldTrashCan] 清理统计:\n[21:17:16 INFO]: - 世界数: 0\n[21:17:16 INFO]: - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[21:17:16 INFO]: - 删除物品: 0\n[21:17:16 INFO]: - 删除实体: 0\n[21:17:16 INFO]: - 公共垃圾桶页数: 5\n[21:17:16 INFO]: - 公共垃圾桶当前物品: 0 (堆叠 0)\n[21:17:16 INFO]: - 已加载个人垃圾桶: 0\n[21:17:16 INFO]: - 下次清理剩余秒数: 0\n",
+          "command": "blwtc stats",
+          "screenshot": "",
+          "details": {
+            "name": "stats 统计",
+            "command": "blwtc stats",
+            "markers": [
+              "[BLWorldTrashCan]"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:16 INFO]: [BLWorldTrashCan] 清理统计:\n[21:17:16 INFO]: - 世界数: 0\n[21:17:16 INFO]: - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[21:17:16 INFO]: - 删除物品: 0\n[21:17:16 INFO]: - 删除实体: 0\n[21:17:16 INFO]: - 公共垃圾桶页数: 5\n[21:17:16 INFO]: - 公共垃圾桶当前物品: 0 (堆叠 0)\n[21:17:16 INFO]: - 已加载个人垃圾桶: 0\n[21:17:16 INFO]: - 下次清理剩余秒数: 0\n"
+          }
+        },
+        {
+          "id": "F-038",
+          "name": "单个损坏回收提示",
+          "status": "PASS",
+          "evidence": "[21:17:17 INFO]: [BLWorldTrashCan] [Debug] debugDamageRecovery player=RGBaper2612, material=SAND, amount=3, recovered=true\n[21:17:17 INFO]: 损坏回收测试成功。\n",
+          "command": "blwtc debugdamage RGBaper2612 SAND 3",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-personal-single-notify-f2.png",
+          "details": {
+            "name": "单个损坏回收提示",
+            "command": "blwtc debugdamage RGBaper2612 SAND 3",
+            "markers": [
+              "[Debug] debugDamageRecovery",
+              "recovered=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:17 INFO]: [BLWorldTrashCan] [Debug] debugDamageRecovery player=RGBaper2612, material=SAND, amount=3, recovered=true\n[21:17:17 INFO]: 损坏回收测试成功。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "批量提示前 owner 掉落 STONE",
+          "status": "PASS",
+          "evidence": "[21:17:20 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=STONE, amount=5, markOwner=true\n[21:17:20 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 STONE 5 owner",
+          "screenshot": "",
+          "details": {
+            "name": "批量提示前 owner 掉落 STONE",
+            "command": "blwtc debugdrop RGBaper2612 STONE 5 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:20 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=STONE, amount=5, markOwner=true\n[21:17:20 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "批量提示前 owner 掉落 COBBLESTONE",
+          "status": "PASS",
+          "evidence": "[21:17:20 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=COBBLESTONE, amount=30, markOwner=true\n[21:17:20 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 COBBLESTONE 30 owner",
+          "screenshot": "",
+          "details": {
+            "name": "批量提示前 owner 掉落 COBBLESTONE",
+            "command": "blwtc debugdrop RGBaper2612 COBBLESTONE 30 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:20 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=COBBLESTONE, amount=30, markOwner=true\n[21:17:20 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "批量提示前 owner 掉落 DIRT",
+          "status": "PASS",
+          "evidence": "[21:17:21 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=DIRT, amount=1, markOwner=true\n[21:17:21 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 DIRT 1 owner",
+          "screenshot": "",
+          "details": {
+            "name": "批量提示前 owner 掉落 DIRT",
+            "command": "blwtc debugdrop RGBaper2612 DIRT 1 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:21 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=DIRT, amount=1, markOwner=true\n[21:17:21 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-039",
+          "name": "个人垃圾桶批量提示三类完整显示",
+          "status": "PASS",
+          "evidence": "[21:17:21 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=36, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=51, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[21:17:21 INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 36, 移除物品 0, 移除实体 0。\n",
+          "command": "blwtc clear",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-personal-batch-three-f2.png",
+          "details": {
+            "name": "个人垃圾桶批量提示三类完整显示",
+            "command": "blwtc clear",
+            "markers": [
+              "[Cleanup]"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:21 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=36, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=51, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[21:17:21 INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 36, 移除物品 0, 移除实体 0。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "省略提示前 owner 掉落 STONE",
+          "status": "PASS",
+          "evidence": "[21:17:24 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=STONE, amount=5, markOwner=true\n[21:17:24 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 STONE 5 owner",
+          "screenshot": "",
+          "details": {
+            "name": "省略提示前 owner 掉落 STONE",
+            "command": "blwtc debugdrop RGBaper2612 STONE 5 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:24 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=STONE, amount=5, markOwner=true\n[21:17:24 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "省略提示前 owner 掉落 COBBLESTONE",
+          "status": "PASS",
+          "evidence": "[21:17:25 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=COBBLESTONE, amount=30, markOwner=true\n[21:17:25 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 COBBLESTONE 30 owner",
+          "screenshot": "",
+          "details": {
+            "name": "省略提示前 owner 掉落 COBBLESTONE",
+            "command": "blwtc debugdrop RGBaper2612 COBBLESTONE 30 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:25 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=COBBLESTONE, amount=30, markOwner=true\n[21:17:25 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "省略提示前 owner 掉落 DIRT",
+          "status": "PASS",
+          "evidence": "[21:17:25 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=DIRT, amount=1, markOwner=true\n[21:17:25 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 DIRT 1 owner",
+          "screenshot": "",
+          "details": {
+            "name": "省略提示前 owner 掉落 DIRT",
+            "command": "blwtc debugdrop RGBaper2612 DIRT 1 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:25 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=DIRT, amount=1, markOwner=true\n[21:17:25 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "省略提示前 owner 掉落 SAND",
+          "status": "PASS",
+          "evidence": "[21:17:26 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=SAND, amount=2, markOwner=true\n[21:17:26 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 SAND 2 owner",
+          "screenshot": "",
+          "details": {
+            "name": "省略提示前 owner 掉落 SAND",
+            "command": "blwtc debugdrop RGBaper2612 SAND 2 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:26 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=SAND, amount=2, markOwner=true\n[21:17:26 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-040",
+          "name": "个人垃圾桶批量提示超过上限省略",
+          "status": "PASS",
+          "evidence": "[21:17:26 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=38, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=65, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[21:17:26 INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 38, 移除物品 0, 移除实体 0。\n",
+          "command": "blwtc clear",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-personal-batch-ellipsis-f2.png",
+          "details": {
+            "name": "个人垃圾桶批量提示超过上限省略",
+            "command": "blwtc clear",
+            "markers": [
+              "[Cleanup]"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:26 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=38, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=65, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[21:17:26 INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 38, 移除物品 0, 移除实体 0。\n"
+          }
+        },
+        {
+          "id": "F-010",
+          "name": "reload 基础回归",
+          "status": "PASS",
+          "evidence": "[21:17:30 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[21:17:30 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。\n[21:17:30 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。\n[21:17:30 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\n",
+          "command": "blwtc reload",
+          "screenshot": "",
+          "details": {
+            "name": "reload",
+            "command": "blwtc reload",
+            "markers": [
+              "[Message]"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:30 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[21:17:30 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。\n[21:17:30 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。\n[21:17:30 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\n"
+          }
+        },
+        {
+          "id": "F-017",
+          "name": "世界垃圾桶创建",
+          "status": "PASS",
+          "evidence": "[21:17:30 INFO]: [BLWorldTrashCan] [Debug] debugWorldTrash player=RGBaper2612, world=rgb_visual_universal_paper2612_20260608_211637, x=-9, y=-60, z=-6, saved=true\n[21:17:30 INFO]: 已创建并登记测试世界垃圾桶。\n",
+          "command": "blwtc debugworldtrash RGBaper2612",
+          "screenshot": "",
+          "details": {
+            "name": "world-trash-create",
+            "command": "blwtc debugworldtrash RGBaper2612",
+            "markers": [
+              "[Debug] debugWorldTrash",
+              "saved=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:30 INFO]: [BLWorldTrashCan] [Debug] debugWorldTrash player=RGBaper2612, world=rgb_visual_universal_paper2612_20260608_211637, x=-9, y=-60, z=-6, saved=true\n[21:17:30 INFO]: 已创建并登记测试世界垃圾桶。\n"
+          }
+        },
+        {
+          "id": "F-025",
+          "name": "路由进入公共垃圾桶",
+          "status": "PASS",
+          "evidence": "[21:17:31 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=5, routed=true\n[21:17:31 INFO]: 路由测试成功。\n",
+          "command": "blwtc debugroute RGBaper2612 global COBBLESTONE 5",
+          "screenshot": "",
+          "details": {
+            "name": "global-route",
+            "command": "blwtc debugroute RGBaper2612 global COBBLESTONE 5",
+            "markers": [
+              "[Debug] debugRoute",
+              "route=GLOBAL_TRASH",
+              "routed=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:31 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=5, routed=true\n[21:17:31 INFO]: 路由测试成功。\n"
+          }
+        },
+        {
+          "id": "F-033",
+          "name": "路由进入个人垃圾桶",
+          "status": "PASS",
+          "evidence": "[21:17:31 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper2612, route=PERSONAL_TRASH, material=STONE, amount=6, routed=true\n[21:17:31 INFO]: 路由测试成功。\n",
+          "command": "blwtc debugroute RGBaper2612 personal STONE 6",
+          "screenshot": "",
+          "details": {
+            "name": "personal-route",
+            "command": "blwtc debugroute RGBaper2612 personal STONE 6",
+            "markers": [
+              "[Debug] debugRoute",
+              "route=PERSONAL_TRASH",
+              "routed=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:31 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper2612, route=PERSONAL_TRASH, material=STONE, amount=6, routed=true\n[21:17:31 INFO]: 路由测试成功。\n"
+          }
+        },
+        {
+          "id": "F-047",
+          "name": "路由优先级世界垃圾桶",
+          "status": "PASS",
+          "evidence": "[21:17:32 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper2612, route=WORLD_TRASH, material=SAND, amount=4, routed=true\n[21:17:32 INFO]: 路由测试成功。\n",
+          "command": "blwtc debugroute RGBaper2612 world SAND 4",
+          "screenshot": "",
+          "details": {
+            "name": "world-route",
+            "command": "blwtc debugroute RGBaper2612 world SAND 4",
+            "markers": [
+              "[Debug] debugRoute",
+              "route=WORLD_TRASH",
+              "routed=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:32 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper2612, route=WORLD_TRASH, material=SAND, amount=4, routed=true\n[21:17:32 INFO]: 路由测试成功。\n"
+          }
+        },
+        {
+          "id": "F-038",
+          "name": "损坏回收运行态",
+          "status": "PASS",
+          "evidence": "[21:17:32 INFO]: [BLWorldTrashCan] [Debug] debugDamageRecovery player=RGBaper2612, material=SAND, amount=3, recovered=true\n[21:17:32 INFO]: 损坏回收测试成功。\n",
+          "command": "blwtc debugdamage RGBaper2612 SAND 3",
+          "screenshot": "",
+          "details": {
+            "name": "damage-recovery",
+            "command": "blwtc debugdamage RGBaper2612 SAND 3",
+            "markers": [
+              "[Debug] debugDamageRecovery"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:32 INFO]: [BLWorldTrashCan] [Debug] debugDamageRecovery player=RGBaper2612, material=SAND, amount=3, recovered=true\n[21:17:32 INFO]: 损坏回收测试成功。\n"
+          }
+        },
+        {
+          "id": "F-042",
+          "name": "owner 掉落追踪",
+          "status": "PASS",
+          "evidence": "[21:17:33 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=GRAVEL, amount=2, markOwner=true\n[21:17:33 INFO]: 已生成测试掉落物。\n",
+          "command": "blwtc debugdrop RGBaper2612 GRAVEL 2 owner",
+          "screenshot": "",
+          "details": {
+            "name": "owner-drop",
+            "command": "blwtc debugdrop RGBaper2612 GRAVEL 2 owner",
+            "markers": [
+              "[Debug] debugDrop",
+              "markOwner=true"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:33 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBaper2612, material=GRAVEL, amount=2, markOwner=true\n[21:17:33 INFO]: 已生成测试掉落物。\n"
+          }
+        },
+        {
+          "id": "F-011",
+          "name": "立即清理",
+          "status": "PASS",
+          "evidence": "[21:17:33 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=2, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=81, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[21:17:33 INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 2, 移除物品 0, 移除实体 0。\n",
+          "command": "blwtc clear",
+          "screenshot": "",
+          "details": {
+            "name": "manual-clear",
+            "command": "blwtc clear",
+            "markers": [
+              "[Cleanup]"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:33 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=2, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=81, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[21:17:33 INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 2, 移除物品 0, 移除实体 0。\n"
+          }
+        },
+        {
+          "id": "F-012",
+          "name": "debug summary 统计",
+          "status": "PASS",
+          "evidence": "[21:17:34 INFO]: BLWorldTrashCan debug summary:\n[21:17:34 INFO]: - 平台: paper-1.16-1.20 (universal)\n[21:17:34 INFO]: - 世界: rgb_visual_universal_paper2612_20260608_211637\n[21:17:34 INFO]: - 世界垃圾桶数量: 1\n[21:17:34 INFO]: - 世界垃圾桶物品: 6 (堆叠 2)\n[21:17:34 INFO]: - 跳过未加载区块: 0\n[21:17:34 INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\n[21:17:34 INFO]: - 个人垃圾桶物品: 86 (堆叠 4)\n",
+          "command": "blwtc debugsummary RGBaper2612",
+          "screenshot": "",
+          "details": {
+            "name": "summary",
+            "command": "blwtc debugsummary RGBaper2612",
+            "markers": [
+              "BLWorldTrashCan debug summary"
+            ],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:34 INFO]: BLWorldTrashCan debug summary:\n[21:17:34 INFO]: - 平台: paper-1.16-1.20 (universal)\n[21:17:34 INFO]: - 世界: rgb_visual_universal_paper2612_20260608_211637\n[21:17:34 INFO]: - 世界垃圾桶数量: 1\n[21:17:34 INFO]: - 世界垃圾桶物品: 6 (堆叠 2)\n[21:17:34 INFO]: - 跳过未加载区块: 0\n[21:17:34 INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\n[21:17:34 INFO]: - 个人垃圾桶物品: 86 (堆叠 4)\n"
+          }
+        },
+        {
+          "id": "F-023",
+          "name": "公共垃圾桶 GUI 打开",
+          "status": "PASS",
+          "evidence": "[21:17:34 INFO]: 已为玩家打开公共垃圾桶: RGBaper2612\n",
+          "command": "blwtc debugopen RGBaper2612 global",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-global-gui-open-f2.png",
+          "details": {
+            "name": "global-gui-open",
+            "command": "blwtc debugopen RGBaper2612 global",
+            "markers": [],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:34 INFO]: 已为玩家打开公共垃圾桶: RGBaper2612\n",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-global-gui-open-f2.png"
+          }
+        },
+        {
+          "id": "F-032",
+          "name": "个人垃圾桶 GUI 打开",
+          "status": "PASS",
+          "evidence": "[21:17:41 INFO]: 已为玩家打开个人垃圾桶: RGBaper2612\n",
+          "command": "blwtc debugopen RGBaper2612 personal",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-personal-gui-open-f2.png",
+          "details": {
+            "name": "personal-gui-open",
+            "command": "blwtc debugopen RGBaper2612 personal",
+            "markers": [],
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": "[21:17:41 INFO]: 已为玩家打开个人垃圾桶: RGBaper2612\n",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-personal-gui-open-f2.png"
+          }
+        },
+        {
+          "id": "F-014",
+          "name": "控制台 add 指定世界增加上限",
+          "status": "PASS",
+          "evidence": "[21:17:47 INFO]: [BLWorldTrashCan] 世界 rgb_visual_universal_paper2612_20260608_211637 垃圾桶上限已调整为 5。\n[21:17:50 INFO]: RGBaper2612 was slain by Slime\n",
+          "command": "blwtc add rgb_visual_universal_paper2612_20260608_211637 2",
+          "screenshot": "",
+          "details": {
+            "name": "add-world-limit",
+            "command": "blwtc add rgb_visual_universal_paper2612_20260608_211637 2",
+            "status": "PASS",
+            "world": "rgb_visual_universal_paper2612_20260608_211637",
+            "beforeMaxCount": 3,
+            "afterMaxCount": 5,
+            "expectedAfterMaxCount": 5,
+            "logExcerpt": "[21:17:47 INFO]: [BLWorldTrashCan] 世界 rgb_visual_universal_paper2612_20260608_211637 垃圾桶上限已调整为 5。\n[21:17:50 INFO]: RGBaper2612 was slain by Slime\n"
+          }
+        },
+        {
+          "id": "F-018",
+          "name": "世界垃圾桶上限运行数据生效",
+          "status": "PASS",
+          "evidence": "data/worlds.yml 中当前 run 世界 max-count 从 3 到 5",
+          "command": "blwtc add rgb_visual_universal_paper2612_20260608_211637 2",
+          "screenshot": "",
+          "details": {
+            "name": "add-world-limit",
+            "command": "blwtc add rgb_visual_universal_paper2612_20260608_211637 2",
+            "status": "PASS",
+            "world": "rgb_visual_universal_paper2612_20260608_211637",
+            "beforeMaxCount": 3,
+            "afterMaxCount": 5,
+            "expectedAfterMaxCount": 5,
+            "logExcerpt": "[21:17:47 INFO]: [BLWorldTrashCan] 世界 rgb_visual_universal_paper2612_20260608_211637 垃圾桶上限已调整为 5。\n[21:17:50 INFO]: RGBaper2612 was slain by Slime\n"
+          }
+        },
+        {
+          "id": "F-023",
+          "name": "真实玩家命令 /blwtc global",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc global",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-global-f2.png",
+          "details": {
+            "name": "matrix-client-global-f2",
+            "command": "/blwtc global",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-global-f2.png",
+            "brightness": 108.044921875
+          }
+        },
+        {
+          "id": "F-032",
+          "name": "真实玩家命令 /blwtc personal",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc personal",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-personal-f2.png",
+          "details": {
+            "name": "matrix-client-personal-f2",
+            "command": "/blwtc personal",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-personal-f2.png",
+            "brightness": 108.26953125
+          }
+        },
+        {
+          "id": "F-064",
+          "name": "真实玩家命令 /blwtc dropmode",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc dropmode",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-dropmode-f2.png",
+          "details": {
+            "name": "matrix-client-dropmode-f2",
+            "command": "/blwtc dropmode",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-dropmode-f2.png",
+            "brightness": 108.36458333333333
+          }
+        },
+        {
+          "id": "F-065",
+          "name": "真实玩家命令 /blwtc look",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc look",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-look-f2.png",
+          "details": {
+            "name": "matrix-client-look-f2",
+            "command": "/blwtc look",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-look-f2.png",
+            "brightness": 108.39127604166667
+          }
+        },
+        {
+          "id": "F-030",
+          "name": "真实玩家命令 /blwtc ban",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc ban",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-ban-f2.png",
+          "details": {
+            "name": "matrix-client-ban-f2",
+            "command": "/blwtc ban",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-ban-f2.png",
+            "brightness": 108.33854166666667
+          }
+        },
+        {
+          "id": "F-030",
+          "name": "真实玩家命令 /blwtc globalban",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc globalban",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-globalban-f2.png",
+          "details": {
+            "name": "matrix-client-globalban-f2",
+            "command": "/blwtc globalban",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-globalban-f2.png",
+            "brightness": 108.34798177083333
+          }
+        },
+        {
+          "id": "F-007",
+          "name": "真实玩家命令 /WTC stats",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/WTC stats",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-WTC-stats-f2.png",
+          "details": {
+            "name": "matrix-client-WTC-stats-f2",
+            "command": "/WTC stats",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-WTC-stats-f2.png",
+            "brightness": 108.34928385416667
+          }
+        },
+        {
+          "id": "F-013",
+          "name": "真实玩家命令 /blwtc add 1",
+          "status": "PASS",
+          "evidence": "真实客户端执行并截图。",
+          "command": "/blwtc add 1",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-add-current-world-f2.png",
+          "details": {
+            "name": "matrix-client-add-current-world-f2",
+            "command": "/blwtc add 1",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-add-current-world-f2.png",
+            "brightness": 108.34733072916667
+          }
+        },
+        {
+          "id": "F-077",
+          "name": "GUI 标题、物品名、Lore 富文本渲染",
+          "status": "PASS",
+          "evidence": "debugrgb all-channels 真实客户端截图。",
+          "command": "blwtc debugrgb RGBaper2612",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-rgb-all-channels-f2.png",
+          "details": {}
+        },
+        {
+          "id": "F-016",
+          "name": "无权限管理命令拒绝",
+          "status": "PASS",
+          "evidence": "非 OP 玩家执行 reload 后截图。",
+          "command": "/blwtc reload",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-no-permission-f2.png",
+          "details": {
+            "name": "matrix-client-no-permission-f2",
+            "command": "/blwtc reload",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-client-no-permission-f2.png",
+            "brightness": 108.25130208333333
+          }
+        },
+        {
+          "id": "F-066",
+          "name": "聊天限频",
+          "status": "PASS",
+          "evidence": "非 OP 玩家连续聊天，第二张截图保留限频提示。",
+          "command": "",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-chat-rate-two-f2.png",
+          "details": {
+            "first": {
+              "name": "matrix-chat-rate-one-f2",
+              "chat": "matrix chat one",
+              "status": "PASS",
+              "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-chat-rate-one-f2.png",
+              "brightness": 108.28678385416667
+            },
+            "second": {
+              "name": "matrix-chat-rate-two-f2",
+              "chat": "matrix chat two",
+              "status": "PASS",
+              "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-chat-rate-two-f2.png",
+              "brightness": 108.48209635416667
+            }
+          }
+        },
+        {
+          "id": "F-067",
+          "name": "命令限频",
+          "status": "PASS",
+          "evidence": "非 OP 玩家连续命令，第二张截图保留限频提示。",
+          "command": "",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-command-rate-two-f2.png",
+          "details": {
+            "first": {
+              "name": "matrix-command-rate-one-f2",
+              "command": "/blwtc stats",
+              "status": "PASS",
+              "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-command-rate-one-f2.png",
+              "brightness": 108.32259114583333
+            },
+            "second": {
+              "name": "matrix-command-rate-two-f2",
+              "command": "/blwtc stats",
+              "status": "PASS",
+              "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-matrix-command-rate-two-f2.png",
+              "brightness": 108.3017578125
+            }
+          }
+        },
+        {
+          "id": "F-078",
+          "name": "PAPI %Wtc_ClearTime%",
+          "status": "PASS",
+          "evidence": "[21:19:08 INFO]: 0\n",
+          "command": "papi parse RGBaper2612 %Wtc_ClearTime%",
+          "screenshot": "",
+          "details": {
+            "name": "papi-Wtc_ClearTime",
+            "command": "papi parse RGBaper2612 %Wtc_ClearTime%",
+            "status": "PASS",
+            "hasNumericResult": true,
+            "logExcerpt": "[21:19:08 INFO]: 0\n"
+          }
+        },
+        {
+          "id": "F-079",
+          "name": "bStats 配置文件",
+          "status": "PASS",
+          "evidence": "检查 bStats 全局配置 enabled: true。",
+          "command": "",
+          "screenshot": "",
+          "details": {
+            "name": "data-and-bstats-files",
+            "status": "PASS",
+            "worldsFile": "E:\\server_work\\paper-26.1.2-test-server\\plugins\\BLWorldTrashCan\\data\\worlds.yml",
+            "worldsFileHasLocations": true,
+            "worldsFileHasMaxCount": true,
+            "bStatsConfig": "E:\\server_work\\paper-26.1.2-test-server\\plugins\\bStats\\config.yml",
+            "bStatsEnabledTrue": true
+          }
+        },
+        {
+          "id": "F-004",
+          "name": "默认资源全量自愈",
+          "status": "PASS",
+          "evidence": "删除默认资源后 reload 并恢复备份。",
+          "command": "delete resources + blwtc reload",
+          "screenshot": "",
+          "details": {
+            "name": "resource-self-heal-all",
+            "status": "PASS",
+            "resources": {
+              "config.yml": true,
+              "platform.yml": true,
+              "cleanup.yml": true,
+              "trash.yml": true,
+              "protections.yml": true,
+              "entity-limits.yml": true,
+              "messages/message_zh.yml": true,
+              "messages/message_zh_TW.yml": true,
+              "messages/message_en.yml": true,
+              "messages/message_es.yml": true,
+              "data/worlds.yml": true
+            },
+            "backupDir": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\logs\\resource-self-heal-backup",
+            "commandResult": {
+              "name": "resource-self-heal-reload",
+              "command": "blwtc reload",
+              "markers": [
+                "[Message]"
+              ],
+              "status": "PASS",
+              "error": "",
+              "logExcerpt": "[21:19:16 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[21:19:16 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。\n[21:19:16 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。\n[21:19:16 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\n"
+            },
+            "restoreResult": {
+              "name": "resource-self-heal-restore-reload",
+              "command": "blwtc reload",
+              "markers": [
+                "[Message]"
+              ],
+              "status": "PASS",
+              "error": "",
+              "logExcerpt": "[21:19:17 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[21:19:17 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。\n[21:19:17 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。\n[21:19:17 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\n"
+            }
+          }
+        },
+        {
+          "id": "F-057",
+          "name": "Chat 清理/调试可见消息",
+          "status": "PASS",
+          "evidence": "真实客户端多张聊天提示截图。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-059",
+          "name": "ActionBar 可见消息",
+          "status": "PASS",
+          "evidence": "RGB 三通道截图包含 ActionBar。",
+          "command": "",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\universal_paper2612\\screenshots\\universal_paper2612-rgb-channels-f2.png",
+          "details": {}
+        },
+        {
+          "id": "F-005",
+          "name": "旧配置自动迁移",
+          "status": "SKIP",
+          "evidence": "需要独立旧插件目录夹具，不能污染本轮三端在线回归。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-019",
+          "name": "禁止世界普通玩家创建",
+          "status": "SKIP",
+          "evidence": "本轮测试世界为 runId 隔离世界，不在 banned-worlds 默认列表。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-020",
+          "name": "破坏告示牌或容器移除登记",
+          "status": "SKIP",
+          "evidence": "需要真实方块破坏交互或专用夹具，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-021",
+          "name": "世界物品黑名单路由降级",
+          "status": "SKIP",
+          "evidence": "需要写入世界黑名单并对照路由，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-022",
+          "name": "未加载区块跳过",
+          "status": "SKIP",
+          "evidence": "需要远处已登记箱子和区块卸载夹具，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-024",
+          "name": "公共垃圾桶分页翻页",
+          "status": "SKIP",
+          "evidence": "本轮只打开 GUI，未做真实翻页点击。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-026",
+          "name": "公共垃圾桶 GUI 取出",
+          "status": "SKIP",
+          "evidence": "本轮未做真实 GUI 点击取出。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-027",
+          "name": "公共垃圾桶 GUI 放入",
+          "status": "SKIP",
+          "evidence": "本轮未做真实 GUI 点击放入。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-028",
+          "name": "公共垃圾桶取出冷却",
+          "status": "SKIP",
+          "evidence": "依赖连续 GUI 取出点击，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-029",
+          "name": "公共垃圾桶操作日志",
+          "status": "SKIP",
+          "evidence": "依赖 GUI 取放动作，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-030",
+          "name": "公共黑名单 GUI 保存即时生效",
+          "status": "SKIP",
+          "evidence": "本轮打开 GUI 但未做真实放入黑名单物品和关闭保存。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-031",
+          "name": "公共垃圾桶按清理次数刷新",
+          "status": "SKIP",
+          "evidence": "本轮未做 clear-every-cleanups 多轮刷新夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-034",
+          "name": "个人垃圾桶 GUI 取出",
+          "status": "SKIP",
+          "evidence": "本轮未做真实 GUI 点击取出。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-035",
+          "name": "个人垃圾桶 GUI 放入",
+          "status": "SKIP",
+          "evidence": "本轮未做真实 GUI 点击放入。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-036",
+          "name": "个人垃圾桶满时自动清空",
+          "status": "SKIP",
+          "evidence": "需要填满个人桶或缩小容量夹具，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-037",
+          "name": "Vault 扣费取出",
+          "status": "SKIP",
+          "evidence": "默认 take-cost 为 -1，测试服未安装 Economy 前置。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-054",
+          "name": "船内实体保护",
+          "status": "SKIP",
+          "evidence": "需要船内实体场景，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-058",
+          "name": "Chat 完成通知点击命令",
+          "status": "SKIP",
+          "evidence": "本轮验证可见消息，不做客户端点击组件。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-060",
+          "name": "BossBar 清理通知",
+          "status": "SKIP",
+          "evidence": "默认关闭，本轮未启用 BossBar 通知夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-061",
+          "name": "Title 清理通知",
+          "status": "SKIP",
+          "evidence": "默认关闭，本轮 RGB Title 走 debug 通道，不等价于清理通知。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-062",
+          "name": "Sound 清理通知",
+          "status": "SKIP",
+          "evidence": "声音无法通过后台日志可靠判定，本轮未做人工听感夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-063",
+          "name": "Command 清理通知",
+          "status": "SKIP",
+          "evidence": "默认关闭，本轮未启用命令通知夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-068",
+          "name": "不可拾取箭矢清理",
+          "status": "SKIP",
+          "evidence": "需要无限弓或骷髅射箭场景，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-069",
+          "name": "防踩踏农田",
+          "status": "SKIP",
+          "evidence": "需要真实踩踏事件夹具，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-070",
+          "name": "单世界实体数量限制",
+          "status": "SKIP",
+          "evidence": "默认关闭，本轮未启用实体限制运行态夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-071",
+          "name": "密集实体限制",
+          "status": "SKIP",
+          "evidence": "默认关闭，本轮未启用密集实体运行态夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-072",
+          "name": "实体限制 ignored-worlds",
+          "status": "SKIP",
+          "evidence": "依赖 F-070/F-071 夹具，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-073",
+          "name": "多语言切换",
+          "status": "SKIP",
+          "evidence": "本轮验证语言文件存在和自愈，未切换 language 后重载。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-074",
+          "name": "语言缺节点回退默认",
+          "status": "SKIP",
+          "evidence": "需要删节点而非删文件的语言夹具，本轮未覆盖。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-043",
+          "name": "ignored-worlds 跳过指定世界",
+          "status": "STATIC-PASS",
+          "evidence": "源码和默认配置已核对；该项本轮未做独立玩家运行态夹具。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-044",
+          "name": "ignored-materials 跳过指定物品",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-045",
+          "name": "显示名片段跳过物品",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-046",
+          "name": "Lore 片段跳过物品",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-048",
+          "name": "实体清理总开关",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-049",
+          "name": "清理经验球",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-050",
+          "name": "清理怪物",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-051",
+          "name": "清理动物可配置",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-052",
+          "name": "清理投射物",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-053",
+          "name": "自定义名实体保护",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-055",
+          "name": "实体白名单优先保留",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-056",
+          "name": "实体黑名单强制清理",
+          "status": "STATIC-PASS",
+          "evidence": "CorePolicySelfTest/mvn test 覆盖纯 Java 清理策略；运行态仍以显式用例为准。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-042",
+          "name": "现代端 PDC owner 追踪",
+          "status": "PASS",
+          "evidence": "26.1.2 owner 掉落清理进入个人垃圾桶；PDC 写在实体。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-076",
+          "name": "现代端 RGB",
+          "status": "PASS",
+          "evidence": "真实客户端 Chat/ActionBar/Title 截图。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-041",
+          "name": "无 PDC 版本短期 owner 追踪",
+          "status": "SKIP",
+          "evidence": "现代端不走无 PDC 主路径。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-075",
+          "name": "1.12.2 RGB 降级",
+          "status": "SKIP",
+          "evidence": "现代端不适用降级。",
+          "command": "",
+          "screenshot": "",
+          "details": {}
+        },
+        {
+          "id": "F-080",
+          "name": "日志保留",
+          "status": "PASS",
+          "evidence": "测试脚本未删除 logs/world*/cache/assets；本轮证据保留服务端和客户端日志。",
+          "command": "",
+          "screenshot": "",
+          "details": {
+            "case": "universal_paper2612"
+          }
+        }
+      ],
+      "functionMatrixSummary": {
+        "counts": {
+          "PASS": 55,
+          "SKIP": 32,
+          "STATIC-PASS": 12
+        },
+        "failed": [],
+        "skipped": [
+          {
+            "id": "F-003",
+            "name": "Java 8 bootstrap",
+            "status": "SKIP",
+            "evidence": "仅 legacy 端验证 Java 8 bootstrap。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-005",
+            "name": "旧配置自动迁移",
+            "status": "SKIP",
+            "evidence": "需要独立旧插件目录夹具，不能污染本轮三端在线回归。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-019",
+            "name": "禁止世界普通玩家创建",
+            "status": "SKIP",
+            "evidence": "本轮测试世界为 runId 隔离世界，不在 banned-worlds 默认列表。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-020",
+            "name": "破坏告示牌或容器移除登记",
+            "status": "SKIP",
+            "evidence": "需要真实方块破坏交互或专用夹具，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-021",
+            "name": "世界物品黑名单路由降级",
+            "status": "SKIP",
+            "evidence": "需要写入世界黑名单并对照路由，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-022",
+            "name": "未加载区块跳过",
+            "status": "SKIP",
+            "evidence": "需要远处已登记箱子和区块卸载夹具，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-024",
+            "name": "公共垃圾桶分页翻页",
+            "status": "SKIP",
+            "evidence": "本轮只打开 GUI，未做真实翻页点击。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-026",
+            "name": "公共垃圾桶 GUI 取出",
+            "status": "SKIP",
+            "evidence": "本轮未做真实 GUI 点击取出。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-027",
+            "name": "公共垃圾桶 GUI 放入",
+            "status": "SKIP",
+            "evidence": "本轮未做真实 GUI 点击放入。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-028",
+            "name": "公共垃圾桶取出冷却",
+            "status": "SKIP",
+            "evidence": "依赖连续 GUI 取出点击，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-029",
+            "name": "公共垃圾桶操作日志",
+            "status": "SKIP",
+            "evidence": "依赖 GUI 取放动作，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-030",
+            "name": "公共黑名单 GUI 保存即时生效",
+            "status": "SKIP",
+            "evidence": "本轮打开 GUI 但未做真实放入黑名单物品和关闭保存。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-031",
+            "name": "公共垃圾桶按清理次数刷新",
+            "status": "SKIP",
+            "evidence": "本轮未做 clear-every-cleanups 多轮刷新夹具。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-034",
+            "name": "个人垃圾桶 GUI 取出",
+            "status": "SKIP",
+            "evidence": "本轮未做真实 GUI 点击取出。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-035",
+            "name": "个人垃圾桶 GUI 放入",
+            "status": "SKIP",
+            "evidence": "本轮未做真实 GUI 点击放入。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-036",
+            "name": "个人垃圾桶满时自动清空",
+            "status": "SKIP",
+            "evidence": "需要填满个人桶或缩小容量夹具，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-037",
+            "name": "Vault 扣费取出",
+            "status": "SKIP",
+            "evidence": "默认 take-cost 为 -1，测试服未安装 Economy 前置。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-054",
+            "name": "船内实体保护",
+            "status": "SKIP",
+            "evidence": "需要船内实体场景，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-058",
+            "name": "Chat 完成通知点击命令",
+            "status": "SKIP",
+            "evidence": "本轮验证可见消息，不做客户端点击组件。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-060",
+            "name": "BossBar 清理通知",
+            "status": "SKIP",
+            "evidence": "默认关闭，本轮未启用 BossBar 通知夹具。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-061",
+            "name": "Title 清理通知",
+            "status": "SKIP",
+            "evidence": "默认关闭，本轮 RGB Title 走 debug 通道，不等价于清理通知。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-062",
+            "name": "Sound 清理通知",
+            "status": "SKIP",
+            "evidence": "声音无法通过后台日志可靠判定，本轮未做人工听感夹具。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-063",
+            "name": "Command 清理通知",
+            "status": "SKIP",
+            "evidence": "默认关闭，本轮未启用命令通知夹具。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-068",
+            "name": "不可拾取箭矢清理",
+            "status": "SKIP",
+            "evidence": "需要无限弓或骷髅射箭场景，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-069",
+            "name": "防踩踏农田",
+            "status": "SKIP",
+            "evidence": "需要真实踩踏事件夹具，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-070",
+            "name": "单世界实体数量限制",
+            "status": "SKIP",
+            "evidence": "默认关闭，本轮未启用实体限制运行态夹具。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-071",
+            "name": "密集实体限制",
+            "status": "SKIP",
+            "evidence": "默认关闭，本轮未启用密集实体运行态夹具。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-072",
+            "name": "实体限制 ignored-worlds",
+            "status": "SKIP",
+            "evidence": "依赖 F-070/F-071 夹具，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-073",
+            "name": "多语言切换",
+            "status": "SKIP",
+            "evidence": "本轮验证语言文件存在和自愈，未切换 language 后重载。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-074",
+            "name": "语言缺节点回退默认",
+            "status": "SKIP",
+            "evidence": "需要删节点而非删文件的语言夹具，本轮未覆盖。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-041",
+            "name": "无 PDC 版本短期 owner 追踪",
+            "status": "SKIP",
+            "evidence": "现代端不走无 PDC 主路径。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          },
+          {
+            "id": "F-075",
+            "name": "1.12.2 RGB 降级",
+            "status": "SKIP",
+            "evidence": "现代端不适用降级。",
+            "command": "",
+            "screenshot": "",
+            "details": {}
+          }
+        ],
+        "total": 99
+      }
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\rgb-external-server-matrix\\runs\\20260608-211637\\rgb-external-server-contact-sheet.png"
+}
