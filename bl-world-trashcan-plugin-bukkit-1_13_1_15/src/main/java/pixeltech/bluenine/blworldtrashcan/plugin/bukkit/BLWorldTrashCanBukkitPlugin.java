@@ -192,6 +192,7 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
         BLWorldTrashCanBukkitCommand executor = new BLWorldTrashCanBukkitCommand(this);
         registerCommand("blworldtrashcan", executor);
         registerCommand("blwtc", executor);
+        registerCommand("worldlisttrashcan", executor);
         registerCommand("WorldListTrashCan", executor);
         registerCommand("wtc", executor);
     }

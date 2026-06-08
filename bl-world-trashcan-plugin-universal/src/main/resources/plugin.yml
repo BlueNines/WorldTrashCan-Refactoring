@@ -9,8 +9,8 @@ commands:
   blworldtrashcan:
     aliases: [blwtc]
     description: BLWorldTrashCan main command.
-  WorldListTrashCan:
-    aliases: [wtc]
+  worldlisttrashcan:
+    aliases: [WorldListTrashCan, wtc]
     description: Legacy WorldListTrashCan command alias.
 permissions:
   blworldtrashcan.admin:

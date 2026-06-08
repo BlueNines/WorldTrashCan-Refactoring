@@ -1,10 +1,13 @@
 import argparse
+import hashlib
 import json
+import re
 import shutil
 import socket
 import subprocess
 import sys
 import time
+import zipfile
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -19,9 +22,31 @@ JAVA21 = Path(r"C:\Program Files\Java\jdk-21\bin\java.exe")
 JAVA17 = base.JAVA17
 JAVA25 = base.REPO / "build" / "tools" / "jre-25.0.3+9" / "bin" / "java.exe"
 UNIVERSAL_PLUGIN = "BLWorldTrashCan-universal.jar"
+PAPI_1122 = base.WORKSPACE / "paper-1.12.2-test-server" / "plugins" / "placeholderapi-2.11.6.jar"
+PAPI_MODERN = SERVER_WORK / "1.21.11spigot" / "plugins" / "PlaceholderAPI-2.12.2.jar"
 
 
 EXTERNAL_MATRIX = [
+    {
+        "id": "managed_paper1122",
+        "label": "paper-1.12.2-managed-universal",
+        "version": "1.12.2",
+        "serverDir": SERVER_WORK / "paper-1.12.2-universal-test-server",
+        "serverJar": "paper-1.12.2-1620.jar",
+        "serverSourceJar": base.WORKSPACE / "paper-1.12.2-test-server" / "paper-1.12.2-1620.jar",
+        "port": 30012,
+        "java": base.JAVA8,
+        "plugin": UNIVERSAL_PLUGIN,
+        "expect": "downgrade",
+        "managedConfig": True,
+        "modernJvmArgs": False,
+        "levelType": "FLAT",
+        "readyTimeout": 360,
+        "joinTimeout": 120,
+        "extraPlugins": [PAPI_1122],
+        "expectPapi": True,
+        "expectedPlatform": "legacy-1.12",
+    },
     {
         "id": "external_paper1218",
         "label": "server_1.21.8_0",
@@ -122,6 +147,9 @@ EXTERNAL_MATRIX = [
         "managedConfig": True,
         "readyTimeout": 240,
         "joinTimeout": 150,
+        "extraPlugins": [PAPI_MODERN],
+        "expectPapi": True,
+        "expectedPlatform": "paper-1.16-1.20",
     },
     {
         "id": "external_spigot2612",
@@ -138,6 +166,9 @@ EXTERNAL_MATRIX = [
         "managedConfig": True,
         "readyTimeout": 240,
         "joinTimeout": 150,
+        "extraPlugins": [PAPI_MODERN],
+        "expectPapi": True,
+        "expectedPlatform": "paper-1.16-1.20",
     },
 ]
 
@@ -289,8 +320,14 @@ def deploy_plugin(case: dict) -> Path:
     source = base.REPO / "dist" / case["plugin"]
     if not source.is_file():
         raise RuntimeError("缺少待部署插件 jar: " + str(source))
-    target = plugins_dir / "BLWorldTrashCan-rgb-test.jar"
+    for old in plugins_dir.glob("BLWorldTrashCan*.jar"):
+        old.unlink()
+    target = plugins_dir / case["plugin"]
     shutil.copy2(source, target)
+    for extra in case.get("extraPlugins", []):
+        extra_path = Path(extra)
+        if extra_path.is_file():
+            shutil.copy2(extra_path, plugins_dir / extra_path.name)
     return target
 
 
@@ -299,6 +336,12 @@ def ensure_managed_server_jar(case: dict) -> None:
     server_dir = Path(case["serverDir"])
     server_dir.mkdir(parents=True, exist_ok=True)
     target = server_dir / str(case["serverJar"])
+    source = case.get("serverSourceJar")
+    if not target.is_file() and source:
+        source_path = Path(source)
+        if not source_path.is_file():
+            raise RuntimeError("managed 服务端源 jar 不存在: " + str(source_path))
+        shutil.copy2(source_path, target)
     if not target.is_file() and case.get("serverDownloadUrl"):
         base.download(str(case["serverDownloadUrl"]), target)
     if not target.is_file():
@@ -315,6 +358,7 @@ def write_managed_server_properties(case: dict) -> None:
     """写入 managed 26.1 测试服启动所需的最小配置。"""
     server_dir = Path(case["serverDir"])
     path = server_dir / "server.properties"
+    level_name = current_world_name(case)
     values = {}
     if path.is_file():
         for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -324,8 +368,8 @@ def write_managed_server_properties(case: dict) -> None:
     values.update({
         "server-port": str(case["port"]),
         "online-mode": "false",
-        "level-name": "rgb_visual_" + str(case["id"]),
-        "level-type": "minecraft:flat",
+        "level-name": level_name,
+        "level-type": str(case.get("levelType", "minecraft:flat")),
         "generate-structures": "false",
         "view-distance": "2",
         "simulation-distance": "2",
@@ -337,6 +381,14 @@ def write_managed_server_properties(case: dict) -> None:
     text = "\n".join(key + "=" + value for key, value in values.items()) + "\n"
     path.write_text(text, encoding="utf-8")
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
+
+
+def current_world_name(case: dict) -> str:
+    """返回当前 run 应该使用和验证的测试世界名。"""
+    run_id = str(case.get("runId", "static")).replace("-", "_")
+    if case.get("managedConfig", False):
+        return "rgb_visual_" + str(case["id"]) + "_" + run_id
+    return "rgb_visual_" + str(case["id"])
 
 
 def prepare_managed_server(case: dict) -> None:
@@ -396,7 +448,11 @@ def launch_server(case: dict, run_dir: Path) -> subprocess.Popen:
         errors="replace",
     )
     process._blwtc_log_file = log_file
-    wait_server_ready(process, log_path, int(case["port"]), int(case.get("readyTimeout", 150)))
+    try:
+        wait_server_ready(process, log_path, int(case["port"]), int(case.get("readyTimeout", 150)))
+    except Exception:
+        stop_process(process, "stop")
+        raise
     return process
 
 
@@ -510,6 +566,28 @@ def capture_named_screenshot(case: dict, game_dir: Path, run_dir: Path, suffix: 
     """截取当前客户端画面并归档为指定后缀。"""
     source = base.capture_internal_screenshot(case, game_dir, run_dir)
     return copy_screenshot(source, run_dir, case, suffix)
+
+
+def send_client_command(case: dict, game_dir: Path, run_dir: Path, command: str, suffix: str,
+                        wait_seconds: float = 1.0) -> dict:
+    """让真实客户端输入一条玩家命令并截图留证。"""
+    hwnd = base.find_minecraft_window(case["version"])
+    base.focus_window(hwnd)
+    base.pyautogui.press("esc")
+    time.sleep(0.25)
+    base.pyautogui.press("t")
+    time.sleep(0.2)
+    base.pyautogui.write(command, interval=0.01)
+    base.pyautogui.press("enter")
+    time.sleep(wait_seconds)
+    screenshot = capture_named_screenshot(case, game_dir, run_dir, suffix)
+    return {
+        "name": suffix,
+        "command": command,
+        "status": "PASS",
+        "screenshot": str(screenshot),
+        "brightness": base.image_brightness(Image.open(screenshot)),
+    }
 
 
 def stop_process(process: subprocess.Popen, command: str | None = None) -> None:
@@ -634,8 +712,240 @@ def run_basic_function_checks(case: dict, username: str, server_process: subproc
     return results
 
 
-def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: bool, basic_checks: bool) -> dict:
+def artifact_summary_for_plugin(case: dict) -> dict:
+    """读取本轮部署的 universal jar 元信息。"""
+    source = base.REPO / "dist" / case["plugin"]
+    data = source.read_bytes()
+    result = {
+        "path": str(source),
+        "name": source.name,
+        "size": source.stat().st_size,
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "pluginYmlVersion": "",
+        "main": "",
+    }
+    with zipfile.ZipFile(source) as jar:
+        plugin_yml = jar.read("plugin.yml").decode("utf-8", errors="replace")
+    for line in plugin_yml.splitlines():
+        if line.startswith("version:"):
+            result["pluginYmlVersion"] = line.split(":", 1)[1].strip()
+        if line.startswith("main:"):
+            result["main"] = line.split(":", 1)[1].strip()
+    return result
+
+
+def run_command_check(case: dict, server_process: subprocess.Popen, server_log: Path,
+                      command_log: Path, command: str, name: str, markers: list[str],
+                      timeout: float = 10.0) -> dict:
+    """执行一条后台命令并按日志标记断言结果。"""
+    offset = log_text_offset(server_log)
+    send_console_command(server_process, command, command_log)
+    try:
+        text = wait_command_markers(server_log, offset, markers, timeout, command) if markers else wait_command_not_rejected(server_log, offset, timeout, command)
+        return {
+            "name": name,
+            "command": command,
+            "markers": markers,
+            "status": "PASS",
+            "error": "",
+            "logExcerpt": text[-2000:],
+        }
+    except Exception as exception:
+        return {
+            "name": name,
+            "command": command,
+            "markers": markers,
+            "status": "FAIL",
+            "error": repr(exception),
+            "logExcerpt": read_text_since(server_log, offset)[-2000:],
+        }
+
+
+def verify_reload_self_heal(case: dict, server_process: subprocess.Popen, server_log: Path,
+                            command_log: Path, run_dir: Path) -> dict:
+    """删除一个默认语言文件后执行 reload，验证资源会自动补回。"""
+    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "messages" / "message_es.yml"
+    backup = run_dir / "logs" / "self-heal-backup" / "message_es.yml"
+    backup.parent.mkdir(parents=True, exist_ok=True)
+    if target.is_file():
+        shutil.copy2(target, backup)
+        target.unlink()
+    command_result = run_command_check(case, server_process, server_log, command_log, "blwtc reload", "reload-self-heal-command", ["[Message]"], 10)
+    exists = target.is_file() and target.stat().st_size > 0
+    return {
+        "name": "reload-self-heal",
+        "command": "delete messages/message_es.yml + blwtc reload",
+        "status": "PASS" if command_result["status"] == "PASS" and exists else "FAIL",
+        "fileRestored": exists,
+        "deletedFile": str(target),
+        "backup": str(backup) if backup.is_file() else "",
+        "commandResult": command_result,
+    }
+
+
+def verify_data_files(case: dict) -> dict:
+    """检查世界垃圾桶数据和 bStats 全局配置是否已落盘。"""
+    data_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "data" / "worlds.yml"
+    bstats_file = Path(case["serverDir"]) / "plugins" / "bStats" / "config.yml"
+    data_text = read_text(data_file)
+    bstats_text = read_text(bstats_file)
+    data_ok = data_file.is_file() and "locations" in data_text and "max-count" in data_text
+    bstats_ok = bstats_file.is_file() and re.search(r"(?m)^enabled:\s*true\s*$", bstats_text) is not None
+    return {
+        "name": "data-and-bstats-files",
+        "status": "PASS" if data_ok and bstats_ok else "FAIL",
+        "worldsFile": str(data_file),
+        "worldsFileHasLocations": "locations" in data_text,
+        "worldsFileHasMaxCount": "max-count" in data_text,
+        "bStatsConfig": str(bstats_file),
+        "bStatsEnabledTrue": bstats_ok,
+    }
+
+
+def read_world_max_count(case: dict, world_name: str) -> int | None:
+    """从 worlds.yml 读取指定世界的 max-count。"""
+    data_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "data" / "worlds.yml"
+    if not data_file.is_file():
+        return None
+    in_target_world = False
+    for line in read_text(data_file).splitlines():
+        if line.startswith("  ") and not line.startswith("    "):
+            in_target_world = line.strip() == world_name + ":"
+            continue
+        if in_target_world and line.startswith("    max-count:"):
+            raw = line.split(":", 1)[1].strip()
+            try:
+                return int(raw)
+            except ValueError:
+                return None
+    return None
+
+
+def run_add_world_limit_check(case: dict, server_process: subprocess.Popen, server_log: Path,
+                              command_log: Path, world_name: str, delta: int = 2) -> dict:
+    """验证 add 命令确实写入当前测试世界的 max-count。"""
+    before = read_world_max_count(case, world_name)
+    command = "blwtc add " + world_name + " " + str(delta)
+    offset = log_text_offset(server_log)
+    send_console_command(server_process, command, command_log)
+    try:
+        text = wait_command_not_rejected(server_log, offset, 10, command)
+        after = read_world_max_count(case, world_name)
+        ok = before is not None and after == before + delta
+        return {
+            "name": "add-world-limit",
+            "command": command,
+            "status": "PASS" if ok else "FAIL",
+            "world": world_name,
+            "beforeMaxCount": before,
+            "afterMaxCount": after,
+            "expectedAfterMaxCount": None if before is None else before + delta,
+            "logExcerpt": text[-2000:],
+        }
+    except Exception as exception:
+        return {
+            "name": "add-world-limit",
+            "command": command,
+            "status": "FAIL",
+            "world": world_name,
+            "beforeMaxCount": before,
+            "afterMaxCount": read_world_max_count(case, world_name),
+            "error": repr(exception),
+            "logExcerpt": read_text_since(server_log, offset)[-2000:],
+        }
+
+
+def run_papi_check(case: dict, username: str, server_process: subprocess.Popen,
+                   server_log: Path, command_log: Path) -> dict:
+    """在安装 PlaceholderAPI 的测试端验证 %Wtc_ClearTime%。"""
+    if not case.get("expectPapi", False):
+        return {"name": "papi-Wtc_ClearTime", "status": "SKIP", "reason": "case does not install PlaceholderAPI"}
+    command = "papi parse " + username + " %Wtc_ClearTime%"
+    offset = log_text_offset(server_log)
+    send_console_command(server_process, command, command_log)
+    try:
+        text = wait_command_not_rejected(server_log, offset, 8, command)
+        has_number = (re.search(r"(?m)^\s*[0-9]+\s*$", text) is not None
+                      or re.search(r"(?m)\]:\s*[0-9]+\s*$", text) is not None
+                      or re.search(r"Wtc_ClearTime.*[0-9]+", text) is not None)
+        disabled = "PlaceholderAPI" in text and ("not enabled" in text or "Unknown" in text)
+        return {
+            "name": "papi-Wtc_ClearTime",
+            "command": command,
+            "status": "PASS" if has_number and not disabled else "FAIL",
+            "hasNumericResult": has_number,
+            "logExcerpt": text[-2000:],
+        }
+    except Exception as exception:
+        return {
+            "name": "papi-Wtc_ClearTime",
+            "command": command,
+            "status": "FAIL",
+            "error": repr(exception),
+            "logExcerpt": read_text_since(server_log, offset)[-2000:],
+        }
+
+
+def run_full_function_checks(case: dict, username: str, server_process: subprocess.Popen,
+                             server_log: Path, command_log: Path, run_dir: Path,
+                             game_dir: Path) -> list[dict]:
+    """执行覆盖正式入口、旧入口、PAPI、reload 自愈和落盘状态的全功能检查。"""
+    world_name = current_world_name(case)
+    platform_marker = str(case.get("expectedPlatform", "")) or "(universal)"
+    results = []
+    console_checks = [
+        ("help", "blwtc help", ["/blwtc platform"]),
+        ("alias-wtc-platform", "wtc platform", [platform_marker, "(universal)"]),
+        ("alias-worldlist-platform", "WorldListTrashCan platform", [platform_marker, "(universal)"]),
+        ("stats", "blwtc stats", ["[BLWorldTrashCan]"]),
+        ("debugstock", "blwtc debugstock", []),
+        ("debugplayer-dropmode", "blwtc debugplayer " + username + " dropmode", []),
+        ("debugplayer-look", "blwtc debugplayer " + username + " look", []),
+        ("debugplayer-ban", "blwtc debugplayer " + username + " ban", []),
+        ("debugplayer-globalban", "blwtc debugplayer " + username + " globalban", []),
+    ]
+    for name, command, markers in console_checks:
+        item = run_command_check(case, server_process, server_log, command_log, command, name, markers, 12)
+        if item["status"] == "PASS" and name in ("debugplayer-ban", "debugplayer-globalban"):
+            time.sleep(0.8)
+            item["screenshot"] = str(capture_named_screenshot(case, game_dir, run_dir, name + "-f2"))
+        results.append(item)
+        if item["status"] != "PASS":
+            write_json(run_dir / "logs" / (case["id"] + "-full-checks.json"), results)
+            raise RuntimeError("全功能检查失败: " + name + " " + item.get("error", ""))
+    add_result = run_add_world_limit_check(case, server_process, server_log, command_log, world_name)
+    results.append(add_result)
+    if add_result["status"] != "PASS":
+        write_json(run_dir / "logs" / (case["id"] + "-full-checks.json"), results)
+        raise RuntimeError("全功能检查失败: add-world-limit " + add_result.get("error", ""))
+    send_console_command(server_process, "op " + username, command_log)
+    time.sleep(0.8)
+    client_commands = [
+        ("/blwtc global", "client-command-global", 1.0),
+        ("/blwtc personal", "client-command-personal", 1.0),
+        ("/blwtc dropmode", "client-command-dropmode", 0.8),
+        ("/blwtc look", "client-command-look", 0.8),
+        ("/blwtc ban", "client-command-ban", 1.0),
+        ("/blwtc globalban", "client-command-globalban", 1.0),
+        ("/wtc stats", "client-command-legacy-stats", 0.8),
+    ]
+    for command, suffix, wait_seconds in client_commands:
+        results.append(send_client_command(case, game_dir, run_dir, command, suffix + "-f2", wait_seconds))
+    results.append(run_papi_check(case, username, server_process, server_log, command_log))
+    results.append(verify_reload_self_heal(case, server_process, server_log, command_log, run_dir))
+    results.append(verify_data_files(case))
+    failed = [item for item in results if item.get("status") == "FAIL"]
+    write_json(run_dir / "logs" / (case["id"] + "-full-checks.json"), results)
+    if failed:
+        raise RuntimeError("全功能检查失败: " + ",".join(item["name"] for item in failed))
+    return results
+
+
+def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: bool,
+             basic_checks: bool, full_checks: bool) -> dict:
     """执行单个外部服务端 RGB 截图用例。"""
+    case = dict(case)
+    case["runId"] = run_root.name
     log("开始外部服务端用例 " + case["id"] + " / " + case["label"])
     run_dir = run_root / case["id"]
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -654,14 +964,19 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: 
         "expect": case["expect"],
         "rgbEvidence": "chat-actionbar-title" if channels_only else "all-visible-channels",
         "basicChecksRequested": basic_checks,
+        "fullChecksRequested": full_checks,
         "testConfigPatched": False,
+        "artifact": artifact_summary_for_plugin(case),
         "status": "FAIL",
     }
     try:
-        if basic_checks:
+        if basic_checks or full_checks:
             config_backups = prepare_test_config(case, run_dir)
             result["testConfigPatched"] = bool(config_backups)
         server_process = launch_server(case, run_dir)
+        if (basic_checks or full_checks) and not config_backups:
+            config_backups = prepare_test_config(case, run_dir)
+            result["testConfigPatched"] = bool(config_backups)
         prepared = prepared_clients[case["version"]]
         client_process, username, game_dir = base.launch_client(case, prepared, run_dir)
         base.ACTIVE_CLIENT_PID = client_process.pid
@@ -689,6 +1004,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: 
         result["brightness"] = base.image_brightness(Image.open(screenshot))
         if basic_checks:
             result["basicChecks"] = run_basic_function_checks(case, username, server_process, server_log, command_log, run_dir, game_dir)
+        if full_checks:
+            result["fullChecks"] = run_full_function_checks(case, username, server_process, server_log, command_log, run_dir, game_dir)
         result["status"] = "PASS"
     except Exception as error:
         result["error"] = repr(error)
@@ -743,6 +1060,7 @@ def main() -> int:
     parser.add_argument("--universal", action="store_true")
     parser.add_argument("--channels-only", action="store_true")
     parser.add_argument("--basic-checks", action="store_true")
+    parser.add_argument("--full-checks", action="store_true")
     args = parser.parse_args()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     run_root = BUILD_ROOT / "runs" / run_id
@@ -761,7 +1079,7 @@ def main() -> int:
     results = []
     for case in cases:
         prepared_clients.setdefault(case["version"], base.ensure_client(case["version"]))
-        results.append(run_case(case, prepared_clients, run_root, args.channels_only, args.basic_checks))
+        results.append(run_case(case, prepared_clients, run_root, args.channels_only, args.basic_checks, args.full_checks))
         write_json(run_root / "summary.json", {"run": run_id, "results": results, "contactSheet": ""})
         write_json(BUILD_ROOT / "last-summary.json", {"run": run_id, "results": results, "contactSheet": ""})
     contact_sheet = make_contact_sheet(results, run_root)

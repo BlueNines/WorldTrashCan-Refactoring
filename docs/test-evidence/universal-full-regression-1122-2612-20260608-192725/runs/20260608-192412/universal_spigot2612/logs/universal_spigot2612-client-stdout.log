@@ -1,0 +1,114 @@
+[19:24:30] [Datafixer Bootstrap/INFO]: 291 Datafixer optimizations took 304 milliseconds
+[19:24:33] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[19:24:33] [Render thread/INFO]: Setting user: RGBigot2612
+[19:24:33] [Render thread/INFO]: Backend library: LWJGL version 3.4.1+2
+[19:24:33] [Render thread/INFO]: Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access, GL_EXT_texture_filter_anisotropic
+[19:24:33] [Download-2/ERROR]: Failed to fetch user properties
+com.mojang.authlib.exceptions.InvalidCredentialsException: Status: 401
+	at com.mojang.authlib.exceptions.MinecraftClientHttpException.toAuthenticationException(MinecraftClientHttpException.java:59)
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:150)
+	at net.minecraft.client.Minecraft.lambda$new$1(Minecraft.java:459)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 401
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:103)
+	at com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:56)
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:121)
+	... 5 more
+[19:24:34] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[19:24:34] [Worker-Main-7/INFO]: Found unifont_all_no_pua-17.0.01.hex, loading
+[19:24:34] [Worker-Main-11/INFO]: Found unifont_pua-17.0.01.hex, loading
+[19:24:34] [Worker-Main-6/INFO]: Found unifont_jp_patch-17.0.01.hex, loading
+[19:24:34] [Download-2/INFO]: Could not authorize you against Realms server: javax.ws.rs.BadRequestException: Invalid session
+[19:24:34] [Download-2/ERROR]: Failed to fetch Realms feature flags
+com.mojang.realmsclient.exception.RealmsServiceException: Realms authentication error with message 'javax.ws.rs.BadRequestException: Invalid session'
+	at com.mojang.realmsclient.client.RealmsClient.execute(RealmsClient.java:526)
+	at com.mojang.realmsclient.client.RealmsClient.fetchFeatureFlags(RealmsClient.java:186)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+[19:24:34] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on 扬声器 (USB Audio Device)
+[19:24:34] [Render thread/INFO]: Sound engine started
+[19:24:34] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[19:24:34] [Render thread/INFO]: Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[19:24:34] [Render thread/INFO]: Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
+[19:24:34] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 512x512x0 minecraft:textures/atlas/beds.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/signs.png-atlas
+[19:24:35] [Render thread/INFO]: Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[19:24:35] [Render thread/INFO]: Connecting to 127.0.0.1, 30027
+[19:24:36] [Download-2/ERROR]: Failed to retrieve profile key pair
+com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 401
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:103)
+	at com.mojang.authlib.minecraft.client.MinecraftClient.post(MinecraftClient.java:64)
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.getKeyPair(YggdrasilUserApiService.java:61)
+	at net.minecraft.client.multiplayer.AccountProfileKeyPairManager.fetchProfileKeyPair(AccountProfileKeyPairManager.java:128)
+	at net.minecraft.client.multiplayer.AccountProfileKeyPairManager.lambda$readOrFetchProfileKeyPair$0(AccountProfileKeyPairManager.java:77)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+[19:24:38] [Render thread/INFO]: [System] [CHAT] RGBigot2612 joined the game
+[19:24:38] [Render thread/INFO]: Loaded 2 advancements
+[19:24:38] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[19:24:38] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[19:24:38] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[19:24:38] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[19:24:38] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[19:24:38] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[19:24:40] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 清理通道 ONLINE | 冷蓝 鎏金 雾灰
+[19:24:42] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.24.42.png
+[19:24:43] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.24.43.png
+[19:24:46] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已回收到个人垃圾桶: [SAND*3]
+[19:24:53] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.24.53.png
+[19:24:54] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.24.54.png
+[19:25:00] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.25.00.png
+[19:25:00] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.25.00_2.png
+[19:25:15] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已开启防丢弃模式。
+[19:25:27] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 当前区块实体:
+[19:25:27] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] - RGBigot2612
+[19:25:27] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 手持物品: AIR
+[19:25:27] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 请右键一个实体以查询实体名称。
+[19:25:53] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.25.53.png
+[19:25:53] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.25.53_2.png
+[19:25:54] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已保存世界垃圾桶黑名单，数量: 0
+[19:26:07] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.07.png
+[19:26:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.08.png
+[19:26:20] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已保存公共垃圾桶黑名单，数量: 2 (已立即生效)
+[19:26:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.23.png
+[19:26:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.23_2.png
+[19:26:27] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.27.png
+[19:26:28] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.28.png
+[19:26:30] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已关闭防丢弃模式。
+[19:26:32] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.31.png
+[19:26:32] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.32.png
+[19:26:36] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.36.png
+[19:26:36] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.36_2.png
+[19:26:40] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.40.png
+[19:26:41] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.41.png
+[19:26:42] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已保存世界垃圾桶黑名单，数量: 0
+[19:26:45] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.45.png
+[19:26:45] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.45_2.png
+[19:26:47] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 已保存公共垃圾桶黑名单，数量: 2 (已立即生效)
+[19:26:47] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 清理统计:
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 世界数: 3
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 回收物品: 2 (世界 1, 个人 0, 公共 0)
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 5 (堆叠 1)
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 1
+[19:26:47] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0
+[19:26:49] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.49.png
+[19:26:50] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-08_19.26.50.png

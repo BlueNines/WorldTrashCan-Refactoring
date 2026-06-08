@@ -1,0 +1,337 @@
+Unbundling libraries to E:\server_work\spigot-26.1.2-test-server\bundler
+Starting server
+Loading libraries, please wait...
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.jna.Native in an unnamed module (file:/E:/server_work/spigot-26.1.2-test-server/bundler/libraries/jna-5.17.0.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.joml.MemUtil$MemUtilUnsafe (file:/E:/server_work/spigot-26.1.2-test-server/bundler/libraries/joml-1.10.8.jar)
+WARNING: Please consider reporting this to the maintainers of class org.joml.MemUtil$MemUtilUnsafe
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+[19:24:16] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[19:24:16] [ServerMain/INFO]: Found new data pack file/bukkit, loading it automatically
+[19:24:16] [Worker-Main-11/INFO]: No existing world data, creating new world
+[19:24:16] [Worker-Main-11/ERROR]: No key layers in MapLike[{}]
+[19:24:17] [ServerMain/INFO]: Loaded 1515 recipes
+[19:24:16] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[19:24:16] [ServerMain/INFO]: Found new data pack file/bukkit, loading it automatically
+[19:24:16] [Worker-Main-11/INFO]: No existing world data, creating new world
+[19:24:16] [Worker-Main-11/ERROR]: No key layers in MapLike[{}]
+[19:24:17] [ServerMain/INFO]: Loaded 1515 recipes
+[19:24:17] [Server thread/INFO]: Starting minecraft server version 26.1.2
+[19:24:17] [Server thread/INFO]: Loading properties
+[19:24:17] [Server thread/INFO]: This server is running Spigot version 4629-Spigot-566f972-bb990d0 (MC: 26.1.2) (Implementing API version 26.1.2-R0.1-SNAPSHOT)
+[19:24:17] [Server thread/INFO]: *** This version of Spigot contains changes to some enums. If you notice that plugins no longer work after updating, please report this to the developers of those plugins first. ***
+[19:24:17] [Server thread/INFO]: *** If you cannot update those plugins, you can try setting `settings.compatibility.enum-compatibility-mode` to `true` in `bukkit.yml`. ***
+[19:24:17] [Server thread/INFO]: Debug logging is disabled
+[19:24:17] [Server thread/INFO]: Using 4 threads for Netty based IO
+[19:24:17] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[19:24:17] [Server thread/INFO]: Default game type: SURVIVAL
+[19:24:17] [Server thread/INFO]: Generating keypair
+[19:24:17] [Server thread/INFO]: Starting Minecraft server on *:30027
+[19:24:17] [Server thread/WARN]: Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[19:24:22] [Server thread/WARN]: Legacy plugin BLWorldTrashCan v7.0.0 does not specify an api-version.
+[19:24:22] [Server thread/INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.12.2
+[19:24:23] [Server thread/INFO]: [BLWorldTrashCan] Loading BLWorldTrashCan v7.0.0
+[19:24:23] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[19:24:23] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[19:24:23] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[19:24:23] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[19:24:23] [Server thread/INFO]: Preparing level "rgb_visual_universal_spigot2612_20260608_192412"
+[19:24:23] [Server thread/ERROR]: No key layers in MapLike[{}]
+[19:24:23] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_spigot2612_20260608_192412] --------
+[19:24:23] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[19:24:23] [Server thread/INFO]: Mob Spawn Range: 6
+[19:24:23] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Desert: 14357617 Igloo: 14357618 Jungle: 14357619 Swamp: 14357620 Monument: 10387313 Ocean: 14357621 Shipwreck: 165745295 End City: 10387313 Slime: 987234911 Nether: 30084232 Mansion: 10387319 Fossil: 14357921 Portal: 34222645
+[19:24:23] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Di 128 / Other 64
+[19:24:23] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[19:24:23] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Cane Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Melon Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Beetroot Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Carrot Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Potato Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Vine Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Bamboo Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: SweetBerry Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Kelp Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: TwistingVines Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: WeepingVines Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: CaveVines Growth Modifier: 100%
+[19:24:23] [Server thread/INFO]: Max TNT Explosions: 100
+[19:24:23] [Server thread/INFO]: Experience Merge Radius: 3.0
+[19:24:23] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1 Hopper Can Load Chunks: false
+[19:24:23] [Server thread/INFO]: View Distance: 3
+[19:24:23] [Server thread/INFO]: Simulation Distance: 2
+[19:24:23] [Server thread/INFO]: Item Merge Radius: 2.5
+[19:24:23] [Server thread/INFO]: Item Despawn Rate: 6000
+[19:24:23] [Server thread/INFO]: Arrow Despawn Rate: 1200 Trident Respawn Rate:1200
+[19:24:23] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[19:24:23] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[19:24:23] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Ra 48 / Mi 16 / Tiv true / Isa false
+[19:24:23] [Server thread/INFO]: Selecting global world spawn...
+[19:24:25] [Server thread/ERROR]: No key layers in MapLike[{}]
+[19:24:25] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_spigot2612_20260608_192412_nether] --------
+[19:24:25] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[19:24:25] [Server thread/INFO]: Mob Spawn Range: 6
+[19:24:25] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Desert: 14357617 Igloo: 14357618 Jungle: 14357619 Swamp: 14357620 Monument: 10387313 Ocean: 14357621 Shipwreck: 165745295 End City: 10387313 Slime: 987234911 Nether: 30084232 Mansion: 10387319 Fossil: 14357921 Portal: 34222645
+[19:24:25] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Di 128 / Other 64
+[19:24:25] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[19:24:25] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Cane Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Melon Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Beetroot Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Carrot Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Potato Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Vine Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Bamboo Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: SweetBerry Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Kelp Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: TwistingVines Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: WeepingVines Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: CaveVines Growth Modifier: 100%
+[19:24:25] [Server thread/INFO]: Max TNT Explosions: 100
+[19:24:25] [Server thread/INFO]: Experience Merge Radius: 3.0
+[19:24:25] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1 Hopper Can Load Chunks: false
+[19:24:25] [Server thread/INFO]: View Distance: 3
+[19:24:25] [Server thread/INFO]: Simulation Distance: 2
+[19:24:25] [Server thread/INFO]: Item Merge Radius: 2.5
+[19:24:25] [Server thread/INFO]: Item Despawn Rate: 6000
+[19:24:25] [Server thread/INFO]: Arrow Despawn Rate: 1200 Trident Respawn Rate:1200
+[19:24:25] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[19:24:25] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[19:24:25] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Ra 48 / Mi 16 / Tiv true / Isa false
+[19:24:25] [Server thread/INFO]: Selecting global world spawn...
+[19:24:26] [Server thread/ERROR]: No key layers in MapLike[{}]
+[19:24:26] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_spigot2612_20260608_192412_the_end] --------
+[19:24:26] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[19:24:26] [Server thread/INFO]: Mob Spawn Range: 6
+[19:24:26] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Desert: 14357617 Igloo: 14357618 Jungle: 14357619 Swamp: 14357620 Monument: 10387313 Ocean: 14357621 Shipwreck: 165745295 End City: 10387313 Slime: 987234911 Nether: 30084232 Mansion: 10387319 Fossil: 14357921 Portal: 34222645
+[19:24:26] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Di 128 / Other 64
+[19:24:26] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[19:24:26] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Cane Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Melon Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Beetroot Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Carrot Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Potato Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Vine Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Bamboo Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: SweetBerry Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Kelp Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: TwistingVines Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: WeepingVines Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: CaveVines Growth Modifier: 100%
+[19:24:26] [Server thread/INFO]: Max TNT Explosions: 100
+[19:24:26] [Server thread/INFO]: Experience Merge Radius: 3.0
+[19:24:26] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1 Hopper Can Load Chunks: false
+[19:24:26] [Server thread/INFO]: View Distance: 3
+[19:24:26] [Server thread/INFO]: Simulation Distance: 2
+[19:24:26] [Server thread/INFO]: Item Merge Radius: 2.5
+[19:24:26] [Server thread/INFO]: Item Despawn Rate: 6000
+[19:24:26] [Server thread/INFO]: Arrow Despawn Rate: 1200 Trident Respawn Rate:1200
+[19:24:26] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[19:24:26] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[19:24:26] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Ra 48 / Mi 16 / Tiv true / Isa false
+[19:24:26] [Server thread/INFO]: Selecting global world spawn...
+[19:24:28] [Server thread/INFO]: Loading 0 persistent chunks...
+[19:24:28] [Server thread/INFO]: Preparing spawn area: 100%
+[19:24:28] [Server thread/INFO]: Time elapsed: 4472 ms
+[19:24:28] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.12.2
+[19:24:28] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 2 个世界垃圾桶数据。
+[19:24:28] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Universal runtime: paper
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[19:24:28] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[19:24:28] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[19:24:28] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[19:24:28] [Server thread/INFO]: Done (4.907s)! For help, type "help"
+[19:24:28] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_20260608_192412]'/minecraft:overworld
+[19:24:28] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_20260608_192412_nether]'/minecraft:the_nether
+[19:24:28] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_20260608_192412_the_end]'/minecraft:the_end
+[19:24:28] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[19:24:28] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[19:24:28] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[19:24:28] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[19:24:28] [Server thread/INFO]: 0 placeholder hook(s) registered!
+[19:24:37] [User Authenticator #1/INFO]: UUID of player RGBigot2612 is fe3c448f-3acd-388d-be7d-19e41f972e02
+[19:24:38] [Server thread/INFO]: RGBigot2612 joined the game
+[19:24:38] [Server thread/INFO]: RGBigot2612[/127.0.0.1:62092] logged in with entity id 1 at ([rgb_visual_universal_spigot2612_20260608_192412]4.5, -60.0, 2.5)
+[19:24:40] [Server thread/INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)
+[19:24:40] [Server thread/INFO]: - scheduler-global: 启用
+[19:24:40] [Server thread/INFO]: - scheduler-region: 禁用
+[19:24:40] [Server thread/INFO]: - inventory-basic: 启用
+[19:24:40] [Server thread/INFO]: - item-pdc-tag: 启用
+[19:24:40] [Server thread/INFO]: - item-legacy-tag: 禁用
+[19:24:40] [Server thread/INFO]: - rgb-message: 启用
+[19:24:40] [Server thread/INFO]: - clickable-message: 启用
+[19:24:40] [Server thread/INFO]: - boss-bar: 启用
+[19:24:40] [Server thread/INFO]: - sign-legacy: 禁用
+[19:24:40] [Server thread/INFO]: - sign-modern: 启用
+[19:24:40] [Server thread/INFO]: - entity-move-event: 启用
+[19:24:40] [Server thread/INFO]: - folia-region-safe: 禁用
+[19:24:40] [Server thread/INFO]: [BLWorldTrashCan] [DebugRGB] channels player=RGBigot2612
+[19:24:40] [Server thread/INFO]: 已发送 RGB 三通道测试: RGBigot2612
+[19:24:43] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[19:24:43] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 2 个世界垃圾桶数据。
+[19:24:43] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[19:24:43] [Server thread/INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。
+[19:24:44] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugWorldTrash player=RGBigot2612, world=rgb_visual_universal_spigot2612_20260608_192412, x=3, y=-60, z=1, saved=true
+[19:24:44] [Server thread/INFO]: 已创建并登记测试世界垃圾桶。
+[19:24:44] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=5, routed=true
+[19:24:44] [Server thread/INFO]: 路由测试成功。
+[19:24:45] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=6, routed=true
+[19:24:45] [Server thread/INFO]: 路由测试成功。
+[19:24:45] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=WORLD_TRASH, material=SAND, amount=4, routed=true
+[19:24:45] [Server thread/INFO]: 路由测试成功。
+[19:24:46] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugDamageRecovery player=RGBigot2612, material=SAND, amount=3, recovered=true
+[19:24:46] [Server thread/INFO]: 损坏回收测试成功。
+[19:24:46] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBigot2612, material=GRAVEL, amount=2, markOwner=true
+[19:24:46] [Server thread/INFO]: 已生成测试掉落物。
+[19:24:47] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, itemsRouted=2, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=25, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false
+[19:24:47] [Server thread/INFO]: [BLWorldTrashCan] 清理完成: 世界 3, 回收物品 2, 移除物品 0, 移除实体 0。
+[19:24:47] [Server thread/INFO]: BLWorldTrashCan debug summary:
+[19:24:47] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)
+[19:24:47] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_20260608_192412
+[19:24:47] [Server thread/INFO]: - 世界垃圾桶数量: 1
+[19:24:47] [Server thread/INFO]: - 世界垃圾桶物品: 6 (堆叠 2)
+[19:24:47] [Server thread/INFO]: - 跳过未加载区块: 0
+[19:24:47] [Server thread/INFO]: - 公共垃圾桶物品: 5 (堆叠 1)
+[19:24:47] [Server thread/INFO]: - 个人垃圾桶物品: 9 (堆叠 2)
+[19:24:48] [Server thread/INFO]: 已为玩家打开公共垃圾桶: RGBigot2612
+[19:24:54] [Server thread/INFO]: 已为玩家打开个人垃圾桶: RGBigot2612
+[19:25:01] [Server thread/INFO]: /blwtc help - 查看帮助
+[19:25:01] [Server thread/INFO]: /blwtc platform - 查看当前版本产物能力
+[19:25:01] [Server thread/INFO]: /blwtc clear - 立即执行一次后台清理
+[19:25:01] [Server thread/INFO]: /blwtc global - 打开公共垃圾桶
+[19:25:01] [Server thread/INFO]: /blwtc personal - 打开个人垃圾桶
+[19:25:01] [Server thread/INFO]: /blwtc dropmode - 切换防丢弃模式
+[19:25:01] [Server thread/INFO]: /blwtc look - 查询手持物品和右键实体类型
+[19:25:01] [Server thread/INFO]: /blwtc ban - 打开当前世界垃圾桶物品黑名单
+[19:25:01] [Server thread/INFO]: /blwtc globalban - 打开公共垃圾桶物品黑名单
+[19:25:01] [Server thread/INFO]: /blwtc stats - 查看清理和垃圾桶统计
+[19:25:01] [Server thread/INFO]: /blwtc add <数量> - 增加当前世界可创建的世界垃圾桶数量
+[19:25:01] [Server thread/INFO]: /blwtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量
+[19:25:01] [Server thread/INFO]: /blwtc debugopen <玩家> <global|personal> - 后台测试打开 GUI
+[19:25:01] [Server thread/INFO]: /blwtc debugworldtrash <玩家> - 后台创建并登记测试世界垃圾桶
+[19:25:01] [Server thread/INFO]: /blwtc debugroute <玩家> <world|personal|global> <Material> <数量> - 后台测试指定路由
+[19:25:01] [Server thread/INFO]: /blwtc debugdrop <玩家> <Material> <数量> [owner] - 后台生成测试掉落物
+[19:25:01] [Server thread/INFO]: /blwtc debugdamage <玩家> <Material> <数量> - 后台测试仙人掌/岩浆损坏回收
+[19:25:01] [Server thread/INFO]: /blwtc debugstock - 后台查看当前垃圾桶库存
+[19:25:01] [Server thread/INFO]: /blwtc debugsummary <玩家> - 查看后台测试摘要
+[19:25:01] [Server thread/INFO]: /blwtc debugplayer <玩家> <dropmode|look|ban|globalban> - 后台测试玩家入口
+[19:25:01] [Server thread/INFO]: /blwtc reload - 重载插件
+[19:25:01] [Server thread/INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)
+[19:25:01] [Server thread/INFO]: - scheduler-global: 启用
+[19:25:01] [Server thread/INFO]: - scheduler-region: 禁用
+[19:25:01] [Server thread/INFO]: - inventory-basic: 启用
+[19:25:01] [Server thread/INFO]: - item-pdc-tag: 启用
+[19:25:01] [Server thread/INFO]: - item-legacy-tag: 禁用
+[19:25:01] [Server thread/INFO]: - rgb-message: 启用
+[19:25:01] [Server thread/INFO]: - clickable-message: 启用
+[19:25:01] [Server thread/INFO]: - boss-bar: 启用
+[19:25:01] [Server thread/INFO]: - sign-legacy: 禁用
+[19:25:01] [Server thread/INFO]: - sign-modern: 启用
+[19:25:01] [Server thread/INFO]: - entity-move-event: 启用
+[19:25:01] [Server thread/INFO]: - folia-region-safe: 禁用
+[19:25:02] [Server thread/INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)
+[19:25:02] [Server thread/INFO]: - scheduler-global: 启用
+[19:25:02] [Server thread/INFO]: - scheduler-region: 禁用
+[19:25:02] [Server thread/INFO]: - inventory-basic: 启用
+[19:25:02] [Server thread/INFO]: - item-pdc-tag: 启用
+[19:25:02] [Server thread/INFO]: - item-legacy-tag: 禁用
+[19:25:02] [Server thread/INFO]: - rgb-message: 启用
+[19:25:02] [Server thread/INFO]: - clickable-message: 启用
+[19:25:02] [Server thread/INFO]: - boss-bar: 启用
+[19:25:02] [Server thread/INFO]: - sign-legacy: 禁用
+[19:25:02] [Server thread/INFO]: - sign-modern: 启用
+[19:25:02] [Server thread/INFO]: - entity-move-event: 启用
+[19:25:02] [Server thread/INFO]: - folia-region-safe: 禁用
+[19:25:02] [Server thread/INFO]: [BLWorldTrashCan] 清理统计:
+[19:25:02] [Server thread/INFO]: - 世界数: 3
+[19:25:02] [Server thread/INFO]: - 回收物品: 2 (世界 1, 个人 0, 公共 0)
+[19:25:02] [Server thread/INFO]: - 删除物品: 0
+[19:25:02] [Server thread/INFO]: - 删除实体: 0
+[19:25:02] [Server thread/INFO]: - 公共垃圾桶页数: 5
+[19:25:02] [Server thread/INFO]: - 公共垃圾桶当前物品: 5 (堆叠 1)
+[19:25:02] [Server thread/INFO]: - 已加载个人垃圾桶: 1
+[19:25:02] [Server thread/INFO]: - 下次清理剩余秒数: 0
+[19:25:03] [Server thread/INFO]: 垃圾桶库存:
+[19:25:03] [Server thread/INFO]: - 公共垃圾桶物品: 5 (堆叠 1)
+[19:25:03] [Server thread/INFO]: - 公共垃圾桶页数: 5
+[19:25:03] [Server thread/INFO]: - 已加载个人垃圾桶: 1
+[19:25:15] [Server thread/INFO]: 已切换玩家防丢弃模式。
+[19:25:27] [Server thread/INFO]: 已触发玩家 look 查询。
+[19:25:39] [Server thread/INFO]: 已为玩家打开世界黑名单 GUI。
+[19:25:54] [Server thread/INFO]: 已为玩家打开公共黑名单 GUI。
+[19:26:08] [Server thread/INFO]: [BLWorldTrashCan] 世界 rgb_visual_universal_spigot2612_20260608_192412 垃圾桶上限已调整为 5。
+[19:26:18] [Server thread/INFO]: Nothing changed. The player already is an operator
+[19:26:20] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[19:26:20] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。
+[19:26:20] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[19:26:21] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc global
+[19:26:25] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc personal
+[19:26:30] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc dropmode
+[19:26:38] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc ban
+[19:26:43] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc globalban
+[19:26:47] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[19:26:47] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。
+[19:26:47] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[19:26:47] [Server thread/INFO]: RGBigot2612 issued server command: /wtc stats
+[19:26:50] [Server thread/INFO]: 0
+[19:26:58] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[19:26:58] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 3 个世界垃圾桶数据。
+[19:26:58] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[19:26:58] [Server thread/INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。
+[19:27:24] [Server thread/INFO]: RGBigot2612 lost connection: Disconnected
+[19:27:24] [Server thread/INFO]: RGBigot2612 left the game
+[19:27:24] [Server thread/INFO]: Stopping the server
+[19:27:24] [Server thread/INFO]: Stopping server
+[19:27:24] [Server thread/INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[19:27:24] [Server thread/INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.12.2
+[19:27:24] [Server thread/INFO]: Saving players
+[19:27:24] [Server thread/INFO]: Saving worlds
+[19:27:24] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_20260608_192412]'/minecraft:overworld
+[19:27:24] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_20260608_192412_nether]'/minecraft:the_nether
+[19:27:24] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_20260608_192412_the_end]'/minecraft:the_end
+[19:27:24] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[19:27:24] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[19:27:24] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[19:27:24] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved

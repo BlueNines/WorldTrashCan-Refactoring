@@ -586,6 +586,7 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         UniversalCommand executor = new UniversalCommand(this);
         registerCommand("blworldtrashcan", executor);
         registerCommand("blwtc", executor);
+        registerCommand("worldlisttrashcan", executor);
         registerCommand("WorldListTrashCan", executor);
         registerCommand("wtc", executor);
     }

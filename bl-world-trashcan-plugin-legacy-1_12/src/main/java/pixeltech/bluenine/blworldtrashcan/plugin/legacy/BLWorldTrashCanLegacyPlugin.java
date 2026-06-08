@@ -365,6 +365,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         BLWorldTrashCanLegacyCommand executor = new BLWorldTrashCanLegacyCommand(this);
         registerCommand("blworldtrashcan", executor);
         registerCommand("blwtc", executor);
+        registerCommand("worldlisttrashcan", executor);
         registerCommand("WorldListTrashCan", executor);
         registerCommand("wtc", executor);
     }

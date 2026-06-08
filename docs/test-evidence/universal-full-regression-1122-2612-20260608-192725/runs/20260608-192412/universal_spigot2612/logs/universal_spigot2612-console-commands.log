@@ -1,0 +1,26 @@
+[19:24:39] blwtc platform
+[19:24:40] blwtc debugrgbchannels RGBigot2612
+[19:24:43] blwtc reload
+[19:24:44] blwtc debugworldtrash RGBigot2612
+[19:24:44] blwtc debugroute RGBigot2612 global COBBLESTONE 5
+[19:24:45] blwtc debugroute RGBigot2612 personal STONE 6
+[19:24:45] blwtc debugroute RGBigot2612 world SAND 4
+[19:24:46] blwtc debugdamage RGBigot2612 SAND 3
+[19:24:46] blwtc debugdrop RGBigot2612 GRAVEL 2 owner
+[19:24:47] blwtc clear
+[19:24:47] blwtc debugsummary RGBigot2612
+[19:24:48] blwtc debugopen RGBigot2612 global
+[19:24:54] blwtc debugopen RGBigot2612 personal
+[19:25:01] blwtc help
+[19:25:01] wtc platform
+[19:25:02] WorldListTrashCan platform
+[19:25:02] blwtc stats
+[19:25:03] blwtc debugstock
+[19:25:15] blwtc debugplayer RGBigot2612 dropmode
+[19:25:27] blwtc debugplayer RGBigot2612 look
+[19:25:39] blwtc debugplayer RGBigot2612 ban
+[19:25:54] blwtc debugplayer RGBigot2612 globalban
+[19:26:08] blwtc add rgb_visual_universal_spigot2612_20260608_192412 2
+[19:26:18] op RGBigot2612
+[19:26:50] papi parse RGBigot2612 %Wtc_ClearTime%
+[19:26:58] blwtc reload

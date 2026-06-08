@@ -12,9 +12,10 @@ commands:
     description: BLWorldTrashCan 主命令
     aliases:
       - blwtc
-  WorldListTrashCan:
+  worldlisttrashcan:
     description: WorldListTrashCan 旧命令兼容入口
     aliases:
+      - WorldListTrashCan
       - WTC
       - wtc
 permissions:

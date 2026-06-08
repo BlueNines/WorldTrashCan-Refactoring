@@ -1,0 +1,26 @@
+[19:21:17] blwtc platform
+[19:21:17] blwtc debugrgbchannels RGBaper2612
+[19:21:21] blwtc reload
+[19:21:21] blwtc debugworldtrash RGBaper2612
+[19:21:22] blwtc debugroute RGBaper2612 global COBBLESTONE 5
+[19:21:22] blwtc debugroute RGBaper2612 personal STONE 6
+[19:21:23] blwtc debugroute RGBaper2612 world SAND 4
+[19:21:23] blwtc debugdamage RGBaper2612 SAND 3
+[19:21:24] blwtc debugdrop RGBaper2612 GRAVEL 2 owner
+[19:21:24] blwtc clear
+[19:21:25] blwtc debugsummary RGBaper2612
+[19:21:25] blwtc debugopen RGBaper2612 global
+[19:21:32] blwtc debugopen RGBaper2612 personal
+[19:21:38] blwtc help
+[19:21:39] wtc platform
+[19:21:39] WorldListTrashCan platform
+[19:21:40] blwtc stats
+[19:21:40] blwtc debugstock
+[19:21:52] blwtc debugplayer RGBaper2612 dropmode
+[19:22:04] blwtc debugplayer RGBaper2612 look
+[19:22:16] blwtc debugplayer RGBaper2612 ban
+[19:22:31] blwtc debugplayer RGBaper2612 globalban
+[19:22:46] blwtc add rgb_visual_universal_paper2612_20260608_192053 2
+[19:22:56] op RGBaper2612
+[19:23:27] papi parse RGBaper2612 %Wtc_ClearTime%
+[19:23:35] blwtc reload
