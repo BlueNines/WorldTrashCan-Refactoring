@@ -123,7 +123,7 @@ command:
   no-global-open-permission: "{prefix}&cYou do not have permission to open global trash."
   # 没有打开个人垃圾桶权限时提示。
   no-personal-open-permission: "{prefix}&cYou do not have permission to open personal trash."
-  # /blwtc help 输出，每行一条。
+  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
   help:
     - "&b/blwtc help &7- Show help"
     - "&b/blwtc platform &7- Show this build's capabilities"
@@ -137,6 +137,10 @@ command:
     - "&b/blwtc stats &7- Show cleanup and trash statistics"
     - "&b/blwtc add <amount> &7- Add world trash slots to your current world"
     - "&b/blwtc add <world> <amount> &7- Add world trash slots to a specific world"
+    - "&b/blwtc debughelp &7- Show debug commands"
+    - "&b/blwtc reload &7- Reload the plugin"
+  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
+  debug-help:
     - "&b/blwtc debugopen <player> <global|personal> &7- Test opening a GUI"
     - "&b/blwtc debugworldtrash <player> &7- Create and register a test world trash can"
     - "&b/blwtc debugroute <player> <world|personal|global> <Material> <amount> &7- Test a trash route"
@@ -145,7 +149,9 @@ command:
     - "&b/blwtc debugstock &7- Show backend trash stock"
     - "&b/blwtc debugsummary <player> &7- Show backend test summary"
     - "&b/blwtc debugplayer <player> <dropmode|look|ban|globalban> &7- Test player-only entry points"
-    - "&b/blwtc reload &7- Reload the plugin"
+    - "&b/blwtc debugrgb <player> &7- Test RGB/fallback visible channels"
+    - "&b/blwtc debugrgbchannels <player> &7- Test Chat, ActionBar and Title RGB/fallback channels"
+    - "&7These commands change test-server state; use them only for validation and diagnostics."
   # 平台信息标题，{platform} 为平台 ID。
   platform:
     header: "{prefix}&aCurrent platform: &f{platform}"

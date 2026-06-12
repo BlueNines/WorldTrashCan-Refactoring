@@ -123,7 +123,7 @@ command:
   no-global-open-permission: "{prefix}&c你沒有權限打開公共垃圾桶。"
   # 沒有打開個人垃圾桶權限時提示。
   no-personal-open-permission: "{prefix}&c你沒有權限打開個人垃圾桶。"
-  # /blwtc help 輸出，每行一條。
+  # /blwtc help 輸出，每行一條。主幫助只展示正式命令；調試命令請使用 /blwtc debughelp。
   help:
     - "&b/blwtc help &7- 查看幫助"
     - "&b/blwtc platform &7- 查看目前版本產物能力"
@@ -137,6 +137,10 @@ command:
     - "&b/blwtc stats &7- 查看清理和垃圾桶統計"
     - "&b/blwtc add <數量> &7- 增加目前世界可建立的世界垃圾桶數量"
     - "&b/blwtc add <世界名> <數量> &7- 後台增加指定世界可建立的世界垃圾桶數量"
+    - "&b/blwtc debughelp &7- 查看後台調試命令"
+    - "&b/blwtc reload &7- 重載插件"
+  # /blwtc debughelp 輸出，每行一條。調試命令會改變測試服運行狀態，不作為普通玩家功能展示。
+  debug-help:
     - "&b/blwtc debugopen <玩家> <global|personal> &7- 後台測試打開 GUI"
     - "&b/blwtc debugworldtrash <玩家> &7- 後台建立並登記測試世界垃圾桶"
     - "&b/blwtc debugroute <玩家> <world|personal|global> <Material> <數量> &7- 後台測試指定路由"
@@ -145,7 +149,9 @@ command:
     - "&b/blwtc debugstock &7- 後台查看目前垃圾桶庫存"
     - "&b/blwtc debugsummary <玩家> &7- 查看後台測試摘要"
     - "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 後台測試玩家入口"
-    - "&b/blwtc reload &7- 重載插件"
+    - "&b/blwtc debugrgb <玩家> &7- 後台測試 RGB/降級色可見通道"
+    - "&b/blwtc debugrgbchannels <玩家> &7- 後台測試聊天、ActionBar 和 Title RGB/降級色通道"
+    - "&7這些命令會改變測試服運行狀態，只建議用於驗收和排障。"
   # 平台資訊標題，{platform} 為平台 ID。
   platform:
     header: "{prefix}&a目前平台: &f{platform}"

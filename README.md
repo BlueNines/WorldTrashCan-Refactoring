@@ -147,6 +147,7 @@ migration-legacy-folder: "WorldListTrashCan"
 /blwtc globalban
 /blwtc add <数量>
 /blwtc add <世界名> <数量>
+/blwtc debughelp
 /blwtc reload
 ```
 
@@ -160,7 +161,7 @@ Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回
 /wtc
 ```
 
-后台测试命令，均需要 `blworldtrashcan.admin`：
+后台测试命令已从 `/blwtc help` 主面板移出，统一通过 `/blwtc debughelp` 查看。旧版本已生成的默认语言文件如果仍把调试命令写在主帮助里，运行时会自动使用新内置主帮助列表，避免调试入口继续显要展示。除 `debughelp` 只展示说明外，以下命令均需要 `blworldtrashcan.admin`：
 
 ```text
 /blwtc debugopen <玩家> <global|personal>
@@ -171,6 +172,8 @@ Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回
 /blwtc debugstock
 /blwtc debugsummary <玩家>
 /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>
+/blwtc debugrgb <玩家>
+/blwtc debugrgbchannels <玩家>
 ```
 
 `debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成带拾取延迟的真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 会在不要求玩家在线的情况下输出当前公共垃圾桶库存，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。

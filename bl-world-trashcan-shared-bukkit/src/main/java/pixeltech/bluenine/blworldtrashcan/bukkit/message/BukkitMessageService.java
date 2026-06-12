@@ -71,6 +71,7 @@ public final class BukkitMessageService {
         if (raw.isEmpty()) {
             raw = fallback == null ? Collections.<String>emptyList() : fallback;
         }
+        raw = normalizeList(key, raw);
         List<String> result = new ArrayList<>();
         for (String line : raw) {
             result.add(color(player, applyPlaceholders(line, replacements)));
@@ -145,6 +146,33 @@ public final class BukkitMessageService {
             return DEFAULT_FILE;
         }
         return value;
+    }
+
+    /** 修正旧默认语言文件中把调试命令直接放进主帮助面板的问题。 */
+    private List<String> normalizeList(String key, List<String> raw) {
+        if (!"command.help".equals(key) || !containsLegacyDebugHelp(raw)) {
+            return raw;
+        }
+        List<String> bundled = bundledDefaultMessages.getStringList(key);
+        return bundled.isEmpty() ? raw : bundled;
+    }
+
+    /** 判断 help 列表是否仍是旧版调试命令堆叠写法。 */
+    private boolean containsLegacyDebugHelp(List<String> raw) {
+        for (String line : raw) {
+            if (line.contains("/blwtc debugopen")
+                    || line.contains("/blwtc debugworldtrash")
+                    || line.contains("/blwtc debugroute")
+                    || line.contains("/blwtc debugdrop")
+                    || line.contains("/blwtc debugdamage")
+                    || line.contains("/blwtc debugstock")
+                    || line.contains("/blwtc debugsummary")
+                    || line.contains("/blwtc debugplayer")
+                    || line.contains("/blwtc debugrgbchannels")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** 替换内置占位符和调用方传入的占位符。 */

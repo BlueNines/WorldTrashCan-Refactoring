@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "case": "managed_paper1122",
+  "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 433767,
+    "sha256": "670c4aac4e78e463641b78b4c3f5299eb26db6d7ef2fd532d49c04f8885a0361",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "oldMessageFileBackedUp": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\help-debughelp-panel-20260613-015108\\runs\\20260613-015108\\managed_paper1122\\logs\\message_zh-before-runtime.yml",
+  "serverLog": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\help-debughelp-panel-20260613-015108\\runs\\20260613-015108\\managed_paper1122\\logs\\managed_paper1122-server-console.log",
+  "commandLog": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\help-debughelp-panel-20260613-015108\\runs\\20260613-015108\\managed_paper1122\\logs\\managed_paper1122-console-commands.log",
+  "results": [
+    {
+      "name": "platform",
+      "command": "blwtc platform",
+      "markers": [
+        "legacy-1.12"
+      ],
+      "status": "PASS",
+      "error": "",
+      "logExcerpt": "[01:51:11 INFO]: [BLWorldTrashCan] ��ǰƽ̨ | legacy-1.12 (universal)\n[01:51:11 INFO]: - scheduler-global: ����\n[01:51:11 INFO]: - scheduler-region: ����\n[01:51:11 INFO]: - inventory-basic: ����\n[01:51:11 INFO]: - item-pdc-tag: ����\n[01:51:11 INFO]: - item-legacy-tag: ����\n[01:51:11 INFO]: - rgb-message: ����\n[01:51:11 INFO]: - clickable-message: ����\n[01:51:11 INFO]: - boss-bar: ����\n[01:51:11 INFO]: - sign-legacy: ����\n[01:51:11 INFO]: - sign-modern: ����\n[01:51:11 INFO]: - entity-move-event: ����\n[01:51:11 INFO]: - folia-region-safe: ����\n"
+    },
+    {
+      "name": "main-help",
+      "command": "blwtc help",
+      "markers": [
+        "/blwtc help",
+        "/blwtc debughelp",
+        "/blwtc reload"
+      ],
+      "status": "PASS",
+      "error": "",
+      "logExcerpt": "[01:51:12 INFO]: /blwtc help - �鿴����\n[01:51:12 INFO]: /blwtc platform - �鿴��ǰ�汾��������\n[01:51:12 INFO]: /blwtc clear - ����ִ��һ�κ�̨����\n[01:51:12 INFO]: /blwtc global - �򿪹�������Ͱ\n[01:51:12 INFO]: /blwtc personal - �򿪸�������Ͱ\n[01:51:12 INFO]: /blwtc dropmode - �л�������ģʽ\n[01:51:12 INFO]: /blwtc look - ��ѯ�ֳ���Ʒ���Ҽ�ʵ������\n[01:51:12 INFO]: /blwtc ban - �򿪵�ǰ��������Ͱ��Ʒ������\n[01:51:12 INFO]: /blwtc globalban - �򿪹�������Ͱ��Ʒ������\n[01:51:12 INFO]: /blwtc stats - �鿴����������Ͱͳ��\n[01:51:12 INFO]: /blwtc add <����> - ���ӵ�ǰ����ɴ�������������Ͱ����\n[01:51:12 INFO]: /blwtc add <������> <����> - ��̨����ָ������ɴ�������������Ͱ����\n[01:51:12 INFO]: /blwtc debughelp - �鿴��̨��������\n[01:51:12 INFO]: /blwtc reload - ���ز��\n",
+      "forbiddenExpandedDebugCommands": [
+        "/blwtc debugopen",
+        "/blwtc debugworldtrash",
+        "/blwtc debugroute",
+        "/blwtc debugdrop",
+        "/blwtc debugdamage",
+        "/blwtc debugstock",
+        "/blwtc debugsummary",
+        "/blwtc debugplayer",
+        "/blwtc debugrgbchannels"
+      ],
+      "leakedDebugCommands": []
+    },
+    {
+      "name": "debug-help",
+      "command": "blwtc debughelp",
+      "markers": [
+        "/blwtc debugopen",
+        "/blwtc debugroute",
+        "/blwtc debugrgbchannels"
+      ],
+      "status": "PASS",
+      "error": "",
+      "logExcerpt": "[01:51:12 INFO]: /blwtc debugopen <���> <global|personal> - ��̨���Դ� GUI\n[01:51:12 INFO]: /blwtc debugworldtrash <���> - ��̨�������Ǽǲ�����������Ͱ\n[01:51:12 INFO]: /blwtc debugroute <���> <world|personal|global> <Material> <����> - ��̨����ָ��·��\n[01:51:12 INFO]: /blwtc debugdrop <���> <Material> <����> [owner] - ��̨���ɲ��Ե�����\n[01:51:12 INFO]: /blwtc debugdamage <���> <Material> <����> - ��̨����������/�ҽ��𻵻���\n[01:51:12 INFO]: /blwtc debugstock - ��̨�鿴��ǰ����Ͱ���\n[01:51:12 INFO]: /blwtc debugsummary <���> - �鿴��̨����ժҪ\n[01:51:12 INFO]: /blwtc debugplayer <���> <dropmode|look|ban|globalban> - ��̨����������\n[01:51:12 INFO]: /blwtc debugrgb <���> - ��̨���� RGB/����ɫ�ɼ�ͨ��\n[01:51:12 INFO]: /blwtc debugrgbchannels <���> - ��̨�������졢ActionBar �� Title RGB/����ɫͨ��\n[01:51:12 INFO]: ��Щ�����ı���Է�����̬��ֻ�����������պ����ϡ�\n[01:51:13 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:\n[01:51:13 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/\n"
+    }
+  ]
+}

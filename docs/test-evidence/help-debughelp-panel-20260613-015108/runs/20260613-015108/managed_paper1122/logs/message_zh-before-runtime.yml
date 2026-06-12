@@ -123,7 +123,7 @@ command:
   no-global-open-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能打开公共垃圾桶。"
   # 没有打开个人垃圾桶权限时提示。
   no-personal-open-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能打开个人垃圾桶。"
-  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
+  # /blwtc help 输出，每行一条。
   help:
     - "&#5AC8FA/blwtc help &#64748B- &#C9D4E2查看帮助"
     - "&#5AC8FA/blwtc platform &#64748B- &#C9D4E2查看当前版本产物能力"
@@ -137,10 +137,6 @@ command:
     - "&#5AC8FA/blwtc stats &#64748B- &#C9D4E2查看清理和垃圾桶统计"
     - "&#5AC8FA/blwtc add <数量> &#64748B- &#C9D4E2增加当前世界可创建的世界垃圾桶数量"
     - "&#5AC8FA/blwtc add <世界名> <数量> &#64748B- &#C9D4E2后台增加指定世界可创建的世界垃圾桶数量"
-    - "&#5AC8FA/blwtc debughelp &#64748B- &#C9D4E2查看后台调试命令"
-    - "&#5AC8FA/blwtc reload &#64748B- &#C9D4E2重载插件"
-  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
-  debug-help:
     - "&#5AC8FA/blwtc debugopen <玩家> <global|personal> &#64748B- &#C9D4E2后台测试打开 GUI"
     - "&#5AC8FA/blwtc debugworldtrash <玩家> &#64748B- &#C9D4E2后台创建并登记测试世界垃圾桶"
     - "&#5AC8FA/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> &#64748B- &#C9D4E2后台测试指定路由"
@@ -149,9 +145,8 @@ command:
     - "&#5AC8FA/blwtc debugstock &#64748B- &#C9D4E2后台查看当前垃圾桶库存"
     - "&#5AC8FA/blwtc debugsummary <玩家> &#64748B- &#C9D4E2查看后台测试摘要"
     - "&#5AC8FA/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- &#C9D4E2后台测试玩家入口"
-    - "&#5AC8FA/blwtc debugrgb <玩家> &#64748B- &#C9D4E2后台测试 RGB/降级色可见通道"
-    - "&#5AC8FA/blwtc debugrgbchannels <玩家> &#64748B- &#C9D4E2后台测试聊天、ActionBar 和 Title RGB/降级色通道"
-    - "&#64748B这些命令会改变测试服运行态，只建议用于验收和排障。"
+    - "&#5AC8FA/blwtc debugrgbchannels <玩家> &#64748B- &#C9D4E2后台测试聊天、ActionBar 和 Title RGB 通道"
+    - "&#5AC8FA/blwtc reload &#64748B- &#C9D4E2重载插件"
   # 平台信息标题，{platform} 为平台 ID。
   platform:
     header: "{prefix}&#5AC8FA当前平台 &#64748B| &#FFD166{platform}"

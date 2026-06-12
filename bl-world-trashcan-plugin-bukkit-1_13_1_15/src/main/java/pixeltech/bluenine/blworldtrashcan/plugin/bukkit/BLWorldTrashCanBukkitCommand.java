@@ -21,7 +21,7 @@ import java.util.Locale;
 
 /** 新架构主命令，当前只提供架构验证命令。 */
 public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabCompleter {
-    private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "platform", "clear", "global", "personal", "stats", "add",
+    private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanBukkitPlugin plugin;
 
@@ -117,6 +117,10 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             handleAdd(sender, args);
             return true;
         }
+        if ("debughelp".equals(sub)) {
+            sendDebugHelp(sender);
+            return true;
+        }
         if ("debugopen".equals(sub)) {
             handleDebugOpen(sender, args);
             return true;
@@ -188,6 +192,13 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 "&b/blwtc stats &7- 查看清理和垃圾桶统计",
                 "&b/blwtc add <数量> &7- 增加当前世界可创建的世界垃圾桶数量",
                 "&b/blwtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
+                "&b/blwtc debughelp &7- 查看后台调试命令",
+                "&b/blwtc reload &7- 重载插件"));
+    }
+
+    /** 发送调试命令帮助。 */
+    private void sendDebugHelp(CommandSender sender) {
+        sendMessageList(sender, "command.debug-help", Arrays.asList(
                 "&b/blwtc debugopen <玩家> <global|personal> &7- 后台测试打开 GUI",
                 "&b/blwtc debugworldtrash <玩家> &7- 后台创建并登记测试世界垃圾桶",
                 "&b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> &7- 后台测试指定路由",
@@ -198,7 +209,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
                 "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
                 "&b/blwtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB/降级色通道",
-                "&b/blwtc reload &7- 重载插件"));
+                "&7这些命令会改变测试服运行态，只建议用于验收和排障。"));
     }
 
     /** 发送运行统计。 */

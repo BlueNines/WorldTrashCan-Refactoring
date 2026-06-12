@@ -123,20 +123,24 @@ command:
   no-global-open-permission: "{prefix}&cNo tienes permiso para abrir la papelera global."
   # 没有打开个人垃圾桶权限时提示。
   no-personal-open-permission: "{prefix}&cNo tienes permiso para abrir la papelera personal."
-  # /blwtc help 输出，每行一条。
+  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
   help:
     - "&b/blwtc help &7- Ver ayuda"
     - "&b/blwtc platform &7- Ver capacidades de esta version"
-    - "&b/blwtc clear &7- Ejecutar una limpieza ahora"
+    - "&b/blwtc clear &7- Ejecutar una limpieza inmediata"
     - "&b/blwtc global &7- Abrir papelera global"
     - "&b/blwtc personal &7- Abrir papelera personal"
-    - "&b/blwtc dropmode &7- Alternar proteccion contra tirar objetos"
-    - "&b/blwtc look &7- Inspeccionar objeto en mano y entidad clicada"
-    - "&b/blwtc ban &7- Abrir lista negra de este mundo"
-    - "&b/blwtc globalban &7- Abrir lista negra global"
+    - "&b/blwtc dropmode &7- Alternar proteccion de soltar"
+    - "&b/blwtc look &7- Inspeccionar item en mano y entidad clicada"
+    - "&b/blwtc ban &7- Abrir blacklist de papeleras del mundo"
+    - "&b/blwtc globalban &7- Abrir blacklist global"
     - "&b/blwtc stats &7- Ver estadisticas de limpieza y papeleras"
-    - "&b/blwtc add <cantidad> &7- Anadir espacios de papelera al mundo actual"
-    - "&b/blwtc add <mundo> <cantidad> &7- Anadir espacios de papelera a un mundo"
+    - "&b/blwtc add <cantidad> &7- Agregar espacios al mundo actual"
+    - "&b/blwtc add <mundo> <cantidad> &7- Agregar espacios a un mundo especifico"
+    - "&b/blwtc debughelp &7- Ver comandos de depuracion"
+    - "&b/blwtc reload &7- Recargar el plugin"
+  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
+  debug-help:
     - "&b/blwtc debugopen <jugador> <global|personal> &7- Probar apertura de GUI"
     - "&b/blwtc debugworldtrash <jugador> &7- Crear y registrar una papelera de prueba"
     - "&b/blwtc debugroute <jugador> <world|personal|global> <Material> <cantidad> &7- Probar una ruta"
@@ -145,7 +149,9 @@ command:
     - "&b/blwtc debugstock &7- Ver stock interno de papeleras"
     - "&b/blwtc debugsummary <jugador> &7- Ver resumen de pruebas"
     - "&b/blwtc debugplayer <jugador> <dropmode|look|ban|globalban> &7- Probar entradas de jugador"
-    - "&b/blwtc reload &7- Recargar el plugin"
+    - "&b/blwtc debugrgb <jugador> &7- Probar canales visibles RGB/degradados"
+    - "&b/blwtc debugrgbchannels <jugador> &7- Probar Chat, ActionBar y Title RGB/degradados"
+    - "&7Estos comandos cambian el estado del servidor de pruebas; usalos solo para validacion y diagnostico."
   # 平台信息标题，{platform} 为平台 ID。
   platform:
     header: "{prefix}&aPlataforma actual: &f{platform}"
