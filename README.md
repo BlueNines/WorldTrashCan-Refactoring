@@ -55,6 +55,27 @@
 - `messages/message_es.yml`：西班牙语消息。
 - `data/worlds.yml`：世界垃圾桶运行数据。
 
+## Folia 清理保护
+
+Folia 分支的世界清理不再在 global thread 上执行普通 Bukkit 的全世界实体扫描。当前实现会先收集未忽略世界的已加载 chunk，再按 `cleanup.yml` 的 `folia.*` 配置分批提交到 RegionScheduler；掉落物删除、实体删除、通知和写入收尾都有异常兜底，避免单个 region 或实体任务异常卡住整轮清理。
+
+默认配置：
+
+```yaml
+folia:
+  timeout-seconds: 30
+  max-chunks-per-cleanup: 4096
+  chunk-batch-size: 64
+  chunk-batch-delay-ticks: 1
+```
+
+- `timeout-seconds`：单轮 Folia 清理最长等待秒数；超时后释放运行中状态，迟到 region 任务不再计入本轮统计。
+- `max-chunks-per-cleanup`：单轮最多扫描多少个已加载 chunk；`0` 表示不限制。
+- `chunk-batch-size`：每批派发多少个 chunk 扫描任务。
+- `chunk-batch-delay-ticks`：每批之间间隔多少 tick，用于削峰。
+
+`/blwtc clear` 在 Folia 下仍是异步启动语义：命令返回“已启动”只表示任务成功提交。若上一轮仍在运行，会返回运行中保护并跳过本次请求；若本轮超时，会发送 `-4` 通知文案“Folia 清理超时”，并允许下一次 `/blwtc clear` 再启动。公共垃圾桶刷新次数配置为负数时会发送 `-3`，明确提示“公共垃圾桶不会自动刷新”，不再显示“还有 0 次”。
+
 ## 消息与语言
 
 `config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会继续回退到 jar 内默认节点，避免升级后命令、GUI 或提示变成空白。
@@ -254,6 +275,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
 - Folia 产物已接入专用 `FoliaEntityLimitFeature`：单世界实体上限用 `EntityAddToWorldEvent` / `EntityRemoveFromWorldEvent` 维护数量缓存并用 region-safe 复算兜底，密集实体限制只扫描当前 chunk；`folia-1.20.1-test-server` 验证 PIG 第二次生成被 `current=1, max=1` 拦截，COW 密集限制移除 `1` 个实体。
 - Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见的 ActionBar、BossBar、Title、Sound 在代码中改为提交到玩家实体 scheduler，但本机没有 Folia 1.20 客户端验收资产，尚未做视觉验收。
+- 2026-06-15 Folia 1.21.8 压力回归只使用 `dist/BLWorldTrashCan-universal.jar`，SHA256 `A84D2EC08402500505D9BE4F0EDFD404AF86A861AC0DC98F8C86FC53832E7CCC`。147 个已加载 chunk 的基线清理 `timedOut=false`；约 5946 个 `ai_wtc_pressure` armor_stand canary 被清理，立即二次 `/blwtc clear` 命中运行中保护；`chunk-batch-size: 1`、`chunk-batch-delay-ticks: 2`、`timeout-seconds: 1` 稳定触发两次 `timedOut=true`，第二次能重新启动证明 `cleanupRunning` 已释放；超时通知改为 `-4`“Folia 清理超时”，不再误报“清理成功”。证据目录：`docs/test-evidence/folia-cleanup-pressure-20260615-030918/`。
 - 四个平台默认 `cleanup.yml` 的 `notify.*` 已补回旧配置里的清理后 `-1/-2` 提醒：Chat、ActionBar、BossBar、Title 都默认包含“公共垃圾桶未刷新/已刷新”两类消息；包内检查确认四个 dist jar 的 `cleanup.yml` 均包含这些条目。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`

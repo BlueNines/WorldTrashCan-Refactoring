@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "runningGuard": false,
+    "timedOut": false,
+    "retryStarted": false,
+    "killResponse": "No entity was found"
+  },
+  "timedOutTrueCount": 0,
+  "timedOutFalseCount": 1,
+  "runningGuardCount": 0
+}

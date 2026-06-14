@@ -31,7 +31,13 @@ public final class ConfigBundleLoader {
         CleanupConfig cleanupConfig = new CleanupConfig(
                 cleanup.getInt("interval-seconds", 360),
                 toSet(cleanup.getStringList("ignored-worlds")),
-                cleanupSettings
+                cleanupSettings,
+                new CleanupConfig.FoliaCleanupConfig(
+                        cleanup.getInt("folia.timeout-seconds", 30),
+                        cleanup.getInt("folia.max-chunks-per-cleanup", 4096),
+                        cleanup.getInt("folia.chunk-batch-size", 64),
+                        cleanup.getInt("folia.chunk-batch-delay-ticks", 1)
+                )
         );
         TrashConfig trashConfig = new TrashConfig(
                 new TrashConfig.WorldTrashConfig(

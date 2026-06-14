@@ -190,7 +190,7 @@ public final class CleanupFeature implements Feature {
         if (countdownSeconds <= 0) {
             CleanupStats stats = runNow();
             sendNotify(0, stats);
-            sendNotify(stats.isGlobalTrashRefreshed() ? -2 : -1, stats);
+            sendNotify(globalTrashStatusNotifyCount(stats), stats);
             countdownSeconds = interval;
             nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
             return;
@@ -306,6 +306,18 @@ public final class CleanupFeature implements Feature {
             cleanupRunsSinceGlobalClear = 0;
             stats.globalTrashRefreshed = true;
         }
+    }
+
+    /** 返回本轮公共垃圾桶状态对应的通知编号。 */
+    private int globalTrashStatusNotifyCount(CleanupStats stats) {
+        if (stats.isGlobalTrashRefreshed()) {
+            return -2;
+        }
+        if (configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups() < 0
+                || globalTrashService == null || !globalTrashService.isEnabled()) {
+            return -3;
+        }
+        return -1;
     }
 
     /** 发送本轮清理进入个人垃圾桶的批量提示。 */
@@ -510,12 +522,29 @@ public final class CleanupFeature implements Feature {
     private String applyStats(String message, CleanupStats stats) {
         int dealItemSum = stats.getItemsRouted() + stats.getItemsRemoved();
         int clearEvery = configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups();
-        int clearRemain = clearEvery <= 0 ? 0 : Math.max(0, clearEvery - cleanupRunsSinceGlobalClear);
+        int clearRemain = remainingGlobalClearCount(clearEvery);
         return (message == null ? "" : message)
                 .replace("%DealItemSum%", String.valueOf(dealItemSum))
                 .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
                 .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
+                .replace("%ClearGlobalText%", clearGlobalText(clearEvery, clearRemain))
                 .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
+    }
+
+    /** 返回公共垃圾桶刷新剩余清理次数。 */
+    private int remainingGlobalClearCount(int clearEvery) {
+        return clearEvery <= 0 ? 0 : Math.max(0, clearEvery - cleanupRunsSinceGlobalClear);
+    }
+
+    /** 返回公共垃圾桶刷新状态文案。 */
+    private String clearGlobalText(int clearEvery, int clearRemain) {
+        if (clearEvery < 0) {
+            return "公共垃圾桶不会自动刷新";
+        }
+        if (clearEvery == 0) {
+            return "公共垃圾桶每次清理都会刷新";
+        }
+        return "还有 " + clearRemain + " 次清理，公共垃圾桶会刷新";
     }
 
     /** 清理统计。 */

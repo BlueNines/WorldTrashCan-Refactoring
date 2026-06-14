@@ -1,0 +1,22 @@
+[03:36:13.55099PASS wait server-ready
+[03:36:13.55717PASS rcon connected
+[03:36:13.55745> gamerule sendCommandFeedback true
+[03:36:13.62805< Gamerule sendCommandFeedback is now set to: true
+[03:36:13.62829> kill @e[tag=ai_wtc_pressure]
+[03:36:13.67647< No entity was found
+[03:36:13.67685> blwtc reload
+[03:36:13.74358< §7[§bBLWorldTrashCan§7] §aBLWorldTrashCan 已重载。\n
+[03:36:14.75939> say AI_WTC_DISPATCH_TIMEOUT_CLEAR_START
+[03:36:14.77862> blwtc clear
+[03:36:14.82421< §7[§bBLWorldTrashCan§7] §a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /blwtc stats。\n
+[03:36:15.02569> blwtc clear
+[03:36:15.07054< §7[§bBLWorldTrashCan§7] §e上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。\n
+[03:36:15.08202PASS wait running guard count=1 baseline=0 increase=1
+[03:36:16.10886PASS wait first timedOut=true count=1 baseline=0 increase=1
+[03:36:16.10995> say AI_WTC_DISPATCH_TIMEOUT_RETRY
+[03:36:16.12045> blwtc clear
+[03:36:16.17287< §7[§bBLWorldTrashCan§7] §a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /blwtc stats。\n
+[03:36:36.29048FAIL wait retry clear started count=0 baseline=0 increase=1
+[03:36:36.29184PASS wait retry timedOut=true count=2 baseline=1 increase=1
+[03:36:36.29259> stop
+[03:36:36.32260< Stopping the server

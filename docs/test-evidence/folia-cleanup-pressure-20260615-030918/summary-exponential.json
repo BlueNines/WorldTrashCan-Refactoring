@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-06-15 03:28:51",
+  "server": "E:\\server_work\\folia1.21.8",
+  "jar": "BLWorldTrashCan-universal.jar",
+  "expectedEntities": 32768,
+  "doublingRounds": 15,
+  "checks": {
+    "ready": true,
+    "baselineNoTimeout": true,
+    "noRefreshText": true
+  },
+  "timedOutTrueCount": 0,
+  "timedOutFalseCount": 1,
+  "runningGuardCount": 0,
+  "noRefreshTextCount": 1,
+  "processExitCode": 1,
+  "error": "ConnectionAbortedError(10053, '你的主机中的软件中止了一个已建立的连接。', None, 10053, None)"
+}

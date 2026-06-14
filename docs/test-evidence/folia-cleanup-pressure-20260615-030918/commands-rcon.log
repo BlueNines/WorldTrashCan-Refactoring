@@ -1,0 +1,27 @@
+[03:16:47.339] PASS wait server-ready
+[03:16:47.360] PASS rcon connected
+[03:16:47.360] > gamerule doMobSpawning false
+[03:16:47.455] < Gamerule doMobSpawning is now set to: false
+[03:16:47.456] > gamerule sendCommandFeedback true
+[03:16:47.602] < Gamerule sendCommandFeedback is now set to: true
+[03:16:47.603] > gamerule logAdminCommands false
+[03:16:47.643] < Gamerule logAdminCommands is now set to: false
+[03:16:47.643] > kill @e[tag=ai_wtc_pressure]
+[03:16:47.696] < No entity was found
+[03:16:49.698] > blwtc platform
+[03:16:49.745] < §7[§bBLWorldTrashCan§7] §a当前平台: §ffolia-1.20 (universal)\n§7- §fscheduler-global§7: §a启用\n§7- §fscheduler-region§7: §a启用\n§7- §finventory-basic§7: §a启用\n§7- §fitem-pdc-tag§7: §a启用\n§7- §fitem-legacy-tag§7: §7禁用\n§7- §frgb-message§7: §a启用\n§7- §fclickable-message§7: §a启用\n§7- §fboss-bar§7: §a启用\n§7- §fsign-legacy§7: §7禁用\n§7- §fsign-modern§7: §a启用\n§7- §fentity-move-event§7: §a启用\n§7- §ffolia-region-safe§7: §7禁用\n
+[03:16:49.746] > blwtc reload
+[03:16:49.824] < §7[§bBLWorldTrashCan§7] §aBLWorldTrashCan 已重载。\n
+[03:16:51.839] > say AI_WTC_BASELINE_CLEAR_START
+[03:16:51.855] > blwtc clear
+[03:16:51.863] < §7[§bBLWorldTrashCan§7] §a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /blwtc stats。\n
+[03:16:52.388] PASS wait baseline timedOut=false count=1 baseline=0 increase=1
+[03:16:52.389] PASS wait public no refresh text count=1 baseline=0 increase=1
+[03:16:52.389] > scoreboard objectives add ai_wtc dummy
+[03:16:52.402] < Unknown or incomplete command, see below for error\nscoreboard objectives add ai_wtc dummy<--[HERE]
+[03:16:52.402] > scoreboard players set #pressure ai_wtc 0
+[03:16:52.443] < Unknown or incomplete command, see below for error\nscoreboard players set #pressure ai_wtc 0<--[HERE]
+[03:16:52.443] > gamerule sendCommandFeedback false
+[03:16:52.494] < Gamerule sendCommandFeedback is now set to: false
+[03:16:52.494] spawning armor stands count=32000 tag=ai_wtc_pressure
+[03:20:59.345] spawn-progress 5000/32000

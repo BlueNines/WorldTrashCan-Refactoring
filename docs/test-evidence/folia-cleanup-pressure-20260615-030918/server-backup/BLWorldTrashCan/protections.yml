@@ -1,0 +1,34 @@
+# 聊天防刷屏。
+chat-rate-limit:
+  # 是否启用聊天防刷屏。
+  enabled: true
+  # 最小间隔，单位秒。
+  interval-seconds: 0.7
+  # 触发限制时发送的消息。
+  message: '&c请不要刷屏'
+  # 触发限制时执行的控制台命令；空字符串表示不执行。
+  command: ''
+
+# 命令防刷屏。
+command-rate-limit:
+  # 是否启用命令防刷屏。
+  enabled: true
+  # 最小间隔，单位秒。
+  interval-seconds: 0.7
+  # 触发限制时发送的消息。
+  message: '&c请不要频繁使用指令'
+  # 不受限制的命令前缀。
+  whitelist: []
+  command: ''
+
+# 防丢弃模式。
+drop-protection:
+  # 是否启用防丢弃模式。
+  enabled: false
+
+# 简单优化。
+simple-optimize:
+  # 是否清理无法拾取的箭矢。
+  remove-unpickable-arrow: false
+  # 是否禁止踩踏农田。
+  prevent-farmland-trampling: false

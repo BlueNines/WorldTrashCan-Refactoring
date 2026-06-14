@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-06-15 03:36:37",
+  "checks": {
+    "ready": true,
+    "runningGuard": true,
+    "firstTimeout": true,
+    "retryStarted": false,
+    "retryTimeout": true
+  },
+  "timedOutTrueCount": 2,
+  "timedOutFalseCount": 0,
+  "runningGuardCount": 1,
+  "startedCount": 0,
+  "processExitCode": 0,
+  "error": null
+}

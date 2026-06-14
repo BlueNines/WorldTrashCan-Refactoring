@@ -1,6 +1,6 @@
 # 清理周期，单位秒。
 # 默认 360 秒；设为 0 时只允许管理员手动触发清理。
-interval-seconds: 360
+interval-seconds: 0
 
 # 跳过清理的世界名。
 # 默认示例为 testWorld；留空请写 []。
@@ -11,13 +11,13 @@ ignored-worlds:
 # 普通 Bukkit、Paper、Legacy 运行时会读取但不会使用这些设置。
 folia:
   # 单轮 Folia 清理最多执行多少秒；超时后会释放清理状态，迟到的 region 任务不再计入本轮统计。
-  timeout-seconds: 30
+  timeout-seconds: 1
   # 单轮最多扫描多少个已加载 chunk；0 表示不限制。大型生存服建议保持默认或更低，避免一次扫完整个加载世界。
   max-chunks-per-cleanup: 4096
   # 每批向 Folia RegionScheduler 派发多少个 chunk 扫描任务；数值越大瞬时压力越高。
-  chunk-batch-size: 64
+  chunk-batch-size: 1
   # 每批 chunk 扫描任务之间间隔多少 tick；最小 1，默认 1 用来削峰。
-  chunk-batch-delay-ticks: 1
+  chunk-batch-delay-ticks: 2
 
 # 不回收也不删除的物品类型。
 # 使用当前版本平台标准化后的 Material 名称。

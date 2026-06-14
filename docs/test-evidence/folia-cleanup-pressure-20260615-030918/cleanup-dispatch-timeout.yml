@@ -1,6 +1,6 @@
 # 清理周期，单位秒。
 # 默认 360 秒；设为 0 时只允许管理员手动触发清理。
-interval-seconds: 360
+interval-seconds: 0
 
 # 跳过清理的世界名。
 # 默认示例为 testWorld；留空请写 []。
@@ -11,13 +11,13 @@ ignored-worlds:
 # 普通 Bukkit、Paper、Legacy 运行时会读取但不会使用这些设置。
 folia:
   # 单轮 Folia 清理最多执行多少秒；超时后会释放清理状态，迟到的 region 任务不再计入本轮统计。
-  timeout-seconds: 30
+  timeout-seconds: 1
   # 单轮最多扫描多少个已加载 chunk；0 表示不限制。大型生存服建议保持默认或更低，避免一次扫完整个加载世界。
   max-chunks-per-cleanup: 4096
   # 每批向 Folia RegionScheduler 派发多少个 chunk 扫描任务；数值越大瞬时压力越高。
-  chunk-batch-size: 64
+  chunk-batch-size: 1
   # 每批 chunk 扫描任务之间间隔多少 tick；最小 1，默认 1 用来削峰。
-  chunk-batch-delay-ticks: 1
+  chunk-batch-delay-ticks: 2
 
 # 不回收也不删除的物品类型。
 # 使用当前版本平台标准化后的 Material 名称。
@@ -45,7 +45,7 @@ entities:
   # 是否清理怪物。
   clear-monsters: true
   # 是否清理动物或普通生物。
-  clear-animals: false
+  clear-animals: true
   # 是否清理投射物。
   clear-projectiles: true
   # 是否清理带自定义名的实体。
@@ -83,8 +83,7 @@ notify:
       - "2;&#FFD1662秒"
       - "1;&#FFD1661秒"
       - "0;&#5AC8FA清理成功 &#64748B| &#C9D4E2回收 &#FFD166%DealItemSum% &#C9D4E2个物品，公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个 &#E7C873(点我打开垃圾桶)"
-      - "-4;&#FFD166Folia 清理超时 &#64748B| &#C9D4E2已释放清理状态，下一轮会继续处理剩余 chunk"
-      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新。
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新"
@@ -103,8 +102,7 @@ notify:
       - "2;&#0F172A▌ &#FFD166&l2秒"
       - "1;&#0F172A▌ &#FFD166&l1秒"
       - "0;&#0F172A▌ &#5AC8FA清理成功 &#64748B| &#C9D4E2公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个"
-      - "-4;&#0F172A▌ &#FFD166Folia 清理超时 &#64748B| &#C9D4E2已释放状态，下一轮继续"
-      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新。
       - "-1;&#0F172A▌ &#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新"
       - "-2;&#0F172A▌ &#5AC8FA公共垃圾桶的物品已刷新"
       - "-3;&#0F172A▌ &#C9D4E2公共垃圾桶不会自动刷新"
@@ -115,7 +113,7 @@ notify:
     enabled: false
     # 倒计时 BossBar 提醒，格式：剩余秒数;内容;样式;颜色。
     # 样式可用 SOLID、SEGMENTED_6、SEGMENTED_10、SEGMENTED_12、SEGMENTED_20；颜色可用 PINK、BLUE、RED、GREEN、YELLOW、PURPLE、WHITE。
-    # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+    # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新。
     messages:
       - "30;&#5AC8FA&l即将清理物品和实体;SOLID;BLUE"
       - "10;&#FFD166&l即将清理物品和实体;SOLID;YELLOW"
@@ -124,7 +122,6 @@ notify:
       - "2;&#FFD166&l2秒;SEGMENTED_20;YELLOW"
       - "1;&#FFD166&l1秒;SEGMENTED_20;YELLOW"
       - "0;&#5AC8FA清理成功，公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个;SEGMENTED_20;BLUE"
-      - "-4;&#FFD166Folia 清理超时，已释放状态，下一轮继续;SEGMENTED_20;YELLOW"
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新;SEGMENTED_20;BLUE"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新;SEGMENTED_20;BLUE"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新;SEGMENTED_20;BLUE"
@@ -143,8 +140,7 @@ notify:
       - "2;&#FFD1662秒;"
       - "1;&#FFD1661秒;"
       - "0;&#5AC8FA清理成功;&#C9D4E2公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个"
-      - "-4;&#FFD166Folia 清理超时;&#C9D4E2已释放状态，下一轮会继续处理"
-      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新。
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新;"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新;"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新;"
