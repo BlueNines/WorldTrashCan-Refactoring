@@ -1,0 +1,60 @@
+{
+  "id": "universal_spigot2612",
+  "sourceId": "external_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "clientVersion": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 477063,
+    "sha256": "cb78511dbd9645f7127cc4d02c06bf37e89920378bbc2ccc0fed6ee2e933403b",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBigot2612",
+  "clientPid": 23080,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_spigot2612\\screenshots\\universal_spigot2612-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "[06:05:06] [Server thread/INFO]: 实体密度扫描统计:\n[06:05:06] [Server thread/INFO]: - 已加载/本轮选择 chunk: 121/8\n[06:05:06] [Server thread/INFO]: - 索引 chunk/实体: 8/12\n[06:05:06] [Server thread/INFO]: - 脏 chunk 队列: 1 (标记 7, 丢弃 0)\n[06:05:06] [Server thread/INFO]: - 候选队列/去重: 0/0\n[06:05:06] [Server thread/INFO]: - 快照/扫描 chunk: 8/8 (未加载 0)\n[06:05:06] [Server thread/INFO]: - 候选创建/取出/完成: 24/24/24\n[06:05:06] [Server thread/INFO]: - 候选过期/重试/丢弃: 0/0/0\n[06:05:06] [Server thread/INFO]: - 删除成功/跳过: 16/8\n[06:05:06] [Server thread/INFO]: - 索引修剪 stale/cap: 0/0\n[06:05:06] [Server thread/INFO]: - 累计索引实体写入: 28\n",
+      "indexed": [
+        8,
+        12
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        24,
+        24,
+        24
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        16,
+        8
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_spigot2612\\screenshots\\universal_spigot2612-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_spigot2612\\screenshots\\universal_spigot2612-density-after-debugdensity-f2.png",
+    "brightness": 169.66373697916666
+  },
+  "cleanupLogExcerpt": ""
+}

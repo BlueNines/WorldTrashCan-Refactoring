@@ -1,0 +1,13 @@
+{
+  "cwd": "E:\\server_work\\server_cat_1.12.2",
+  "command": [
+    "C:\\Program Files\\Java\\jdk-1.8\\bin\\java.exe",
+    "-Xms1024M",
+    "-Xmx4096M",
+    "-jar",
+    "CatServer-4168d848-universal.jar",
+    "nogui"
+  ],
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "port": 25565
+}

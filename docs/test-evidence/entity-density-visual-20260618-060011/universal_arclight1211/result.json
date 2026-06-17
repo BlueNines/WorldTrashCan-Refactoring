@@ -1,0 +1,60 @@
+{
+  "id": "universal_arclight1211",
+  "sourceId": "external_arclight1211",
+  "label": "1.21.11arclight-neoforge",
+  "version": "1.21.1-arclight-neoforge",
+  "clientVersion": "1.21.1",
+  "serverDir": "E:\\server_work\\1.21.11arclight-neoforge",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 477063,
+    "sha256": "cb78511dbd9645f7127cc4d02c06bf37e89920378bbc2ccc0fed6ee2e933403b",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBight1211",
+  "clientPid": 43952,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_arclight1211\\screenshots\\universal_arclight1211-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "\u001b[0m[06:06:30 INFO] [Console]: 实体密度扫描统计:\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 已加载/本轮选择 chunk: 625/8\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 索引 chunk/实体: 8/8\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 脏 chunk 队列: 1 (标记 2, 丢弃 0)\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 候选队列/去重: 0/0\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 快照/扫描 chunk: 8/8 (未加载 0)\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 候选创建/取出/完成: 80/80/80\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 候选过期/重试/丢弃: 0/0/0\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 删除成功/跳过: 72/8\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 索引修剪 stale/cap: 0/0\n\u001b[m\u001b[0m[06:06:30 INFO] [Console]: - 累计索引实体写入: 80\n\u001b[m",
+      "indexed": [
+        8,
+        8
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        80,
+        80,
+        80
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        72,
+        8
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_arclight1211\\screenshots\\universal_arclight1211-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_arclight1211\\screenshots\\universal_arclight1211-density-after-debugdensity-f2.png",
+    "brightness": 60.728190104166664
+  },
+  "cleanupLogExcerpt": "\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/234, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/235, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/236, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/237, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/238, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/239, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/240, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Named entity Cow['AI_BLWTC_DENSITY'/241, l='ServerLevel[world]', x=0.50, y=90.00, z=0.50] died: AI_BLWTC_DENSITY was killed\n\u001b[m\u001b[0m[06:06:39 INFO]: Killed 8 entities\n\u001b[m"
+}

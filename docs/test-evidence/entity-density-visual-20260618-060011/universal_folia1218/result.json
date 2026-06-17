@@ -1,0 +1,60 @@
+{
+  "id": "universal_folia1218",
+  "sourceId": "external_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "clientVersion": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 477063,
+    "sha256": "cb78511dbd9645f7127cc4d02c06bf37e89920378bbc2ccc0fed6ee2e933403b",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBolia1218",
+  "clientPid": 36616,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_folia1218\\screenshots\\universal_folia1218-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "[06:02:18 INFO]: 实体密度扫描统计:\n[06:02:18 INFO]: - 已加载/本轮选择 chunk: 723/8\n[06:02:18 INFO]: - 索引 chunk/实体: 8/1\n[06:02:18 INFO]: - 脏 chunk 队列: 0 (标记 2, 丢弃 0)\n[06:02:18 INFO]: - 候选队列/去重: 0/0\n[06:02:18 INFO]: - 快照/扫描 chunk: 8/8 (未加载 0)\n[06:02:18 INFO]: - 候选创建/取出/完成: 81/81/81\n[06:02:18 INFO]: - 候选过期/重试/丢弃: 0/0/0\n[06:02:18 INFO]: - 删除成功/跳过: 80/1\n[06:02:18 INFO]: - 索引修剪 stale/cap: 0/0\n[06:02:18 INFO]: - 累计索引实体写入: 81\n",
+      "indexed": [
+        8,
+        1
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        81,
+        81,
+        81
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        80,
+        1
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+    "brightness": 110.88248697916667
+  },
+  "cleanupSkipped": "Folia vanilla entity selector can trip region thread checks; density limiter already reduced the sample."
+}

@@ -1,0 +1,37 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_folia1218\\screenshots\\universal_folia1218-density-before-f2.png",
+      "size": 379946,
+      "sha256": "fe96fa67219a3d0942a4ce983b1b77413889923c2f65a579c04a4aca85f9aa89",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 101.40006510416667
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-060011\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+      "size": 356878,
+      "sha256": "4554a770950edbfea0e8d80a082ee1cf81286a68faa5ddf1a58733b4ea1cf2a4",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 110.88248697916667
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 477063,
+    "sha256": "cb78511dbd9645f7127cc4d02c06bf37e89920378bbc2ccc0fed6ee2e933403b",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}
