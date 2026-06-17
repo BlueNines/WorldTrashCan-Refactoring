@@ -47,7 +47,7 @@
 - `cleanup.yml`：后台清理周期、忽略世界、物品保护、实体清理规则、清理倒计时通知。
 - `trash.yml`：世界垃圾桶、公共垃圾桶、个人垃圾桶配置。
 - `platform.yml`：版本能力说明。
-- `entity-limits.yml`：世界实体数量限制和密集实体限制。
+- `entity-limits.yml`：世界实体数量限制、低占用实体扫描器和密集实体限制。
 - `protections.yml`：聊天/命令限频、防丢弃模式、不可拾取箭矢清理、防踩踏农田。
 - `messages/message_zh.yml`：简体中文消息。
 - `messages/message_zh_TW.yml`：繁体中文消息。
@@ -75,6 +75,42 @@ folia:
 - `chunk-batch-delay-ticks`：每批之间间隔多少 tick，用于削峰。
 
 `/blwtc clear` 在 Folia 下仍是异步启动语义：命令返回“已启动”只表示任务成功提交。若上一轮仍在运行，会返回运行中保护并跳过本次请求；若本轮超时，会发送 `-4` 通知文案“Folia 清理超时”，并允许下一次 `/blwtc clear` 再启动。公共垃圾桶刷新次数配置为负数时会发送 `-3`，明确提示“公共垃圾桶不会自动刷新”，不再显示“还有 0 次”。
+
+## 实体限制低占用扫描
+
+`entity-limits.yml` 的世界实体上限和密集实体清理不再在生成事件里同步扫描 `world.getEntities()` 或大范围附近实体。新实现使用低占用分片体系：
+
+- 实体生成、进入世界或离开世界只标记所在 chunk 为 dirty，不维护永久全实体事件表。
+- Bukkit/Paper/Spigot 端在主线程按预算采集少量已加载 chunk 的不可变快照。
+- Folia 端在 global region 只挑选 chunk，实际快照采集和删除都派发到 chunk 所在 region。
+- 异步 worker 只处理 UUID、世界、类型、chunk、坐标等轻量快照，计算待删除候选。
+- 删除候选回到主线程或 region 线程按 `max-removes-per-run` 预算执行。
+- 候选带 TTL、去重、最大队列和重试上限；实体查不到、失效、类型/世界/chunk 不匹配或已经不再超限时会直接消费候选并释放去重标记。
+
+关键配置：
+
+```yaml
+scanner:
+  target-full-cycle-seconds: 300
+  scan-interval-ticks: 20
+  min-chunks-per-scan: 4
+  max-chunks-per-scan: 64
+  max-scan-millis-per-run: 4
+  remove-interval-ticks: 2
+  max-removes-per-run: 20
+  max-pending-removals: 2000
+  candidate-ttl-seconds: 120
+  max-candidate-retries: 3
+  max-dirty-chunks: 4096
+  stale-chunk-seconds: 600
+  max-index-entities: 50000
+  max-index-entities-per-chunk: 512
+  log-summary-seconds: 60
+```
+
+这套设计接受一定延迟，优先保证清理插件自身占用低且不会因为密集实体瞬间生成而卡住主线程。`/blwtc debugdensity` 可查看 loaded/selected chunk、索引实体数、候选队列、删除成功/跳过、TTL/重试/丢弃等统计，用于压测和排障。
+
+2026-06-18 已用 `dist/BLWorldTrashCan-universal.jar` 完成低占用实体密度压测，SHA256 为 `CB78511DBD9645F7127CC4D02C06BF37E89920378BBC2CCC0FED6EE2E933403B`。测试端覆盖 Paper 1.12.2 与 Folia 1.21.8，均临时启用密集 cow 限制、生成 300 只 cow，并把 `scanner.max-removes-per-run` 压到 `1` 验证预算化删除。Paper 1.12.2 最终剩余 1 只，候选队列/去重 `0/0`；Folia 1.21.8 最终剩余 6 只，候选队列/去重 `0/0`。两端均通过 `debugdensity` 证明候选创建、取出、完成和删除/跳过生命周期闭合，证据目录为 `docs/test-evidence/entity-density-low-overhead-20260618-015437/`。
 
 ## 消息与语言
 
@@ -192,12 +228,13 @@ Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回
 /blwtc debugdamage <玩家> <Material> <数量>
 /blwtc debugstock
 /blwtc debugsummary <玩家>
+/blwtc debugdensity
 /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>
 /blwtc debugrgb <玩家>
 /blwtc debugrgbchannels <玩家>
 ```
 
-`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成带拾取延迟的真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 会在不要求玩家在线的情况下输出当前公共垃圾桶库存，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
+`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成带拾取延迟的真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 和 `debugdensity` 不要求玩家在线，分别输出垃圾桶库存与实体密度扫描摘要，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock`、`debugdensity` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
 
 ## 权限
 

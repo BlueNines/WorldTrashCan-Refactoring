@@ -1,0 +1,84 @@
+[01:47:11.980] PASS wait server ready
+[01:47:11.986] PASS rcon connected
+[01:47:11.986] > gamerule doMobSpawning false
+[01:47:12.004] < Gamerule doMobSpawning is now set to: false
+[01:47:12.004] > gamerule sendCommandFeedback true
+[01:47:12.046] < Gamerule sendCommandFeedback is now set to: true
+[01:47:12.046] > gamerule logAdminCommands false
+[01:47:12.093] < Gamerule logAdminCommands is now set to: false
+[01:47:12.094] > kill @e[type=minecraft:cow,tag=ai_wtc_density]
+[01:47:12.223] < No entity was found
+[01:47:12.223] > plugins
+[01:47:12.292] < ℹ Server Plugins (2):\nBukkit Plugins:\n - *BLWorldTrashCan, PlaceholderAPI\n
+[01:47:12.292] > blwtc platform
+[01:47:12.306] < [BLWorldTrashCan] 当前平台: folia-1.20 (universal)\n- scheduler-global: 启用\n- scheduler-region: 启用\n- inventory-basic: 启用\n- item-pdc-tag: 启用\n- item-legacy-tag: 禁用\n- rgb-message: 启用\n- clickable-message: 启用\n- boss-bar: 启用\n- sign-legacy: 禁用\n- sign-modern: 启用\n- entity-move-event: 启用\n- folia-region-safe: 禁用\n
+[01:47:12.307] > blwtc debughelp
+[01:47:12.384] < /blwtc debugopen <玩家> <global|personal> - 后台测试打开 GUI\n/blwtc debugworldtrash <玩家> - 后台创建并登记测试世界垃圾桶\n/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> - 后台测试指定路由\n/blwtc debugdrop <玩家> <Material> <数量> [owner] - 后台生成测试掉落物\n/blwtc debugdamage <玩家> <Material> <数量> - 后台测试仙人掌/岩浆损坏回收\n/blwtc debugstock - 后台查看当前垃圾桶库存\n/blwtc debugsummary <玩家> - 查看后台测试摘要\n/blwtc debugdensity - 查看实体密度扫描和候选队列\n/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> - 后台测试玩家入口\n/blwtc debugrgb <玩家> - 后台测试 RGB/降级色可见通道\n/blwtc debugrgbchannels <玩家> - 后台测试聊天、ActionBar 和 Title RGB/降级色通道\n这些命令会改变测试服运行态，只建议用于验收和排障。\n
+[01:47:12.385] > blwtc reload
+[01:47:12.479] < [BLWorldTrashCan] BLWorldTrashCan 已重载。\n
+[01:47:14.479] > blwtc debugdensity
+[01:47:14.495] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 18/0\n- 脏 chunk 队列: 0 (标记 11, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 19/19 (未加载 0)\n- 候选创建/取出/完成: 0/0/0\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 0/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 0\n
+[01:47:14.495] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 18/0\n- 脏 chunk 队列: 0 (标记 11, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 19/19 (未加载 0)\n- 候选创建/取出/完成: 0/0/0\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 0/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 0\n", "loadedChunks": [147, 1], "indexed": [18, 0], "dirty": [0, 11, 0], "pending": [0, 0], "snapshots": [19, 19, 0], "candidates": [0, 0, 0], "candidateFailures": [0, 0, 0], "removals": [0, 0], "pruned": [0, 0]}
+[01:47:14.495] > execute in minecraft:overworld run summon minecraft:cow 0 80 0 {NoAI:1b,Silent:1b,Tags:["ai_wtc_density"]}
+[01:47:14.546] < Summoned new Cow
+[01:47:14.546] > execute in minecraft:overworld run summon minecraft:cow 0 80 0 {NoAI:1b,Silent:1b,Tags:["ai_wtc_density"]}
+[01:47:14.593] < Summoned new Cow
+[01:47:14.593] > execute in minecraft:overworld run summon minecraft:cow 0 80 0 {NoAI:1b,Silent:1b,Tags:["ai_wtc_density"]}
+[01:47:14.643] < Summoned new Cow
+[01:47:16.493] spawn-progress 40/300
+[01:47:18.492] spawn-progress 80/300
+[01:47:20.444] spawn-progress 120/300
+[01:47:22.444] spawn-progress 160/300
+[01:47:24.443] spawn-progress 200/300
+[01:47:26.442] spawn-progress 240/300
+[01:47:28.392] spawn-progress 280/300
+[01:47:29.393] spawned 300 cows in one chunk
+[01:47:30.394] > blwtc debugdensity
+[01:47:30.442] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/145\n- 脏 chunk 队列: 1 (标记 170, 丢弃 0)\n- 候选队列/去重: 145/145\n- 快照/扫描 chunk: 178/178 (未加载 0)\n- 候选创建/取出/完成: 300/155/155\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 155/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 13388\n
+[01:47:30.443] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/145\n- 脏 chunk 队列: 1 (标记 170, 丢弃 0)\n- 候选队列/去重: 145/145\n- 快照/扫描 chunk: 178/178 (未加载 0)\n- 候选创建/取出/完成: 300/155/155\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 155/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 13388\n", "loadedChunks": [147, 1], "indexed": [19, 145], "dirty": [1, 170, 0], "pending": [145, 145], "snapshots": [178, 178, 0], "candidates": [300, 155, 155], "candidateFailures": [0, 0, 0], "removals": [155, 0], "pruned": [0, 0]}
+[01:47:31.444] > blwtc debugdensity
+[01:47:31.492] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/134\n- 脏 chunk 队列: 1 (标记 181, 丢弃 0)\n- 候选队列/去重: 134/134\n- 快照/扫描 chunk: 189/189 (未加载 0)\n- 候选创建/取出/完成: 300/166/166\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 166/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 14928\n
+[01:47:31.492] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/134\n- 脏 chunk 队列: 1 (标记 181, 丢弃 0)\n- 候选队列/去重: 134/134\n- 快照/扫描 chunk: 189/189 (未加载 0)\n- 候选创建/取出/完成: 300/166/166\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 166/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 14928\n", "loadedChunks": [147, 1], "indexed": [19, 134], "dirty": [1, 181, 0], "pending": [134, 134], "snapshots": [189, 189, 0], "candidates": [300, 166, 166], "candidateFailures": [0, 0, 0], "removals": [166, 0], "pruned": [0, 0]}
+[01:47:32.493] > blwtc debugdensity
+[01:47:32.542] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/124\n- 脏 chunk 队列: 1 (标记 191, 丢弃 0)\n- 候选队列/去重: 124/124\n- 快照/扫描 chunk: 199/199 (未加载 0)\n- 候选创建/取出/完成: 300/176/176\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 176/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 16223\n
+[01:47:32.542] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/124\n- 脏 chunk 队列: 1 (标记 191, 丢弃 0)\n- 候选队列/去重: 124/124\n- 快照/扫描 chunk: 199/199 (未加载 0)\n- 候选创建/取出/完成: 300/176/176\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 176/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 16223\n", "loadedChunks": [147, 1], "indexed": [19, 124], "dirty": [1, 191, 0], "pending": [124, 124], "snapshots": [199, 199, 0], "candidates": [300, 176, 176], "candidateFailures": [0, 0, 0], "removals": [176, 0], "pruned": [0, 0]}
+[01:47:33.543] > blwtc debugdensity
+[01:47:33.592] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/113\n- 脏 chunk 队列: 1 (标记 202, 丢弃 0)\n- 候选队列/去重: 113/113\n- 快照/扫描 chunk: 210/210 (未加载 0)\n- 候选创建/取出/完成: 300/187/187\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 187/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 17532\n
+[01:47:33.593] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/113\n- 脏 chunk 队列: 1 (标记 202, 丢弃 0)\n- 候选队列/去重: 113/113\n- 快照/扫描 chunk: 210/210 (未加载 0)\n- 候选创建/取出/完成: 300/187/187\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 187/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 17532\n", "loadedChunks": [147, 1], "indexed": [19, 113], "dirty": [1, 202, 0], "pending": [113, 113], "snapshots": [210, 210, 0], "candidates": [300, 187, 187], "candidateFailures": [0, 0, 0], "removals": [187, 0], "pruned": [0, 0]}
+[01:47:34.593] > blwtc debugdensity
+[01:47:34.642] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/103\n- 脏 chunk 队列: 1 (标记 212, 丢弃 0)\n- 候选队列/去重: 103/103\n- 快照/扫描 chunk: 220/220 (未加载 0)\n- 候选创建/取出/完成: 300/197/197\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 197/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 18617\n
+[01:47:34.642] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/103\n- 脏 chunk 队列: 1 (标记 212, 丢弃 0)\n- 候选队列/去重: 103/103\n- 快照/扫描 chunk: 220/220 (未加载 0)\n- 候选创建/取出/完成: 300/197/197\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 197/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 18617\n", "loadedChunks": [147, 1], "indexed": [19, 103], "dirty": [1, 212, 0], "pending": [103, 103], "snapshots": [220, 220, 0], "candidates": [300, 197, 197], "candidateFailures": [0, 0, 0], "removals": [197, 0], "pruned": [0, 0]}
+[01:47:35.643] > blwtc debugdensity
+[01:47:35.691] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/92\n- 脏 chunk 队列: 1 (标记 223, 丢弃 0)\n- 候选队列/去重: 92/92\n- 快照/扫描 chunk: 231/231 (未加载 0)\n- 候选创建/取出/完成: 300/208/208\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 208/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 19695\n
+[01:47:35.692] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/92\n- 脏 chunk 队列: 1 (标记 223, 丢弃 0)\n- 候选队列/去重: 92/92\n- 快照/扫描 chunk: 231/231 (未加载 0)\n- 候选创建/取出/完成: 300/208/208\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 208/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 19695\n", "loadedChunks": [147, 1], "indexed": [19, 92], "dirty": [1, 223, 0], "pending": [92, 92], "snapshots": [231, 231, 0], "candidates": [300, 208, 208], "candidateFailures": [0, 0, 0], "removals": [208, 0], "pruned": [0, 0]}
+[01:47:36.692] > blwtc debugdensity
+[01:47:36.742] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/82\n- 脏 chunk 队列: 1 (标记 233, 丢弃 0)\n- 候选队列/去重: 82/82\n- 快照/扫描 chunk: 241/241 (未加载 0)\n- 候选创建/取出/完成: 300/218/218\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 218/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 20570\n
+[01:47:36.742] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/82\n- 脏 chunk 队列: 1 (标记 233, 丢弃 0)\n- 候选队列/去重: 82/82\n- 快照/扫描 chunk: 241/241 (未加载 0)\n- 候选创建/取出/完成: 300/218/218\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 218/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 20570\n", "loadedChunks": [147, 1], "indexed": [19, 82], "dirty": [1, 233, 0], "pending": [82, 82], "snapshots": [241, 241, 0], "candidates": [300, 218, 218], "candidateFailures": [0, 0, 0], "removals": [218, 0], "pruned": [0, 0]}
+[01:47:37.742] > blwtc debugdensity
+[01:47:37.793] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/71\n- 脏 chunk 队列: 1 (标记 244, 丢弃 0)\n- 候选队列/去重: 71/71\n- 快照/扫描 chunk: 252/252 (未加载 0)\n- 候选创建/取出/完成: 300/229/229\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 229/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 21417\n
+[01:47:37.793] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/71\n- 脏 chunk 队列: 1 (标记 244, 丢弃 0)\n- 候选队列/去重: 71/71\n- 快照/扫描 chunk: 252/252 (未加载 0)\n- 候选创建/取出/完成: 300/229/229\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 229/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 21417\n", "loadedChunks": [147, 1], "indexed": [19, 71], "dirty": [1, 244, 0], "pending": [71, 71], "snapshots": [252, 252, 0], "candidates": [300, 229, 229], "candidateFailures": [0, 0, 0], "removals": [229, 0], "pruned": [0, 0]}
+[01:47:38.794] > blwtc debugdensity
+[01:47:38.841] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/61\n- 脏 chunk 队列: 1 (标记 254, 丢弃 0)\n- 候选队列/去重: 61/61\n- 快照/扫描 chunk: 262/262 (未加载 0)\n- 候选创建/取出/完成: 300/239/239\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 239/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 22082\n
+[01:47:38.842] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/61\n- 脏 chunk 队列: 1 (标记 254, 丢弃 0)\n- 候选队列/去重: 61/61\n- 快照/扫描 chunk: 262/262 (未加载 0)\n- 候选创建/取出/完成: 300/239/239\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 239/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 22082\n", "loadedChunks": [147, 1], "indexed": [19, 61], "dirty": [1, 254, 0], "pending": [61, 61], "snapshots": [262, 262, 0], "candidates": [300, 239, 239], "candidateFailures": [0, 0, 0], "removals": [239, 0], "pruned": [0, 0]}
+[01:47:39.843] > blwtc debugdensity
+[01:47:39.892] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/50\n- 脏 chunk 队列: 1 (标记 265, 丢弃 0)\n- 候选队列/去重: 50/50\n- 快照/扫描 chunk: 273/273 (未加载 0)\n- 候选创建/取出/完成: 300/250/250\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 250/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 22698\n
+[01:47:39.893] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/50\n- 脏 chunk 队列: 1 (标记 265, 丢弃 0)\n- 候选队列/去重: 50/50\n- 快照/扫描 chunk: 273/273 (未加载 0)\n- 候选创建/取出/完成: 300/250/250\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 250/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 22698\n", "loadedChunks": [147, 1], "indexed": [19, 50], "dirty": [1, 265, 0], "pending": [50, 50], "snapshots": [273, 273, 0], "candidates": [300, 250, 250], "candidateFailures": [0, 0, 0], "removals": [250, 0], "pruned": [0, 0]}
+[01:47:40.894] > blwtc debugdensity
+[01:47:40.942] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/40\n- 脏 chunk 队列: 1 (标记 275, 丢弃 0)\n- 候选队列/去重: 40/40\n- 快照/扫描 chunk: 283/283 (未加载 0)\n- 候选创建/取出/完成: 300/260/260\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 260/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 23153\n
+[01:47:40.942] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/40\n- 脏 chunk 队列: 1 (标记 275, 丢弃 0)\n- 候选队列/去重: 40/40\n- 快照/扫描 chunk: 283/283 (未加载 0)\n- 候选创建/取出/完成: 300/260/260\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 260/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 23153\n", "loadedChunks": [147, 1], "indexed": [19, 40], "dirty": [1, 275, 0], "pending": [40, 40], "snapshots": [283, 283, 0], "candidates": [300, 260, 260], "candidateFailures": [0, 0, 0], "removals": [260, 0], "pruned": [0, 0]}
+[01:47:41.943] > blwtc debugdensity
+[01:47:41.992] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/29\n- 脏 chunk 队列: 1 (标记 286, 丢弃 0)\n- 候选队列/去重: 29/29\n- 快照/扫描 chunk: 294/294 (未加载 0)\n- 候选创建/取出/完成: 300/271/271\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 271/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 23538\n
+[01:47:41.992] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 19/29\n- 脏 chunk 队列: 1 (标记 286, 丢弃 0)\n- 候选队列/去重: 29/29\n- 快照/扫描 chunk: 294/294 (未加载 0)\n- 候选创建/取出/完成: 300/271/271\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 271/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 23538\n", "loadedChunks": [147, 1], "indexed": [19, 29], "dirty": [1, 286, 0], "pending": [29, 29], "snapshots": [294, 294, 0], "candidates": [300, 271, 271], "candidateFailures": [0, 0, 0], "removals": [271, 0], "pruned": [0, 0]}
+[01:47:42.993] > blwtc debugdensity
+[01:47:43.041] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 15/19\n- 脏 chunk 队列: 1 (标记 296, 丢弃 0)\n- 候选队列/去重: 19/19\n- 快照/扫描 chunk: 304/304 (未加载 0)\n- 候选创建/取出/完成: 300/281/281\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 281/0\n- 索引修剪 stale/cap: 4/0\n- 累计索引实体写入: 23783\n
+[01:47:43.042] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 15/19\n- 脏 chunk 队列: 1 (标记 296, 丢弃 0)\n- 候选队列/去重: 19/19\n- 快照/扫描 chunk: 304/304 (未加载 0)\n- 候选创建/取出/完成: 300/281/281\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 281/0\n- 索引修剪 stale/cap: 4/0\n- 累计索引实体写入: 23783\n", "loadedChunks": [147, 1], "indexed": [15, 19], "dirty": [1, 296, 0], "pending": [19, 19], "snapshots": [304, 304, 0], "candidates": [300, 281, 281], "candidateFailures": [0, 0, 0], "removals": [281, 0], "pruned": [4, 0]}
+[01:47:44.043] > blwtc debugdensity
+[01:47:44.092] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 7/8\n- 脏 chunk 队列: 1 (标记 307, 丢弃 0)\n- 候选队列/去重: 8/8\n- 快照/扫描 chunk: 315/315 (未加载 0)\n- 候选创建/取出/完成: 300/292/292\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 292/0\n- 索引修剪 stale/cap: 12/0\n- 累计索引实体写入: 23937\n
+[01:47:44.092] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 7/8\n- 脏 chunk 队列: 1 (标记 307, 丢弃 0)\n- 候选队列/去重: 8/8\n- 快照/扫描 chunk: 315/315 (未加载 0)\n- 候选创建/取出/完成: 300/292/292\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 292/0\n- 索引修剪 stale/cap: 12/0\n- 累计索引实体写入: 23937\n", "loadedChunks": [147, 1], "indexed": [7, 8], "dirty": [1, 307, 0], "pending": [8, 8], "snapshots": [315, 315, 0], "candidates": [300, 292, 292], "candidateFailures": [0, 0, 0], "removals": [292, 0], "pruned": [12, 0]}
+[01:47:45.093] > blwtc debugdensity
+[01:47:45.141] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 8/5\n- 脏 chunk 队列: 0 (标记 309, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 325/325 (未加载 0)\n- 候选创建/取出/完成: 304/300/304\n- 候选过期/重试/丢弃: 4/0/0\n- 删除成功/跳过: 294/6\n- 索引修剪 stale/cap: 18/0\n- 累计索引实体写入: 23958\n
+[01:47:45.141] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 8/5\n- 脏 chunk 队列: 0 (标记 309, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 325/325 (未加载 0)\n- 候选创建/取出/完成: 304/300/304\n- 候选过期/重试/丢弃: 4/0/0\n- 删除成功/跳过: 294/6\n- 索引修剪 stale/cap: 18/0\n- 累计索引实体写入: 23958\n", "loadedChunks": [147, 1], "indexed": [8, 5], "dirty": [0, 309, 0], "pending": [0, 0], "snapshots": [325, 325, 0], "candidates": [304, 300, 304], "candidateFailures": [4, 0, 0], "removals": [294, 6], "pruned": [18, 0]}
+[01:47:45.142] > kill @e[type=minecraft:cow,tag=ai_wtc_density]
+[01:47:45.194] < Killed 6 entities
+[01:47:46.195] > stop
+[01:47:46.242] < Stopping the server

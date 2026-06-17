@@ -64,6 +64,7 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
     private TrashFeature trashFeature;
     private ProtectionFeature protectionFeature;
     private BanGuiFeature banGuiFeature;
+    private Feature entityLimitFeature;
     private WorldTrashRouter trashRouter;
     private GlobalTrashService globalTrashService;
     private PersonalTrashService personalTrashService;
@@ -353,6 +354,24 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         return lines;
     }
 
+    /** 测试用：输出实体密度扫描统计。 */
+    public List<String> debugEntityLimits() {
+        if (entityLimitFeature instanceof EntityLimitFeature) {
+            return ((EntityLimitFeature) entityLimitFeature).debugStats();
+        }
+        Object value = invokeNoArg(entityLimitFeature, "debugStats", null);
+        if (value instanceof List) {
+            List<String> lines = new ArrayList<>();
+            for (Object item : (List<?>) value) {
+                lines.add(String.valueOf(item));
+            }
+            return lines;
+        }
+        List<String> lines = new ArrayList<>();
+        lines.add("§e实体限制功能尚未初始化。");
+        return lines;
+    }
+
     /** 完成插件启动流程。 */
     private void startPlugin() {
         saveDefaultConfigs();
@@ -397,7 +416,8 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
-        featureRegistry.register(createEntityLimitFeature(configSupplier));
+        this.entityLimitFeature = createEntityLimitFeature(configSupplier);
+        featureRegistry.register(entityLimitFeature);
         registerCommands();
         registerPlaceholderApi();
         logCapabilities();

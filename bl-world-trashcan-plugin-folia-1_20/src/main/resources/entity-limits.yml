@@ -12,6 +12,41 @@ world-limits:
     - entity: "CHICKEN"
       max-count: 20
 
+# 低占用实体扫描器。
+# Folia 下 global region 只负责挑选 chunk，实体快照采集和删除都会派发到 chunk 所在 region。
+# 主线程/region 线程只做少量快照和预算删除，密集判断在异步 worker 中完成。
+scanner:
+  # 目标完整覆盖周期，单位秒。延迟可以接受时建议保持较大，避免插件自身占用过高。
+  target-full-cycle-seconds: 300
+  # 扫描任务间隔，单位 tick。20 tick 约等于 1 秒。
+  scan-interval-ticks: 20
+  # 每轮至少扫描多少个已加载 chunk。
+  min-chunks-per-scan: 4
+  # 每轮最多扫描多少个已加载 chunk，防止地图很大时单轮压力过高。
+  max-chunks-per-scan: 64
+  # 每轮扫描分派最多使用多少毫秒，超预算会把未扫到的 chunk 放回脏队列。
+  max-scan-millis-per-run: 4
+  # 候选删除任务间隔，单位 tick。
+  remove-interval-ticks: 2
+  # 每轮最多真正移除多少个实体。
+  max-removes-per-run: 20
+  # 最多排队多少个待删除候选，超过后会丢弃新候选，等待后续扫描再补。
+  max-pending-removals: 2000
+  # 候选最长保留时间，单位秒。超时后会释放候选，避免长期占用内存。
+  candidate-ttl-seconds: 120
+  # 候选删除失败后的最大重试次数。
+  max-candidate-retries: 3
+  # 最多记录多少个脏 chunk，防止实体事件暴涨时队列无限增长。
+  max-dirty-chunks: 4096
+  # chunk 索引多久没有刷新就视为过期，单位秒。
+  stale-chunk-seconds: 600
+  # 全局最多索引多少个相关实体。
+  max-index-entities: 50000
+  # 单个 chunk 最多索引多少个相关实体。
+  max-index-entities-per-chunk: 512
+  # 后台摘要日志间隔，单位秒。设置为 0 可关闭。
+  log-summary-seconds: 60
+
 # 密集实体清理。
 gather-limits:
   # 是否启用密集实体清理。

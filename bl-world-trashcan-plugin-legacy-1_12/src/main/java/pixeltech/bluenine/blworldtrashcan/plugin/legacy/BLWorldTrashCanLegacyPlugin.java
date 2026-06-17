@@ -53,6 +53,7 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
     private BLWorldTrashCanLegacyExpansion expansion;
     private BukkitMessageService messageService;
     private DropOwnerTracker dropOwnerTracker;
+    private EntityLimitFeature entityLimitFeature;
     private Metrics metrics;
 
     /** 启动插件。 */
@@ -98,7 +99,8 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
-        featureRegistry.register(new EntityLimitFeature(this, configSupplier));
+        this.entityLimitFeature = new EntityLimitFeature(this, configSupplier);
+        featureRegistry.register(entityLimitFeature);
         registerCommands();
         registerPlaceholderApi();
         logCapabilities();
@@ -299,6 +301,16 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         lines.add("§7- §f个人垃圾桶物品: §a" + trashFeature.getPersonalStoredItemAmount(player.getUniqueId())
                 + " §7(堆叠 " + trashFeature.getPersonalStoredStackCount(player.getUniqueId()) + ")");
         return lines;
+    }
+
+    /** 测试用：输出实体密度扫描统计。 */
+    public List<String> debugEntityLimits() {
+        if (entityLimitFeature == null) {
+            List<String> lines = new ArrayList<>();
+            lines.add("§e实体限制功能尚未初始化。");
+            return lines;
+        }
+        return entityLimitFeature.debugStats();
     }
 
     /** 查找测试箱子可使用的位置。 */

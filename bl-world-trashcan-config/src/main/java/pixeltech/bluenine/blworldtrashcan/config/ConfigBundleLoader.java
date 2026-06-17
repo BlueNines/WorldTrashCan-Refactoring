@@ -100,6 +100,23 @@ public final class ConfigBundleLoader {
                         entityLimits.getBoolean("gather-limits.drop-items", true),
                         toSet(entityLimits.getStringList("gather-limits.ignored-worlds")),
                         parseGatherLimits(entityLimits.getMapList("gather-limits.defaults"))
+                ),
+                new EntityLimitConfig.ScanConfig(
+                        entityLimits.getInt("scanner.target-full-cycle-seconds", 300),
+                        entityLimits.getInt("scanner.scan-interval-ticks", 20),
+                        entityLimits.getInt("scanner.min-chunks-per-scan", 4),
+                        entityLimits.getInt("scanner.max-chunks-per-scan", 64),
+                        entityLimits.getInt("scanner.max-scan-millis-per-run", 4),
+                        entityLimits.getInt("scanner.remove-interval-ticks", 2),
+                        entityLimits.getInt("scanner.max-removes-per-run", 20),
+                        entityLimits.getInt("scanner.max-pending-removals", 2000),
+                        entityLimits.getInt("scanner.candidate-ttl-seconds", 120),
+                        entityLimits.getInt("scanner.max-candidate-retries", 3),
+                        entityLimits.getInt("scanner.max-dirty-chunks", 4096),
+                        entityLimits.getInt("scanner.stale-chunk-seconds", 600),
+                        entityLimits.getInt("scanner.max-index-entities", 50000),
+                        entityLimits.getInt("scanner.max-index-entities-per-chunk", 512),
+                        entityLimits.getInt("scanner.log-summary-seconds", 60)
                 )
         );
         return new ConfigBundle(

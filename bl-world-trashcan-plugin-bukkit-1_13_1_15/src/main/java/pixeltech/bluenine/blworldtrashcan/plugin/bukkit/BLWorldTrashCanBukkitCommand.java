@@ -22,7 +22,7 @@ import java.util.Locale;
 /** 新架构主命令，当前只提供架构验证命令。 */
 public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugplayer", "debugrgb", "debugrgbchannels");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanBukkitPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -149,6 +149,10 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             handleDebugSummary(sender, args);
             return true;
         }
+        if ("debugdensity".equals(sub)) {
+            handleDebugDensity(sender);
+            return true;
+        }
         if ("debugplayer".equals(sub)) {
             handleDebugPlayer(sender, args);
             return true;
@@ -206,6 +210,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 "&b/blwtc debugdamage <玩家> <Material> <数量> &7- 后台测试仙人掌/岩浆损坏回收",
                 "&b/blwtc debugstock &7- 后台查看当前垃圾桶库存",
                 "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
+                "&b/blwtc debugdensity &7- 查看实体密度扫描和候选队列",
                 "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
                 "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
                 "&b/blwtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB/降级色通道",
@@ -462,6 +467,17 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
             return;
         }
         for (String line : plugin.debugSummary(player)) {
+            sender.sendMessage(line);
+        }
+    }
+
+    /** 后台输出实体密度扫描摘要。 */
+    private void handleDebugDensity(CommandSender sender) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        for (String line : plugin.debugEntityLimits()) {
             sender.sendMessage(line);
         }
     }

@@ -1,0 +1,382 @@
+[01:45:00] [Server thread/INFO]: Starting minecraft server version 1.12.2
+[01:45:00] [Server thread/INFO]: Loading properties
+[01:45:00] [Server thread/INFO]: Default game type: SURVIVAL
+[01:45:00] [Server thread/INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[01:45:00] [Server thread/INFO]: Debug logging is disabled
+[01:45:00] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[01:45:00] [Server thread/INFO]: Using 4 threads for Netty based IO
+[01:45:00] [Server thread/INFO]: Generating keypair
+[01:45:00] [Server thread/INFO]: Starting Minecraft server on *:30012
+[01:45:00] [Server thread/INFO]: Using default channel type
+[01:45:01] [Server thread/INFO]: Set PluginClassLoader as parallel capable
+[01:45:01] [Server thread/INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.11.6
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Loading BLWorldTrashCan v7.0.0
+[01:45:01] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[01:45:01] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[01:45:01] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[01:45:01] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[01:45:01] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[01:45:01] [Server thread/INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[01:45:01] [Server thread/INFO]: Preparing level "rgb_visual_managed_paper1122_20260613_044437"
+[01:45:01] [Server thread/INFO]: -------- World Settings For [rgb_visual_managed_paper1122_20260613_044437] --------
+[01:45:01] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[01:45:01] [Server thread/INFO]: View Distance: 2
+[01:45:01] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[01:45:01] [Server thread/INFO]: Item Merge Radius: 2.5
+[01:45:01] [Server thread/INFO]: Item Despawn Rate: 6000
+[01:45:01] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[01:45:01] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[01:45:01] [Server thread/INFO]: Experience Merge Radius: 3.0
+[01:45:01] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[01:45:01] [Server thread/INFO]: Mob Spawn Range: 4
+[01:45:01] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[01:45:01] [Server thread/INFO]: Random Lighting Updates: false
+[01:45:01] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[01:45:01] [Server thread/INFO]: Structure Info Saving: true
+[01:45:01] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[01:45:01] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[01:45:01] [Server thread/INFO]: Max TNT Explosions: 100
+[01:45:01] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Cane Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Melon Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Vine Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: -------- World Settings For [rgb_visual_managed_paper1122_20260613_044437_nether] --------
+[01:45:01] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[01:45:01] [Server thread/INFO]: View Distance: 2
+[01:45:01] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[01:45:01] [Server thread/INFO]: Item Merge Radius: 2.5
+[01:45:01] [Server thread/INFO]: Item Despawn Rate: 6000
+[01:45:01] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[01:45:01] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[01:45:01] [Server thread/INFO]: Experience Merge Radius: 3.0
+[01:45:01] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[01:45:01] [Server thread/INFO]: Mob Spawn Range: 4
+[01:45:01] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[01:45:01] [Server thread/INFO]: Random Lighting Updates: false
+[01:45:01] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[01:45:01] [Server thread/INFO]: Structure Info Saving: true
+[01:45:01] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[01:45:01] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[01:45:01] [Server thread/INFO]: Max TNT Explosions: 100
+[01:45:01] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Cane Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Melon Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Vine Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: -------- World Settings For [rgb_visual_managed_paper1122_20260613_044437_the_end] --------
+[01:45:01] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[01:45:01] [Server thread/INFO]: View Distance: 2
+[01:45:01] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[01:45:01] [Server thread/INFO]: Item Merge Radius: 2.5
+[01:45:01] [Server thread/INFO]: Item Despawn Rate: 6000
+[01:45:01] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[01:45:01] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[01:45:01] [Server thread/INFO]: Experience Merge Radius: 3.0
+[01:45:01] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[01:45:01] [Server thread/INFO]: Mob Spawn Range: 4
+[01:45:01] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[01:45:01] [Server thread/INFO]: Random Lighting Updates: false
+[01:45:01] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[01:45:01] [Server thread/INFO]: Structure Info Saving: true
+[01:45:01] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[01:45:01] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[01:45:01] [Server thread/INFO]: Max TNT Explosions: 100
+[01:45:01] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Cane Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Melon Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Vine Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[01:45:01] [Server thread/INFO]: Preparing start region for level 0 (Seed: 6215849033182114025)
+[01:45:01] [Server thread/INFO]: Preparing start region for level 1 (Seed: 6215849033182114025)
+[01:45:01] [Server thread/INFO]: Preparing start region for level 2 (Seed: 6215849033182114025)
+[01:45:01] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[01:45:01] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[01:45:01] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Universal runtime: legacy
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Platform: legacy-1.12
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability item-pdc-tag: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability rgb-message: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-legacy: enabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-modern: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability entity-move-event: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[01:45:01] [Server thread/INFO]: [BLWorldTrashCan] [EntityLimit] 已启动低占用实体扫描: scanInterval=2, minChunks=1, maxChunks=8, maxRemoves=1
+[01:45:01] [Server thread/INFO]: Done (0.540s)! For help, type "help" or "?"
+[01:45:01] [Server thread/INFO]: Starting remote control listener
+[01:45:01] [RCON Listener #1/INFO]: RCON running on 0.0.0.0:25576
+[01:45:01] [Server thread/INFO]: Timings Reset
+[01:45:01] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[01:45:01] [Server thread/INFO]: 0 placeholder hook(s) registered!
+[01:45:01] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[01:45:02] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[01:45:02] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[01:45:02] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[01:45:02] [Server thread/INFO]: [BLWorldTrashCan] [EntityLimit] 已启动低占用实体扫描: scanInterval=2, minChunks=1, maxChunks=8, maxRemoves=1
+[01:45:02] [Server thread/INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[01:45:02] [Server thread/INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 57/1
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 57/57 (未加载 0)
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:07] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 57/1
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 107/107 (未加载 0)
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:12] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 157/157 (未加载 0)
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:17] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 207/207 (未加载 0)
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:22] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 257/257 (未加载 0)
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:27] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 307/307 (未加载 0)
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:32] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 357/357 (未加载 0)
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:45:37] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 54/0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 407/407 (未加载 0)
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 3/0
+[01:45:42] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 457/457 (未加载 0)
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:45:47] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 507/507 (未加载 0)
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:45:52] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 557/557 (未加载 0)
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:45:57] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 607/607 (未加载 0)
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:02] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 657/657 (未加载 0)
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:07] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 707/707 (未加载 0)
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:12] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 757/757 (未加载 0)
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:17] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 807/807 (未加载 0)
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:22] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 857/857 (未加载 0)
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:27] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 907/907 (未加载 0)
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:32] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 957/957 (未加载 0)
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:37] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 1007/1007 (未加载 0)
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:42] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 0, 丢弃 0)
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 1057/1057 (未加载 0)
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 0/0/0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 删除成功/跳过: 0/0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:46:47] [Server thread/INFO]: [BLWorldTrashCan] - 累计索引实体写入: 0
+[01:46:52] [Server thread/INFO]: Stopping server
+[01:46:52] [Server thread/INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[01:46:52] [Server thread/INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[01:46:52] [Server thread/INFO]: Saving players
+[01:46:52] [Server thread/INFO]: Saving worlds
+[01:46:52] [Server thread/INFO]: Saving chunks for level 'rgb_visual_managed_paper1122_20260613_044437'/overworld
+[01:46:52] [Server thread/INFO]: Saving chunks for level 'rgb_visual_managed_paper1122_20260613_044437_nether'/the_nether
+[01:46:52] [Server thread/INFO]: Saving chunks for level 'rgb_visual_managed_paper1122_20260613_044437_the_end'/the_end

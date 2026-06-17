@@ -148,6 +148,7 @@ command:
     - "&#5AC8FA/blwtc debugdamage <玩家> <Material> <数量> &#64748B- &#C9D4E2后台测试仙人掌/岩浆损坏回收"
     - "&#5AC8FA/blwtc debugstock &#64748B- &#C9D4E2后台查看当前垃圾桶库存"
     - "&#5AC8FA/blwtc debugsummary <玩家> &#64748B- &#C9D4E2查看后台测试摘要"
+    - "&#5AC8FA/blwtc debugdensity &#64748B- &#C9D4E2查看实体密度扫描和候选队列"
     - "&#5AC8FA/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- &#C9D4E2后台测试玩家入口"
     - "&#5AC8FA/blwtc debugrgb <玩家> &#64748B- &#C9D4E2后台测试 RGB/降级色可见通道"
     - "&#5AC8FA/blwtc debugrgbchannels <玩家> &#64748B- &#C9D4E2后台测试聊天、ActionBar 和 Title RGB/降级色通道"

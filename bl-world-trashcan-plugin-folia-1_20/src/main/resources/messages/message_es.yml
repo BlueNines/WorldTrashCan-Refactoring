@@ -148,6 +148,7 @@ command:
     - "&b/blwtc debugdamage <jugador> <Material> <cantidad> &7- Probar recuperacion por dano"
     - "&b/blwtc debugstock &7- Ver stock interno de papeleras"
     - "&b/blwtc debugsummary <jugador> &7- Ver resumen de pruebas"
+    - "&b/blwtc debugdensity &7- Ver escaneo de densidad y cola de candidatos"
     - "&b/blwtc debugplayer <jugador> <dropmode|look|ban|globalban> &7- Probar entradas de jugador"
     - "&b/blwtc debugrgb <jugador> &7- Probar canales visibles RGB/degradados"
     - "&b/blwtc debugrgbchannels <jugador> &7- Probar Chat, ActionBar y Title RGB/degradados"

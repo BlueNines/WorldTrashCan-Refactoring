@@ -11,11 +11,13 @@ import java.util.Set;
 public final class EntityLimitConfig {
     private final WorldLimitConfig worldLimit;
     private final GatherLimitConfig gatherLimit;
+    private final ScanConfig scanConfig;
 
     /** 创建实体限制配置。 */
-    public EntityLimitConfig(WorldLimitConfig worldLimit, GatherLimitConfig gatherLimit) {
+    public EntityLimitConfig(WorldLimitConfig worldLimit, GatherLimitConfig gatherLimit, ScanConfig scanConfig) {
         this.worldLimit = worldLimit;
         this.gatherLimit = gatherLimit;
+        this.scanConfig = scanConfig == null ? ScanConfig.defaults() : scanConfig;
     }
 
     /** 返回世界实体数量限制。 */
@@ -26,6 +28,11 @@ public final class EntityLimitConfig {
     /** 返回密集实体限制。 */
     public GatherLimitConfig getGatherLimit() {
         return gatherLimit;
+    }
+
+    /** 返回低占用扫描配置。 */
+    public ScanConfig getScanConfig() {
+        return scanConfig;
     }
 
     /** 单世界实体数量限制配置。 */
@@ -55,6 +62,11 @@ public final class EntityLimitConfig {
         public int getMaxCount(String entityType) {
             Integer value = limits.get(normalize(entityType));
             return value == null ? 0 : value;
+        }
+
+        /** 返回配置了世界上限的实体类型。 */
+        public Set<String> getLimitedTypes() {
+            return limits.keySet();
         }
     }
 
@@ -93,6 +105,11 @@ public final class EntityLimitConfig {
         public GatherRule getRule(String entityType) {
             return rules.get(normalize(entityType));
         }
+
+        /** 返回配置了密集清理的实体类型。 */
+        public Set<String> getLimitedTypes() {
+            return rules.keySet();
+        }
     }
 
     /** 单条密集实体限制规则。 */
@@ -121,6 +138,134 @@ public final class EntityLimitConfig {
         /** 返回每次清理数量。 */
         public int getRemoveCount() {
             return removeCount;
+        }
+    }
+
+    /** 低占用实体扫描和候选队列配置。 */
+    public static final class ScanConfig {
+        private final int targetFullCycleSeconds;
+        private final int scanIntervalTicks;
+        private final int minChunksPerScan;
+        private final int maxChunksPerScan;
+        private final int maxScanMillisPerRun;
+        private final int removeIntervalTicks;
+        private final int maxRemovesPerRun;
+        private final int maxPendingRemovals;
+        private final int candidateTtlSeconds;
+        private final int maxCandidateRetries;
+        private final int maxDirtyChunks;
+        private final int staleChunkSeconds;
+        private final int maxIndexEntities;
+        private final int maxIndexEntitiesPerChunk;
+        private final int logSummarySeconds;
+
+        /** 创建低占用实体扫描配置。 */
+        public ScanConfig(int targetFullCycleSeconds, int scanIntervalTicks, int minChunksPerScan,
+                          int maxChunksPerScan, int maxScanMillisPerRun, int removeIntervalTicks,
+                          int maxRemovesPerRun, int maxPendingRemovals, int candidateTtlSeconds,
+                          int maxCandidateRetries, int maxDirtyChunks, int staleChunkSeconds,
+                          int maxIndexEntities, int maxIndexEntitiesPerChunk, int logSummarySeconds) {
+            this.targetFullCycleSeconds = clamp(targetFullCycleSeconds, 30, 3600);
+            this.scanIntervalTicks = clamp(scanIntervalTicks, 1, 20 * 60);
+            this.minChunksPerScan = clamp(minChunksPerScan, 1, 512);
+            this.maxChunksPerScan = clamp(Math.max(minChunksPerScan, maxChunksPerScan), 1, 2048);
+            this.maxScanMillisPerRun = clamp(maxScanMillisPerRun, 1, 50);
+            this.removeIntervalTicks = clamp(removeIntervalTicks, 1, 20 * 60);
+            this.maxRemovesPerRun = clamp(maxRemovesPerRun, 1, 1024);
+            this.maxPendingRemovals = clamp(maxPendingRemovals, 1, 100000);
+            this.candidateTtlSeconds = clamp(candidateTtlSeconds, 5, 3600);
+            this.maxCandidateRetries = clamp(maxCandidateRetries, 0, 100);
+            this.maxDirtyChunks = clamp(maxDirtyChunks, 1, 100000);
+            this.staleChunkSeconds = clamp(staleChunkSeconds, 30, 86400);
+            this.maxIndexEntities = clamp(maxIndexEntities, 100, 2000000);
+            this.maxIndexEntitiesPerChunk = clamp(maxIndexEntitiesPerChunk, 1, 100000);
+            this.logSummarySeconds = Math.max(0, logSummarySeconds);
+        }
+
+        /** 返回默认低占用扫描配置。 */
+        public static ScanConfig defaults() {
+            return new ScanConfig(300, 20, 4, 64, 4, 2, 20, 2000,
+                    120, 3, 4096, 600, 50000, 512, 60);
+        }
+
+        /** 返回目标完整扫描周期秒数。 */
+        public int getTargetFullCycleSeconds() {
+            return targetFullCycleSeconds;
+        }
+
+        /** 返回扫描任务间隔 tick。 */
+        public int getScanIntervalTicks() {
+            return scanIntervalTicks;
+        }
+
+        /** 返回每轮扫描的最小 chunk 数。 */
+        public int getMinChunksPerScan() {
+            return minChunksPerScan;
+        }
+
+        /** 返回每轮扫描的最大 chunk 数。 */
+        public int getMaxChunksPerScan() {
+            return maxChunksPerScan;
+        }
+
+        /** 返回每轮主线程扫描预算毫秒数。 */
+        public int getMaxScanMillisPerRun() {
+            return maxScanMillisPerRun;
+        }
+
+        /** 返回候选清理任务间隔 tick。 */
+        public int getRemoveIntervalTicks() {
+            return removeIntervalTicks;
+        }
+
+        /** 返回每轮最多移除实体数。 */
+        public int getMaxRemovesPerRun() {
+            return maxRemovesPerRun;
+        }
+
+        /** 返回最多排队候选数。 */
+        public int getMaxPendingRemovals() {
+            return maxPendingRemovals;
+        }
+
+        /** 返回候选过期秒数。 */
+        public int getCandidateTtlSeconds() {
+            return candidateTtlSeconds;
+        }
+
+        /** 返回候选最大重试次数。 */
+        public int getMaxCandidateRetries() {
+            return maxCandidateRetries;
+        }
+
+        /** 返回最多记录的脏 chunk 数。 */
+        public int getMaxDirtyChunks() {
+            return maxDirtyChunks;
+        }
+
+        /** 返回索引 chunk 失效秒数。 */
+        public int getStaleChunkSeconds() {
+            return staleChunkSeconds;
+        }
+
+        /** 返回最多索引实体数。 */
+        public int getMaxIndexEntities() {
+            return maxIndexEntities;
+        }
+
+        /** 返回单个 chunk 最多索引实体数。 */
+        public int getMaxIndexEntitiesPerChunk() {
+            return maxIndexEntitiesPerChunk;
+        }
+
+        /** 返回摘要日志间隔秒数，0 表示关闭。 */
+        public int getLogSummarySeconds() {
+            return logSummarySeconds;
+        }
+
+        /** 把整数限制在闭区间内。 */
+        private static int clamp(int value, int min, int max) {
+            return Math.max(min, Math.min(max, value));
         }
     }
 

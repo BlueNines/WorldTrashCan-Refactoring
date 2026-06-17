@@ -1,0 +1,384 @@
+Loading libraries, please wait...
+2026-06-18 01:50:24,045 main WARN Disabling terminal, you're running in an unsupported environment.
+[01:50:24 INFO]: Starting minecraft server version 1.12.2
+[01:50:24 INFO]: Loading properties
+[01:50:24 INFO]: Default game type: SURVIVAL
+[01:50:24 INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[01:50:24 INFO]: Debug logging is disabled
+[01:50:24 INFO]: Server Ping Player Sample Count: 12
+[01:50:24 INFO]: Using 4 threads for Netty based IO
+[01:50:24 INFO]: Generating keypair
+[01:50:25 INFO]: Starting Minecraft server on *:30012
+[01:50:25 INFO]: Using default channel type
+[01:50:25 INFO]: Set PluginClassLoader as parallel capable
+[01:50:25 INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.11.6
+[01:50:25 INFO]: [BLWorldTrashCan] Loading BLWorldTrashCan v7.0.0
+[01:50:25 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[01:50:25 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[01:50:25 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[01:50:25 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[01:50:25 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[01:50:25 INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[01:50:25 INFO]: Preparing level "rgb_visual_managed_paper1122_20260613_044437"
+[01:50:25 INFO]: -------- World Settings For [rgb_visual_managed_paper1122_20260613_044437] --------
+[01:50:25 INFO]: Zombie Aggressive Towards Villager: true
+[01:50:25 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[01:50:25 INFO]: Item Despawn Rate: 6000
+[01:50:25 INFO]: Item Merge Radius: 2.5
+[01:50:25 INFO]: View Distance: 2
+[01:50:25 INFO]: Arrow Despawn Rate: 1200
+[01:50:25 INFO]: Experience Merge Radius: 3.0
+[01:50:25 INFO]: Nerfing mobs spawned from spawners: false
+[01:50:25 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[01:50:25 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[01:50:25 INFO]: Max TNT Explosions: 100
+[01:50:25 INFO]: Mob Spawn Range: 4
+[01:50:25 INFO]: Cactus Growth Modifier: 100%
+[01:50:25 INFO]: Cane Growth Modifier: 100%
+[01:50:25 INFO]: Melon Growth Modifier: 100%
+[01:50:25 INFO]: Mushroom Growth Modifier: 100%
+[01:50:25 INFO]: Pumpkin Growth Modifier: 100%
+[01:50:25 INFO]: Sapling Growth Modifier: 100%
+[01:50:25 INFO]: Wheat Growth Modifier: 100%
+[01:50:25 INFO]: NetherWart Growth Modifier: 100%
+[01:50:25 INFO]: Vine Growth Modifier: 100%
+[01:50:25 INFO]: Cocoa Growth Modifier: 100%
+[01:50:25 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[01:50:25 INFO]: Random Lighting Updates: false
+[01:50:25 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[01:50:25 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[01:50:25 INFO]: Structure Info Saving: true
+[01:50:25 INFO]: -------- World Settings For [rgb_visual_managed_paper1122_20260613_044437_nether] --------
+[01:50:25 INFO]: Zombie Aggressive Towards Villager: true
+[01:50:25 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[01:50:25 INFO]: Item Despawn Rate: 6000
+[01:50:25 INFO]: Item Merge Radius: 2.5
+[01:50:25 INFO]: View Distance: 2
+[01:50:25 INFO]: Arrow Despawn Rate: 1200
+[01:50:25 INFO]: Experience Merge Radius: 3.0
+[01:50:25 INFO]: Nerfing mobs spawned from spawners: false
+[01:50:25 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[01:50:25 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[01:50:25 INFO]: Max TNT Explosions: 100
+[01:50:25 INFO]: Mob Spawn Range: 4
+[01:50:25 INFO]: Cactus Growth Modifier: 100%
+[01:50:25 INFO]: Cane Growth Modifier: 100%
+[01:50:25 INFO]: Melon Growth Modifier: 100%
+[01:50:25 INFO]: Mushroom Growth Modifier: 100%
+[01:50:25 INFO]: Pumpkin Growth Modifier: 100%
+[01:50:25 INFO]: Sapling Growth Modifier: 100%
+[01:50:25 INFO]: Wheat Growth Modifier: 100%
+[01:50:25 INFO]: NetherWart Growth Modifier: 100%
+[01:50:25 INFO]: Vine Growth Modifier: 100%
+[01:50:25 INFO]: Cocoa Growth Modifier: 100%
+[01:50:25 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[01:50:25 INFO]: Random Lighting Updates: false
+[01:50:25 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[01:50:25 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[01:50:25 INFO]: Structure Info Saving: true
+[01:50:25 INFO]: -------- World Settings For [rgb_visual_managed_paper1122_20260613_044437_the_end] --------
+[01:50:25 INFO]: Zombie Aggressive Towards Villager: true
+[01:50:25 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[01:50:25 INFO]: Item Despawn Rate: 6000
+[01:50:25 INFO]: Item Merge Radius: 2.5
+[01:50:25 INFO]: View Distance: 2
+[01:50:25 INFO]: Arrow Despawn Rate: 1200
+[01:50:25 INFO]: Experience Merge Radius: 3.0
+[01:50:25 INFO]: Nerfing mobs spawned from spawners: false
+[01:50:25 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[01:50:25 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[01:50:25 INFO]: Max TNT Explosions: 100
+[01:50:25 INFO]: Mob Spawn Range: 4
+[01:50:25 INFO]: Cactus Growth Modifier: 100%
+[01:50:25 INFO]: Cane Growth Modifier: 100%
+[01:50:25 INFO]: Melon Growth Modifier: 100%
+[01:50:25 INFO]: Mushroom Growth Modifier: 100%
+[01:50:25 INFO]: Pumpkin Growth Modifier: 100%
+[01:50:25 INFO]: Sapling Growth Modifier: 100%
+[01:50:25 INFO]: Wheat Growth Modifier: 100%
+[01:50:25 INFO]: NetherWart Growth Modifier: 100%
+[01:50:25 INFO]: Vine Growth Modifier: 100%
+[01:50:25 INFO]: Cocoa Growth Modifier: 100%
+[01:50:25 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[01:50:25 INFO]: Random Lighting Updates: false
+[01:50:25 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[01:50:25 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[01:50:25 INFO]: Structure Info Saving: true
+[01:50:25 INFO]: Preparing start region for level 0 (Seed: 6215849033182114025)
+[01:50:25 INFO]: Preparing start region for level 1 (Seed: 6215849033182114025)
+[01:50:25 INFO]: Preparing start region for level 2 (Seed: 6215849033182114025)
+[01:50:25 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[01:50:25 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[01:50:25 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[01:50:25 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[01:50:25 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[01:50:25 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[01:50:25 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[01:50:25 INFO]: [BLWorldTrashCan] Universal runtime: legacy
+[01:50:25 INFO]: [BLWorldTrashCan] Platform: legacy-1.12
+[01:50:25 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability rgb-message: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability sign-legacy: enabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability sign-modern: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability entity-move-event: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[01:50:25 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[01:50:25 INFO]: [BLWorldTrashCan] [EntityLimit] 已启动低占用实体扫描: scanInterval=2, minChunks=1, maxChunks=8, maxRemoves=1
+[01:50:25 INFO]: Done (0.583s)! For help, type "help" or "?"
+[01:50:25 INFO]: Starting remote control listener
+[01:50:25 INFO]: RCON running on 0.0.0.0:25576
+[01:50:25 INFO]: Timings Reset
+[01:50:25 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[01:50:25 INFO]: 0 placeholder hook(s) registered!
+[01:50:25 INFO]: Rcon connection from: /127.0.0.1
+[01:50:26 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[01:50:26 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[01:50:26 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[01:50:26 INFO]: [BLWorldTrashCan] [EntityLimit] 已启动低占用实体扫描: scanInterval=2, minChunks=1, maxChunks=8, maxRemoves=1
+[01:50:26 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[01:50:26 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[01:50:31 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:50:31 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:50:31 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 26/32
+[01:50:31 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 1 (标记 30, 丢弃 0)
+[01:50:31 INFO]: [BLWorldTrashCan] - 候选队列/去重: 33/33
+[01:50:31 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 55/55 (未加载 0)
+[01:50:31 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 58/25/25
+[01:50:31 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:50:31 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 25/0
+[01:50:31 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:50:31 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 541
+[01:50:36 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:50:36 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:50:36 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 26/45
+[01:50:36 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 1 (标记 80, 丢弃 0)
+[01:50:36 INFO]: [BLWorldTrashCan] - 候选队列/去重: 96/96
+[01:50:36 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 105/105 (未加载 0)
+[01:50:36 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 171/75/75
+[01:50:36 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:50:36 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 26/49
+[01:50:36 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:50:36 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 2829
+[01:50:41 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:50:41 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:50:41 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 26/48
+[01:50:41 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 1 (标记 130, 丢弃 0)
+[01:50:41 INFO]: [BLWorldTrashCan] - 候选队列/去重: 146/146
+[01:50:41 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 155/155 (未加载 0)
+[01:50:41 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 271/125/125
+[01:50:41 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:50:41 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 26/99
+[01:50:41 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:50:41 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 5168
+[01:50:46 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:50:46 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:50:46 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 42/24
+[01:50:46 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 150, 丢弃 0)
+[01:50:46 INFO]: [BLWorldTrashCan] - 候选队列/去重: 138/138
+[01:50:46 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 205/205 (未加载 0)
+[01:50:46 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 313/175/175
+[01:50:46 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:50:46 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 26/149
+[01:50:46 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:50:46 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6196
+[01:50:51 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:50:51 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:50:51 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 57/24
+[01:50:51 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 150, 丢弃 0)
+[01:50:51 INFO]: [BLWorldTrashCan] - 候选队列/去重: 88/88
+[01:50:51 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 255/255 (未加载 0)
+[01:50:51 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 313/225/225
+[01:50:51 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:50:51 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 26/199
+[01:50:51 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 0/0
+[01:50:51 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6220
+[01:50:56 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:50:56 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:50:56 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 53/24
+[01:50:56 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 150, 丢弃 0)
+[01:50:56 INFO]: [BLWorldTrashCan] - 候选队列/去重: 38/38
+[01:50:56 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 305/305 (未加载 0)
+[01:50:56 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 313/275/275
+[01:50:56 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 0/0/0
+[01:50:56 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 26/249
+[01:50:56 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 4/0
+[01:50:56 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6244
+[01:51:01 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:01 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:01 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:01 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:01 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:01 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 355/355 (未加载 0)
+[01:51:01 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:01 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:01 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:01 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:01 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6515
+[01:51:06 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:06 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:06 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:06 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:06 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:06 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 405/405 (未加载 0)
+[01:51:06 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:06 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:06 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:06 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:06 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6520
+[01:51:11 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:11 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:11 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:11 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:11 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:11 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 455/455 (未加载 0)
+[01:51:11 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:11 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:11 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:11 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:11 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6525
+[01:51:16 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:16 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:16 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:16 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:16 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:16 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 505/505 (未加载 0)
+[01:51:16 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:16 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:16 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:16 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:16 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6530
+[01:51:21 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:21 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:21 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:21 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:21 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:21 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 555/555 (未加载 0)
+[01:51:21 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:21 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:21 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:21 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:21 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6535
+[01:51:26 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:26 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:26 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:26 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:26 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:26 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 605/605 (未加载 0)
+[01:51:26 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:26 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:26 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:26 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:26 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6540
+[01:51:31 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:31 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:31 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:31 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:31 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:31 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 655/655 (未加载 0)
+[01:51:31 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:31 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:31 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:31 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:31 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6545
+[01:51:36 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:36 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:36 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:36 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:36 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:36 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 705/705 (未加载 0)
+[01:51:36 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:36 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:36 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:36 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:36 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6550
+[01:51:41 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:41 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:41 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:41 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:41 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:41 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 755/755 (未加载 0)
+[01:51:41 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:41 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:41 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:41 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:41 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6555
+[01:51:46 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:46 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:46 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:46 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:46 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:46 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 805/805 (未加载 0)
+[01:51:46 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:46 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:46 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:46 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:46 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6560
+[01:51:51 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:51 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:51 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:51 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:51 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:51 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 855/855 (未加载 0)
+[01:51:51 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:51 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:51 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:51 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:51 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6565
+[01:51:56 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:51:56 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:51:56 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:51:56 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:51:56 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:51:56 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 905/905 (未加载 0)
+[01:51:56 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:51:56 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:51:56 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:51:56 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:51:56 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6570
+[01:52:01 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:52:01 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:52:01 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:52:01 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:52:01 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:52:01 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 955/955 (未加载 0)
+[01:52:01 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:52:01 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:52:01 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:52:01 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:52:01 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6575
+[01:52:06 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:52:06 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:52:06 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:52:06 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:52:06 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:52:06 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 1005/1005 (未加载 0)
+[01:52:06 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:52:06 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:52:06 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:52:06 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:52:06 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6580
+[01:52:11 INFO]: [BLWorldTrashCan] 实体密度扫描统计:
+[01:52:11 INFO]: [BLWorldTrashCan] - 已加载/本轮选择 chunk: 48/1
+[01:52:11 INFO]: [BLWorldTrashCan] - 索引 chunk/实体: 48/5
+[01:52:11 INFO]: [BLWorldTrashCan] - 脏 chunk 队列: 0 (标记 169, 丢弃 0)
+[01:52:11 INFO]: [BLWorldTrashCan] - 候选队列/去重: 0/0
+[01:52:11 INFO]: [BLWorldTrashCan] - 快照/扫描 chunk: 1055/1055 (未加载 0)
+[01:52:11 INFO]: [BLWorldTrashCan] - 候选创建/取出/完成: 325/307/325
+[01:52:11 INFO]: [BLWorldTrashCan] - 候选过期/重试/丢弃: 18/0/0
+[01:52:11 INFO]: [BLWorldTrashCan] - 删除成功/跳过: 45/262
+[01:52:11 INFO]: [BLWorldTrashCan] - 索引修剪 stale/cap: 9/0
+[01:52:11 INFO]: [BLWorldTrashCan] - 累计索引实体写入: 6585
+[01:52:16 INFO]: Stopping server
+[01:52:16 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[01:52:16 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[01:52:16 INFO]: Saving players
+[01:52:16 INFO]: Saving worlds
+[01:52:16 INFO]: Saving chunks for level 'rgb_visual_managed_paper1122_20260613_044437'/overworld
+[01:52:16 INFO]: Saving chunks for level 'rgb_visual_managed_paper1122_20260613_044437_nether'/the_nether
+[01:52:16 INFO]: Saving chunks for level 'rgb_visual_managed_paper1122_20260613_044437_the_end'/the_end

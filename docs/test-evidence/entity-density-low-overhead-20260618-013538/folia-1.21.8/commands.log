@@ -1,0 +1,41 @@
+[01:42:06.566] PASS wait server ready
+[01:42:06.569] PASS rcon connected
+[01:42:06.570] > gamerule doMobSpawning false
+[01:42:06.715] < Gamerule doMobSpawning is now set to: false
+[01:42:06.715] > gamerule sendCommandFeedback true
+[01:42:06.738] < Gamerule sendCommandFeedback is now set to: true
+[01:42:06.739] > gamerule logAdminCommands false
+[01:42:06.789] < Gamerule logAdminCommands is now set to: false
+[01:42:06.790] > kill @e[type=minecraft:cow,tag=ai_wtc_density]
+[01:42:06.863] < No entity was found
+[01:42:06.864] > plugins
+[01:42:06.921] < ℹ Server Plugins (2):\nBukkit Plugins:\n - *BLWorldTrashCan, PlaceholderAPI\n
+[01:42:06.922] > blwtc platform
+[01:42:06.976] < [BLWorldTrashCan] 当前平台: folia-1.20 (universal)\n- scheduler-global: 启用\n- scheduler-region: 启用\n- inventory-basic: 启用\n- item-pdc-tag: 启用\n- item-legacy-tag: 禁用\n- rgb-message: 启用\n- clickable-message: 启用\n- boss-bar: 启用\n- sign-legacy: 禁用\n- sign-modern: 启用\n- entity-move-event: 启用\n- folia-region-safe: 禁用\n
+[01:42:06.977] > blwtc debughelp
+[01:42:07.000] < /blwtc debugopen <玩家> <global|personal> - 后台测试打开 GUI\n/blwtc debugworldtrash <玩家> - 后台创建并登记测试世界垃圾桶\n/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> - 后台测试指定路由\n/blwtc debugdrop <玩家> <Material> <数量> [owner] - 后台生成测试掉落物\n/blwtc debugdamage <玩家> <Material> <数量> - 后台测试仙人掌/岩浆损坏回收\n/blwtc debugstock - 后台查看当前垃圾桶库存\n/blwtc debugsummary <玩家> - 查看后台测试摘要\n/blwtc debugdensity - 查看实体密度扫描和候选队列\n/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> - 后台测试玩家入口\n/blwtc debugrgb <玩家> - 后台测试 RGB/降级色可见通道\n/blwtc debugrgbchannels <玩家> - 后台测试聊天、ActionBar 和 Title RGB/降级色通道\n这些命令会改变测试服运行态，只建议用于验收和排障。\n
+[01:42:07.000] > blwtc reload
+[01:42:07.055] < [BLWorldTrashCan] BLWorldTrashCan 已重载。\n
+[01:42:09.057] > blwtc debugdensity
+[01:42:09.090] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 22/0\n- 脏 chunk 队列: 0 (标记 10, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 22/22 (未加载 0)\n- 候选创建/取出/完成: 0/0/0\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 0/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 0\n
+[01:42:09.090] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 22/0\n- 脏 chunk 队列: 0 (标记 10, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 22/22 (未加载 0)\n- 候选创建/取出/完成: 0/0/0\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 0/0\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 0\n", "loadedChunks": [147, 1], "indexed": [22, 0], "dirty": [0, 10, 0], "pending": [0, 0], "snapshots": [22, 22, 0], "candidates": [0, 0, 0], "candidateFailures": [0, 0, 0], "removals": [0, 0], "pruned": [0, 0]}
+[01:42:11.089] spawn-progress 40/160
+[01:42:13.039] spawn-progress 80/160
+[01:42:15.040] spawn-progress 120/160
+[01:42:17.038] spawn-progress 160/160
+[01:42:17.039] spawned 160 cows in one chunk
+[01:42:18.039] > blwtc debugdensity
+[01:42:18.089] < 实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 33/5\n- 脏 chunk 队列: 0 (标记 90, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 112/112 (未加载 0)\n- 候选创建/取出/完成: 263/263/263\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 155/108\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 552\n
+[01:42:18.089] density-stats={"raw": "实体密度扫描统计:\n- 已加载/本轮选择 chunk: 147/1\n- 索引 chunk/实体: 33/5\n- 脏 chunk 队列: 0 (标记 90, 丢弃 0)\n- 候选队列/去重: 0/0\n- 快照/扫描 chunk: 112/112 (未加载 0)\n- 候选创建/取出/完成: 263/263/263\n- 候选过期/重试/丢弃: 0/0/0\n- 删除成功/跳过: 155/108\n- 索引修剪 stale/cap: 0/0\n- 累计索引实体写入: 552\n", "loadedChunks": [147, 1], "indexed": [33, 5], "dirty": [0, 90, 0], "pending": [0, 0], "snapshots": [112, 112, 0], "candidates": [263, 263, 263], "candidateFailures": [0, 0, 0], "removals": [155, 108], "pruned": [0, 0]}
+[01:42:18.090] > scoreboard objectives add ai_wtc dummy
+[01:42:18.185] < Unknown or incomplete command, see below for error\nscoreboard objectives add ai_wtc dummy<--[HERE]
+[01:42:18.185] > scoreboard players set #density ai_wtc 0
+[01:42:18.190] < Unknown or incomplete command, see below for error\nscoreboard players set #density ai_wtc 0<--[HERE]
+[01:42:18.190] > execute as @e[type=minecraft:cow,tag=ai_wtc_density] run scoreboard players add #density ai_wtc 1
+[01:42:18.241] < Incorrect argument for command\n...sity] run scoreboard players add #density ai_wtc 1<--[HERE]
+[01:42:18.242] > scoreboard players get #density ai_wtc
+[01:42:18.289] < Unknown or incomplete command, see below for error\nscoreboard players get #density ai_wtc<--[HERE]
+[01:42:18.290] > kill @e[type=minecraft:cow,tag=ai_wtc_density]
+[01:42:18.340] < Killed 5 entities
+[01:42:19.341] > stop
+[01:42:19.389] < Stopping the server
