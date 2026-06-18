@@ -91,6 +91,11 @@ protection:
   # 手持物品查询结果，{material} 为物品类型。
   hand-item: "{prefix}&aMain hand item: &f{material}"
 
+# Entity limit messages.
+entity-limit:
+  # Sent to nearby players after dense entity cleanup. {range} radius, {entity} entity type, {size} nearby count before cleanup, {max} allowed count, {removed} removed count.
+  gather-cleared: "{prefix}&#FFD166Dense entity cleanup &#64748B| &#C9D4E2Within &#FFD166{range} &#C9D4E2blocks around you there were &#FFD166{entity} x {size}&#C9D4E2, above limit &#FFD166{max}&#C9D4E2. Removed &#5AC8FA{removed} &#C9D4E2this round."
+
 # 世界垃圾桶相关消息。
 world-trash:
   # 当前世界禁止创建世界垃圾桶。

@@ -1,0 +1,48 @@
+{
+  "id": "universal_paper12111",
+  "label": "1.21.11spigot",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-before-f2.png",
+      "size": 461381,
+      "sha256": "a92aa28f3191617028485d34f31e7035123ba438e485895f6511f28c0b2823f9",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 111.07845052083333
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-notify-f2.png",
+      "size": 631330,
+      "sha256": "4e7a17a0ab5ccf39aeb85345425cea573da430a6d842ad6af4bd997e074de297",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 123.2998046875
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-after-debugdensity-f2.png",
+      "size": 633459,
+      "sha256": "3b611aef342edb46510213da3224c8819f0ea36af06ba5dd42e890dca0e2e737",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 118.35188802083333
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}

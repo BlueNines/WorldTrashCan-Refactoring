@@ -461,13 +461,15 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         if (runtimeKind == RuntimeKind.FOLIA) {
             return createFoliaFeature(FOLIA_ENTITY_LIMIT, new Class<?>[]{
                     Plugin.class,
-                    Supplier.class
+                    Supplier.class,
+                    BukkitMessageService.class
             }, new Object[]{
                     this,
-                    configSupplier
+                    configSupplier,
+                    messageService
             });
         }
-        return new EntityLimitFeature(this, configSupplier);
+        return new EntityLimitFeature(this, configSupplier, messageService);
     }
 
     /** 通过反射创建 Folia 专用功能，避免旧端提前加载 Java 17 类。 */

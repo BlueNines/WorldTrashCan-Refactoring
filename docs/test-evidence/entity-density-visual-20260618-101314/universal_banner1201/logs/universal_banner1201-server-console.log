@@ -1,0 +1,368 @@
+Starting net.fabricmc.loader.impl.game.minecraft.BundlerClassPathCapture
+[10:21:44 INFO]: Loading Minecraft 1.20.1 Taiyitist 1.20.1-84706762 with Fabric Loader 0.18.4
+[10:21:44 INFO]: Loading 46 mods:
+	- fabric-api 0.92.2+1.20.1
+	   |-- fabric-api-base 0.4.31+1802ada577
+	   |-- fabric-api-lookup-api-v1 1.6.36+1802ada577
+	   |-- fabric-biome-api-v1 13.0.13+1802ada577
+	   |-- fabric-block-api-v1 1.0.11+1802ada577
+	   |-- fabric-block-view-api-v2 1.0.1+1802ada577
+	   |-- fabric-blockrenderlayer-v1 1.1.41+1802ada577
+	   |-- fabric-client-tags-api-v1 1.1.2+1802ada577
+	   |-- fabric-command-api-v1 1.2.34+f71b366f77
+	   |-- fabric-command-api-v2 2.2.13+1802ada577
+	   |-- fabric-commands-v0 0.2.51+df3654b377
+	   |-- fabric-containers-v0 0.1.64+df3654b377
+	   |-- fabric-content-registries-v0 4.0.11+1802ada577
+	   |-- fabric-convention-tags-v1 1.5.5+1802ada577
+	   |-- fabric-crash-report-info-v1 0.2.19+1802ada577
+	   |-- fabric-data-attachment-api-v1 1.0.0+de0fd6d177
+	   |-- fabric-data-generation-api-v1 12.3.4+1802ada577
+	   |-- fabric-dimensions-v1 2.1.54+1802ada577
+	   |-- fabric-entity-events-v1 1.6.0+1c78457f77
+	   |-- fabric-events-interaction-v0 0.6.2+1802ada577
+	   |-- fabric-events-lifecycle-v0 0.2.63+df3654b377
+	   |-- fabric-game-rule-api-v1 1.0.40+1802ada577
+	   |-- fabric-item-api-v1 2.1.28+1802ada577
+	   |-- fabric-item-group-api-v1 4.0.12+1802ada577
+	   |-- fabric-key-binding-api-v1 1.0.37+1802ada577
+	   |-- fabric-keybindings-v0 0.2.35+df3654b377
+	   |-- fabric-lifecycle-events-v1 2.2.22+1802ada577
+	   |-- fabric-loot-api-v2 1.2.1+1802ada577
+	   |-- fabric-loot-tables-v1 1.1.45+9e7660c677
+	   |-- fabric-message-api-v1 5.1.9+1802ada577
+	   |-- fabric-mining-level-api-v1 2.1.50+1802ada577
+	   |-- fabric-model-loading-api-v1 1.0.3+1802ada577
+	   |-- fabric-models-v0 0.4.2+9386d8a777
+	   |-- fabric-networking-api-v1 1.3.11+1802ada577
+	   |-- fabric-networking-v0 0.3.51+df3654b377
+	   |-- fabric-object-builder-api-v1 11.1.3+1802ada577
+	   |-- fabric-particles-v1 1.1.2+1802ada577
+	   |-- fabric-recipe-api-v1 1.0.21+1802ada577
+	   |-- fabric-registry-sync-v0 2.3.3+1802ada577
+	   |-- fabric-renderer-api-v1 3.2.1+1802ada577
+	   |-- fabric-renderer-indigo 1.5.2+85287f9f77
+	   |-- fabric-renderer-registries-v1 3.2.46+df3654b377
+	   |-- fabric-rendering-data-attachment-v1 0.3.37+92a0d36777
+	   |-- fabric-rendering-fluids-v1 3.0.28+1802ada577
+	   |-- fabric-rendering-v0 1.1.49+df3654b377
+	   |-- fabric-rendering-v1 3.0.8+1802ada577
+	   |-- fabric-resource-conditions-api-v1 2.3.8+1802ada577
+	   |-- fabric-resource-loader-v0 0.11.10+1802ada577
+	   |-- fabric-screen-api-v1 2.0.8+1802ada577
+	   |-- fabric-screen-handler-api-v1 1.3.30+1802ada577
+	   |-- fabric-sound-api-v1 1.0.13+1802ada577
+	   |-- fabric-transfer-api-v1 3.3.5+8dd72ea377
+	   \-- fabric-transitive-access-wideners-v1 4.3.1+1802ada577
+	- fabricloader 0.18.4
+	   \-- mixinextras 0.5.0
+	- java 21
+	- minecraft 1.20.1
+	- taiyitist 1.20.1-84706762
+	   \-- mixinsquared 0.2.0-beta.6
+[10:21:44 INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/E:/server_work/1.20.1fabric.banner/libraries/net/fabricmc/sponge-mixin/0.17.0+mixin.0.8.7/sponge-mixin-0.17.0+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[10:21:45 INFO]: Compatibility level set to JAVA_16
+[10:21:45 INFO]: Compatibility level set to JAVA_17
+[10:21:45 INFO]: Compatibility level set to JAVA_21
+[10:21:45 INFO]:  _____       ___   _  __    __  _   _____   _   _____   _____  
+[10:21:45 INFO]: |_   _|     /   | | | \ \  / / | | |_   _| | | /  ___/ |_   _| 
+[10:21:45 INFO]:   | |      / /| | | |  \ \/ /  | |   | |   | | | |___    | |   
+[10:21:45 INFO]:   | |     / /_| | | |   \  /   | |   | |   | | \___  \   | |   
+[10:21:45 INFO]:   | |    / ___  | | |   / /    | |   | |   | |  ___| |   | |   
+[10:21:45 INFO]:   |_|   /_/   |_| |_|  /_/     |_|   |_|   |_| /_____/   |_|   
+[10:21:45 INFO]: Thanks for using Taiyitist ! - Taiyitist Developement Group 1.20.1-84706762, Java 65.0
+ÂÆòÊñπ‰∫§ÊµÅQQÁæ§: 211128424
+Â¶ÇÊûúÊéßÂà∂Âè∞Âá∫Áé∞‰∏≠Êñá‰π±Á†ÅËØ∑Ê∑ªÂä†ÂêØÂä®ÂèÇÊï∞: -Dfile.encoding=GBK
+[10:21:45 INFO]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[10:21:50 INFO]: Registering Banner Event Dispatchers...
+[10:21:50 INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[10:21:51 WARN]: [fabric-registry-sync] Could not find the following registries: ae2:keytypes
+[10:21:51 INFO]: [fabric-registry-sync] Loaded registry data [file 1/4]
+[10:21:51 INFO]: Loaded 7 recipes
+[10:21:51 INFO]: Loaded 1271 advancements
+[10:21:51 INFO]: Applied 0 biome modifications to 0 of 64 new biomes in 2.285 ms
+[10:21:51 INFO]: Starting minecraft server version 1.20.1
+[10:21:51 INFO]: Loading properties
+[10:21:51 INFO]: Default game type: SURVIVAL
+[10:21:51 INFO]: Generating keypair
+[10:21:51 INFO]: Starting Minecraft server on *:25565
+[10:21:51 INFO]: Using default channel type
+[10:21:52 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[10:21:52 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[10:21:52 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[10:21:52 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[10:21:52 INFO]: This server is running Taiyitist version 1.20.1-84706762 (MC: 1.20.1) (Implementing API version 1.20.1-R0.1-SNAPSHOT)
+[10:21:53 INFO]: Registering for Bukkit ...
+[10:21:53 INFO]: Registered 0 new items
+[10:21:53 INFO]: Registered 0 new blocks
+[10:21:53 INFO]: Loading Bukkit plugins, please wait...
+[10:21:53 INFO]: Debug logging is disabled
+[10:21:53 INFO]: Server Ping Player Sample Count: 12
+[10:21:53 INFO]: Using 4 threads for Netty based IO
+[10:21:53 INFO]: patcher.loading
+[10:21:56 WARN]: Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[10:22:00 WARN]: Legacy plugin BLWorldTrashCan v7.0.0 does not specify an api-version.
+[10:22:00 INFO]: [LuckPerms] Loading LuckPerms v5.5.17
+[10:22:00 INFO]: [LuckPerms] Loading configuration...
+[10:22:00 INFO]: [Vault] Loading Vault v1.7.3-b${env.TRAVIS_BUILD_NUMBER}
+[10:22:00 INFO]: [CoreLogging] Loading Multiverse-Core v5.5.3
+[10:22:00 INFO]: [ArcartX] Loading ArcartX v1.13.888
+[10:22:01 INFO]: [BLWorldTrashCan] Loading BLWorldTrashCan v7.0.0
+[10:22:01 INFO]: [XConomy] Loading XConomy v2.26.3
+[10:22:01 INFO]: [LuckPerms] Enabling LuckPerms v5.5.17
+[10:22:02 INFO]:         __    
+[10:22:02 INFO]:   |    |__)   LuckPerms v5.5.17
+[10:22:02 INFO]:   |___ |      Running on Bukkit - Taiyitist
+[10:22:02 INFO]: 
+[10:22:02 INFO]: [LuckPerms] Loading storage provider... [H2]
+[10:22:03 INFO]: [LuckPerms] Loading internal permission managers...
+[10:22:03 INFO]: [LuckPerms] Performing initial data load...
+[10:22:03 INFO]: [LuckPerms] Successfully enabled. (took 2257ms)
+[10:22:03 INFO]: [Vault] Enabling Vault v1.7.3-b${env.TRAVIS_BUILD_NUMBER}
+[10:22:03 INFO]: [Vault] [Permission] SuperPermissions loaded as backup permission system.
+[10:22:03 INFO]: [Vault] Enabled Version 1.7.3-b${env.TRAVIS_BUILD_NUMBER}
+[10:22:03 INFO]: [LuckPerms] Registered Vault permission & chat hook.
+[10:22:03 INFO]: [XConomy] Enabling XConomy v2.26.3
+[10:22:03 INFO]: [XConomy] UUID-Mode: Default
+[10:22:03 INFO]: [XConomy] Language: ENGLISH
+[10:22:03 INFO]: [XConomy] Saving method - SQLite
+[10:22:03 INFO]: [XConomy] SQLite successfully connected
+[10:22:03 INFO]: [XConomy] XConomy successfully enabled
+[10:22:03 INFO]: [XConomy] ===== YiC =====
+[10:22:03 INFO]: Preparing level "world"
+[10:22:06 INFO]: Preparing start region for dimension minecraft:overworld
+[10:22:08 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 0%
+[10:22:09 INFO]: Preparing spawn area: 42%
+[10:22:10 INFO]: Preparing spawn area: 60%
+[10:22:10 INFO]: Time elapsed: 4184 ms
+[10:22:10 INFO]: [Multiverse-Core] Enabling Multiverse-Core v5.5.3
+[10:22:11 ERROR]: [Multiverse-Core] Failed to autoload world world_ae2_spatial_storage: Failure{reason=WORLD_FOLDER_INVALID}
+[10:22:12 INFO]: [Multiverse-Core] API service loaded!
+[10:22:12 INFO]: [Multiverse-Core] [32mVersion 5.5.3 (API v5.5) Enabled - By dumptruckman, Rigby, fernferret, lithium3141, main--, benwoo1110 and Zax71[39m
+[10:22:12 INFO]: [Multiverse-Core] [32mLoving Multiverse-Core? Please consider supporting the project with a small donation: https://github.com/sponsors/Multiverse[39m
+[10:22:12 INFO]: [ArcartX] Enabling ArcartX v1.13.888
+[10:22:12 INFO]:      _                       _  __  __
+[10:22:12 INFO]:     / \   _ __ ___ __ _ _ __| |_\ \/ /
+[10:22:12 INFO]:    / _ \ | '__/ __/ _` | '__| __|\  / 
+[10:22:12 INFO]:   / ___ \| | | (_| (_| | |  | |_ /  \ 
+[10:22:12 INFO]:  /_/   \_\_|  \___\__,_|_|   \__/_/\_\   By.17Artist - QQ: 652805973
+[10:22:12 INFO]: 
+[10:22:12 INFO]: ? ArcartX | INFO: ª∂”≠ π”√ ArcartX
+[10:22:12 INFO]: ? ArcartX | INFO: ◊˜’ﬂ±£¡Ù“ª«–»®¿˚£¨–ªæ¯◊™‘ÿ
+[10:22:12 INFO]: ? ArcartX | INFO: œÓƒøµÿ÷∑: https://arcartx.com
+[10:22:12 INFO]: ? ArcartX | INFO: øÕªß∂Àƒ¨»œ±ÍÃ‚: ª∂”≠ π”√ArcartX,∏√±ÍÃ‚ø…‘⁄setting.yml–ﬁ∏ƒ
+[10:22:12 INFO]: ? ArcartX | INFO:  ˝æ›ø‚≈‰÷√º”‘ÿÕÍ≥…
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆº”√‹◊ ‘¥∞¸
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ’ºŒª∑˚API∫⁄√˚µ•
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ4∏ˆΩ≈±æÕ‚≤ø¿‡µº»Î
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆœ‡ª˙‘§…Ë≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ≥°æ∞œ‡ª˙≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ µÃÂƒ£–Õ≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ◊÷ÃÂÕº±Í
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ2∏ˆ»´œ¢≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ ¿ΩÁ»´œ¢≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ µÃÂ—™Ãı»´œ¢≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆøÕªß∂À∞¥º¸
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ∞¥º¸◊È∫œ
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ2∏ˆºÚµ•∞¥º¸
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ∂Øª≠øÿ÷∆∆˜≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ0∏ˆTIP
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ¡ƒÃÏø®∆¨ƒ£∞Â
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆBossBar
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆUI
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆŒÔ∆∑∂ÓÕ‚œ‘ æ≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ2∏ˆ∂ÓÕ‚≤€Œª
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ0∏ˆ«¯”Ú
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ¬∑±Í≈‰÷√
+[10:22:12 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ…À∫¶œ‘ æ≈‰÷√
+[10:22:13 INFO]: ? ArcartX | INFO: º”‘ÿ12∏ˆ∑Ω∑®Ω≈±æ
+[10:22:13 INFO]: ? ArcartX | INFO: º”‘ÿ1∏ˆ ¬º˛Ω≈±æ
+[10:22:13 INFO]: ? ArcartX | INFO: ¥¥Ω®∂ÓÕ‚≤€Œª ˝æ›ø‚ÕÍ≥…(SQLITE)
+[10:22:13 INFO]: ? ArcartX | INFO: ◊¢≤·–≈µ¿: arcartx:main
+[10:22:13 INFO]: ? ArcartX | INFO: µ±«∞∑˛ŒÒ∂À∞Ê±æ£∫1.20.1
+[10:22:13 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[10:22:13 INFO]: [BLWorldTrashCan] [Message] “—º”‘ÿ”Ô—‘Œƒº˛: messages/message_zh.yml
+[10:22:13 WARN]: [BLWorldTrashCan] [Vault] Vault API ≤ªø…”√£¨∏ˆ»À¿¨ª¯Õ∞ø€∑—◊‘∂Øπÿ±’: net.milkbowl.vault.economy.Economy.withdrawPlayer(org.bukkit.entity.Player,double)
+[10:22:13 INFO]: [BLWorldTrashCan] [TrashRouter] “—º”‘ÿ 1 ∏ˆ ¿ΩÁ¿¨ª¯Õ∞ ˝æ›°£
+[10:22:13 INFO]: [BLWorldTrashCan] [PlaceholderAPI] Œ¥ºÏ≤‚µΩ PlaceholderAPI£¨Ã¯π˝±‰¡ø◊¢≤·°£
+[10:22:13 INFO]: [BLWorldTrashCan] Universal runtime: paper
+[10:22:13 INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
+[10:22:13 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[10:22:13 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[10:22:13 INFO]: [BLWorldTrashCan] [Cleanup] ∂® ±«Â¿Ì“—πÿ±’£¨Ωˆ‘ –Ì ÷∂Ø¥•∑¢°£
+[10:22:13 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[10:22:13 INFO]: Done (20.171s)! For help, type "help"
+[10:22:13 INFO]: ? ArcartX | INFO: ∑¢œ÷Vault≤Âº˛£¨◊¢≤·æ≠º√Ã·π©∆˜
+[10:22:13 INFO]: [Vault] Checking for Updates ... 
+[10:22:13 INFO]: ? ArcartX | INFO: ª∂”≠ªÿ¿¥, BlueNine!
+[10:22:14 INFO]: [XConomy] Is the latest version
+[10:22:25 INFO]: UUID of player RGBnner1201 is 55a98a24-d60d-31c4-b0ca-622c2ededfec
+[10:22:25 INFO]: RGBnner1201[/127.0.0.1:54935] logged in with entity id 89 at (0.5, 90.0, -7.5)
+[10:22:25 INFO]: RGBnner1201 joined the game
+[10:22:27 INFO]: [BLWorldTrashCan] µ±«∞∆ΩÃ®: paper-1.16-1.20 (universal)
+[10:22:27 INFO]: - scheduler-global: ∆Ù”√
+[10:22:27 INFO]: - scheduler-region: Ω˚”√
+[10:22:27 INFO]: - inventory-basic: ∆Ù”√
+[10:22:27 INFO]: - item-pdc-tag: ∆Ù”√
+[10:22:27 INFO]: - item-legacy-tag: Ω˚”√
+[10:22:27 INFO]: - rgb-message: ∆Ù”√
+[10:22:27 INFO]: - clickable-message: ∆Ù”√
+[10:22:27 INFO]: - boss-bar: ∆Ù”√
+[10:22:27 INFO]: - sign-legacy: Ω˚”√
+[10:22:27 INFO]: - sign-modern: ∆Ù”√
+[10:22:27 INFO]: - entity-move-event: ∆Ù”√
+[10:22:27 INFO]: - folia-region-safe: Ω˚”√
+[10:22:27 INFO]: Made RGBnner1201 no longer a server operator
+[10:22:27 INFO]: Gamerule sendCommandFeedback is now set to: false
+[10:22:27 INFO]: Gamerule commandBlockOutput is now set to: false
+[10:22:27 INFO]: Gamerule doMobSpawning is now set to: false
+[10:22:27 INFO]: Gamerule maxEntityCramming is now set to: 0
+[10:22:28 INFO]: Set the time to 1000
+[10:22:28 INFO]: Set the weather to clear
+[10:22:28 INFO]: Set RGBnner1201's game mode to Creative Mode
+[10:22:28 INFO]: Teleported RGBnner1201 to 0.500000, 91.000000, -7.500000
+[10:22:28 INFO]: No blocks were filled
+[10:22:28 INFO]: No blocks were filled
+[10:22:28 INFO]: Teleported RGBnner1201 to 0.500000, 91.000000, -7.500000
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:30 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:31 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:32 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:32 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:32 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:32 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:32 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:32 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:33 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:34 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:35 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:35 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:35 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:35 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:35 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:35 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:36 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:37 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:38 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:38 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:38 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:38 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:38 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:38 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:39 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:40 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:40 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:40 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:40 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:40 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:46 INFO]: [BLWorldTrashCan] [Message] “—º”‘ÿ”Ô—‘Œƒº˛: messages/message_zh.yml
+[10:22:46 INFO]: [BLWorldTrashCan] [TrashRouter] “—º”‘ÿ 1 ∏ˆ ¿ΩÁ¿¨ª¯Õ∞ ˝æ›°£
+[10:22:46 INFO]: [BLWorldTrashCan] [Cleanup] ∂® ±«Â¿Ì“—πÿ±’£¨Ωˆ‘ –Ì ÷∂Ø¥•∑¢°£
+[10:22:46 INFO]: [BLWorldTrashCan] [EntityLimit] “—∆Ù∂ØµÕ’º”√ µÃÂ…®√Ë: scanInterval=5, minChunks=8, maxChunks=128, maxRemoves=40
+[10:22:46 INFO]: [BLWorldTrashCan] BLWorldTrashCan “—÷ÿ‘ÿ°£
+[10:22:46 INFO]: Summoned new AI_BLWTC_DENSITY
+[10:22:46 INFO]:  µÃÂ√‹∂»…®√ËÕ≥º∆:
+[10:22:46 INFO]: - “—º”‘ÿ/±æ¬÷—°‘Ò chunk: 1756/15
+[10:22:46 INFO]: - À˜“˝ chunk/ µÃÂ: 12/8
+[10:22:46 INFO]: - ‘‡ chunk ∂”¡–: 4 (±Íº« 8, ∂™∆˙ 0)
+[10:22:46 INFO]: - ∫Ú—°∂”¡–/»•÷ÿ: 0/0
+[10:22:46 INFO]: - øÏ’’/…®√Ë chunk: 15/15 (Œ¥º”‘ÿ 0)
+[10:22:46 INFO]: - ∫Ú—°¥¥Ω®/»°≥ˆ/ÕÍ≥…: 80/80/80
+[10:22:46 INFO]: - ∫Ú—°π˝∆⁄/÷ÿ ‘/∂™∆˙: 0/0/0
+[10:22:46 INFO]: - …æ≥˝≥…π¶/Ã¯π˝: 72/8
+[10:22:46 INFO]: - À˜“˝–ﬁºÙ stale/cap: 0/0
+[10:22:46 INFO]: - ¿€º∆À˜“˝ µÃÂ–¥»Î: 80
+[10:22:53 INFO]: Made RGBnner1201 a server operator
+[10:22:57 INFO]: RGBnner1201 issued server command: /blwtc debugdensity
+[10:23:02 INFO]: Killed 8 entities
+[10:23:29 INFO]: RGBnner1201 lost connection: Disconnected
+[10:23:29 INFO]: RGBnner1201 left the game
+[10:23:29 INFO]: Stopping the server
+[10:23:29 INFO]: Stopping server
+[10:23:29 INFO]: [XConomy] Disabling XConomy v2.26.3
+[10:23:29 INFO]: [XConomy] XConomy successfully disabled
+[10:23:29 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[10:23:29 INFO]: [ArcartX] Disabling ArcartX v1.13.888
+[10:23:29 INFO]: ? ArcartX | INFO: πÿ±’∂ÓÕ‚≤€Œª ˝æ›ø‚¡¨Ω”
+[10:23:29 INFO]: [Multiverse-Core] Disabling Multiverse-Core v5.5.3
+[10:23:29 INFO]: [Multiverse-Core] - Disabled
+[10:23:29 INFO]: [Vault] Disabling Vault v1.7.3-b${env.TRAVIS_BUILD_NUMBER}
+[10:23:29 INFO]: [LuckPerms] Disabling LuckPerms v5.5.17
+[10:23:29 INFO]: [LuckPerms] Starting shutdown process...
+[10:23:29 INFO]: [LuckPerms] Closing storage...
+[10:23:29 INFO]: [LuckPerms] Goodbye!
+[10:23:29 INFO]: Saving players
+[10:23:29 INFO]: Saving worlds
+[10:23:32 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[10:23:32 INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[10:23:32 INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[10:23:32 INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[10:23:32 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[10:23:32 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[10:23:32 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[10:23:38 INFO]: 7 threads not shutting down correctly, force exiting

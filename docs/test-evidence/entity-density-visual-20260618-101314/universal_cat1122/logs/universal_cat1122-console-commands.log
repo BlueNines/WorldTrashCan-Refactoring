@@ -1,0 +1,99 @@
+[10:17:04] blwtc platform
+[10:17:08] deop RGB_cat1122
+[10:17:08] minecraft:gamerule sendCommandFeedback false
+[10:17:08] minecraft:gamerule commandBlockOutput false
+[10:17:08] minecraft:gamerule doMobSpawning false
+[10:17:08] minecraft:gamerule maxEntityCramming 0
+[10:17:08] minecraft:time set day
+[10:17:08] minecraft:weather clear
+[10:17:08] minecraft:gamemode 1 RGB_cat1122
+[10:17:09] minecraft:tp RGB_cat1122 0 91 -8 0 15
+[10:17:09] minecraft:fill -8 90 -12 8 95 12 air
+[10:17:09] minecraft:fill -8 89 -12 8 89 12 glass
+[10:17:09] minecraft:tp RGB_cat1122 0 91 -8 0 15
+[10:17:09] minecraft:execute RGB_cat1122 ~ ~ ~ minecraft:kill @e[type=Cow,name=AI_BLWTC_DENSITY,r=64]
+[10:17:10] minecraft:summon Cow -4 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:10] minecraft:summon Cow -3 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:10] minecraft:summon Cow -2 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow -1 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow 0 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow 1 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow 2 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow 3 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow 4 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow -4 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow -3 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:11] minecraft:summon Cow -2 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow -1 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow 0 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow 1 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow 2 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow 3 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow 4 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow -4 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:12] minecraft:summon Cow -3 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:13] minecraft:summon Cow -2 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:13] minecraft:summon Cow -1 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:13] minecraft:summon Cow 0 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:13] minecraft:summon Cow 1 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:13] minecraft:summon Cow 2 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:13] minecraft:summon Cow 3 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow 4 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow -4 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow -3 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow -2 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow -1 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow 0 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow 1 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:14] minecraft:summon Cow 2 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:15] minecraft:summon Cow 3 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:15] minecraft:summon Cow 4 90 -1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:15] minecraft:summon Cow -4 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:15] minecraft:summon Cow -3 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:15] minecraft:summon Cow -2 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:15] minecraft:summon Cow -1 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow 0 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow 1 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow 2 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow 3 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow 4 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow -4 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow -3 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:16] minecraft:summon Cow -2 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow -1 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow 0 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow 1 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow 2 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow 3 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow 4 90 1 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow -4 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:17] minecraft:summon Cow -3 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:18] minecraft:summon Cow -2 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:18] minecraft:summon Cow -1 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:18] minecraft:summon Cow 0 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:18] minecraft:summon Cow 1 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:18] minecraft:summon Cow 2 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:18] minecraft:summon Cow 3 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow 4 90 2 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow -4 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow -3 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow -2 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow -1 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow 0 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow 1 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:19] minecraft:summon Cow 2 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow 3 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow 4 90 3 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow -4 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow -3 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow -2 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow -1 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow 0 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:20] minecraft:summon Cow 1 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:21] minecraft:summon Cow 2 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:21] minecraft:summon Cow 3 90 4 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:27] blwtc reload
+[10:17:27] minecraft:summon Cow 0 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"AI_BLWTC_DENSITY"}
+[10:17:27] blwtc debugdensity
+[10:17:34] op RGB_cat1122
+[10:17:44] minecraft:kill @e[type=Cow,name=AI_BLWTC_DENSITY]

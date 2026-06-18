@@ -312,8 +312,31 @@ def restore_test_config(backups: list[tuple[Path, Path]]) -> None:
             shutil.copy2(backup, target)
 
 
+def refresh_universal_dist_plugin(case: dict) -> None:
+    """把最新 Maven 产出的 universal 整包同步到 dist，避免测试旧 jar。"""
+    if case.get("plugin") != UNIVERSAL_PLUGIN:
+        return
+    target_dir = base.REPO / "bl-world-trashcan-plugin-universal" / "target"
+    candidates = [
+        item for item in target_dir.glob("bl-world-trashcan-plugin-universal-*.jar")
+        if not item.name.startswith("original-") and not item.name.endswith("-shaded.jar")
+    ]
+    if not candidates:
+        candidates = [
+            item for item in target_dir.glob("bl-world-trashcan-plugin-universal-*.jar")
+            if not item.name.startswith("original-")
+        ]
+    if not candidates:
+        return
+    latest = max(candidates, key=lambda item: item.stat().st_mtime)
+    dist = base.REPO / "dist" / UNIVERSAL_PLUGIN
+    dist.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(latest, dist)
+
+
 def deploy_plugin(case: dict) -> Path:
     """把本轮测试用 BLWorldTrashCan jar 部署到目标服务端 plugins 目录。"""
+    refresh_universal_dist_plugin(case)
     server_dir = Path(case["serverDir"])
     plugins_dir = server_dir / "plugins"
     plugins_dir.mkdir(parents=True, exist_ok=True)
@@ -572,13 +595,10 @@ def send_client_command(case: dict, game_dir: Path, run_dir: Path, command: str,
                         wait_seconds: float = 1.0) -> dict:
     """让真实客户端输入一条玩家命令并截图留证。"""
     hwnd = base.find_minecraft_window(case["version"])
-    base.focus_window(hwnd)
-    base.pyautogui.press("esc")
-    time.sleep(0.25)
-    base.pyautogui.press("t")
-    time.sleep(0.2)
-    base.pyautogui.write(command, interval=0.01)
-    base.pyautogui.press("enter")
+    if str(case["version"]) == "1.12.2":
+        base.send_chat_line_by_window_message(hwnd, command)
+    else:
+        base.send_chat_line(hwnd, command)
     time.sleep(wait_seconds)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, suffix)
     return {
@@ -594,13 +614,10 @@ def send_client_chat(case: dict, game_dir: Path, run_dir: Path, text: str, suffi
                      wait_seconds: float = 0.8) -> dict:
     """让真实客户端发送一条聊天文本并截图留证。"""
     hwnd = base.find_minecraft_window(case["version"])
-    base.focus_window(hwnd)
-    base.pyautogui.press("esc")
-    time.sleep(0.25)
-    base.pyautogui.press("t")
-    time.sleep(0.2)
-    base.pyautogui.write(text, interval=0.01)
-    base.pyautogui.press("enter")
+    if str(case["version"]) == "1.12.2":
+        base.send_chat_line_by_window_message(hwnd, text)
+    else:
+        base.send_chat_line(hwnd, text)
     time.sleep(wait_seconds)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, suffix)
     return {
@@ -736,6 +753,7 @@ def run_basic_function_checks(case: dict, username: str, server_process: subproc
 
 def artifact_summary_for_plugin(case: dict) -> dict:
     """读取本轮部署的 universal jar 元信息。"""
+    refresh_universal_dist_plugin(case)
     source = base.REPO / "dist" / case["plugin"]
     data = source.read_bytes()
     result = {

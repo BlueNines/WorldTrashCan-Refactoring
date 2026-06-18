@@ -1,0 +1,83 @@
+{
+  "id": "universal_cat1122",
+  "sourceId": "external_cat1122",
+  "label": "server_cat_1.12.2",
+  "version": "1.12.2",
+  "clientVersion": "1.12.2",
+  "serverDir": "E:\\server_work\\server_cat_1.12.2",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGB_cat1122",
+  "clientPid": 16772,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "[10:17:27] [Server thread/INFO]: ʵ���ܶ�ɨ��ͳ��:\n[10:17:27] [Server thread/INFO]: - �Ѽ���/����ѡ�� chunk: 537/8\n[10:17:27] [Server thread/INFO]: - ���� chunk/ʵ��: 5/8\n[10:17:27] [Server thread/INFO]: - �� chunk ����: 4 (��� 8, ���� 0)\n[10:17:27] [Server thread/INFO]: - ��ѡ����/ȥ��: 0/0\n[10:17:27] [Server thread/INFO]: - ����/ɨ�� chunk: 8/8 (δ���� 0)\n[10:17:27] [Server thread/INFO]: - ��ѡ����/ȡ��/���: 80/80/80\n[10:17:27] [Server thread/INFO]: - ��ѡ����/����/����: 0/0/0\n[10:17:27] [Server thread/INFO]: - ɾ���ɹ�/����: 72/8\n[10:17:27] [Server thread/INFO]: - �����޼� stale/cap: 0/0\n[10:17:27] [Server thread/INFO]: - �ۼ�����ʵ��д��: 80\n",
+      "loaded": [
+        537,
+        8
+      ],
+      "indexed": [
+        5,
+        8
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "snapshots": [
+        8,
+        8
+      ],
+      "candidates": [
+        80,
+        80,
+        80
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        72,
+        8
+      ],
+      "pruned": [
+        0,
+        0
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "noticeCheck": {
+    "status": "PASS",
+    "marker": "密集实体清理",
+    "excerpt": "ent.ExecutionException: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!\n\tat java.util.concurrent.FutureTask.report(FutureTask.java:122) ~[?:1.8.0_451]\n\tat java.util.concurrent.FutureTask.get(FutureTask.java:192) ~[?:1.8.0_451]\n\tat h.a(SourceFile:47) [1.12.2.jar:?]\n\tat bib.az(SourceFile:991) [1.12.2.jar:?]\n\tat bib.a(SourceFile:419) [1.12.2.jar:?]\n\tat net.minecraft.client.main.Main.main(SourceFile:123) [1.12.2.jar:?]\nCaused by: java.lang.IllegalArgumentException: Default value cannot be lower than minimum value!\n\tat wj.<init>(SourceFile:21) ~[1.12.2.jar:?]\n\tat brz.a(SourceFile:1744) ~[1.12.2.jar:?]\n\tat kv.a(SourceFile:70) ~[1.12.2.jar:?]\n\tat kv.a(SourceFile:15) ~[1.12.2.jar:?]\n\tat hv$1.run(SourceFile:13) ~[1.12.2.jar:?]\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) ~[?:1.8.0_451]\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266) ~[?:1.8.0_451]\n\tat h.a(SourceFile:46) ~[1.12.2.jar:?]\n\t... 3 more\n[10:17:27] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 40 只，超过上限 8，本次已清理 32 只。\n[10:17:27] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 9 只，超过上限 8，本次已清理 1 只。\n"
+  },
+  "notifyScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-notify-f2.png",
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-after-debugdensity-f2.png",
+    "brightness": 168.76302083333334
+  },
+  "debugCommandCheck": {
+    "status": "PASS",
+    "marker": "实体密度扫描统计",
+    "excerpt": "[10:17:39] [Client thread/INFO]: [CHAT] 实体密度扫描统计:\n[10:17:39] [Client thread/INFO]: [CHAT] - 已加载/本轮选择 chunk: 537/8\n[10:17:39] [Client thread/INFO]: [CHAT] - 索引 chunk/实体: 401/8\n[10:17:39] [Client thread/INFO]: [CHAT] - 脏 chunk 队列: 0 (标记 9, 丢弃 0)\n[10:17:39] [Client thread/INFO]: [CHAT] - 候选队列/去重: 0/0\n[10:17:39] [Client thread/INFO]: [CHAT] - 快照/扫描 chunk: 408/408 (未加载 0)\n[10:17:39] [Client thread/INFO]: [CHAT] - 候选创建/取出/完成: 89/89/89\n[10:17:39] [Client thread/INFO]: [CHAT] - 候选过期/重试/丢弃: 0/0/0\n[10:17:39] [Client thread/INFO]: [CHAT] - 删除成功/跳过: 73/16\n[10:17:39] [Client thread/INFO]: [CHAT] - 索引修剪 stale/cap: 0/0\n[10:17:39] [Client thread/INFO]: [CHAT] - 累计索引实体写入: 97\n[10:17:43] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-18_10.17.43.png\n[10:17:44] [Client thread/INFO]: [CHAT] 还剩下 10 秒清理物品和实体\n[10:17:44] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-18_10.17.44.png\n"
+  },
+  "cleanupLogExcerpt": "[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n[10:17:44] [Server thread/INFO]: Killed AI_BLWTC_DENSITY\n"
+}

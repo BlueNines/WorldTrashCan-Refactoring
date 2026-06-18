@@ -91,6 +91,11 @@ protection:
   # 手持物品查詢結果，{material} 為物品類型。
   hand-item: "{prefix}&a手持物品: &f{material}"
 
+# 實體限制相關訊息。
+entity-limit:
+  # 密集實體清理完成時發送給附近玩家，{range} 檢測半徑，{entity} 實體類型，{size} 清理前附近數量，{max} 允許上限，{removed} 本次清理數量。
+  gather-cleared: "{prefix}&#FFD166密集實體清理 &#64748B| &#C9D4E2你的附近 &#FFD166{range} &#C9D4E2格內有 &#FFD166{entity} x {size} &#C9D4E2隻，超過上限 &#FFD166{max}&#C9D4E2，本次已清理 &#5AC8FA{removed} &#C9D4E2隻。"
+
 # 世界垃圾桶相關訊息。
 world-trash:
   # 當前世界禁止創建世界垃圾桶。

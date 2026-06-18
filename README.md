@@ -112,13 +112,13 @@ scanner:
 
 2026-06-18 已用 `dist/BLWorldTrashCan-universal.jar` 完成低占用实体密度压测，SHA256 为 `CB78511DBD9645F7127CC4D02C06BF37E89920378BBC2CCC0FED6EE2E933403B`。测试端覆盖 Paper 1.12.2 与 Folia 1.21.8，均临时启用密集 cow 限制、生成 300 只 cow，并把 `scanner.max-removes-per-run` 压到 `1` 验证预算化删除。Paper 1.12.2 最终剩余 1 只，候选队列/去重 `0/0`；Folia 1.21.8 最终剩余 6 只，候选队列/去重 `0/0`。两端均通过 `debugdensity` 证明候选创建、取出、完成和删除/跳过生命周期闭合，证据目录为 `docs/test-evidence/entity-density-low-overhead-20260618-015437/`。
 
-2026-06-18 另用同一个 `dist/BLWorldTrashCan-universal.jar` 完成真实客户端游戏内截图矩阵，SHA256 仍为 `CB78511DBD9645F7127CC4D02C06BF37E89920378BBC2CCC0FED6EE2E933403B`，`plugin.yml` 版本 `7.0.0`。测试覆盖 `E:\server_work\1.21.11spigot`、`E:\server_work\folia1.21.8`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\spigot-26.1.2-test-server`、`E:\server_work\1.21.11arclight-neoforge`、`E:\server_work\1.20.1fabric.banner` 六个服务端；每端均由真实客户端进服、生成 80 只 cow、截取 before/after F2 游戏内 PNG，并通过 `/blwtc debugdensity` 断言候选创建/取出/完成、候选队列归零和删除生效。证据目录为 `docs/test-evidence/entity-density-visual-20260618-060011/`，总览图为 `entity-density-visual-contact-sheet.png`。
+2026-06-18 另用同一个 `dist/BLWorldTrashCan-universal.jar` 完成真实客户端游戏内截图矩阵，SHA256 为 `73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56`，`plugin.yml` 版本 `7.0.0`。测试覆盖 `E:\server_work\1.21.11spigot`、`E:\server_work\folia1.21.8`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\spigot-26.1.2-test-server`、`E:\server_work\1.21.11arclight-neoforge`、`E:\server_work\1.20.1fabric.banner` 六个服务端；每端均由真实客户端进服、生成 80 只 cow，分别截取 before、正式清理提示 notify、玩家 `/blwtc debugdensity` 输出三列 F2 游戏内 PNG。`summary.json` 同时断言客户端日志出现正式“密集实体清理”提示和玩家命令输出“实体密度扫描统计”，避免只凭服务端日志或截图误判。证据目录为 `docs/test-evidence/entity-density-visual-20260618-101314/`，总览图为 `entity-density-visual-contact-sheet.png`。
 
 ## 消息与语言
 
 `config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会继续回退到 jar 内默认节点，避免升级后命令、GUI 或提示变成空白。
 
-当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询和手持物品/区块实体查询。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
+当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询、手持物品/区块实体查询和密集实体清理提示。密集实体清理对应消息节点为 `entity-limit.gather-cleared`，可使用 `{range}`、`{entity}`、`{size}`、`{max}`、`{removed}` 占位符。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
 
 ## RGB 与富文本消息
 

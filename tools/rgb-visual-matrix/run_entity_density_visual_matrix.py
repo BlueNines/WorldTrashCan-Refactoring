@@ -86,6 +86,21 @@ def restore_backups(backups: list[dict]) -> None:
             target.unlink()
 
 
+def write_quiet_server_properties(case: dict) -> None:
+    """关闭控制台命令广播，避免大量 summon 反馈刷爆真实客户端聊天。"""
+    target = Path(case["serverDir"]) / "server.properties"
+    values = {}
+    if target.is_file():
+        for line in target.read_text(encoding="utf-8", errors="replace").splitlines():
+            if "=" in line and not line.lstrip().startswith("#"):
+                key, value = line.split("=", 1)
+                values[key] = value
+    values["broadcast-console-to-ops"] = "false"
+    values["broadcast-rcon-to-ops"] = "false"
+    values["enable-command-block"] = "false"
+    target.write_text("\n".join(key + "=" + value for key, value in values.items()) + "\n", encoding="utf-8")
+
+
 def entity_limit_config(enabled: bool) -> str:
     """生成本轮测试专用实体密度配置。"""
     enabled_text = "true" if enabled else "false"
@@ -134,6 +149,17 @@ def write_entity_config(case: dict, enabled: bool) -> Path:
     return target
 
 
+def write_quiet_cleanup_config(case: dict) -> None:
+    """关闭定时扫地，避免它抢占密集实体提示截图和聊天日志。"""
+    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    if not target.is_file():
+        return
+    original = target.read_text(encoding="utf-8", errors="replace")
+    updated = external.update_yaml_scalars(original, {"interval-seconds": "0"})
+    if updated != original:
+        target.write_text(updated, encoding="utf-8")
+
+
 def is_legacy(case: dict) -> bool:
     """判断当前用例是否为 1.12.2 命令语法。"""
     return str(case["version"]) == "1.12.2"
@@ -150,49 +176,64 @@ def setup_commands(case: dict, username: str) -> list[str]:
     """生成测试场景初始化命令。"""
     if is_legacy(case):
         return [
-            "gamerule doMobSpawning false",
-            "gamerule maxEntityCramming 0",
-            "time set day",
-            "weather clear",
-            "op " + username,
-            "gamemode 1 " + username,
-            "tp " + username + " 0 91 -8 0 15",
-            "fill -8 90 -12 8 95 12 air",
-            "fill -8 89 -12 8 89 12 glass",
-            "tp " + username + " 0 91 -8 0 15",
-            "execute " + username + " ~ ~ ~ kill @e[type=Cow,name=" + TEST_ENTITY_NAME + ",r=64]",
+            "deop " + username,
+            "minecraft:gamerule sendCommandFeedback false",
+            "minecraft:gamerule commandBlockOutput false",
+            "minecraft:gamerule doMobSpawning false",
+            "minecraft:gamerule maxEntityCramming 0",
+            "minecraft:time set day",
+            "minecraft:weather clear",
+            "minecraft:gamemode 1 " + username,
+            "minecraft:tp " + username + " 0 91 -8 0 15",
+            "minecraft:fill -8 90 -12 8 95 12 air",
+            "minecraft:fill -8 89 -12 8 89 12 glass",
+            "minecraft:tp " + username + " 0 91 -8 0 15",
+            "minecraft:execute " + username + " ~ ~ ~ minecraft:kill @e[type=Cow,name=" + TEST_ENTITY_NAME + ",r=64]",
         ]
     commands = [
-        "gamerule doMobSpawning false",
-        "gamerule maxEntityCramming 0",
-        "time set day",
-        "weather clear",
-        "op " + username,
-        "gamemode creative " + username,
-        "tp " + username + " 0 91 -8 0 15",
-        "fill -8 90 -12 8 95 12 minecraft:air",
-        "fill -8 89 -12 8 89 12 minecraft:glass",
-        "tp " + username + " 0 91 -8 0 15",
+        "deop " + username,
+        "minecraft:gamerule sendCommandFeedback false",
+        "minecraft:gamerule commandBlockOutput false",
+        "minecraft:gamerule doMobSpawning false",
+        "minecraft:gamerule maxEntityCramming 0",
+        "minecraft:time set day",
+        "minecraft:weather clear",
+        "minecraft:gamemode creative " + username,
+        "minecraft:tp " + username + " 0 91 -8 0 15",
+        "minecraft:fill -8 90 -12 8 95 12 minecraft:air",
+        "minecraft:fill -8 89 -12 8 89 12 minecraft:glass",
+        "minecraft:tp " + username + " 0 91 -8 0 15",
     ]
     if not is_folia(case):
-        commands.append("execute at " + username + " run kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + ",distance=..64]")
+        commands.append("minecraft:execute at " + username + " run minecraft:kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + ",distance=..64]")
     return commands
 
 
-def summon_command(case: dict) -> str:
+def dense_entity_position(index: int | None) -> tuple[int, int, int]:
+    """返回半径内的网格生成位置，避免测试实体被原版拥挤伤害提前杀死。"""
+    if index is None:
+        return 0, 90, 0
+    grid_size = 9
+    x = (index % grid_size) - 4
+    z = ((index // grid_size) % grid_size) - 4
+    return x, 90, z
+
+
+def summon_command(case: dict, index: int | None = None) -> str:
     """返回单只测试 cow 的 summon 命令。"""
+    x, y, z = dense_entity_position(index)
     if is_legacy(case):
-        return 'summon Cow 0 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:"' + TEST_ENTITY_NAME + '"}'
-    return "summon minecraft:cow 0 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:'{\"text\":\"" + TEST_ENTITY_NAME + "\"}'}"
+        return 'minecraft:summon Cow ' + str(x) + " " + str(y) + " " + str(z) + ' {NoAI:1b,PersistenceRequired:1b,CustomName:"' + TEST_ENTITY_NAME + '"}'
+    return "minecraft:summon minecraft:cow " + str(x) + " " + str(y) + " " + str(z) + " {NoAI:1b,PersistenceRequired:1b,CustomName:'{\"text\":\"" + TEST_ENTITY_NAME + "\"}'}"
 
 
 def cleanup_command(case: dict, username: str) -> str:
     """返回测试结束清理剩余 cow 的命令。"""
     if is_legacy(case):
-        return "kill @e[type=Cow,name=" + TEST_ENTITY_NAME + "]"
+        return "minecraft:kill @e[type=Cow,name=" + TEST_ENTITY_NAME + "]"
     if is_folia(case):
         return ""
-    return "execute at " + username + " run kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + ",distance=..80]"
+    return "minecraft:execute at " + username + " run minecraft:kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + ",distance=..80]"
 
 
 def run_console(process, command_log: Path, command: str) -> None:
@@ -210,9 +251,8 @@ def run_setup(case: dict, username: str, process, command_log: Path) -> None:
 
 def spawn_dense_entities(case: dict, process, command_log: Path, count: int) -> None:
     """生成指定数量的密集测试 cow。"""
-    command = summon_command(case)
     for index in range(count):
-        run_console(process, command_log, command)
+        run_console(process, command_log, summon_command(case, index))
         if index % 20 == 19:
             time.sleep(0.3)
     time.sleep(1.0)
@@ -278,6 +318,54 @@ def wait_density_effect(case: dict, process, server_log: Path, command_log: Path
     }
 
 
+def wait_client_density_notice(client_log: Path, offset: int) -> dict:
+    """等待客户端聊天日志出现正式密集实体清理提示。"""
+    deadline = time.time() + 15
+    markers = ["密集实体清理", "密集實體清理", "Dense entity cleanup", "Limpieza de entidades densas"]
+    last_text = ""
+    while time.time() < deadline:
+        text = external.read_text_since(client_log, offset)
+        if text:
+            last_text = text
+        for marker in markers:
+            if marker in text:
+                return {
+                    "status": "PASS",
+                    "marker": marker,
+                    "excerpt": text[-1200:],
+                }
+        time.sleep(0.5)
+    return {
+        "status": "FAIL",
+        "marker": "",
+        "excerpt": last_text[-1200:],
+    }
+
+
+def wait_client_debugdensity(client_log: Path, offset: int) -> dict:
+    """等待客户端聊天日志出现 debugdensity 输出，证明玩家命令真的发出。"""
+    deadline = time.time() + 8
+    markers = ["实体密度扫描统计", "實體密度掃描統計", "Entity density scan", "Densidad de entidades"]
+    last_text = ""
+    while time.time() < deadline:
+        text = external.read_text_since(client_log, offset)
+        if text:
+            last_text = text
+        for marker in markers:
+            if marker in text:
+                return {
+                    "status": "PASS",
+                    "marker": marker,
+                    "excerpt": text[-1200:],
+                }
+        time.sleep(0.4)
+    return {
+        "status": "FAIL",
+        "marker": "",
+        "excerpt": last_text[-1200:],
+    }
+
+
 def copy_named_screenshot(case: dict, game_dir: Path, run_dir: Path, suffix: str) -> Path:
     """截取当前游戏内 F2 截图并保存成稳定文件名。"""
     source = base.capture_internal_screenshot(case, game_dir, run_dir)
@@ -298,12 +386,12 @@ def ensure_ingame_view(case: dict) -> None:
 def send_ingame_command(case: dict, game_dir: Path, run_dir: Path, command: str, suffix: str,
                         wait_seconds: float = 1.0) -> dict:
     """在正常游戏画面里输入玩家命令并保留 F2 截图。"""
+    hwnd = base.find_minecraft_window(case["version"])
     ensure_ingame_view(case)
-    time.sleep(0.2)
-    base.pyautogui.press("t")
-    time.sleep(0.2)
-    base.pyautogui.write(command, interval=0.01)
-    base.pyautogui.press("enter")
+    if is_legacy(case):
+        base.send_chat_line_by_window_message(hwnd, command)
+    else:
+        base.send_chat_line(hwnd, command)
     time.sleep(wait_seconds)
     screenshot = copy_named_screenshot(case, game_dir, run_dir, suffix)
     return {
@@ -332,7 +420,7 @@ def screenshot_info(path: Path) -> dict:
 def artifact_summary(result: dict) -> dict:
     """生成单个用例的截图和日志文件摘要。"""
     files = []
-    for key in ("beforeScreenshot", "afterScreenshot", "failureScreenshot"):
+    for key in ("beforeScreenshot", "notifyScreenshot", "afterScreenshot", "failureScreenshot"):
         if result.get(key):
             files.append(screenshot_info(Path(result[key])))
     return {
@@ -373,7 +461,10 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         backup_dir = run_dir / "logs" / "config-backup"
         backups.append(backup_file(Path(case["serverDir"]) / "server.properties", backup_dir, "server.properties.before"))
         backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "entity-limits.yml", backup_dir, "entity-limits.yml.before"))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml", backup_dir, "cleanup.yml.before"))
         external.deploy_plugin(case)
+        write_quiet_server_properties(case)
+        write_quiet_cleanup_config(case)
         write_entity_config(case, False)
         process = external.launch_server(case, run_dir)
         prepared = prepared_clients[case["version"]]
@@ -390,6 +481,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         ensure_ingame_view(case)
         before = copy_named_screenshot(case, game_dir, run_dir, "density-before-f2")
         result["beforeScreenshot"] = str(before)
+        client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
+        client_notice_offset = external.log_text_offset(client_log)
         write_entity_config(case, True)
         offset = external.log_text_offset(server_log)
         run_console(process, command_log, "blwtc reload")
@@ -397,9 +490,19 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         run_console(process, command_log, summon_command(case))
         density = wait_density_effect(case, process, server_log, command_log)
         result["densityCheck"] = density
-        after_command = send_ingame_command(case, game_dir, run_dir, "/blwtc debugdensity", "density-after-debugdensity-f2", 1.5)
+        notice_check = wait_client_density_notice(client_log, client_notice_offset)
+        result["noticeCheck"] = notice_check
+        ensure_ingame_view(case)
+        time.sleep(0.8)
+        notify = copy_named_screenshot(case, game_dir, run_dir, "density-notify-f2")
+        result["notifyScreenshot"] = str(notify)
+        run_console(process, command_log, "op " + username)
+        client_debug_offset = external.log_text_offset(client_log)
+        after_command = send_ingame_command(case, game_dir, run_dir, "/blwtc debugdensity", "density-after-debugdensity-f2", 3.0)
         result["afterScreenshot"] = after_command["screenshot"]
         result["afterClientCommand"] = after_command
+        debug_check = wait_client_debugdensity(client_log, client_debug_offset)
+        result["debugCommandCheck"] = debug_check
         cleanup_offset = external.log_text_offset(server_log)
         cleanup = cleanup_command(case, username)
         if cleanup:
@@ -408,7 +511,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
             result["cleanupLogExcerpt"] = external.read_text_since(server_log, cleanup_offset)[-2000:]
         else:
             result["cleanupSkipped"] = "Folia vanilla entity selector can trip region thread checks; density limiter already reduced the sample."
-        if density["status"] == "PASS" and screenshot_info(before)["brightness"] > 3 and screenshot_info(Path(result["afterScreenshot"]))["brightness"] > 3:
+        if density["status"] == "PASS" and notice_check["status"] == "PASS" and debug_check["status"] == "PASS" and screenshot_info(before)["brightness"] > 3 and screenshot_info(notify)["brightness"] > 3 and screenshot_info(Path(result["afterScreenshot"]))["brightness"] > 3:
             result["status"] = "PASS"
     except Exception as error:
         result["error"] = repr(error)
@@ -431,17 +534,18 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
 
 
 def make_contact_sheet(results: list[dict], run_root: Path) -> Path | None:
-    """生成清理前后截图总览图。"""
+    """生成清理前、正式提示和调试统计截图总览图。"""
     rows = []
     for item in results:
         if item.get("status") != "PASS":
             continue
         before = Path(item["beforeScreenshot"])
+        notify = Path(item["notifyScreenshot"])
         after = Path(item["afterScreenshot"])
-        if not before.is_file() or not after.is_file():
+        if not before.is_file() or not notify.is_file() or not after.is_file():
             continue
         row = []
-        for label, path in (("before", before), ("after", after)):
+        for label, path in (("before", before), ("notify", notify), ("debugdensity", after)):
             image = Image.open(path).convert("RGB")
             image.thumbnail((360, 210))
             canvas = Image.new("RGB", (390, 255), (24, 24, 24))
@@ -452,10 +556,11 @@ def make_contact_sheet(results: list[dict], run_root: Path) -> Path | None:
         rows.append(row)
     if not rows:
         return None
-    sheet = Image.new("RGB", (780, len(rows) * 255), (16, 16, 16))
+    sheet = Image.new("RGB", (1170, len(rows) * 255), (16, 16, 16))
     for index, row in enumerate(rows):
         sheet.paste(row[0], (0, index * 255))
         sheet.paste(row[1], (390, index * 255))
+        sheet.paste(row[2], (780, index * 255))
     path = run_root / "entity-density-visual-contact-sheet.png"
     sheet.save(path)
     return path

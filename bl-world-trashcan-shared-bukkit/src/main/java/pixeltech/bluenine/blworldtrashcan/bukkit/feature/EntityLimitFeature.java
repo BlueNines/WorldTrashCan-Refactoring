@@ -16,13 +16,17 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.entitylimit.LowOverheadEntityLimitEngine;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.EntityLimitConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -30,19 +34,27 @@ import java.util.function.Supplier;
 
 /** 世界实体数量限制和密集实体清理功能。 */
 public final class EntityLimitFeature implements Feature, Listener {
+    private static final int NOTICE_FLUSH_INTERVAL_TICKS = 10;
+    private static final int MAX_PENDING_NOTICE_KEYS = 1024;
+    private static final String DENSITY_NOTIFY_KEY = "entity-limit.gather-cleared";
+    private static final String DENSITY_NOTIFY_FALLBACK = "{prefix}&#FFD166密集实体清理 &#64748B| &#C9D4E2你的附近 &#FFD166{range} &#C9D4E2格内有 &#FFD166{entity} x {size} &#C9D4E2只，超过上限 &#FFD166{max}&#C9D4E2，本次已清理 &#5AC8FA{removed} &#C9D4E2只。";
     private final Plugin plugin;
     private final Supplier<ConfigBundle> configSupplier;
+    private final BukkitMessageService messages;
     private final LowOverheadEntityLimitEngine engine = new LowOverheadEntityLimitEngine();
+    private final Map<DensityNoticeKey, DensityRemovalNotice> pendingDensityNotices = new HashMap<>();
     private boolean registered;
     private ExecutorService worker;
     private BukkitTask scanTask;
     private BukkitTask removeTask;
     private BukkitTask summaryTask;
+    private BukkitTask noticeTask;
 
     /** 创建实体限制功能。 */
-    public EntityLimitFeature(Plugin plugin, Supplier<ConfigBundle> configSupplier) {
+    public EntityLimitFeature(Plugin plugin, Supplier<ConfigBundle> configSupplier, BukkitMessageService messages) {
         this.plugin = plugin;
         this.configSupplier = configSupplier;
+        this.messages = messages;
     }
 
     /** 返回功能 ID。 */
@@ -137,6 +149,13 @@ public final class EntityLimitFeature implements Feature, Listener {
                 runRemovalBatch();
             }
         }, 1L, scanConfig.getRemoveIntervalTicks());
+        noticeTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+            /** 聚合并发送密集实体清理提示。 */
+            @Override
+            public void run() {
+                flushDensityNotices();
+            }
+        }, NOTICE_FLUSH_INTERVAL_TICKS, NOTICE_FLUSH_INTERVAL_TICKS);
         if (scanConfig.getLogSummarySeconds() > 0) {
             long period = scanConfig.getLogSummarySeconds() * 20L;
             summaryTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -159,12 +178,17 @@ public final class EntityLimitFeature implements Feature, Listener {
         cancel(scanTask);
         cancel(removeTask);
         cancel(summaryTask);
+        cancel(noticeTask);
         scanTask = null;
         removeTask = null;
         summaryTask = null;
+        noticeTask = null;
         if (worker != null) {
             worker.shutdownNow();
             worker = null;
+        }
+        synchronized (pendingDensityNotices) {
+            pendingDensityNotices.clear();
         }
     }
 
@@ -279,6 +303,7 @@ public final class EntityLimitFeature implements Feature, Listener {
                 plugin.getLogger().warning("[EntityLimit] 删除候选实体失败，已进入重试: " + exception.getMessage());
             }
         }
+        flushDensityNotices();
     }
 
     /** 删除一个候选实体，找不到或校验失败都会消费候选并清理索引。 */
@@ -300,10 +325,77 @@ public final class EntityLimitFeature implements Feature, Listener {
             engine.finishCandidate(candidate, true, false);
             return;
         }
+        EntityLimitConfig.GatherRule rule = config.getGatherLimit().getRule(candidate.getTypeName());
+        int totalBefore = rule == null ? 0 : engine.countNearbySameType(candidate, rule.getRadius());
+        Location location = target.getLocation();
+        String typeName = target.getType().name();
         removeEntity(target, config.getGatherLimit().isDropItems());
         engine.finishCandidate(candidate, true, true);
+        queueDensityNotice(location, typeName, rule, totalBefore, 1);
         engine.markDirty(new LowOverheadEntityLimitEngine.ChunkKey(world.getName(), chunk.getX(), chunk.getZ()),
                 config.getScanConfig().getMaxDirtyChunks());
+    }
+
+    /** 记录一次密集实体删除提示，稍后按玩家聚合发送。 */
+    private void queueDensityNotice(Location location, String typeName, EntityLimitConfig.GatherRule rule,
+                                    int totalBefore, int removed) {
+        if (location == null || location.getWorld() == null || rule == null || removed <= 0) {
+            return;
+        }
+        DensityNoticeKey key = new DensityNoticeKey(location.getWorld().getName(), typeName,
+                location.getBlockX() >> 4, location.getBlockZ() >> 4, rule.getRadius(), rule.getMaxCount());
+        synchronized (pendingDensityNotices) {
+            DensityRemovalNotice notice = pendingDensityNotices.get(key);
+            if (notice == null) {
+                if (pendingDensityNotices.size() >= MAX_PENDING_NOTICE_KEYS) {
+                    return;
+                }
+                notice = new DensityRemovalNotice(key, location.getX(), location.getY(), location.getZ());
+                pendingDensityNotices.put(key, notice);
+            }
+            notice.add(totalBefore, removed);
+        }
+    }
+
+    /** 发送聚合后的密集实体清理提示。 */
+    private void flushDensityNotices() {
+        List<DensityRemovalNotice> notices = drainDensityNotices();
+        if (notices.isEmpty() || messages == null) {
+            return;
+        }
+        Map<DensityPlayerNoticeKey, DensityPlayerNotice> playerNotices = new HashMap<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Location playerLocation = player.getLocation();
+            for (DensityRemovalNotice notice : notices) {
+                if (!notice.isNear(playerLocation)) {
+                    continue;
+                }
+                DensityPlayerNoticeKey key = new DensityPlayerNoticeKey(player.getUniqueId(), notice.getTypeName(),
+                        notice.getRadius(), notice.getMaxCount());
+                DensityPlayerNotice playerNotice = playerNotices.get(key);
+                if (playerNotice == null) {
+                    playerNotice = new DensityPlayerNotice(player, notice.getTypeName(), notice.getRadius(),
+                            notice.getMaxCount());
+                    playerNotices.put(key, playerNotice);
+                }
+                playerNotice.add(notice.getTotalBefore(), notice.getRemoved());
+            }
+        }
+        for (DensityPlayerNotice notice : playerNotices.values()) {
+            notice.send();
+        }
+    }
+
+    /** 取出并清空待发送的密集实体提示。 */
+    private List<DensityRemovalNotice> drainDensityNotices() {
+        synchronized (pendingDensityNotices) {
+            if (pendingDensityNotices.isEmpty()) {
+                return Collections.emptyList();
+            }
+            List<DensityRemovalNotice> result = new ArrayList<>(pendingDensityNotices.values());
+            pendingDensityNotices.clear();
+            return result;
+        }
     }
 
     /** 按配置移除实体。 */
@@ -362,5 +454,196 @@ public final class EntityLimitFeature implements Feature, Listener {
             return Collections.singletonList("§e实体限制未启用。");
         }
         return engine.describe();
+    }
+
+    /** 密集实体提示聚合键。 */
+    private static final class DensityNoticeKey {
+        private final String worldName;
+        private final String typeName;
+        private final int chunkX;
+        private final int chunkZ;
+        private final int radius;
+        private final int maxCount;
+
+        /** 创建密集实体提示聚合键。 */
+        private DensityNoticeKey(String worldName, String typeName, int chunkX, int chunkZ, int radius, int maxCount) {
+            this.worldName = worldName == null ? "" : worldName;
+            this.typeName = typeName == null ? "" : typeName;
+            this.chunkX = chunkX;
+            this.chunkZ = chunkZ;
+            this.radius = radius;
+            this.maxCount = maxCount;
+        }
+
+        /** 判断两个键是否相等。 */
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof DensityNoticeKey)) {
+                return false;
+            }
+            DensityNoticeKey that = (DensityNoticeKey) other;
+            return chunkX == that.chunkX
+                    && chunkZ == that.chunkZ
+                    && radius == that.radius
+                    && maxCount == that.maxCount
+                    && worldName.equals(that.worldName)
+                    && typeName.equals(that.typeName);
+        }
+
+        /** 返回哈希值。 */
+        @Override
+        public int hashCode() {
+            int result = worldName.hashCode();
+            result = 31 * result + typeName.hashCode();
+            result = 31 * result + chunkX;
+            result = 31 * result + chunkZ;
+            result = 31 * result + radius;
+            result = 31 * result + maxCount;
+            return result;
+        }
+    }
+
+    /** 一组同区域密集实体删除提示。 */
+    private static final class DensityRemovalNotice {
+        private final DensityNoticeKey key;
+        private final double x;
+        private final double y;
+        private final double z;
+        private int totalBefore;
+        private int removed;
+
+        /** 创建密集实体删除提示。 */
+        private DensityRemovalNotice(DensityNoticeKey key, double x, double y, double z) {
+            this.key = key;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        /** 合并一次删除结果。 */
+        private void add(int totalBefore, int removed) {
+            this.totalBefore = Math.max(this.totalBefore, totalBefore);
+            this.removed += Math.max(0, removed);
+        }
+
+        /** 判断玩家位置是否在提示范围内。 */
+        private boolean isNear(Location location) {
+            if (location == null || location.getWorld() == null || !key.worldName.equals(location.getWorld().getName())) {
+                return false;
+            }
+            double dx = location.getX() - x;
+            double dy = location.getY() - y;
+            double dz = location.getZ() - z;
+            double radiusSquared = key.radius * (double) key.radius;
+            return dx * dx + dy * dy + dz * dz <= radiusSquared;
+        }
+
+        /** 返回实体类型。 */
+        private String getTypeName() {
+            return key.typeName;
+        }
+
+        /** 返回检测半径。 */
+        private int getRadius() {
+            return key.radius;
+        }
+
+        /** 返回上限数量。 */
+        private int getMaxCount() {
+            return key.maxCount;
+        }
+
+        /** 返回清理前数量。 */
+        private int getTotalBefore() {
+            return Math.max(totalBefore, key.maxCount + removed);
+        }
+
+        /** 返回已删除数量。 */
+        private int getRemoved() {
+            return removed;
+        }
+    }
+
+    /** 玩家维度的密集实体提示聚合键。 */
+    private static final class DensityPlayerNoticeKey {
+        private final UUID playerUuid;
+        private final String typeName;
+        private final int radius;
+        private final int maxCount;
+
+        /** 创建玩家提示聚合键。 */
+        private DensityPlayerNoticeKey(UUID playerUuid, String typeName, int radius, int maxCount) {
+            this.playerUuid = playerUuid;
+            this.typeName = typeName == null ? "" : typeName;
+            this.radius = radius;
+            this.maxCount = maxCount;
+        }
+
+        /** 判断两个键是否相等。 */
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof DensityPlayerNoticeKey)) {
+                return false;
+            }
+            DensityPlayerNoticeKey that = (DensityPlayerNoticeKey) other;
+            return radius == that.radius
+                    && maxCount == that.maxCount
+                    && playerUuid.equals(that.playerUuid)
+                    && typeName.equals(that.typeName);
+        }
+
+        /** 返回哈希值。 */
+        @Override
+        public int hashCode() {
+            int result = playerUuid.hashCode();
+            result = 31 * result + typeName.hashCode();
+            result = 31 * result + radius;
+            result = 31 * result + maxCount;
+            return result;
+        }
+    }
+
+    /** 单个玩家最终收到的密集实体提示。 */
+    private final class DensityPlayerNotice {
+        private final Player player;
+        private final String typeName;
+        private final int radius;
+        private final int maxCount;
+        private int totalBefore;
+        private int removed;
+
+        /** 创建玩家密集实体提示。 */
+        private DensityPlayerNotice(Player player, String typeName, int radius, int maxCount) {
+            this.player = player;
+            this.typeName = typeName;
+            this.radius = radius;
+            this.maxCount = maxCount;
+        }
+
+        /** 合并一组删除统计。 */
+        private void add(int totalBefore, int removed) {
+            this.totalBefore = Math.max(this.totalBefore, totalBefore);
+            this.removed += Math.max(0, removed);
+        }
+
+        /** 向玩家发送提示。 */
+        private void send() {
+            if (removed <= 0) {
+                return;
+            }
+            player.sendMessage(messages.text(player, DENSITY_NOTIFY_KEY, DENSITY_NOTIFY_FALLBACK,
+                    "{range}", String.valueOf(radius),
+                    "{entity}", typeName,
+                    "{entityType}", typeName,
+                    "{size}", String.valueOf(Math.max(totalBefore, maxCount + removed)),
+                    "{max}", String.valueOf(maxCount),
+                    "{removed}", String.valueOf(removed)));
+        }
     }
 }

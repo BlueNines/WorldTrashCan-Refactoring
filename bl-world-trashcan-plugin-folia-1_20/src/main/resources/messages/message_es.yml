@@ -91,6 +91,11 @@ protection:
   # 手持物品查询结果，{material} 为物品类型。
   hand-item: "{prefix}&aObjeto en mano: &f{material}"
 
+# Mensajes de limite de entidades.
+entity-limit:
+  # Se envia a jugadores cercanos tras limpiar entidades densas. {range} radio, {entity} tipo, {size} cantidad cercana previa, {max} limite, {removed} cantidad eliminada.
+  gather-cleared: "{prefix}&#FFD166Limpieza de entidades densas &#64748B| &#C9D4E2Dentro de &#FFD166{range} &#C9D4E2bloques habia &#FFD166{entity} x {size}&#C9D4E2, sobre el limite &#FFD166{max}&#C9D4E2. Eliminadas &#5AC8FA{removed} &#C9D4E2esta ronda."
+
 # 世界垃圾桶相关消息。
 world-trash:
   # 当前世界禁止创建世界垃圾桶。

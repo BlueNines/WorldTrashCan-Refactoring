@@ -1,0 +1,71 @@
+{
+  "id": "universal_folia1218",
+  "sourceId": "external_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "clientVersion": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBolia1218",
+  "clientPid": 50960,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "[10:15:54 INFO]: 实体密度扫描统计:\n[10:15:54 INFO]: - 已加载/本轮选择 chunk: 723/8\n[10:15:54 INFO]: - 索引 chunk/实体: 5/5\n[10:15:54 INFO]: - 脏 chunk 队列: 4 (标记 8, 丢弃 0)\n[10:15:54 INFO]: - 候选队列/去重: 0/0\n[10:15:54 INFO]: - 快照/扫描 chunk: 8/8 (未加载 0)\n[10:15:54 INFO]: - 候选创建/取出/完成: 85/85/85\n[10:15:54 INFO]: - 候选过期/重试/丢弃: 0/0/0\n[10:15:54 INFO]: - 删除成功/跳过: 80/5\n[10:15:54 INFO]: - 索引修剪 stale/cap: 0/0\n[10:15:54 INFO]: - 累计索引实体写入: 85\n",
+      "indexed": [
+        5,
+        5
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        85,
+        85,
+        85
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        80,
+        5
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "noticeCheck": {
+    "status": "PASS",
+    "marker": "密集实体清理",
+    "excerpt": "[10:15:54] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 85 只，超过上限 8，本次已清理 40 只。\n[10:15:54] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 48 只，超过上限 8，本次已清理 40 只。\n"
+  },
+  "notifyScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-notify-f2.png",
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+    "brightness": 99.77571614583333
+  },
+  "debugCommandCheck": {
+    "status": "PASS",
+    "marker": "实体密度扫描统计",
+    "excerpt": "[10:16:06] [Render thread/INFO]: [System] [CHAT] 实体密度扫描统计:\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 已加载/本轮选择 chunk: 723/8\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 索引 chunk/实体: 378/6\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 脏 chunk 队列: 0 (标记 8, 丢弃 0)\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 候选队列/去重: 0/0\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 快照/扫描 chunk: 384/384 (未加载 0)\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 候选创建/取出/完成: 85/85/85\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 候选过期/重试/丢弃: 0/0/0\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 删除成功/跳过: 80/5\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 索引修剪 stale/cap: 0/0\n[10:16:06] [Render thread/INFO]: [System] [CHAT] - 累计索引实体写入: 96\n[10:16:10] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.16.10.png\n[10:16:10] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.16.10_2.png\n"
+  },
+  "cleanupSkipped": "Folia vanilla entity selector can trip region thread checks; density limiter already reduced the sample."
+}

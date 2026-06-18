@@ -1,0 +1,71 @@
+{
+  "id": "universal_arclight1211",
+  "sourceId": "external_arclight1211",
+  "label": "1.21.11arclight-neoforge",
+  "version": "1.21.1-arclight-neoforge",
+  "clientVersion": "1.21.1",
+  "serverDir": "E:\\server_work\\1.21.11arclight-neoforge",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBight1211",
+  "clientPid": 44140,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "\u001b[0m[10:20:58 INFO] [Console]: 实体密度扫描统计:\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 已加载/本轮选择 chunk: 625/8\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 索引 chunk/实体: 5/8\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 脏 chunk 队列: 4 (标记 8, 丢弃 0)\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 候选队列/去重: 0/0\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 快照/扫描 chunk: 8/8 (未加载 0)\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 候选创建/取出/完成: 88/88/88\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 候选过期/重试/丢弃: 0/0/0\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 删除成功/跳过: 80/8\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 索引修剪 stale/cap: 0/0\n\u001b[m\u001b[0m[10:20:58 INFO] [Console]: - 累计索引实体写入: 88\n\u001b[m",
+      "indexed": [
+        5,
+        8
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        88,
+        88,
+        88
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        80,
+        8
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "noticeCheck": {
+    "status": "PASS",
+    "marker": "密集实体清理",
+    "excerpt": "[10:20:58] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 88 只，超过上限 8，本次已清理 40 只。\n[10:20:58] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 48 只，超过上限 8，本次已清理 40 只。\n[10:20:58] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 9 只，超过上限 8，本次已清理 1 只。\n"
+  },
+  "notifyScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-notify-f2.png",
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-after-debugdensity-f2.png",
+    "brightness": 116.0556640625
+  },
+  "debugCommandCheck": {
+    "status": "PASS",
+    "marker": "实体密度扫描统计",
+    "excerpt": "[10:21:10] [Render thread/INFO]: [System] [CHAT] 实体密度扫描统计:\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 已加载/本轮选择 chunk: 625/8\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 索引 chunk/实体: 377/17\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 脏 chunk 队列: 0 (标记 11, 丢弃 0)\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 候选队列/去重: 0/0\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 快照/扫描 chunk: 384/384 (未加载 0)\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 候选创建/取出/完成: 97/97/97\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 候选过期/重试/丢弃: 0/0/0\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 删除成功/跳过: 81/16\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 索引修剪 stale/cap: 0/0\n[10:21:10] [Render thread/INFO]: [System] [CHAT] - 累计索引实体写入: 114\n[10:21:14] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.21.14.png\n[10:21:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.21.14_2.png\n"
+  },
+  "cleanupLogExcerpt": "\u001b[0m[10:21:15 INFO]: Incorrect argument for command\n\u001b[m\u001b[0m[10:21:15 INFO]: ...t1211 run minecraft:kill @e[type=minecraft:cow,name=AI_BLWTC_DENSITY,distance=..80]<--[HERE]\n\u001b[m"
+}

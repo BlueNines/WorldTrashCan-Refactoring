@@ -103,7 +103,7 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
-        this.entityLimitFeature = new FoliaEntityLimitFeature(this, configSupplier);
+        this.entityLimitFeature = new FoliaEntityLimitFeature(this, configSupplier, messageService);
         featureRegistry.register(entityLimitFeature);
         registerCommands();
         registerPlaceholderApi();

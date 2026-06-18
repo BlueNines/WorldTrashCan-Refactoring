@@ -102,7 +102,7 @@ public final class BLWorldTrashCanBukkitPlugin extends JavaPlugin {
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
-        this.entityLimitFeature = new EntityLimitFeature(this, configSupplier);
+        this.entityLimitFeature = new EntityLimitFeature(this, configSupplier, messageService);
         featureRegistry.register(entityLimitFeature);
         registerCommands();
         registerPlaceholderApi();

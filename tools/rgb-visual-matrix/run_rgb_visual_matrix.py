@@ -17,6 +17,7 @@ from pathlib import Path
 import pyautogui
 from PIL import Image, ImageDraw, ImageFont, ImageGrab
 import win32con
+import win32clipboard
 import win32gui
 import win32process
 
@@ -28,6 +29,40 @@ USER_AGENT = "Codex-BLWorldTrashCan-RGB-Visual-Test"
 MOJANG_MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 PAPER_API = "https://api.papermc.io/v2/projects/paper/versions/{version}/builds"
 PAPER_JAR = "https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{build}/downloads/{name}"
+
+
+def set_clipboard_text(text: str) -> None:
+    """把文本写入系统剪贴板，绕开中文输入法对自动输入的影响。"""
+    last_error = None
+    for _ in range(12):
+        try:
+            win32clipboard.OpenClipboard()
+            try:
+                win32clipboard.EmptyClipboard()
+                win32clipboard.SetClipboardText(text, win32con.CF_UNICODETEXT)
+            finally:
+                win32clipboard.CloseClipboard()
+            return
+        except Exception as error:
+            last_error = error
+            time.sleep(0.12)
+    completed = subprocess.run(
+        ["powershell", "-NoProfile", "-Command", "Set-Clipboard -Value ([Console]::In.ReadToEnd())"],
+        input=text,
+        text=True,
+        encoding="utf-8",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=8,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError("写入剪贴板失败: " + str(last_error) + " / " + completed.stderr.strip())
+
+
+def paste_text(text: str) -> None:
+    """通过剪贴板粘贴文本，避免 pyautogui.write 被当前输入法吞掉。"""
+    set_clipboard_text(text)
+    pyautogui.hotkey("ctrl", "v")
 
 
 def repo_root() -> Path:
@@ -779,7 +814,7 @@ def connect_via_gui(case: dict, username: str, run_dir: Path) -> None:
     capture_rect(rect, run_dir / "screenshots" / (case["id"] + "-gui-03-after-direct-click.png"))
     time.sleep(0.5)
     pyautogui.hotkey("ctrl", "a")
-    pyautogui.write("127.0.0.1:" + str(case["port"]), interval=0.01)
+    paste_text("127.0.0.1:" + str(case["port"]))
     capture_rect(rect, run_dir / "screenshots" / (case["id"] + "-gui-04-after-address.png"))
     pyautogui.press("enter")
     time.sleep(2)
@@ -829,6 +864,29 @@ def post_text(hwnd: int, text: str) -> None:
     for char in text:
         win32gui.PostMessage(hwnd, win32con.WM_CHAR, ord(char), 1)
         time.sleep(0.03)
+
+
+def send_chat_line(hwnd: int, text: str) -> None:
+    """打开 Minecraft 聊天栏并发送一整行文本。"""
+    rect = focus_window(hwnd)
+    click_game(hwnd, rect, 0.50, 0.34)
+    time.sleep(0.2)
+    pyautogui.press("t")
+    time.sleep(0.25)
+    paste_text(text)
+    time.sleep(0.1)
+    pyautogui.press("enter")
+
+
+def send_chat_line_by_window_message(hwnd: int, text: str) -> None:
+    """用窗口消息打开聊天栏并发送文本，兼容 1.12.2 剪贴板不稳定场景。"""
+    rect = focus_window(hwnd)
+    click_game(hwnd, rect, 0.50, 0.34)
+    time.sleep(0.2)
+    post_key(hwnd, ord("T"))
+    time.sleep(0.25)
+    post_text(hwnd, text)
+    post_key(hwnd, win32con.VK_RETURN)
 
 
 def image_brightness(image: Image.Image) -> float:

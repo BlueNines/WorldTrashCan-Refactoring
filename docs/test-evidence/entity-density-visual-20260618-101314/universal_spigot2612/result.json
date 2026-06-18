@@ -1,0 +1,71 @@
+{
+  "id": "universal_spigot2612",
+  "sourceId": "external_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "clientVersion": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBigot2612",
+  "clientPid": 5016,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_spigot2612\\screenshots\\universal_spigot2612-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "[10:19:12] [Server thread/INFO]: 实体密度扫描统计:\n[10:19:12] [Server thread/INFO]: - 已加载/本轮选择 chunk: 121/8\n[10:19:12] [Server thread/INFO]: - 索引 chunk/实体: 10/10\n[10:19:12] [Server thread/INFO]: - 脏 chunk 队列: 1 (标记 12, 丢弃 0)\n[10:19:12] [Server thread/INFO]: - 候选队列/去重: 0/0\n[10:19:12] [Server thread/INFO]: - 快照/扫描 chunk: 16/16 (未加载 0)\n[10:19:12] [Server thread/INFO]: - 候选创建/取出/完成: 89/89/89\n[10:19:12] [Server thread/INFO]: - 候选过期/重试/丢弃: 0/0/0\n[10:19:12] [Server thread/INFO]: - 删除成功/跳过: 73/16\n[10:19:12] [Server thread/INFO]: - 索引修剪 stale/cap: 0/0\n[10:19:12] [Server thread/INFO]: - 累计索引实体写入: 92\n",
+      "indexed": [
+        10,
+        10
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        89,
+        89,
+        89
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        73,
+        16
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "noticeCheck": {
+    "status": "PASS",
+    "marker": "密集实体清理",
+    "excerpt": "[10:19:12] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 79 只，超过上限 8，本次已清理 16 只。\n[10:19:12] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 64 只，超过上限 8，本次已清理 40 只。\n[10:19:12] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 24 只，超过上限 8，本次已清理 16 只。\n[10:19:12] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 9 只，超过上限 8，本次已清理 1 只。\n"
+  },
+  "notifyScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_spigot2612\\screenshots\\universal_spigot2612-density-notify-f2.png",
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_spigot2612\\screenshots\\universal_spigot2612-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_spigot2612\\screenshots\\universal_spigot2612-density-after-debugdensity-f2.png",
+    "brightness": 167.8544921875
+  },
+  "debugCommandCheck": {
+    "status": "PASS",
+    "marker": "实体密度扫描统计",
+    "excerpt": "[10:19:24] [Render thread/INFO]: [System] [CHAT] 实体密度扫描统计:\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 已加载/本轮选择 chunk: 121/8\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 索引 chunk/实体: 121/10\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 脏 chunk 队列: 0 (标记 12, 丢弃 0)\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 候选队列/去重: 0/0\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 快照/扫描 chunk: 392/392 (未加载 0)\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 候选创建/取出/完成: 89/89/89\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 候选过期/重试/丢弃: 0/0/0\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 删除成功/跳过: 73/16\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 索引修剪 stale/cap: 0/0\n[10:19:24] [Render thread/INFO]: [System] [CHAT] - 累计索引实体写入: 130\n[10:19:28] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.19.28.png\n[10:19:29] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.19.29.png\n"
+  },
+  "cleanupLogExcerpt": "[10:19:29] [Server thread/INFO]: Incorrect argument for command\n[10:19:29] [Server thread/INFO]: ...t2612 run minecraft:kill @e[type=minecraft:cow,name=AI_BLWTC_DENSITY,distance=..80]<--[HERE]\n"
+}

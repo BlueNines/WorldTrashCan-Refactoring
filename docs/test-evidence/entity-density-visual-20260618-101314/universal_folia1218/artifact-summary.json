@@ -1,0 +1,48 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-before-f2.png",
+      "size": 269548,
+      "sha256": "dcb55b2e534fe45c70467b6868eb0ad42681347c199c071c569197bda2dbb9ad",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 98.1630859375
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-notify-f2.png",
+      "size": 358728,
+      "sha256": "55c3c235c583dfec77917839f1037f24bd3888f0f00556a9620e6e57c7df46c5",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 105.56901041666667
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+      "size": 361203,
+      "sha256": "ff32cdafcecf7f031a305244dd125d4b27e3aabeb9a721465965962eb5f4e4d3",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 99.77571614583333
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}

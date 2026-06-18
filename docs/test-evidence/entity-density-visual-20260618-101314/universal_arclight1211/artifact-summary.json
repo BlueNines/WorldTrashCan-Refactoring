@@ -1,0 +1,48 @@
+{
+  "id": "universal_arclight1211",
+  "label": "1.21.11arclight-neoforge",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-before-f2.png",
+      "size": 421930,
+      "sha256": "b15fcf0a24a4726320a0d6af24260a48e8e73414f1caf25d20d3dbcfd6bb8b89",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 107.63216145833333
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-notify-f2.png",
+      "size": 545624,
+      "sha256": "59f59b99f8ae8147db0aa38a91087fa0ebe24915496a77b38e815ad79544824c",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 120.04264322916667
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_arclight1211\\screenshots\\universal_arclight1211-density-after-debugdensity-f2.png",
+      "size": 550990,
+      "sha256": "10501d1da7b64455108e569c7e43639b6c6bf49ac3542bdc8a5cee789b6425e0",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 116.0556640625
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}

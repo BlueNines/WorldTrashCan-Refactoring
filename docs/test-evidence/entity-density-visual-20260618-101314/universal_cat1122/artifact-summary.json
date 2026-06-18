@@ -1,0 +1,48 @@
+{
+  "id": "universal_cat1122",
+  "label": "server_cat_1.12.2",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-before-f2.png",
+      "size": 34842,
+      "sha256": "e8586ae97a6977020bb15ba5a5a389eb825a926fa2fac4b3570ddb9f392a5b2f",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        704,
+        409
+      ],
+      "brightness": 178.4736328125
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-notify-f2.png",
+      "size": 17620,
+      "sha256": "bf0c6304b051e31c1079485df63b3c9a2f8b0506b21ab96a63bde897ae3f6bcd",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        704,
+        409
+      ],
+      "brightness": 169.41536458333334
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_cat1122\\screenshots\\universal_cat1122-density-after-debugdensity-f2.png",
+      "size": 15487,
+      "sha256": "1a384577e8a4bb3562e3ae327db59c3d3e51f47abcd0d66f70c38c24f3ee7c8f",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        704,
+        409
+      ],
+      "brightness": 168.76302083333334
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}

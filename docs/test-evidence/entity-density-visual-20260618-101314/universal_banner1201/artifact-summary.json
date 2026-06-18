@@ -1,0 +1,48 @@
+{
+  "id": "universal_banner1201",
+  "label": "1.20.1fabric.banner",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_banner1201\\screenshots\\universal_banner1201-density-before-f2.png",
+      "size": 182179,
+      "sha256": "7e45424e59df3c7f786d0ebea6027457a200ce4983cb03904bacef2a8eafe5d2",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 137.078125
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_banner1201\\screenshots\\universal_banner1201-density-notify-f2.png",
+      "size": 187855,
+      "sha256": "b60bc54f2670452633e5be1ce344d07cc01933c86a5d225c270e0cc419572e9d",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 158.1298828125
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_banner1201\\screenshots\\universal_banner1201-density-after-debugdensity-f2.png",
+      "size": 175597,
+      "sha256": "24cd9bb9aa9167badac14d249f53348c4eb8dba8632d5333892532df43ba6f40",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 157.01432291666666
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}

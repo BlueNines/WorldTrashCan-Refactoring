@@ -165,6 +165,18 @@ public final class LowOverheadEntityLimitEngine {
         return findNearbySameType(record, rule.getRadius()).size() > rule.getMaxCount();
     }
 
+    /** 返回候选附近同类型实体的索引数量。 */
+    public synchronized int countNearbySameType(RemovalCandidate candidate, int radius) {
+        if (candidate == null) {
+            return 0;
+        }
+        EntityRecord record = entities.get(candidate.getUniqueId());
+        if (record == null) {
+            return 0;
+        }
+        return findNearbySameType(record, radius).size();
+    }
+
     /** 完成候选处理并释放去重标记。 */
     public synchronized void finishCandidate(RemovalCandidate candidate, boolean removeFromIndex, boolean removed) {
         finishCandidateInternal(candidate, removeFromIndex, removed, false);

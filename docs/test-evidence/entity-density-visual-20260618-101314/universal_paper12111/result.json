@@ -1,0 +1,71 @@
+{
+  "id": "universal_paper12111",
+  "sourceId": "external_paper12111",
+  "label": "1.21.11spigot",
+  "version": "1.21.11",
+  "clientVersion": "1.21.11",
+  "serverDir": "E:\\server_work\\1.21.11spigot",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "spawnCount": 80,
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 498170,
+    "sha256": "73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "username": "RGBper12111",
+  "clientPid": 39204,
+  "beforeScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-before-f2.png",
+  "densityCheck": {
+    "status": "PASS",
+    "density": {
+      "raw": "[10:14:15 INFO]: 实体密度扫描统计:\n[10:14:15 INFO]: - 已加载/本轮选择 chunk: 625/8\n[10:14:15 INFO]: - 索引 chunk/实体: 8/8\n[10:14:15 INFO]: - 脏 chunk 队列: 4 (标记 12, 丢弃 0)\n[10:14:15 INFO]: - 候选队列/去重: 0/0\n[10:14:15 INFO]: - 快照/扫描 chunk: 8/8 (未加载 0)\n[10:14:15 INFO]: - 候选创建/取出/完成: 25/25/25\n[10:14:15 INFO]: - 候选过期/重试/丢弃: 0/0/0\n[10:14:15 INFO]: - 删除成功/跳过: 17/8\n[10:14:15 INFO]: - 索引修剪 stale/cap: 0/0\n[10:14:15 INFO]: - 累计索引实体写入: 25\n",
+      "indexed": [
+        8,
+        8
+      ],
+      "pending": [
+        0,
+        0
+      ],
+      "candidates": [
+        25,
+        25,
+        25
+      ],
+      "failures": [
+        0,
+        0,
+        0
+      ],
+      "removals": [
+        17,
+        8
+      ]
+    },
+    "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12"
+  },
+  "noticeCheck": {
+    "status": "PASS",
+    "marker": "密集实体清理",
+    "excerpt": "[10:14:15] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 25 只，超过上限 8，本次已清理 17 只。\n[10:14:15] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 72 只，超过上限 8，本次已清理 40 只。\n[10:14:15] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 32 只，超过上限 8，本次已清理 24 只。\n"
+  },
+  "notifyScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-notify-f2.png",
+  "afterScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-after-debugdensity-f2.png",
+  "afterClientCommand": {
+    "name": "density-after-debugdensity-f2",
+    "command": "/blwtc debugdensity",
+    "status": "PASS",
+    "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260618-101314\\universal_paper12111\\screenshots\\universal_paper12111-density-after-debugdensity-f2.png",
+    "brightness": 118.35188802083333
+  },
+  "debugCommandCheck": {
+    "status": "PASS",
+    "marker": "实体密度扫描统计",
+    "excerpt": "[10:14:27] [Render thread/INFO]: [System] [CHAT] 实体密度扫描统计:\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 已加载/本轮选择 chunk: 625/8\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 索引 chunk/实体: 370/20\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 脏 chunk 队列: 0 (标记 21, 丢弃 0)\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 候选队列/去重: 0/0\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 快照/扫描 chunk: 384/384 (未加载 0)\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 候选创建/取出/完成: 97/97/97\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 候选过期/重试/丢弃: 0/0/0\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 删除成功/跳过: 81/16\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 索引修剪 stale/cap: 0/0\n[10:14:27] [Render thread/INFO]: [System] [CHAT] - 累计索引实体写入: 117\n[10:14:31] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.14.31.png\n[10:14:31] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-18_10.14.31_2.png\n"
+  },
+  "cleanupLogExcerpt": ""
+}

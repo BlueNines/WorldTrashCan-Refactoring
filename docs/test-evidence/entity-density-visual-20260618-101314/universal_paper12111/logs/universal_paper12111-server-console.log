@@ -1,0 +1,404 @@
+Starting org.bukkit.craftbukkit.Main
+2026-06-18T02:13:15.553376800Z ServerMain WARN Advanced terminal features are not available in this environment
+[10:13:15 INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
+[10:13:15 INFO]: [bootstrap] Loading Paper 1.21.11-127-main@bd74bf6 (2026-03-10T02:55:23Z) for Minecraft 1.21.11
+[10:13:16 INFO]: [PluginInitializerManager] Initializing plugins...
+[10:13:16 INFO]: [PluginInitializerManager] Initialized 5 plugins
+[10:13:16 INFO]: [PluginInitializerManager] Bukkit plugins (5):
+ - BLWorldTrashCan (7.0.0), CMILib (1.5.9.0), PlaceholderAPI (2.12.2), ResLinkMysql (1.6.1), Residence (6.0.1.6)
+[10:13:20 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[10:13:21 INFO]: Loaded 1470 recipes
+[10:13:21 INFO]: Loaded 1584 advancements
+[10:13:21 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[10:13:21 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 252.7ms
+[10:13:22 INFO]: Starting minecraft server version 1.21.11
+[10:13:22 INFO]: Loading properties
+[10:13:22 INFO]: This server is running Paper version 1.21.11-127-main@bd74bf6 (2026-03-10T02:55:23Z) (Implementing API version 1.21.11-R0.1-SNAPSHOT)
+[10:13:22 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[10:13:22 INFO]: Server Ping Player Sample Count: 12
+[10:13:22 INFO]: Using 4 threads for Netty based IO
+[10:13:22 INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
+[10:13:22 INFO]: Default game type: SURVIVAL
+[10:13:22 INFO]: Generating keypair
+[10:13:22 INFO]: Starting Minecraft server on *:30001
+[10:13:23 INFO]: Paper: Using Java compression from Velocity.
+[10:13:23 INFO]: Paper: Using Java cipher from Velocity.
+[10:13:23 WARN]: [org.bukkit.craftbukkit.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[10:13:35 WARN]: Legacy plugin ResLinkMysql v1.6.1 does not specify an api-version.
+[10:13:35 WARN]: Legacy plugin BLWorldTrashCan v7.0.0 does not specify an api-version.
+[10:13:35 INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.12.2
+[10:13:36 INFO]: [CMILib] Loading server plugin CMILib v1.5.9.0
+[10:13:36 INFO]: [Residence] Loading server plugin Residence v6.0.1.6
+[10:13:36 INFO]: [ResLinkMysql] Loading server plugin ResLinkMysql v1.6.1
+[10:13:36 INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v7.0.0
+[10:13:36 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[10:13:36 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[10:13:36 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[10:13:36 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[10:13:36 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[10:13:36 INFO]: Preparing level "world"
+[10:13:37 INFO]: Loading 0 persistent chunks for world 'minecraft:overworld'...
+[10:13:37 INFO]: Preparing spawn area: 100%
+[10:13:37 INFO]: Prepared spawn area in 2 ms
+[10:13:37 INFO]: Loading 0 persistent chunks for world 'minecraft:the_nether'...
+[10:13:37 INFO]: Prepared spawn area in 1 ms
+[10:13:37 INFO]: Loading 0 persistent chunks for world 'minecraft:the_end'...
+[10:13:37 INFO]: Prepared spawn area in 1 ms
+[10:13:37 INFO]: Done preparing level "world" (0.916s)
+[10:13:37 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.12.2
+[10:13:38 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[10:13:38 INFO]: [CMILib] Enabling CMILib v1.5.9.0
+[10:13:38 INFO]: Server version detection by new method: v1_21_R7 Legacy: true Mojang Mappings: true
+[10:13:38 INFO]: Server version: v1_21_R7 - 1.21.11 - paper  1.21.11-127-bd74bf6 (MC: 1.21.11)
+[10:13:39 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[10:13:40 INFO]: [PlaceholderAPI] Successfully registered internal expansion: cmil [1.5.9.0]
+[10:13:40 INFO]: PlaceholderAPI hooked.
+[10:13:40 INFO]: Updated (EN) language file. Took 357ms
+[10:13:40 INFO]: [Residence] Enabling Residence v6.0.1.6
+[10:13:41 INFO]: [Residence] Loaded (2) groups
+[10:13:41 INFO]: [Residence] Permissions plugin NOT FOUND!
+[10:13:41 INFO]: [Residence] Preloaded 4 player cached data
+[10:13:41 INFO]: [Residence] Scanning for economy systems...
+[10:13:41 INFO]: [Residence] Vault NOT found!
+[10:13:41 INFO]: [Residence] CMIEconomy NOT found!
+[10:13:41 INFO]: [Residence] Essentials Economy NOT found!
+[10:13:41 INFO]: [Residence] Unable to find an economy system...
+[10:13:42 INFO]: [PlaceholderAPI] Successfully registered internal expansion: residence [6.0.1.6]
+[10:13:42 INFO]: [Residence] PlaceholderAPI was found - Enabling capabilities.
+[10:13:42 INFO]: [Residence] Enabled! Version 6.0.1.6 by Zrips
+[10:13:42 INFO]: [ResLinkMysql] Enabling ResLinkMysql v1.6.1*
+[10:13:42 ERROR]: [ResLinkMysql] 无法连接 Redis: Failed to connect to any host resolved for DNS name.
+[10:13:42 WARN]: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+[10:13:42 WARN]: 
+[10:13:42 WARN]: The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:165)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:55)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:837)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180)
+[10:13:42 WARN]: 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+[10:13:42 WARN]: 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+[10:13:42 WARN]: 	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.Method.MysqlMethod.createInit(v:164)
+[10:13:42 WARN]: 	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.ResLinkMysql.reload(ResLinkMysql.java:258)
+[10:13:42 WARN]: 	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.ResLinkMysql.onEnable(ResLinkMysql.java:171)
+[10:13:42 WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279)
+[10:13:42 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:207)
+[10:13:42 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109)
+[10:13:42 WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520)
+[10:13:42 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639)
+[10:13:42 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596)
+[10:13:42 WARN]: 	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636)
+[10:13:42 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:365)
+[10:13:42 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1253)
+[10:13:42 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+[10:13:42 WARN]: 	at java.base/java.lang.Thread.run(Thread.java:1583)
+[10:13:42 WARN]: Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+[10:13:42 WARN]: 
+[10:13:42 WARN]: The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+[10:13:42 WARN]: 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+[10:13:42 WARN]: 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+[10:13:42 WARN]: 	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+[10:13:42 WARN]: 	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:52)
+[10:13:42 WARN]: 	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:95)
+[10:13:42 WARN]: 	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:140)
+[10:13:42 WARN]: 	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:156)
+[10:13:42 WARN]: 	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:79)
+[10:13:42 WARN]: 	at com.mysql.cj.NativeSession.connect(NativeSession.java:142)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961)
+[10:13:42 WARN]: 	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+[10:13:42 WARN]: 	... 19 more
+[10:13:42 WARN]: Caused by: java.net.ConnectException: Connection refused: connect
+[10:13:42 WARN]: 	at java.base/sun.nio.ch.Net.connect0(Native Method)
+[10:13:42 WARN]: 	at java.base/sun.nio.ch.Net.connect(Net.java:589)
+[10:13:42 WARN]: 	at java.base/sun.nio.ch.Net.connect(Net.java:578)
+[10:13:42 WARN]: 	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+[10:13:42 WARN]: 	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+[10:13:42 WARN]: 	at java.base/java.net.Socket.connect(Socket.java:751)
+[10:13:42 WARN]: 	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:144)
+[10:13:42 WARN]: 	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:53)
+[10:13:42 WARN]: 	... 22 more
+[10:13:42 INFO]: [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[10:13:43 ERROR]: [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Exception during pool initialization.
+com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:165) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:55) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:837) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.ResLinkMysql.createSqlSessionFactory(ResLinkMysql.java:322) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.ResLinkMysql.reload(ResLinkMysql.java:261) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.ResLinkMysql.onEnable(ResLinkMysql.java:171) ~[?:?]
+	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:207) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:365) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1253) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62) ~[?:?]
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502) ~[?:?]
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486) ~[?:?]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:52) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:95) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:140) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:156) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:79) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:142) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	... 24 more
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[?:?]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682) ~[?:?]
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542) ~[?:?]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[?:?]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?]
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:144) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:53) ~[mysql-connector-j-9.2.0.jar:9.2.0]
+	... 27 more
+[10:13:43 INFO]: 插件寄了Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+[10:13:43 INFO]: 说你呢，帅比！定制插件找蓝九 - QQ：2831508831
+[10:13:43 INFO]: 该reslink仅兼容res6.0.0以上
+[10:13:43 INFO]: 如需兼容，请询问作者要更低版本的reslink
+[10:13:43 ERROR]: Error occurred while enabling ResLinkMysql v1.6.1 (Is it up to date?)
+java.lang.NullPointerException: Cannot invoke "org.apache.ibatis.session.SqlSessionFactory.openSession()" because "bluenine.reslinkmysql.ResLinkMysql.sqlSessionFactory" is null
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.Method.ResMethod.saveAndRemoveRes(k:154) ~[?:?]
+	at ResLink-1.0-SNAPSHOT-formal (2).jar//bluenine.reslinkmysql.ResLinkMysql.onEnable(ResLinkMysql.java:198) ~[?:?]
+	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:207) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:365) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1253) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-127-bd74bf6]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
+[10:13:43 INFO]: [ResLinkMysql] Disabling ResLinkMysql v1.6.1
+[10:13:43 INFO]: 插件已卸载并保存
+[10:13:43 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0*
+[10:13:43 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[10:13:43 INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[10:13:43 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[10:13:43 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[10:13:43 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[10:13:43 INFO]: [BLWorldTrashCan] Universal runtime: paper
+[10:13:43 INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
+[10:13:43 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[10:13:43 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[10:13:43 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[10:13:44 INFO]: [spark] Starting background profiler...
+[10:13:44 INFO]: [spark] The async-profiler engine is not supported for your os/arch (windows10/amd64), so the built-in Java engine will be used instead.
+[10:13:44 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[10:13:44 INFO]: 0 placeholder hook(s) registered!
+[10:13:44 INFO]: Running delayed init tasks
+[10:13:44 INFO]: Done (28.980s)! For help, type "help"
+[10:13:44 INFO]: New version of CMILib was detected. Please update it (1.5.9.0 -> 1.5.9.7)
+[10:13:44 INFO]: _________________/ Residence \_________________
+| 6.0.1.8 is now available! Your version: 6.0.1.6
+----------------------------------------
+[10:13:46 WARN]: *** You are running an outdated version of Minecraft, which is 2 release(s) and 5 build(s) behind!
+[10:13:46 WARN]: *** Please update to the latest stable version on https://papermc.io/downloads/paper ***
+[10:13:52 INFO]: UUID of player RGBper12111 is c1ee5612-52c2-331d-b3d2-e639070cec9d
+[10:13:52 INFO]: [HorriblePlayerLoginEventHack] You have plugins listening to the PlayerLoginEvent, this will cause re-configuration APIs to be unavailable: [Residence]
+[10:13:54 INFO]: RGBper12111 joined the game
+[10:13:54 INFO]: RGBper12111[/127.0.0.1:54198] logged in with entity id 1 at ([world]0.5, 90.0, -7.5)
+[10:13:55 INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)
+[10:13:55 INFO]: - scheduler-global: 启用
+[10:13:55 INFO]: - scheduler-region: 禁用
+[10:13:55 INFO]: - inventory-basic: 启用
+[10:13:55 INFO]: - item-pdc-tag: 启用
+[10:13:55 INFO]: - item-legacy-tag: 禁用
+[10:13:55 INFO]: - rgb-message: 启用
+[10:13:55 INFO]: - clickable-message: 启用
+[10:13:55 INFO]: - boss-bar: 启用
+[10:13:55 INFO]: - sign-legacy: 禁用
+[10:13:55 INFO]: - sign-modern: 启用
+[10:13:55 INFO]: - entity-move-event: 启用
+[10:13:55 INFO]: - folia-region-safe: 禁用
+[10:13:55 INFO]: Made RGBper12111 no longer a server operator
+[10:13:55 INFO]: Incorrect argument for command
+...:gamerule sendCommandFeedback false<--[HERE]
+[10:13:55 INFO]: Incorrect argument for command
+...:gamerule commandBlockOutput false<--[HERE]
+[10:13:56 INFO]: Incorrect argument for command
+...:gamerule doMobSpawning false<--[HERE]
+[10:13:56 INFO]: Incorrect argument for command
+...:gamerule maxEntityCramming 0<--[HERE]
+[10:13:56 INFO]: Set the time to 1000
+[10:13:56 INFO]: Set the weather to clear
+[10:13:56 INFO]: Teleported RGBper12111 to 0.500000, 91.000000, -7.500000
+[10:13:57 INFO]: No blocks were filled
+[10:13:57 INFO]: No blocks were filled
+[10:13:57 INFO]: Teleported RGBper12111 to 0.500000, 91.000000, -7.500000
+[10:13:58 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:13:59 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:13:59 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:13:59 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:13:59 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:00 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:01 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:02 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:03 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:04 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:04 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:04 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:04 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:04 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:05 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:06 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:07 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:07 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:07 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:07 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:07 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:07 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:08 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:09 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:15 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[10:14:15 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[10:14:15 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[10:14:15 INFO]: [BLWorldTrashCan] [EntityLimit] 已启动低占用实体扫描: scanInterval=5, minChunks=8, maxChunks=128, maxRemoves=40
+[10:14:15 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。
+[10:14:15 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
+[10:14:15 INFO]: 实体密度扫描统计:
+[10:14:15 INFO]: - 已加载/本轮选择 chunk: 625/8
+[10:14:15 INFO]: - 索引 chunk/实体: 8/8
+[10:14:15 INFO]: - 脏 chunk 队列: 4 (标记 12, 丢弃 0)
+[10:14:15 INFO]: - 候选队列/去重: 0/0
+[10:14:15 INFO]: - 快照/扫描 chunk: 8/8 (未加载 0)
+[10:14:15 INFO]: - 候选创建/取出/完成: 25/25/25
+[10:14:15 INFO]: - 候选过期/重试/丢弃: 0/0/0
+[10:14:15 INFO]: - 删除成功/跳过: 17/8
+[10:14:15 INFO]: - 索引修剪 stale/cap: 0/0
+[10:14:15 INFO]: - 累计索引实体写入: 25
+[10:14:22 INFO]: Made RGBper12111 a server operator
+[10:14:27 INFO]: RGBper12111 issued server command: /blwtc debugdensity
+[10:14:58 INFO]: RGBper12111 lost connection: Disconnected
+[10:14:58 INFO]: RGBper12111 left the game
+[10:14:58 INFO]: Stopping the server
+[10:14:58 INFO]: Stopping server
+[10:14:58 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[10:14:58 INFO]: [Residence] Disabling Residence v6.0.1.6
+[10:14:58 INFO]: [Residence] Disabled!
+[10:14:58 INFO]: [CMILib] Disabling CMILib v1.5.9.0
+[10:14:58 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.12.2
+[10:14:58 INFO]: Saving players
+[10:14:58 INFO]: Saving worlds
+[10:14:58 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[10:14:58 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[10:14:58 INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[10:14:58 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[10:14:59 INFO]: [ChunkHolderManager] Saved 625 block chunks, 625 entity chunks, 0 poi chunks in world 'world' in 1.16s
+[10:14:59 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
+[10:14:59 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
+[10:14:59 INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[10:15:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[10:15:00 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[10:15:00 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[10:15:00 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'world_nether' in 0.00s
+[10:15:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
+[10:15:00 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
+[10:15:00 INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[10:15:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[10:15:00 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[10:15:00 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[10:15:00 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'world_the_end' in 0.00s
+[10:15:00 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
+[10:15:00 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
+[10:15:00 INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[10:15:00 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[10:15:00 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[10:15:00 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[10:15:00 INFO]: Waiting for all RegionFile I/O tasks to complete...
+[10:15:00 INFO]: All RegionFile I/O tasks to complete
+[10:15:00 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+[10:15:00 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...
