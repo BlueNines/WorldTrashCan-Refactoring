@@ -1,0 +1,151 @@
+{
+  "run": "cleanup-guard-visual-20260626-215753",
+  "results": [
+    {
+      "id": "universal_managed_paper1122",
+      "label": "paper-1.12.2-managed-universal",
+      "version": "1.12.2",
+      "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "status": "PASS",
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 517400,
+        "sha256": "5d0bb85487f632dd3bc221d5bc749c5deb3af2ff92748e14a0c71a00cb134a0d",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "scenarios": [
+        {
+          "id": "online-guard",
+          "name": "在线人数不足跳过",
+          "status": "PASS",
+          "expectedMarkers": [
+            "skippedByGuard=true"
+          ],
+          "serverExcerpt": "[21:58:14 INFO]: RGBaper1122 issued server command: /blwtc clear\n[21:58:14 INFO]: [BLWorldTrashCan] [Cleanup] skippedByGuard=true, guardReason=online-players, onlinePlayers=1, minOnlinePlayers=2, targetEntities=-1, minTotalEntities=0, worlds=0\n[21:58:14 INFO]: ����ɨ�������� | ԭ��: ������������ ���� 1/2 Ŀ��ʵ�� -1/0\n[21:58:24 INFO]: RGBaper1122 issued server command: /blwtc stats\n",
+          "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\logs\\universal_managed_paper1122-online-guard-cleanup.yml",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-online-guard-clear.png",
+              "size": 23754,
+              "sha256": "1c8b1cfa6e8bbcfc84ae6d5325c801ebbe1d3d70d15fcbee7f544a248c1be759",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 177.51985677083334
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-online-guard-stats.png",
+              "size": 23875,
+              "sha256": "35e87c892f5825a509ff937bd5dc2610d66b0c3e0dd61eb75566899cb32a0704",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 169.96223958333334
+            }
+          ],
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-online-guard-server-log.png",
+            "size": 99076,
+            "sha256": "48cebfb7a16b8a57e9ed5cd1784b72a6b3699a07fc26c46c35a4890730555a5d",
+            "dimensions": [
+              1500,
+              364
+            ],
+            "brightness": 39.910481770833336
+          }
+        },
+        {
+          "id": "entity-guard",
+          "name": "目标实体数量不足跳过",
+          "status": "PASS",
+          "expectedMarkers": [
+            "skippedByGuard=true"
+          ],
+          "serverExcerpt": "[21:58:36 INFO]: RGBaper1122 issued server command: /blwtc clear\n[21:58:36 INFO]: [BLWorldTrashCan] [Cleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=1, minTotalEntities=400, worlds=3\n[21:58:36 INFO]: ����ɨ�������� | ԭ��: Ŀ��ʵ���������� ���� 1/1 Ŀ��ʵ�� 1/400\n[21:58:47 INFO]: RGBaper1122 issued server command: /blwtc stats\n",
+          "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\logs\\universal_managed_paper1122-entity-guard-cleanup.yml",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-entity-guard-clear.png",
+              "size": 24960,
+              "sha256": "390689c6447d5bb25988da87265731d89c6d90647e7d94904c44be2d9e0f8969",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 173.99869791666666
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-entity-guard-stats.png",
+              "size": 28415,
+              "sha256": "e995907ad6c90bb5f05c8b7367dc669f2b2bc39d9062b51931e20ee034f04a54",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 167.85384114583334
+            }
+          ],
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-entity-guard-server-log.png",
+            "size": 100405,
+            "sha256": "89207f02524767487c77f5b648841b6ce87569813f5bb97f25acdd024c791ab0",
+            "dimensions": [
+              1500,
+              364
+            ],
+            "brightness": 39.993489583333336
+          }
+        },
+        {
+          "id": "guard-pass-clean",
+          "name": "达到低阈值后正常清理",
+          "status": "PASS",
+          "expectedMarkers": [
+            "skippedByGuard=false"
+          ],
+          "serverExcerpt": "[21:58:59 INFO]: RGBaper1122 issued server command: /blwtc clear\n[21:58:59 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=1, minTotalEntities=1, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[21:59:10 INFO]: RGBaper1122 issued server command: /blwtc stats\n",
+          "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\logs\\universal_managed_paper1122-guard-pass-clean-cleanup.yml",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-guard-pass-clean-clear.png",
+              "size": 26084,
+              "sha256": "7add3a198884313c53a03bfc7eaa34dafd690837dce3c6f7d423eed1f7bea0dc",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 173.6650390625
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-guard-pass-clean-stats.png",
+              "size": 30884,
+              "sha256": "d74a4e6462b0cc5201cba4691d94c6e57cf0faee140a8b18a178e369968b46da",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 167.71614583333334
+            }
+          ],
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-guard-pass-clean-server-log.png",
+            "size": 100365,
+            "sha256": "2a13d34880af9d1fce90e0ec29821725fe5b85861334c320fc76c22beda45c86",
+            "dimensions": [
+              1500,
+              364
+            ],
+            "brightness": 39.981770833333336
+          }
+        }
+      ],
+      "username": "RGBaper1122"
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-guard-visual-20260626-215753\\cleanup-guard-contact-sheet.png"
+}

@@ -370,6 +370,7 @@ public final class CleanupFeature implements Feature {
                 + ", targetEntities=" + stats.getGuardTargetEntities()
                 + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
                 + ", worlds=" + stats.getWorlds());
+        sendNotify(-5, stats);
     }
 
     /** 清理单个掉落物实体。 */

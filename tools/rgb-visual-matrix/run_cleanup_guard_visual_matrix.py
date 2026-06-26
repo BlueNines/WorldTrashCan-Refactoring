@@ -168,6 +168,7 @@ def focus_game(case: dict) -> int:
     """聚焦 Minecraft 窗口并返回窗口句柄。"""
     hwnd = base.find_minecraft_window(case["version"])
     rect = base.focus_window(hwnd)
+    base.click_game(hwnd, rect, 0.50, 0.29)
     base.click_game(hwnd, rect, 0.50, 0.34)
     time.sleep(0.4)
     return hwnd
@@ -199,6 +200,30 @@ def send_command_and_screenshot(case: dict, game_dir: Path, run_dir: Path, comma
 def read_since(path: Path, offset: int) -> str:
     """读取日志偏移后的新增文本。"""
     return external.read_text_since(path, offset)
+
+
+def cleanup_minus5_excerpt(case: dict) -> str:
+    """读取当前服务端 cleanup.yml 中的 -5 通知配置片段。"""
+    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    if not target.is_file():
+        return "cleanup.yml 当前 -5 通知配置: 文件不存在\n"
+    lines = []
+    for line in target.read_text(encoding="utf-8", errors="replace").splitlines():
+        if "-5" in line and ("本轮扫地已跳过" in line or "门禁" in line):
+            lines.append(line)
+    if not lines:
+        return "cleanup.yml 当前 -5 通知配置: 未找到 -5 文案\n"
+    return "cleanup.yml 当前 -5 通知配置:\n" + "\n".join(lines[:12]) + "\n"
+
+
+def copy_scenario_config(case: dict, run_dir: Path, scenario_id: str) -> Path:
+    """归档当前场景运行时的 cleanup.yml。"""
+    source = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    target = run_dir / "logs" / (case["id"] + "-" + scenario_id + "-cleanup.yml")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if source.is_file():
+        shutil.copy2(source, target)
+    return target
 
 
 def wait_server_marker(server_log: Path, offset: int, markers: list[str], timeout: float = 12.0) -> str:
@@ -288,10 +313,15 @@ def run_guard_scenario(case: dict, username: str, process, game_dir: Path, run_d
         time.sleep(4.0)
     stats_shot = send_command_and_screenshot(case, game_dir, run_dir, "/blwtc stats",
                                              scenario["id"] + "-stats", 1.5)
-    markers = ["skippedByGuard=true"] if scenario["expectGuard"] else ["skippedByGuard=false"]
+    if scenario["expectGuard"]:
+        markers = ["skippedByGuard=true"] if is_legacy(case) else ["skippedByGuard=true", "本轮扫地已跳过"]
+    else:
+        markers = ["skippedByGuard=false"]
     text = wait_server_marker(server_log, offset, markers, 18.0)
+    config_snapshot = copy_scenario_config(case, run_dir, scenario["id"])
+    screenshot_text = cleanup_minus5_excerpt(case) + "\n服务端运行日志:\n" + text
     server_shot = render_server_log_screenshot(
-        text,
+        screenshot_text,
         run_dir / "server-screenshots" / (case["id"] + "-" + scenario["id"] + "-server-log.png"),
         case["label"] + " / " + scenario["name"],
     )
@@ -301,6 +331,7 @@ def run_guard_scenario(case: dict, username: str, process, game_dir: Path, run_d
         "status": "PASS" if all(marker in text for marker in markers) else "FAIL",
         "expectedMarkers": markers,
         "serverExcerpt": text[-2400:],
+        "configSnapshot": str(config_snapshot),
         "clientScreenshots": [screenshot_info(clear_shot), screenshot_info(stats_shot)],
         "serverScreenshot": screenshot_info(server_shot),
     }

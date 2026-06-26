@@ -7,7 +7,10 @@ import pixeltech.bluenine.blworldtrashcan.config.LegacyMigrationPlan;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -23,6 +26,15 @@ import java.util.Map;
 public final class BukkitLegacyConfigMigrator {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final String REPORT_FILE = "legacy-migration-report.md";
+    private static final String CLEANUP_FILE = "cleanup.yml";
+    private static final int CLEANUP_GUARD_NOTIFY_KEY = -5;
+    private static final String CLEANUP_GUARD_NOTIFY_COMMENT = "# -5 表示本轮被扫地启动门禁跳过。";
+    private static final String[] CLEANUP_GUARD_NOTIFY_PATHS = {
+            "notify.chat.messages",
+            "notify.actionbar.messages",
+            "notify.bossbar.messages",
+            "notify.title.messages"
+    };
     private final JavaPlugin plugin;
 
     /** 创建旧配置迁移器。 */
@@ -32,6 +44,7 @@ public final class BukkitLegacyConfigMigrator {
 
     /** 如果检测到旧配置且尚未迁移，则执行一次迁移。 */
     public boolean migrateIfNeeded() {
+        ensureCurrentRuntimeDefaults();
         if (!plugin.getConfig().getBoolean("migration-enabled", true)) {
             return false;
         }
@@ -52,6 +65,210 @@ public final class BukkitLegacyConfigMigrator {
             plugin.getLogger().severe("[Migration] 旧配置迁移失败: " + exception.getMessage());
             return false;
         }
+    }
+
+    /** 补齐当前版本运行时需要的新增默认配置。 */
+    private void ensureCurrentRuntimeDefaults() {
+        try {
+            if (mergeCleanupGuardNotifyDefaults()) {
+                plugin.getLogger().info("[Config] 已补齐 cleanup.yml 缺失的 -5 扫地门禁通知默认文案。");
+            }
+        } catch (IOException exception) {
+            plugin.getLogger().warning("[Config] 补齐 cleanup.yml 默认通知失败: " + exception.getMessage());
+        }
+    }
+
+    /** 把 cleanup.yml 中缺失的扫地门禁通知默认项追加回原配置。 */
+    private boolean mergeCleanupGuardNotifyDefaults() throws IOException {
+        File file = new File(plugin.getDataFolder(), CLEANUP_FILE);
+        if (!file.isFile()) {
+            return false;
+        }
+        YamlConfiguration current = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration defaults = loadResourceYaml(CLEANUP_FILE);
+        String original = new String(Files.readAllBytes(file.toPath()), UTF8);
+        String updated = original;
+        for (String path : CLEANUP_GUARD_NOTIFY_PATHS) {
+            if (hasEventMessage(current.getStringList(path), CLEANUP_GUARD_NOTIFY_KEY)) {
+                continue;
+            }
+            String defaultMessage = firstEventMessage(defaults.getStringList(path), CLEANUP_GUARD_NOTIFY_KEY);
+            if (defaultMessage.isEmpty()) {
+                continue;
+            }
+            updated = insertYamlListEntry(updated, path, defaultMessage, CLEANUP_GUARD_NOTIFY_COMMENT);
+        }
+        if (updated.equals(original)) {
+            return false;
+        }
+        Files.write(file.toPath(), updated.getBytes(UTF8));
+        return true;
+    }
+
+    /** 从插件 jar 内按 UTF-8 加载默认 YAML。 */
+    private YamlConfiguration loadResourceYaml(String path) throws IOException {
+        InputStream inputStream = plugin.getResource(path);
+        if (inputStream == null) {
+            return new YamlConfiguration();
+        }
+        try (Reader reader = new InputStreamReader(inputStream, UTF8)) {
+            return YamlConfiguration.loadConfiguration(reader);
+        }
+    }
+
+    /** 判断列表中是否已有指定事件键。 */
+    private boolean hasEventMessage(List<String> values, int key) {
+        return !firstEventMessage(values, key).isEmpty();
+    }
+
+    /** 返回列表中第一个指定事件键的消息。 */
+    private String firstEventMessage(List<String> values, int key) {
+        String keyText = String.valueOf(key);
+        for (String value : values) {
+            if (eventKey(value).equals(keyText)) {
+                return value;
+            }
+        }
+        return "";
+    }
+
+    /** 解析分号消息的事件键。 */
+    private String eventKey(String value) {
+        if (value == null) {
+            return "";
+        }
+        int split = value.indexOf(';');
+        String key = split >= 0 ? value.substring(0, split) : value;
+        return key.trim();
+    }
+
+    /** 在指定 YAML 列表末尾插入一个新值。 */
+    private String insertYamlListEntry(String text, String path, String value, String comment) {
+        String separator = text.contains("\r\n") ? "\r\n" : "\n";
+        String[] lines = text.split("\\r?\\n", -1);
+        int keyLine = findYamlPathLine(lines, path);
+        if (keyLine < 0) {
+            return text;
+        }
+        int listIndent = countLeadingSpaces(lines[keyLine]) + 2;
+        int lastListLine = findLastListLine(lines, keyLine + 1, countLeadingSpaces(lines[keyLine]), listIndent);
+        if (lastListLine < 0) {
+            return text;
+        }
+        List<String> output = new ArrayList<>();
+        for (String line : lines) {
+            output.add(line);
+        }
+        int insertAt = lastListLine + 1;
+        String spaces = repeatSpace(listIndent);
+        output.add(insertAt, spaces + "- \"" + escapeYamlDoubleQuoted(value) + "\"");
+        if (!hasCommentNear(lines, keyLine + 1, lastListLine, comment)) {
+            output.add(insertAt, spaces + comment);
+        }
+        return joinLines(output, separator);
+    }
+
+    /** 查找点分 YAML 路径最后一个键所在行。 */
+    private int findYamlPathLine(String[] lines, String path) {
+        String[] keys = path.split("\\.");
+        int start = 0;
+        int indent = 0;
+        for (int index = 0; index < keys.length; index++) {
+            int found = findYamlKeyLine(lines, start, indent, keys[index]);
+            if (found < 0) {
+                return -1;
+            }
+            start = found + 1;
+            indent = countLeadingSpaces(lines[found]) + 2;
+        }
+        return start - 1;
+    }
+
+    /** 在指定缩进层级查找 YAML 键。 */
+    private int findYamlKeyLine(String[] lines, int start, int indent, String key) {
+        for (int index = start; index < lines.length; index++) {
+            String trimmed = lines[index].trim();
+            if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                continue;
+            }
+            int currentIndent = countLeadingSpaces(lines[index]);
+            if (currentIndent < indent) {
+                return -1;
+            }
+            if (currentIndent == indent && isYamlKey(trimmed, key)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    /** 判断一行是否是目标 YAML 键。 */
+    private boolean isYamlKey(String trimmed, String key) {
+        return trimmed.equals(key + ":") || trimmed.startsWith(key + ": ");
+    }
+
+    /** 查找 YAML 列表最后一个条目行。 */
+    private int findLastListLine(String[] lines, int start, int parentIndent, int fallbackListIndent) {
+        int last = -1;
+        for (int index = start; index < lines.length; index++) {
+            String trimmed = lines[index].trim();
+            if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                continue;
+            }
+            int indent = countLeadingSpaces(lines[index]);
+            if (indent <= parentIndent) {
+                break;
+            }
+            if (indent >= fallbackListIndent && trimmed.startsWith("- ")) {
+                last = index;
+            }
+        }
+        return last;
+    }
+
+    /** 判断列表附近是否已经有相同注释。 */
+    private boolean hasCommentNear(String[] lines, int start, int end, String comment) {
+        for (int index = start; index <= end && index < lines.length; index++) {
+            if (lines[index].trim().equals(comment)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** 统计行首空格数。 */
+    private int countLeadingSpaces(String line) {
+        int count = 0;
+        while (count < line.length() && line.charAt(count) == ' ') {
+            count++;
+        }
+        return count;
+    }
+
+    /** 生成指定数量空格。 */
+    private String repeatSpace(int count) {
+        StringBuilder builder = new StringBuilder(count);
+        for (int index = 0; index < count; index++) {
+            builder.append(' ');
+        }
+        return builder.toString();
+    }
+
+    /** 转义 YAML 双引号字符串内容。 */
+    private String escapeYamlDoubleQuoted(String value) {
+        return value.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    /** 使用指定换行符拼接多行文本。 */
+    private String joinLines(List<String> lines, String separator) {
+        StringBuilder builder = new StringBuilder();
+        for (int index = 0; index < lines.size(); index++) {
+            if (index > 0) {
+                builder.append(separator);
+            }
+            builder.append(lines.get(index));
+        }
+        return builder.toString();
     }
 
     /** 查找可迁移的旧配置来源。 */
