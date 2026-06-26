@@ -245,6 +245,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return;
         }
         stats.setGuardTargetEntities(0);
+        handleGlobalTrashRefresh(stats);
         final CompletionTracker tracker = new CompletionTracker(stats, foliaConfig);
         tracker.recordCollectedChunks(chunksSeen, chunksSkippedByLimit);
         tracker.startTimeout();
@@ -356,6 +357,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             finishCleanupOnGlobalRegion(stats, null, timedOut);
             return;
         }
+        handleGlobalTrashRefresh(stats);
         CompletionTracker cleanupTracker = new CompletionTracker(stats, tracker.foliaConfig);
         cleanupTracker.recordCollectedChunks(tracker.chunks.size(), 0);
         cleanupTracker.startTimeout();
@@ -727,12 +729,12 @@ public final class FoliaRegionCleanupFeature implements Feature {
         stats.addEntitiesSkipped();
     }
 
-    /** 结束清理并在全局区域刷新公共垃圾桶和输出日志。 */
+    /** 结束清理并在全局区域输出日志和通知。 */
     private void finishCleanup(final CleanupFeature.CleanupStats stats) {
         finishCleanup(stats, null, false);
     }
 
-    /** 结束清理并在全局区域刷新公共垃圾桶和输出日志。 */
+    /** 结束清理并在全局区域输出日志和通知。 */
     private void finishCleanup(final CleanupFeature.CleanupStats stats, final CompletionTracker tracker, final boolean timedOut) {
         try {
             Bukkit.getGlobalRegionScheduler().execute(plugin, new Runnable() {
@@ -748,7 +750,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
     }
 
-    /** 在全局区域完成清理统计、通知和公共垃圾桶刷新。 */
+    /** 在全局区域完成清理统计、通知和状态释放。 */
     private void finishCleanupOnGlobalRegion(CleanupFeature.CleanupStats stats, CompletionTracker tracker, boolean timedOut) {
         if (stats.isGuardSkipped()) {
             lastStats = stats;
@@ -764,7 +766,6 @@ public final class FoliaRegionCleanupFeature implements Feature {
             sendNotify(-5, stats);
             return;
         }
-        handleGlobalTrashRefresh(stats);
         sendPersonalTrashBatchNotify(stats);
         lastStats = stats;
         cleanupRunning.set(false);
@@ -818,7 +819,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         return -1;
     }
 
-    /** 按清理次数刷新公共垃圾桶。 */
+    /** 在本轮实际清理前按清理次数刷新公共垃圾桶。 */
     private void handleGlobalTrashRefresh(CleanupFeature.CleanupStats stats) {
         int interval = configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups();
         if (interval < 0 || globalTrashService == null || !globalTrashService.isEnabled()) {

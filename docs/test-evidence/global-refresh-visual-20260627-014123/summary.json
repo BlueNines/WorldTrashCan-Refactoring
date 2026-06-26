@@ -1,0 +1,148 @@
+{
+  "run": "global-refresh-visual-20260627-014123",
+  "results": [
+    {
+      "id": "universal_spigot2612",
+      "label": "spigot-26.1.2-managed",
+      "version": "26.1.2",
+      "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "status": "PASS",
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 517471,
+        "sha256": "52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "status": "PASS",
+          "expectedStock": 1,
+          "actualStock": 1,
+          "expectedGlobalTrashRefreshed": "false",
+          "serverExcerpt": "[01:42:06] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc clear\n[01:42:06] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=12, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n",
+          "clientExcerpt": "[01:42:17] [Render thread/INFO]: [System] [CHAT] 垃圾桶库存:\n[01:42:17] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶物品: 1 (堆叠 1)\n[01:42:17] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[01:42:17] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[01:42:19] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.42.19.png\n[01:42:20] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.42.20.png\n",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\screenshots\\universal_spigot2612-round-1-clear.png",
+              "size": 290933,
+              "sha256": "975ce6eea6aa66058dc33db33dd5575246f771c5bf0bb346389f126957c44a80",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 122.2470703125
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\screenshots\\universal_spigot2612-round-1-debugstock.png",
+              "size": 286715,
+              "sha256": "bfbf5fc292f83f0a5cc06d223f32dd1eaa3334ef229e62725723e014e738a35e",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 121.67057291666667
+            }
+          ],
+          "serverScreenshot": {
+            "path": "docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\server-screenshots\\universal_spigot2612-round-1-server-log.png",
+            "size": 113056,
+            "sha256": "da8a975b2c421a8d1e5f57a95d59a3b0fb81596c87f833cc4e5316221af5d471",
+            "dimensions": [
+              1500,
+              550
+            ],
+            "brightness": 36.183268229166664
+          }
+        },
+        {
+          "round": 2,
+          "status": "PASS",
+          "expectedStock": 2,
+          "actualStock": 2,
+          "expectedGlobalTrashRefreshed": "false",
+          "serverExcerpt": "[01:42:27] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc clear\n[01:42:27] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=12, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n",
+          "clientExcerpt": "[01:42:37] [Render thread/INFO]: [System] [CHAT] 垃圾桶库存:\n[01:42:37] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶物品: 2 (堆叠 1)\n[01:42:37] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[01:42:37] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[01:42:40] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.42.40.png\n[01:42:40] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.42.40_2.png\n",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\screenshots\\universal_spigot2612-round-2-clear.png",
+              "size": 281238,
+              "sha256": "8e55a2d8aa9b29580053f082b0cb702e63fec767e6c16335a398f0417ab4f50b",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 123.34765625
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\screenshots\\universal_spigot2612-round-2-debugstock.png",
+              "size": 286373,
+              "sha256": "acac6089b861f1b3287009af9c28bca2f4d0a6124277f166402bd4e217bc5061",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 121.62141927083333
+            }
+          ],
+          "serverScreenshot": {
+            "path": "docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\server-screenshots\\universal_spigot2612-round-2-server-log.png",
+            "size": 114414,
+            "sha256": "e8758f9f7cf75ca8dd6f87b855d0eab764168c357c42e6defe8d6cae5a042fc7",
+            "dimensions": [
+              1500,
+              550
+            ],
+            "brightness": 36.224609375
+          }
+        },
+        {
+          "round": 3,
+          "status": "PASS",
+          "expectedStock": 1,
+          "actualStock": 1,
+          "expectedGlobalTrashRefreshed": "true",
+          "serverExcerpt": "[01:42:47] [Server thread/INFO]: RGBigot2612 issued server command: /blwtc clear\n[01:42:47] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=12, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n",
+          "clientExcerpt": "[01:42:58] [Render thread/INFO]: [System] [CHAT] 垃圾桶库存:\n[01:42:58] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶物品: 1 (堆叠 1)\n[01:42:58] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[01:42:58] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[01:43:00] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.43.00.png\n[01:43:01] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.43.01.png\n",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\screenshots\\universal_spigot2612-round-3-clear.png",
+              "size": 281220,
+              "sha256": "53926651ae0281e4dd67eb13d2eb55fb519bf88e3c251f2db49891b4c7b64885",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 123.35319010416667
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\screenshots\\universal_spigot2612-round-3-debugstock.png",
+              "size": 285920,
+              "sha256": "b06eff7fcc7e1f442f283aaa0d4a9c502735b731868ee5c1f1fdb8bce7ac71ff",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 121.69303385416667
+            }
+          ],
+          "serverScreenshot": {
+            "path": "docs\\test-evidence\\global-refresh-visual-20260627-014123\\universal_spigot2612\\server-screenshots\\universal_spigot2612-round-3-server-log.png",
+            "size": 114860,
+            "sha256": "82886942ab700d2189f52c066e490510d2243d6757eb6011147e19014070267e",
+            "dimensions": [
+              1500,
+              550
+            ],
+            "brightness": 36.207682291666664
+          }
+        }
+      ],
+      "username": "RGBigot2612"
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014123\\global-refresh-contact-sheet.png"
+}

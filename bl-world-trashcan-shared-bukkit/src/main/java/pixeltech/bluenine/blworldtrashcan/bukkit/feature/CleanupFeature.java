@@ -126,7 +126,7 @@ public final class CleanupFeature implements Feature {
             return stats;
         }
         if (guardConfig.getMinTotalEntities() > 0) {
-            cleanWithEntityGuard(cleanupConfig, policy, stats);
+            cleanWithEntityGuard(bundle, cleanupConfig, policy, stats);
             if (stats.isGuardSkipped()) {
                 lastStats = stats;
                 logCleanupGuardSkipped(stats);
@@ -134,6 +134,7 @@ public final class CleanupFeature implements Feature {
             }
         } else {
             stats.setGuardTargetEntities(0);
+            handleGlobalTrashRefresh(bundle, stats);
             for (World world : Bukkit.getWorlds()) {
                 if (cleanupConfig.isIgnoredWorld(world.getName())) {
                     continue;
@@ -141,7 +142,6 @@ public final class CleanupFeature implements Feature {
                 cleanWorld(world, policy, stats);
             }
         }
-        handleGlobalTrashRefresh(bundle, stats);
         sendPersonalTrashBatchNotify(stats);
         lastStats = stats;
         plugin.getLogger().info("[Cleanup] worlds=" + stats.worlds
@@ -251,7 +251,7 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 按扫地门禁统计目标实体，达到阈值后再实际清理。 */
-    private void cleanWithEntityGuard(CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats) {
+    private void cleanWithEntityGuard(ConfigBundle bundle, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats) {
         int minTotalEntities = cleanupConfig.getGuardConfig().getMinTotalEntities();
         if (minTotalEntities > MAX_DEFERRED_GUARD_TARGETS) {
             CountResult result = countCleanableTargets(cleanupConfig, policy);
@@ -261,6 +261,7 @@ public final class CleanupFeature implements Feature {
                 stats.markGuardSkipped(GUARD_REASON_TARGET_ENTITIES);
                 return;
             }
+            handleGlobalTrashRefresh(bundle, stats);
             for (World world : Bukkit.getWorlds()) {
                 if (cleanupConfig.isIgnoredWorld(world.getName())) {
                     continue;
@@ -287,6 +288,7 @@ public final class CleanupFeature implements Feature {
                         stats.setGuardTargetEntities(stats.getGuardTargetEntities() + 1);
                         if (stats.getGuardTargetEntities() >= minTotalEntities) {
                             thresholdReached = true;
+                            handleGlobalTrashRefresh(bundle, stats);
                             cleanDeferredTargets(deferredTargets, policy, stats);
                             deferredTargets.clear();
                         }
@@ -452,7 +454,7 @@ public final class CleanupFeature implements Feature {
         }
     }
 
-    /** 按清理次数刷新公共垃圾桶。 */
+    /** 在本轮实际清理前按清理次数刷新公共垃圾桶。 */
     private void handleGlobalTrashRefresh(ConfigBundle bundle, CleanupStats stats) {
         int interval = bundle.getTrashConfig().getGlobalTrash().getClearEveryCleanups();
         if (interval < 0 || globalTrashService == null || !globalTrashService.isEnabled()) {

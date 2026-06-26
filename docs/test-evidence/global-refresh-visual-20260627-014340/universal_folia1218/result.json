@@ -1,0 +1,142 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 517471,
+    "sha256": "52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "PASS",
+      "expectedStock": 1,
+      "actualStock": 1,
+      "expectedGlobalTrashRefreshed": "false",
+      "serverExcerpt": "\n  \n[01:44:21 INFO]: RGBolia1218 issued server command: /blwtc clear\n> \n  \n[01:44:21 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=33, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=596, clearEvery=3, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n> \n  \n[01:44:21 INFO]: \u001b[96m清理成功 \u001b[94m| \u001b[94m回收 \u001b[93m1 \u001b[94m个物品，公共垃圾桶加入 \u001b[93m1 \u001b[94m个物品，清理生物 \u001b[93m0 \u001b[94m个 \u001b[93m(点我打开垃圾桶)\u001b[0m\n> \n  \n[01:44:21 INFO]: \u001b[94m还有 \u001b[93m2 \u001b[94m次清理，公共垃圾桶会刷新\u001b[0m\n> ",
+      "clientExcerpt": "[01:44:37] [Render thread/INFO]: [System] [CHAT] 垃圾桶库存:\n[01:44:37] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶物品: 1 (堆叠 1)\n[01:44:37] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[01:44:37] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[01:44:40] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.44.40.png\n[01:44:40] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.44.40_2.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\screenshots\\universal_folia1218-round-1-clear.png",
+          "size": 82919,
+          "sha256": "35384bae559105b99f7a7552f7114f4a92d5f0c1cde6889dcf61385ccc442d34",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 57.551432291666664
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\screenshots\\universal_folia1218-round-1-debugstock.png",
+          "size": 74952,
+          "sha256": "f1586a5128ba539da60315795493dc01ded420a12a9c91d6e3aa4d717e92bf78",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 56.943033854166664
+        }
+      ],
+      "serverScreenshot": {
+        "path": "docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\server-screenshots\\universal_folia1218-round-1-server-log.png",
+        "size": 147764,
+        "sha256": "358ba21c59c68e92771861b8a53cab0c2bad1c4aebe2d5d8f1822297166ff6f7",
+        "dimensions": [
+          1500,
+          875
+        ],
+        "brightness": 34.984700520833336
+      }
+    },
+    {
+      "round": 2,
+      "status": "PASS",
+      "expectedStock": 2,
+      "actualStock": 2,
+      "expectedGlobalTrashRefreshed": "false",
+      "serverExcerpt": "\n  \n[01:44:49 INFO]: RGBolia1218 issued server command: /blwtc clear\n> \n  \n[01:44:49 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=33, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=601, clearEvery=3, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n> \n  \n[01:44:49 INFO]: \u001b[96m清理成功 \u001b[94m| \u001b[94m回收 \u001b[93m1 \u001b[94m个物品，公共垃圾桶加入 \u001b[93m1 \u001b[94m个物品，清理生物 \u001b[93m0 \u001b[94m个 \u001b[93m(点我打开垃圾桶)\u001b[0m\n> \n  \n[01:44:49 INFO]: \u001b[94m还有 \u001b[93m1 \u001b[94m次清理，公共垃圾桶会刷新\u001b[0m\n> ",
+      "clientExcerpt": "[01:45:05] [Render thread/INFO]: [System] [CHAT] 垃圾桶库存:\n[01:45:05] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶物品: 2 (堆叠 1)\n[01:45:05] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[01:45:05] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[01:45:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.45.08.png\n[01:45:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.45.08_2.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\screenshots\\universal_folia1218-round-2-clear.png",
+          "size": 81876,
+          "sha256": "0e9b8a63b3020026e709af1c0a5364848e1649dff0fa160ee01b86d6b497c921",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 57.6572265625
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\screenshots\\universal_folia1218-round-2-debugstock.png",
+          "size": 75028,
+          "sha256": "c25fd07628ce7d33d3290ff6942fc90194057eded9ea29e5d35861b7f02d2671",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 56.953776041666664
+        }
+      ],
+      "serverScreenshot": {
+        "path": "docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\server-screenshots\\universal_folia1218-round-2-server-log.png",
+        "size": 148041,
+        "sha256": "841d4ef3cb6a5356eb257d5ba06f9ff098c166d0ce09890f673a20ab081b916d",
+        "dimensions": [
+          1500,
+          875
+        ],
+        "brightness": 35.019205729166664
+      }
+    },
+    {
+      "round": 3,
+      "status": "PASS",
+      "expectedStock": 1,
+      "actualStock": 1,
+      "expectedGlobalTrashRefreshed": "true",
+      "serverExcerpt": "\n  \n[01:45:17 INFO]: RGBolia1218 issued server command: /blwtc clear\n> \n  \n[01:45:18 INFO]: [BLWorldTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=33, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=599, clearEvery=3, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n> \n  \n[01:45:18 INFO]: \u001b[96m清理成功 \u001b[94m| \u001b[94m回收 \u001b[93m1 \u001b[94m个物品，公共垃圾桶加入 \u001b[93m1 \u001b[94m个物品，清理生物 \u001b[93m0 \u001b[94m个 \u001b[93m(点我打开垃圾桶)\u001b[0m\n> \n  \n[01:45:18 INFO]: \u001b[96m公共垃圾桶的物品已刷新\u001b[0m\n> ",
+      "clientExcerpt": "[01:45:34] [Render thread/INFO]: [System] [CHAT] 垃圾桶库存:\n[01:45:34] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶物品: 1 (堆叠 1)\n[01:45:34] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[01:45:34] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[01:45:36] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.45.36.png\n[01:45:37] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_01.45.37.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\screenshots\\universal_folia1218-round-3-clear.png",
+          "size": 81243,
+          "sha256": "1f6681ac4ce9d6a7adc2f79be75ea6d644665b4c1c566830e424770a48af1a3e",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 57.52734375
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\screenshots\\universal_folia1218-round-3-debugstock.png",
+          "size": 74982,
+          "sha256": "97f8cc499fa7a64154c42c922fca0e7ea09c55baa9483d0ee0fef634d9bbc9a1",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 56.935872395833336
+        }
+      ],
+      "serverScreenshot": {
+        "path": "docs\\test-evidence\\global-refresh-visual-20260627-014340\\universal_folia1218\\server-screenshots\\universal_folia1218-round-3-server-log.png",
+        "size": 148653,
+        "sha256": "76f896f4b4e5928ffa7d80388418b088d0305b0ab03a67ab40e5e9011eb3b4ea",
+        "dimensions": [
+          1500,
+          875
+        ],
+        "brightness": 34.853841145833336
+      }
+    }
+  ],
+  "username": "RGBolia1218"
+}

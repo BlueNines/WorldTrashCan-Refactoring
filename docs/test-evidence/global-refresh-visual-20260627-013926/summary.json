@@ -1,0 +1,148 @@
+{
+  "run": "global-refresh-visual-20260627-013926",
+  "results": [
+    {
+      "id": "universal_managed_paper1122",
+      "label": "paper-1.12.2-managed-universal",
+      "version": "1.12.2",
+      "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "status": "PASS",
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 517471,
+        "sha256": "52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "status": "PASS",
+          "expectedStock": 1,
+          "actualStock": 1,
+          "expectedGlobalTrashRefreshed": "false",
+          "serverExcerpt": "[01:39:50 INFO]: RGBaper1122 issued server command: /blwtc clear\n[01:39:50 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n",
+          "clientExcerpt": "[01:40:00] [Client thread/INFO]: [CHAT] 垃圾桶库存:\n[01:40:00] [Client thread/INFO]: [CHAT] - 公共垃圾桶物品: 1 (堆叠 1)\n[01:40:00] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[01:40:00] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[01:40:02] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-27_01.40.02.png\n[01:40:03] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-27_01.40.03.png\n",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-round-1-clear.png",
+              "size": 22966,
+              "sha256": "1c0e668d1d90bc1908364c6b71430f76a5e5c1645dce7ba1479ed13623162534",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 179.2490234375
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-round-1-debugstock.png",
+              "size": 24582,
+              "sha256": "ec9f56b86e151f690880a00dd7b0a9b983c89115c5ac2f1581e5ca187af52177",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 174.48209635416666
+            }
+          ],
+          "serverScreenshot": {
+            "path": "docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-round-1-server-log.png",
+            "size": 102032,
+            "sha256": "3a42a701b9f4093f6e8a00ee953eea180e020acb3d4a271013702d72fa8482c6",
+            "dimensions": [
+              1500,
+              550
+            ],
+            "brightness": 35.446940104166664
+          }
+        },
+        {
+          "round": 2,
+          "status": "PASS",
+          "expectedStock": 2,
+          "actualStock": 2,
+          "expectedGlobalTrashRefreshed": "false",
+          "serverExcerpt": "[01:40:10 INFO]: RGBaper1122 issued server command: /blwtc clear\n[01:40:10 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n",
+          "clientExcerpt": "[01:40:20] [Client thread/INFO]: [CHAT] 垃圾桶库存:\n[01:40:20] [Client thread/INFO]: [CHAT] - 公共垃圾桶物品: 2 (堆叠 1)\n[01:40:20] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[01:40:20] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[01:40:23] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-27_01.40.23.png\n[01:40:23] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-27_01.40.23_2.png\n",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-round-2-clear.png",
+              "size": 23270,
+              "sha256": "4efd809aac2a8c6c58c5e83ee95936bed59421d827c1576d568b515330bf9092",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 177.81022135416666
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-round-2-debugstock.png",
+              "size": 27070,
+              "sha256": "301cab1bc553cbe121007b7e13727324766b06c029a853392bdc748331313a46",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 175.021484375
+            }
+          ],
+          "serverScreenshot": {
+            "path": "docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-round-2-server-log.png",
+            "size": 102687,
+            "sha256": "933478e2b0dfe1b94c626573632b28dc876e7157b613b00bbec1ad3b24fa4fb0",
+            "dimensions": [
+              1500,
+              550
+            ],
+            "brightness": 35.449869791666664
+          }
+        },
+        {
+          "round": 3,
+          "status": "PASS",
+          "expectedStock": 1,
+          "actualStock": 1,
+          "expectedGlobalTrashRefreshed": "true",
+          "serverExcerpt": "[01:40:31 INFO]: RGBaper1122 issued server command: /blwtc clear\n[01:40:31 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n",
+          "clientExcerpt": "[01:40:41] [Client thread/INFO]: [CHAT] 垃圾桶库存:\n[01:40:41] [Client thread/INFO]: [CHAT] - 公共垃圾桶物品: 1 (堆叠 1)\n[01:40:41] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[01:40:41] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[01:40:43] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-27_01.40.43.png\n[01:40:44] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-27_01.40.44.png\n",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-round-3-clear.png",
+              "size": 23677,
+              "sha256": "0da4999707deedf4604d63cf1f0d8f68ed62c85b2acf19b7eebb4360f5405aa2",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 179.06184895833334
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-round-3-debugstock.png",
+              "size": 30492,
+              "sha256": "a4c1a47e09c8d4033ae1dd2b94921e23f2401e8548fd56ad370c4f5d636d18f8",
+              "dimensions": [
+                704,
+                409
+              ],
+              "brightness": 176.1201171875
+            }
+          ],
+          "serverScreenshot": {
+            "path": "docs\\test-evidence\\global-refresh-visual-20260627-013926\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-round-3-server-log.png",
+            "size": 101329,
+            "sha256": "92814c39aba1eb9d48ebe8be6d12e235d6820085a28a385ce2e582309a6e82c3",
+            "dimensions": [
+              1500,
+              550
+            ],
+            "brightness": 35.39453125
+          }
+        }
+      ],
+      "username": "RGBaper1122"
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-refresh-visual-20260627-013926\\global-refresh-contact-sheet.png"
+}
