@@ -7,6 +7,16 @@ interval-seconds: 360
 ignored-worlds:
   - "testWorld"
 
+# 扫地启动门禁。
+# 这些配置只决定“本轮扫地是否启动”，不会改变具体哪些物品或实体会被清理。
+guards:
+  # 在线玩家低于该值时跳过本轮扫地。
+  # 默认 1，表示无人在线时不扫地；设为 0 可允许无人在线时继续自动扫地。
+  min-online-players: 1
+  # 会被本轮扫地处理的目标实体数量低于该值时跳过本轮扫地。
+  # 默认 400，避免实体很少时仍频繁扫描和清理；设为 0 可关闭实体数量门禁。
+  min-total-entities: 400
+
 # Folia 专用清理保护。
 # 普通 Bukkit、Paper、Legacy 运行时会读取但不会使用这些设置。
 folia:
@@ -84,7 +94,8 @@ notify:
       - "1;&#FFD1661秒"
       - "0;&#5AC8FA清理成功 &#64748B| &#C9D4E2回收 &#FFD166%DealItemSum% &#C9D4E2个物品，公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个 &#E7C873(点我打开垃圾桶)"
       - "-4;&#FFD166Folia 清理超时 &#64748B| &#C9D4E2已释放清理状态，下一轮会继续处理剩余 chunk"
-      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+      - "-5;&#FFD166本轮扫地已跳过 &#64748B| &#C9D4E2原因: &#FFD166%CleanupSkipReason% &#C9D4E2在线 &#FFD166%CleanupOnlinePlayers%/%CleanupMinOnlinePlayers% &#C9D4E2目标实体 &#FFD166%CleanupTargetEntities%/%CleanupMinTotalEntities%"
+      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态，-5 表示本轮被扫地启动门禁跳过。
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新"
@@ -104,7 +115,8 @@ notify:
       - "1;&#0F172A▌ &#FFD166&l1秒"
       - "0;&#0F172A▌ &#5AC8FA清理成功 &#64748B| &#C9D4E2公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个"
       - "-4;&#0F172A▌ &#FFD166Folia 清理超时 &#64748B| &#C9D4E2已释放状态，下一轮继续"
-      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+      - "-5;&#0F172A▌ &#FFD166本轮扫地已跳过 &#64748B| &#C9D4E2%CleanupSkipReason% &#FFD166%CleanupOnlinePlayers%/%CleanupMinOnlinePlayers% &#C9D4E2目标 &#FFD166%CleanupTargetEntities%/%CleanupMinTotalEntities%"
+      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态，-5 表示本轮被扫地启动门禁跳过。
       - "-1;&#0F172A▌ &#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新"
       - "-2;&#0F172A▌ &#5AC8FA公共垃圾桶的物品已刷新"
       - "-3;&#0F172A▌ &#C9D4E2公共垃圾桶不会自动刷新"
@@ -125,6 +137,7 @@ notify:
       - "1;&#FFD166&l1秒;SEGMENTED_20;YELLOW"
       - "0;&#5AC8FA清理成功，公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个;SEGMENTED_20;BLUE"
       - "-4;&#FFD166Folia 清理超时，已释放状态，下一轮继续;SEGMENTED_20;YELLOW"
+      - "-5;&#FFD166本轮扫地已跳过：%CleanupSkipReason%，在线 %CleanupOnlinePlayers%/%CleanupMinOnlinePlayers%，目标实体 %CleanupTargetEntities%/%CleanupMinTotalEntities%;SEGMENTED_20;YELLOW"
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新;SEGMENTED_20;BLUE"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新;SEGMENTED_20;BLUE"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新;SEGMENTED_20;BLUE"
@@ -144,7 +157,8 @@ notify:
       - "1;&#FFD1661秒;"
       - "0;&#5AC8FA清理成功;&#C9D4E2公共垃圾桶加入 &#FFD166%GlobalTrashAddSum% &#C9D4E2个物品，清理生物 &#FFD166%EntitySum% &#C9D4E2个"
       - "-4;&#FFD166Folia 清理超时;&#C9D4E2已释放状态，下一轮会继续处理"
-      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态。
+      - "-5;&#FFD166扫地已跳过;&#C9D4E2%CleanupSkipReason% 在线 %CleanupOnlinePlayers%/%CleanupMinOnlinePlayers% 目标实体 %CleanupTargetEntities%/%CleanupMinTotalEntities%"
+      # -1 表示本轮清理完成但公共垃圾桶未刷新，-2 表示公共垃圾桶已刷新，-3 表示公共垃圾桶不会自动刷新，-4 表示 Folia 本轮清理超时但已释放状态，-5 表示本轮被扫地启动门禁跳过。
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新;"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新;"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新;"

@@ -32,6 +32,10 @@ public final class ConfigBundleLoader {
                 cleanup.getInt("interval-seconds", 360),
                 toSet(cleanup.getStringList("ignored-worlds")),
                 cleanupSettings,
+                new CleanupConfig.CleanupGuardConfig(
+                        cleanup.getInt("guards.min-online-players", 1),
+                        cleanup.getInt("guards.min-total-entities", 400)
+                ),
                 new CleanupConfig.FoliaCleanupConfig(
                         cleanup.getInt("folia.timeout-seconds", 30),
                         cleanup.getInt("folia.max-chunks-per-cleanup", 4096),

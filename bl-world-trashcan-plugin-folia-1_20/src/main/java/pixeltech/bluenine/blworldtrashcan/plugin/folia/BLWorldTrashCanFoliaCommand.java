@@ -184,6 +184,27 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
         return Collections.emptyList();
     }
 
+    /** 返回扫地门禁原因文案。 */
+    private String cleanupGuardReason(CleanupFeature.CleanupStats stats) {
+        if (CleanupFeature.GUARD_REASON_ONLINE_PLAYERS.equals(stats.getGuardSkipReason())) {
+            return "在线人数不足";
+        }
+        if (CleanupFeature.GUARD_REASON_TARGET_ENTITIES.equals(stats.getGuardSkipReason())) {
+            return "目标实体数量不足";
+        }
+        return "未跳过";
+    }
+
+    /** 返回扫地门禁目标实体数量文案。 */
+    private String cleanupGuardTargetText(CleanupFeature.CleanupStats stats) {
+        return stats.getGuardTargetEntities() < 0 ? "未统计" : String.valueOf(stats.getGuardTargetEntities());
+    }
+
+    /** 返回扫地门禁状态文案。 */
+    private String cleanupGuardState(CleanupFeature.CleanupStats stats) {
+        return stats.isGuardSkipped() ? "已跳过: " + cleanupGuardReason(stats) : "已通过";
+    }
+
     /** 发送帮助。 */
     private void sendHelp(CommandSender sender) {
         sendMessageList(sender, "command.help", Arrays.asList(
@@ -224,6 +245,12 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
     private void sendStats(CommandSender sender) {
         CleanupFeature.CleanupStats stats = plugin.getLastCleanupStats();
         sender.sendMessage(message("command.stats.header", "{prefix}&a清理统计:"));
+        sender.sendMessage(message("command.stats.guard", "&7- &f扫地门禁: &a{state} &7(在线 {online}/{minOnline}, 目标实体 {targets}/{minEntities})",
+                "{state}", cleanupGuardState(stats),
+                "{online}", String.valueOf(stats.getGuardOnlinePlayers()),
+                "{minOnline}", String.valueOf(stats.getGuardMinOnlinePlayers()),
+                "{targets}", cleanupGuardTargetText(stats),
+                "{minEntities}", String.valueOf(stats.getGuardMinTotalEntities())));
         sender.sendMessage(message("command.stats.worlds", "&7- &f世界数: &a{worlds}", "{worlds}", String.valueOf(stats.getWorlds())));
         sender.sendMessage(message("command.stats.routed", "&7- &f回收物品: &a{routed} &7(世界 {world}, 个人 {personal}, 公共 {global})",
                 "{routed}", String.valueOf(stats.getItemsRouted()),

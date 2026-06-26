@@ -55,6 +55,22 @@
 - `messages/message_es.yml`：西班牙语消息。
 - `data/worlds.yml`：世界垃圾桶运行数据。
 
+## 扫地启动门禁
+
+`cleanup.yml` 新增 `guards` 配置，用来决定本轮扫地是否启动：
+
+```yaml
+guards:
+  min-online-players: 1
+  min-total-entities: 400
+```
+
+- `min-online-players`：在线玩家低于该值时跳过扫地，默认 `1`，即无人在线不扫地。
+- `min-total-entities`：会被本轮扫地处理的目标实体数量低于该值时跳过扫地，默认 `400`。
+- 任意一项设为 `0` 可关闭对应门禁。
+- `/blwtc clear` 和 `/blwtc stats` 会显示最近一轮门禁状态；自动扫地被跳过时使用 `notify.*.messages` 的 `-5` 文案。
+- Folia 分支会先按 RegionScheduler 安全计数，达到阈值后再进入 region-safe 清理阶段。
+
 ## Folia 清理保护
 
 Folia 分支的世界清理不再在 global thread 上执行普通 Bukkit 的全世界实体扫描。当前实现会先收集未忽略世界的已加载 chunk，再按 `cleanup.yml` 的 `folia.*` 配置分批提交到 RegionScheduler；掉落物删除、实体删除、通知和写入收尾都有异常兜底，避免单个 region 或实体任务异常卡住整轮清理。

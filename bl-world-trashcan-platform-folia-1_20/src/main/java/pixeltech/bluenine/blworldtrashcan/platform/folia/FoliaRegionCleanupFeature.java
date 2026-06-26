@@ -207,9 +207,17 @@ public final class FoliaRegionCleanupFeature implements Feature {
         CleanupPolicy policy = new DefaultCleanupPolicy(bundle.getCleanupSettings());
         CleanupConfig cleanupConfig = bundle.getCleanupConfig();
         CleanupConfig.FoliaCleanupConfig foliaConfig = cleanupConfig.getFoliaCleanup();
-        final CompletionTracker tracker = new CompletionTracker(stats, foliaConfig);
-        tracker.startTimeout();
+        CleanupConfig.CleanupGuardConfig guardConfig = cleanupConfig.getGuardConfig();
+        stats.recordGuardState(Bukkit.getOnlinePlayers().size(), guardConfig.getMinOnlinePlayers(),
+                -1, guardConfig.getMinTotalEntities());
+        if (stats.getGuardOnlinePlayers() < stats.getGuardMinOnlinePlayers()) {
+            stats.markGuardSkipped(CleanupFeature.GUARD_REASON_ONLINE_PLAYERS);
+            finishCleanup(stats);
+            return;
+        }
         List<Chunk> chunksToScan = new ArrayList<>();
+        int chunksSeen = 0;
+        int chunksSkippedByLimit = 0;
         for (World world : Bukkit.getWorlds()) {
             if (cleanupConfig.isIgnoredWorld(world.getName())) {
                 continue;
@@ -218,9 +226,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 stats.addWorld();
                 Chunk[] chunks = world.getLoadedChunks();
                 for (Chunk chunk : chunks) {
-                    tracker.chunkSeen();
+                    chunksSeen++;
                     if (isChunkScanLimited(foliaConfig, chunksToScan.size())) {
-                        tracker.chunkSkippedByLimit();
+                        chunksSkippedByLimit++;
                         continue;
                     }
                     chunksToScan.add(chunk);
@@ -230,6 +238,16 @@ public final class FoliaRegionCleanupFeature implements Feature {
                         + world.getName() + " - " + exception.getMessage());
             }
         }
+        if (guardConfig.getMinTotalEntities() > 0) {
+            final GuardCountTracker guardTracker = new GuardCountTracker(stats, foliaConfig, chunksToScan, policy);
+            guardTracker.startTimeout();
+            scheduleGuardCountBatch(chunksToScan, 0, policy, guardTracker, foliaConfig);
+            return;
+        }
+        stats.setGuardTargetEntities(0);
+        final CompletionTracker tracker = new CompletionTracker(stats, foliaConfig);
+        tracker.recordCollectedChunks(chunksSeen, chunksSkippedByLimit);
+        tracker.startTimeout();
         scheduleChunkBatch(chunksToScan, 0, policy, stats, tracker, foliaConfig);
     }
 
@@ -237,6 +255,111 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private boolean isChunkScanLimited(CleanupConfig.FoliaCleanupConfig foliaConfig, int currentSize) {
         int maxChunks = foliaConfig.getMaxChunksPerCleanup();
         return maxChunks > 0 && currentSize >= maxChunks;
+    }
+
+    /** 分批派发扫地门禁目标实体计数任务。 */
+    private void scheduleGuardCountBatch(final List<Chunk> chunks, final int startIndex, final CleanupPolicy policy,
+                                         final GuardCountTracker tracker,
+                                         final CleanupConfig.FoliaCleanupConfig foliaConfig) {
+        if (!tracker.isOpen()) {
+            return;
+        }
+        int endIndex = Math.min(chunks.size(), startIndex + foliaConfig.getChunkBatchSize());
+        for (int index = startIndex; index < endIndex; index++) {
+            scheduleGuardCount(chunks.get(index), policy, tracker);
+        }
+        if (endIndex >= chunks.size()) {
+            tracker.initialSchedulingDone();
+            return;
+        }
+        try {
+            platform.scheduler().runLater(new Runnable() {
+                /** 继续派发下一批门禁计数任务。 */
+                @Override
+                public void run() {
+                    scheduleGuardCountBatch(chunks, endIndex, policy, tracker, foliaConfig);
+                }
+            }, foliaConfig.getChunkBatchDelayTicks());
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[FoliaCleanup] 分批派发门禁计数失败: " + exception.getMessage());
+            tracker.initialSchedulingDone();
+        }
+    }
+
+    /** 安排单个 chunk 的门禁目标实体计数任务。 */
+    private void scheduleGuardCount(final Chunk chunk, final CleanupPolicy policy, final GuardCountTracker tracker) {
+        if (!tracker.isOpen()) {
+            return;
+        }
+        tracker.taskStarted();
+        try {
+            Bukkit.getRegionScheduler().run(plugin, chunk.getWorld(), chunk.getX(), chunk.getZ(), new Consumer<ScheduledTask>() {
+                /** 在 chunk 所在 region 内统计会被扫地处理的实体。 */
+                @Override
+                public void accept(ScheduledTask task) {
+                    try {
+                        if (tracker.isOpen()) {
+                            countChunkTargets(chunk, policy, tracker);
+                        }
+                    } catch (RuntimeException exception) {
+                        plugin.getLogger().warning("[FoliaCleanup] 统计门禁目标实体失败: "
+                                + chunk.getWorld().getName() + "," + chunk.getX() + "," + chunk.getZ()
+                                + " - " + exception.getMessage());
+                    } finally {
+                        tracker.taskDone();
+                    }
+                }
+            });
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[FoliaCleanup] 分派门禁计数失败: "
+                    + chunk.getWorld().getName() + "," + chunk.getX() + "," + chunk.getZ()
+                    + " - " + exception.getMessage());
+            tracker.taskDone();
+        }
+    }
+
+    /** 在当前 region 内统计会被扫地处理的实体。 */
+    private void countChunkTargets(Chunk chunk, CleanupPolicy policy, GuardCountTracker tracker) {
+        Entity[] entities = chunk.getEntities();
+        for (Entity entity : entities) {
+            if (!tracker.isOpen()) {
+                return;
+            }
+            if (!(entity instanceof Player) && isCleanableTarget(entity, policy)) {
+                tracker.targetFound();
+            }
+        }
+    }
+
+    /** 完成 Folia 门禁计数后决定是否进入正式清理。 */
+    private void finishGuardCount(final GuardCountTracker tracker, final boolean timedOut) {
+        try {
+            Bukkit.getGlobalRegionScheduler().execute(plugin, new Runnable() {
+                /** 在全局区域根据门禁计数继续或跳过。 */
+                @Override
+                public void run() {
+                    finishGuardCountOnGlobalRegion(tracker, timedOut);
+                }
+            });
+        } catch (RuntimeException exception) {
+            cleanupRunning.set(false);
+            plugin.getLogger().warning("[FoliaCleanup] 分派门禁计数收尾失败，已释放运行状态: " + exception.getMessage());
+        }
+    }
+
+    /** 在全局区域根据门禁计数继续或跳过。 */
+    private void finishGuardCountOnGlobalRegion(GuardCountTracker tracker, boolean timedOut) {
+        CleanupFeature.CleanupStats stats = tracker.stats;
+        stats.setGuardTargetEntities(tracker.targetEntities.get());
+        if (timedOut || stats.getGuardTargetEntities() < stats.getGuardMinTotalEntities()) {
+            stats.markGuardSkipped(CleanupFeature.GUARD_REASON_TARGET_ENTITIES);
+            finishCleanupOnGlobalRegion(stats, null, timedOut);
+            return;
+        }
+        CompletionTracker cleanupTracker = new CompletionTracker(stats, tracker.foliaConfig);
+        cleanupTracker.recordCollectedChunks(tracker.chunks.size(), 0);
+        cleanupTracker.startTimeout();
+        scheduleChunkBatch(tracker.chunks, 0, tracker.policy, stats, cleanupTracker, tracker.foliaConfig);
     }
 
     /** 分批向 Folia region scheduler 派发 chunk 扫描任务。 */
@@ -328,6 +451,27 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
     }
 
+    /** 判断实体是否会被本轮扫地处理。 */
+    private boolean isCleanableTarget(Entity entity, CleanupPolicy policy) {
+        if (entity instanceof Item) {
+            return isCleanableItemTarget((Item) entity, policy);
+        }
+        EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
+        return decision.getAction() == EntityCleanupAction.REMOVE;
+    }
+
+    /** 判断掉落物是否会被本轮扫地路由或删除。 */
+    private boolean isCleanableItemTarget(Item item, CleanupPolicy policy) {
+        ItemStack itemStack = item.getItemStack();
+        if (itemStack == null) {
+            return false;
+        }
+        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        RouteState state = initialRouteState(item.getWorld(), snapshot, itemStack);
+        TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable, state.personalAvailable, state.globalAvailable);
+        return decision.getRoute() != TrashRoute.SKIP;
+    }
+
     /** 在物品实体所在 region 内处理掉落物。 */
     private void cleanItem(Item item, CleanupPolicy policy, CleanupFeature.CleanupStats stats, CompletionTracker tracker) {
         if (!tracker.isOpen()) {
@@ -346,10 +490,11 @@ public final class FoliaRegionCleanupFeature implements Feature {
 
     /** 生成初始路由可用性。 */
     private RouteState initialRouteState(World world, ItemSnapshot snapshot, ItemStack itemStack) {
+        UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
         synchronized (trashRouter) {
             return new RouteState(
                     trashRouter.hasWorldTrash(world, itemStack),
-                    trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), itemStack),
+                    trashRouter.hasPersonalTrash(ownerUuid, itemStack),
                     trashRouter.hasGlobalTrash(itemStack)
             );
         }
@@ -605,12 +750,32 @@ public final class FoliaRegionCleanupFeature implements Feature {
 
     /** 在全局区域完成清理统计、通知和公共垃圾桶刷新。 */
     private void finishCleanupOnGlobalRegion(CleanupFeature.CleanupStats stats, CompletionTracker tracker, boolean timedOut) {
+        if (stats.isGuardSkipped()) {
+            lastStats = stats;
+            cleanupRunning.set(false);
+            plugin.getLogger().info("[FoliaCleanup] skippedByGuard=true"
+                    + ", guardReason=" + stats.getGuardSkipReason()
+                    + ", onlinePlayers=" + stats.getGuardOnlinePlayers()
+                    + ", minOnlinePlayers=" + stats.getGuardMinOnlinePlayers()
+                    + ", targetEntities=" + stats.getGuardTargetEntities()
+                    + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
+                    + ", worlds=" + stats.getWorlds()
+                    + ", timedOut=" + timedOut);
+            sendNotify(-5, stats);
+            return;
+        }
         handleGlobalTrashRefresh(stats);
         sendPersonalTrashBatchNotify(stats);
         lastStats = stats;
         cleanupRunning.set(false);
         long elapsedMs = tracker == null ? -1L : tracker.elapsedMillis();
         plugin.getLogger().info("[FoliaCleanup] worlds=" + stats.getWorlds()
+                + ", skippedByGuard=" + stats.isGuardSkipped()
+                + ", guardReason=" + stats.getGuardSkipReason()
+                + ", onlinePlayers=" + stats.getGuardOnlinePlayers()
+                + ", minOnlinePlayers=" + stats.getGuardMinOnlinePlayers()
+                + ", targetEntities=" + stats.getGuardTargetEntities()
+                + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
                 + ", itemsRouted=" + stats.getItemsRouted()
                 + ", itemsRemoved=" + stats.getItemsRemoved()
                 + ", itemsSkipped=" + stats.getItemsSkipped()
@@ -930,8 +1095,24 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 .replace("%DealItemSum%", String.valueOf(dealItemSum))
                 .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
                 .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
+                .replace("%CleanupSkipReason%", guardReasonText(stats))
+                .replace("%CleanupOnlinePlayers%", String.valueOf(stats.getGuardOnlinePlayers()))
+                .replace("%CleanupMinOnlinePlayers%", String.valueOf(stats.getGuardMinOnlinePlayers()))
+                .replace("%CleanupTargetEntities%", String.valueOf(stats.getGuardTargetEntities()))
+                .replace("%CleanupMinTotalEntities%", String.valueOf(stats.getGuardMinTotalEntities()))
                 .replace("%ClearGlobalText%", clearGlobalText(clearEvery, clearRemain))
                 .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
+    }
+
+    /** 返回扫地门禁原因文案。 */
+    private String guardReasonText(CleanupFeature.CleanupStats stats) {
+        if (CleanupFeature.GUARD_REASON_ONLINE_PLAYERS.equals(stats.getGuardSkipReason())) {
+            return "在线人数不足";
+        }
+        if (CleanupFeature.GUARD_REASON_TARGET_ENTITIES.equals(stats.getGuardSkipReason())) {
+            return "目标实体数量不足";
+        }
+        return "未跳过";
     }
 
     /** 返回公共垃圾桶刷新剩余清理次数。 */
@@ -1030,6 +1211,84 @@ public final class FoliaRegionCleanupFeature implements Feature {
         abstract int value(CompletionTracker tracker);
     }
 
+    /** Folia 门禁目标实体计数跟踪器。 */
+    private final class GuardCountTracker {
+        private final CleanupFeature.CleanupStats stats;
+        private final CleanupConfig.FoliaCleanupConfig foliaConfig;
+        private final List<Chunk> chunks;
+        private final CleanupPolicy policy;
+        private final AtomicInteger pendingTasks = new AtomicInteger(1);
+        private final AtomicBoolean completed = new AtomicBoolean(false);
+        private final AtomicInteger targetEntities = new AtomicInteger();
+        private TaskHandle timeoutTask;
+
+        /** 创建 Folia 门禁目标实体计数跟踪器。 */
+        private GuardCountTracker(CleanupFeature.CleanupStats stats, CleanupConfig.FoliaCleanupConfig foliaConfig,
+                                  List<Chunk> chunks, CleanupPolicy policy) {
+            this.stats = stats;
+            this.foliaConfig = foliaConfig;
+            this.chunks = chunks;
+            this.policy = policy;
+        }
+
+        /** 启动门禁计数超时保护。 */
+        private void startTimeout() {
+            try {
+                timeoutTask = platform.scheduler().runLater(new Runnable() {
+                    /** 超时后跳过本轮清理并释放运行状态。 */
+                    @Override
+                    public void run() {
+                        plugin.getLogger().warning("[FoliaCleanup] 门禁目标实体计数超时，"
+                                + "timeoutSeconds=" + foliaConfig.getTimeoutSeconds()
+                                + ", targetEntities=" + targetEntities.get()
+                                + ", pendingTasks=" + pendingTasks.get());
+                        complete(true);
+                    }
+                }, foliaConfig.getTimeoutSeconds() * 20L);
+            } catch (RuntimeException exception) {
+                plugin.getLogger().warning("[FoliaCleanup] 分派门禁计数超时保护失败: " + exception.getMessage());
+            }
+        }
+
+        /** 判断门禁计数是否仍接受任务和统计。 */
+        private boolean isOpen() {
+            return !completed.get();
+        }
+
+        /** 记录新任务。 */
+        private void taskStarted() {
+            pendingTasks.incrementAndGet();
+        }
+
+        /** 记录任务完成。 */
+        private void taskDone() {
+            if (pendingTasks.decrementAndGet() == 0) {
+                complete(false);
+            }
+        }
+
+        /** 初始任务分派完成。 */
+        private void initialSchedulingDone() {
+            taskDone();
+        }
+
+        /** 增加一个会被扫地处理的目标实体。 */
+        private void targetFound() {
+            targetEntities.incrementAndGet();
+        }
+
+        /** 完成门禁计数。 */
+        private void complete(boolean timedOut) {
+            if (!completed.compareAndSet(false, true)) {
+                return;
+            }
+            if (!timedOut && timeoutTask != null) {
+                timeoutTask.cancel();
+            }
+            finishGuardCount(this, timedOut);
+        }
+    }
+
     /** 异步清理完成跟踪器。 */
     private final class CompletionTracker {
         private final CleanupFeature.CleanupStats stats;
@@ -1096,6 +1355,12 @@ public final class FoliaRegionCleanupFeature implements Feature {
         /** 记录发现的已加载 chunk。 */
         private void chunkSeen() {
             chunksSeen.incrementAndGet();
+        }
+
+        /** 记录收集阶段已经完成的 chunk 指标。 */
+        private void recordCollectedChunks(int seen, int skippedByLimit) {
+            chunksSeen.addAndGet(Math.max(0, seen));
+            chunksSkippedByLimit.addAndGet(Math.max(0, skippedByLimit));
         }
 
         /** 记录因单轮上限跳过的 chunk。 */

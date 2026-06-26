@@ -40,6 +40,10 @@ import java.util.function.Supplier;
 
 /** 后台清理功能模块，清理决策交给 core，Bukkit 层只执行结果。 */
 public final class CleanupFeature implements Feature {
+    public static final String GUARD_REASON_ONLINE_PLAYERS = "online-players";
+    public static final String GUARD_REASON_TARGET_ENTITIES = "target-entities";
+    private static final int MAX_DEFERRED_GUARD_TARGETS = 4096;
+
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
@@ -112,16 +116,41 @@ public final class CleanupFeature implements Feature {
         CleanupPolicy policy = new DefaultCleanupPolicy(bundle.getCleanupSettings());
         CleanupStats stats = new CleanupStats();
         CleanupConfig cleanupConfig = bundle.getCleanupConfig();
-        for (World world : Bukkit.getWorlds()) {
-            if (cleanupConfig.isIgnoredWorld(world.getName())) {
-                continue;
+        CleanupConfig.CleanupGuardConfig guardConfig = cleanupConfig.getGuardConfig();
+        stats.recordGuardState(Bukkit.getOnlinePlayers().size(), guardConfig.getMinOnlinePlayers(),
+                -1, guardConfig.getMinTotalEntities());
+        if (stats.getGuardOnlinePlayers() < stats.getGuardMinOnlinePlayers()) {
+            stats.markGuardSkipped(GUARD_REASON_ONLINE_PLAYERS);
+            lastStats = stats;
+            logCleanupGuardSkipped(stats);
+            return stats;
+        }
+        if (guardConfig.getMinTotalEntities() > 0) {
+            cleanWithEntityGuard(cleanupConfig, policy, stats);
+            if (stats.isGuardSkipped()) {
+                lastStats = stats;
+                logCleanupGuardSkipped(stats);
+                return stats;
             }
-            cleanWorld(world, policy, stats);
+        } else {
+            stats.setGuardTargetEntities(0);
+            for (World world : Bukkit.getWorlds()) {
+                if (cleanupConfig.isIgnoredWorld(world.getName())) {
+                    continue;
+                }
+                cleanWorld(world, policy, stats);
+            }
         }
         handleGlobalTrashRefresh(bundle, stats);
         sendPersonalTrashBatchNotify(stats);
         lastStats = stats;
         plugin.getLogger().info("[Cleanup] worlds=" + stats.worlds
+                + ", skippedByGuard=" + stats.isGuardSkipped()
+                + ", guardReason=" + stats.getGuardSkipReason()
+                + ", onlinePlayers=" + stats.getGuardOnlinePlayers()
+                + ", minOnlinePlayers=" + stats.getGuardMinOnlinePlayers()
+                + ", targetEntities=" + stats.getGuardTargetEntities()
+                + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
                 + ", itemsRouted=" + stats.itemsRouted
                 + ", itemsRemoved=" + stats.itemsRemoved
                 + ", itemsSkipped=" + stats.itemsSkipped
@@ -189,6 +218,12 @@ public final class CleanupFeature implements Feature {
         }
         if (countdownSeconds <= 0) {
             CleanupStats stats = runNow();
+            if (stats.isGuardSkipped()) {
+                sendNotify(-5, stats);
+                countdownSeconds = interval;
+                nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
+                return;
+            }
             sendNotify(0, stats);
             sendNotify(globalTrashStatusNotifyCount(stats), stats);
             countdownSeconds = interval;
@@ -213,6 +248,128 @@ public final class CleanupFeature implements Feature {
             }
             cleanEntity(entity, policy, stats);
         }
+    }
+
+    /** 按扫地门禁统计目标实体，达到阈值后再实际清理。 */
+    private void cleanWithEntityGuard(CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats) {
+        int minTotalEntities = cleanupConfig.getGuardConfig().getMinTotalEntities();
+        if (minTotalEntities > MAX_DEFERRED_GUARD_TARGETS) {
+            CountResult result = countCleanableTargets(cleanupConfig, policy);
+            stats.setGuardTargetEntities(result.targetEntities);
+            if (result.targetEntities < minTotalEntities) {
+                stats.worlds = result.worlds;
+                stats.markGuardSkipped(GUARD_REASON_TARGET_ENTITIES);
+                return;
+            }
+            for (World world : Bukkit.getWorlds()) {
+                if (cleanupConfig.isIgnoredWorld(world.getName())) {
+                    continue;
+                }
+                cleanWorld(world, policy, stats);
+            }
+            return;
+        }
+        stats.setGuardTargetEntities(0);
+        List<Entity> deferredTargets = new ArrayList<>(Math.max(1, minTotalEntities));
+        boolean thresholdReached = false;
+        for (World world : Bukkit.getWorlds()) {
+            if (cleanupConfig.isIgnoredWorld(world.getName())) {
+                continue;
+            }
+            stats.worlds++;
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof Player) {
+                    continue;
+                }
+                if (!thresholdReached) {
+                    if (isCleanableTarget(entity, policy)) {
+                        deferredTargets.add(entity);
+                        stats.setGuardTargetEntities(stats.getGuardTargetEntities() + 1);
+                        if (stats.getGuardTargetEntities() >= minTotalEntities) {
+                            thresholdReached = true;
+                            cleanDeferredTargets(deferredTargets, policy, stats);
+                            deferredTargets.clear();
+                        }
+                    }
+                    continue;
+                }
+                cleanNonPlayerEntity(entity, policy, stats);
+            }
+        }
+        if (!thresholdReached) {
+            stats.markGuardSkipped(GUARD_REASON_TARGET_ENTITIES);
+        }
+    }
+
+    /** 统计当前世界里会被扫地处理的目标实体数量。 */
+    private CountResult countCleanableTargets(CleanupConfig cleanupConfig, CleanupPolicy policy) {
+        CountResult result = new CountResult();
+        for (World world : Bukkit.getWorlds()) {
+            if (cleanupConfig.isIgnoredWorld(world.getName())) {
+                continue;
+            }
+            result.worlds++;
+            for (Entity entity : world.getEntities()) {
+                if (!(entity instanceof Player) && isCleanableTarget(entity, policy)) {
+                    result.targetEntities++;
+                }
+            }
+        }
+        return result;
+    }
+
+    /** 清理门禁通过前暂存的候选实体。 */
+    private void cleanDeferredTargets(List<Entity> deferredTargets, CleanupPolicy policy, CleanupStats stats) {
+        for (Entity entity : deferredTargets) {
+            if (entity == null || entity.isDead()) {
+                continue;
+            }
+            cleanNonPlayerEntity(entity, policy, stats);
+        }
+    }
+
+    /** 清理一个非玩家实体。 */
+    private void cleanNonPlayerEntity(Entity entity, CleanupPolicy policy, CleanupStats stats) {
+        if (entity instanceof Item) {
+            cleanItem((Item) entity, policy, stats);
+            return;
+        }
+        cleanEntity(entity, policy, stats);
+    }
+
+    /** 判断实体是否会被本轮扫地处理。 */
+    private boolean isCleanableTarget(Entity entity, CleanupPolicy policy) {
+        if (entity instanceof Item) {
+            return isCleanableItemTarget((Item) entity, policy);
+        }
+        EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
+        return decision.getAction() == EntityCleanupAction.REMOVE;
+    }
+
+    /** 判断掉落物是否会被本轮扫地路由或删除。 */
+    private boolean isCleanableItemTarget(Item item, CleanupPolicy policy) {
+        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        ItemStack itemStack = item.getItemStack();
+        if (itemStack == null) {
+            return false;
+        }
+        boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), itemStack);
+        UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
+        boolean personalTrash = trashRouter.hasPersonalTrash(ownerUuid, itemStack);
+        boolean globalTrash = trashRouter.hasGlobalTrash(itemStack);
+        TrashRoutingDecision decision = policy.decideItem(snapshot, worldTrash, personalTrash, globalTrash);
+        return decision.getRoute() != TrashRoute.SKIP;
+    }
+
+    /** 输出扫地门禁跳过日志。 */
+    private void logCleanupGuardSkipped(CleanupStats stats) {
+        plugin.getLogger().info("[Cleanup] skippedByGuard=true"
+                + ", guardReason=" + stats.getGuardSkipReason()
+                + ", onlinePlayers=" + stats.getGuardOnlinePlayers()
+                + ", minOnlinePlayers=" + stats.getGuardMinOnlinePlayers()
+                + ", targetEntities=" + stats.getGuardTargetEntities()
+                + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
+                + ", worlds=" + stats.getWorlds());
     }
 
     /** 清理单个掉落物实体。 */
@@ -527,8 +684,24 @@ public final class CleanupFeature implements Feature {
                 .replace("%DealItemSum%", String.valueOf(dealItemSum))
                 .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
                 .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
+                .replace("%CleanupSkipReason%", guardReasonText(stats))
+                .replace("%CleanupOnlinePlayers%", String.valueOf(stats.getGuardOnlinePlayers()))
+                .replace("%CleanupMinOnlinePlayers%", String.valueOf(stats.getGuardMinOnlinePlayers()))
+                .replace("%CleanupTargetEntities%", String.valueOf(stats.getGuardTargetEntities()))
+                .replace("%CleanupMinTotalEntities%", String.valueOf(stats.getGuardMinTotalEntities()))
                 .replace("%ClearGlobalText%", clearGlobalText(clearEvery, clearRemain))
                 .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
+    }
+
+    /** 返回扫地门禁原因文案。 */
+    private String guardReasonText(CleanupStats stats) {
+        if (GUARD_REASON_ONLINE_PLAYERS.equals(stats.getGuardSkipReason())) {
+            return "在线人数不足";
+        }
+        if (GUARD_REASON_TARGET_ENTITIES.equals(stats.getGuardSkipReason())) {
+            return "目标实体数量不足";
+        }
+        return "未跳过";
     }
 
     /** 返回公共垃圾桶刷新剩余清理次数。 */
@@ -559,6 +732,12 @@ public final class CleanupFeature implements Feature {
         private int entitiesRemoved;
         private int entitiesSkipped;
         private boolean globalTrashRefreshed;
+        private boolean guardSkipped;
+        private String guardSkipReason = "";
+        private int guardOnlinePlayers;
+        private int guardMinOnlinePlayers;
+        private int guardTargetEntities = -1;
+        private int guardMinTotalEntities;
         private final Map<UUID, List<ItemStack>> personalTrashItemsByOwner = new HashMap<>();
 
         /** 创建空统计。 */
@@ -614,6 +793,36 @@ public final class CleanupFeature implements Feature {
         /** 判断本轮是否刷新了公共垃圾桶。 */
         public synchronized boolean isGlobalTrashRefreshed() {
             return globalTrashRefreshed;
+        }
+
+        /** 判断本轮是否被扫地门禁跳过。 */
+        public synchronized boolean isGuardSkipped() {
+            return guardSkipped;
+        }
+
+        /** 返回扫地门禁跳过原因。 */
+        public synchronized String getGuardSkipReason() {
+            return guardSkipReason;
+        }
+
+        /** 返回本轮检查到的在线玩家数。 */
+        public synchronized int getGuardOnlinePlayers() {
+            return guardOnlinePlayers;
+        }
+
+        /** 返回配置的最少在线玩家数。 */
+        public synchronized int getGuardMinOnlinePlayers() {
+            return guardMinOnlinePlayers;
+        }
+
+        /** 返回本轮扫地门禁统计到的目标实体数量。 */
+        public synchronized int getGuardTargetEntities() {
+            return guardTargetEntities;
+        }
+
+        /** 返回配置的最少目标实体数量。 */
+        public synchronized int getGuardMinTotalEntities() {
+            return guardMinTotalEntities;
         }
 
         /** 返回本轮进入个人垃圾桶的物品快照。 */
@@ -680,5 +889,31 @@ public final class CleanupFeature implements Feature {
         public synchronized void markGlobalTrashRefreshed() {
             globalTrashRefreshed = true;
         }
+
+        /** 记录扫地门禁检查上下文。 */
+        public synchronized void recordGuardState(int onlinePlayers, int minOnlinePlayers,
+                                                  int targetEntities, int minTotalEntities) {
+            this.guardOnlinePlayers = Math.max(0, onlinePlayers);
+            this.guardMinOnlinePlayers = Math.max(0, minOnlinePlayers);
+            this.guardTargetEntities = targetEntities;
+            this.guardMinTotalEntities = Math.max(0, minTotalEntities);
+        }
+
+        /** 更新扫地门禁统计到的目标实体数量。 */
+        public synchronized void setGuardTargetEntities(int targetEntities) {
+            this.guardTargetEntities = Math.max(0, targetEntities);
+        }
+
+        /** 标记本轮扫地因门禁被跳过。 */
+        public synchronized void markGuardSkipped(String reason) {
+            this.guardSkipped = true;
+            this.guardSkipReason = reason == null ? "" : reason;
+        }
+    }
+
+    /** 可清理目标实体计数结果。 */
+    private static final class CountResult {
+        private int worlds;
+        private int targetEntities;
     }
 }

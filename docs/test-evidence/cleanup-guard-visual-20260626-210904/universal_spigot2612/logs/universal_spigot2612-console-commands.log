@@ -1,0 +1,17 @@
+[21:09:40] op RGBigot2612
+[21:09:40] minecraft:gamerule sendCommandFeedback false
+[21:09:40] minecraft:gamerule commandBlockOutput false
+[21:09:40] minecraft:gamerule doMobSpawning false
+[21:09:40] minecraft:time set day
+[21:09:40] minecraft:weather clear
+[21:09:41] minecraft:gamemode creative RGBigot2612
+[21:09:41] minecraft:tp RGBigot2612 0 91 -8 0 15
+[21:09:41] minecraft:kill @e[type=minecraft:item]
+[21:09:42] blwtc platform
+[21:09:43] blwtc reload
+[21:10:01] blwtc reload
+[21:10:02] blwtc debugdrop RGBigot2612 STONE 1
+[21:10:02] blwtc debugdrop RGBigot2612 STONE 1
+[21:10:03] blwtc debugdrop RGBigot2612 STONE 1
+[21:10:21] blwtc reload
+[21:10:22] blwtc debugdrop RGBigot2612 STONE 1

@@ -12,19 +12,27 @@ public final class CleanupConfig {
     private final int intervalSeconds;
     private final Set<String> ignoredWorlds;
     private final CleanupSettings settings;
+    private final CleanupGuardConfig guardConfig;
     private final FoliaCleanupConfig foliaCleanup;
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings) {
-        this(intervalSeconds, ignoredWorlds, settings, FoliaCleanupConfig.defaults());
+        this(intervalSeconds, ignoredWorlds, settings, CleanupGuardConfig.defaults(), FoliaCleanupConfig.defaults());
     }
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings,
                          FoliaCleanupConfig foliaCleanup) {
+        this(intervalSeconds, ignoredWorlds, settings, CleanupGuardConfig.defaults(), foliaCleanup);
+    }
+
+    /** 创建清理配置。 */
+    public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings,
+                         CleanupGuardConfig guardConfig, FoliaCleanupConfig foliaCleanup) {
         this.intervalSeconds = Math.max(0, intervalSeconds);
         this.ignoredWorlds = normalizeWorlds(ignoredWorlds);
         this.settings = settings;
+        this.guardConfig = guardConfig == null ? CleanupGuardConfig.defaults() : guardConfig;
         this.foliaCleanup = foliaCleanup == null ? FoliaCleanupConfig.defaults() : foliaCleanup;
     }
 
@@ -46,6 +54,11 @@ public final class CleanupConfig {
         return settings;
     }
 
+    /** 返回扫地前置门禁配置。 */
+    public CleanupGuardConfig getGuardConfig() {
+        return guardConfig;
+    }
+
     /** 返回 Folia 专用清理保护配置。 */
     public FoliaCleanupConfig getFoliaCleanup() {
         return foliaCleanup;
@@ -63,6 +76,36 @@ public final class CleanupConfig {
             }
         }
         return Collections.unmodifiableSet(result);
+    }
+
+    /** 扫地启动前置门禁配置。 */
+    public static final class CleanupGuardConfig {
+        private static final int DEFAULT_MIN_ONLINE_PLAYERS = 1;
+        private static final int DEFAULT_MIN_TOTAL_ENTITIES = 400;
+
+        private final int minOnlinePlayers;
+        private final int minTotalEntities;
+
+        /** 创建扫地启动前置门禁配置。 */
+        public CleanupGuardConfig(int minOnlinePlayers, int minTotalEntities) {
+            this.minOnlinePlayers = Math.max(0, minOnlinePlayers);
+            this.minTotalEntities = Math.max(0, minTotalEntities);
+        }
+
+        /** 返回默认扫地启动前置门禁配置。 */
+        public static CleanupGuardConfig defaults() {
+            return new CleanupGuardConfig(DEFAULT_MIN_ONLINE_PLAYERS, DEFAULT_MIN_TOTAL_ENTITIES);
+        }
+
+        /** 返回清理需要的最少在线玩家数，低于该值时跳过本轮扫地。 */
+        public int getMinOnlinePlayers() {
+            return minOnlinePlayers;
+        }
+
+        /** 返回清理需要的最少目标实体数，低于该值时跳过本轮扫地。 */
+        public int getMinTotalEntities() {
+            return minTotalEntities;
+        }
     }
 
     /** Folia 专用清理保护配置。 */
