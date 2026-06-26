@@ -1,0 +1,66 @@
+[07:47:25] [Datafixer Bootstrap/INFO]: 243 Datafixer optimizations took 365 milliseconds
+[07:47:28] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[07:47:28] [Render thread/INFO]: Setting user: RGBt_074659
+[07:47:28] [Render thread/INFO]: Backend library: LWJGL version 3.3.3+5
+[07:47:28] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[07:47:29] [Worker-Main-4/INFO]: Found unifont_all_no_pua-16.0.01.hex, loading
+[07:47:29] [Worker-Main-8/INFO]: Found unifont_jp_patch-16.0.01.hex, loading
+[07:47:30] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on 扬声器 (High Definition Audio Device)
+[07:47:30] [Render thread/INFO]: Sound engine started
+[07:47:30] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[07:47:30] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[07:47:30] [Render thread/INFO]: Connecting to 127.0.0.1, 25576
+[07:47:32] [Render thread/INFO]: [System] [CHAT] RGBt_074659 joined the game
+[07:47:32] [Render thread/INFO]: Loaded 2 advancements
+[07:47:36] [Render thread/INFO]: Loaded 4 advancements
+[07:47:36] [Render thread/INFO]: Loaded 11 advancements
+[07:47:37] [Render thread/INFO]: Loaded 12 advancements
+[07:47:37] [Render thread/INFO]: Loaded 13 advancements
+[07:47:37] [Render thread/INFO]: [System] [CHAT] RGBt_074659 has made the advancement [Stone Age]
+[07:47:37] [Render thread/INFO]: Loaded 39 advancements
+[07:47:38] [Render thread/INFO]: Loaded 40 advancements
+[07:47:47] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.47.47.png
+[07:47:47] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.47.47_2.png
+[07:48:03] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.03.png
+[07:48:04] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.04.png
+[07:48:07] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.07.png
+[07:48:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.08.png
+[07:48:11] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.11.png
+[07:48:11] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.11_2.png
+[07:48:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.15.png
+[07:48:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.15_2.png
+[07:48:18] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.18.png
+[07:48:19] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.19.png
+[07:48:22] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.22.png
+[07:48:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.23.png
+[07:48:26] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.26.png
+[07:48:27] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.26_2.png
+[07:48:30] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.30.png
+[07:48:30] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.30_2.png
+[07:48:33] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.33.png
+[07:48:34] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.34.png
+[07:48:37] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.37.png
+[07:48:38] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.38.png
+[07:48:47] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 清理完成: 世界 4, 回收物品 12, 移除物品 0, 移除实体 0。
+[07:48:50] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.50.png
+[07:48:51] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.48.51.png
+[07:49:00] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.00.png
+[07:49:00] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.00_2.png
+[07:49:03] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.03.png
+[07:49:04] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.04.png
+[07:49:07] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.07.png
+[07:49:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.08.png
+[07:49:11] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.11.png
+[07:49:12] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-27_07.49.12.png

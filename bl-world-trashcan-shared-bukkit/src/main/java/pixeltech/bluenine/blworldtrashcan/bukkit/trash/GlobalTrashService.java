@@ -352,6 +352,8 @@ public final class GlobalTrashService {
                     StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException exception) {
             plugin.getLogger().warning("[GlobalTrash] 写入公共垃圾桶日志失败: " + exception.getMessage());
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[GlobalTrash] 写入公共垃圾桶日志时出现运行时异常: " + exception.getMessage());
         }
     }
 
