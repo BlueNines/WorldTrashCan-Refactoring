@@ -125,20 +125,30 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         return runtimeKind == RuntimeKind.FOLIA;
     }
 
-    /** 立即执行一次普通平台清理。 */
+    /** 立即执行一次普通平台清理，默认遵守定时扫地门禁。 */
     public CleanupFeature.CleanupStats runCleanupNow() {
-        if (cleanupFeature instanceof CleanupFeature) {
-            return ((CleanupFeature) cleanupFeature).runNow();
-        }
-        return invokeCleanupStats("runNow");
+        return runCleanupNow(false);
     }
 
-    /** 立即提交一次 Folia region-safe 清理。 */
+    /** 立即执行一次普通平台清理，可由命令入口决定是否忽略 guards。 */
+    public CleanupFeature.CleanupStats runCleanupNow(boolean ignoreGuards) {
+        if (cleanupFeature instanceof CleanupFeature) {
+            return ((CleanupFeature) cleanupFeature).runNow(ignoreGuards);
+        }
+        return invokeCleanupStats("runNow", ignoreGuards);
+    }
+
+    /** 立即提交一次 Folia region-safe 清理，默认遵守定时扫地门禁。 */
     public boolean startCleanupNow() {
+        return startCleanupNow(false);
+    }
+
+    /** 立即提交一次 Folia region-safe 清理，可由命令入口决定是否忽略 guards。 */
+    public boolean startCleanupNow(boolean ignoreGuards) {
         if (!isFoliaRuntime()) {
             return false;
         }
-        return invokeBoolean(cleanupFeature, "startNow", false);
+        return invokeBoolean(cleanupFeature, "startNow", ignoreGuards, false);
     }
 
     /** 判断 Folia 清理是否仍在运行。 */
@@ -713,10 +723,35 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         return value instanceof CleanupFeature.CleanupStats ? (CleanupFeature.CleanupStats) value : CleanupFeature.CleanupStats.empty();
     }
 
+    /** 调用带一个 boolean 参数的清理功能并返回统计结果。 */
+    private CleanupFeature.CleanupStats invokeCleanupStats(String methodName, boolean argument) {
+        Object value = invokeBooleanArg(cleanupFeature, methodName, argument, CleanupFeature.CleanupStats.empty());
+        return value instanceof CleanupFeature.CleanupStats ? (CleanupFeature.CleanupStats) value : CleanupFeature.CleanupStats.empty();
+    }
+
     /** 调用无参布尔方法。 */
     private boolean invokeBoolean(Object target, String methodName, boolean fallback) {
         Object value = invokeNoArg(target, methodName, Boolean.valueOf(fallback));
         return value instanceof Boolean ? ((Boolean) value).booleanValue() : fallback;
+    }
+
+    /** 调用带一个 boolean 参数的布尔方法。 */
+    private boolean invokeBoolean(Object target, String methodName, boolean argument, boolean fallback) {
+        Object value = invokeBooleanArg(target, methodName, argument, Boolean.valueOf(fallback));
+        return value instanceof Boolean ? ((Boolean) value).booleanValue() : fallback;
+    }
+
+    /** 调用带一个 boolean 参数的方法并在失败时返回默认值。 */
+    private Object invokeBooleanArg(Object target, String methodName, boolean argument, Object fallback) {
+        if (target == null) {
+            return fallback;
+        }
+        try {
+            return target.getClass().getMethod(methodName, boolean.class).invoke(target, Boolean.valueOf(argument));
+        } catch (ReflectiveOperationException exception) {
+            getLogger().warning("[Universal] 调用运行时方法失败: " + methodName + "(boolean), " + exception.getMessage());
+            return fallback;
+        }
     }
 
     /** 调用无参方法并在失败时返回默认值。 */

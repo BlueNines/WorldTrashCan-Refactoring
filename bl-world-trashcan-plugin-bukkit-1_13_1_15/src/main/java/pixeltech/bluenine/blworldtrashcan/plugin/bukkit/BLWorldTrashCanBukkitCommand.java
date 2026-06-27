@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
+import pixeltech.bluenine.blworldtrashcan.bukkit.command.ClearCommandOptions;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -63,7 +64,12 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
                 sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
                 return true;
             }
-            CleanupFeature.CleanupStats stats = plugin.runCleanupNow();
+            Boolean ignoreGuards = ClearCommandOptions.parseIgnoreGuards(args);
+            if (ignoreGuards == null) {
+                sendClearGuardUsage(sender);
+                return true;
+            }
+            CleanupFeature.CleanupStats stats = plugin.runCleanupNow(ignoreGuards.booleanValue());
             sendClearResult(sender, stats);
             return true;
         }
@@ -171,10 +177,18 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         if (args.length == 1) {
             return filter(SUB_COMMANDS, args[0]);
         }
+        if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
+            return filter(ClearCommandOptions.booleanValues(), args[1]);
+        }
         if (args.length == 3 && "debugroute".equalsIgnoreCase(args[0])) {
             return filter(Arrays.asList("world", "personal", "global"), args[2]);
         }
         return Collections.emptyList();
+    }
+
+    /** 发送 clear guards 参数用法。 */
+    private void sendClearGuardUsage(CommandSender sender) {
+        sender.sendMessage(message("command.clear-guard-usage", "{prefix}&c用法: /wtc clear [true/false]，true 表示忽略 guards，false 表示遵守 guards。"));
     }
 
     /** 发送立即清理结果。 */
@@ -221,7 +235,7 @@ public final class BLWorldTrashCanBukkitCommand implements CommandExecutor, TabC
         sendMessageList(sender, "command.help", Arrays.asList(
                 "&b/blwtc help &7- 查看帮助",
                 "&b/blwtc platform &7- 查看当前版本产物能力",
-                "&b/blwtc clear &7- 立即执行一次后台清理",
+                "&b/blwtc clear [true/false] &7- 立即扫地，默认 true 忽略 guards，false 遵守 guards",
                 "&b/blwtc global &7- 打开公共垃圾桶",
                 "&b/blwtc personal &7- 打开个人垃圾桶",
                 "&b/blwtc dropmode &7- 切换防丢弃模式",

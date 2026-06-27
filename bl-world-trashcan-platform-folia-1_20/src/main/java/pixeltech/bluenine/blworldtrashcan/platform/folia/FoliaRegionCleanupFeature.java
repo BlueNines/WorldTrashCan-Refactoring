@@ -107,8 +107,13 @@ public final class FoliaRegionCleanupFeature implements Feature {
         countdownSeconds = 0;
     }
 
-    /** 立即启动一次异步 region-safe 清理并返回是否成功提交。 */
+    /** 立即启动一次异步 region-safe 清理，默认遵守定时扫地门禁。 */
     public boolean startNow() {
+        return startNow(false);
+    }
+
+    /** 立即启动一次异步 region-safe 清理并返回是否成功提交。 */
+    public boolean startNow(final boolean ignoreGuards) {
         if (!cleanupRunning.compareAndSet(false, true)) {
             plugin.getLogger().warning("[FoliaCleanup] 上一轮 region-safe 清理仍在运行，本次请求已跳过。");
             return false;
@@ -121,7 +126,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 @Override
                 public void run() {
                     try {
-                        scheduleWorldScans(stats);
+                        scheduleWorldScans(stats, ignoreGuards);
                     } catch (RuntimeException exception) {
                         plugin.getLogger().warning("[FoliaCleanup] 分派 region-safe 清理失败: " + exception.getMessage());
                         finishCleanup(stats);
@@ -139,6 +144,12 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** 兼容旧调用方，返回当前正在收集的统计对象。 */
     public CleanupFeature.CleanupStats runNow() {
         startNow();
+        return lastStats;
+    }
+
+    /** 兼容命令调用方，返回当前正在收集的统计对象。 */
+    public CleanupFeature.CleanupStats runNow(boolean ignoreGuards) {
+        startNow(ignoreGuards);
         return lastStats;
     }
 
@@ -202,7 +213,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     }
 
     /** 为所有未忽略世界的已加载 chunk 安排 region 任务。 */
-    private void scheduleWorldScans(final CleanupFeature.CleanupStats stats) {
+    private void scheduleWorldScans(final CleanupFeature.CleanupStats stats, boolean ignoreGuards) {
         ConfigBundle bundle = configSupplier.get();
         CleanupPolicy policy = new DefaultCleanupPolicy(bundle.getCleanupSettings());
         CleanupConfig cleanupConfig = bundle.getCleanupConfig();
@@ -210,7 +221,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         CleanupConfig.CleanupGuardConfig guardConfig = cleanupConfig.getGuardConfig();
         stats.recordGuardState(Bukkit.getOnlinePlayers().size(), guardConfig.getMinOnlinePlayers(),
                 -1, guardConfig.getMinTotalEntities());
-        if (stats.getGuardOnlinePlayers() < stats.getGuardMinOnlinePlayers()) {
+        if (!ignoreGuards && stats.getGuardOnlinePlayers() < stats.getGuardMinOnlinePlayers()) {
             stats.markGuardSkipped(CleanupFeature.GUARD_REASON_ONLINE_PLAYERS);
             finishCleanup(stats);
             return;
@@ -238,7 +249,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                         + world.getName() + " - " + exception.getMessage());
             }
         }
-        if (guardConfig.getMinTotalEntities() > 0) {
+        if (!ignoreGuards && guardConfig.getMinTotalEntities() > 0) {
             final GuardCountTracker guardTracker = new GuardCountTracker(stats, foliaConfig, chunksToScan, policy);
             guardTracker.startTimeout();
             scheduleGuardCountBatch(chunksToScan, 0, policy, guardTracker, foliaConfig);

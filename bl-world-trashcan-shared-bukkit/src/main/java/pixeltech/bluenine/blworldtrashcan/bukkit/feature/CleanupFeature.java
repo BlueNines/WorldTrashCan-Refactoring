@@ -103,8 +103,13 @@ public final class CleanupFeature implements Feature {
         countdownSeconds = 0;
     }
 
-    /** 立即执行一次清理。 */
+    /** 立即执行一次清理，默认遵守定时扫地门禁。 */
     public CleanupStats runNow() {
+        return runNow(false);
+    }
+
+    /** 立即执行一次清理，可由命令入口决定是否忽略 guards。 */
+    public CleanupStats runNow(boolean ignoreGuards) {
         ConfigBundle bundle = configSupplier.get();
         if (!isWorldScanSupported()) {
             CleanupStats stats = new CleanupStats();
@@ -119,13 +124,13 @@ public final class CleanupFeature implements Feature {
         CleanupConfig.CleanupGuardConfig guardConfig = cleanupConfig.getGuardConfig();
         stats.recordGuardState(Bukkit.getOnlinePlayers().size(), guardConfig.getMinOnlinePlayers(),
                 -1, guardConfig.getMinTotalEntities());
-        if (stats.getGuardOnlinePlayers() < stats.getGuardMinOnlinePlayers()) {
+        if (!ignoreGuards && stats.getGuardOnlinePlayers() < stats.getGuardMinOnlinePlayers()) {
             stats.markGuardSkipped(GUARD_REASON_ONLINE_PLAYERS);
             lastStats = stats;
             logCleanupGuardSkipped(stats);
             return stats;
         }
-        if (guardConfig.getMinTotalEntities() > 0) {
+        if (!ignoreGuards && guardConfig.getMinTotalEntities() > 0) {
             cleanWithEntityGuard(bundle, cleanupConfig, policy, stats);
             if (stats.isGuardSkipped()) {
                 lastStats = stats;

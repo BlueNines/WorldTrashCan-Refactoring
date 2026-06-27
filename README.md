@@ -213,7 +213,7 @@ migration-legacy-folder: "WorldListTrashCan"
 ```text
 /blwtc help
 /blwtc platform
-/blwtc clear
+/blwtc clear [true/false]
 /blwtc stats
 /blwtc global
 /blwtc personal
@@ -227,7 +227,7 @@ migration-legacy-folder: "WorldListTrashCan"
 /blwtc reload
 ```
 
-Folia 产物中 `/blwtc clear` 会启动异步 region-safe 清理；命令返回只表示清理任务已提交，最终统计以后台 `[FoliaCleanup]` 日志或后续 `/blwtc stats` 为准。
+`/blwtc clear [true/false]` 与 `/wtc clear [true/false]` 会立即执行一次手动扫地。第二参数默认 `true`，表示本次忽略 `guards` 门禁；传入 `false` 时才会遵守 `guards.min-online-players` 和 `guards.min-total-entities`。Folia 产物中该命令会启动异步 region-safe 清理；命令返回只表示清理任务已提交，最终统计以后台 `[FoliaCleanup]` 日志或后续 `/blwtc stats` 为准。
 
 兼容旧命令入口：
 

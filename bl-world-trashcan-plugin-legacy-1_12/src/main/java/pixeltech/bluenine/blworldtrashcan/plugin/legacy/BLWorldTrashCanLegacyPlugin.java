@@ -137,9 +137,14 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         return platform;
     }
 
-    /** 立即执行清理。 */
+    /** 立即执行清理，默认遵守定时扫地门禁。 */
     public CleanupFeature.CleanupStats runCleanupNow() {
-        return cleanupFeature.runNow();
+        return runCleanupNow(false);
+    }
+
+    /** 立即执行清理，可由命令入口决定是否忽略 guards。 */
+    public CleanupFeature.CleanupStats runCleanupNow(boolean ignoreGuards) {
+        return cleanupFeature.runNow(ignoreGuards);
     }
 
     /** 返回消息服务。 */

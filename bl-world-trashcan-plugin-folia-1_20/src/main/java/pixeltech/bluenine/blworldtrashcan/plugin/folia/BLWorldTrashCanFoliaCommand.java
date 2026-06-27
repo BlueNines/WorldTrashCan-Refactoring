@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
+import pixeltech.bluenine.blworldtrashcan.bukkit.command.ClearCommandOptions;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -67,7 +68,12 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
                 sender.sendMessage(message("command.folia-clear-unsupported", "{prefix}&c当前 Folia 产物尚未启用 region-safe 清理，已拒绝执行世界实体扫描。"));
                 return true;
             }
-            if (!plugin.startCleanupNow()) {
+            Boolean ignoreGuards = ClearCommandOptions.parseIgnoreGuards(args);
+            if (ignoreGuards == null) {
+                sendClearGuardUsage(sender);
+                return true;
+            }
+            if (!plugin.startCleanupNow(ignoreGuards.booleanValue())) {
                 sender.sendMessage(message("command.folia-clear-running", "{prefix}&e上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。"));
                 return true;
             }
@@ -178,10 +184,18 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
         if (args.length == 1) {
             return filter(SUB_COMMANDS, args[0]);
         }
+        if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
+            return filter(ClearCommandOptions.booleanValues(), args[1]);
+        }
         if (args.length == 3 && "debugroute".equalsIgnoreCase(args[0])) {
             return filter(Arrays.asList("world", "personal", "global"), args[2]);
         }
         return Collections.emptyList();
+    }
+
+    /** 发送 clear guards 参数用法。 */
+    private void sendClearGuardUsage(CommandSender sender) {
+        sender.sendMessage(message("command.clear-guard-usage", "{prefix}&c用法: /wtc clear [true/false]，true 表示忽略 guards，false 表示遵守 guards。"));
     }
 
     /** 返回扫地门禁原因文案。 */
@@ -210,7 +224,7 @@ public final class BLWorldTrashCanFoliaCommand implements CommandExecutor, TabCo
         sendMessageList(sender, "command.help", Arrays.asList(
                 "&b/blwtc help &7- 查看帮助",
                 "&b/blwtc platform &7- 查看当前版本产物能力",
-                "&b/blwtc clear &7- 立即执行一次后台清理",
+                "&b/blwtc clear [true/false] &7- 立即扫地，默认 true 忽略 guards，false 遵守 guards",
                 "&b/blwtc global &7- 打开公共垃圾桶",
                 "&b/blwtc personal &7- 打开个人垃圾桶",
                 "&b/blwtc dropmode &7- 切换防丢弃模式",

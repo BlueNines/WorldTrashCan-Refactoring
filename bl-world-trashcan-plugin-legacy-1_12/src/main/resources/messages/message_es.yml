@@ -118,6 +118,8 @@ command:
   reload-success: "{prefix}&aBLWorldTrashCan recargado."
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&aLimpieza terminada: &fmundos {worlds}&a, objetos enviados {routed}&a, objetos eliminados {items}&a, entidades eliminadas {entities}&a."
+  # 手动清理 guards 参数错误时提示。
+  clear-guard-usage: "{prefix}&cUso: /wtc clear [true/false]. true ignora guards en esta limpieza; false respeta guards."
   # Folia 不支持当前清理扫描时提示。
   folia-clear-unsupported: "{prefix}&cEsta version Folia no tiene limpieza region-safe activada; se rechazo el escaneo de entidades del mundo."
   # Folia 上一轮清理仍在运行时提示。
@@ -132,7 +134,7 @@ command:
   help:
     - "&b/blwtc help &7- Ver ayuda"
     - "&b/blwtc platform &7- Ver capacidades de esta version"
-    - "&b/blwtc clear &7- Ejecutar una limpieza inmediata"
+    - "&b/blwtc clear [true/false] &7- Ejecutar limpieza; true ignora guards, false los respeta"
     - "&b/blwtc global &7- Abrir papelera global"
     - "&b/blwtc personal &7- Abrir papelera personal"
     - "&b/blwtc dropmode &7- Alternar proteccion de soltar"

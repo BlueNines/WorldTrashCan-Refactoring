@@ -118,6 +118,8 @@ command:
   reload-success: "{prefix}&aBLWorldTrashCan 已重載。"
   # 手動清理完成提示，{worlds} 世界數，{routed} 回收物品數，{items} 移除物品數，{entities} 移除實體數。
   clear-success: "{prefix}&a清理完成: &f世界 {worlds}&a, 回收物品 {routed}&a, 移除物品 {items}&a, 移除實體 {entities}&a。"
+  # 手動清理 guards 參數錯誤時提示。
+  clear-guard-usage: "{prefix}&c用法: /wtc clear [true/false]，true 表示忽略 guards，false 表示遵守 guards。"
   # Folia 不支援目前清理掃描時提示。
   folia-clear-unsupported: "{prefix}&c目前 Folia 產物尚未啟用 region-safe 清理，已拒絕執行世界實體掃描。"
   # Folia 上一輪清理仍在執行時提示。
@@ -132,7 +134,7 @@ command:
   help:
     - "&b/blwtc help &7- 查看幫助"
     - "&b/blwtc platform &7- 查看目前版本產物能力"
-    - "&b/blwtc clear &7- 立即執行一次後台清理"
+    - "&b/blwtc clear [true/false] &7- 立即掃地，預設 true 忽略 guards，false 遵守 guards"
     - "&b/blwtc global &7- 打開公共垃圾桶"
     - "&b/blwtc personal &7- 打開個人垃圾桶"
     - "&b/blwtc dropmode &7- 切換防丟棄模式"

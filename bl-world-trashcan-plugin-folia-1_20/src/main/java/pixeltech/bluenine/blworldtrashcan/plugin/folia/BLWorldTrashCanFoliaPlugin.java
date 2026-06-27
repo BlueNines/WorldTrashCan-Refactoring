@@ -141,9 +141,14 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         return platform;
     }
 
-    /** 立即执行一次后台清理。 */
+    /** 立即执行一次后台清理，默认遵守定时扫地门禁。 */
     public CleanupFeature.CleanupStats runCleanupNow() {
-        return cleanupFeature.runNow();
+        return runCleanupNow(false);
+    }
+
+    /** 立即执行一次后台清理，可由命令入口决定是否忽略 guards。 */
+    public CleanupFeature.CleanupStats runCleanupNow(boolean ignoreGuards) {
+        return cleanupFeature.runNow(ignoreGuards);
     }
 
     /** 返回消息服务。 */
@@ -151,9 +156,14 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         return messageService;
     }
 
-    /** 立即提交一次 Folia 异步清理。 */
+    /** 立即提交一次 Folia 异步清理，默认遵守定时扫地门禁。 */
     public boolean startCleanupNow() {
-        return cleanupFeature != null && cleanupFeature.startNow();
+        return startCleanupNow(false);
+    }
+
+    /** 立即提交一次 Folia 异步清理，可由命令入口决定是否忽略 guards。 */
+    public boolean startCleanupNow(boolean ignoreGuards) {
+        return cleanupFeature != null && cleanupFeature.startNow(ignoreGuards);
     }
 
     /** 判断当前是否已有 Folia 清理任务在运行。 */
