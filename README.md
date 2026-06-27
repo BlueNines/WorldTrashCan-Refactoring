@@ -102,7 +102,7 @@ folia:
 - Folia 端在 global region 只挑选 chunk，实际快照采集和删除都派发到 chunk 所在 region。
 - 异步 worker 只处理 UUID、世界、类型、chunk、坐标等轻量快照，计算待删除候选。
 - 删除候选回到主线程或 region 线程按 `max-removes-per-run` 预算执行。
-- 候选带 TTL、去重、最大队列和重试上限；实体查不到、失效、类型/世界/chunk 不匹配或已经不再超限时会直接消费候选并释放去重标记。
+- 候选带 TTL、去重、最大队列和重试上限；实体查不到、失效、类型/世界/chunk 不匹配或规则关闭时会直接消费候选并释放去重标记。
 
 关键配置：
 
@@ -130,6 +130,8 @@ scanner:
 2026-06-18 已用 `dist/BLWorldTrashCan-universal.jar` 完成低占用实体密度压测，SHA256 为 `CB78511DBD9645F7127CC4D02C06BF37E89920378BBC2CCC0FED6EE2E933403B`。测试端覆盖 Paper 1.12.2 与 Folia 1.21.8，均临时启用密集 cow 限制、生成 300 只 cow，并把 `scanner.max-removes-per-run` 压到 `1` 验证预算化删除。Paper 1.12.2 最终剩余 1 只，候选队列/去重 `0/0`；Folia 1.21.8 最终剩余 6 只，候选队列/去重 `0/0`。两端均通过 `debugdensity` 证明候选创建、取出、完成和删除/跳过生命周期闭合，证据目录为 `docs/test-evidence/entity-density-low-overhead-20260618-015437/`。
 
 2026-06-18 另用同一个 `dist/BLWorldTrashCan-universal.jar` 完成真实客户端游戏内截图矩阵，SHA256 为 `73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56`，`plugin.yml` 版本 `7.0.0`。测试覆盖 `E:\server_work\1.21.11spigot`、`E:\server_work\folia1.21.8`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\spigot-26.1.2-test-server`、`E:\server_work\1.21.11arclight-neoforge`、`E:\server_work\1.20.1fabric.banner` 六个服务端；每端均由真实客户端进服、生成 80 只 cow，分别截取 before、正式清理提示 notify、玩家 `/blwtc debugdensity` 输出三列 F2 游戏内 PNG。`summary.json` 同时断言客户端日志出现正式“密集实体清理”提示和玩家命令输出“实体密度扫描统计”，避免只凭服务端日志或截图误判。证据目录为 `docs/test-evidence/entity-density-visual-20260618-101314/`，总览图为 `entity-density-visual-contact-sheet.png`。
+
+2026-06-28 对照旧版 `GatherEntityLimitCount: 实体类型;数量;范围;清理数量` 语义修复 `remove-count`：它表示密集条件触发后本轮最多清理多少只，不是只清理“当前数量 - max-count”的差值。重构版现在按 `min(remove-count, 当前密集数量)` 选择候选，删除阶段不再因为前面候选已经把数量降到上限附近而跳过同轮剩余候选；同一半径内已经有待删除候选时，后续跨 chunk 快照不会再重复创建第二组候选。关闭密集实体限制后，已排队候选也会直接消费而不继续删除。最终整包 SHA256 为 `38c33ad0a32e782c0878b858e9f8cd6cb871d858afd97ae6e216b504720958a7`，在 `E:\server_work\folia1.21.8` 与 `E:\server_work\1.21.11spigot` 用真实客户端验证 `spawn-count: 20`、`max-count: 8`、`remove-count: 5`，正式聊天提示每条均为“本次已清理 5 只”，并保存 before/notify/debugdensity F2 截图。证据目录为 `docs/test-evidence/entity-density-visual-20260628-032747/` 和 `docs/test-evidence/entity-density-visual-20260628-032445/`。
 
 ## 消息与语言
 

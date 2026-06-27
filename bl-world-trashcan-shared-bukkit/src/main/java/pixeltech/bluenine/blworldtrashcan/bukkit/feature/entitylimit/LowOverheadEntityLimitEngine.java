@@ -142,7 +142,7 @@ public final class LowOverheadEntityLimitEngine {
         return result;
     }
 
-    /** 判断候选在当前索引中是否仍需要删除。 */
+    /** 判断候选在当前索引中是否仍允许删除。 */
     public synchronized boolean shouldRemove(RemovalCandidate candidate, EntityLimitConfig config) {
         if (candidate == null || config == null) {
             return false;
@@ -158,11 +158,14 @@ public final class LowOverheadEntityLimitEngine {
             return false;
         }
         EntityLimitConfig.GatherLimitConfig gatherConfig = config.getGatherLimit();
+        if (!gatherConfig.isEnabled()) {
+            return false;
+        }
         EntityLimitConfig.GatherRule rule = gatherConfig.getRule(record.getTypeName());
         if (rule == null || gatherConfig.isIgnoredWorld(record.getWorldName())) {
             return false;
         }
-        return findNearbySameType(record, rule.getRadius()).size() > rule.getMaxCount();
+        return true;
     }
 
     /** 返回候选附近同类型实体的索引数量。 */
@@ -269,7 +272,11 @@ public final class LowOverheadEntityLimitEngine {
         if (!gatherConfig.isEnabled()) {
             return;
         }
+        Set<UUID> handledDenseEntities = new HashSet<>();
         for (EntityRecord record : state.getRecords()) {
+            if (handledDenseEntities.contains(record.getUniqueId())) {
+                continue;
+            }
             if (gatherConfig.isIgnoredWorld(record.getWorldName())) {
                 continue;
             }
@@ -281,17 +288,35 @@ public final class LowOverheadEntityLimitEngine {
             if (nearby.size() <= rule.getMaxCount()) {
                 continue;
             }
-            int removeLimit = Math.min(rule.getRemoveCount(), Math.max(1, nearby.size() - rule.getMaxCount()));
-            int added = 0;
-            for (EntityRecord target : nearby) {
-                if (addCandidate(target, state.getVersion(), config.getScanConfig())) {
-                    added++;
+            if (hasPendingRemoval(nearby)) {
+                for (EntityRecord denseRecord : nearby) {
+                    handledDenseEntities.add(denseRecord.getUniqueId());
                 }
-                if (added >= removeLimit) {
+                continue;
+            }
+            for (EntityRecord denseRecord : nearby) {
+                handledDenseEntities.add(denseRecord.getUniqueId());
+            }
+            int removeLimit = Math.min(rule.getRemoveCount(), nearby.size());
+            int selected = 0;
+            for (EntityRecord target : nearby) {
+                if (selected >= removeLimit) {
                     break;
                 }
+                selected++;
+                addCandidate(target, state.getVersion(), config.getScanConfig());
             }
         }
+    }
+
+    /** 判断同一密集范围内是否已经有待删除候选。 */
+    private boolean hasPendingRemoval(List<EntityRecord> records) {
+        for (EntityRecord record : records) {
+            if (pendingRemovalUuids.contains(record.getUniqueId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** 尝试加入一个删除候选。 */

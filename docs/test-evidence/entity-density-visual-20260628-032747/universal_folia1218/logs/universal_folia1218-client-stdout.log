@@ -1,0 +1,60 @@
+[03:27:58] [Datafixer Bootstrap/INFO]: 269 Datafixer optimizations took 422 milliseconds
+[03:28:01] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[03:28:01] [Render thread/INFO]: Setting user: RGBolia1218
+[03:28:01] [Render thread/INFO]: Backend library: LWJGL version 3.3.3+5
+[03:28:01] [Render thread/INFO]: Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access
+[03:28:01] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[03:28:01] [Worker-Main-10/INFO]: Found unifont_pua-16.0.03.hex, loading
+[03:28:01] [Worker-Main-9/INFO]: Found unifont_all_no_pua-16.0.03.hex, loading
+[03:28:01] [Worker-Main-6/INFO]: Found unifont_jp_patch-16.0.03.hex, loading
+[03:28:02] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on 扬声器 (High Definition Audio Device)
+[03:28:02] [Render thread/INFO]: Sound engine started
+[03:28:02] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[03:28:02] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[03:28:02] [Render thread/INFO]: Connecting to 127.0.0.1, 30004
+[03:28:03] [Render thread/INFO]: [System] [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.2)
+[03:28:03] [Render thread/INFO]: [System] [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[03:28:04] [Render thread/INFO]: [System] [CHAT] RGBolia1218 joined the game
+[03:28:04] [Render thread/INFO]: Loaded 54 advancements
+[03:28:04] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[03:28:04] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[03:28:04] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[03:28:04] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[03:28:04] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[03:28:05] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[03:28:06] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 128 reached during a single frame. New capacity will be 256.
+[03:28:08] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 256 reached during a single frame. New capacity will be 512.
+[03:28:10] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 512 reached during a single frame. New capacity will be 1024.
+[03:28:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-28_03.28.15.png
+[03:28:16] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-28_03.28.15_2.png
+[03:28:16] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 28 只，超过上限 8，本次已清理 5 只。
+[03:28:16] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 24 只，超过上限 8，本次已清理 5 只。
+[03:28:17] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 19 只，超过上限 8，本次已清理 5 只。
+[03:28:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-28_03.28.22.png
+[03:28:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-28_03.28.23.png
+[03:28:29] [Render thread/INFO]: [System] [CHAT] 实体密度扫描统计:
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 已加载/本轮选择 chunk: 723/8
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 索引 chunk/实体: 427/14
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 脏 chunk 队列: 0 (标记 6, 丢弃 0)
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 候选队列/去重: 0/0
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 快照/扫描 chunk: 432/432 (未加载 0)
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 候选创建/取出/完成: 15/15/15
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 候选过期/重试/丢弃: 0/0/0
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 删除成功/跳过: 15/0
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 索引修剪 stale/cap: 0/0
+[03:28:29] [Render thread/INFO]: [System] [CHAT] - 累计索引实体写入: 47
+[03:28:33] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 14 只，超过上限 8，本次已清理 5 只。
+[03:28:33] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 密集实体清理 | 你的附近 16 格内有 COW x 13 只，超过上限 8，本次已清理 5 只。
+[03:28:33] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-28_03.28.33.png
+[03:28:34] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-28_03.28.34.png

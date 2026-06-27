@@ -24,6 +24,7 @@ JAVA25 = base.REPO / "build" / "tools" / "jre-25.0.3+9" / "bin" / "java.exe"
 UNIVERSAL_PLUGIN = "BLWorldTrashCan-universal.jar"
 PAPI_1122 = base.WORKSPACE / "paper-1.12.2-test-server" / "plugins" / "placeholderapi-2.11.6.jar"
 PAPI_MODERN = SERVER_WORK / "1.21.11spigot" / "plugins" / "PlaceholderAPI-2.12.2.jar"
+ANSI_PATTERN = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
 
 EXTERNAL_MATRIX = [
@@ -245,6 +246,11 @@ def read_text_since(path: Path, offset: int) -> str:
     if offset >= len(text):
         return ""
     return text[offset:]
+
+
+def strip_ansi(text: str) -> str:
+    """移除服务端控制台 ANSI 颜色码，方便稳定匹配日志。"""
+    return ANSI_PATTERN.sub("", text or "")
 
 
 def update_yaml_scalars(text: str, replacements: dict[str, str]) -> str:
@@ -509,9 +515,10 @@ def wait_platform_command_accepted(log_path: Path, offset: int) -> None:
     deadline = time.time() + 12
     while time.time() < deadline:
         text = read_text_since(log_path, offset)
-        if "Unknown or incomplete command" in text or "Unknown command" in text:
+        plain = strip_ansi(text)
+        if "Unknown or incomplete command" in plain or "Unknown command" in plain:
             raise RuntimeError("blwtc platform 未被服务端识别: " + str(log_path))
-        if "[BLWorldTrashCan] 当前平台" in text or "- rgb-message:" in text:
+        if "[BLWorldTrashCan] 当前平台" in plain or "- rgb-message:" in plain:
             return
         time.sleep(0.5)
     raise TimeoutError("未看到 blwtc platform 的插件输出: " + str(log_path))

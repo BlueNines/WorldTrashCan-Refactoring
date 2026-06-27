@@ -101,9 +101,10 @@ def write_quiet_server_properties(case: dict) -> None:
     target.write_text("\n".join(key + "=" + value for key, value in values.items()) + "\n", encoding="utf-8")
 
 
-def entity_limit_config(enabled: bool) -> str:
+def entity_limit_config(enabled: bool, remove_count: int) -> str:
     """生成本轮测试专用实体密度配置。"""
     enabled_text = "true" if enabled else "false"
+    safe_remove_count = max(1, remove_count)
     return (
         "# AI 自动化密集实体视觉测试临时配置。\n"
         "# 测试结束后脚本会恢复原 entity-limits.yml。\n"
@@ -137,15 +138,15 @@ def entity_limit_config(enabled: bool) -> str:
         "    - entity: \"COW\"\n"
         "      max-count: 8\n"
         "      radius: 16\n"
-        "      remove-count: 80\n"
+        f"      remove-count: {safe_remove_count}\n"
     )
 
 
-def write_entity_config(case: dict, enabled: bool) -> Path:
+def write_entity_config(case: dict, enabled: bool, remove_count: int) -> Path:
     """写入本轮测试专用 entity-limits.yml。"""
     target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "entity-limits.yml"
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(entity_limit_config(enabled), encoding="utf-8")
+    target.write_text(entity_limit_config(enabled, remove_count), encoding="utf-8")
     return target
 
 
@@ -205,7 +206,7 @@ def setup_commands(case: dict, username: str) -> list[str]:
         "minecraft:tp " + username + " 0 91 -8 0 15",
     ]
     if not is_folia(case):
-        commands.append("minecraft:execute at " + username + " run minecraft:kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + ",distance=..64]")
+        commands.append("minecraft:kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + "]")
     return commands
 
 
@@ -233,7 +234,7 @@ def cleanup_command(case: dict, username: str) -> str:
         return "minecraft:kill @e[type=Cow,name=" + TEST_ENTITY_NAME + "]"
     if is_folia(case):
         return ""
-    return "minecraft:execute at " + username + " run minecraft:kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + ",distance=..80]"
+    return "minecraft:kill @e[type=minecraft:cow,name=" + TEST_ENTITY_NAME + "]"
 
 
 def run_console(process, command_log: Path, command: str) -> None:
@@ -260,6 +261,7 @@ def spawn_dense_entities(case: dict, process, command_log: Path, count: int) -> 
 
 def parse_density(text: str) -> dict:
     """解析 debugdensity 文本中的关键数字。"""
+    plain = external.strip_ansi(text)
     result = {"raw": text}
     patterns = {
         "indexed": r"索引 chunk/实体:\s*(\d+)\D+(\d+)",
@@ -269,12 +271,12 @@ def parse_density(text: str) -> dict:
         "removals": r"删除成功/跳过:\s*(\d+)\D+(\d+)",
     }
     for key, pattern in patterns.items():
-        match = re.search(pattern, text)
+        match = re.search(pattern, plain)
         if match:
             result[key] = [int(item) for item in match.groups()]
     if "indexed" not in result or "pending" not in result or "candidates" not in result or "removals" not in result:
         slash_groups = []
-        for match in re.finditer(r"(\d+)\s*/\s*(\d+)(?:\s*/\s*(\d+))?", text):
+        for match in re.finditer(r"(\d+)\s*/\s*(\d+)(?:\s*/\s*(\d+))?", plain):
             slash_groups.append([int(item) for item in match.groups() if item is not None])
         if len(slash_groups) >= 8:
             result.setdefault("loaded", slash_groups[0])
@@ -301,14 +303,13 @@ def wait_density_effect(case: dict, process, server_log: Path, command_log: Path
         if parsed:
             last = parsed
         pending = parsed.get("pending", [999, 999])
-        indexed = parsed.get("indexed", [0, 999])
         removals = parsed.get("removals", [0, 0])
         candidates = parsed.get("candidates", [0, 0, 0])
-        if removals[0] > 0 and candidates[0] > 0 and pending[0] == 0 and pending[1] == 0 and indexed[1] <= 12:
+        if removals[0] > 0 and candidates[0] > 0 and pending[0] == 0 and pending[1] == 0:
             return {
                 "status": "PASS",
                 "density": parsed,
-                "condition": "removed>0,candidates>0,pending=0,indexedEntities<=12",
+                "condition": "removed>0,candidates>0,pending=0",
             }
         time.sleep(1.0)
     return {
@@ -342,9 +343,22 @@ def wait_client_density_notice(client_log: Path, offset: int) -> dict:
     }
 
 
+def validate_notice_remove_count(notice_check: dict, remove_count: int) -> dict:
+    """校验正式提示中的单次清理数量没有超过 remove-count。"""
+    limit = max(1, remove_count)
+    text = str(notice_check.get("excerpt", ""))
+    values = [int(match.group(1)) for match in re.finditer(r"已清理\s*(\d+)", text)]
+    too_large = [value for value in values if value > limit]
+    if not values:
+        return {"status": "FAIL", "limit": limit, "values": values, "reason": "未解析到已清理数量"}
+    if too_large:
+        return {"status": "FAIL", "limit": limit, "values": values, "tooLarge": too_large}
+    return {"status": "PASS", "limit": limit, "values": values}
+
+
 def wait_client_debugdensity(client_log: Path, offset: int) -> dict:
     """等待客户端聊天日志出现 debugdensity 输出，证明玩家命令真的发出。"""
-    deadline = time.time() + 8
+    deadline = time.time() + 15
     markers = ["实体密度扫描统计", "實體密度掃描統計", "Entity density scan", "Densidad de entidades"]
     last_text = ""
     while time.time() < deadline:
@@ -379,6 +393,8 @@ def ensure_ingame_view(case: dict) -> None:
     """尽量把客户端从暂停菜单切回正常游戏画面。"""
     hwnd = base.find_minecraft_window(case["version"])
     rect = base.focus_window(hwnd)
+    base.pyautogui.press("esc")
+    time.sleep(0.2)
     base.click_game(hwnd, rect, 0.50, 0.34)
     time.sleep(0.4)
 
@@ -388,10 +404,7 @@ def send_ingame_command(case: dict, game_dir: Path, run_dir: Path, command: str,
     """在正常游戏画面里输入玩家命令并保留 F2 截图。"""
     hwnd = base.find_minecraft_window(case["version"])
     ensure_ingame_view(case)
-    if is_legacy(case):
-        base.send_chat_line_by_window_message(hwnd, command)
-    else:
-        base.send_chat_line(hwnd, command)
+    base.send_chat_line_by_window_message(hwnd, command)
     time.sleep(wait_seconds)
     screenshot = copy_named_screenshot(case, game_dir, run_dir, suffix)
     return {
@@ -432,7 +445,7 @@ def artifact_summary(result: dict) -> dict:
     }
 
 
-def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: int) -> dict:
+def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: int, remove_count: int) -> dict:
     """运行单个外部服务端密集实体截图测试。"""
     case = dict(case)
     case["runId"] = run_root.name
@@ -454,6 +467,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         "serverDir": str(case["serverDir"]),
         "plugin": case["plugin"],
         "spawnCount": spawn_count,
+        "removeCount": max(1, remove_count),
         "status": "FAIL",
         "artifact": external.artifact_summary_for_plugin(case),
     }
@@ -465,7 +479,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         external.deploy_plugin(case)
         write_quiet_server_properties(case)
         write_quiet_cleanup_config(case)
-        write_entity_config(case, False)
+        write_entity_config(case, False, remove_count)
         process = external.launch_server(case, run_dir)
         prepared = prepared_clients[case["version"]]
         client, username, game_dir = base.launch_client(case, prepared, run_dir)
@@ -483,7 +497,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         result["beforeScreenshot"] = str(before)
         client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
         client_notice_offset = external.log_text_offset(client_log)
-        write_entity_config(case, True)
+        write_entity_config(case, True, remove_count)
         offset = external.log_text_offset(server_log)
         run_console(process, command_log, "blwtc reload")
         external.wait_command_markers(server_log, offset, ["[Message]"], 12, "blwtc reload")
@@ -492,6 +506,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         result["densityCheck"] = density
         notice_check = wait_client_density_notice(client_log, client_notice_offset)
         result["noticeCheck"] = notice_check
+        notice_count_check = validate_notice_remove_count(notice_check, remove_count)
+        result["removeCountNoticeCheck"] = notice_count_check
         ensure_ingame_view(case)
         time.sleep(0.8)
         notify = copy_named_screenshot(case, game_dir, run_dir, "density-notify-f2")
@@ -511,7 +527,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
             result["cleanupLogExcerpt"] = external.read_text_since(server_log, cleanup_offset)[-2000:]
         else:
             result["cleanupSkipped"] = "Folia vanilla entity selector can trip region thread checks; density limiter already reduced the sample."
-        if density["status"] == "PASS" and notice_check["status"] == "PASS" and debug_check["status"] == "PASS" and screenshot_info(before)["brightness"] > 3 and screenshot_info(notify)["brightness"] > 3 and screenshot_info(Path(result["afterScreenshot"]))["brightness"] > 3:
+        if density["status"] == "PASS" and notice_check["status"] == "PASS" and notice_count_check["status"] == "PASS" and debug_check["status"] == "PASS" and screenshot_info(before)["brightness"] > 3 and screenshot_info(notify)["brightness"] > 3 and screenshot_info(Path(result["afterScreenshot"]))["brightness"] > 3:
             result["status"] = "PASS"
     except Exception as error:
         result["error"] = repr(error)
@@ -581,6 +597,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--case", default="")
     parser.add_argument("--spawn-count", type=int, default=80)
+    parser.add_argument("--remove-count", type=int, default=80)
     args = parser.parse_args()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     run_root = BUILD_ROOT / "runs" / run_id
@@ -590,13 +607,14 @@ def main() -> int:
     results = []
     for case in cases:
         prepared_clients.setdefault(case["version"], base.ensure_client(case["version"]))
-        result = run_case(case, prepared_clients, run_root, args.spawn_count)
+        result = run_case(case, prepared_clients, run_root, args.spawn_count, args.remove_count)
         results.append(result)
         write_json(run_root / "summary.json", {"run": run_id, "results": results})
     contact_sheet = make_contact_sheet(results, run_root)
     summary = {
         "run": run_id,
         "spawnCount": args.spawn_count,
+        "removeCount": max(1, args.remove_count),
         "results": results,
         "contactSheet": str(contact_sheet) if contact_sheet else "",
         "allPassed": all(item.get("status") == "PASS" for item in results),

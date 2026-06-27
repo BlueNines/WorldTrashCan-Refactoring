@@ -1,0 +1,48 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "status": "PASS",
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260628-030303\\universal_folia1218\\screenshots\\universal_folia1218-density-before-f2.png",
+      "size": 256092,
+      "sha256": "5e9ae5c5e04221b268475db2c6683abb4cb9c4a9f513bc56cf62a95f04c53215",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 85.55729166666667
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260628-030303\\universal_folia1218\\screenshots\\universal_folia1218-density-notify-f2.png",
+      "size": 353942,
+      "sha256": "7de24050232eb749f76849ad2c273592c21ba62e876aca7c0fc82a120fc46aac",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 104.02473958333333
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-density-visual-matrix\\runs\\20260628-030303\\universal_folia1218\\screenshots\\universal_folia1218-density-after-debugdensity-f2.png",
+      "size": 352517,
+      "sha256": "0540e59f4c13cef0d4ed30f095523e178db92dcd003424882ea55322ca5d3643",
+      "pngMagic": "89504e470d0a1a0a",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 98.39453125
+    }
+  ],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 518542,
+    "sha256": "f17326db410682f7f437ae521952e4c2e191b683935cacc0370f0050de827a03",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  }
+}

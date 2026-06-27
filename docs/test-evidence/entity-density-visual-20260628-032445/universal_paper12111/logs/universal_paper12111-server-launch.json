@@ -1,0 +1,17 @@
+{
+  "cwd": "E:\\server_work\\1.21.11spigot",
+  "command": [
+    "C:\\Program Files\\Java\\jdk-21\\bin\\java.exe",
+    "-Xms1024M",
+    "-Xmx4096M",
+    "--add-opens",
+    "java.base/java.net=ALL-UNNAMED",
+    "-XX:+UnlockDiagnosticVMOptions",
+    "-XX:-UseAESCTRIntrinsics",
+    "-jar",
+    "paper-1.21.11-127.jar",
+    "nogui"
+  ],
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "port": 30001
+}
