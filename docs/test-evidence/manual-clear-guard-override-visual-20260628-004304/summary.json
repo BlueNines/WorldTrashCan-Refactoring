@@ -1,0 +1,156 @@
+{
+  "run": "manual-clear-guard-override-visual-20260628-004304",
+  "results": [
+    {
+      "id": "universal_spigot2612",
+      "label": "spigot-26.1.2-managed",
+      "version": "26.1.2",
+      "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "status": "PASS",
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 520093,
+        "sha256": "cb60aaf52687fffe9485e6ea7766f9aec0a37296f4cc5ec35d15dfa0e69c4985",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "scenarios": [
+        {
+          "id": "default-bypass",
+          "name": "/wtc clear 默认忽略 guards",
+          "command": "/wtc clear",
+          "status": "PASS",
+          "expectedMarkers": [
+            "skippedByGuard=false",
+            "itemsRouted=1"
+          ],
+          "serverExcerpt": "[00:43:48] [Server thread/INFO]: RGBigot2612 issued server command: /wtc clear\n[00:43:48] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=2, targetEntities=0, minTotalEntities=400, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=13, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[00:43:59] [Server thread/INFO]: RGBigot2612 issued server command: /wtc stats\n",
+          "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\logs\\universal_spigot2612-default-bypass-cleanup.yml",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\screenshots\\universal_spigot2612-default-bypass-clear.png",
+              "size": 290300,
+              "sha256": "71c3759a54dd9cdd6db90382c1ca84f89aa666e4c8bcd80dc312cb0a4985b71e",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 122.36881510416667
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\screenshots\\universal_spigot2612-default-bypass-stats.png",
+              "size": 291169,
+              "sha256": "431953a099b845da00066a8e57a3d1e8ed41a02ecc09d3d61b2cc288e4b85786",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 116.82877604166667
+            }
+          ],
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\server-screenshots\\universal_spigot2612-default-bypass-server-log.png",
+            "size": 35842,
+            "sha256": "001d377f587f3b3c158076b5d908ca85d8a62c674f39627b221e7a3c4d01ad61",
+            "dimensions": [
+              1560,
+              240
+            ],
+            "brightness": 33.6064453125
+          }
+        },
+        {
+          "id": "explicit-true-bypass",
+          "name": "/wtc clear true 忽略 guards",
+          "command": "/wtc clear true",
+          "status": "PASS",
+          "expectedMarkers": [
+            "skippedByGuard=false",
+            "itemsRouted=1"
+          ],
+          "serverExcerpt": "[00:44:12] [Server thread/INFO]: RGBigot2612 issued server command: /wtc clear true\n[00:44:12] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=2, targetEntities=0, minTotalEntities=400, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=13, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n[00:44:23] [Server thread/INFO]: RGBigot2612 issued server command: /wtc stats\n",
+          "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\logs\\universal_spigot2612-explicit-true-bypass-cleanup.yml",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\screenshots\\universal_spigot2612-explicit-true-bypass-clear.png",
+              "size": 282332,
+              "sha256": "1c78e504024094fbef1eebe2cc5e40014b4a444d88be35d8cb198b21d20ed35a",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 123.21647135416667
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\screenshots\\universal_spigot2612-explicit-true-bypass-stats.png",
+              "size": 290532,
+              "sha256": "656c696711e6dfe805ed36b695d62ebab48c9a635961a90e84fd8ec4bffe9991",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 116.87272135416667
+            }
+          ],
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\server-screenshots\\universal_spigot2612-explicit-true-bypass-server-log.png",
+            "size": 33363,
+            "sha256": "45e6557fe888e3418d5cdb643d9a595007ed24b7004a1931032268b15d96558a",
+            "dimensions": [
+              1560,
+              240
+            ],
+            "brightness": 33.637044270833336
+          }
+        },
+        {
+          "id": "explicit-false-guard",
+          "name": "/wtc clear false 遵守 guards",
+          "command": "/wtc clear false",
+          "status": "PASS",
+          "expectedMarkers": [
+            "skippedByGuard=true"
+          ],
+          "serverExcerpt": "[00:44:35] [Server thread/INFO]: RGBigot2612 issued server command: /wtc clear false\n[00:44:35] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] skippedByGuard=true, guardReason=online-players, onlinePlayers=1, minOnlinePlayers=2, targetEntities=-1, minTotalEntities=400, worlds=0\n[00:44:35] [Server thread/INFO]: 本轮扫地已跳过 | 原因: 在线人数不足 在线 1/2 目标实体 -1/400\n[00:44:46] [Server thread/INFO]: RGBigot2612 issued server command: /wtc stats\n",
+          "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\logs\\universal_spigot2612-explicit-false-guard-cleanup.yml",
+          "clientScreenshots": [
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\screenshots\\universal_spigot2612-explicit-false-guard-clear.png",
+              "size": 286666,
+              "sha256": "91b1c90c38ff8b322fa2f4eba50bb11074a12ff02e3b1e41f43772924b428ccc",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 123.16015625
+            },
+            {
+              "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\screenshots\\universal_spigot2612-explicit-false-guard-stats.png",
+              "size": 291345,
+              "sha256": "7bdbc3b659e80da25a3cc20bec3295b64909d3eb17100947f279b4ace08c96d1",
+              "dimensions": [
+                882,
+                513
+              ],
+              "brightness": 116.97884114583333
+            }
+          ],
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\universal_spigot2612\\server-screenshots\\universal_spigot2612-explicit-false-guard-server-log.png",
+            "size": 46048,
+            "sha256": "ca8b3ffa9e5870063bee99b1f9950455a6da9c79cffe9f63d84b228fbc623869",
+            "dimensions": [
+              1560,
+              240
+            ],
+            "brightness": 35.596354166666664
+          }
+        }
+      ],
+      "username": "RGBigot2612"
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\manual-clear-guard-override-visual-20260628-004304\\manual-clear-guard-override-contact-sheet.png"
+}

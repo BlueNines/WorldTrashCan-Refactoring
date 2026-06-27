@@ -1,0 +1,22 @@
+[00:41:15] op RGBaper2612
+[00:41:16] minecraft:gamerule sendCommandFeedback false
+[00:41:16] minecraft:gamerule commandBlockOutput false
+[00:41:16] minecraft:gamerule doMobSpawning false
+[00:41:16] minecraft:time set day
+[00:41:16] minecraft:weather clear
+[00:41:16] minecraft:gamemode creative RGBaper2612
+[00:41:16] minecraft:tp RGBaper2612 0 91 -8 0 15
+[00:41:17] minecraft:kill @e[type=minecraft:item]
+[00:41:18] wtc platform
+[00:41:19] blwtc reload
+[00:41:20] minecraft:kill @e[type=minecraft:item]
+[00:41:20] minecraft:tp RGBaper2612 0 91 -8 0 15
+[00:41:20] blwtc debugdrop RGBaper2612 STONE 1
+[00:41:42] blwtc reload
+[00:41:43] minecraft:kill @e[type=minecraft:item]
+[00:41:43] minecraft:tp RGBaper2612 0 91 -8 0 15
+[00:41:43] blwtc debugdrop RGBaper2612 STONE 1
+[00:42:06] blwtc reload
+[00:42:07] minecraft:kill @e[type=minecraft:item]
+[00:42:07] minecraft:tp RGBaper2612 0 91 -8 0 15
+[00:42:07] blwtc debugdrop RGBaper2612 STONE 1

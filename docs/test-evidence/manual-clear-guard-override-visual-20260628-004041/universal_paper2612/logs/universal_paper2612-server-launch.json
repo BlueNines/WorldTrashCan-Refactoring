@@ -1,0 +1,17 @@
+{
+  "cwd": "E:\\server_work\\paper-26.1.2-test-server",
+  "command": [
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\tools\\jre-25.0.3+9\\bin\\java.exe",
+    "-Xms1024M",
+    "-Xmx4096M",
+    "--add-opens",
+    "java.base/java.net=ALL-UNNAMED",
+    "-XX:+UnlockDiagnosticVMOptions",
+    "-XX:-UseAESCTRIntrinsics",
+    "-jar",
+    "paper-26.1.2-69.jar",
+    "nogui"
+  ],
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "port": 30026
+}

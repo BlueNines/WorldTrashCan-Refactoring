@@ -1,0 +1,63 @@
+Completely ignored arguments: [legacy]
+[00:34:42] [Client thread/INFO]: Setting user: RGBaper1122
+[00:34:43] [Client thread/INFO]: LWJGL Version: 2.9.4
+[00:34:43] [Client thread/INFO]: Reloading ResourceManager: Default
+[00:34:43] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[00:34:44] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[00:34:44] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[00:34:44] [Thread-3/INFO]: OpenAL initialized.
+[00:34:44] [Sound Library Loader/INFO]: Sound engine started
+[00:34:45] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[00:34:45] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[00:34:45] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[00:34:48] [Client thread/INFO]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.2)
+[00:34:48] [Client thread/INFO]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[00:34:48] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[00:34:49] [Client thread/INFO]: [CHAT] [Server: Opped RGBaper1122]
+[00:35:01] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 清理完成 | 世界 3, 回收 1, 移除物品 0, 移除实体 0。
+[00:35:05] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.05.png
+[00:35:05] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.05_2.png
+[00:35:12] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 清理统计:
+[00:35:12] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/2, 目标实体 0/400)
+[00:35:12] [Client thread/INFO]: [CHAT] - 世界数: 3
+[00:35:12] [Client thread/INFO]: [CHAT] - 回收物品: 1 (世界 0, 个人 0, 公共 1)
+[00:35:12] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[00:35:12] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[00:35:12] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[00:35:12] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 1 (堆叠 1)
+[00:35:12] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[00:35:12] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 329
+[00:35:15] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.15.png
+[00:35:15] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.15_2.png
+[00:35:25] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 清理完成 | 世界 3, 回收 1, 移除物品 0, 移除实体 0。
+[00:35:29] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.29.png
+[00:35:29] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.29_2.png
+[00:35:36] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 清理统计:
+[00:35:36] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/2, 目标实体 0/400)
+[00:35:36] [Client thread/INFO]: [CHAT] - 世界数: 3
+[00:35:36] [Client thread/INFO]: [CHAT] - 回收物品: 1 (世界 0, 个人 0, 公共 1)
+[00:35:36] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[00:35:36] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[00:35:36] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[00:35:36] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 2 (堆叠 1)
+[00:35:36] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[00:35:36] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 305
+[00:35:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.39.png
+[00:35:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.39_2.png
+[00:35:49] [Client thread/INFO]: [CHAT] 本轮扫地已跳过 | 原因: 在线人数不足 在线 1/2 目标实体 -1/400
+[00:35:49] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 本次扫地已跳过: 在线人数不足。在线 1/2，目标实体 未统计/400。
+[00:35:51] [Client thread/INFO]: Loaded 5 advancements
+[00:35:53] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.53.png
+[00:35:53] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.35.53_2.png
+[00:36:00] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 清理统计:
+[00:36:00] [Client thread/INFO]: [CHAT] - 扫地门禁: 已跳过: 在线人数不足 (在线 1/2, 目标实体 未统计/400)
+[00:36:00] [Client thread/INFO]: [CHAT] - 世界数: 0
+[00:36:00] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[00:36:00] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[00:36:00] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[00:36:00] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[00:36:00] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 2 (堆叠 1)
+[00:36:00] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[00:36:00] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 281
+[00:36:02] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.36.02.png
+[00:36:03] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-28_00.36.03.png
