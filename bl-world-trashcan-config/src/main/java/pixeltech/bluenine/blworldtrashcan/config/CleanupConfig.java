@@ -81,7 +81,7 @@ public final class CleanupConfig {
     /** 扫地启动前置门禁配置。 */
     public static final class CleanupGuardConfig {
         private static final int DEFAULT_MIN_ONLINE_PLAYERS = 1;
-        private static final int DEFAULT_MIN_TOTAL_ENTITIES = 400;
+        private static final int DEFAULT_MIN_TOTAL_ENTITIES = 150;
 
         private final int minOnlinePlayers;
         private final int minTotalEntities;

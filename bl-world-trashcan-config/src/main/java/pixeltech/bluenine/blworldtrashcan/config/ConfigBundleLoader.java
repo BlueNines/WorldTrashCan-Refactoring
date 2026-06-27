@@ -34,7 +34,7 @@ public final class ConfigBundleLoader {
                 cleanupSettings,
                 new CleanupConfig.CleanupGuardConfig(
                         cleanup.getInt("guards.min-online-players", 1),
-                        cleanup.getInt("guards.min-total-entities", 400)
+                        cleanup.getInt("guards.min-total-entities", 150)
                 ),
                 new CleanupConfig.FoliaCleanupConfig(
                         cleanup.getInt("folia.timeout-seconds", 30),

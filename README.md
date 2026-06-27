@@ -62,11 +62,11 @@
 ```yaml
 guards:
   min-online-players: 1
-  min-total-entities: 400
+  min-total-entities: 150
 ```
 
 - `min-online-players`：在线玩家低于该值时跳过扫地，默认 `1`，即无人在线不扫地。
-- `min-total-entities`：会被本轮扫地处理的目标实体数量低于该值时跳过扫地，默认 `400`。
+- `min-total-entities`：会被本轮扫地处理的目标实体数量低于该值时跳过扫地，默认 `150`。
 - 任意一项设为 `0` 可关闭对应门禁。
 - `/blwtc clear` 和 `/blwtc stats` 会显示最近一轮门禁状态；自动扫地被跳过时使用 `notify.*.messages` 的 `-5` 文案。
 - 已存在的旧 `cleanup.yml` 如果缺少 `-5` 文案，插件启动时只追加缺失项，不整体重写服主已有配置。
