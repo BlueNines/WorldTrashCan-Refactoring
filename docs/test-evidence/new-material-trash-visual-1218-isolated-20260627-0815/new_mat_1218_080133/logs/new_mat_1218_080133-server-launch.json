@@ -1,0 +1,36 @@
+{
+  "cwd": "E:\\server_work\\server_1.21.8_0",
+  "command": [
+    "C:\\Program Files\\Java\\jdk-21\\bin\\java.exe",
+    "-Xms1024M",
+    "-Xmx4096M",
+    "--add-opens",
+    "java.base/java.net=ALL-UNNAMED",
+    "-XX:+UnlockDiagnosticVMOptions",
+    "-XX:-UseAESCTRIntrinsics",
+    "-jar",
+    "paper-1.21.8-60.jar",
+    "nogui"
+  ],
+  "plugin": {
+    "artifact": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+      "size": 517558,
+      "sha256": "cb757624e783b0adc609333b7b4722cf05399ab709aeceee2202af9872565a19",
+      "pluginYml": "name: BLWorldTrashCan\nversion: 7.0.0\nmain: pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin\napi-version: '1.13'\nfolia-supported: true\nsoftdepend:\n  - Vault\n  - PlaceholderAPI\ncommands:\n  blworldtrashcan:\n    aliases: [blwtc]\n    description: BLWorldTrashCan main command.\n  worldlisttrashcan:\n    aliases: [WorldListTrashCan, WTC, wtc]\n    description: Legacy WorldListTrashCan command alias.\npermissions:\n  blworldtrashcan.admin:\n    default: op\n  blworldtrashcan.use:\n    default: true\n  blworldtrashcan.world.create:\n    default: true\n  blworldtrashcan.global.open:\n    default: true\n  blworldtrashcan.global.take:\n    default: true\n  blworldtrashcan.global.put:\n    default: true\n  blworldtrashcan.personal.open:\n    default: true\n  blworldtrashcan.personal.take:\n    default: true\n  blworldtrashcan.personal.put:\n    default: true\n  blworldtrashcan.dropmode:\n    default: true\n  blworldtrashcan.look:\n    default: true\n",
+      "hasApiVersion113": true
+    },
+    "deployed": "E:\\server_work\\server_1.21.8_0\\plugins\\BLWorldTrashCan-universal.jar",
+    "backups": [
+      {
+        "source": "E:\\server_work\\server_1.21.8_0\\plugins\\BLWorldTrashCan-rgb-test.jar",
+        "disabled": "E:\\server_work\\server_1.21.8_0\\plugins\\BLWorldTrashCan-rgb-test.jar.ai-disabled-new_mat_1218_080133"
+      },
+      {
+        "source": "E:\\server_work\\server_1.21.8_0\\plugins\\wtc.jar",
+        "disabled": "E:\\server_work\\server_1.21.8_0\\plugins\\wtc.jar.ai-disabled-new_mat_1218_080133"
+      }
+    ]
+  },
+  "port": 30001
+}

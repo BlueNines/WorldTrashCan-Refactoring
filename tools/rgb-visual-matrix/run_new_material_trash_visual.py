@@ -1,6 +1,7 @@
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -60,15 +61,15 @@ def to_json_value(value):
     return value
 
 
-def paper1214_case(case_id: str) -> dict:
-    """返回本轮新材质验收使用的 Paper 1.21.4 测试服配置。"""
+def new_material_case(case_id: str, label: str, version: str, server_dir: Path, server_jar: str, port: int) -> dict:
+    """返回新材质入桶验收使用的服务端配置。"""
     return {
         "id": case_id,
-        "label": "paper-1.21.4-new-material-universal",
-        "version": "1.21.4",
-        "serverDir": base.WORKSPACE / "paper-1.21.4-test-server",
-        "serverJar": "paper-1.21.4-232.jar",
-        "port": 25576,
+        "label": label,
+        "version": version,
+        "serverDir": server_dir,
+        "serverJar": server_jar,
+        "port": port,
         "java": base.JAVA21,
         "plugin": "BLWorldTrashCan-universal.jar",
         "expect": "rgb",
@@ -77,6 +78,55 @@ def paper1214_case(case_id: str) -> dict:
         "readyTimeout": 180,
         "joinTimeout": 120,
     }
+
+
+def paper1214_case(case_id: str) -> dict:
+    """返回本轮新材质验收使用的 Paper 1.21.4 测试服配置。"""
+    return new_material_case(
+        case_id,
+        "paper-1.21.4-new-material-universal",
+        "1.21.4",
+        base.WORKSPACE / "paper-1.21.4-test-server",
+        "paper-1.21.4-232.jar",
+        25576,
+    )
+
+
+def read_server_port(server_dir: Path) -> int:
+    """从 server.properties 读取服务端端口。"""
+    properties = server_dir / "server.properties"
+    if not properties.is_file():
+        return 25565
+    for line in properties.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if line.startswith("server-port="):
+            return int(line.split("=", 1)[1])
+    return 25565
+
+
+def find_server_jar(server_dir: Path, version: str, explicit: str) -> str:
+    """查找本轮验收要启动的服务端 jar。"""
+    if explicit:
+        return explicit
+    candidates = sorted(server_dir.glob("*" + version + "*.jar"))
+    if not candidates:
+        candidates = sorted(server_dir.glob("*.jar"))
+    if not candidates:
+        raise RuntimeError("没有在服务端目录找到 jar: " + str(server_dir))
+    return candidates[0].name
+
+
+def build_case_from_args(args: argparse.Namespace) -> dict:
+    """根据命令行参数构建验收用例。"""
+    timestamp = time.strftime("%H%M%S")
+    if not args.server_dir:
+        return paper1214_case("new_mat_" + timestamp)
+    server_dir = Path(args.server_dir)
+    version_id = args.mc_version.replace(".", "")
+    server_jar = find_server_jar(server_dir, args.mc_version, args.server_jar)
+    port = int(args.port or read_server_port(server_dir))
+    label = args.label or ("paper-" + args.mc_version + "-new-material-universal")
+    return new_material_case("new_mat_" + version_id + "_" + timestamp, label, args.mc_version, server_dir, server_jar, port)
 
 
 def sync_universal_dist() -> dict:
@@ -99,17 +149,20 @@ def sync_universal_dist() -> dict:
 
 
 def backup_and_deploy_plugin(case: dict, run_dir: Path) -> dict:
-    """备份旧插件 jar 后部署本轮 universal 整包。"""
+    """临时禁用旧垃圾桶插件后部署本轮 universal 整包。"""
     artifact = sync_universal_dist()
     plugins_dir = Path(case["serverDir"]) / "plugins"
-    backup_dir = run_dir / "logs" / "plugin-backup"
-    backup_dir.mkdir(parents=True, exist_ok=True)
     backed_up = []
-    for old in sorted(plugins_dir.glob("BLWorldTrashCan*.jar")):
-        backup = backup_dir / old.name
-        shutil.copy2(old, backup)
-        backed_up.append({"source": old, "backup": backup})
-        old.unlink()
+    patterns = ["BLWorldTrashCan*.jar", "WorldListTrashCan*.jar", "wtc.jar"]
+    old_plugins = []
+    for pattern in patterns:
+        old_plugins.extend(sorted(plugins_dir.glob(pattern)))
+    for old in sorted(set(old_plugins)):
+        disabled = old.with_name(old.name + ".ai-disabled-" + case["id"])
+        if os.path.lexists(disabled):
+            disabled.unlink()
+        old.rename(disabled)
+        backed_up.append({"source": old, "disabled": disabled})
     target = plugins_dir / case["plugin"]
     shutil.copy2(UNIVERSAL_DIST, target)
     return {
@@ -117,6 +170,20 @@ def backup_and_deploy_plugin(case: dict, run_dir: Path) -> dict:
         "deployed": target,
         "backups": backed_up,
     }
+
+
+def restore_deployed_plugins(deploy: dict) -> None:
+    """恢复本轮部署前临时禁用的插件 jar。"""
+    deployed = Path(deploy.get("deployed", ""))
+    if os.path.lexists(deployed):
+        deployed.unlink()
+    for item in reversed(deploy.get("backups", [])):
+        source = Path(item["source"])
+        disabled = Path(item["disabled"])
+        if os.path.lexists(disabled):
+            if os.path.lexists(source):
+                source.unlink()
+            disabled.rename(source)
 
 
 def launch_server_with_plugin(case: dict, run_dir: Path) -> tuple[subprocess.Popen, dict]:
@@ -435,6 +502,7 @@ def run_case(case: dict, evidence_root: Path) -> dict:
     result = {"id": case["id"], "label": case["label"], "status": "FAIL", "screenshots": []}
     process = None
     client = None
+    deploy = None
     config_backups = []
     try:
         process, deploy = launch_server_with_plugin(case, run_dir)
@@ -540,6 +608,8 @@ def run_case(case: dict, evidence_root: Path) -> dict:
         restore_runtime_files(config_backups)
         if process is not None:
             close_server_process(process)
+        if deploy is not None:
+            restore_deployed_plugins(deploy)
     write_json(run_dir / "result.json", result)
     return result
 
@@ -548,11 +618,16 @@ def main() -> int:
     """运行新版本物品入桶真实客户端截图验收。"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--evidence-name", default="")
+    parser.add_argument("--mc-version", default="1.21.4")
+    parser.add_argument("--server-dir", default="")
+    parser.add_argument("--server-jar", default="")
+    parser.add_argument("--port", type=int, default=0)
+    parser.add_argument("--label", default="")
     args = parser.parse_args()
     run_id = args.evidence_name or ("new-material-trash-visual-" + time.strftime("%Y%m%d-%H%M%S"))
     evidence_root = EVIDENCE_ROOT / run_id
     evidence_root.mkdir(parents=True, exist_ok=True)
-    case = paper1214_case("new_mat_" + time.strftime("%H%M%S"))
+    case = build_case_from_args(args)
     result = run_case(case, evidence_root)
     summary = {"run": run_id, "result": result}
     write_json(evidence_root / "summary.json", summary)

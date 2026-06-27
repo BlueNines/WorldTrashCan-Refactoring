@@ -1,0 +1,26 @@
+[08:01:54] blwtc reload
+[08:02:05] op RGB8_080133
+[08:02:05] minecraft:gamerule sendCommandFeedback false
+[08:02:06] minecraft:gamerule commandBlockOutput false
+[08:02:06] minecraft:gamerule doMobSpawning false
+[08:02:06] minecraft:gamerule fallDamage false
+[08:02:06] minecraft:time set day
+[08:02:06] minecraft:weather clear
+[08:02:06] minecraft:gamemode creative RGB8_080133
+[08:02:06] minecraft:tp RGB8_080133 0 91 -8 0 15
+[08:02:07] minecraft:clear RGB8_080133
+[08:02:07] minecraft:kill @e[type=minecraft:item]
+[08:02:08] minecraft:give RGB8_080133 minecraft:resin_clump 24
+[08:02:08] minecraft:give RGB8_080133 minecraft:creaking_heart 2
+[08:02:08] minecraft:give RGB8_080133 minecraft:resin_bricks 64
+[08:02:09] minecraft:give RGB8_080133 minecraft:chiseled_resin_bricks 24
+[08:02:09] minecraft:give RGB8_080133 minecraft:copper_grate 24
+[08:02:09] minecraft:give RGB8_080133 minecraft:copper_bulb 17
+[08:02:09] minecraft:give RGB8_080133 minecraft:crafter 64
+[08:02:09] minecraft:give RGB8_080133 minecraft:blackstone 64
+[08:02:10] minecraft:give RGB8_080133 minecraft:heavy_core 1
+[08:02:34] blwtc debugstock
+[08:03:11] blwtc debugdrop RGB8_080133 POLISHED_BLACKSTONE 5
+[08:03:11] blwtc debugdrop RGB8_080133 GILDED_BLACKSTONE 4
+[08:03:12] blwtc debugdrop RGB8_080133 CRYING_OBSIDIAN 3
+[08:03:44] blwtc debugstock

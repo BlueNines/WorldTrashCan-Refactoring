@@ -1,0 +1,70 @@
+{
+  "id": "new_mat_1218_080133",
+  "label": "paper-1.21.8-new-material-universal",
+  "status": "PASS",
+  "screenshots": [
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-open-global-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-after-clicks-full-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-resin-clump-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-creaking-heart-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-resin-bricks-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-chiseled-resin-bricks-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-copper-grate-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-copper-bulb-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-crafter-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-blackstone-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-manual-hover-heavy-core-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-cleanup-clear-command-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-cleanup-open-global-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-cleanup-hover-polished-blackstone-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-cleanup-hover-gilded-blackstone-f2.png",
+    "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\screenshots\\new_mat_1218_080133-cleanup-hover-crying-obsidian-f2.png"
+  ],
+  "deploy": {
+    "artifact": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+      "size": 517558,
+      "sha256": "cb757624e783b0adc609333b7b4722cf05399ab709aeceee2202af9872565a19",
+      "pluginYml": "name: BLWorldTrashCan\nversion: 7.0.0\nmain: pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin\napi-version: '1.13'\nfolia-supported: true\nsoftdepend:\n  - Vault\n  - PlaceholderAPI\ncommands:\n  blworldtrashcan:\n    aliases: [blwtc]\n    description: BLWorldTrashCan main command.\n  worldlisttrashcan:\n    aliases: [WorldListTrashCan, WTC, wtc]\n    description: Legacy WorldListTrashCan command alias.\npermissions:\n  blworldtrashcan.admin:\n    default: op\n  blworldtrashcan.use:\n    default: true\n  blworldtrashcan.world.create:\n    default: true\n  blworldtrashcan.global.open:\n    default: true\n  blworldtrashcan.global.take:\n    default: true\n  blworldtrashcan.global.put:\n    default: true\n  blworldtrashcan.personal.open:\n    default: true\n  blworldtrashcan.personal.take:\n    default: true\n  blworldtrashcan.personal.put:\n    default: true\n  blworldtrashcan.dropmode:\n    default: true\n  blworldtrashcan.look:\n    default: true\n",
+      "hasApiVersion113": true
+    },
+    "deployed": "E:\\server_work\\server_1.21.8_0\\plugins\\BLWorldTrashCan-universal.jar",
+    "backups": [
+      {
+        "source": "E:\\server_work\\server_1.21.8_0\\plugins\\BLWorldTrashCan-rgb-test.jar",
+        "disabled": "E:\\server_work\\server_1.21.8_0\\plugins\\BLWorldTrashCan-rgb-test.jar.ai-disabled-new_mat_1218_080133"
+      },
+      {
+        "source": "E:\\server_work\\server_1.21.8_0\\plugins\\wtc.jar",
+        "disabled": "E:\\server_work\\server_1.21.8_0\\plugins\\wtc.jar.ai-disabled-new_mat_1218_080133"
+      }
+    ]
+  },
+  "username": "RGB8_080133",
+  "expected": {
+    "manualItems": 284,
+    "manualStacks": 9,
+    "cleanupItems": 12,
+    "cleanupStacks": 3,
+    "finalItems": 296,
+    "finalStacks": 12
+  },
+  "manualStock": {
+    "status": "PASS",
+    "text": "> \n  \n[08:02:34 INFO]: \u001b[92m垃圾桶库存:\u001b[0m\n> \n  \n[08:02:34 INFO]: \u001b[37m- \u001b[97m公共垃圾桶物品: \u001b[92m284 \u001b[37m(堆叠 9)\u001b[0m\n> \n  \n[08:02:34 INFO]: \u001b[37m- \u001b[97m公共垃圾桶页数: \u001b[92m5\u001b[0m\n> \n  \n[08:02:34 INFO]: \u001b[37m- \u001b[97m已加载个人垃圾桶: \u001b[92m0\u001b[0m\n> ",
+    "normalizedText": "> \n  \n[08:02:34 INFO]: 垃圾桶库存:\n> \n  \n[08:02:34 INFO]: - 公共垃圾桶物品: 284 (堆叠 9)\n> \n  \n[08:02:34 INFO]: - 公共垃圾桶页数: 5\n> \n  \n[08:02:34 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "items": 284,
+    "stacks": 9
+  },
+  "cleanupLogExcerpt": "\n  \n[08:03:19 INFO]: RGB8_080133 issued server command: /blwtc clear\n> \n  \n[08:03:19 INFO]: [BLWorldTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=12, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=89, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false\n> ",
+  "finalStock": {
+    "status": "PASS",
+    "text": "> \n  \n[08:03:44 INFO]: \u001b[92m垃圾桶库存:\u001b[0m\n> \n  \n[08:03:44 INFO]: \u001b[37m- \u001b[97m公共垃圾桶物品: \u001b[92m296 \u001b[37m(堆叠 12)\u001b[0m\n> \n  \n[08:03:44 INFO]: \u001b[37m- \u001b[97m公共垃圾桶页数: \u001b[92m5\u001b[0m\n> \n  \n[08:03:44 INFO]: \u001b[37m- \u001b[97m已加载个人垃圾桶: \u001b[92m0\u001b[0m\n> ",
+    "normalizedText": "> \n  \n[08:03:44 INFO]: 垃圾桶库存:\n> \n  \n[08:03:44 INFO]: - 公共垃圾桶物品: 296 (堆叠 12)\n> \n  \n[08:03:44 INFO]: - 公共垃圾桶页数: 5\n> \n  \n[08:03:44 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "items": 296,
+    "stacks": 12
+  },
+  "legacyWarningForBLWorldTrashCan": false,
+  "serverEvidenceScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new_mat_1218_080133\\server-screenshots\\new_mat_1218_080133-new-material-server-log.png",
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\new-material-trash-visual-1218-isolated-20260627-0815\\new-material-trash-contact-sheet.png"
+}
