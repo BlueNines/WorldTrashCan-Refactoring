@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
 /** 跨版本通用总包入口，运行时选择最合适的平台实现。 */
 public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
@@ -79,8 +80,7 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         try {
             startPlugin();
         } catch (Throwable throwable) {
-            getLogger().severe("[Universal] 启动失败，已禁用插件: " + throwable.getMessage());
-            throwable.printStackTrace();
+            getLogger().log(Level.SEVERE, "[Universal] 启动失败，已禁用插件: " + throwable.getMessage(), throwable);
             getServer().getPluginManager().disablePlugin(this);
         }
     }
