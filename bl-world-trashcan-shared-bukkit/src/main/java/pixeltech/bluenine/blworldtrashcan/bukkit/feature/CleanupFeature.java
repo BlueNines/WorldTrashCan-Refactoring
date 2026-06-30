@@ -383,6 +383,10 @@ public final class CleanupFeature implements Feature {
     /** 清理单个掉落物实体。 */
     private void cleanItem(Item item, CleanupPolicy policy, CleanupStats stats) {
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        if (snapshot == null) {
+            stats.itemsSkipped++;
+            return;
+        }
         boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), item.getItemStack());
         boolean personalTrash = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
         boolean globalTrash = trashRouter.hasGlobalTrash(item.getItemStack());
