@@ -1,0 +1,12 @@
+[09:29:54] blwtc reload
+[09:30:03] op RGBigot2612
+[09:30:03] minecraft:gamerule sendCommandFeedback false
+[09:30:04] minecraft:gamerule commandBlockOutput false
+[09:30:04] minecraft:gamerule doMobSpawning false
+[09:30:04] minecraft:time set day
+[09:30:04] minecraft:weather clear
+[09:30:04] minecraft:gamemode creative RGBigot2612
+[09:30:04] minecraft:tp RGBigot2612 0 91 -8 0 15
+[09:30:05] blwtc platform
+[09:30:09] blwtc debugnotify 0
+[09:30:18] blwtc debugnotify -5

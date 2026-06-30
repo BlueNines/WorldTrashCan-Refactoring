@@ -1,0 +1,108 @@
+# 清理周期，单位秒。
+# 默认 360 秒；设为 0 时只允许管理员手动触发清理。
+interval-seconds: 0
+
+# 跳过清理的世界名。
+# 默认示例为 testWorld；留空请写 []。
+ignored-worlds:
+  - "testWorld"
+
+# 不回收也不删除的物品类型。
+# 使用当前版本平台标准化后的 Material 名称。
+ignored-materials:
+  - "DIAMOND"
+
+# 显示名包含以下片段时跳过清理。
+# 可用于保护特殊商店、祭坛、任务物品。
+ignored-name-fragments:
+  - "shopLocation"
+  - "ALTAR"
+
+# lore 包含以下片段时跳过清理。
+# 默认保护 QuickShop 一类带位置 lore 的物品。
+ignored-lore-fragments:
+  - "shopLocation"
+
+# 实体清理规则。
+entities:
+  # 是否启用实体清理总开关。
+  # 默认 true；改为 false 时，经验球、怪物、动物、投射物、实体黑名单等实体清理规则都会整体跳过。
+  enabled: true
+  # 是否清理经验球。
+  clear-experience-orbs: true
+  # 是否清理怪物。
+  clear-monsters: true
+  # 是否清理动物或普通生物。
+  clear-animals: false
+  # 是否清理投射物。
+  clear-projectiles: true
+  # 是否清理带自定义名的实体。
+  clear-named-entities: false
+  # 是否跳过船内实体。
+  ignore-entities-in-boat: false
+  # 实体白名单；命中后不清理，支持 * 通配。
+  whitelist:
+    - "VILLAGER"
+    - "*golem*"
+    - "WITHER"
+    - "Ender Dragon"
+  # 实体黑名单；命中后强制清理，支持 * 通配。白名单优先级更高。
+  blacklist:
+    - "FLAMMPFEIL.SLASHBLADE_BLADESTAND"
+
+# 清理通知配置。
+# 这些通知都属于扫地功能的一部分，因此统一放在 cleanup.yml 中维护。
+
+notify:
+  # AI 自动化清理通知视觉验收临时配置，测试结束后脚本会恢复原文件。
+  chat:
+    # 是否启用聊天提醒。
+    enabled: true
+    # 是否同步输出到控制台。
+    console-log: true
+    # 清理完成消息点击后执行的命令。
+    click-command: "/worldlisttrashcan globaltrash"
+    # 倒计时聊天提醒，格式：剩余秒数;内容。
+    messages:
+      - "0;&#FF1493AI_NOTIFY_CHAT_0 &#00E5FF清理完成 &#BAFF00公共:%GlobalTrashAddSum% &#FF4F00实体:%EntitySum%"
+      - "-5;&#FF4F00AI_NOTIFY_CHAT_MINUS5 &#00E5FF%CleanupSkipReason% &#BAFF00%CleanupOnlinePlayers%/%CleanupMinOnlinePlayers% &#FF1493%CleanupTargetEntities%/%CleanupMinTotalEntities%"
+
+  actionbar:
+    # 是否启用 ActionBar。
+    enabled: true
+    # 倒计时 ActionBar 提醒，格式：剩余秒数;内容。
+    messages:
+      - "0;&#00E5FFAI_ACTIONBAR_0 &#FF1493清理完成 &#BAFF00公共:%GlobalTrashAddSum% &#FF4F00实体:%EntitySum%"
+      - "-5;&#FF4F00AI_ACTIONBAR_MINUS5 &#00E5FF%CleanupSkipReason%"
+
+  bossbar:
+    # 是否启用 BossBar。
+    enabled: true
+    # 倒计时 BossBar 提醒，格式：剩余秒数;内容;样式;颜色。
+    messages:
+      - "0;&#FF1493AI_BOSSBAR_0 &#00E5FF清理完成 &#BAFF00公共:%GlobalTrashAddSum% &#FF4F00实体:%EntitySum%;SEGMENTED_20;PURPLE"
+      - "-5;&#FF4F00AI_BOSSBAR_MINUS5 &#00E5FF%CleanupSkipReason% &#BAFF00%CleanupOnlinePlayers%/%CleanupMinOnlinePlayers%;SEGMENTED_20;YELLOW"
+
+  title:
+    # 是否启用 Title。
+    enabled: true
+    # 倒计时 Title 提醒，格式：剩余秒数;主标题;副标题。
+    messages:
+      - "0;&#FF1493AI_TITLE_0;&#00E5FFAI_SUBTITLE_0 &#BAFF00公共:%GlobalTrashAddSum% &#FF4F00实体:%EntitySum%"
+      - "-5;&#FF4F00AI_TITLE_MINUS5;&#00E5FFAI_SUBTITLE_MINUS5 %CleanupSkipReason%"
+
+  sound:
+    # 是否启用提示音。
+    enabled: true
+    # 倒计时声音提醒，格式：剩余秒数;声音名,音量,音调。
+    messages:
+      - "0;entity.experience_orb.pickup,1.0,1.4"
+      - "-5;entity.experience_orb.pickup,1.0,0.5"
+
+  command:
+    # 是否启用倒计时命令。
+    enabled: true
+    # 倒计时命令，格式：剩余秒数;命令1;命令2。
+    commands:
+      - "0;say AI_WTC_NOTIFY_COMMAND_0"
+      - "-5;say AI_WTC_NOTIFY_COMMAND_MINUS5"

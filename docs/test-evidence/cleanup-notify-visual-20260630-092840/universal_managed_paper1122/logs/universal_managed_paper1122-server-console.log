@@ -1,0 +1,184 @@
+Loading libraries, please wait...
+2026-06-30 09:28:41,075 main WARN Disabling terminal, you're running in an unsupported environment.
+[09:28:41 INFO]: Starting minecraft server version 1.12.2
+[09:28:41 INFO]: Loading properties
+[09:28:41 INFO]: Default game type: SURVIVAL
+[09:28:41 INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[09:28:41 INFO]: Debug logging is disabled
+[09:28:41 INFO]: Server Ping Player Sample Count: 12
+[09:28:41 INFO]: Using 4 threads for Netty based IO
+[09:28:41 INFO]: Generating keypair
+[09:28:42 INFO]: Starting Minecraft server on *:30012
+[09:28:42 INFO]: Using default channel type
+[09:28:42 INFO]: Set PluginClassLoader as parallel capable
+[09:28:42 INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.11.6
+[09:28:42 INFO]: [BLWorldTrashCan] Loading BLWorldTrashCan v7.0.0
+[09:28:42 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[09:28:42 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[09:28:42 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[09:28:42 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[09:28:42 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[09:28:42 INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[09:28:42 INFO]: Preparing level "rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840"
+[09:28:42 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840] --------
+[09:28:42 INFO]: Item Merge Radius: 2.5
+[09:28:42 INFO]: Item Despawn Rate: 6000
+[09:28:42 INFO]: View Distance: 2
+[09:28:42 INFO]: Arrow Despawn Rate: 1200
+[09:28:42 INFO]: Experience Merge Radius: 3.0
+[09:28:42 INFO]: Nerfing mobs spawned from spawners: false
+[09:28:42 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[09:28:42 INFO]: Zombie Aggressive Towards Villager: true
+[09:28:42 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[09:28:42 INFO]: Random Lighting Updates: false
+[09:28:42 INFO]: Structure Info Saving: true
+[09:28:42 INFO]: Max TNT Explosions: 100
+[09:28:42 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[09:28:42 INFO]: Cactus Growth Modifier: 100%
+[09:28:42 INFO]: Cane Growth Modifier: 100%
+[09:28:42 INFO]: Melon Growth Modifier: 100%
+[09:28:42 INFO]: Mushroom Growth Modifier: 100%
+[09:28:42 INFO]: Pumpkin Growth Modifier: 100%
+[09:28:42 INFO]: Sapling Growth Modifier: 100%
+[09:28:42 INFO]: Wheat Growth Modifier: 100%
+[09:28:42 INFO]: NetherWart Growth Modifier: 100%
+[09:28:42 INFO]: Vine Growth Modifier: 100%
+[09:28:42 INFO]: Cocoa Growth Modifier: 100%
+[09:28:42 INFO]: Mob Spawn Range: 4
+[09:28:42 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[09:28:42 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[09:28:42 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[09:28:42 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840_nether] --------
+[09:28:42 INFO]: Item Merge Radius: 2.5
+[09:28:42 INFO]: Item Despawn Rate: 6000
+[09:28:42 INFO]: View Distance: 2
+[09:28:42 INFO]: Arrow Despawn Rate: 1200
+[09:28:42 INFO]: Experience Merge Radius: 3.0
+[09:28:42 INFO]: Nerfing mobs spawned from spawners: false
+[09:28:42 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[09:28:42 INFO]: Zombie Aggressive Towards Villager: true
+[09:28:42 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[09:28:42 INFO]: Random Lighting Updates: false
+[09:28:42 INFO]: Structure Info Saving: true
+[09:28:42 INFO]: Max TNT Explosions: 100
+[09:28:42 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[09:28:42 INFO]: Cactus Growth Modifier: 100%
+[09:28:42 INFO]: Cane Growth Modifier: 100%
+[09:28:42 INFO]: Melon Growth Modifier: 100%
+[09:28:42 INFO]: Mushroom Growth Modifier: 100%
+[09:28:42 INFO]: Pumpkin Growth Modifier: 100%
+[09:28:42 INFO]: Sapling Growth Modifier: 100%
+[09:28:42 INFO]: Wheat Growth Modifier: 100%
+[09:28:42 INFO]: NetherWart Growth Modifier: 100%
+[09:28:42 INFO]: Vine Growth Modifier: 100%
+[09:28:42 INFO]: Cocoa Growth Modifier: 100%
+[09:28:42 INFO]: Mob Spawn Range: 4
+[09:28:42 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[09:28:42 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[09:28:42 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[09:28:42 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840_the_end] --------
+[09:28:42 INFO]: Item Merge Radius: 2.5
+[09:28:42 INFO]: Item Despawn Rate: 6000
+[09:28:42 INFO]: View Distance: 2
+[09:28:42 INFO]: Arrow Despawn Rate: 1200
+[09:28:42 INFO]: Experience Merge Radius: 3.0
+[09:28:42 INFO]: Nerfing mobs spawned from spawners: false
+[09:28:42 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[09:28:42 INFO]: Zombie Aggressive Towards Villager: true
+[09:28:42 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[09:28:42 INFO]: Random Lighting Updates: false
+[09:28:42 INFO]: Structure Info Saving: true
+[09:28:42 INFO]: Max TNT Explosions: 100
+[09:28:42 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[09:28:42 INFO]: Cactus Growth Modifier: 100%
+[09:28:42 INFO]: Cane Growth Modifier: 100%
+[09:28:42 INFO]: Melon Growth Modifier: 100%
+[09:28:42 INFO]: Mushroom Growth Modifier: 100%
+[09:28:42 INFO]: Pumpkin Growth Modifier: 100%
+[09:28:42 INFO]: Sapling Growth Modifier: 100%
+[09:28:42 INFO]: Wheat Growth Modifier: 100%
+[09:28:42 INFO]: NetherWart Growth Modifier: 100%
+[09:28:42 INFO]: Vine Growth Modifier: 100%
+[09:28:42 INFO]: Cocoa Growth Modifier: 100%
+[09:28:42 INFO]: Mob Spawn Range: 4
+[09:28:42 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[09:28:42 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[09:28:42 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[09:28:42 INFO]: Preparing start region for level 0 (Seed: -2021340290819332314)
+[09:28:42 INFO]: Preparing start region for level 1 (Seed: -2021340290819332314)
+[09:28:42 INFO]: Preparing start region for level 2 (Seed: -2021340290819332314)
+[09:28:42 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[09:28:43 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[09:28:43 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[09:28:43 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[09:28:43 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[09:28:43 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[09:28:43 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[09:28:43 INFO]: [BLWorldTrashCan] Universal runtime: legacy
+[09:28:43 INFO]: [BLWorldTrashCan] Platform: legacy-1.12
+[09:28:43 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability rgb-message: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability sign-legacy: enabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability sign-modern: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability entity-move-event: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[09:28:43 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[09:28:43 INFO]: Done (0.916s)! For help, type "help" or "?"
+[09:28:43 INFO]: Timings Reset
+[09:28:43 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[09:28:43 INFO]: 0 placeholder hook(s) registered!
+[09:28:43 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[09:28:43 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[09:28:43 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[09:28:43 INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。
+[09:28:43 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[09:28:43 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[09:28:48 INFO]: UUID of player RGBaper1122 is 492a4a1c-1269-347c-a86f-e86c5e9d0cca
+[09:28:48 INFO]: RGBaper1122[/127.0.0.1:50564] logged in with entity id 3 at ([rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840]-522.5, 4.0, -1082.5)
+[09:28:49 INFO]: Opped RGBaper1122
+[09:28:50 INFO]: Game rule sendCommandFeedback has been updated to false
+[09:28:50 INFO]: Game rule commandBlockOutput has been updated to false
+[09:28:50 INFO]: Game rule doMobSpawning has been updated to false
+[09:28:50 INFO]: Set the time to 1000
+[09:28:50 INFO]: Changing to clear weather
+[09:28:50 INFO]: Set RGBaper1122's game mode to Creative Mode
+[09:28:50 INFO]: Teleported RGBaper1122 to 0.5, 91.0, -7.5
+[09:28:50 WARN]: RGBaper1122 moved too quickly! 523.0,87.0,1075.0
+[09:28:51 INFO]: [BLWorldTrashCan] 当前平台 | legacy-1.12 (universal)
+[09:28:51 INFO]: - scheduler-global: 启用
+[09:28:51 INFO]: - scheduler-region: 禁用
+[09:28:51 INFO]: - inventory-basic: 启用
+[09:28:51 INFO]: - item-pdc-tag: 禁用
+[09:28:51 INFO]: - item-legacy-tag: 禁用
+[09:28:51 INFO]: - rgb-message: 禁用
+[09:28:51 INFO]: - clickable-message: 启用
+[09:28:51 INFO]: - boss-bar: 启用
+[09:28:51 INFO]: - sign-legacy: 启用
+[09:28:51 INFO]: - sign-modern: 禁用
+[09:28:51 INFO]: - entity-move-event: 禁用
+[09:28:51 INFO]: - folia-region-safe: 禁用
+[09:28:56 INFO]: AI_NOTIFY_CHAT_0 清理完成 公共:0 实体:0
+[09:28:56 INFO]: [Server] AI_WTC_NOTIFY_COMMAND_0
+[09:28:56 INFO]: [BLWorldTrashCan] [Debug] debugNotify count=0
+[09:28:56 INFO]: 已触发清理通知: 0
+[09:29:04 INFO]: AI_NOTIFY_CHAT_MINUS5 未跳过 0/0 -1/0
+[09:29:04 INFO]: [Server] AI_WTC_NOTIFY_COMMAND_MINUS5
+[09:29:04 INFO]: [BLWorldTrashCan] [Debug] debugNotify count=-5
+[09:29:04 INFO]: 已触发清理通知: -5
+[09:29:33 INFO]: RGBaper1122 lost connection: Internal Exception: java.io.IOException: 杩滅▼涓绘満寮鸿揩鍏抽棴浜嗕竴涓幇鏈夌殑杩炴帴銆?
+[09:29:33 INFO]: RGBaper1122 left the game
+[09:29:33 INFO]: Stopping the server
+[09:29:33 INFO]: Stopping server
+[09:29:33 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[09:29:33 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[09:29:33 INFO]: Saving players
+[09:29:33 INFO]: Saving worlds
+[09:29:33 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840'/overworld
+[09:29:33 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840_nether'/the_nether
+[09:29:33 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_cleanup_notify_visual_20260630_092840_the_end'/the_end

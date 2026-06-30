@@ -1,0 +1,116 @@
+{
+  "id": "universal_managed_paper1122",
+  "sourceId": "managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "clientVersion": "1.12.2",
+  "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 522622,
+    "sha256": "9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "count": 0,
+      "label": "count0",
+      "serverCheck": {
+        "status": "PASS",
+        "markers": [
+          "debugNotify count=0",
+          "AI_WTC_NOTIFY_COMMAND_0"
+        ],
+        "excerpt": "[09:28:56 INFO]: AI_NOTIFY_CHAT_0 ������� ����:0 ʵ��:0\n[09:28:56 INFO]: [Server] AI_WTC_NOTIFY_COMMAND_0\n[09:28:56 INFO]: [BLWorldTrashCan] [Debug] debugNotify count=0\n[09:28:56 INFO]: �Ѵ�������֪ͨ: 0\n"
+      },
+      "clientChatCheck": {
+        "status": "PASS",
+        "markers": [
+          "AI_NOTIFY_CHAT_0"
+        ],
+        "excerpt": "[09:28:56] [Client thread/INFO]: [CHAT] §cAI_NOTIFY_CHAT_0 §b清理完成 §6公共:0 §c实体:0\n[09:28:56] [Client thread/INFO]: [CHAT] [Server] AI_WTC_NOTIFY_COMMAND_0\n[09:28:58] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-30_09.28.58.png\n[09:28:59] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-30_09.28.59.png\n"
+      },
+      "visualMarkersExpected": [
+        "AI_NOTIFY_CHAT_0",
+        "AI_ACTIONBAR_0",
+        "AI_BOSSBAR_0",
+        "AI_TITLE_0"
+      ],
+      "soundEvidence": "客户端已打开字幕并触发 sound 配置；若截图没有声音字幕，只能证明触发链路无异常，不能替代人工听感。",
+      "clientScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-notify-count0-f2.png",
+        "size": 26431,
+        "sha256": "201dbf7127f065e50a3e54cad1904f79822d543f5b54d4a242b801c9ffc86818",
+        "dimensions": [
+          704,
+          409
+        ],
+        "brightness": 181.11067708333334
+      },
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-notify-count0-server-log.png",
+        "size": 25184,
+        "sha256": "3209f1a56c8d1307861d1f6199faaca4527ae040bee380932a36b4cf1f0640ac",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 30.706380208333332
+      }
+    },
+    {
+      "count": -5,
+      "label": "minus5",
+      "serverCheck": {
+        "status": "PASS",
+        "markers": [
+          "debugNotify count=-5",
+          "AI_WTC_NOTIFY_COMMAND_MINUS5"
+        ],
+        "excerpt": "[09:29:04 INFO]: AI_NOTIFY_CHAT_MINUS5 δ���� 0/0 -1/0\n[09:29:04 INFO]: [Server] AI_WTC_NOTIFY_COMMAND_MINUS5\n[09:29:04 INFO]: [BLWorldTrashCan] [Debug] debugNotify count=-5\n[09:29:04 INFO]: �Ѵ�������֪ͨ: -5\n"
+      },
+      "clientChatCheck": {
+        "status": "PASS",
+        "markers": [
+          "AI_NOTIFY_CHAT_MINUS5"
+        ],
+        "excerpt": "[09:29:04] [Client thread/INFO]: [CHAT] AI_NOTIFY_CHAT_MINUS5 未跳过 0/0 -1/0\n[09:29:04] [Client thread/INFO]: [CHAT] [Server] AI_WTC_NOTIFY_COMMAND_MINUS5\n[09:29:06] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-30_09.29.06.png\n[09:29:07] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-06-30_09.29.07.png\n"
+      },
+      "visualMarkersExpected": [
+        "AI_NOTIFY_CHAT_MINUS5",
+        "AI_ACTIONBAR_MINUS5",
+        "AI_BOSSBAR_MINUS5",
+        "AI_TITLE_MINUS5"
+      ],
+      "soundEvidence": "客户端已打开字幕并触发 sound 配置；若截图没有声音字幕，只能证明触发链路无异常，不能替代人工听感。",
+      "clientScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-notify-minus5-f2.png",
+        "size": 25939,
+        "sha256": "ef90f8d68a861045670439977051ac5a7f5130e4f0fe2e9f8cf068d356b09f32",
+        "dimensions": [
+          704,
+          409
+        ],
+        "brightness": 173.64973958333334
+      },
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-notify-minus5-server-log.png",
+        "size": 25394,
+        "sha256": "da710ef2107180c1af2f4d0d844d33e5ac50906de7c7e503afdfc9de0beaf16c",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 30.806966145833332
+      }
+    }
+  ],
+  "patchedCleanupConfig": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_managed_paper1122\\logs\\config-after-patch\\cleanup.yml",
+  "username": "RGBaper1122",
+  "clientPid": 21068,
+  "failedChecks": []
+}

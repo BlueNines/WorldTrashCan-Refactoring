@@ -9,7 +9,7 @@
 - `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
 - `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
 - `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.4、外部 Paper 1.21.8 和外部 Paper 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
-- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 Folia 测试服完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为清理通知里的 BossBar/Sound 专项视觉验收还未完整补齐，且 Command 通知允许服主配置任意控制台命令。
+- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 Folia 测试服完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。清理通知的 Chat、ActionBar、BossBar、Title、Sound 和 Command 已补真实客户端专项截图与日志证据；当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 Command 通知允许服主配置任意控制台命令。
 - `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在 6 个外部服务端全部使用同一个 universal 整包完成真实客户端 RGB 三通道截图和基础功能回归，也已在 Paper 1.12.2、Paper 26.1.2 与 Spigot 26.1.2 使用同一个 universal 整包完成真实客户端 RGB 截图、基础功能和完整功能矩阵复测。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 以及 26.1.2 RGB 截图矩阵以真实客户端 F2 截图为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
 
 ## 模块
@@ -333,7 +333,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BLWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
 - Folia 产物已接入专用 `FoliaEntityLimitFeature`：单世界实体上限用 `EntityAddToWorldEvent` / `EntityRemoveFromWorldEvent` 维护数量缓存并用 region-safe 复算兜底；后续低占用密集实体扫描改为分片 chunk 快照和异步候选队列，不再按旧实现只看当前 chunk。
-- Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见 RGB Chat、ActionBar、Title 已在 Folia 1.21.8 的通道截图矩阵中覆盖，清理通知里的 BossBar/Sound 仍需要单独专项视觉验收。
+- Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见 RGB Chat、ActionBar、Title 已在 Folia 1.21.8 的通道截图矩阵中覆盖。2026-06-30 又用真实客户端专项矩阵补齐清理通知 Chat、ActionBar、BossBar、Title、Sound 和 Command，证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。
 - 2026-06-15 Folia 1.21.8 压力回归只使用 `dist/BLWorldTrashCan-universal.jar`，SHA256 `A84D2EC08402500505D9BE4F0EDFD404AF86A861AC0DC98F8C86FC53832E7CCC`。147 个已加载 chunk 的基线清理 `timedOut=false`；约 5946 个 `ai_wtc_pressure` armor_stand canary 被清理，立即二次 `/blwtc clear` 命中运行中保护；`chunk-batch-size: 1`、`chunk-batch-delay-ticks: 2`、`timeout-seconds: 1` 稳定触发两次 `timedOut=true`，第二次能重新启动证明 `cleanupRunning` 已释放；超时通知改为 `-4`“Folia 清理超时”，不再误报“清理成功”。证据目录：`docs/test-evidence/folia-cleanup-pressure-20260615-030918/`。
 - 四个平台默认 `cleanup.yml` 的 `notify.*` 已补回旧配置里的清理后 `-1/-2` 提醒：Chat、ActionBar、BossBar、Title 都默认包含“公共垃圾桶未刷新/已刷新”两类消息；包内检查确认四个 dist jar 的 `cleanup.yml` 均包含这些条目。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
@@ -371,6 +371,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 2026-06-08 已新增 `docs/重构版完整功能与测试矩阵.md`，把重构版拆成 80 个功能项，并按功能文档执行 universal 整包真实客户端矩阵测试。被测 jar 为 `dist/BLWorldTrashCan-universal.jar`，SHA256 `9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399`，jar 内 `plugin.yml` 为 `version: 7.0.0` 且旧入口包含 `WorldListTrashCan/WTC/wtc`。Paper 1.12.2、Paper 26.1.2、Spigot 26.1.2 三端矩阵结果均为 PASS、无 FAIL；本轮仍有明确 `SKIP` 项，不能视为通过。证据目录：`docs/test-evidence/universal-function-matrix-1122-2612-20260608-213500/`。
 - 2026-06-26 已补验扫地门禁 `-5` 正式通知：修复旧 `cleanup.yml` 不自动补齐新增 `-5` 文案、普通 Bukkit/Paper/Legacy 跳过路径不发送正式通知的问题。`dist/BLWorldTrashCan-universal.jar` SHA256 `5D0BB85487F632DD3BC221D5BC749C5DEB3AF2FF92748E14A0C71A00CB134A0D`，Spigot 26.1.2、Folia 1.21.8、Paper 1.12.2 均用真实客户端和服务端截图复测 PASS；1.12.2 控制台中文乱码，因此以服务端截图中的 `cleanup.yml` `-5` 配置行、`skippedByGuard=true` 汇总和客户端可见中文截图共同验收。证据目录：`docs/test-evidence/cleanup-guard-visual-20260626-214947/`、`docs/test-evidence/cleanup-guard-visual-20260626-215753/`。
 - 2026-06-27 已修复公共垃圾桶按次数刷新时序：`global-trash.clear-every-cleanups: 3` 触发时先清空旧公共垃圾桶，再把本轮清理物品写入公共垃圾桶，避免第 3 次清理把本轮新物品一起清空。`dist/BLWorldTrashCan-universal.jar` SHA256 `52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466`，Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 均用真实客户端连续三轮 `/blwtc clear` + `/blwtc debugstock` 截图复测 PASS；第 3 轮服务端日志为 `globalTrashRefreshed=true`，客户端库存仍为公共垃圾桶物品 `1`。证据目录：`docs/test-evidence/global-refresh-visual-20260627-013926/`、`docs/test-evidence/global-refresh-visual-20260627-014123/`、`docs/test-evidence/global-refresh-visual-20260627-014340/`。
+- 2026-06-30 已补做清理通知专项真实客户端矩阵：同一个 `dist/BLWorldTrashCan-universal.jar`，SHA256 `9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时开启 `notify.chat/actionbar/bossbar/title/sound/command`，分别触发 `/blwtc debugnotify 0` 和 `/blwtc debugnotify -5`；真实客户端截图可见 Chat、ActionBar、BossBar、Title，客户端字幕 `Experience gained` 作为 Sound 辅助证据，服务端日志 `AI_WTC_NOTIFY_COMMAND_*` 作为 Command 执行证据。证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。
 
 本轮关键日志：
 
@@ -497,7 +498,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 通用总包 1.12.2 smoke summary 里的 `ErrorPattern=true` 来自测试服其它前置插件噪声；同轮日志中 BLWorldTrashCan 已正常启用，平台识别、命令和停服流程均有证据。
 - 2026-06-07 真实客户端工作流回归中，Paper/Forge 日志只用于辅助定位；玩家可见功能结论以 `client-response.properties`、`client-workflow-assertions.txt`、`client-chat.log`、`client-screen.log` 和真实 PNG 截图为准。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
-- Folia 当前已经完成世界清理、专用实体限制、低占用密集实体扫描和多轮真实客户端回归，但仍不等于整产物 `FOLIA_REGION_SAFE`；清理通知里的 BossBar/Sound 仍需专项视觉验收，Command 通知也可能被服主配置成触发其它插件的非 region-safe 行为。
+- Folia 当前已经完成世界清理、专用实体限制、低占用密集实体扫描和多轮真实客户端回归；清理通知 Chat、ActionBar、BossBar、Title、Sound 和 Command 也已补专项真实客户端截图与日志证据。但这仍不等于整产物 `FOLIA_REGION_SAFE`，因为 Command 通知可能被服主配置成触发其它插件的非 region-safe 行为。
 - 本机 PlaceholderAPI 2.11.6 不支持 Folia，Folia PAPI 变量仍需换用支持 Folia 的 PlaceholderAPI 前置后再验收；不能用普通 Paper 的 PAPI 验证结果替代 Folia。
 - `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。
 - 1.12.2 控制台直接执行 `summon Zombie 0 64 0` 会返回 `Cannot summon the object out of the world`，因此本轮未用原版 summon 完成“关闭 `entities.enabled` 后实体仍保留”的运行态子用例；该语义已由核心自测和字节码检查覆盖。

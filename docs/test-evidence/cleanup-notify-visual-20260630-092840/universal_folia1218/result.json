@@ -1,0 +1,116 @@
+{
+  "id": "universal_folia1218",
+  "sourceId": "external_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "clientVersion": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 522622,
+    "sha256": "9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "count": 0,
+      "label": "count0",
+      "serverCheck": {
+        "status": "PASS",
+        "markers": [
+          "debugNotify count=0",
+          "AI_WTC_NOTIFY_COMMAND_0"
+        ],
+        "excerpt": "> \n  \n[09:31:12 INFO]: 已触发清理通知: 0\n> \n  \n[09:31:12 INFO]: AI_NOTIFY_CHAT_0 清理完成 公共:0 实体:0\n> \n  \n[09:31:12 INFO]: [BLWorldTrashCan] [Debug] debugNotify count=0\n> \n  \n[09:31:12 INFO]: [Not Secure] [Server] AI_WTC_NOTIFY_COMMAND_0\n> "
+      },
+      "clientChatCheck": {
+        "status": "PASS",
+        "markers": [
+          "AI_NOTIFY_CHAT_0"
+        ],
+        "excerpt": "[09:31:12] [Render thread/INFO]: [System] [CHAT] AI_NOTIFY_CHAT_0 清理完成 公共:0 实体:0\n[09:31:12] [Render thread/INFO]: [System] [CHAT] [Server] AI_WTC_NOTIFY_COMMAND_0\n[09:31:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-30_09.31.15.png\n[09:31:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-30_09.31.15_2.png\n"
+      },
+      "visualMarkersExpected": [
+        "AI_NOTIFY_CHAT_0",
+        "AI_ACTIONBAR_0",
+        "AI_BOSSBAR_0",
+        "AI_TITLE_0"
+      ],
+      "soundEvidence": "客户端已打开字幕并触发 sound 配置；若截图没有声音字幕，只能证明触发链路无异常，不能替代人工听感。",
+      "clientScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_folia1218\\screenshots\\universal_folia1218-notify-count0-f2.png",
+        "size": 335351,
+        "sha256": "a2821480b86b0a9e9f0242f44fe363640e695f8fbd11e18e14c82ae85eb3d710",
+        "dimensions": [
+          882,
+          513
+        ],
+        "brightness": 95.58984375
+      },
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_folia1218\\server-screenshots\\universal_folia1218-notify-count0-server-log.png",
+        "size": 27254,
+        "sha256": "4acff7367f287b294fa8c16acf08e4f94c6ef71fa7cc8d4bb5464d156a61b410",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 30.614583333333332
+      }
+    },
+    {
+      "count": -5,
+      "label": "minus5",
+      "serverCheck": {
+        "status": "PASS",
+        "markers": [
+          "debugNotify count=-5",
+          "AI_WTC_NOTIFY_COMMAND_MINUS5"
+        ],
+        "excerpt": "> \n  \n[09:31:20 INFO]: 已触发清理通知: -5\n> \n  \n[09:31:20 INFO]: AI_NOTIFY_CHAT_MINUS5 未跳过 0/0 -1/0\n> \n  \n[09:31:20 INFO]: [BLWorldTrashCan] [Debug] debugNotify count=-5\n> \n  \n[09:31:20 INFO]: [Not Secure] [Server] AI_WTC_NOTIFY_COMMAND_MINUS5\n> "
+      },
+      "clientChatCheck": {
+        "status": "PASS",
+        "markers": [
+          "AI_NOTIFY_CHAT_MINUS5"
+        ],
+        "excerpt": "[09:31:20] [Render thread/INFO]: [System] [CHAT] AI_NOTIFY_CHAT_MINUS5 未跳过 0/0 -1/0\n[09:31:20] [Render thread/INFO]: [System] [CHAT] [Server] AI_WTC_NOTIFY_COMMAND_MINUS5\n[09:31:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-30_09.31.23.png\n[09:31:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-06-30_09.31.23_2.png\n"
+      },
+      "visualMarkersExpected": [
+        "AI_NOTIFY_CHAT_MINUS5",
+        "AI_ACTIONBAR_MINUS5",
+        "AI_BOSSBAR_MINUS5",
+        "AI_TITLE_MINUS5"
+      ],
+      "soundEvidence": "客户端已打开字幕并触发 sound 配置；若截图没有声音字幕，只能证明触发链路无异常，不能替代人工听感。",
+      "clientScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_folia1218\\screenshots\\universal_folia1218-notify-minus5-f2.png",
+        "size": 346882,
+        "sha256": "834d59ab0f24f79787d5ebfc4c33cbf05e57d10a758d87a1a49caef45cfbe066",
+        "dimensions": [
+          882,
+          513
+        ],
+        "brightness": 104.70149739583333
+      },
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_folia1218\\server-screenshots\\universal_folia1218-notify-minus5-server-log.png",
+        "size": 26785,
+        "sha256": "3ecddb1d321cb7a8aa77c46bec36620ab0d25b21441bbebccf1d2652c55bba5e",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 30.7470703125
+      }
+    }
+  ],
+  "patchedCleanupConfig": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-visual-20260630-092840\\universal_folia1218\\logs\\config-after-patch\\cleanup.yml",
+  "username": "RGBolia1218",
+  "clientPid": 25024,
+  "failedChecks": []
+}
