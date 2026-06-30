@@ -156,6 +156,7 @@ command:
     - "&b/blwtc debugstock &7- Show backend trash stock"
     - "&b/blwtc debugsummary <player> &7- Show backend test summary"
     - "&b/blwtc debugdensity &7- Show entity density scanner and candidate queue"
+    - "&b/blwtc debugnotify <count> &7- Trigger a cleanup.yml notification count through the real notification pipeline"
     - "&b/blwtc debugplayer <player> <dropmode|look|ban|globalban> &7- Test player-only entry points"
     - "&b/blwtc debugrgb <player> &7- Test RGB/fallback visible channels"
     - "&b/blwtc debugrgbchannels <player> &7- Test Chat, ActionBar and Title RGB/fallback channels"

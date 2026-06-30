@@ -250,12 +250,13 @@ migration-legacy-folder: "WorldListTrashCan"
 /blwtc debugstock
 /blwtc debugsummary <玩家>
 /blwtc debugdensity
+/blwtc debugnotify <count>
 /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>
 /blwtc debugrgb <玩家>
 /blwtc debugrgbchannels <玩家>
 ```
 
-`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成带拾取延迟的真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 和 `debugdensity` 不要求玩家在线，分别输出垃圾桶库存与实体密度扫描摘要，`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI；除 `debugstock`、`debugdensity` 外它们都会改变测试服运行态，只用于验收，不是普通玩家功能。
+`debugworldtrash` 会在玩家附近创建并登记一个测试箱子，`debugdrop` 会生成带拾取延迟的真实掉落物，`debugdamage` 会生成真实掉落物并通过正式事件总线模拟岩浆损坏回收，`debugroute` 会向指定垃圾桶写入测试物品，`debugstock` 和 `debugdensity` 不要求玩家在线，分别输出垃圾桶库存与实体密度扫描摘要，`debugnotify <count>` 会按 `cleanup.yml` 的正式 `notify.*` 配置直接触发对应编号的清理通知，适合补 Chat、ActionBar、BossBar、Title、Sound 和 Command 通知截图；`debugplayer` 会用真实在线 `Player` 对象触发玩家入口和 GUI。除 `debugstock`、`debugdensity` 外它们都会改变测试服运行态或玩家可见状态，只用于验收，不是普通玩家功能。
 
 ## 权限
 

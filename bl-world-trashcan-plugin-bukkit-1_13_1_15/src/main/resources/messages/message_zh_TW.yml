@@ -156,6 +156,7 @@ command:
     - "&b/blwtc debugstock &7- 後台查看目前垃圾桶庫存"
     - "&b/blwtc debugsummary <玩家> &7- 查看後台測試摘要"
     - "&b/blwtc debugdensity &7- 查看實體密度掃描和候選隊列"
+    - "&b/blwtc debugnotify <count> &7- 後台觸發 cleanup.yml 對應編號的正式清理通知"
     - "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 後台測試玩家入口"
     - "&b/blwtc debugrgb <玩家> &7- 後台測試 RGB/降級色可見通道"
     - "&b/blwtc debugrgbchannels <玩家> &7- 後台測試聊天、ActionBar 和 Title RGB/降級色通道"

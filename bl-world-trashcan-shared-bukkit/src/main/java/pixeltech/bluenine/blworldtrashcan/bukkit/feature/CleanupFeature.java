@@ -171,6 +171,13 @@ public final class CleanupFeature implements Feature {
         return lastStats;
     }
 
+    /** 测试用：按正式通知配置直接触发指定编号的清理通知。 */
+    public boolean debugNotify(int count) {
+        sendNotify(count, lastStats);
+        plugin.getLogger().info("[Debug] debugNotify count=" + count);
+        return true;
+    }
+
     /** 返回距离下次自动清理的秒数。 */
     public long getRemainingSeconds() {
         if (nextRunAtMillis <= 0L) {

@@ -168,6 +168,24 @@ public final class FoliaRegionCleanupFeature implements Feature {
         return lastStats;
     }
 
+    /** 测试用：在 Folia 全局区域按正式通知配置触发指定编号的清理通知。 */
+    public boolean debugNotify(final int count) {
+        try {
+            Bukkit.getGlobalRegionScheduler().execute(plugin, new Runnable() {
+                /** 在全局区域复用正式通知链路。 */
+                @Override
+                public void run() {
+                    sendNotify(count, lastStats);
+                    plugin.getLogger().info("[Debug] debugNotify count=" + count);
+                }
+            });
+            return true;
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[Debug] 分派 Folia 清理通知调试失败: " + exception.getMessage());
+            return false;
+        }
+    }
+
     /** 返回下次自动清理剩余秒数。 */
     public long getRemainingSeconds() {
         if (nextRunAtMillis <= 0L) {

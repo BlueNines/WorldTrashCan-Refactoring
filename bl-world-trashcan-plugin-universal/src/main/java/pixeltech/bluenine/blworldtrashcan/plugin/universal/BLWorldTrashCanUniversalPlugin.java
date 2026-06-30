@@ -181,6 +181,15 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         return invokeCleanupStats("getLastStats");
     }
 
+    /** 测试用：触发清理通知指定编号，复用正式通知链路。 */
+    public boolean debugCleanupNotify(int count) {
+        if (cleanupFeature instanceof CleanupFeature) {
+            return ((CleanupFeature) cleanupFeature).debugNotify(count);
+        }
+        Object value = invokeIntArg(cleanupFeature, "debugNotify", count, Boolean.FALSE);
+        return value instanceof Boolean && ((Boolean) value).booleanValue();
+    }
+
     /** 返回公共垃圾桶页数。 */
     public int getGlobalTrashPageCount() {
         return trashFeature == null ? 0 : trashFeature.getGlobalPageCount();
@@ -750,6 +759,19 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
             return target.getClass().getMethod(methodName, boolean.class).invoke(target, Boolean.valueOf(argument));
         } catch (ReflectiveOperationException exception) {
             getLogger().warning("[Universal] 调用运行时方法失败: " + methodName + "(boolean), " + exception.getMessage());
+            return fallback;
+        }
+    }
+
+    /** 调用带一个 int 参数的方法并在失败时返回默认值。 */
+    private Object invokeIntArg(Object target, String methodName, int argument, Object fallback) {
+        if (target == null) {
+            return fallback;
+        }
+        try {
+            return target.getClass().getMethod(methodName, int.class).invoke(target, Integer.valueOf(argument));
+        } catch (ReflectiveOperationException exception) {
+            getLogger().warning("[Universal] 调用运行时方法失败: " + methodName + "(int), " + exception.getMessage());
             return fallback;
         }
     }

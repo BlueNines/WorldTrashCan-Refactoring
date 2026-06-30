@@ -323,6 +323,11 @@ public final class BLWorldTrashCanFoliaPlugin extends JavaPlugin {
         return cleanupFeature == null ? CleanupFeature.CleanupStats.empty() : cleanupFeature.getLastStats();
     }
 
+    /** 测试用：触发清理通知指定编号，复用正式通知链路。 */
+    public boolean debugCleanupNotify(int count) {
+        return cleanupFeature != null && cleanupFeature.debugNotify(count);
+    }
+
     /** 返回公共垃圾桶页数。 */
     public int getGlobalTrashPageCount() {
         return trashFeature == null ? 0 : trashFeature.getGlobalPageCount();

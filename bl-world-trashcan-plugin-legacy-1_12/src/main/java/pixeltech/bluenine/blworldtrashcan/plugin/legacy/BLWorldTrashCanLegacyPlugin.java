@@ -157,6 +157,11 @@ public final class BLWorldTrashCanLegacyPlugin extends JavaPlugin {
         return cleanupFeature == null ? CleanupFeature.CleanupStats.empty() : cleanupFeature.getLastStats();
     }
 
+    /** 测试用：触发清理通知指定编号，复用正式通知链路。 */
+    public boolean debugCleanupNotify(int count) {
+        return cleanupFeature != null && cleanupFeature.debugNotify(count);
+    }
+
     /** 打开公共垃圾桶。 */
     public void openGlobalTrash(Player player) {
         trashFeature.openGlobal(player);

@@ -23,7 +23,7 @@ import java.util.Locale;
 /** universal 总包主命令，兼容现有轻量包命令行为。 */
 public final class UniversalCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugplayer", "debugrgb", "debugrgbchannels");
+            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanUniversalPlugin plugin;
 
     /** 创建命令执行器。 */
@@ -115,6 +115,10 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             handleDebugDensity(sender);
             return true;
         }
+        if ("debugnotify".equals(sub)) {
+            handleDebugNotify(sender, args);
+            return true;
+        }
         if ("debugplayer".equals(sub)) {
             handleDebugPlayer(sender, args);
             return true;
@@ -139,6 +143,9 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         }
         if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
             return filter(ClearCommandOptions.booleanValues(), args[1]);
+        }
+        if (args.length == 2 && "debugnotify".equalsIgnoreCase(args[0])) {
+            return filter(Arrays.asList("10", "5", "0", "-1", "-2", "-3", "-4", "-5"), args[1]);
         }
         if (args.length == 3 && "debugroute".equalsIgnoreCase(args[0])) {
             return filter(Arrays.asList("world", "personal", "global"), args[2]);
@@ -298,6 +305,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
                 "&b/blwtc debugstock &7- 后台查看当前垃圾桶库存",
                 "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
                 "&b/blwtc debugdensity &7- 查看实体密度扫描和候选队列",
+                "&b/blwtc debugnotify <count> &7- 后台触发 cleanup.yml 对应编号的正式清理通知",
                 "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
                 "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
                 "&b/blwtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB/降级色通道",
@@ -581,6 +589,27 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         for (String line : plugin.debugEntityLimits()) {
             sender.sendMessage(line);
         }
+    }
+
+    /** 后台触发 cleanup.yml 对应编号的正式清理通知。 */
+    private void handleDebugNotify(CommandSender sender, String[] args) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage("§c用法: /blwtc debugnotify <count>");
+            return;
+        }
+        int count = parseInt(args[1], Integer.MIN_VALUE);
+        if (count == Integer.MIN_VALUE) {
+            sender.sendMessage("§c通知编号必须是整数，例如 0、-1、-5。");
+            return;
+        }
+        boolean submitted = plugin.debugCleanupNotify(count);
+        sender.sendMessage(submitted
+                ? "§a已触发清理通知: §f" + count
+                : "§c清理通知触发失败，请查看后台日志。");
     }
 
     /** 后台测试需要真实玩家对象的入口。 */
