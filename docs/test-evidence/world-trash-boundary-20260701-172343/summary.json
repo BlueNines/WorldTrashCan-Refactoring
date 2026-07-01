@@ -1,0 +1,10 @@
+{
+  "timestamp": "20260701-172343",
+  "allPassed": false,
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+  "jarSha256": "18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b",
+  "fixtureJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\world-trash-boundary-matrix\\20260701-172343\\BLWtcWorldTrashFixture.jar",
+  "fixtureSha256": "98d341bd3d5bbb76f5fe815b56a554ad41b6c3ab85ffe29fa62a3026cb6c0420",
+  "evidenceDir": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\world-trash-boundary-20260701-172343",
+  "results": []
+}

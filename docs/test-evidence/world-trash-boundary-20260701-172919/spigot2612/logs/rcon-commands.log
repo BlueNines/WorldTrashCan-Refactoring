@@ -1,0 +1,113 @@
+> plugins
+Plugins (2): §aBLWtcWorldTrashFixture§f, §aBLWorldTrashCan
+
+> blwtc platform
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6paper-1.16-1.20 (universal)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> worldtrashfixture cleanup
+AI_WORLD_TRASH_CLEANUP done=true
+
+> worldtrashfixture banned
+AI_WORLD_TRASH_BANNED before=0 after=0 registered=false messages=[§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§f§f§d§1§6§6该世界禁止创建世界垃圾桶。]
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> worldtrashfixture break
+AI_WORLD_TRASH_BREAK afterCreate=1 afterBreak=0 removed=true messages=[§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a已在世界 §x§f§f§d§1§6§6world §x§5§a§c§8§f§a创建世界垃圾桶。, §x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a已移除该世界垃圾桶登记。]
+
+> worldtrashfixture prepareblacklist
+AI_WORLD_TRASH_BLACKLIST_PREPARED world=world chest=world:-484,73,-96 banned=STONE locations=1
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> blwtc stats
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 未统计/0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6355
+
+> worldtrashfixture drop STONE 5
+AI_WORLD_TRASH_DROP material=STONE amount=5 uuid=9bc12bc5-f591-4ee9-95ae-9ab7c3dfa061
+
+> blwtc clear true
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理完成 §x§6§4§7§4§8§b| §x§c§9§d§4§e§2世界 §x§f§f§d§1§6§63§x§6§4§7§4§8§b, §x§c§9§d§4§e§2回收 §x§f§f§d§1§6§66§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除物品 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除实体 §x§f§f§d§1§6§60§x§c§9§d§4§e§2。
+
+> worldtrashfixture assertblacklist
+AI_WORLD_TRASH_BLACKLIST_RESULT chestAmount=0 dropAlive=false expectedGlobalFallback=true
+
+> blwtc stats
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 0/0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§63
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§66 §x§6§4§7§4§8§b(世界 1, 个人 0, 公共 1)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§65 §x§6§4§7§4§8§b(堆叠 1)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6354
+
+> worldtrashfixture prepareunloaded
+AI_WORLD_TRASH_UNLOADED_PREPARED world=world location=200000,73,200000 chunk=12500,12500 chunkLoadedBefore=false locations=1
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> blwtc stats
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 0/0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§63
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§66 §x§6§4§7§4§8§b(世界 1, 个人 0, 公共 1)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§65 §x§6§4§7§4§8§b(堆叠 1)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6352
+
+> worldtrashfixture drop STONE 7
+AI_WORLD_TRASH_DROP material=STONE amount=7 uuid=43a48e1e-0b4c-4052-a462-52afbb5200b2
+
+> blwtc clear true
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理完成 §x§6§4§7§4§8§b| §x§c§9§d§4§e§2世界 §x§f§f§d§1§6§63§x§6§4§7§4§8§b, §x§c§9§d§4§e§2回收 §x§f§f§d§1§6§67§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除物品 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除实体 §x§f§f§d§1§6§60§x§c§9§d§4§e§2。
+
+> worldtrashfixture assertunloaded
+AI_WORLD_TRASH_UNLOADED_RESULT chunkLoadedAfter=false dropAlive=false expectedGlobalFallback=true
+
+> blwtc stats
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 0/0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§63
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§67 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 1)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§67 §x§6§4§7§4§8§b(堆叠 1)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6351
+
+> worldtrashfixture cleanup
+AI_WORLD_TRASH_CLEANUP done=true

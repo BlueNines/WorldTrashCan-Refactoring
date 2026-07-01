@@ -1,0 +1,89 @@
+> plugins
+Plugins (2): §aBLWorldTrashCan§f, §aBLWtcWorldTrashFixture
+
+> blwtc platform
+§0[§bBL§fWorld§eTrash§bCan§0] §b当前平台 §8| §elegacy-1.12 (universal)
+§8- §fscheduler-global§8: §b启用
+§8- §fscheduler-region§8: §8禁用
+§8- §finventory-basic§8: §b启用
+§8- §fitem-pdc-tag§8: §8禁用
+§8- §fitem-legacy-tag§8: §8禁用
+§8- §frgb-message§8: §8禁用
+§8- §fclickable-message§8: §b启用
+§8- §fboss-bar§8: §b启用
+§8- §fsign-legacy§8: §b启用
+§8- §fsign-modern§8: §8禁用
+§8- §fentity-move-event§8: §8禁用
+§8- §ffolia-region-safe§8: §8禁用
+
+> blwtc reload
+§0[§bBL§fWorld§eTrash§bCan§0] §bBLWorldTrashCan §f已重载。
+
+> worldtrashfixture cleanup
+AI_WORLD_TRASH_CLEANUP done=true
+
+> worldtrashfixture banned
+AI_WORLD_TRASH_BANNED before=0 after=0 registered=false messages=[§0[§bBL§fWorld§eTrash§bCan§0] §e该世界禁止创建世界垃圾桶。]
+
+> blwtc reload
+§0[§bBL§fWorld§eTrash§bCan§0] §bBLWorldTrashCan §f已重载。
+
+> worldtrashfixture break
+AI_WORLD_TRASH_BREAK afterCreate=1 afterBreak=0 removed=true messages=[§0[§bBL§fWorld§eTrash§bCan§0] §b已在世界 §eworld §b创建世界垃圾桶。, §0[§bBL§fWorld§eTrash§bCan§0] §b已移除该世界垃圾桶登记。]
+
+> worldtrashfixture prepareblacklist
+AI_WORLD_TRASH_BLACKLIST_PREPARED world=world chest=world:76,64,256 banned=STONE locations=1
+
+> blwtc reload
+§0[§bBL§fWorld§eTrash§bCan§0] §bBLWorldTrashCan §f已重载。
+
+> worldtrashfixture drop STONE 5
+AI_WORLD_TRASH_DROP material=STONE amount=5 uuid=f6834ed0-22b3-4633-8104-8ec3f5cbd5c0
+
+> blwtc clear true
+§0[§bBL§fWorld§eTrash§bCan§0] §b清理完成 §8| §f世界 §e3§8, §f回收 §e10§8, §f移除物品 §e0§8, §f移除实体 §e0§f。
+
+> worldtrashfixture assertblacklist
+AI_WORLD_TRASH_BLACKLIST_RESULT chestAmount=0 dropAlive=false expectedGlobalFallback=true
+
+> blwtc stats
+§0[§bBL§fWorld§eTrash§bCan§0] §b清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 0/0)
+§8- §f世界数: §e3
+§8- §f回收物品: §e10 §8(世界 2, 个人 0, 公共 1)
+§8- §f删除物品: §e0
+§8- §f删除实体: §e0
+§8- §f公共垃圾桶页数: §e5
+§8- §f公共垃圾桶当前物品: §e5 §8(堆叠 1)
+§8- §f已加载个人垃圾桶: §e0
+§8- §f下次清理剩余秒数: §e354
+
+> worldtrashfixture prepareunloaded
+AI_WORLD_TRASH_UNLOADED_PREPARED world=world location=200000,64,200000 chunk=12500,12500 chunkLoadedBefore=false locations=1
+
+> blwtc reload
+§0[§bBL§fWorld§eTrash§bCan§0] §bBLWorldTrashCan §f已重载。
+
+> worldtrashfixture drop STONE 7
+AI_WORLD_TRASH_DROP material=STONE amount=7 uuid=cd585c35-1395-4e66-85bf-a6ae0b1c04a2
+
+> blwtc clear true
+§0[§bBL§fWorld§eTrash§bCan§0] §b清理完成 §8| §f世界 §e3§8, §f回收 §e12§8, §f移除物品 §e0§8, §f移除实体 §e0§f。
+
+> worldtrashfixture assertunloaded
+AI_WORLD_TRASH_UNLOADED_RESULT chunkLoadedAfter=false dropAlive=false expectedGlobalFallback=true
+
+> blwtc stats
+§0[§bBL§fWorld§eTrash§bCan§0] §b清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 0/0)
+§8- §f世界数: §e3
+§8- §f回收物品: §e12 §8(世界 0, 个人 0, 公共 3)
+§8- §f删除物品: §e0
+§8- §f删除实体: §e0
+§8- §f公共垃圾桶页数: §e5
+§8- §f公共垃圾桶当前物品: §e12 §8(堆叠 3)
+§8- §f已加载个人垃圾桶: §e0
+§8- §f下次清理剩余秒数: §e352
+
+> worldtrashfixture cleanup
+AI_WORLD_TRASH_CLEANUP done=true
