@@ -1,0 +1,207 @@
+# 插件前缀，会自动替换 {prefix}。
+prefix: "&7[&bBLWorldTrashCan&7] "
+
+# 通用无权限提示。
+no-permission: "{prefix}&cNo tienes permiso para usar este comando."
+
+# 重载成功提示。
+reload-success: "{prefix}&aConfiguracion recargada."
+
+# 公共垃圾桶相关消息。
+global-trash:
+  # 公共垃圾桶未启用时提示。
+  disabled: "{prefix}&cLa papelera global esta desactivada."
+  # 玩家没有权限从公共垃圾桶取出物品。
+  no-take-permission: "{prefix}&cNo tienes permiso para sacar objetos de la papelera global."
+  # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
+  take-cooldown: "{prefix}&cDebes esperar {time} segundos antes de sacar otro objeto."
+  # 公共垃圾桶 GUI 文案。
+  gui:
+    # GUI 标题，{page} 当前页，{max} 总页数。
+    title: "&8Papelera Global {page}/{max}"
+    # 上一页按钮名称。
+    back: "&aPagina anterior"
+    # 下一页按钮名称。
+    next: "&aPagina siguiente"
+
+# 个人垃圾桶相关消息。
+personal-trash:
+  # 个人垃圾桶未启用时提示。
+  disabled: "{prefix}&cLa papelera personal esta desactivada."
+  # 玩家没有权限从个人垃圾桶取出物品。
+  no-take-permission: "{prefix}&cNo tienes permiso para sacar objetos de la papelera personal."
+  # 玩家余额不足时提示。
+  not-enough-money: "{prefix}&cNo tienes suficiente dinero para sacar este objeto."
+  # 玩家成功支付取出费用，{cost} 为扣费显示。
+  pay-success: "{prefix}&aPagaste {cost}."
+  # 个人垃圾桶 GUI 文案。
+  gui:
+    # GUI 标题，{player} 为玩家名。
+    title: "&8Papelera personal de {player}"
+  # 自动进入个人垃圾桶时的提示文案。
+  recycle:
+    # 单个来源进入个人垃圾桶时发送，{items} 为格式化后的物品列表。
+    single: "{prefix}&aRecuperado en la papelera personal: {items}"
+    # 批量清理进入个人垃圾桶时发送，{items} 为格式化后的物品列表。
+    batch: "{prefix}&aLa limpieza recupero objetos en la papelera personal: {items}"
+    # 物品列表整体格式，{items} 为已经拼接好的物品条目。
+    list: "&7[{items}&7]"
+    # 多个物品条目之间的分隔符。
+    separator: "&7, "
+    # 单个物品数量大于 1 时的条目格式，{name} 为物品名，{amount} 为总数量。
+    item: "&f{name}&7*&f{amount}"
+    # 单个物品数量等于 1 时的条目格式，{name} 为物品名。
+    item-single: "&f{name}"
+    # 物品条目超过 trash.yml 中 max-display-items 后追加的省略标记。
+    ellipsis: "&7..."
+
+# 黑名单 GUI 相关消息。
+ban-gui:
+  # 世界黑名单 GUI 标题，{world} 为世界名。
+  world-title: "&8Lista negra del mundo: {world}"
+  # 公共垃圾桶黑名单 GUI 标题。
+  global-title: "&8Lista negra de la papelera global"
+  # 保存世界黑名单时世界不存在。
+  world-missing: "{prefix}&cMundo no encontrado, no se puede guardar la lista negra: {world}"
+  # 世界黑名单保存成功，{count} 为物品数量。
+  world-save-success: "{prefix}&aLista negra del mundo guardada, objetos: &f{count}"
+  # 世界黑名单保存失败。
+  world-save-fail: "{prefix}&cNo se pudo guardar la lista negra del mundo. Revisa los logs."
+  # 公共黑名单保存成功，{count} 为物品数量。
+  global-save-success: "{prefix}&aLista negra global guardada, objetos: &f{count} &7(aplicado inmediatamente)"
+  # 公共黑名单保存失败。
+  global-save-fail: "{prefix}&cNo se pudo guardar la lista negra global. Revisa los logs."
+
+# 防护和查询相关消息。
+protection:
+  # 关闭防丢弃模式。
+  drop-mode-off: "{prefix}&aProteccion contra tirar objetos desactivada."
+  # 开启防丢弃模式。
+  drop-mode-on: "{prefix}&aProteccion contra tirar objetos activada."
+  # 防丢弃模式拦截玩家丢弃。
+  drop-blocked: "{prefix}&cLa proteccion bloqueo este objeto."
+  # look 查询等待玩家右键实体。
+  look-prompt: "{prefix}&aHaz clic derecho en una entidad para inspeccionarla."
+  # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
+  entity-result: "{prefix}&aEntidad: &f{name} &7({type})"
+  # 当前区块实体列表标题。
+  chunk-entities-title: "{prefix}&aEntidades del chunk actual:"
+  # 当前区块实体单行，{text} 为实体名和数量。
+  chunk-entity-line: "{prefix}&a{text}"
+  # 手持物品查询结果，{material} 为物品类型。
+  hand-item: "{prefix}&aObjeto en mano: &f{material}"
+
+# Mensajes de limite de entidades.
+entity-limit:
+  # Se envia a jugadores cercanos tras limpiar entidades densas. {range} radio, {entity} tipo, {size} cantidad cercana previa, {max} limite, {removed} cantidad eliminada.
+  gather-cleared: "{prefix}&#FFD166Limpieza de entidades densas &#64748B| &#C9D4E2Dentro de &#FFD166{range} &#C9D4E2bloques habia &#FFD166{entity} x {size}&#C9D4E2, sobre el limite &#FFD166{max}&#C9D4E2. Eliminadas &#5AC8FA{removed} &#C9D4E2esta ronda."
+
+# 世界垃圾桶相关消息。
+world-trash:
+  # 当前世界禁止创建世界垃圾桶。
+  create-banned-world: "{prefix}&cNo se pueden crear papeleras de mundo en este mundo."
+  # 告示牌没有连接到可用容器。
+  create-not-container: "{prefix}&cEl cartel debe estar unido a un contenedor o encima de uno."
+  # 当前世界垃圾桶数量达到上限。
+  create-reach-limit: "{prefix}&cEste mundo alcanzo el limite de papeleras."
+  # 创建世界垃圾桶成功，{world} 为世界名。
+  create-success: "{prefix}&aPapelera de mundo creada en &f{world}&a."
+  # 创建世界垃圾桶保存失败。
+  create-save-fail: "{prefix}&cNo se pudo guardar la papelera de mundo. Revisa los logs."
+  # 移除世界垃圾桶登记成功。
+  remove-success: "{prefix}&aRegistro de papelera de mundo eliminado."
+# 主命令相关消息。
+command:
+  # 通用无权限提示。
+  no-permission: "{prefix}&cNo tienes permiso para usar este comando."
+  # 重载成功提示。
+  reload-success: "{prefix}&aBLWorldTrashCan recargado."
+  # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
+  clear-success: "{prefix}&aLimpieza terminada: &fmundos {worlds}&a, objetos enviados {routed}&a, objetos eliminados {items}&a, entidades eliminadas {entities}&a."
+  # 手动清理 guards 参数错误时提示。
+  clear-guard-usage: "{prefix}&cUso: /wtc clear [true/false]. true ignora guards en esta limpieza; false respeta guards."
+  # Folia 不支持当前清理扫描时提示。
+  folia-clear-unsupported: "{prefix}&cEsta version Folia no tiene limpieza region-safe activada; se rechazo el escaneo de entidades del mundo."
+  # Folia 上一轮清理仍在运行时提示。
+  folia-clear-running: "{prefix}&eLa limpieza region-safe anterior de Folia sigue en ejecucion; esta solicitud se omitio."
+  # Folia 清理任务启动成功提示。
+  folia-clear-started: "{prefix}&aLimpieza region-safe de Folia iniciada; revisa los logs [FoliaCleanup] o ejecuta /blwtc stats al terminar."
+  # 没有打开公共垃圾桶权限时提示。
+  no-global-open-permission: "{prefix}&cNo tienes permiso para abrir la papelera global."
+  # 没有打开个人垃圾桶权限时提示。
+  no-personal-open-permission: "{prefix}&cNo tienes permiso para abrir la papelera personal."
+  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
+  help:
+    - "&b/blwtc help &7- Ver ayuda"
+    - "&b/blwtc platform &7- Ver capacidades de esta version"
+    - "&b/blwtc clear [true/false] &7- Ejecutar limpieza; true ignora guards, false los respeta"
+    - "&b/blwtc global &7- Abrir papelera global"
+    - "&b/blwtc personal &7- Abrir papelera personal"
+    - "&b/blwtc dropmode &7- Alternar proteccion de soltar"
+    - "&b/blwtc look &7- Inspeccionar item en mano y entidad clicada"
+    - "&b/blwtc ban &7- Abrir blacklist de papeleras del mundo"
+    - "&b/blwtc globalban &7- Abrir blacklist global"
+    - "&b/blwtc stats &7- Ver estadisticas de limpieza y papeleras"
+    - "&b/blwtc add <cantidad> &7- Agregar espacios al mundo actual"
+    - "&b/blwtc add <mundo> <cantidad> &7- Agregar espacios a un mundo especifico"
+    - "&b/blwtc debughelp &7- Ver comandos de depuracion"
+    - "&b/blwtc reload &7- Recargar el plugin"
+  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
+  debug-help:
+    - "&b/blwtc debugopen <jugador> <global|personal> &7- Probar apertura de GUI"
+    - "&b/blwtc debugworldtrash <jugador> &7- Crear y registrar una papelera de prueba"
+    - "&b/blwtc debugroute <jugador> <world|personal|global> <Material> <cantidad> &7- Probar una ruta"
+    - "&b/blwtc debugdrop <jugador> <Material> <cantidad> [owner] &7- Crear un objeto tirado de prueba"
+    - "&b/blwtc debugdamage <jugador> <Material> <cantidad> &7- Probar recuperacion por dano"
+    - "&b/blwtc debugstock &7- Ver stock interno de papeleras"
+    - "&b/blwtc debugsummary <jugador> &7- Ver resumen de pruebas"
+    - "&b/blwtc debugdensity &7- Ver escaneo de densidad y cola de candidatos"
+    - "&b/blwtc debugnotify <count> &7- Disparar el aviso de cleanup.yml para ese contador"
+    - "&b/blwtc debugplayer <jugador> <dropmode|look|ban|globalban> &7- Probar entradas de jugador"
+    - "&b/blwtc debugrgb <jugador> &7- Probar canales visibles RGB/degradados"
+    - "&b/blwtc debugrgbchannels <jugador> &7- Probar Chat, ActionBar y Title RGB/degradados"
+    - "&7Estos comandos cambian el estado del servidor de pruebas; usalos solo para validacion y diagnostico."
+  # 平台信息标题，{platform} 为平台 ID。
+  platform:
+    header: "{prefix}&aPlataforma actual: &f{platform}"
+    # 平台能力已启用文案。
+    enabled: "&aActivado"
+    # 平台能力已禁用文案。
+    disabled: "&7Desactivado"
+    # 平台能力单行，{capability} 为能力名，{state} 为启用状态。
+    line: "&7- &f{capability}&7: {state}"
+  # /blwtc stats 输出。
+  stats:
+    header: "{prefix}&aEstadisticas de limpieza:"
+    worlds: "&7- &fMundos: &a{worlds}"
+    routed: "&7- &fObjetos enviados: &a{routed} &7(mundo {world}, personal {personal}, global {global})"
+    removed-items: "&7- &fObjetos eliminados: &a{items}"
+    removed-entities: "&7- &fEntidades eliminadas: &a{entities}"
+    global-pages: "&7- &fPaginas de papelera global: &a{pages}"
+    global-items: "&7- &fObjetos en papelera global: &a{items} &7(stacks {stacks})"
+    personal-loaded: "&7- &fPapeleras personales cargadas: &a{count}"
+    remaining: "&7- &fSegundos hasta la proxima limpieza: &a{seconds}"
+  # 找不到世界时提示，{world} 为输入的世界名。
+  world-not-found: "{prefix}&cMundo no encontrado: &f{world}"
+  # 控制台执行 add 未指定世界时提示。
+  add-console-world-required: "{prefix}&cLa consola debe especificar un mundo al usar add."
+  # add 数量不是正数时提示。
+  add-positive-required: "{prefix}&cLa cantidad debe ser mayor que 0."
+  # add 成功提示，{world} 为世界名，{count} 为调整后的上限。
+  add-success: "{prefix}&aEl limite de papeleras del mundo &f{world} &aahora es &f{count}&a."
+  # add 用法提示。
+  add-usage:
+    - "&cUso: /blwtc add <cantidad>"
+    - "&cUso: /blwtc add <mundo> <cantidad>"
+  # 没有防丢弃模式权限时提示。
+  no-dropmode-permission: "{prefix}&cNo tienes permiso para usar la proteccion contra tirar objetos."
+  # 没有 look 查询权限时提示。
+  no-look-permission: "{prefix}&cNo tienes permiso para usar la inspeccion look."
+  # 没有世界黑名单权限时提示。
+  no-world-ban-permission: "{prefix}&cNo tienes permiso para abrir la lista negra del mundo."
+  # 没有公共黑名单权限时提示。
+  no-global-ban-permission: "{prefix}&cNo tienes permiso para abrir la lista negra global."
+  # 非玩家执行玩家命令时提示。
+  only-player: "{prefix}&cEste comando solo puede ser usado por jugadores."
+  # 玩家不在线时提示，{player} 为玩家名。
+  player-offline: "{prefix}&cJugador no conectado: {player}"

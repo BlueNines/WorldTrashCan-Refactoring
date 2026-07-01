@@ -1,0 +1,58 @@
+# 清理周期，单位秒。
+# 默认 360 秒；设为 0 时只允许管理员手动触发清理。
+interval-seconds: 123
+ignored-worlds:
+- legacy_ignore
+guards:
+  min-online-players: 1
+  min-total-entities: 150
+folia:
+  timeout-seconds: 30
+  max-chunks-per-cleanup: 4096
+  chunk-batch-size: 64
+  chunk-batch-delay-ticks: 1
+ignored-materials:
+- DIAMOND
+ignored-name-fragments:
+- 不清理名称
+ignored-lore-fragments:
+- 不清理Lore
+entities:
+  enabled: false
+  clear-experience-orbs: true
+  clear-monsters: true
+  clear-animals: false
+  clear-projectiles: true
+  clear-named-entities: false
+  ignore-entities-in-boat: true
+  whitelist:
+  - 保护实体
+  blacklist:
+  - 强制实体
+notify:
+  chat:
+    enabled: true
+    console-log: true
+    click-command: /wtc stats
+    messages:
+    - 0;&a旧清理完成
+  actionbar:
+    enabled: true
+    messages:
+    - 0;&b旧ActionBar
+  bossbar:
+    enabled: true
+    messages:
+    - 0;&6旧BossBar;SOLID;YELLOW
+  title:
+    enabled: true
+    messages:
+    - 0;&e旧标题;&7旧副标题
+  sound:
+    enabled: true
+    messages:
+    - 0;ENTITY_EXPERIENCE_ORB_PICKUP;1;1
+  command:
+    enabled: true
+    commands:
+    - 0;say legacy-command

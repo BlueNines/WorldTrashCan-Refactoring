@@ -1,0 +1,106 @@
+Set:
+  Lang: legacy_adjacent.yml
+  Debug: true
+  SecondCount: 123
+  WorldClearWhiteList:
+  - legacy_ignore
+  NoClearContainerType:
+  - DIAMOND
+  NoClearContainerName:
+  - 不清理名称
+  NoClearContainerLore:
+  - 不清理Lore
+  ClearEntity:
+    Flag: false
+    ClearExpBottle: true
+    ClearMonster: true
+    ClearAnimals: false
+    ClearProjectile: true
+    ClearReNameEntity: false
+    IgnoreEntitiesInBoat: true
+    WhiteNameList:
+    - 保护实体
+    BlackNameList:
+    - 强制实体
+  GlobalTrash:
+    Flag: true
+    MaxPage: 7
+    Delay: 250
+    EveryClearGlobalTrash: 3
+    Log:
+      Enable: true
+    GlobalItems:
+      BackItem:
+        ModelId: 101
+      NextItem:
+        ModelId: 102
+      BackgroundItem:
+        ModelId: 103
+  SighCheckName: '[trash]'
+  SighCheckedName: '[created]'
+  DefaultRashCanMax: 9
+  BanWorldNameList:
+  - banned_world
+  PersonalTrashCan:
+    Flag: true
+    NoWorldTrashCanEnterPersonalTrashCan: true
+    OriginalFeatureClearItemAddGlobalTrash:
+      Delay: 5
+      UseModel: 1
+      Model2:
+        AutoClear: true
+        Coins: 4.5
+  ChatFlag: true
+  ChatConsoleLogFlag: true
+  ChatClickCommand: '/wtc stats'
+  ChatMessageForCount:
+  - '0;&a旧清理完成'
+  ActionBarFlag: true
+  ActionBarMessageForCount:
+  - '0;&b旧ActionBar'
+  CommandFlag: true
+  CommandForCount:
+  - '0;say legacy-command'
+  TitleFlag: true
+  TitleMessageForCount:
+  - '0;&e旧标题;&7旧副标题'
+  SoundFlag: true
+  SoundForCount:
+  - '0;ENTITY_EXPERIENCE_ORB_PICKUP;1;1'
+  BossBarFlag: true
+  BossBarMessageForCount:
+  - '0;&6旧BossBar;SOLID;YELLOW'
+GlobalBanItem:
+- DIRT
+- COBBLESTONE
+ChatSet:
+  QuickSendMessage:
+    Flag: true
+    Time: 1.5
+    Message: '&c慢一点'
+    Command: 'say chat-rate'
+  QuickUseCommand:
+    Flag: true
+    Time: 2.5
+    Message: '&c命令慢一点'
+    Command: 'say command-rate'
+    WhiteList:
+    - /login
+DropItemCheck:
+  Flag: true
+SimpleOptimize:
+  NotPickArrow: true
+  NotTreadingFarmLand: true
+WorldEntityLimitCount:
+  Flag: true
+  BanWorldNameList:
+  - ignored_world_limit
+  DefaultCount:
+  - 'ZOMBIE;50'
+GatherEntityLimitCount:
+  Flag: true
+  ItemDropFlag: true
+  BanWorldNameList:
+  - ignored_gather_limit
+  DefaultCount:
+  - 'DROPPED_ITEM;20;8;4'

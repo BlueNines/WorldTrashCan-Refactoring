@@ -212,6 +212,8 @@ migration-legacy-folder: "WorldListTrashCan"
 - 旧 `BossBarFlag` 和 `BossBarMessageForCount` 会迁移到 `bossbar.enabled` 与 `bossbar.messages`，格式仍为 `剩余秒数;内容;样式;颜色`。
 - 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”。
 
+2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 重新做 F-005 旧配置迁移专项验收。测试脚本 `tools/rgb-visual-matrix/run_legacy_migration_matrix.py` 会启动独立 Paper 1.12.2 临时服务端，分别覆盖相邻旧目录 `plugins/WorldListTrashCan` 和当前目录旧结构 `plugins/BLWorldTrashCan` 两种迁移来源，并通过 RCON、迁移报告、新拆分配置和世界垃圾桶数据断言确认迁移生效。通过证据：`docs/test-evidence/legacy-migration-universal-20260701-165606/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
+
 ## 命令
 
 正式命令：
