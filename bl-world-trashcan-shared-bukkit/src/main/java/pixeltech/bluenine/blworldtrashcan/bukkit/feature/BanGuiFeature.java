@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -98,6 +99,28 @@ public final class BanGuiFeature implements Feature, Listener {
         player.openInventory(inventory);
     }
 
+    /** GUI 点击时用明确 token 语义编辑黑名单，避免原版光标物品关闭时未落入 Inventory。 */
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        BanContext context = contexts.get(event.getInventory());
+        if (context == null) {
+            return;
+        }
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+        int rawSlot = event.getRawSlot();
+        if (rawSlot < 0) {
+            return;
+        }
+        if (rawSlot < event.getInventory().getSize()) {
+            removeToken(event.getInventory(), rawSlot);
+            return;
+        }
+        addToken(event.getInventory(), event.getCurrentItem(), (Player) event.getWhoClicked());
+    }
+
     /** GUI 关闭时保存黑名单。 */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
@@ -168,16 +191,58 @@ public final class BanGuiFeature implements Feature, Listener {
         }
     }
 
+    /** 点击上方 GUI 物品时移除一个黑名单 token。 */
+    private void removeToken(Inventory inventory, int slot) {
+        ItemStack itemStack = inventory.getItem(slot);
+        if (!isEmpty(itemStack)) {
+            inventory.clear(slot);
+        }
+    }
+
+    /** 点击玩家背包物品时复制一个 Material token 到 GUI，不消耗玩家物品。 */
+    private void addToken(Inventory inventory, ItemStack clicked, Player player) {
+        if (isEmpty(clicked)) {
+            return;
+        }
+        Material material = clicked.getType();
+        if (material == Material.AIR || containsMaterial(inventory, material)) {
+            return;
+        }
+        for (int slot = 0; slot < inventory.getSize(); slot++) {
+            if (isEmpty(inventory.getItem(slot))) {
+                inventory.setItem(slot, new ItemStack(material));
+                return;
+            }
+        }
+        player.sendMessage(message("ban-gui.full", "&c黑名单 GUI 已满，无法继续添加。"));
+    }
+
+    /** 判断 GUI 中是否已经存在指定 Material token。 */
+    private boolean containsMaterial(Inventory inventory, Material material) {
+        for (int slot = 0; slot < inventory.getSize(); slot++) {
+            ItemStack itemStack = inventory.getItem(slot);
+            if (!isEmpty(itemStack) && itemStack.getType() == material) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** 从 GUI 收集 Material 名称。 */
     private Set<String> collectMaterials(Inventory inventory) {
         Set<String> result = new LinkedHashSet<>();
         for (int slot = 0; slot < inventory.getSize(); slot++) {
             ItemStack itemStack = inventory.getItem(slot);
-            if (itemStack != null && itemStack.getType() != Material.AIR) {
+            if (!isEmpty(itemStack)) {
                 result.add(itemStack.getType().name());
             }
         }
         return result;
+    }
+
+    /** 判断物品是否为空。 */
+    private boolean isEmpty(ItemStack itemStack) {
+        return itemStack == null || itemStack.getType() == Material.AIR || itemStack.getAmount() <= 0;
     }
 
     /** 转换颜色代码。 */

@@ -1,0 +1,124 @@
+[15:54:25] blwtc reload
+[15:54:37] op RGBigot2612
+[15:54:37] minecraft:gamerule sendCommandFeedback false
+[15:54:37] minecraft:gamerule commandBlockOutput false
+[15:54:37] minecraft:gamerule doMobSpawning false
+[15:54:38] minecraft:gamerule keepInventory true
+[15:54:38] minecraft:gamerule fallDamage false
+[15:54:38] minecraft:time set day
+[15:54:38] minecraft:weather clear
+[15:54:38] minecraft:fill -3 90 -11 3 90 -5 stone
+[15:54:38] minecraft:gamemode survival RGBigot2612
+[15:54:38] minecraft:tp RGBigot2612 0 91 -8 0 15
+[15:54:39] blwtc platform
+[15:54:40] minecraft:clear RGBigot2612
+[15:54:40] minecraft:give RGBigot2612 cobblestone 7
+[15:55:06] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:07] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:08] blwtc debugroute RGBigot2612 global COBBLESTONE 64
+[15:55:20] minecraft:clear RGBigot2612
+[15:55:21] minecraft:give RGBigot2612 stone 5
+[15:55:31] blwtc debugsummary RGBigot2612
+[15:55:36] blwtc debugsummary RGBigot2612
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:39] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:40] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal STONE 64
+[15:55:41] blwtc debugroute RGBigot2612 personal DIRT 1
+[15:55:42] blwtc debugsummary RGBigot2612
+[15:55:56] minecraft:clear RGBigot2612
+[15:55:56] minecraft:give RGBigot2612 stone 1
+[15:56:11] blwtc debugroute RGBigot2612 global STONE 1
