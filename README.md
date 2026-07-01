@@ -224,6 +224,12 @@ migration-legacy-folder: "WorldListTrashCan"
 
 2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 完成 F-054 船内实体保护专项验收。测试脚本 `tools/rgb-visual-matrix/run_boat_entity_protection_matrix.py` 会在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，生成一只船内牛和一只普通牛，并执行正式 `/blwtc clear true`。最终断言船内牛仍存在且 `protectedInsideBoat=true`，普通牛 `normalExists=false`，证明 legacy 与现代 universal 分支均遵守 `ignore-entities-in-boat`。通过证据：`docs/test-evidence/boat-entity-protection-20260701-171046/`，失败对照：`docs/test-evidence/boat-entity-protection-20260701-170854/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
 
+## 保护功能专项
+
+`protections.yml` 的 `simple-optimize.remove-unpickable-arrow` 会清理不可拾取箭矢，`simple-optimize.prevent-farmland-trampling` 会阻止玩家和实体踩踏农田。现代 Spigot/Paper 中箭矢拾取状态从旧 `Arrow.PickupStatus` 迁移到 `AbstractArrow.PickupStatus`，正式插件已改为反射读取 `getPickupStatus`，避免高版本 API 变动导致不可拾取箭矢不被清理。
+
+2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 完成 F-068/F-069 保护边界专项验收。测试脚本 `tools/rgb-visual-matrix/run_protection_boundary_matrix.py` 会先同步 Maven 最新 universal 产物到 `dist`，再在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，触发正式 `ProjectileHitEvent`、`EntityShootBowEvent`、`EntityInteractEvent` 和 `PlayerInteractEvent(Action.PHYSICAL)`。最终断言不可拾取箭矢与骷髅/无限弓追踪箭矢均被移除，实体和玩家踩踏农田事件均被取消。通过证据：`docs/test-evidence/protection-boundary-20260701-174709/`，失败对照：`docs/test-evidence/protection-boundary-20260701-173858/`、`docs/test-evidence/protection-boundary-20260701-174200/`、`docs/test-evidence/protection-boundary-20260701-174348/`，被测整包 SHA256 为 `0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84`。
+
 ## 命令
 
 正式命令：

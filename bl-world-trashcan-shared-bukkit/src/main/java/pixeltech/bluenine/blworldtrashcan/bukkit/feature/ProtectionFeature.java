@@ -287,8 +287,9 @@ public final class ProtectionFeature implements Feature, Listener {
     /** 判断箭矢是否不可拾取。 */
     private boolean isUnpickable(Arrow arrow) {
         try {
-            return arrow.getPickupStatus() != Arrow.PickupStatus.ALLOWED;
-        } catch (NoSuchMethodError ignored) {
+            Object pickupStatus = arrow.getClass().getMethod("getPickupStatus").invoke(arrow);
+            return pickupStatus != null && !"ALLOWED".equals(String.valueOf(pickupStatus));
+        } catch (ReflectiveOperationException | LinkageError ignored) {
             return false;
         }
     }

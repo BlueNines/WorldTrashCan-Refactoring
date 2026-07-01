@@ -1,0 +1,32 @@
+> plugins
+Plugins (2): §aBLWtcProtectionFixture§f, §aBLWorldTrashCan
+
+> blwtc platform
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6paper-1.16-1.20 (universal)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> protectionfixture cleanup
+AI_PROTECTION_CLEANUP done=true
+
+> protectionfixture arrow
+AI_PROTECTION_ARROW unpickableRemoved=true trackedRemoved=true unpickableAliveAfter=false trackedAliveAfter=false pickupStatusSet=true pickupStatusAfter=DISALLOWED shootCancelled=false hitEntity=ARROW
+
+> protectionfixture farmland
+AI_PROTECTION_FARMLAND entityCancelled=true playerCancelled=true farmlandType=SOIL
+
+> protectionfixture cleanup
+AI_PROTECTION_CLEANUP done=true

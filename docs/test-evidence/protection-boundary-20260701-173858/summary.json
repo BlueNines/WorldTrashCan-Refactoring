@@ -1,0 +1,19 @@
+{
+  "timestamp": "20260701-173858",
+  "allPassed": false,
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+  "jarSha256": "18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b",
+  "fixtureJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\protection-boundary-matrix\\20260701-173858\\BLWtcProtectionFixture.jar",
+  "fixtureSha256": "b363b8d5bdc379fa93082ac38fb691c7f3b60f645d584c590512f2eb1624d762",
+  "evidenceDir": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\protection-boundary-20260701-173858",
+  "results": [
+    {
+      "id": "paper1122",
+      "label": "Paper 1.12.2",
+      "passed": true,
+      "platform": "legacy-1.12",
+      "f068": "AI_PROTECTION_ARROW unpickableRemoved=true trackedRemoved=true unpickableAliveAfter=false trackedAliveAfter=false shootCancelled=false hitEntity=ARROW\n",
+      "f069": "AI_PROTECTION_FARMLAND entityCancelled=true playerCancelled=true farmlandType=SOIL\n"
+    }
+  ]
+}
