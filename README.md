@@ -161,6 +161,8 @@ scanner:
 
 2026-07-01 已补做 GUI 真实点击专项验收。本轮只部署 `dist/BLWorldTrashCan-universal.jar`，SHA256 为 `9caa1bf4319235bc4a9543abdcfdcfb8af3a27787922284a97b8a2c440b3f05a`，`plugin.yml` 版本 `7.0.0`，在 Spigot 26.1.2 managed 测试服使用真实 26.1.2 客户端点击 GUI 槽位，不再把“GUI 能打开”当作“取放可用”。已通过 F-024 公共分页、F-026 公共取出、F-027 公共放入、F-028 公共取出冷却、F-029 公共操作日志、F-030 公共黑名单 GUI 保存并立即生效、F-034 个人取出、F-035 个人放入、F-036 个人满桶自动清空。公共黑名单 GUI 现在使用明确 token 点击模型：点击玩家背包物品只复制一个 Material token 到上方黑名单 GUI，不消耗玩家物品；点击上方 token 会移除；关闭 GUI 后保存 `trash.yml` 并刷新运行期配置。Vault 扣费 F-037 仍需 Economy 前置专项验证，不在本轮 PASS 范围。证据目录：`docs/test-evidence/trash-gui-click-visual-20260701-155408/`，测试脚本：`tools/rgb-visual-matrix/run_trash_gui_click_visual_matrix.py`。
 
+2026-07-01 已补做世界实体上限专项验收。本轮只部署 `dist/BLWorldTrashCan-universal.jar`，SHA256 为 `0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84`，用 Paper 1.12.2 与 Spigot 26.1.2 隔离真实服务端验证 F-070/F-072。测试先关闭实体限制铺底 2 只 COW，再开启 `world-limits` 等待低占用索引建立；达到缓存上限后第 3 只 COW 被正式生成路径拦截，随后把 `world`、`world_nether`、`world_the_end` 写入 `ignored-worlds` 后同样生成被放行，且 `debugdensity` 显示 ignored 状态下本轮扫描选择为 `0/0`。证据目录：`docs/test-evidence/world-entity-limit-20260701-180527/`，测试脚本：`tools/rgb-visual-matrix/run_world_entity_limit_matrix.py`。
+
 BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
 
 PrismaticAPI 当前在 Modrinth 标注为 `GPL-3.0-only`。本项目接入它的前提是基础版后续按开源要求发布；如果未来要制作不满足 GPL-3.0-only 要求的闭源发行版，需要重新评估为外置软依赖或更换许可证兼容的 RGB 库。

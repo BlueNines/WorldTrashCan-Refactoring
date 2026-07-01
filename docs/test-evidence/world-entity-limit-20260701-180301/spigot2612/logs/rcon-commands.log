@@ -1,0 +1,73 @@
+> plugins
+Plugins (2): §aBLWtcWorldEntityLimitFixture§f, §aBLWorldTrashCan
+
+> blwtc platform
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6paper-1.16-1.20 (universal)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> worldentitylimitfixture cleanup
+AI_WORLD_ENTITY_LIMIT_CLEANUP done=true
+
+> worldentitylimitfixture seed COW 2
+AI_WORLD_ENTITY_LIMIT_SEED type=COW requested=2 count=0 world=world chunk=11,4
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> blwtc debugdensity
+§a实体密度扫描统计:
+§7- §f已加载/本轮选择 chunk: §a3§7/§a3
+§7- §f索引 chunk/实体: §a3§7/§a3
+§7- §f脏 chunk 队列: §a0 §7(标记 1, 丢弃 0)
+§7- §f候选队列/去重: §a0§7/§a0
+§7- §f快照/扫描 chunk: §a21§7/§a21 §7(未加载 0)
+§7- §f候选创建/取出/完成: §a0§7/§a0§7/§a0
+§7- §f候选过期/重试/丢弃: §a0§7/§a0§7/§a0
+§7- §f删除成功/跳过: §a0§7/§a0
+§7- §f索引修剪 stale/cap: §a0§7/§a0
+§7- §f累计索引实体写入: §a21
+
+> worldentitylimitfixture spawncheck COW
+AI_WORLD_ENTITY_LIMIT_SPAWN type=COW before=2 after=2 spawnedAlive=false blocked=true allowed=false thrown=false
+
+> worldentitylimitfixture count COW
+AI_WORLD_ENTITY_LIMIT_COUNT type=COW count=2 world=world
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> blwtc debugdensity
+§a实体密度扫描统计:
+§7- §f已加载/本轮选择 chunk: §a0§7/§a0
+§7- §f索引 chunk/实体: §a25§7/§a3
+§7- §f脏 chunk 队列: §a0 §7(标记 3, 丢弃 0)
+§7- §f候选队列/去重: §a0§7/§a0
+§7- §f快照/扫描 chunk: §a187§7/§a187 §7(未加载 0)
+§7- §f候选创建/取出/完成: §a0§7/§a0§7/§a0
+§7- §f候选过期/重试/丢弃: §a0§7/§a0§7/§a0
+§7- §f删除成功/跳过: §a0§7/§a0
+§7- §f索引修剪 stale/cap: §a0§7/§a0
+§7- §f累计索引实体写入: §a54
+
+> worldentitylimitfixture spawncheck COW
+AI_WORLD_ENTITY_LIMIT_SPAWN type=COW before=2 after=3 spawnedAlive=true blocked=false allowed=true thrown=false
+
+> worldentitylimitfixture count COW
+AI_WORLD_ENTITY_LIMIT_COUNT type=COW count=3 world=world
+
+> worldentitylimitfixture cleanup
+AI_WORLD_ENTITY_LIMIT_CLEANUP done=true

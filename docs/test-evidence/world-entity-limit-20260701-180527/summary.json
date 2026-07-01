@@ -1,0 +1,37 @@
+{
+  "timestamp": "20260701-180527",
+  "allPassed": true,
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+  "jarSha256": "0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84",
+  "fixtureJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\world-entity-limit-matrix\\20260701-180527\\BLWtcWorldEntityLimitFixture.jar",
+  "fixtureSha256": "9cbb5f32c987a31c88435d769940d1ae180b3ae349f0ed4df7fc7a48f5aa345f",
+  "evidenceDir": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\world-entity-limit-20260701-180527",
+  "results": [
+    {
+      "id": "paper1122",
+      "label": "Paper 1.12.2",
+      "passed": true,
+      "platform": "legacy-1.12",
+      "indexedEntities": 6,
+      "ignoredLoadedSelected": [
+        0,
+        0
+      ],
+      "f070": "AI_WORLD_ENTITY_LIMIT_SPAWN type=COW before=2 after=2 spawnedAlive=false blocked=true allowed=false thrown=false\n",
+      "f072": "AI_WORLD_ENTITY_LIMIT_SPAWN type=COW before=2 after=3 spawnedAlive=true blocked=false allowed=true thrown=false\n"
+    },
+    {
+      "id": "spigot2612",
+      "label": "Spigot 26.1.2",
+      "passed": true,
+      "platform": "paper-1.16-1.20",
+      "indexedEntities": 2,
+      "ignoredLoadedSelected": [
+        0,
+        0
+      ],
+      "f070": "AI_WORLD_ENTITY_LIMIT_SPAWN type=COW before=2 after=2 spawnedAlive=false blocked=true allowed=false thrown=false\n",
+      "f072": "AI_WORLD_ENTITY_LIMIT_SPAWN type=COW before=2 after=3 spawnedAlive=true blocked=false allowed=true thrown=false\n"
+    }
+  ]
+}

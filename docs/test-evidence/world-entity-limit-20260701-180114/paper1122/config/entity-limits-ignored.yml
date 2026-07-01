@@ -1,0 +1,37 @@
+# AI 自动化 F-070/F-072 测试临时配置。
+# 测试服目录会在 build 中重建，不会覆盖用户正式配置。
+world-limits:
+  # 启用单世界实体数量限制。
+  enabled: true
+  # 本轮测试会在 active/ignored 两种状态下重写这里。
+  ignored-worlds:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+  # COW 上限设为 2，方便验证第 3 只实体被拦截。
+  defaults:
+    - entity: "COW"
+      max-count: 2
+scanner:
+  # 测试服使用小周期和较高 chunk 预算，加快建立索引。
+  target-full-cycle-seconds: 30
+  scan-interval-ticks: 1
+  min-chunks-per-scan: 16
+  max-chunks-per-scan: 128
+  max-scan-millis-per-run: 20
+  remove-interval-ticks: 1
+  max-removes-per-run: 20
+  max-pending-removals: 200
+  candidate-ttl-seconds: 30
+  max-candidate-retries: 1
+  max-dirty-chunks: 512
+  stale-chunk-seconds: 120
+  max-index-entities: 1000
+  max-index-entities-per-chunk: 128
+  log-summary-seconds: 0
+gather-limits:
+  # 本轮只测单世界实体数量限制，关闭密集实体删除避免干扰。
+  enabled: false
+  drop-items: false
+  ignored-worlds: []
+  defaults: []
