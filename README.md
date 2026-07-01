@@ -135,7 +135,9 @@ scanner:
 
 ## 消息与语言
 
-`config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会继续回退到 jar 内默认节点，避免升级后命令、GUI 或提示变成空白。
+`config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会优先回退到当前语言对应的 jar 内置节点，再回退到默认中文节点，避免升级后命令、GUI 或提示变成空白。旧外部语言文件如果仍把调试命令堆在 `command.help` 主帮助里，运行时会改用当前语言的 jar 内置主帮助，避免英文语言切换时被强制退回中文主帮助。
+
+2026-07-01 已用 `dist/BLWorldTrashCan-universal.jar` 完成多语言真实客户端专项，SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。测试端覆盖 Paper 1.12.2 managed、Spigot 26.1.2 managed 和 Folia 1.21.8：每端先切换到 `message_en.yml` 并由真实客户端执行 `/blwtc help`，确认英文主帮助；再删除外部 `message_zh.yml` 的 `command.help` 节点并重载，确认中文帮助从 jar 内默认节点回退出来。证据目录为 `docs/test-evidence/language-visual-20260701-163536/`。
 
 当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询、手持物品/区块实体查询和密集实体清理提示。密集实体清理对应消息节点为 `entity-limit.gather-cleared`，可使用 `{range}`、`{entity}`、`{size}`、`{max}`、`{removed}` 占位符。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
 

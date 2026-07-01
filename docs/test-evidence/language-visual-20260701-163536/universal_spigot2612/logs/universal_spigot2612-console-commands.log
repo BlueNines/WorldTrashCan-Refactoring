@@ -1,0 +1,13 @@
+[16:37:07] op RGBigot2612
+[16:37:07] minecraft:gamerule sendCommandFeedback false
+[16:37:07] minecraft:gamerule commandBlockOutput false
+[16:37:07] minecraft:gamerule doMobSpawning false
+[16:37:07] minecraft:gamerule keepInventory true
+[16:37:07] minecraft:gamerule fallDamage false
+[16:37:07] minecraft:time set day
+[16:37:08] minecraft:weather clear
+[16:37:08] minecraft:gamemode creative RGBigot2612
+[16:37:08] minecraft:tp RGBigot2612 0 91 -8 0 15
+[16:37:09] blwtc platform
+[16:37:09] blwtc reload
+[16:37:20] blwtc reload

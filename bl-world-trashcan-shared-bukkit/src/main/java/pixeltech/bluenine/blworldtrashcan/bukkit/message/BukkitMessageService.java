@@ -17,6 +17,7 @@ public final class BukkitMessageService {
     private static final String DEFAULT_FILE = "message_zh.yml";
     private final JavaPlugin plugin;
     private YamlConfiguration bundledDefaultMessages = new YamlConfiguration();
+    private YamlConfiguration bundledActiveMessages = new YamlConfiguration();
     private YamlConfiguration fallbackMessages = new YamlConfiguration();
     private YamlConfiguration activeMessages = new YamlConfiguration();
     private String activeFile = DEFAULT_FILE;
@@ -32,6 +33,7 @@ public final class BukkitMessageService {
         saveBundledMessage(DEFAULT_FILE);
         saveBundledMessage(activeFile);
         bundledDefaultMessages = loadBundled(DEFAULT_FILE);
+        bundledActiveMessages = DEFAULT_FILE.equals(activeFile) ? bundledDefaultMessages : loadBundled(activeFile);
         fallbackMessages = loadResourceOrFile(DEFAULT_FILE);
         activeMessages = DEFAULT_FILE.equals(activeFile) ? fallbackMessages : loadResourceOrFile(activeFile);
         plugin.getLogger().info("[Message] 已加载语言文件: messages/" + activeFile);
@@ -45,6 +47,9 @@ public final class BukkitMessageService {
     /** 按玩家版本返回格式化后的单行消息。 */
     public String text(Player player, String key, String fallback, String... replacements) {
         String raw = activeMessages.getString(key);
+        if (raw == null) {
+            raw = bundledActiveMessages.getString(key);
+        }
         if (raw == null) {
             raw = fallbackMessages.getString(key);
         }
@@ -62,6 +67,9 @@ public final class BukkitMessageService {
     /** 按玩家版本返回格式化后的多行消息。 */
     public List<String> list(Player player, String key, List<String> fallback, String... replacements) {
         List<String> raw = activeMessages.getStringList(key);
+        if (raw.isEmpty()) {
+            raw = bundledActiveMessages.getStringList(key);
+        }
         if (raw.isEmpty()) {
             raw = fallbackMessages.getStringList(key);
         }
@@ -154,6 +162,12 @@ public final class BukkitMessageService {
             return raw;
         }
         List<String> bundled = bundledDefaultMessages.getStringList(key);
+        if (bundledActiveMessages != null) {
+            List<String> activeBundled = bundledActiveMessages.getStringList(key);
+            if (!activeBundled.isEmpty()) {
+                bundled = activeBundled;
+            }
+        }
         return bundled.isEmpty() ? raw : bundled;
     }
 
@@ -191,6 +205,9 @@ public final class BukkitMessageService {
     /** 返回消息前缀。 */
     private String prefix() {
         String raw = activeMessages.getString("prefix");
+        if (raw == null) {
+            raw = bundledActiveMessages.getString("prefix");
+        }
         if (raw == null) {
             raw = fallbackMessages.getString("prefix");
         }
