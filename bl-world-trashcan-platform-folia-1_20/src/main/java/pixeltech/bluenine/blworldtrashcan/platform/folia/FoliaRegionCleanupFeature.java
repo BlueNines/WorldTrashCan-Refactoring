@@ -1,7 +1,10 @@
 package pixeltech.bluenine.blworldtrashcan.platform.folia;
 
-import net.md_5.bungee.api.ChatMessageType;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -895,7 +898,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             @Override
             public void run(Player player) {
                 if (clickable) {
-                    player.spigot().sendMessage(RichTextRenderer.clickable(player, message, clickCommand));
+                    sendClickableChat(player, message, clickCommand);
                     return;
                 }
                 player.sendMessage(RichTextRenderer.color(player, message));
@@ -904,6 +907,32 @@ public final class FoliaRegionCleanupFeature implements Feature {
         if (notifyConfig.isChatConsoleLog()) {
             Bukkit.getConsoleSender().sendMessage(RichTextRenderer.color(message));
         }
+    }
+
+    /** 使用 Folia/Paper 原生 Adventure 组件发送可点击聊天。 */
+    private void sendClickableChat(Player player, String message, String clickCommand) {
+        try {
+            Component component = LegacyComponentSerializer.legacySection()
+                    .deserialize(RichTextRenderer.color(player, message));
+            player.sendMessage(withClickEvent(component, ClickEvent.runCommand(clickCommand)));
+        } catch (RuntimeException error) {
+            player.spigot().sendMessage(RichTextRenderer.clickable(player, message, clickCommand));
+        } catch (LinkageError error) {
+            player.spigot().sendMessage(RichTextRenderer.clickable(player, message, clickCommand));
+        }
+    }
+
+    /** 递归给 Adventure 组件树补点击事件。 */
+    private Component withClickEvent(Component component, ClickEvent clickEvent) {
+        List<Component> children = component.children();
+        if (children.isEmpty()) {
+            return component.clickEvent(clickEvent);
+        }
+        List<Component> updatedChildren = new ArrayList<>();
+        for (Component child : children) {
+            updatedChildren.add(withClickEvent(child, clickEvent));
+        }
+        return component.children(updatedChildren).clickEvent(clickEvent);
     }
 
     /** 发送 ActionBar 通知。 */

@@ -8,6 +8,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 /** 统一渲染传统颜色、RGB、渐变和可点击消息。 */
 public final class RichTextRenderer {
     private RichTextRenderer() {
@@ -72,15 +74,7 @@ public final class RichTextRenderer {
         String raw = text == null ? "" : text;
         String clickAction = action == null ? "" : action;
         String clickCommand = command == null ? "" : command;
-        try {
-            return PrismaticAPI.chatComponent(raw)
-                    .setClick(clickAction, clickCommand)
-                    .compile(player);
-        } catch (RuntimeException error) {
-            return fallbackClickable(player, raw, clickAction, clickCommand);
-        } catch (LinkageError error) {
-            return fallbackClickable(player, raw, clickAction, clickCommand);
-        }
+        return withClickEvent(components(player, raw), clickAction, clickCommand);
     }
 
     /** 去除颜色后返回可执行命令文本。 */
@@ -88,13 +82,36 @@ public final class RichTextRenderer {
         return ChatColor.stripColor(color(text));
     }
 
-    /** 构造可点击消息的兜底组件。 */
-    private static BaseComponent[] fallbackClickable(Player player, String text, String action, String command) {
-        TextComponent component = new TextComponent(color(player, text));
+    /** 给已经渲染完成的组件补上点击事件。 */
+    private static BaseComponent[] withClickEvent(BaseComponent[] components, String action, String command) {
         ClickEvent.Action clickAction = "suggest_command".equalsIgnoreCase(action)
                 ? ClickEvent.Action.SUGGEST_COMMAND
                 : ClickEvent.Action.RUN_COMMAND;
-        component.setClickEvent(new ClickEvent(clickAction, command));
-        return new BaseComponent[]{component};
+        ClickEvent clickEvent = new ClickEvent(clickAction, command == null ? "" : command);
+        BaseComponent[] result = components == null ? new BaseComponent[0] : components;
+        for (BaseComponent component : result) {
+            applyClickEvent(component, clickEvent);
+        }
+        if (result.length == 0) {
+            TextComponent component = new TextComponent("");
+            component.setClickEvent(clickEvent);
+            return new BaseComponent[]{component};
+        }
+        return result;
+    }
+
+    /** 递归给组件和 extra 子组件设置点击事件。 */
+    private static void applyClickEvent(BaseComponent component, ClickEvent clickEvent) {
+        if (component == null) {
+            return;
+        }
+        component.setClickEvent(clickEvent);
+        List<BaseComponent> extra = component.getExtra();
+        if (extra == null || extra.isEmpty()) {
+            return;
+        }
+        for (BaseComponent child : extra) {
+            applyClickEvent(child, clickEvent);
+        }
     }
 }
