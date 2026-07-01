@@ -1,0 +1,44 @@
+> plugins
+Plugins (2): §aBLWorldTrashCan§f, §aBLWtcBoatFixture
+
+> blwtc platform
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6paper-1.16-1.20 (universal)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用
+
+> blwtc reload
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§aBLWorldTrashCan §x§c§9§d§4§e§2已重载。
+
+> boatfixture prepare
+AI_BOAT_FIXTURE_PREPARED passengerAdded=true protectedInsideBoat=true protectedCow=ebe9e4d3-075f-4e6e-889f-1f30660dd7fe normalCow=ca320b8e-86fd-4851-b6ed-5d9599ec81a5 boat=0195c364-5b25-4dc6-b6ed-2449ac1c8182
+
+> blwtc clear true
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理完成 §x§6§4§7§4§8§b| §x§c§9§d§4§e§2世界 §x§f§f§d§1§6§63§x§6§4§7§4§8§b, §x§c§9§d§4§e§2回收 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除物品 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除实体 §x§f§f§d§1§6§60§x§c§9§d§4§e§2。
+
+> boatfixture assert
+AI_BOAT_FIXTURE_RESULT protectedExists=false normalExists=false boatExists=false protectedInsideBoat=false
+
+> blwtc stats
+§x§1§b§2§4§3§0[§x§5§a§c§8§f§aBL§x§c§9§d§4§e§2World§x§f§f§d§1§6§6Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:
+§7- §f扫地门禁: §a已通过 §7(在线 0/1, 目标实体 0/150)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§63
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60
+§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6357
+
+> boatfixture cleanup
+AI_BOAT_FIXTURE_CLEANUP done=true

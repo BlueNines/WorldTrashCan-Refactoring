@@ -214,6 +214,12 @@ migration-legacy-folder: "WorldListTrashCan"
 
 2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 重新做 F-005 旧配置迁移专项验收。测试脚本 `tools/rgb-visual-matrix/run_legacy_migration_matrix.py` 会启动独立 Paper 1.12.2 临时服务端，分别覆盖相邻旧目录 `plugins/WorldListTrashCan` 和当前目录旧结构 `plugins/BLWorldTrashCan` 两种迁移来源，并通过 RCON、迁移报告、新拆分配置和世界垃圾桶数据断言确认迁移生效。通过证据：`docs/test-evidence/legacy-migration-universal-20260701-165606/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
 
+## 船内实体保护
+
+`cleanup.yml` 的 `entities.ignore-entities-in-boat` 用于保护正在船内的实体。启用实体清理时，如果动物、怪物或其它实体位于船内，本轮清理会跳过该实体，避免扫地功能误删玩家正在运输或展示的生物。
+
+2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 完成 F-054 船内实体保护专项验收。测试脚本 `tools/rgb-visual-matrix/run_boat_entity_protection_matrix.py` 会在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，生成一只船内牛和一只普通牛，并执行正式 `/blwtc clear true`。最终断言船内牛仍存在且 `protectedInsideBoat=true`，普通牛 `normalExists=false`，证明 legacy 与现代 universal 分支均遵守 `ignore-entities-in-boat`。通过证据：`docs/test-evidence/boat-entity-protection-20260701-171046/`，失败对照：`docs/test-evidence/boat-entity-protection-20260701-170854/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
+
 ## 命令
 
 正式命令：
