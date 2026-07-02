@@ -1,0 +1,42 @@
+[22:03:09] blwtc reload
+[22:03:20] op RGBigot2612
+[22:03:21] minecraft:gamerule sendCommandFeedback false
+[22:03:21] minecraft:gamerule commandBlockOutput false
+[22:03:21] minecraft:gamerule doMobSpawning false
+[22:03:22] minecraft:gamerule keepInventory true
+[22:03:22] minecraft:gamerule fallDamage false
+[22:03:23] minecraft:time set day
+[22:03:23] minecraft:weather clear
+[22:03:23] minecraft:gamemode creative RGBigot2612
+[22:03:24] minecraft:fill -3 90 -11 3 90 -5 stone
+[22:03:24] minecraft:tp RGBigot2612 0 91 -8 0 15
+[22:03:25] deop RGBigot2612
+[22:03:25] minecraft:clear RGBigot2612
+[22:03:25] permfixture clear RGBigot2612
+[22:03:26] blwtc debugroute RGBigot2612 global COBBLESTONE 7
+[22:03:26] minecraft:clear RGBigot2612
+[22:03:26] permfixture deny RGBigot2612 blworldtrashcan.global.take WorldListTrashCan.GlobalTrashTakeItem
+[22:03:27] blwtc debugopen RGBigot2612 global
+[22:03:36] blwtc debugsummary RGBigot2612
+[22:03:37] permfixture clear RGBigot2612
+[22:03:38] permfixture deny RGBigot2612 blworldtrashcan.global.put WorldListTrashCan.GlobalTrashPutItem
+[22:03:38] blwtc debugsummary RGBigot2612
+[22:03:39] minecraft:clear RGBigot2612
+[22:03:39] minecraft:give RGBigot2612 stone 5
+[22:03:40] blwtc debugopen RGBigot2612 global
+[22:03:49] blwtc debugsummary RGBigot2612
+[22:03:50] permfixture clear RGBigot2612
+[22:03:51] blwtc debugroute RGBigot2612 personal DIRT 3
+[22:03:51] minecraft:clear RGBigot2612
+[22:03:51] permfixture deny RGBigot2612 blworldtrashcan.personal.take WorldListTrashCan.PersonalTrashTakeItem
+[22:03:52] blwtc debugopen RGBigot2612 personal
+[22:04:01] blwtc debugsummary RGBigot2612
+[22:04:02] permfixture clear RGBigot2612
+[22:04:02] permfixture deny RGBigot2612 blworldtrashcan.personal.put WorldListTrashCan.PersonalTrashPutItem
+[22:04:03] blwtc debugsummary RGBigot2612
+[22:04:04] minecraft:clear RGBigot2612
+[22:04:04] minecraft:give RGBigot2612 stone 4
+[22:04:05] blwtc debugopen RGBigot2612 personal
+[22:04:14] blwtc debugsummary RGBigot2612
+[22:04:15] permfixture clear RGBigot2612
+[22:04:16] op RGBigot2612

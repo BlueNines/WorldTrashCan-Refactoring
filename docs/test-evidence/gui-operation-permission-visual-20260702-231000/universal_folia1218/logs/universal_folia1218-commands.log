@@ -1,0 +1,42 @@
+[22:04:59] blwtc reload
+[22:05:10] op RGBolia1218
+[22:05:10] minecraft:gamerule sendCommandFeedback false
+[22:05:11] minecraft:gamerule commandBlockOutput false
+[22:05:11] minecraft:gamerule doMobSpawning false
+[22:05:11] minecraft:gamerule keepInventory true
+[22:05:12] minecraft:gamerule fallDamage false
+[22:05:12] minecraft:time set day
+[22:05:13] minecraft:weather clear
+[22:05:13] minecraft:gamemode creative RGBolia1218
+[22:05:13] minecraft:fill -3 90 -11 3 90 -5 stone
+[22:05:14] minecraft:tp RGBolia1218 0 91 -8 0 15
+[22:05:14] deop RGBolia1218
+[22:05:15] minecraft:clear RGBolia1218
+[22:05:15] permfixture clear RGBolia1218
+[22:05:15] blwtc debugroute RGBolia1218 global COBBLESTONE 7
+[22:05:16] minecraft:clear RGBolia1218
+[22:05:16] permfixture deny RGBolia1218 blworldtrashcan.global.take WorldListTrashCan.GlobalTrashTakeItem
+[22:05:16] blwtc debugopen RGBolia1218 global
+[22:05:26] blwtc debugsummary RGBolia1218
+[22:05:27] permfixture clear RGBolia1218
+[22:05:27] permfixture deny RGBolia1218 blworldtrashcan.global.put WorldListTrashCan.GlobalTrashPutItem
+[22:05:27] blwtc debugsummary RGBolia1218
+[22:05:28] minecraft:clear RGBolia1218
+[22:05:29] minecraft:give RGBolia1218 stone 5
+[22:05:29] blwtc debugopen RGBolia1218 global
+[22:05:39] blwtc debugsummary RGBolia1218
+[22:05:40] permfixture clear RGBolia1218
+[22:05:40] blwtc debugroute RGBolia1218 personal DIRT 3
+[22:05:40] minecraft:clear RGBolia1218
+[22:05:41] permfixture deny RGBolia1218 blworldtrashcan.personal.take WorldListTrashCan.PersonalTrashTakeItem
+[22:05:41] blwtc debugopen RGBolia1218 personal
+[22:05:50] blwtc debugsummary RGBolia1218
+[22:05:51] permfixture clear RGBolia1218
+[22:05:52] permfixture deny RGBolia1218 blworldtrashcan.personal.put WorldListTrashCan.PersonalTrashPutItem
+[22:05:52] blwtc debugsummary RGBolia1218
+[22:05:53] minecraft:clear RGBolia1218
+[22:05:53] minecraft:give RGBolia1218 stone 4
+[22:05:54] blwtc debugopen RGBolia1218 personal
+[22:06:03] blwtc debugsummary RGBolia1218
+[22:06:04] permfixture clear RGBolia1218
+[22:06:05] op RGBolia1218

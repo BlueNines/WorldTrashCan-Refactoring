@@ -1,0 +1,172 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "status": "PASS",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 523626,
+    "sha256": "18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "global-take-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-global-take-denied-open-f2.png",
+        "size": 175363,
+        "sha256": "bcee94d344691f8bc0bf0296f47ce7d04e76ac465500cef1d56c38473d7666ba",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 75.86946614583333
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-global-take-denied-after-click-f2.png",
+        "size": 185793,
+        "sha256": "12864d9443daf3592907dfcce90525fd32e54225d4a5a13f33410badf7aca1eb",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 77.03190104166667
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "没有权限从公共垃圾桶取出物品"
+        ],
+        "excerpt": "[22:05:20] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从公共垃圾桶取出物品。\n[22:05:20] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从公共垃圾桶取出物品。\n[22:05:20] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从公共垃圾桶取出物品。\n[22:05:23] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_22.05.23.png\n[22:05:24] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_22.05.24.png\n"
+      },
+      "summaryAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "summaryExcerpt": "> \n  \n[22:05:26 INFO]: BLWorldTrashCan debug summary:\n> \n  \n[22:05:26 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[22:05:26 INFO]: - 世界: world\n> \n  \n[22:05:26 INFO]: - 世界垃圾桶数量: 1\n> \n  \n[22:05:26 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[22:05:26 INFO]: - 跳过未加载区块: 0\n> \n  \n[22:05:26 INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n> \n  \n[22:05:26 INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n> ",
+      "globalLogDelta": ""
+    },
+    {
+      "name": "global-put-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-global-put-denied-open-f2.png",
+        "size": 181733,
+        "sha256": "95a9ae55ba58a6335d8fea085795c0205132f787a9c44f43cc1040e5a3f80119",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.19401041666667
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-global-put-denied-after-click-f2.png",
+        "size": 181608,
+        "sha256": "517eae407907f1dbc0c8d04efc28dfc75f1a2c36f3c40c41846cec3e49e2e0da",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 77.8505859375
+      },
+      "beforeAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "afterAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "summaryExcerpt": "> \n  \n[22:05:39 INFO]: BLWorldTrashCan debug summary:\n> \n  \n[22:05:39 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[22:05:39 INFO]: - 世界: world\n> \n  \n[22:05:39 INFO]: - 世界垃圾桶数量: 1\n> \n  \n[22:05:39 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[22:05:39 INFO]: - 跳过未加载区块: 0\n> \n  \n[22:05:39 INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n> \n  \n[22:05:39 INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n> ",
+      "globalLogDelta": ""
+    },
+    {
+      "name": "personal-take-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-personal-take-denied-open-f2.png",
+        "size": 179088,
+        "sha256": "f3b7055d2cfbf9ba9bddc2a246c3e972515a6e561b0a96805ce69a89040e0e7d",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 79.3720703125
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-personal-take-denied-after-click-f2.png",
+        "size": 183070,
+        "sha256": "1db81ab3cae31100f3efde4f591742d2adbe072a1bb86c41a9f043089bb970ef",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.69401041666667
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "没有权限从个人垃圾桶取出物品"
+        ],
+        "excerpt": "[22:05:45] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从个人垃圾桶取出物品。\n[22:05:45] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从个人垃圾桶取出物品。\n[22:05:45] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从个人垃圾桶取出物品。\n[22:05:48] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_22.05.47.png\n[22:05:48] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_22.05.48.png\n"
+      },
+      "summaryAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "summaryExcerpt": "> \n  \n[22:05:51 INFO]: BLWorldTrashCan debug summary:\n> \n  \n[22:05:51 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[22:05:51 INFO]: - 世界: world\n> \n  \n[22:05:51 INFO]: - 世界垃圾桶数量: 1\n> \n  \n[22:05:51 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[22:05:51 INFO]: - 跳过未加载区块: 0\n> \n  \n[22:05:51 INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n> \n  \n[22:05:51 INFO]: - 个人垃圾桶物品: 3 (堆叠 1)\n> "
+    },
+    {
+      "name": "personal-put-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-personal-put-denied-open-f2.png",
+        "size": 180821,
+        "sha256": "e3ef0bbc5a9a453d3fcb49782be209174c4a97ee6c3b2fb7e0385bf35a2fc20a",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 79.31510416666667
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\screenshots\\universal_folia1218-personal-put-denied-after-click-f2.png",
+        "size": 181335,
+        "sha256": "a3eeca87301c18d34310088c7eafdcadbf684863d69121ec0fef191254b3da2b",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.7314453125
+      },
+      "beforeAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "afterAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "summaryExcerpt": "> \n  \n[22:06:03 INFO]: BLWorldTrashCan debug summary:\n> \n  \n[22:06:03 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[22:06:03 INFO]: - 世界: world\n> \n  \n[22:06:03 INFO]: - 世界垃圾桶数量: 1\n> \n  \n[22:06:03 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[22:06:03 INFO]: - 跳过未加载区块: 0\n> \n  \n[22:06:03 INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n> \n  \n[22:06:03 INFO]: - 个人垃圾桶物品: 3 (堆叠 1)\n> "
+    }
+  ],
+  "username": "RGBolia1218",
+  "clientPid": 17216,
+  "failedChecks": [],
+  "blankScreenshots": [],
+  "commandsScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_folia1218\\server-screenshots\\universal_folia1218-commands.png",
+    "size": 231055,
+    "sha256": "7c9aff429687bb076004dcac1a09060af8c8917176954d6f70e64af079d47d0a",
+    "dimensions": [
+      1600,
+      1144
+    ],
+    "brightness": 34.798502604166664
+  }
+}

@@ -14,7 +14,11 @@ import run_trash_gui_click_visual_matrix as gui
 
 
 EVIDENCE_ROOT = base.REPO / "docs" / "test-evidence"
-TARGET_CASE_IDS = ["external_spigot2612"]
+TARGET_CASE_IDS = [
+    "managed_paper1122",
+    "external_spigot2612",
+    "external_folia1218",
+]
 
 
 def log(message: str) -> None:
@@ -157,12 +161,49 @@ def debug_summary_amounts(text: str) -> dict:
             result["global"] = parse_first_int_after_marker(line, "公共垃圾桶物品:")
         if "个人垃圾桶物品:" in line:
             result["personal"] = parse_first_int_after_marker(line, "个人垃圾桶物品:")
+    if result["global"] < 0 or result["personal"] < 0:
+        fallback = debug_summary_amounts_by_order(plain)
+        if result["global"] < 0:
+            result["global"] = fallback["global"]
+        if result["personal"] < 0:
+            result["personal"] = fallback["personal"]
     return result
+
+
+def debug_summary_amounts_by_order(text: str) -> dict:
+    """兼容 1.12 控制台中文乱码时按 debugsummary 固定行序解析库存。"""
+    values = []
+    in_summary = False
+    for line in text.splitlines():
+        if "BLWorldTrashCan debug summary" in line:
+            in_summary = True
+            values = []
+            continue
+        if not in_summary:
+            continue
+        if "- " not in line:
+            continue
+        values.append(parse_first_int_after_last_colon(line))
+    if len(values) >= 5:
+        return {"global": values[-2], "personal": values[-1]}
+    return {"global": -1, "personal": -1}
 
 
 def parse_first_int_after_marker(line: str, marker: str) -> int:
     """解析指定标记后的第一个整数。"""
     text = line.split(marker, 1)[1] if marker in line else line
+    digits = ""
+    for char in text:
+        if char.isdigit():
+            digits += char
+        elif digits:
+            break
+    return int(digits) if digits else -1
+
+
+def parse_first_int_after_last_colon(line: str) -> int:
+    """解析最后一个冒号后的第一个整数，避开日志时间戳。"""
+    text = line.rsplit(":", 1)[1] if ":" in line else line
     digits = ""
     for char in text:
         if char.isdigit():
@@ -225,12 +266,30 @@ def font() -> ImageFont.ImageFont:
 
 def prepare_player(case: dict, username: str, process, command_log: Path) -> None:
     """初始化玩家位置、背包和权限状态。"""
-    gui.setup_player(case, username, process, command_log)
+    gamemode = "minecraft:gamemode 1 " + username if gui.is_legacy(case) else "minecraft:gamemode creative " + username
     for command in (
+        "op " + username,
+        "minecraft:gamerule sendCommandFeedback false",
+        "minecraft:gamerule commandBlockOutput false",
+        "minecraft:gamerule doMobSpawning false",
+        "minecraft:gamerule keepInventory true",
+        "minecraft:gamerule fallDamage false",
+        "minecraft:time set day",
+        "minecraft:weather clear",
+        gamemode,
+        "minecraft:fill -3 90 -11 3 90 -5 stone",
+        "minecraft:tp " + username + " 0 91 -8 0 15",
         "deop " + username,
         "minecraft:clear " + username,
     ):
         run_console(process, command_log, command, 0.4)
+
+
+def open_trash_gui(case: dict, username: str, process, command_log: Path,
+                   run_dir: Path, game_dir: Path, kind: str, screenshot_name: str) -> dict:
+    """通过后台测试入口打开真实客户端 GUI 并截图。"""
+    run_console(process, command_log, "blwtc debugopen " + username + " " + kind, 1.0)
+    return capture_named_screenshot(case, game_dir, run_dir, screenshot_name)
 
 
 def route_item(process, server_log: Path, command_log: Path, username: str,
@@ -257,7 +316,7 @@ def run_global_take_denied(case: dict, username: str, process, server_log: Path,
         "WorldListTrashCan.GlobalTrashTakeItem",
     ])
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
-    open_result = gui.send_client_command(case, game_dir, run_dir, "/blwtc global", "global-take-denied-open-f2", 1.0)
+    open_result = open_trash_gui(case, username, process, command_log, run_dir, game_dir, "global", "global-take-denied-open-f2")
     offset = external.log_text_offset(client_log)
     log_snapshot = snapshot_global_logs(case)
     gui.click_slot(case, "top", 0, 0)
@@ -279,7 +338,7 @@ def run_global_take_denied(case: dict, username: str, process, server_log: Path,
     return {
         "name": "global-take-denied",
         "status": status,
-        "openScreenshot": open_result.get("screenshot"),
+        "openScreenshot": open_result,
         "clickScreenshot": screenshot,
         "clientLog": client_check,
         "summaryAmounts": amounts,
@@ -300,7 +359,7 @@ def run_global_put_denied(case: dict, username: str, process, server_log: Path,
     before_amounts = debug_summary_amounts(before)
     give_item(process, command_log, username, "stone", 5)
     log_snapshot = snapshot_global_logs(case)
-    open_result = gui.send_client_command(case, game_dir, run_dir, "/blwtc global", "global-put-denied-open-f2", 1.0)
+    open_result = open_trash_gui(case, username, process, command_log, run_dir, game_dir, "global", "global-put-denied-open-f2")
     gui.click_slot(case, "hotbar", 0, 0)
     time.sleep(1.0)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, "global-put-denied-after-click-f2")
@@ -312,7 +371,7 @@ def run_global_put_denied(case: dict, username: str, process, server_log: Path,
     return {
         "name": "global-put-denied",
         "status": status,
-        "openScreenshot": open_result.get("screenshot"),
+        "openScreenshot": open_result,
         "clickScreenshot": screenshot,
         "beforeAmounts": before_amounts,
         "afterAmounts": after_amounts,
@@ -332,7 +391,7 @@ def run_personal_take_denied(case: dict, username: str, process, server_log: Pat
         "WorldListTrashCan.PersonalTrashTakeItem",
     ])
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
-    open_result = gui.send_client_command(case, game_dir, run_dir, "/blwtc personal", "personal-take-denied-open-f2", 1.0)
+    open_result = open_trash_gui(case, username, process, command_log, run_dir, game_dir, "personal", "personal-take-denied-open-f2")
     offset = external.log_text_offset(client_log)
     gui.click_slot(case, "top", 0, 0)
     time.sleep(1.0)
@@ -352,7 +411,7 @@ def run_personal_take_denied(case: dict, username: str, process, server_log: Pat
     return {
         "name": "personal-take-denied",
         "status": status,
-        "openScreenshot": open_result.get("screenshot"),
+        "openScreenshot": open_result,
         "clickScreenshot": screenshot,
         "clientLog": client_check,
         "summaryAmounts": amounts,
@@ -371,7 +430,7 @@ def run_personal_put_denied(case: dict, username: str, process, server_log: Path
     before = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
     before_amounts = debug_summary_amounts(before)
     give_item(process, command_log, username, "stone", 4)
-    open_result = gui.send_client_command(case, game_dir, run_dir, "/blwtc personal", "personal-put-denied-open-f2", 1.0)
+    open_result = open_trash_gui(case, username, process, command_log, run_dir, game_dir, "personal", "personal-put-denied-open-f2")
     gui.click_slot(case, "hotbar", 0, 0)
     time.sleep(1.0)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, "personal-put-denied-after-click-f2")
@@ -382,7 +441,7 @@ def run_personal_put_denied(case: dict, username: str, process, server_log: Path
     return {
         "name": "personal-put-denied",
         "status": status,
-        "openScreenshot": open_result.get("screenshot"),
+        "openScreenshot": open_result,
         "clickScreenshot": screenshot,
         "beforeAmounts": before_amounts,
         "afterAmounts": after_amounts,
@@ -529,12 +588,16 @@ def make_contact_sheet(results: list[dict], evidence_root: Path) -> str:
 
 def write_readme(evidence_root: Path, summary: dict) -> None:
     """生成证据目录 README。"""
+    environments = "、".join(
+        item["label"] + " + 真实 " + str(item["version"]) + " 客户端"
+        for item in summary["results"]
+    )
     lines = [
         "# GUI 取放权限真实客户端专项",
         "",
         "- 被测 jar: `dist/BLWorldTrashCan-universal.jar`",
         "- SHA256: `" + summary.get("jarSha256", "") + "`",
-        "- 验收方式: Spigot 26.1.2 managed + 真实 26.1.2 客户端 + 临时 PermissionDenyFixture。",
+        "- 验收方式: " + environments + " + 临时 PermissionDenyFixture。",
         "- 覆盖: 公共取出 deny、公共放入 deny、个人取出 deny、个人放入 deny。",
         "- 通过标准: 真实点击后取出权限必须出现客户端无权限提示；放入权限静默拒绝但垃圾桶库存和公共操作日志不能变化。",
         "- 结论: " + summary["status"],

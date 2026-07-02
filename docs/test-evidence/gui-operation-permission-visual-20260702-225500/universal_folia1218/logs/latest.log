@@ -1,0 +1,237 @@
+[21:53:55] [ServerMain/INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
+[21:53:55] [ServerMain/INFO]: [bootstrap] Loading Folia 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) for Minecraft 1.21.8
+[21:53:55] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[21:53:56] [Paper Plugin Remapper Thread - 2/INFO]: [PluginRemapper] Remapping plugin 'plugins\PermissionDenyFixture.jar'...
+[21:53:56] [Paper Plugin Remapper Thread - 2/INFO]: [PluginRemapper] Done remapping plugin 'plugins\PermissionDenyFixture.jar' in 219ms.
+[21:53:56] [ServerMain/INFO]: [PluginInitializerManager] Initialized 3 plugins
+[21:53:56] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (3):
+ - BLWorldTrashCan (7.0.0), PermissionDenyFixture (1.0.0), PlaceholderAPI (2.11.7-DEV-null)
+[21:53:59] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[21:54:00] [ServerMain/INFO]: Loaded 1407 recipes
+[21:54:00] [ServerMain/INFO]: Loaded 1520 advancements
+[21:54:00] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[21:54:01] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 234.2ms
+[21:54:01] [Server thread/INFO]: Starting minecraft server version 1.21.8
+[21:54:01] [Server thread/INFO]: Loading properties
+[21:54:01] [Server thread/INFO]: This server is running Folia version 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
+[21:54:01] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[21:54:01] [Server thread/INFO]: Using 4 threads for Netty based IO
+[21:54:01] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[21:54:01] [Server thread/INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
+[21:54:01] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[21:54:01] [Server thread/INFO]: [io.papermc.paper.threadedregions.TickRegions] Regionised ticking is enabled with 2 tick threads
+[21:54:02] [Server thread/INFO]: Default game type: SURVIVAL
+[21:54:02] [Server thread/INFO]: Generating keypair
+[21:54:02] [Server thread/INFO]: Starting Minecraft server on *:30004
+[21:54:02] [Server thread/INFO]: Using default channel type
+[21:54:02] [Server thread/INFO]: Paper: Using Java compression from Velocity.
+[21:54:02] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
+[21:54:02] [Server thread/WARN]: [org.bukkit.craftbukkit.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[21:54:09] [Server thread/WARN]: Legacy plugin PermissionDenyFixture v1.0.0 does not specify an api-version.
+[21:54:09] [Server thread/INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.7-DEV-null
+[21:54:09] [Server thread/INFO]: [PermissionDenyFixture] Loading server plugin PermissionDenyFixture v1.0.0
+[21:54:09] [Server thread/INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v7.0.0
+[21:54:09] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[21:54:09] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[21:54:09] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[21:54:09] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[21:54:09] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[21:54:09] [Server thread/INFO]: Preparing level "world"
+[21:54:10] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[21:54:10] [Server thread/INFO]: Time elapsed: 4 ms
+[21:54:10] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[21:54:10] [Server thread/INFO]: Time elapsed: 0 ms
+[21:54:10] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[21:54:10] [Server thread/INFO]: Time elapsed: 0 ms
+[21:54:10] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.7-DEV-null
+[21:54:10] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[21:54:10] [Server thread/INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0*
+[21:54:10] [Server thread/INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[21:54:10] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Universal runtime: folia
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Platform: folia-1.20
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-region: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 360 秒。
+[21:54:10] [Server thread/INFO]: [BLWorldTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+[21:54:10] [Server thread/INFO]: [spark] The spark plugin has been preferred but was not loaded. The bundled spark profiler will enabled instead.
+[21:54:10] [Server thread/INFO]: [spark] The spark profiler will not be enabled because it is currently disabled in the configuration.
+[21:54:10] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[21:54:10] [Server thread/INFO]: Done preparing level "world" (0.868s)
+[21:54:10] [Server thread/INFO]: Done (15.628s)! For help, type "help"
+[21:54:10] [Region Scheduler Thread #0/INFO]: 0 placeholder hook(s) registered!
+[21:54:10] [Region Scheduler Thread #1/INFO]: Initialising world 'world' before it can be ticked...
+[21:54:10] [Region Scheduler Thread #1/INFO]: Initialised world 'world'
+[21:54:10] [Region Scheduler Thread #1/INFO]: Initialising world 'world_nether' before it can be ticked...
+[21:54:10] [Region Scheduler Thread #1/INFO]: Initialised world 'world_nether'
+[21:54:10] [Region Scheduler Thread #0/INFO]: Initialising world 'world_the_end' before it can be ticked...
+[21:54:10] [Region Scheduler Thread #0/INFO]: Initialised world 'world_the_end'
+[21:54:11] [Region Scheduler Thread #1/INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
+[21:54:11] [Region Scheduler Thread #1/INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[21:54:11] [Region Scheduler Thread #1/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[21:54:11] [Region Scheduler Thread #1/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[21:54:11] [Region Scheduler Thread #1/INFO]: [BLWorldTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 360 秒。
+[21:54:11] [Region Scheduler Thread #1/INFO]: [BLWorldTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+[21:54:11] [Region Scheduler Thread #1/INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。
+[21:54:19] [User Authenticator #0/INFO]: UUID of player RGBolia1218 is eea599c9-a6e7-3374-be36-45fda92be0e8
+[21:54:20] [Region Scheduler Thread #1/INFO]: RGBolia1218 joined the game
+[21:54:20] [Region Scheduler Thread #1/INFO]: RGBolia1218[/127.0.0.1:49735] logged in with entity id 15 at ([world]0.5, 90.0, -7.5)
+[21:54:22] [Region Scheduler Thread #0/INFO]: Nothing changed. The player already is an operator
+[21:54:22] [Region Scheduler Thread #0/INFO]: Gamerule sendCommandFeedback is now set to: false
+[21:54:22] [Region Scheduler Thread #0/INFO]: Gamerule commandBlockOutput is now set to: false
+[21:54:22] [Region Scheduler Thread #0/INFO]: Gamerule doMobSpawning is now set to: false
+[21:54:22] [Region Scheduler Thread #0/INFO]: Gamerule keepInventory is now set to: true
+[21:54:22] [Region Scheduler Thread #0/INFO]: Gamerule fallDamage is now set to: false
+[21:54:22] [Region Scheduler Thread #0/INFO]: Set the time to 1000
+[21:54:22] [Region Scheduler Thread #1/INFO]: Set the weather to clear
+[21:54:23] [Region Scheduler Thread #0/INFO]: Successfully filled 49 block(s)
+[21:54:23] [Region Scheduler Thread #0/INFO]: Set RGBolia1218's game mode to Survival Mode
+[21:54:23] [Region Scheduler Thread #0/INFO]: Teleported RGBolia1218 to 0.500000, 91.000000, -7.500000
+[21:54:24] [Region Scheduler Thread #1/INFO]: Made RGBolia1218 no longer a server operator
+[21:54:24] [Region Scheduler Thread #0/INFO]: Removed 1 item(s) from player RGBolia1218
+[21:54:25] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_CLEAR player=RGBolia1218 removed=0
+[21:54:25] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[21:54:25] [Region Scheduler Thread #0/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=7, routed=true
+[21:54:25] [Region Scheduler Thread #1/INFO]: Removed 1 item(s) from player RGBolia1218
+[21:54:26] [Region Scheduler Thread #1/INFO]: AI_PERMFIXTURE_DENY player=RGBolia1218 permissions=2
+[21:54:46] [Region Scheduler Thread #0/INFO]: BLWorldTrashCan debug summary:
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 平台: folia-1.20 (universal)
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 世界: world
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶数量: 1
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 跳过未加载区块: 0
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)
+[21:54:46] [Region Scheduler Thread #0/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)
+[21:54:47] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_CLEAR player=RGBolia1218 removed=1
+[21:54:47] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_DENY player=RGBolia1218 permissions=2
+[21:54:48] [Region Scheduler Thread #0/INFO]: BLWorldTrashCan debug summary:
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 平台: folia-1.20 (universal)
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 世界: world
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶数量: 1
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 跳过未加载区块: 0
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)
+[21:54:48] [Region Scheduler Thread #0/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)
+[21:54:48] [Region Scheduler Thread #0/INFO]: Removed 1 item(s) from player RGBolia1218
+[21:54:49] [Region Scheduler Thread #0/INFO]: Gave 5 [Stone] to RGBolia1218
+[21:55:02] [Region Scheduler Thread #0/INFO]: BLWorldTrashCan debug summary:
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 平台: folia-1.20 (universal)
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 世界: world
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶数量: 1
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 跳过未加载区块: 0
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)
+[21:55:02] [Region Scheduler Thread #0/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)
+[21:55:02] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_CLEAR player=RGBolia1218 removed=1
+[21:55:03] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[21:55:03] [Region Scheduler Thread #1/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=DIRT, amount=3, routed=true
+[21:55:03] [Region Scheduler Thread #0/INFO]: Removed 1 item(s) from player RGBolia1218
+[21:55:03] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_DENY player=RGBolia1218 permissions=2
+[21:55:24] [Region Scheduler Thread #0/INFO]: BLWorldTrashCan debug summary:
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 平台: folia-1.20 (universal)
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 世界: world
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶数量: 1
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 跳过未加载区块: 0
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)
+[21:55:24] [Region Scheduler Thread #0/INFO]: - 个人垃圾桶物品: 3 (堆叠 1)
+[21:55:25] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_CLEAR player=RGBolia1218 removed=1
+[21:55:25] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_DENY player=RGBolia1218 permissions=2
+[21:55:25] [Region Scheduler Thread #0/INFO]: BLWorldTrashCan debug summary:
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 平台: folia-1.20 (universal)
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 世界: world
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶数量: 1
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 跳过未加载区块: 0
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)
+[21:55:25] [Region Scheduler Thread #0/INFO]: - 个人垃圾桶物品: 3 (堆叠 1)
+[21:55:26] [Region Scheduler Thread #0/INFO]: Removed 1 item(s) from player RGBolia1218
+[21:55:26] [Region Scheduler Thread #0/INFO]: Gave 4 [Stone] to RGBolia1218
+[21:55:39] [Region Scheduler Thread #0/INFO]: BLWorldTrashCan debug summary:
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 平台: folia-1.20 (universal)
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 世界: world
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶数量: 1
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 跳过未加载区块: 0
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)
+[21:55:39] [Region Scheduler Thread #0/INFO]: - 个人垃圾桶物品: 3 (堆叠 1)
+[21:55:40] [Region Scheduler Thread #0/INFO]: AI_PERMFIXTURE_CLEAR player=RGBolia1218 removed=1
+[21:55:40] [Region Scheduler Thread #0/INFO]: Made RGBolia1218 a server operator
+[21:56:06] [Region Scheduler Thread #1/INFO]: RGBolia1218 lost connection: Disconnected
+[21:56:06] [Region Scheduler Thread #1/INFO]: RGBolia1218 left the game
+[21:56:06] [Region Scheduler Thread #0/INFO]: Stopping the server
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Awaiting scheduler termination for 60s...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Scheduler halted
+[21:56:06] [Region shutdown thread/INFO]: Stopping server
+[21:56:06] [Region shutdown thread/INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[21:56:06] [Region shutdown thread/INFO]: [PermissionDenyFixture] Disabling PermissionDenyFixture v1.0.0
+[21:56:06] [Region shutdown thread/INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.7-DEV-null
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Halting chunk systems...
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Halted chunk systems
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Finishing pending teleports...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Finished pending teleports
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving all worlds
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving world data for world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Closing player inventories...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Closed player inventories
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving chunks...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, -1] in world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Saved 625 block chunks, 625 entity chunks, 0 poi chunks in world 'world' in 0.39s
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved chunks
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving level data...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved level data
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved world data for world 'world'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving world data for world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Closing player inventories...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Closed player inventories
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving chunks...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_nether' in 0.05s
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved chunks
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving level data...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved level data
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved world data for world 'world_nether'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving world data for world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Closing player inventories...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Closed player inventories
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving chunks...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_the_end' in 0.02s
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved chunks
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving level data...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved level data
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved world data for world 'world_the_end'
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved all worlds
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saving all player data...
+[21:56:06] [Region shutdown thread/INFO]: [RegionShutdownThread] Saved all player data
+[21:56:06] [Region shutdown thread/INFO]: Waiting for all RegionFile I/O tasks to complete...
+[21:56:06] [Region shutdown thread/INFO]: All RegionFile I/O tasks to complete
+[21:56:06] [Region shutdown thread/INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+[21:56:06] [Region shutdown thread/INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...

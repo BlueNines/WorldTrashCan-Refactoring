@@ -1,0 +1,172 @@
+{
+  "id": "universal_managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+  "status": "PASS",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 523626,
+    "sha256": "18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "global-take-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-take-denied-open-f2.png",
+        "size": 39218,
+        "sha256": "e22a3c172384e1d8800a405ac7bd6674938580beb4c9519dabd304ff67e3b876",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 83.09733072916667
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-take-denied-after-click-f2.png",
+        "size": 40614,
+        "sha256": "828c16f513960678139faecc2574360359a4501c86e5d8eba833b37183e018eb",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 82.61393229166667
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "不能从公共垃圾桶取出物品"
+        ],
+        "excerpt": "[22:01:36] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 权限不足 | 你不能从公共垃圾桶取出物品。\n[22:01:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.01.39.png\n[22:01:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.01.39_2.png\n"
+      },
+      "summaryAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "summaryExcerpt": "[22:01:42 INFO]: BLWorldTrashCan debug summary:\n[22:01:42 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:01:42 INFO]: - ����: rgb_visual_universal_managed_paper1122_gui_operation_permission_visual_20260702_231000\n[22:01:42 INFO]: - ��������Ͱ����: 0\n[22:01:42 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:01:42 INFO]: - ����δ��������: 0\n[22:01:42 INFO]: - ��������Ͱ��Ʒ: 7 (�ѵ� 1)\n[22:01:42 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n",
+      "globalLogDelta": ""
+    },
+    {
+      "name": "global-put-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-put-denied-open-f2.png",
+        "size": 42203,
+        "sha256": "dbbcd4fcaee22a4253699b4b834ba218eb53aceab6a38bccd8bf95bff558268f",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 87.93001302083333
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-put-denied-after-click-f2.png",
+        "size": 41450,
+        "sha256": "cf93c83932aef0d56f3c2dbc350e30a5518d9d59a68154719a1d835fd1fbb5af",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 83.2119140625
+      },
+      "beforeAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "afterAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "summaryExcerpt": "[22:01:55 INFO]: BLWorldTrashCan debug summary:\n[22:01:55 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:01:55 INFO]: - ����: rgb_visual_universal_managed_paper1122_gui_operation_permission_visual_20260702_231000\n[22:01:55 INFO]: - ��������Ͱ����: 0\n[22:01:55 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:01:55 INFO]: - ����δ��������: 0\n[22:01:55 INFO]: - ��������Ͱ��Ʒ: 7 (�ѵ� 1)\n[22:01:55 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n",
+      "globalLogDelta": ""
+    },
+    {
+      "name": "personal-take-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-take-denied-open-f2.png",
+        "size": 37914,
+        "sha256": "09b227042411d158118b573e5e3f36cb2112c6be7649018b9c53ae503d4ac16e",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 82.56119791666667
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-take-denied-after-click-f2.png",
+        "size": 41790,
+        "sha256": "5393393bc40942aa4976c2f01846711d30d3c831307bda97a880e8a3155a0dc1",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 82.20572916666667
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "不能从个人垃圾桶取出物品"
+        ],
+        "excerpt": "[22:02:01] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 权限不足 | 你不能从个人垃圾桶取出物品。\n[22:02:01] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 权限不足 | 你不能从个人垃圾桶取出物品。\n[22:02:01] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 权限不足 | 你不能从个人垃圾桶取出物品。\n[22:02:04] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.02.04.png\n[22:02:05] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.02.05.png\n"
+      },
+      "summaryAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "summaryExcerpt": "[22:02:07 INFO]: BLWorldTrashCan debug summary:\n[22:02:07 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:02:07 INFO]: - ����: rgb_visual_universal_managed_paper1122_gui_operation_permission_visual_20260702_231000\n[22:02:07 INFO]: - ��������Ͱ����: 0\n[22:02:07 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:02:07 INFO]: - ����δ��������: 0\n[22:02:07 INFO]: - ��������Ͱ��Ʒ: 7 (�ѵ� 1)\n[22:02:07 INFO]: - ��������Ͱ��Ʒ: 3 (�ѵ� 1)\n"
+    },
+    {
+      "name": "personal-put-denied",
+      "status": "PASS",
+      "openScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-put-denied-open-f2.png",
+        "size": 39958,
+        "sha256": "cdb142b441280fbb01f859232d6e9124f4bc75e9850acb3087ff9b6312bdbcc6",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 82.646484375
+      },
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-put-denied-after-click-f2.png",
+        "size": 40254,
+        "sha256": "26bf51d79b9adf8e78c7f04aa2f41bc0f4c5aedc758f4a693be7c4c7183e0945",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 82.26627604166667
+      },
+      "beforeAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "afterAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "summaryExcerpt": "[22:02:20 INFO]: BLWorldTrashCan debug summary:\n[22:02:20 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:02:20 INFO]: - ����: rgb_visual_universal_managed_paper1122_gui_operation_permission_visual_20260702_231000\n[22:02:20 INFO]: - ��������Ͱ����: 0\n[22:02:20 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:02:20 INFO]: - ����δ��������: 0\n[22:02:20 INFO]: - ��������Ͱ��Ʒ: 7 (�ѵ� 1)\n[22:02:20 INFO]: - ��������Ͱ��Ʒ: 3 (�ѵ� 1)\n"
+    }
+  ],
+  "username": "RGBaper1122",
+  "clientPid": 9568,
+  "failedChecks": [],
+  "blankScreenshots": [],
+  "commandsScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-231000\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-commands.png",
+    "size": 215190,
+    "sha256": "51d29e283e4657bca7b22eec3a0266f5a69eebca7526e74ca69a829e833185a1",
+    "dimensions": [
+      1600,
+      1144
+    ],
+    "brightness": 34.878580729166664
+  }
+}

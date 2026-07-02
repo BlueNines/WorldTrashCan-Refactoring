@@ -1,0 +1,42 @@
+[22:01:17] blwtc reload
+[22:01:25] op RGBaper1122
+[22:01:25] minecraft:gamerule sendCommandFeedback false
+[22:01:26] minecraft:gamerule commandBlockOutput false
+[22:01:26] minecraft:gamerule doMobSpawning false
+[22:01:27] minecraft:gamerule keepInventory true
+[22:01:27] minecraft:gamerule fallDamage false
+[22:01:27] minecraft:time set day
+[22:01:28] minecraft:weather clear
+[22:01:28] minecraft:gamemode 1 RGBaper1122
+[22:01:29] minecraft:fill -3 90 -11 3 90 -5 stone
+[22:01:29] minecraft:tp RGBaper1122 0 91 -8 0 15
+[22:01:29] deop RGBaper1122
+[22:01:30] minecraft:clear RGBaper1122
+[22:01:30] permfixture clear RGBaper1122
+[22:01:31] blwtc debugroute RGBaper1122 global COBBLESTONE 7
+[22:01:31] minecraft:clear RGBaper1122
+[22:01:31] permfixture deny RGBaper1122 blworldtrashcan.global.take WorldListTrashCan.GlobalTrashTakeItem
+[22:01:32] blwtc debugopen RGBaper1122 global
+[22:01:42] blwtc debugsummary RGBaper1122
+[22:01:43] permfixture clear RGBaper1122
+[22:01:43] permfixture deny RGBaper1122 blworldtrashcan.global.put WorldListTrashCan.GlobalTrashPutItem
+[22:01:43] blwtc debugsummary RGBaper1122
+[22:01:44] minecraft:clear RGBaper1122
+[22:01:44] minecraft:give RGBaper1122 stone 5
+[22:01:45] blwtc debugopen RGBaper1122 global
+[22:01:55] blwtc debugsummary RGBaper1122
+[22:01:56] permfixture clear RGBaper1122
+[22:01:56] blwtc debugroute RGBaper1122 personal DIRT 3
+[22:01:57] minecraft:clear RGBaper1122
+[22:01:57] permfixture deny RGBaper1122 blworldtrashcan.personal.take WorldListTrashCan.PersonalTrashTakeItem
+[22:01:57] blwtc debugopen RGBaper1122 personal
+[22:02:07] blwtc debugsummary RGBaper1122
+[22:02:08] permfixture clear RGBaper1122
+[22:02:08] permfixture deny RGBaper1122 blworldtrashcan.personal.put WorldListTrashCan.PersonalTrashPutItem
+[22:02:08] blwtc debugsummary RGBaper1122
+[22:02:09] minecraft:clear RGBaper1122
+[22:02:10] minecraft:give RGBaper1122 stone 4
+[22:02:10] blwtc debugopen RGBaper1122 personal
+[22:02:20] blwtc debugsummary RGBaper1122
+[22:02:21] permfixture clear RGBaper1122
+[22:02:21] op RGBaper1122

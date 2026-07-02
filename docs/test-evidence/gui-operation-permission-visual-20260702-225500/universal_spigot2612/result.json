@@ -1,0 +1,136 @@
+{
+  "id": "universal_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "status": "PASS",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 523626,
+    "sha256": "18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "global-take-denied",
+      "status": "PASS",
+      "openScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-global-take-denied-open-f2.png",
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-global-take-denied-after-click-f2.png",
+        "size": 64468,
+        "sha256": "46965dc5bb55793b2b0821a2908486e3ff618909c78eaac5ba124dc973874c64",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 86.0927734375
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "没有权限从公共垃圾桶取出物品"
+        ],
+        "excerpt": "[21:52:34] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从公共垃圾桶取出物品。\n[21:52:34] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从公共垃圾桶取出物品。\n[21:52:35] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从公共垃圾桶取出物品。\n[21:52:37] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.52.37.png\n[21:52:38] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.52.38.png\n"
+      },
+      "summaryAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "summaryExcerpt": "[21:52:40] [Server thread/INFO]: BLWorldTrashCan debug summary:\n[21:52:40] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[21:52:40] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500\n[21:52:40] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[21:52:40] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[21:52:40] [Server thread/INFO]: - 跳过未加载区块: 0\n[21:52:40] [Server thread/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n[21:52:40] [Server thread/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n",
+      "globalLogDelta": ""
+    },
+    {
+      "name": "global-put-denied",
+      "status": "PASS",
+      "openScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-global-put-denied-open-f2.png",
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-global-put-denied-after-click-f2.png",
+        "size": 59645,
+        "sha256": "04e3667f0a92bf174f604b5c8b1d7166e2e8d2b473535f894b25f34633aaae05",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 87.22200520833333
+      },
+      "beforeAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "afterAmounts": {
+        "global": 7,
+        "personal": 0
+      },
+      "summaryExcerpt": "[21:52:56] [Server thread/INFO]: BLWorldTrashCan debug summary:\n[21:52:56] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[21:52:56] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500\n[21:52:56] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[21:52:56] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[21:52:56] [Server thread/INFO]: - 跳过未加载区块: 0\n[21:52:56] [Server thread/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n[21:52:56] [Server thread/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n",
+      "globalLogDelta": ""
+    },
+    {
+      "name": "personal-take-denied",
+      "status": "PASS",
+      "openScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-take-denied-open-f2.png",
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-take-denied-after-click-f2.png",
+        "size": 61246,
+        "sha256": "5ccacc03dfd7f8a01fce4815bfb6c6b849904c09268a4b6c0ffb6a57bdfe35d7",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 87.81868489583333
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "没有权限从个人垃圾桶取出物品"
+        ],
+        "excerpt": "[21:53:04] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从个人垃圾桶取出物品。\n[21:53:05] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从个人垃圾桶取出物品。\n[21:53:05] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限从个人垃圾桶取出物品。\n[21:53:07] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.53.07.png\n[21:53:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.53.08.png\n"
+      },
+      "summaryAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "summaryExcerpt": "[21:53:10] [Server thread/INFO]: BLWorldTrashCan debug summary:\n[21:53:10] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[21:53:10] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500\n[21:53:10] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[21:53:10] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[21:53:10] [Server thread/INFO]: - 跳过未加载区块: 0\n[21:53:10] [Server thread/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n[21:53:10] [Server thread/INFO]: - 个人垃圾桶物品: 3 (堆叠 1)\n"
+    },
+    {
+      "name": "personal-put-denied",
+      "status": "PASS",
+      "openScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-put-denied-open-f2.png",
+      "clickScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-put-denied-after-click-f2.png",
+        "size": 59985,
+        "sha256": "8d65ed857dc5d3f3f0a0e6ddb69d677c60cd0fa6f0a0fc207a3efb6cb4edb20f",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 88.11067708333333
+      },
+      "beforeAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "afterAmounts": {
+        "global": 7,
+        "personal": 3
+      },
+      "summaryExcerpt": "[21:53:26] [Server thread/INFO]: BLWorldTrashCan debug summary:\n[21:53:26] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[21:53:26] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500\n[21:53:26] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[21:53:26] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[21:53:26] [Server thread/INFO]: - 跳过未加载区块: 0\n[21:53:26] [Server thread/INFO]: - 公共垃圾桶物品: 7 (堆叠 1)\n[21:53:26] [Server thread/INFO]: - 个人垃圾桶物品: 3 (堆叠 1)\n"
+    }
+  ],
+  "username": "RGBigot2612",
+  "clientPid": 8704,
+  "failedChecks": [],
+  "blankScreenshots": [],
+  "commandsScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\gui-operation-permission-visual-20260702-225500\\universal_spigot2612\\server-screenshots\\universal_spigot2612-commands.png",
+    "size": 204338,
+    "sha256": "0a24a4799226cd7939ed04a93938cbc1998e318c80e827825518f9c873bd426d",
+    "dimensions": [
+      1600,
+      1040
+    ],
+    "brightness": 34.789713541666664
+  }
+}

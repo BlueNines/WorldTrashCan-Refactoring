@@ -18,7 +18,7 @@
 | 80 项完整矩阵基线 | `universal-function-matrix-1122-2612-20260608-213500/` | 2026-06-08 完整功能矩阵基线 |
 | Folia 清理通知视觉 | `cleanup-notify-visual-20260630-092840/` | Chat、ActionBar、BossBar、Title、Sound、Command 通知专项 |
 | GUI 真实点击 | `trash-gui-click-visual-20260701-155408/` | 公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
-| GUI 取放权限 | `gui-operation-permission-visual-20260702-213946/` | 玩家已能打开 GUI 时，显式 deny 公共/个人 take/put 后真实点击不产生取放 |
+| GUI 取放权限 | `gui-operation-permission-visual-20260702-231000/` | Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 三端，玩家已能打开 GUI 时显式 deny 公共/个人 take/put 后真实点击不产生取放 |
 | 旧配置迁移 | `legacy-migration-universal-20260701-165606/` | 旧目录和当前目录旧结构迁移 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
 | 船内实体保护 | `boat-entity-protection-20260701-171046/` | 船内实体保留、普通实体清理 |
@@ -42,6 +42,7 @@
 | Folia PAPI | `folia-papi-20260702-202706/` | PAPI 已返回 `358/350`，但脚本解析函数未识别 Folia console 的 `[time INFO]: 数字` 格式 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212027/` | 首版夹具把 Spigot 26.1.2 同 tick 实体 UUID 可见性和箭实体稳定性当成前提；业务日志已显示关闭总开关跳过实体，最终由 `entity-cleanup-toggle-20260702-212255/` 收敛 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-213616/` | 插件实际已提示取出无权限，但脚本未匹配“没有权限从公共/个人垃圾桶取出物品”，并把时间戳解析成库存数量 |
+| GUI 取放权限 | `gui-operation-permission-visual-20260702-225500/` | 三端扩展首轮失败：1.12.2 玩家死亡导致截图停留死亡界面，Folia 客户端聊天输入未进入服务端；最终改用安全创造初始化和 `debugopen` 打开 GUI |
 | 清理通知点击 | `cleanup-notify-click-20260701-181352/` | 通知可见但点击未触发 `/blwtc stats` |
 | 清理通知点击 | `cleanup-notify-click-20260701-181801/` | 只给顶层 Bungee 组件补点击事件后仍失败 |
 | 清理通知点击 | `cleanup-notify-click-20260701-182556/` | 硬编码点击点位偏离实际文本 |
