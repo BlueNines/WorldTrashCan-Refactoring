@@ -13,6 +13,7 @@ PYTHON_AUDITS = [
     ("resource-yaml-comments", [sys.executable, "tools/rgb-visual-matrix/check_resource_yaml_comments.py"]),
     ("test-evidence-index", [sys.executable, "tools/rgb-visual-matrix/check_test_evidence_index.py"]),
     ("function-matrix-doc", [sys.executable, "tools/rgb-visual-matrix/check_function_matrix_doc.py"]),
+    ("command-help-separation", [sys.executable, "tools/rgb-visual-matrix/check_command_help_separation.py"]),
     ("chunk-load-guards", [sys.executable, "tools/rgb-visual-matrix/check_chunk_load_guards.py"]),
 ]
 GIT_AUDITS = [

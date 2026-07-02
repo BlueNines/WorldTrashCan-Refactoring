@@ -72,6 +72,14 @@ py -3 tools\rgb-visual-matrix\check_function_matrix_doc.py
 
 当前矩阵为 F-001 到 F-088 共 88 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
 
+常规帮助和 debug 帮助分离也有独立审计脚本，检查 Java fallback、源码语言文件和 dist jar 内语言文件：`/blwtc help` 只允许保留 `/blwtc debughelp` 入口，具体 `debug*` 命令必须只出现在 `/blwtc debughelp` 面板：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_command_help_separation.py
+```
+
+当前审计覆盖 5 个命令类、16 个源码语言文件、5 个 dist jar 内 20 个语言文件，结果为 `errors: 0`。
+
 涉及世界垃圾桶或实体限制扫描时，还需要运行区块强加载防护审计，确认正式源码没有新增 `loadChunk`、实体限制 `getChunkAt` 前仍有 `isChunkLoaded` 保护、世界垃圾桶默认仍不会访问未加载区块：
 
 ```powershell
@@ -87,7 +95,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 9 项审计和完整 10 项审计均为 `failed: 0`。
+当前默认 10 项审计和完整 11 项审计均为 `failed: 0`。
 
 ## 配置文件
 
