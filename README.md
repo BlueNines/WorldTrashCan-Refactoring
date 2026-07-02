@@ -54,7 +54,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `68d55cdf277bb3ef30129ef75386370a0dfa0063590ce6c8f6db54b522ebdab1`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `47a9850582ece315a2f6d70ef5370be7a940b48c6d3c22aed35103ca3eecdd94`。
 
 更新当前 dist 后还需要运行以下脚本，确认 README、长期硬化清单和执行记录没有继续写着旧交付包 SHA：
 
@@ -72,7 +72,7 @@ py -3 tools\rgb-visual-matrix\check_function_matrix_doc.py
 
 当前矩阵为 F-001 到 F-088 共 88 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
 
-常规帮助和 debug 帮助分离也有独立审计脚本，检查 Java fallback、源码语言文件和 dist jar 内语言文件：`/blwtc help` 只允许保留 `/blwtc debughelp` 入口，具体 `debug*` 命令必须只出现在 `/blwtc debughelp` 面板：
+常规帮助、普通补全和 debug 帮助分离也有独立审计脚本，检查 Java fallback、一参 tab 补全、源码语言文件和 dist jar 内语言文件：`/blwtc help` 只允许保留 `/blwtc debughelp` 入口，空前缀 tab 补全只显示正式命令与 `debughelp`，具体 `debug*` 命令必须只出现在 `/blwtc debughelp` 面板或输入 `debug` 前缀后的补全中：
 
 ```powershell
 py -3 tools\rgb-visual-matrix\check_command_help_separation.py

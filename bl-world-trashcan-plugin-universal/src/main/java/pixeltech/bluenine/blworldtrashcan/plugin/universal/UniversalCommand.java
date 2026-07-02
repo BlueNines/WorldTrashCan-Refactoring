@@ -22,6 +22,8 @@ import java.util.Locale;
 
 /** universal 总包主命令，兼容现有轻量包命令行为。 */
 public final class UniversalCommand implements CommandExecutor, TabCompleter {
+    private static final List<String> REGULAR_SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
+            "dropmode", "look", "ban", "globalban");
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanUniversalPlugin plugin;
@@ -139,7 +141,8 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return filter(SUB_COMMANDS, args[0]);
+            String prefix = args[0].toLowerCase(Locale.ROOT);
+            return filter(prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS, args[0]);
         }
         if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
             return filter(ClearCommandOptions.booleanValues(), args[1]);

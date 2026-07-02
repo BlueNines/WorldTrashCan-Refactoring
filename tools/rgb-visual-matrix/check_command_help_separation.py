@@ -23,6 +23,7 @@ DEBUG_COMMANDS = {
 }
 HELP_ALLOWED_DEBUG_COMMANDS = {"debughelp"}
 COMMAND_PATTERN = re.compile(r"/blwtc\s+(debug[a-z]+)", re.IGNORECASE)
+QUOTED_DEBUG_COMMAND_PATTERN = re.compile(r'"(debug[a-z]+)"', re.IGNORECASE)
 
 
 def read_text(path: Path) -> str:
@@ -77,6 +78,17 @@ def debug_commands_in_text(text: str) -> set[str]:
     return {match.group(1).lower() for match in COMMAND_PATTERN.finditer(text)}
 
 
+def quoted_debug_commands_in_text(text: str) -> set[str]:
+    """提取 Java 字符串列表里的 debug* 命令名。"""
+    return {match.group(1).lower() for match in QUOTED_DEBUG_COMMAND_PATTERN.finditer(text)}
+
+
+def extract_static_list(text: str, name: str) -> str:
+    """提取 Java Arrays.asList 静态列表内容。"""
+    match = re.search(r"\b" + re.escape(name) + r"\s*=\s*Arrays\.asList\((.*?)\);", text, re.DOTALL)
+    return match.group(1) if match else ""
+
+
 def yaml_list_after_key(text: str, key: str) -> list[str]:
     """提取两空格缩进键下的 YAML 列表行。"""
     lines = text.splitlines()
@@ -128,6 +140,16 @@ def check_java_sources() -> tuple[list[str], int]:
             errors.append(label + ": 缺少 sendDebugHelp 方法")
             continue
         errors.extend(check_help_lists(label, help_body, debug_help_body))
+        regular_list = extract_static_list(text, "REGULAR_SUB_COMMANDS")
+        if not regular_list:
+            errors.append(label + ": 缺少 REGULAR_SUB_COMMANDS 普通补全列表")
+            continue
+        illegal_regular_debugs = sorted(quoted_debug_commands_in_text(regular_list) - HELP_ALLOWED_DEBUG_COMMANDS)
+        if illegal_regular_debugs:
+            errors.append(label + ": REGULAR_SUB_COMMANDS 混入具体调试命令: " + ", ".join(illegal_regular_debugs))
+        tab_body = extract_method_body(text, "onTabComplete")
+        if 'prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS' not in tab_body:
+            errors.append(label + ": 一参 tab 补全未按 debug 前缀拆分")
     return errors, len(files)
 
 

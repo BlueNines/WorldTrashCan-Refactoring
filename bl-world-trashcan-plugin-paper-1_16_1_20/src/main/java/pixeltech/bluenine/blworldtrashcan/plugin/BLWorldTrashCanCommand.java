@@ -22,6 +22,8 @@ import java.util.Locale;
 
 /** 新架构主命令，当前只提供架构验证命令。 */
 public final class BLWorldTrashCanCommand implements CommandExecutor, TabCompleter {
+    private static final List<String> REGULAR_SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
+            "dropmode", "look", "ban", "globalban");
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify", "debugplayer", "debugrgb", "debugrgbchannels");
     private final BLWorldTrashCanPlugin plugin;
@@ -179,7 +181,8 @@ public final class BLWorldTrashCanCommand implements CommandExecutor, TabComplet
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return filter(SUB_COMMANDS, args[0]);
+            String prefix = args[0].toLowerCase(Locale.ROOT);
+            return filter(prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS, args[0]);
         }
         if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
             return filter(ClearCommandOptions.booleanValues(), args[1]);
