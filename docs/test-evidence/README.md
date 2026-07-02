@@ -19,6 +19,7 @@
 | Folia 清理通知视觉 | `cleanup-notify-visual-20260630-092840/` | Chat、ActionBar、BossBar、Title、Sound、Command 通知专项 |
 | GUI 真实点击 | `trash-gui-click-visual-20260701-155408/` | 公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
 | 旧配置迁移 | `legacy-migration-universal-20260701-165606/` | 旧目录和当前目录旧结构迁移 |
+| 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
 | 船内实体保护 | `boat-entity-protection-20260701-171046/` | 船内实体保留、普通实体清理 |
 | 世界垃圾桶边界 | `world-trash-boundary-20260701-172919/` | 创建上限、破坏移除、禁用世界、黑名单降级、未加载区块降级 |
 | 保护边界 | `protection-boundary-20260701-174709/` | 不可拾取箭矢、防踩踏农田 |
@@ -38,6 +39,7 @@
 | Vault 扣费 | `vault-payment-visual-20260702-200044/` | 业务 PASS 但截图被暂停菜单遮挡，不作为最终视觉证据 |
 | Folia PAPI | `folia-papi-20260702-202526/` | PlaceholderAPI 和 Wtc 注册成功，但脚本用结束 marker 过早截断 PAPI 输出 |
 | Folia PAPI | `folia-papi-20260702-202706/` | PAPI 已返回 `358/350`，但脚本解析函数未识别 Folia console 的 `[time INFO]: 数字` 格式 |
+| 实体清理总开关 | `entity-cleanup-toggle-20260702-212027/` | 首版夹具把 Spigot 26.1.2 同 tick 实体 UUID 可见性和箭实体稳定性当成前提；业务日志已显示关闭总开关跳过实体，最终由 `entity-cleanup-toggle-20260702-212255/` 收敛 |
 | 清理通知点击 | `cleanup-notify-click-20260701-181352/` | 通知可见但点击未触发 `/blwtc stats` |
 | 清理通知点击 | `cleanup-notify-click-20260701-181801/` | 只给顶层 Bungee 组件补点击事件后仍失败 |
 | 清理通知点击 | `cleanup-notify-click-20260701-182556/` | 硬编码点击点位偏离实际文本 |
