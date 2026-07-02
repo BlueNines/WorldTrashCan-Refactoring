@@ -55,6 +55,22 @@ BSTATS_CLASSES = {
     "pixeltech/bluenine/blworldtrashcan/bukkit/bstats/Metrics.class",
     "pixeltech/bluenine/blworldtrashcan/bukkit/bstats/BStatsMetricsService.class",
 }
+BSTATS_ENTRY_SOURCES = {
+    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BLWorldTrashCanLegacyPlugin.java",
+    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BLWorldTrashCanBukkitPlugin.java",
+    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BLWorldTrashCanPlugin.java",
+    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BLWorldTrashCanFoliaPlugin.java",
+    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BLWorldTrashCanUniversalPlugin.java",
+}
+PLUGIN_CONFIG_RESOURCE_NAMES = {
+    "config.yml",
+    "cleanup.yml",
+    "trash.yml",
+    "entity-limits.yml",
+    "protections.yml",
+    "platform.yml",
+    "data/worlds.yml",
+}
 EXPECTED_ARTIFACTS = [
     {
         "name": "legacy-1.12",
@@ -185,6 +201,33 @@ def check_bstats_service_id(errors: list[str]) -> None:
         errors.append(source.relative_to(REPO).as_posix() + ": bStats SERVICE_ID 不是 24350")
 
 
+def check_bstats_entrypoints(errors: list[str]) -> None:
+    """检查五个插件入口是否都会启动 bStats。"""
+    for label, relative_path in sorted(BSTATS_ENTRY_SOURCES.items()):
+        path = REPO / relative_path
+        if not path.is_file():
+            errors.append(relative_path + ": bStats 入口源码不存在")
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if "BStatsMetricsService.start" not in text:
+            errors.append(relative_path + ": " + label + " 未调用 BStatsMetricsService.start")
+
+
+def check_no_plugin_bstats_toggle(errors: list[str]) -> None:
+    """检查插件默认配置中没有添加 bStats 关闭开关。"""
+    for plugin_dir in sorted(REPO.glob("bl-world-trashcan-plugin-*")):
+        resource_dir = plugin_dir / "src" / "main" / "resources"
+        if not resource_dir.is_dir():
+            continue
+        for resource_name in sorted(PLUGIN_CONFIG_RESOURCE_NAMES):
+            path = resource_dir / resource_name
+            if not path.is_file():
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace").lower()
+            if "bstats" in text:
+                errors.append(path.relative_to(REPO).as_posix() + ": 默认配置不应包含 bStats 关闭开关")
+
+
 def check_plugin_yml(label: str, plugin_text: str, expected: dict, version: str, errors: list[str]) -> dict[str, str]:
     """检查 plugin.yml 的关键交付字段。"""
     values = parse_plugin_yml(plugin_text)
@@ -278,6 +321,8 @@ def run_checks() -> dict:
     version = project_version()
     errors = []
     check_bstats_service_id(errors)
+    check_bstats_entrypoints(errors)
+    check_no_plugin_bstats_toggle(errors)
     artifacts = []
     for expected in EXPECTED_ARTIFACTS:
         result = check_archive(expected, version)
