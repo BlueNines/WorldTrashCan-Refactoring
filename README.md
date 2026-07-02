@@ -64,6 +64,14 @@ py -3 tools\rgb-visual-matrix\check_current_dist_hash_docs.py
 
 当前审计覆盖 5 个 dist jar，结果为 `errors: 0`。
 
+涉及世界垃圾桶或实体限制扫描时，还需要运行区块强加载防护审计，确认正式源码没有新增 `loadChunk`、实体限制 `getChunkAt` 前仍有 `isChunkLoaded` 保护、世界垃圾桶默认仍不会访问未加载区块：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_chunk_load_guards.py
+```
+
+当前审计覆盖 96 个正式 Java 源码文件，结果为 `errors: 0`。
+
 ## 配置文件
 
 默认资源均带中文注释：
