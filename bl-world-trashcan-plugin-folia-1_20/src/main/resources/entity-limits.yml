@@ -7,9 +7,13 @@ world-limits:
     - "testWorld"
   # 默认限制列表。
   defaults:
+    # 实体类型，使用 Bukkit EntityType 名称或插件标准化后的实体名。
     - entity: "VILLAGER"
+      # 单个世界中该实体允许存在的最大数量，超过后新生成会被拦截或进入低占用清理。
       max-count: 10
+    # 第二条示例规则，服主可按相同格式继续追加。
     - entity: "CHICKEN"
+      # CHICKEN 在单个世界中的默认最大数量。
       max-count: 20
 
 # 低占用实体扫描器。
@@ -58,7 +62,11 @@ gather-limits:
     - "testWorld"
   # 默认密集限制列表。
   defaults:
+    # 实体类型，使用 Bukkit EntityType 名称或插件标准化后的实体名。
     - entity: "VILLAGER"
+      # 同一半径内允许存在的最大数量，超过后触发密集实体清理。
       max-count: 10
+      # 检测半径，单位为方块；数值越大，每次密集判断需要比较的范围越大。
       radius: 8
+      # 条件触发后本轮最多清理多少只，不是只清理超出上限的差值。
       remove-count: 5

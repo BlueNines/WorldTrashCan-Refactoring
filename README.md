@@ -55,6 +55,14 @@
 - `messages/message_es.yml`：西班牙语消息。
 - `data/worlds.yml`：世界垃圾桶运行数据。
 
+提交前可运行以下脚本检查四个平台默认配置资源和现有 `dist` 交付 jar 内资源是否保留中文注释：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_resource_yaml_comments.py
+```
+
+当前审计覆盖 28 个源码默认配置资源、5 个 dist jar、35 个包内配置资源和 1143 个 YAML 键，结果为 `errors: 0`。
+
 ## 扫地启动门禁
 
 `cleanup.yml` 新增 `guards` 配置，用来决定本轮扫地是否启动：
