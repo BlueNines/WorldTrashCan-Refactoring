@@ -56,6 +56,14 @@ py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 
 当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `68d55cdf277bb3ef30129ef75386370a0dfa0063590ce6c8f6db54b522ebdab1`。
 
+更新当前 dist 后还需要运行以下脚本，确认 README、长期硬化清单和执行记录没有继续写着旧交付包 SHA：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_current_dist_hash_docs.py
+```
+
+当前审计覆盖 5 个 dist jar，结果为 `errors: 0`。
+
 ## 配置文件
 
 默认资源均带中文注释：
