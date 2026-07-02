@@ -72,6 +72,15 @@ py -3 tools\rgb-visual-matrix\check_chunk_load_guards.py
 
 当前审计覆盖 96 个正式 Java 源码文件，结果为 `errors: 0`。
 
+交付前可用统一预检入口一次性执行当前全部后台审计；默认不跑 Maven，完整模式会额外执行 `mvn -q test`：
+
+```powershell
+py -3 tools\rgb-visual-matrix\run_delivery_audits.py
+py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
+```
+
+当前默认 6 项审计和完整 7 项审计均为 `failed: 0`。
+
 ## 配置文件
 
 默认资源均带中文注释：
