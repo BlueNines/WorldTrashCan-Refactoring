@@ -96,6 +96,14 @@ py -3 tools\rgb-visual-matrix\check_command_parity.py
 
 当前审计覆盖 5 个命令类，普通子命令 13 个、总子命令 25 个，结果为 `errors: 0`。
 
+多语言消息文件还有键结构一致性审计脚本，检查四个平台源码语言文件和当前 `dist` jar 内语言资源，防止某个语言漏键、节点类型从列表变成文本，或通用总包语言资源与当前源码基准不同步：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_message_key_parity.py
+```
+
+当前审计覆盖 4 个源码平台、4 种语言、5 个 dist jar 内 20 个语言资源，基准消息键 91 个，结果为 `errors: 0`。
+
 涉及世界垃圾桶或实体限制扫描时，还需要运行区块强加载防护审计，确认正式源码没有新增 `loadChunk`、实体限制 `getChunkAt` 前仍有 `isChunkLoaded` 保护、世界垃圾桶默认仍不会访问未加载区块：
 
 ```powershell
@@ -111,7 +119,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 12 项审计和完整 13 项审计均为 `failed: 0`。
+当前默认 13 项审计和完整 14 项审计均为 `failed: 0`。
 
 ## 配置文件
 
@@ -136,6 +144,14 @@ py -3 tools\rgb-visual-matrix\check_resource_yaml_comments.py
 ```
 
 当前审计覆盖 28 个源码默认配置资源、5 个 dist jar、35 个包内配置资源和 1143 个 YAML 键，结果为 `errors: 0`。
+
+多语言消息文件不要求逐项中文注释，但要求键路径和节点类型一致；新增或调整任何 `messages/message_*.yml` 后必须运行：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_message_key_parity.py
+```
+
+当前审计覆盖 16 个源码语言文件和 20 个 dist 包内语言资源，结果为 `errors: 0`。
 
 ## 扫地启动门禁
 
