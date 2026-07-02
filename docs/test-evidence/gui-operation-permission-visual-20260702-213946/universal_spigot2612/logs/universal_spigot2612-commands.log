@@ -1,0 +1,38 @@
+[21:40:07] blwtc reload
+[21:40:19] op RGBigot2612
+[21:40:19] minecraft:gamerule sendCommandFeedback false
+[21:40:19] minecraft:gamerule commandBlockOutput false
+[21:40:19] minecraft:gamerule doMobSpawning false
+[21:40:19] minecraft:gamerule keepInventory true
+[21:40:20] minecraft:gamerule fallDamage false
+[21:40:20] minecraft:time set day
+[21:40:20] minecraft:weather clear
+[21:40:20] minecraft:fill -3 90 -11 3 90 -5 stone
+[21:40:20] minecraft:gamemode survival RGBigot2612
+[21:40:20] minecraft:tp RGBigot2612 0 91 -8 0 15
+[21:40:21] deop RGBigot2612
+[21:40:22] minecraft:clear RGBigot2612
+[21:40:22] permfixture clear RGBigot2612
+[21:40:22] blwtc debugroute RGBigot2612 global COBBLESTONE 7
+[21:40:23] minecraft:clear RGBigot2612
+[21:40:23] permfixture deny RGBigot2612 blworldtrashcan.global.take WorldListTrashCan.GlobalTrashTakeItem
+[21:40:36] blwtc debugsummary RGBigot2612
+[21:40:37] permfixture clear RGBigot2612
+[21:40:37] permfixture deny RGBigot2612 blworldtrashcan.global.put WorldListTrashCan.GlobalTrashPutItem
+[21:40:37] blwtc debugsummary RGBigot2612
+[21:40:38] minecraft:clear RGBigot2612
+[21:40:38] minecraft:give RGBigot2612 stone 5
+[21:40:51] blwtc debugsummary RGBigot2612
+[21:40:52] permfixture clear RGBigot2612
+[21:40:53] blwtc debugroute RGBigot2612 personal DIRT 3
+[21:40:53] minecraft:clear RGBigot2612
+[21:40:53] permfixture deny RGBigot2612 blworldtrashcan.personal.take WorldListTrashCan.PersonalTrashTakeItem
+[21:41:06] blwtc debugsummary RGBigot2612
+[21:41:07] permfixture clear RGBigot2612
+[21:41:07] permfixture deny RGBigot2612 blworldtrashcan.personal.put WorldListTrashCan.PersonalTrashPutItem
+[21:41:07] blwtc debugsummary RGBigot2612
+[21:41:08] minecraft:clear RGBigot2612
+[21:41:08] minecraft:give RGBigot2612 stone 4
+[21:41:21] blwtc debugsummary RGBigot2612
+[21:41:22] permfixture clear RGBigot2612
+[21:41:23] op RGBigot2612
