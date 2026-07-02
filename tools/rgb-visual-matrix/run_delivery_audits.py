@@ -18,6 +18,7 @@ PYTHON_AUDITS = [
     ("command-entrypoints", [sys.executable, "tools/rgb-visual-matrix/check_command_entrypoints.py"]),
     ("command-parity", [sys.executable, "tools/rgb-visual-matrix/check_command_parity.py"]),
     ("message-key-parity", [sys.executable, "tools/rgb-visual-matrix/check_message_key_parity.py"]),
+    ("papi-placeholder-parity", [sys.executable, "tools/rgb-visual-matrix/check_papi_placeholder_parity.py"]),
     ("chunk-load-guards", [sys.executable, "tools/rgb-visual-matrix/check_chunk_load_guards.py"]),
 ]
 GIT_AUDITS = [

@@ -119,7 +119,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 14 项审计和完整 15 项审计均为 `failed: 0`。
+当前默认 15 项审计和完整 16 项审计均为 `failed: 0`。
 
 ## 配置文件
 
@@ -425,6 +425,14 @@ PAPI 变量：
 
 - Legacy 1.12、Bukkit 1.13-1.15、Paper 1.16-1.20、Folia 1.20 四个产物的代码都提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
 - Legacy 1.12、Bukkit 1.13.2、Paper 1.20.4 已使用 PlaceholderAPI 2.11.6 实服验证；Folia 1.21.8 已使用支持 Folia 的 `[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 实服验证。旧 PlaceholderAPI 2.11.6 仍会被 Folia 拒绝加载，不能作为 Folia PAPI 验收前置。
+
+提交前可运行以下脚本检查五个平台 PAPI expansion、注册入口和当前 `dist` jar 内 class 常量是否保持 `%Wtc_ClearTime%` 一致：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_papi_placeholder_parity.py
+```
+
+当前审计覆盖 5 个 expansion 源码、5 个注册入口和 5 个 dist jar，结果为 `errors: 0`。
 
 发包变量：
 
