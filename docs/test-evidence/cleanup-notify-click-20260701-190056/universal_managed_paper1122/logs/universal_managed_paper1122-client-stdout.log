@@ -1,0 +1,31 @@
+Completely ignored arguments: [legacy]
+[19:01:00] [Client thread/INFO]: Setting user: RGBaper1122
+[19:01:00] [Client thread/INFO]: LWJGL Version: 2.9.4
+[19:01:01] [Client thread/INFO]: Reloading ResourceManager: Default
+[19:01:01] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[19:01:01] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[19:01:01] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[19:01:01] [Thread-3/INFO]: OpenAL initialized.
+[19:01:02] [Sound Library Loader/INFO]: Sound engine started
+[19:01:02] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[19:01:02] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[19:01:03] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[19:01:05] [Client thread/INFO]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.2)
+[19:01:05] [Client thread/INFO]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[19:01:05] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[19:01:05] [Client thread/INFO]: [CHAT] [Server: Opped RGBaper1122]
+[19:01:08] [Client thread/INFO]: [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats
+[19:01:10] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-01_19.01.10.png
+[19:01:11] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-01_19.01.11.png
+[19:01:14] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 清理统计:
+[19:01:14] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[19:01:14] [Client thread/INFO]: [CHAT] - 世界数: 0
+[19:01:14] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[19:01:14] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[19:01:14] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[19:01:14] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[19:01:14] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[19:01:14] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[19:01:14] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 344
+[19:01:15] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-01_19.01.15.png
+[19:01:16] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-01_19.01.16.png
