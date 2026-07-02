@@ -1,0 +1,9 @@
+[21:05:54] deop RGBolia1218
+[21:06:00] permfixture deny RGBolia1218 blworldtrashcan.global.open WorldListTrashCan.GlobalTrashOpen
+[21:06:06] permfixture clear RGBolia1218
+[21:06:06] permfixture deny RGBolia1218 blworldtrashcan.personal.open WorldListTrashCan.PlayerTrash
+[21:06:12] permfixture clear RGBolia1218
+[21:06:13] op RGBolia1218
+[21:06:19] blwtc platform
+[21:06:20] permfixture clear RGBolia1218
+[21:06:21] op RGBolia1218

@@ -1,0 +1,90 @@
+{
+  "id": "universal_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "status": "PASS",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "universalJarSha256": "18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4",
+  "username": "RGBigot2612",
+  "clientPid": 19436,
+  "deniedReload": {
+    "command": "/blwtc reload",
+    "screenshot": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\permission-negative-visual-20260702-210300\\universal_spigot2612\\screenshots\\universal_spigot2612-permission-denied-reload-f2.png",
+      "width": 884,
+      "height": 521,
+      "brightness": 121.10384114583333
+    },
+    "clientLog": {
+      "status": "PASS",
+      "markers": [
+        "没有权限"
+      ],
+      "excerpt": "[21:04:34] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限执行该命令。\n[21:04:36] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.36.png\n[21:04:37] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.37.png\n"
+    }
+  },
+  "deniedGlobal": {
+    "command": "/blwtc global",
+    "screenshot": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\permission-negative-visual-20260702-210300\\universal_spigot2612\\screenshots\\universal_spigot2612-permission-denied-global-f2.png",
+      "width": 884,
+      "height": 521,
+      "brightness": 143.58658854166666
+    },
+    "clientLog": {
+      "status": "PASS",
+      "markers": [
+        "没有权限打开公共垃圾桶"
+      ],
+      "excerpt": "[21:04:40] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限打开公共垃圾桶。\n[21:04:42] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.42.png\n[21:04:43] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.43.png\n"
+    },
+    "fixture": "[21:04:37] [Server thread/INFO]: AI_PERMFIXTURE_DENY player=RGBigot2612 permissions=2\n"
+  },
+  "deniedPersonal": {
+    "command": "/blwtc personal",
+    "screenshot": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\permission-negative-visual-20260702-210300\\universal_spigot2612\\screenshots\\universal_spigot2612-permission-denied-personal-f2.png",
+      "width": 884,
+      "height": 521,
+      "brightness": 144.46321614583334
+    },
+    "clientLog": {
+      "status": "PASS",
+      "markers": [
+        "没有权限打开个人垃圾桶"
+      ],
+      "excerpt": "[21:04:47] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 你没有权限打开个人垃圾桶。\n[21:04:49] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.49.png\n[21:04:49] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.49_2.png\n"
+    },
+    "fixture": "[21:04:44] [Server thread/INFO]: AI_PERMFIXTURE_DENY player=RGBigot2612 permissions=2\n"
+  },
+  "allowedReload": {
+    "command": "/blwtc reload",
+    "screenshot": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\permission-negative-visual-20260702-210300\\universal_spigot2612\\screenshots\\universal_spigot2612-permission-allowed-reload-f2.png",
+      "width": 884,
+      "height": 521,
+      "brightness": 145.82747395833334
+    },
+    "clientLog": {
+      "status": "PASS",
+      "markers": [
+        "已重载"
+      ],
+      "excerpt": "[21:04:54] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] BLWorldTrashCan 已重载。\n[21:04:56] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.56.png\n[21:04:57] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-02_21.04.57.png\n"
+    }
+  },
+  "platformOutput": "[21:04:57] [Server thread/INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)\n[21:04:57] [Server thread/INFO]: - scheduler-global: 启用\n[21:04:57] [Server thread/INFO]: - scheduler-region: 禁用\n[21:04:57] [Server thread/INFO]: - inventory-basic: 启用\n[21:04:57] [Server thread/INFO]: - item-pdc-tag: 启用\n[21:04:57] [Server thread/INFO]: - item-legacy-tag: 禁用\n[21:04:57] [Server thread/INFO]: - rgb-message: 启用\n[21:04:57] [Server thread/INFO]: - clickable-message: 启用\n[21:04:57] [Server thread/INFO]: - boss-bar: 启用\n[21:04:57] [Server thread/INFO]: - sign-legacy: 禁用\n[21:04:57] [Server thread/INFO]: - sign-modern: 启用\n[21:04:57] [Server thread/INFO]: - entity-move-event: 启用\n[21:04:57] [Server thread/INFO]: - folia-region-safe: 禁用\n",
+  "commandScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\permission-negative-visual-20260702-210300\\universal_spigot2612\\server-screenshots\\universal_spigot2612-commands.png",
+    "width": 1400,
+    "height": 220,
+    "brightness": 27.5166015625
+  },
+  "platformScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\permission-negative-visual-20260702-210300\\universal_spigot2612\\server-screenshots\\universal_spigot2612-platform.png",
+    "width": 1400,
+    "height": 298,
+    "brightness": 28.32421875
+  }
+}

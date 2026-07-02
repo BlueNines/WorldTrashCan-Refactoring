@@ -27,6 +27,7 @@
 | 多语言切换与缺节点回退 | `language-visual-20260701-163536/` | 非默认语言切换和 jar 内默认节点回退 |
 | Vault 扣费 | `vault-payment-visual-20260702-200346/` | 余额充足、余额不足、背包满三分支 |
 | Folia PAPI | `folia-papi-20260702-202801/` | Folia 1.21.8 + PlaceholderAPI 2.11.7 DEV 解析 `%Wtc_ClearTime%` |
+| 权限负向真实客户端 | `permission-negative-visual-20260702-210300/` | 非 OP 管理命令拒绝、显式 deny 公共/个人打开权限、OP 正向重载 |
 
 ## 当前失败对照
 

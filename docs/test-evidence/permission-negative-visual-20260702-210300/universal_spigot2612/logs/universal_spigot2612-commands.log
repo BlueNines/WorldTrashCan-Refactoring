@@ -1,0 +1,9 @@
+[21:04:31] deop RGBigot2612
+[21:04:37] permfixture deny RGBigot2612 blworldtrashcan.global.open WorldListTrashCan.GlobalTrashOpen
+[21:04:43] permfixture clear RGBigot2612
+[21:04:44] permfixture deny RGBigot2612 blworldtrashcan.personal.open WorldListTrashCan.PlayerTrash
+[21:04:50] permfixture clear RGBigot2612
+[21:04:50] op RGBigot2612
+[21:04:57] blwtc platform
+[21:04:58] permfixture clear RGBigot2612
+[21:04:58] op RGBigot2612
