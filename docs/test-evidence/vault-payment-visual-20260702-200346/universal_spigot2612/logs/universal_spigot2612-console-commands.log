@@ -1,0 +1,33 @@
+[20:04:08] blwtc reload
+[20:04:18] op RGBigot2612
+[20:04:18] minecraft:gamerule sendCommandFeedback false
+[20:04:18] minecraft:gamerule commandBlockOutput false
+[20:04:18] minecraft:gamerule doMobSpawning false
+[20:04:19] minecraft:gamerule keepInventory true
+[20:04:19] minecraft:gamerule fallDamage false
+[20:04:19] minecraft:time set day
+[20:04:19] minecraft:weather clear
+[20:04:19] minecraft:fill -3 90 -11 3 90 -5 stone
+[20:04:19] minecraft:gamemode survival RGBigot2612
+[20:04:19] minecraft:tp RGBigot2612 0 91 -8 0 15
+[20:04:20] minecraft:clear RGBigot2612
+[20:04:21] blwtc platform
+[20:04:21] fakevault reset
+[20:04:22] fakevault set RGBigot2612 100
+[20:04:22] fakevault clearinv RGBigot2612
+[20:04:23] blwtc debugroute RGBigot2612 personal STONE 1
+[20:04:35] fakevault balance RGBigot2612
+[20:04:35] blwtc debugsummary RGBigot2612
+[20:04:36] fakevault reset
+[20:04:37] fakevault set RGBigot2612 5
+[20:04:37] fakevault clearinv RGBigot2612
+[20:04:37] blwtc debugroute RGBigot2612 personal DIRT 1
+[20:04:50] fakevault balance RGBigot2612
+[20:04:50] blwtc debugsummary RGBigot2612
+[20:04:51] fakevault reset
+[20:04:52] fakevault set RGBigot2612 100
+[20:04:52] fakevault fill RGBigot2612 COBBLESTONE
+[20:04:52] blwtc debugroute RGBigot2612 personal STONE 1
+[20:04:53] blwtc debugsummary RGBigot2612
+[20:05:05] fakevault balance RGBigot2612
+[20:05:06] blwtc debugsummary RGBigot2612

@@ -1,6 +1,7 @@
 package pixeltech.bluenine.blworldtrashcan.plugin.universal;
 
 import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.NoPaymentService;
@@ -37,7 +38,7 @@ public final class UniversalVaultPaymentService implements PaymentService {
                 return new NoPaymentService();
             }
             Object economy = provider.getProvider();
-            Method withdrawPlayer = economyClass.getMethod("withdrawPlayer", Player.class, double.class);
+            Method withdrawPlayer = economyClass.getMethod("withdrawPlayer", OfflinePlayer.class, double.class);
             Method format = economyClass.getMethod("format", double.class);
             plugin.getLogger().info("[Vault] 已连接经济服务: " + readEconomyName(economyClass, economy));
             return new UniversalVaultPaymentService(economy, withdrawPlayer, format);

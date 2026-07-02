@@ -32,6 +32,8 @@ personal-trash:
   no-take-permission: "{prefix}&c你沒有權限從個人垃圾桶取出物品。"
   # 玩家餘額不足時提示。
   not-enough-money: "{prefix}&c餘額不足，無法取出該物品。"
+  # 玩家背包空间不足时提示。
+  inventory-full: "{prefix}&c背包空間不足，無法取出該物品。"
   # 玩家成功支付取出費用，{cost} 為扣費顯示。
   pay-success: "{prefix}&a已支付 {cost}。"
   # 個人垃圾桶 GUI 文案。

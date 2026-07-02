@@ -1,0 +1,43 @@
+{
+  "id": "universal_spigot2612",
+  "sourceId": "external_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "clientVersion": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "status": "FAIL",
+  "checks": [],
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 523614,
+    "sha256": "f058350aa410514bd4cbea843a316b25b3f21c04fd781aea0c058696128fe848",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "fixtureJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\vault-payment-matrix\\vault-payment-visual-20260702-195606\\Vault-FakeEconomy.jar",
+  "fixtureSha256": "e46a6f2bed80ab2fc765dc30427e181282add54e6ee84695c241c28f9de9a2e5",
+  "patchedTrashConfig": "E:\\server_work\\spigot-26.1.2-test-server\\plugins\\BLWorldTrashCan\\trash.yml",
+  "error": "AssertionError('startup vault registration 缺少标记: [Vault] 已连接经济服务\\nn platform enabled\\n[19:56:30] [Server thread/INFO]: [ResLinkUniversalBootstrap] ResLink universal selected Bukkit platform: modern, jar=E:\\\\server_work\\\\spigot-26.1.2-test-server\\\\plugins\\\\ResLink\\\\runtime-jars\\\\ResLink-modern-1782993389930.jar\\n[19:56:30] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it\\n[19:56:30] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...\\n[19:56:30] [Server thread/INFO]: Done (6.458s)! For help, type \"help\"\\n[19:56:30] [Server thread/INFO]: Saving chunks for level \\'ServerLevel[rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195606]\\'/minecraft:overworld\\n[19:56:30] [Server thread/INFO]: Saving chunks for level \\'ServerLevel[rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195606_nether]\\'/minecraft:the_nether\\n[19:56:30] [Server thread/INFO]: Saving chunks for level \\'ServerLevel[rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195606_the_end]\\'/minecraft:the_end\\n[19:56:30] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved\\n[19:56:30] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved\\n[19:56:30] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved\\n[19:56:30] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved\\n[19:56:30] [Server thread/INFO]: 0 placeholder hook(s) registered!\\n[19:56:30] [Craft Scheduler Thread - 2/INFO]: [ResLink] Redis health check passed by enable\\n[19:56:30] [Craft Scheduler Thread - 2/INFO]: ResLink-MySQL - Starting...\\n[19:56:30] [Craft Scheduler Thread - 2/INFO]: ResLink-MySQL - Start completed.\\n[19:56:30] [Craft Scheduler Thread - 2/INFO]: [ResLink] Placeholder cache refreshed by enable: residences=31\\n[19:56:30] [Craft Scheduler Thread - 2/INFO]: [ResLink] MySQL initialized by enable\\n[19:56:30] [reslink-redis-notification/INFO]: [ResLink] Redis notification subscriber connected\\n[19:56:30] [Craft Scheduler Thread - 1/INFO]: New version of CMILib was detected. Please update it (1.5.9.0 -> 1.5.9.9)\\n[19:56:30] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\\n[19:56:30] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。\\n[19:56:30] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。\\n[19:56:30] [Server thread/INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。\\n')",
+  "commandScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195606\\universal_spigot2612\\server-screenshots\\universal_spigot2612-commands.png",
+    "size": 10139,
+    "sha256": "7e90379bfad047d3faaf24f0796c01a89b781011de65eee91defdff2c24b5a6e",
+    "dimensions": [
+      1680,
+      260
+    ],
+    "brightness": 27.403645833333332
+  },
+  "serverLogScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195606\\universal_spigot2612\\server-screenshots\\universal_spigot2612-vault-server-log.png",
+    "size": 83495,
+    "sha256": "e7b1fafe7920dfd338db011b5d882a03c336c9294d0fd934442519ee7820a488",
+    "dimensions": [
+      1680,
+      364
+    ],
+    "brightness": 38.513997395833336
+  }
+}

@@ -193,6 +193,10 @@ public final class PersonalTrashService {
         if (InventorySlotUtil.isEmpty(itemStack)) {
             return;
         }
+        if (!InventorySlotUtil.hasStorageSpace(player.getInventory(), itemStack)) {
+            player.sendMessage(message("personal-trash.inventory-full", "&c背包空间不足，无法取出该物品。"));
+            return;
+        }
         double cost = config.getTakeCost();
         if (cost > 0D && !paymentService.charge(player, cost)) {
             player.sendMessage(message("personal-trash.not-enough-money", "&c余额不足，无法取出该物品。"));

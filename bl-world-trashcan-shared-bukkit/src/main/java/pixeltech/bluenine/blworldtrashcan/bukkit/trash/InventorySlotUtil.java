@@ -27,6 +27,27 @@ final class InventorySlotUtil {
         return false;
     }
 
+    /** 判断 Inventory 的可存储槽位是否能完整放入物品。 */
+    static boolean hasStorageSpace(Inventory inventory, ItemStack itemStack) {
+        if (inventory == null || isEmpty(itemStack)) {
+            return false;
+        }
+        int remaining = itemStack.getAmount();
+        int maxStack = Math.max(1, itemStack.getMaxStackSize());
+        ItemStack[] contents = inventory.getStorageContents();
+        for (ItemStack current : contents) {
+            if (isEmpty(current)) {
+                remaining -= maxStack;
+            } else if (current.isSimilar(itemStack)) {
+                remaining -= Math.max(0, maxStack - current.getAmount());
+            }
+            if (remaining <= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** 完整放入物品；调用前应先用 hasSpace 判断。 */
     static boolean add(Inventory inventory, ItemStack itemStack, int start, int endExclusive) {
         if (!hasSpace(inventory, itemStack, start, endExclusive)) {
@@ -65,4 +86,3 @@ final class InventorySlotUtil {
     private InventorySlotUtil() {
     }
 }
-

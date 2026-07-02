@@ -32,6 +32,8 @@ personal-trash:
   no-take-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能从个人垃圾桶取出物品。"
   # 玩家余额不足时提示。
   not-enough-money: "{prefix}&#FFD166余额不足 &#64748B| &#C9D4E2无法取出该物品。"
+  # 玩家背包空间不足时提示。
+  inventory-full: "{prefix}&#FFD166背包空间不足 &#64748B| &#C9D4E2无法取出该物品。"
   # 玩家成功支付取出费用，{cost} 为扣费显示。
   pay-success: "{prefix}&#5AC8FA已支付 &#FFD166{cost}&#C9D4E2。"
   # 个人垃圾桶 GUI 文案。

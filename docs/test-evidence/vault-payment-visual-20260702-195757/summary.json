@@ -1,0 +1,118 @@
+{
+  "run": "vault-payment-visual-20260702-195757",
+  "results": [
+    {
+      "id": "universal_spigot2612",
+      "sourceId": "external_spigot2612",
+      "label": "spigot-26.1.2-managed",
+      "version": "26.1.2",
+      "clientVersion": "26.1.2",
+      "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "status": "FAIL",
+      "checks": [
+        {
+          "name": "F-037-success",
+          "status": "PASS",
+          "route": {
+            "command": "blwtc debugroute RGBigot2612 personal STONE 1",
+            "markers": [
+              "[Debug] debugRoute",
+              "route=PERSONAL_TRASH",
+              "routed=true"
+            ],
+            "excerpt": "[19:58:36] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=1, routed=true\n[19:58:36] [Server thread/INFO]: 路由测试成功。\n"
+          },
+          "beforeScreenshot": {
+            "name": "vault-success-before-click-f2",
+            "command": "/blwtc personal",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\screenshots\\universal_spigot2612-vault-success-before-click-f2.png",
+            "brightness": 87.08333333333333
+          },
+          "afterScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\screenshots\\universal_spigot2612-vault-success-after-click-chat-f2.png",
+            "size": 206068,
+            "sha256": "18a30e6e84d8d2538f509a47a24716f92d1005f9829407e02743b16d0c36dfcb",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 123.8349609375
+          },
+          "balanceExcerpt": "[19:58:48] [Server thread/INFO]: AI_FAKEVAULT_BALANCE player=RGBigot2612 balance=$90.00 withdrawals=1\n",
+          "summaryExcerpt": "[19:58:49] [Server thread/INFO]: BLWorldTrashCan debug summary:\n[19:58:49] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[19:58:49] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195757\n[19:58:49] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[19:58:49] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[19:58:49] [Server thread/INFO]: - 跳过未加载区块: 0\n[19:58:49] [Server thread/INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\n[19:58:49] [Server thread/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n"
+        },
+        {
+          "name": "F-037-insufficient",
+          "status": "PASS",
+          "route": {
+            "command": "blwtc debugroute RGBigot2612 personal DIRT 1",
+            "markers": [
+              "[Debug] debugRoute",
+              "route=PERSONAL_TRASH",
+              "routed=true"
+            ],
+            "excerpt": "[19:58:51] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=DIRT, amount=1, routed=true\n[19:58:51] [Server thread/INFO]: 路由测试成功。\n"
+          },
+          "beforeScreenshot": {
+            "name": "vault-insufficient-before-click-f2",
+            "command": "/blwtc personal",
+            "status": "PASS",
+            "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\screenshots\\universal_spigot2612-vault-insufficient-before-click-f2.png",
+            "brightness": 88.55924479166667
+          },
+          "afterScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\screenshots\\universal_spigot2612-vault-insufficient-after-click-chat-f2.png",
+            "size": 225366,
+            "sha256": "714ed6e3b51d18809e8070e7425082af77048dedd6e8180aaf38ef4aa966c833",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 121.037109375
+          },
+          "balanceExcerpt": "[19:59:04] [Server thread/INFO]: AI_FAKEVAULT_BALANCE player=RGBigot2612 balance=$5.00 withdrawals=0\n",
+          "summaryExcerpt": "[19:59:05] [Server thread/INFO]: BLWorldTrashCan debug summary:\n[19:59:05] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[19:59:05] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195757\n[19:59:05] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[19:59:05] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[19:59:05] [Server thread/INFO]: - 跳过未加载区块: 0\n[19:59:05] [Server thread/INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\n[19:59:05] [Server thread/INFO]: - 个人垃圾桶物品: 1 (堆叠 1)\n"
+        }
+      ],
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 523626,
+        "sha256": "18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "fixtureJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\vault-payment-matrix\\vault-payment-visual-20260702-195757\\Vault-FakeEconomy.jar",
+      "fixtureSha256": "10f9c897117db1648578f321fa912978deaba1c3683eed45bf3773d0590bfcf2",
+      "patchedTrashConfig": "E:\\server_work\\spigot-26.1.2-test-server\\plugins\\BLWorldTrashCan\\trash.yml",
+      "username": "RGBigot2612",
+      "clientPid": 22324,
+      "error": "AssertionError('full inventory debugsummary 未显示个人垃圾桶物品为 1\\n[19:59:20] [Server thread/INFO]: BLWorldTrashCan debug summary:\\n[19:59:20] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\\n[19:59:20] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195757\\n[19:59:20] [Server thread/INFO]: - 世界垃圾桶数量: 0\\n[19:59:20] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\\n[19:59:20] [Server thread/INFO]: - 跳过未加载区块: 0\\n[19:59:20] [Server thread/INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\\n[19:59:20] [Server thread/INFO]: - 个人垃圾桶物品: 2 (堆叠 2)\\n')",
+      "failureScreenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\screenshots\\universal_spigot2612-failure-f2.png",
+      "commandScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\server-screenshots\\universal_spigot2612-commands.png",
+        "size": 180170,
+        "sha256": "2acb26cc1e4d57798a040f573770eea834292f0fcb5273e36b5ca6e7e285bd8f",
+        "dimensions": [
+          1680,
+          936
+        ],
+        "brightness": 33.029947916666664
+      },
+      "serverLogScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\universal_spigot2612\\server-screenshots\\universal_spigot2612-vault-server-log.png",
+        "size": 244945,
+        "sha256": "6cb22d6783a5dd681aee1684672b9cb0170e8b82d954648273fb4923d854815f",
+        "dimensions": [
+          1680,
+          780
+        ],
+        "brightness": 40.017578125
+      }
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\vault-payment-visual-20260702-195757\\vault-payment-contact-sheet.png",
+  "allPassed": false
+}
