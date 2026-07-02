@@ -36,6 +36,18 @@ REQUIRED_PERMISSIONS = {
     "blworldtrashcan.personal.open",
     "blworldtrashcan.personal.take",
     "blworldtrashcan.personal.put",
+    "WorldListTrashCan.Main",
+    "WorldListTrashCan.BanGui",
+    "WorldListTrashCan.GlobalTrashOpen",
+    "WorldListTrashCan.GlobalTrashTakeItem",
+    "WorldListTrashCan.GlobalTrashPutItem",
+    "WorldListTrashCan.PersonalTrashTakeItem",
+    "WorldListTrashCan.PersonalTrashPutItem",
+    "WorldListTrashCan.help",
+    "WorldListTrashCan.GlobalBan",
+    "WorldListTrashCan.Look",
+    "WorldListTrashCan.DropMode",
+    "WorldListTrashCan.PlayerTrash",
 }
 RELOCATED_PRISMATIC_PREFIX = "pixeltech/bluenine/blworldtrashcan/libs/croabeast/"
 RAW_PRISMATIC_PREFIX = "me/croabeast/"
