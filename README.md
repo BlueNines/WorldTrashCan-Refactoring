@@ -88,6 +88,14 @@ py -3 tools\rgb-visual-matrix\check_command_entrypoints.py
 
 当前审计覆盖 5 个源码 `plugin.yml`、5 个 dist jar 和 5 个入口源码，结果为 `errors: 0`。
 
+五个平台命令类还有一致性审计脚本，检查 legacy、bukkit、paper、folia、universal 的普通子命令列表、完整子命令列表、处理分支和关键补全值是否一致：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_command_parity.py
+```
+
+当前审计覆盖 5 个命令类，普通子命令 13 个、总子命令 25 个，结果为 `errors: 0`。
+
 涉及世界垃圾桶或实体限制扫描时，还需要运行区块强加载防护审计，确认正式源码没有新增 `loadChunk`、实体限制 `getChunkAt` 前仍有 `isChunkLoaded` 保护、世界垃圾桶默认仍不会访问未加载区块：
 
 ```powershell
@@ -103,7 +111,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 11 项审计和完整 12 项审计均为 `failed: 0`。
+当前默认 12 项审计和完整 13 项审计均为 `failed: 0`。
 
 ## 配置文件
 
