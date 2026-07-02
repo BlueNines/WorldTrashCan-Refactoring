@@ -128,6 +128,14 @@ py -3 tools\rgb-visual-matrix\check_test_script_destructive_guards.py
 
 当前审计覆盖 `tools/rgb-visual-matrix` 下 37 个 Python 脚本、21 个 `shutil.rmtree` 调用和 23 个 `unlink` 调用，结果为 `errors: 0`。
 
+统一预检本身的数量和文档口径也有独立审计，防止新增审计后 README、长期清单或执行记录仍保留旧数字：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_delivery_audit_docs.py
+```
+
+当前审计读取 `run_delivery_audits.py` 的实际命令列表，确认 README、长期硬化缺口清单和重构执行记录均同步当前默认/完整预检数量，结果为 `errors: 0`。
+
 交付前可用统一预检入口一次性执行当前全部后台审计；默认不跑 Maven，完整模式会额外执行 `mvn -q test`：
 
 ```powershell
@@ -135,7 +143,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 17 项审计和完整 18 项审计均为 `failed: 0`。
+当前默认 18 项审计和完整 19 项审计均为 `failed: 0`。
 
 ## 配置文件
 
