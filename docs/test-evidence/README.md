@@ -4,7 +4,7 @@
 
 ## 证据分级
 
-- 最终 PASS 证据：已被 `README.md`、`docs/重构版完整功能与测试矩阵.md`、`docs/长期硬化缺口清单.md` 或 `docs/重构执行记录.md` 明确引用，并且目录内保留机器可读 summary、服务端日志、客户端侧证据或截图。
+- 最终 PASS 证据：已被 `README.md`、`docs/重构版新增功能说明.md`、`docs/重构版完整功能与测试矩阵.md`、`docs/长期硬化缺口清单.md` 或 `docs/重构执行记录.md` 明确引用，并且目录内保留机器可读 summary、服务端日志、客户端侧证据或截图。
 - 失败对照证据：用于说明根因、脚本修正或环境问题，不能单独写成 PASS。只有上层文档明确标注为失败对照时才能引用。
 - 本地缓存证据：`git status --short docs/test-evidence` 中仍未跟踪、且没有被上层文档明确引用的目录。默认只作为排障缓存，不删除、不移动，也不能当成最终验收。
 - 本地恢复 jar：证据目录里的 `backup/*.jar`、`server-backup/plugins/*.jar`、`plugin-backup/*.jar` 只用于恢复测试服现场，不纳入 Git。最终证据应记录被测 jar 文件名、版本和 SHA256，而不是提交备份 jar。
