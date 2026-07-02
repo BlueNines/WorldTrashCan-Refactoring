@@ -10,3 +10,8 @@ __pycache__/
 *.pyc
 dist/*
 !dist/.gitkeep
+
+# Local restore caches in evidence folders. Keep logs, summaries and config snapshots trackable.
+docs/test-evidence/**/backup/*.jar
+docs/test-evidence/**/server-backup/plugins/*.jar
+docs/test-evidence/**/plugin-backup/*.jar
