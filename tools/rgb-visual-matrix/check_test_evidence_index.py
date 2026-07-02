@@ -10,6 +10,7 @@ EVIDENCE_ROOT = REPO / "docs" / "test-evidence"
 INDEX_FILE = EVIDENCE_ROOT / "README.md"
 UPPER_DOCS = [
     REPO / "README.md",
+    REPO / "docs" / "重构版新增功能说明.md",
     REPO / "docs" / "重构版完整功能与测试矩阵.md",
     REPO / "docs" / "长期硬化缺口清单.md",
     REPO / "docs" / "重构执行记录.md",
@@ -17,6 +18,7 @@ UPPER_DOCS = [
 FINAL_HEADING = "## 当前最终证据"
 FAILURE_HEADING = "## 当前失败对照"
 FAILURE_MARKERS = ("FAIL", "失败", "不作为最终", "暴露", "误判", "未稳定", "遮挡")
+EVIDENCE_REFERENCE_PATTERN = re.compile(r"docs[\\/]+test-evidence[\\/]+([^`)\]\s\\/]+)")
 
 
 def read_text(path: Path) -> str:
@@ -78,6 +80,23 @@ def git_tracked_files(path: Path) -> list[str]:
     return [line for line in result.stdout.splitlines() if line.strip()]
 
 
+def all_git_tracked_evidence_files() -> list[str]:
+    """返回测试证据目录下所有已被 Git 跟踪的文件。"""
+    result = subprocess.run(
+        ["git", "ls-files", "--", EVIDENCE_ROOT.relative_to(REPO).as_posix()],
+        cwd=str(REPO),
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.strip())
+    return [line for line in result.stdout.splitlines() if line.strip()]
+
+
 def load_json(path: Path) -> dict:
     """读取 JSON 文件，失败时返回错误结构。"""
     try:
@@ -118,6 +137,33 @@ def upper_doc_references(evidence_dir: str) -> list[str]:
         if path.exists() and needle in read_text(path).replace("\\", "/"):
             hits.append(path.relative_to(REPO).as_posix())
     return hits
+
+
+def doc_evidence_references() -> dict[str, set[str]]:
+    """提取上层文档中显式写出的测试证据目录引用。"""
+    references = {}
+    for path in UPPER_DOCS:
+        if not path.exists():
+            continue
+        text = read_text(path)
+        names = {
+            match.group(1).replace("\\", "/").rstrip("/")
+            for match in EVIDENCE_REFERENCE_PATTERN.finditer(text)
+            if is_evidence_reference_name(match.group(1))
+        }
+        if names:
+            references[path.relative_to(REPO).as_posix()] = names
+    return references
+
+
+def is_evidence_reference_name(name: str) -> bool:
+    """判断匹配到的路径片段是否是真实证据目录名。"""
+    lowered = name.lower()
+    if lowered == "readme.md":
+        return False
+    if "<" in name or ">" in name:
+        return False
+    return True
 
 
 def final_evidence_checks(name: str, evidence_dir: str, description: str) -> list[str]:
@@ -168,6 +214,33 @@ def failure_evidence_checks(name: str, evidence_dir: str, purpose: str) -> list[
     return errors
 
 
+def global_evidence_checks() -> list[str]:
+    """检查全局证据目录中不应出现的 Git 跟踪内容。"""
+    errors = []
+    tracked = all_git_tracked_evidence_files()
+    for item in tracked:
+        if item.lower().endswith(".jar"):
+            errors.append("测试证据目录包含已跟踪 jar: " + item)
+    return errors
+
+
+def doc_reference_checks() -> tuple[list[str], int]:
+    """检查上层文档引用的证据目录是否真实可交付。"""
+    errors = []
+    references = doc_evidence_references()
+    unique_refs = set()
+    for doc, names in references.items():
+        for name in sorted(names):
+            unique_refs.add(name)
+            path = EVIDENCE_ROOT / name
+            if not path.is_dir():
+                errors.append(doc + ": 引用的证据目录不存在: " + name)
+                continue
+            if not git_tracked_files(path):
+                errors.append(doc + ": 引用的证据目录没有 Git 跟踪内容，疑似本地缓存: " + name)
+    return errors, len(unique_refs)
+
+
 def parse_index() -> tuple[list[tuple[str, str, str]], list[tuple[str, str, str]]]:
     """解析证据索引中的最终证据和失败对照表。"""
     text = read_text(INDEX_FILE)
@@ -188,6 +261,7 @@ def run_checks() -> dict:
     """执行证据索引一致性审计。"""
     finals, failures = parse_index()
     errors = []
+    errors.extend(global_evidence_checks())
     final_dirs = {item[1] for item in finals if item[1]}
     failure_dirs = {item[1] for item in failures if item[1]}
     overlap = final_dirs & failure_dirs
@@ -203,9 +277,12 @@ def run_checks() -> dict:
             errors.append(name + ": 失败对照表格缺少反引号目录")
             continue
         errors.extend(failure_evidence_checks(name, evidence_dir, purpose))
+    reference_errors, reference_count = doc_reference_checks()
+    errors.extend(reference_errors)
     return {
         "finalCount": len(finals),
         "failureCount": len(failures),
+        "docReferenceCount": reference_count,
         "errorCount": len(errors),
         "errors": errors,
     }
@@ -222,6 +299,7 @@ def main() -> int:
     else:
         print("final evidence:", result["finalCount"])
         print("failure evidence:", result["failureCount"])
+        print("doc references:", result["docReferenceCount"])
         print("errors:", result["errorCount"])
         for error in result["errors"]:
             print("- " + error)
