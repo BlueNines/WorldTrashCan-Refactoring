@@ -25,6 +25,7 @@
 | 清理通知点击 | `cleanup-notify-click-20260701-190056/` | Chat 可点击命令真实客户端点击 |
 | 多语言切换与缺节点回退 | `language-visual-20260701-163536/` | 非默认语言切换和 jar 内默认节点回退 |
 | Vault 扣费 | `vault-payment-visual-20260702-200346/` | 余额充足、余额不足、背包满三分支 |
+| Folia PAPI | `folia-papi-20260702-202801/` | Folia 1.21.8 + PlaceholderAPI 2.11.7 DEV 解析 `%Wtc_ClearTime%` |
 
 ## 当前失败对照
 
@@ -33,6 +34,8 @@
 | Vault 扣费 | `vault-payment-visual-20260702-195606/` | 暴露 `withdrawPlayer(Player,double)` 反射签名错误 |
 | Vault 扣费 | `vault-payment-visual-20260702-195757/` | 暴露背包满场景脚本断言错误 |
 | Vault 扣费 | `vault-payment-visual-20260702-200044/` | 业务 PASS 但截图被暂停菜单遮挡，不作为最终视觉证据 |
+| Folia PAPI | `folia-papi-20260702-202526/` | PlaceholderAPI 和 Wtc 注册成功，但脚本用结束 marker 过早截断 PAPI 输出 |
+| Folia PAPI | `folia-papi-20260702-202706/` | PAPI 已返回 `358/350`，但脚本解析函数未识别 Folia console 的 `[time INFO]: 数字` 格式 |
 
 ## 新增证据要求
 

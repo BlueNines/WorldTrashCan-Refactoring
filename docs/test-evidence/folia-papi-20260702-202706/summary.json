@@ -1,0 +1,24 @@
+{
+  "run": "folia-papi-20260702-202706",
+  "status": "FAIL",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "artifact": {
+    "source": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "target": "E:\\server_work\\folia1.21.8\\plugins\\BLWorldTrashCan-universal.jar",
+    "size": 523626,
+    "sha256": "18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4",
+    "backup": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\folia-papi-20260702-202706\\backup\\BLWorldTrashCan-universal.before.jar"
+  },
+  "checks": {
+    "ready": true,
+    "placeholderApiLoaded": true,
+    "wtcExpansionRegistered": true,
+    "pluginLoaded": true,
+    "papiValue": "",
+    "papiValueNumeric": false,
+    "noUnknownCommand": true,
+    "noPapiError": true
+  },
+  "papiBlock": "AI_FOLIA_PAPI_BEGIN\n> > \n  \n[20:27:17 INFO]: 358\n> > \n  \n[20:27:25 INFO]: 350\n> > \n  \n[20:27:33 INFO]: [Not Secure] [Server] ",
+  "exitCode": 0
+}

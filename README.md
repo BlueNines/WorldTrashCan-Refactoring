@@ -318,7 +318,7 @@ migration-legacy-folder: "WorldListTrashCan"
 PAPI 变量：
 
 - Legacy 1.12、Bukkit 1.13-1.15、Paper 1.16-1.20、Folia 1.20 四个产物的代码都提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
-- Legacy 1.12、Bukkit 1.13.2、Paper 1.20.4 已使用 PlaceholderAPI 2.11.6 实服验证；Folia 需要服务器安装支持 Folia 的 PlaceholderAPI，本机 PlaceholderAPI 2.11.6 会被 Folia 拒绝加载，不能作为 Folia PAPI 验收前置。
+- Legacy 1.12、Bukkit 1.13.2、Paper 1.20.4 已使用 PlaceholderAPI 2.11.6 实服验证；Folia 1.21.8 已使用支持 Folia 的 `[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 实服验证。旧 PlaceholderAPI 2.11.6 仍会被 Folia 拒绝加载，不能作为 Folia PAPI 验收前置。
 
 发包变量：
 
@@ -374,6 +374,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - Legacy 1.12 产物已补齐旧 `%Wtc_ClearTime%` PAPI 变量注册逻辑，已在 `paper-1.12.2-test-server` 安装 PlaceholderAPI 2.11.6 时验证：`papi parse --null %Wtc_ClearTime%` 返回 `296`，日志出现 `Successfully registered internal expansion: Wtc` 和 `[BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%`。
 - Bukkit 1.13.2 和 Paper 1.20.4 已补做 `%Wtc_ClearTime%` PAPI 验证：`papi parse --null %Wtc_ClearTime%` 分别返回 `315`、`333`；`plugins` 均显示 `BLWorldTrashCan` 和 `PlaceholderAPI` 已启用。
 - Folia 1.20.1 尝试安装本地 PlaceholderAPI 2.11.6 验证 PAPI 时，Folia 在加载阶段拒绝该前置，原因是 `PlaceholderAPI v2.11.6` 未声明支持 Folia；BLWorldTrashCan 因未检测到 PlaceholderAPI 正常跳过变量注册。本轮已将该临时 PAPI jar 改名为 disabled，避免污染后续 Folia 测试。
+- Folia PAPI 已在 2026-07-02 使用 `E:\server_work\folia1.21.8`、`[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 和最终 `dist/BLWorldTrashCan-universal.jar` 验证通过：`papi parse --null %Wtc_ClearTime%` 返回 `358`，日志出现 `Successfully registered internal expansion: Wtc [7.0.0]`，证据目录 `docs/test-evidence/folia-papi-20260702-202801/`。
 - 旧命令 `/WorldListTrashCan add [世界名] <数量>` 已在新命令 `/blwtc add <世界名> <数量>` 中恢复控制台指定世界路径；`paper-1.12.2-test-server` 通过 RCON 验证 `blwtc add world 1` 成功、`blwtc add missing_world 1` 提示世界不存在、控制台 `blwtc add 1` 提示必须指定世界名，并确认 `data/worlds.yml` 落盘为 `world.max-count: 4`。
 - 多语言消息服务已接入四个平台产物并完成 Legacy 1.12 smoke：临时把测试服 `plugins/BLWorldTrashCan/config.yml` 的 `language` 改为 `message_en.yml`，启动后日志显示 `[Message] 已加载语言文件: messages/message_en.yml`，RCON 执行 `blwtc reload/help/platform/stats` 均返回英文文案；测试后 config 已恢复为 `message_zh.yml`，日志和生成的语言文件保留。
 - Legacy 1.12 命令类已补齐公共/个人垃圾桶打开权限校验：`global/globaltrash/trash` 同时接受 `blworldtrashcan.global.open` 与旧权限 `WorldListTrashCan.GlobalTrashOpen`，`personal/playertrash` 同时接受 `blworldtrashcan.personal.open` 与旧权限 `WorldListTrashCan.PlayerTrash`。本轮 1.12.2 smoke 验证 `WorldListTrashCan`、`WTC`、`wtc` 兼容入口可用，控制台打开 GUI 分支仍返回“该命令只能由玩家执行”，且日志未发现 BLWorldTrashCan 自身异常。
@@ -527,6 +528,6 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 2026-06-07 真实客户端工作流回归中，Paper/Forge 日志只用于辅助定位；玩家可见功能结论以 `client-response.properties`、`client-workflow-assertions.txt`、`client-chat.log`、`client-screen.log` 和真实 PNG 截图为准。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
 - Folia 当前已经完成世界清理、专用实体限制、低占用密集实体扫描和多轮真实客户端回归；清理通知 Chat、ActionBar、BossBar、Title、Sound 和 Command 也已补专项真实客户端截图与日志证据。但这仍不等于整产物 `FOLIA_REGION_SAFE`，因为 Command 通知可能被服主配置成触发其它插件的非 region-safe 行为。
-- 本机 PlaceholderAPI 2.11.6 不支持 Folia，Folia PAPI 变量仍需换用支持 Folia 的 PlaceholderAPI 前置后再验收；不能用普通 Paper 的 PAPI 验证结果替代 Folia。
+- 本机旧 PlaceholderAPI 2.11.6 不支持 Folia；Folia PAPI 变量已换用支持 Folia 的 `[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 完成验证。后续服主环境仍必须安装支持 Folia 的 PlaceholderAPI，不能用普通 Paper 的 PAPI 验证结果替代 Folia。
 - `world-trash.allow-load-unloaded-chunks` 默认 `false` 会改变旧插件“远处真实箱子也尽量写入”的行为；这是为了避免后台清理同步加载区块。确实需要旧行为时可以改为 `true`，但会在启动时输出性能风险警告。
 - 1.12.2 控制台直接执行 `summon Zombie 0 64 0` 会返回 `Cannot summon the object out of the world`，因此本轮未用原版 summon 完成“关闭 `entities.enabled` 后实体仍保留”的运行态子用例；该语义已由核心自测和字节码检查覆盖。

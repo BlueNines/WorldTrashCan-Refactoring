@@ -1,0 +1,8 @@
+
+plugins
+blwtc platform
+blwtc stats
+say AI_FOLIA_PAPI_BEGIN
+papi parse --null %Wtc_ClearTime%
+say AI_FOLIA_PAPI_END
+stop
