@@ -46,7 +46,7 @@ build\tools\apache-maven-3.9.9\bin\mvn.cmd -q clean package
 py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 ```
 
-当前同步脚本会输出五个交付 jar 的 SHA256；`--dry-run` 可只比较 target 和 dist 是否一致。
+当前同步脚本会从根 `pom.xml` 读取版本号，并输出五个交付 jar 的 SHA256；`--dry-run` 可只比较 target 和 dist 是否一致。
 
 ## 配置文件
 

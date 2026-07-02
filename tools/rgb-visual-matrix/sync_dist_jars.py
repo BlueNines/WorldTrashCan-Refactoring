@@ -2,6 +2,7 @@ import argparse
 import hashlib
 import json
 import shutil
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
@@ -10,30 +11,53 @@ DIST = REPO / "dist"
 ARTIFACTS = [
     (
         "legacy-1.12",
-        REPO / "bl-world-trashcan-plugin-legacy-1_12" / "target" / "bl-world-trashcan-plugin-legacy-1_12-7.0.0.jar",
+        "bl-world-trashcan-plugin-legacy-1_12",
+        "bl-world-trashcan-plugin-legacy-1_12",
         DIST / "BLWorldTrashCan-legacy-1.12.jar",
     ),
     (
         "bukkit-1.13-1.15",
-        REPO / "bl-world-trashcan-plugin-bukkit-1_13_1_15" / "target" / "bl-world-trashcan-plugin-bukkit-1_13_1_15-7.0.0.jar",
+        "bl-world-trashcan-plugin-bukkit-1_13_1_15",
+        "bl-world-trashcan-plugin-bukkit-1_13_1_15",
         DIST / "BLWorldTrashCan-bukkit-1.13-1.15.jar",
     ),
     (
         "paper-1.16-1.20",
-        REPO / "bl-world-trashcan-plugin-paper-1_16_1_20" / "target" / "bl-world-trashcan-plugin-paper-1_16_1_20-7.0.0.jar",
+        "bl-world-trashcan-plugin-paper-1_16_1_20",
+        "bl-world-trashcan-plugin-paper-1_16_1_20",
         DIST / "BLWorldTrashCan-paper-1.16-1.20.jar",
     ),
     (
         "folia-1.20",
-        REPO / "bl-world-trashcan-plugin-folia-1_20" / "target" / "bl-world-trashcan-plugin-folia-1_20-7.0.0.jar",
+        "bl-world-trashcan-plugin-folia-1_20",
+        "bl-world-trashcan-plugin-folia-1_20",
         DIST / "BLWorldTrashCan-folia-1.20.jar",
     ),
     (
         "universal",
-        REPO / "bl-world-trashcan-plugin-universal" / "target" / "bl-world-trashcan-plugin-universal-7.0.0.jar",
+        "bl-world-trashcan-plugin-universal",
+        "bl-world-trashcan-plugin-universal",
         DIST / "BLWorldTrashCan-universal.jar",
     ),
 ]
+
+
+def project_version() -> str:
+    """从根 pom.xml 读取当前项目版本。"""
+    root = ET.parse(REPO / "pom.xml").getroot()
+    namespace = {"m": "http://maven.apache.org/POM/4.0.0"}
+    version = root.findtext("m:version", namespaces=namespace)
+    if version:
+        return version.strip()
+    parent_version = root.findtext("m:parent/m:version", namespaces=namespace)
+    if parent_version:
+        return parent_version.strip()
+    raise RuntimeError("无法从根 pom.xml 读取项目版本")
+
+
+def target_jar(module_name: str, artifact_id: str, version: str) -> Path:
+    """按 Maven 标准命名计算 target jar 路径。"""
+    return REPO / module_name / "target" / (artifact_id + "-" + version + ".jar")
 
 
 def sha256(path: Path) -> str:
@@ -70,9 +94,12 @@ def sync_artifact(name: str, source: Path, target: Path, dry_run: bool) -> dict:
 def run_sync(dry_run: bool) -> dict:
     """同步全部交付 jar。"""
     artifacts = []
-    for name, source, target in ARTIFACTS:
+    version = project_version()
+    for name, module_name, artifact_id, target in ARTIFACTS:
+        source = target_jar(module_name, artifact_id, version)
         artifacts.append(sync_artifact(name, source, target, dry_run))
     return {
+        "version": version,
         "artifactCount": len(artifacts),
         "changedCount": sum(1 for item in artifacts if item["changed"]),
         "artifacts": artifacts,
@@ -89,6 +116,7 @@ def main() -> int:
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     else:
+        print("version:", result["version"])
         print("artifacts:", result["artifactCount"])
         print("changed:", result["changedCount"])
         for item in result["artifacts"]:
