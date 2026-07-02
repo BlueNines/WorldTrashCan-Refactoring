@@ -39,6 +39,15 @@
 
 通用总包主类、命令适配层和 Paper 现代分支保持 Java 8 class major 52，避免 1.16.5 服主常见 Java 8/17 运行环境出现 class major 不兼容。Folia 分支保持 Java 17 class 并只在 Folia 运行时延迟加载，避免 1.12.2 Java 8 服务端在启用阶段提前解析 Java 17 class。Paper 1.20.4 不能只因为存在 `getGlobalRegionScheduler` 就判定为 Folia；当前 Folia 判定只看服务端名称和版本文本中的 `folia` 标记。
 
+构建后需要把 Maven 最新 target 产物同步到 `dist`，因为真实测试脚本默认部署 `dist/BLWorldTrashCan-universal.jar`：
+
+```powershell
+build\tools\apache-maven-3.9.9\bin\mvn.cmd -q clean package
+py -3 tools\rgb-visual-matrix\sync_dist_jars.py
+```
+
+当前同步脚本会输出五个交付 jar 的 SHA256；`--dry-run` 可只比较 target 和 dist 是否一致。
+
 ## 配置文件
 
 默认资源均带中文注释：
