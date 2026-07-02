@@ -11,6 +11,7 @@ PYTHON_AUDITS = [
     ("dist-package-integrity", [sys.executable, "tools/rgb-visual-matrix/check_dist_package_integrity.py"]),
     ("current-dist-hash-docs", [sys.executable, "tools/rgb-visual-matrix/check_current_dist_hash_docs.py"]),
     ("resource-yaml-comments", [sys.executable, "tools/rgb-visual-matrix/check_resource_yaml_comments.py"]),
+    ("default-resource-key-parity", [sys.executable, "tools/rgb-visual-matrix/check_default_resource_key_parity.py"]),
     ("test-evidence-index", [sys.executable, "tools/rgb-visual-matrix/check_test_evidence_index.py"]),
     ("function-matrix-doc", [sys.executable, "tools/rgb-visual-matrix/check_function_matrix_doc.py"]),
     ("command-help-separation", [sys.executable, "tools/rgb-visual-matrix/check_command_help_separation.py"]),

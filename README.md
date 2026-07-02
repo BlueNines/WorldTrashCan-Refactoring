@@ -119,7 +119,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 13 项审计和完整 14 项审计均为 `failed: 0`。
+当前默认 14 项审计和完整 15 项审计均为 `failed: 0`。
 
 ## 配置文件
 
@@ -144,6 +144,14 @@ py -3 tools\rgb-visual-matrix\check_resource_yaml_comments.py
 ```
 
 当前审计覆盖 28 个源码默认配置资源、5 个 dist jar、35 个包内配置资源和 1143 个 YAML 键，结果为 `errors: 0`。
+
+默认配置资源还需要保持四个平台与 `dist` 交付包的键结构一致，避免某个平台漏配置项但中文注释审计仍然通过：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_default_resource_key_parity.py
+```
+
+当前审计覆盖 28 个源码默认配置资源、35 个 dist 包内默认配置资源和 128 个基准键，结果为 `errors: 0`。
 
 多语言消息文件不要求逐项中文注释，但要求键路径和节点类型一致；新增或调整任何 `messages/message_*.yml` 后必须运行：
 
