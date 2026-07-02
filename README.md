@@ -120,6 +120,14 @@ py -3 tools\rgb-visual-matrix\check_chunk_load_guards.py
 
 当前审计覆盖 96 个正式 Java 源码文件，结果为 `errors: 0`。
 
+涉及真实客户端、外部测试服或证据目录的测试脚本时，还需要运行破坏性操作防护审计，确认脚本不会删除测试服 `logs`、`world*`、`cache`、`assets`，也不会对 `E:\server_work` 等真实服务端目录执行递归删除：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_test_script_destructive_guards.py
+```
+
+当前审计覆盖 `tools/rgb-visual-matrix` 下 37 个 Python 脚本、21 个 `shutil.rmtree` 调用和 23 个 `unlink` 调用，结果为 `errors: 0`。
+
 交付前可用统一预检入口一次性执行当前全部后台审计；默认不跑 Maven，完整模式会额外执行 `mvn -q test`：
 
 ```powershell
@@ -127,7 +135,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 16 项审计和完整 17 项审计均为 `failed: 0`。
+当前默认 17 项审计和完整 18 项审计均为 `failed: 0`。
 
 ## 配置文件
 

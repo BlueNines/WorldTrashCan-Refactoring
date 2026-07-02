@@ -14,6 +14,7 @@ PYTHON_AUDITS = [
     ("resource-yaml-comments", [sys.executable, "tools/rgb-visual-matrix/check_resource_yaml_comments.py"]),
     ("default-resource-key-parity", [sys.executable, "tools/rgb-visual-matrix/check_default_resource_key_parity.py"]),
     ("test-evidence-index", [sys.executable, "tools/rgb-visual-matrix/check_test_evidence_index.py"]),
+    ("test-script-destructive-guards", [sys.executable, "tools/rgb-visual-matrix/check_test_script_destructive_guards.py"]),
     ("function-matrix-doc", [sys.executable, "tools/rgb-visual-matrix/check_function_matrix_doc.py"]),
     ("command-help-separation", [sys.executable, "tools/rgb-visual-matrix/check_command_help_separation.py"]),
     ("command-entrypoints", [sys.executable, "tools/rgb-visual-matrix/check_command_entrypoints.py"]),
