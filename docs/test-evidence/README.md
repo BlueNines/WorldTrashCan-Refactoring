@@ -36,6 +36,12 @@
 | Vault 扣费 | `vault-payment-visual-20260702-200044/` | 业务 PASS 但截图被暂停菜单遮挡，不作为最终视觉证据 |
 | Folia PAPI | `folia-papi-20260702-202526/` | PlaceholderAPI 和 Wtc 注册成功，但脚本用结束 marker 过早截断 PAPI 输出 |
 | Folia PAPI | `folia-papi-20260702-202706/` | PAPI 已返回 `358/350`，但脚本解析函数未识别 Folia console 的 `[time INFO]: 数字` 格式 |
+| 清理通知点击 | `cleanup-notify-click-20260701-181352/` | 通知可见但点击未触发 `/blwtc stats` |
+| 清理通知点击 | `cleanup-notify-click-20260701-181801/` | 只给顶层 Bungee 组件补点击事件后仍失败 |
+| 清理通知点击 | `cleanup-notify-click-20260701-182556/` | 硬编码点击点位偏离实际文本 |
+| 清理通知点击 | `cleanup-notify-click-20260701-183142/` | 像素定位误把 PlaceholderAPI 更新提示和天空识别成目标 |
+| 清理通知点击 | `cleanup-notify-click-20260701-184245/` | Folia 1.21.8 未稳定打开聊天 |
+| 清理通知点击 | `cleanup-notify-click-20260701-185234/` | Folia 1.21.8 未稳定打开聊天 |
 
 ## 新增证据要求
 

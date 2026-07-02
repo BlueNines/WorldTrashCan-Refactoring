@@ -1,0 +1,312 @@
+{
+  "id": "universal_folia1218",
+  "sourceId": "external_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "clientVersion": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "status": "FAIL",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 522457,
+    "sha256": "69025495af17d9ecb022f283cfd11d4a50676cac442fb498da106f4a1d73f959",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "patchedCleanupConfig": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-click-20260701-184245\\universal_folia1218\\logs\\config-after-patch\\cleanup.yml",
+  "username": "RGBolia1218",
+  "clientPid": 5992,
+  "notifyCheck": {
+    "status": "PASS",
+    "markers": [
+      "AI_CLICK_NOTIFY_0"
+    ],
+    "excerpt": "[18:44:56] [Render thread/INFO]: [System] [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats\n"
+  },
+  "beforeClickScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-click-20260701-184245\\universal_folia1218\\screenshots\\universal_folia1218-notify-before-click-f2.png",
+    "size": 376620,
+    "sha256": "9e86596225383bf4675fc3d8b6b3a4a912f9b2143996df1a038eb6b2e0b95bfd",
+    "dimensions": [
+      882,
+      513
+    ],
+    "brightness": 91.28971354166667
+  },
+  "clickCheck": {
+    "status": "FAIL",
+    "attempts": [
+      {
+        "xRatio": 0.11621315192743764,
+        "yRatio": 0.7592592592592593,
+        "source": "pixel-target"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.85,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.85,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.85,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.85,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.85,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.88,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.88,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.88,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.88,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.88,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.91,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.91,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.91,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.91,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.91,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.69,
+        "source": "grid"
+      }
+    ],
+    "statsCheck": {
+      "status": "FAIL",
+      "excerpt": "[18:44:56] [Render thread/INFO]: [System] [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats\n[18:44:58] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.44.58.png\n[18:44:59] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.44.59.png\n"
+    }
+  },
+  "afterClickScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-click-20260701-184245\\universal_folia1218\\screenshots\\universal_folia1218-stats-after-click-f2.png",
+    "size": 352362,
+    "sha256": "e608402a99bd0895abe0bb16b45ece9ad850cfe6fe5e59c8491b9eabb57213f3",
+    "dimensions": [
+      882,
+      513
+    ],
+    "brightness": 113.0048828125
+  }
+}

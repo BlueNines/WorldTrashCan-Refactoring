@@ -1,0 +1,87 @@
+[18:43:51] [Datafixer Bootstrap/INFO]: 291 Datafixer optimizations took 310 milliseconds
+[18:43:53] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[18:43:53] [Render thread/INFO]: Setting user: RGBigot2612
+[18:43:53] [Render thread/INFO]: Backend library: LWJGL version 3.4.1+2
+[18:43:54] [Render thread/INFO]: Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access, GL_EXT_texture_filter_anisotropic
+[18:43:54] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[18:43:54] [Worker-Main-15/INFO]: Found unifont_pua-17.0.01.hex, loading
+[18:43:54] [Worker-Main-12/INFO]: Found unifont_all_no_pua-17.0.01.hex, loading
+[18:43:54] [Worker-Main-14/INFO]: Found unifont_jp_patch-17.0.01.hex, loading
+[18:43:54] [Download-2/ERROR]: Failed to fetch user properties
+com.mojang.authlib.exceptions.InvalidCredentialsException: Status: 401
+	at com.mojang.authlib.exceptions.MinecraftClientHttpException.toAuthenticationException(MinecraftClientHttpException.java:59)
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:150)
+	at net.minecraft.client.Minecraft.lambda$new$1(Minecraft.java:459)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 401
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:103)
+	at com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:56)
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:121)
+	... 5 more
+[18:43:55] [Download-1/INFO]: Could not authorize you against Realms server: javax.ws.rs.BadRequestException: Invalid session
+[18:43:55] [Download-1/ERROR]: Failed to fetch Realms feature flags
+com.mojang.realmsclient.exception.RealmsServiceException: Realms authentication error with message 'javax.ws.rs.BadRequestException: Invalid session'
+	at com.mojang.realmsclient.client.RealmsClient.execute(RealmsClient.java:526)
+	at com.mojang.realmsclient.client.RealmsClient.fetchFeatureFlags(RealmsClient.java:186)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+[18:43:55] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on 扬声器 (High Definition Audio Device)
+[18:43:55] [Render thread/INFO]: Sound engine started
+[18:43:55] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 512x512x0 minecraft:textures/atlas/beds.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/signs.png-atlas
+[18:43:55] [Render thread/INFO]: Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[18:43:55] [Render thread/INFO]: Connecting to 127.0.0.1, 30027
+[18:43:56] [Download-1/ERROR]: Failed to retrieve profile key pair
+com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 401
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:103)
+	at com.mojang.authlib.minecraft.client.MinecraftClient.post(MinecraftClient.java:64)
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.getKeyPair(YggdrasilUserApiService.java:61)
+	at net.minecraft.client.multiplayer.AccountProfileKeyPairManager.fetchProfileKeyPair(AccountProfileKeyPairManager.java:128)
+	at net.minecraft.client.multiplayer.AccountProfileKeyPairManager.lambda$readOrFetchProfileKeyPair$0(AccountProfileKeyPairManager.java:77)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+[18:43:57] [Render thread/INFO]: [System] [CHAT] RGBigot2612 joined the game
+[18:43:57] [Render thread/INFO]: Loaded 2 advancements
+[18:43:57] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[18:43:57] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[18:43:57] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[18:43:57] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 4 reached during a single frame. New capacity will be 16.
+[18:43:57] [Render thread/INFO]: Resizing Chunk Sections UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[18:43:59] [Render thread/INFO]: [System] [CHAT] [Server: Set minecraft:overworld to time marker minecraft:day]
+[18:43:59] [Render thread/INFO]: [System] [CHAT] [Server: Set the weather to clear]
+[18:43:59] [Render thread/INFO]: [System] [CHAT] [Server: Teleported RGBigot2612 to 0.500000, 91.000000, -7.500000]
+[18:44:00] [Render thread/INFO]: [System] [CHAT] _________________/ Residence \_________________\n| 6.0.1.8 is now available! Your version: 6.0.1.6\n----------------------------------------
+[18:44:01] [Render thread/INFO]: [System] [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats
+[18:44:02] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.44.02.png
+[18:44:03] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.44.03.png
+[18:44:06] [Render thread/INFO]: [System] [CHAT] [BLWorldTrashCan] 清理统计:
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 世界数: 0
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0
+[18:44:06] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 341
+[18:44:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.44.08.png
+[18:44:09] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.44.08_2.png

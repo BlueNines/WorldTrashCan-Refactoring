@@ -1,0 +1,11 @@
+[18:36:38] blwtc reload
+[18:36:48] op RGBolia1218
+[18:36:48] minecraft:gamerule sendCommandFeedback false
+[18:36:48] minecraft:gamerule commandBlockOutput false
+[18:36:48] minecraft:gamerule doMobSpawning false
+[18:36:49] minecraft:time set day
+[18:36:49] minecraft:weather clear
+[18:36:49] minecraft:gamemode creative RGBolia1218
+[18:36:49] minecraft:tp RGBolia1218 0 91 -8 0 15
+[18:36:50] blwtc platform
+[18:36:51] blwtc debugnotify 0

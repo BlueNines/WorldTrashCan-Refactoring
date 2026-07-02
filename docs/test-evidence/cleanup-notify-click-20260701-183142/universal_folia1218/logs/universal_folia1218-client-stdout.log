@@ -1,0 +1,41 @@
+[18:36:40] [Datafixer Bootstrap/INFO]: 269 Datafixer optimizations took 428 milliseconds
+[18:36:42] [Render thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[18:36:42] [Render thread/INFO]: Setting user: RGBolia1218
+[18:36:43] [Render thread/INFO]: Backend library: LWJGL version 3.3.3+5
+[18:36:43] [Render thread/INFO]: Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access
+[18:36:43] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[18:36:43] [Worker-Main-10/INFO]: Found unifont_pua-16.0.03.hex, loading
+[18:36:43] [Worker-Main-3/INFO]: Found unifont_all_no_pua-16.0.03.hex, loading
+[18:36:43] [Worker-Main-8/INFO]: Found unifont_jp_patch-16.0.03.hex, loading
+[18:36:44] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on 扬声器 (High Definition Audio Device)
+[18:36:44] [Render thread/INFO]: Sound engine started
+[18:36:44] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[18:36:44] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[18:36:44] [Render thread/INFO]: Connecting to 127.0.0.1, 30004
+[18:36:47] [Render thread/INFO]: [System] [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.2)
+[18:36:47] [Render thread/INFO]: [System] [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[18:36:47] [Render thread/INFO]: [System] [CHAT] RGBolia1218 joined the game
+[18:36:47] [Render thread/INFO]: Loaded 54 advancements
+[18:36:47] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[18:36:47] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[18:36:48] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[18:36:48] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[18:36:48] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[18:36:48] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[18:36:50] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 128 reached during a single frame. New capacity will be 256.
+[18:36:51] [Render thread/INFO]: [System] [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats
+[18:36:51] [Render thread/INFO]: Resizing Dynamic Transforms UBO, capacity limit of 256 reached during a single frame. New capacity will be 512.
+[18:36:52] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.36.52.png
+[18:36:53] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.36.53.png
+[18:39:55] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-01_18.39.55.png

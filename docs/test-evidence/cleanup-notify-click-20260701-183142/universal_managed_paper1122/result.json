@@ -1,0 +1,237 @@
+{
+  "id": "universal_managed_paper1122",
+  "sourceId": "managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "clientVersion": "1.12.2",
+  "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+  "plugin": "BLWorldTrashCan-universal.jar",
+  "status": "FAIL",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+    "name": "BLWorldTrashCan-universal.jar",
+    "size": 522457,
+    "sha256": "69025495af17d9ecb022f283cfd11d4a50676cac442fb498da106f4a1d73f959",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+  },
+  "patchedCleanupConfig": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-click-20260701-183142\\universal_managed_paper1122\\logs\\config-after-patch\\cleanup.yml",
+  "username": "RGBaper1122",
+  "clientPid": 17256,
+  "notifyCheck": {
+    "status": "PASS",
+    "markers": [
+      "AI_CLICK_NOTIFY_0"
+    ],
+    "excerpt": "[18:31:54] [Client thread/INFO]: [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats\n"
+  },
+  "beforeClickScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-click-20260701-183142\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-notify-before-click-f2.png",
+    "size": 69696,
+    "sha256": "82b31f89180c6037c6f9ac3f1e96d3114a73cec4ca647bf90d06fc6079cf7e7e",
+    "dimensions": [
+      704,
+      409
+    ],
+    "brightness": 166.033203125
+  },
+  "clickCheck": {
+    "status": "FAIL",
+    "attempts": [
+      {
+        "xRatio": 0.35909090909090907,
+        "yRatio": 0.6627450980392157,
+        "source": "pixel-target"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.76,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.74,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.78,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.72,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.8,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.84,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.08,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.16,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.24,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.32,
+        "yRatio": 0.69,
+        "source": "grid"
+      },
+      {
+        "xRatio": 0.44,
+        "yRatio": 0.69,
+        "source": "grid"
+      }
+    ],
+    "statsCheck": {
+      "status": "FAIL",
+      "excerpt": "[18:31:54] [Client thread/INFO]: [CHAT] AI_CLICK_NOTIFY_0 点我执行 /blwtc stats\n[18:31:56] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-01_18.31.56.png\n[18:31:57] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-01_18.31.57.png\n"
+    }
+  },
+  "afterClickScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\cleanup-notify-click-20260701-183142\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-stats-after-click-f2.png",
+    "size": 19173,
+    "sha256": "2f8e6e7327159b4741312facae2c3a4e5402fe089cbe6df196254384c7a15d99",
+    "dimensions": [
+      704,
+      409
+    ],
+    "brightness": 56.555338541666664
+  }
+}
