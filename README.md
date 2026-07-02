@@ -80,6 +80,14 @@ py -3 tools\rgb-visual-matrix\check_command_help_separation.py
 
 当前审计覆盖 5 个命令类、16 个源码语言文件、5 个 dist jar 内 20 个语言文件，结果为 `errors: 0`。
 
+新旧命令入口也有独立审计脚本，检查源码 `plugin.yml`、当前 dist jar 内 `plugin.yml` 和五个平台入口源码，确保 `blworldtrashcan/blwtc`、`worldlisttrashcan/WorldListTrashCan/WTC/wtc` 不会退化：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_command_entrypoints.py
+```
+
+当前审计覆盖 5 个源码 `plugin.yml`、5 个 dist jar 和 5 个入口源码，结果为 `errors: 0`。
+
 涉及世界垃圾桶或实体限制扫描时，还需要运行区块强加载防护审计，确认正式源码没有新增 `loadChunk`、实体限制 `getChunkAt` 前仍有 `isChunkLoaded` 保护、世界垃圾桶默认仍不会访问未加载区块：
 
 ```powershell
@@ -95,7 +103,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 10 项审计和完整 11 项审计均为 `failed: 0`。
+当前默认 11 项审计和完整 12 项审计均为 `failed: 0`。
 
 ## 配置文件
 
