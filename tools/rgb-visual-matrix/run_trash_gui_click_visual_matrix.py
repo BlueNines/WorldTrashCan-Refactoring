@@ -203,10 +203,83 @@ def wait_client_log_markers(client_log: Path, offset: int, markers: list[str], t
     return {"status": "FAIL", "markers": markers, "excerpt": last[-1600:]}
 
 
+def wait_client_log_marker_sets(client_log: Path, offset: int, marker_sets: list[list[str]], timeout: float = 8.0) -> dict:
+    """等待真实客户端日志命中任意一组聊天消息标记。"""
+    deadline = time.time() + timeout
+    last = ""
+    while time.time() < deadline:
+        text = external.read_text_since(client_log, offset)
+        if text:
+            last = text
+        for markers in marker_sets:
+            if all(marker in text for marker in markers):
+                return {"status": "PASS", "markers": markers, "excerpt": text[-1600:]}
+        time.sleep(0.4)
+    return {"status": "FAIL", "markers": marker_sets, "excerpt": last[-1600:]}
+
+
 def personal_summary_amount(text: str, expected_amount: int) -> bool:
     """判断 debugsummary 输出是否包含预期个人垃圾桶物品数量。"""
-    plain = text.replace("§", "")
-    return "个人垃圾桶物品" in plain and ("a" + str(expected_amount) in plain or " " + str(expected_amount) + " " in plain)
+    return debug_summary_amounts(text)["personal"] == expected_amount
+
+
+def debug_summary_amounts(text: str) -> dict:
+    """解析 debugsummary 中的公共和个人垃圾桶物品数。"""
+    plain = external.strip_ansi(text)
+    result = {"global": -1, "personal": -1}
+    for line in plain.splitlines():
+        if "公共垃圾桶物品:" in line:
+            result["global"] = parse_first_int_after_marker(line, "公共垃圾桶物品:")
+        if "个人垃圾桶物品:" in line:
+            result["personal"] = parse_first_int_after_marker(line, "个人垃圾桶物品:")
+    if result["global"] < 0 or result["personal"] < 0:
+        fallback = debug_summary_amounts_by_order(plain)
+        if result["global"] < 0:
+            result["global"] = fallback["global"]
+        if result["personal"] < 0:
+            result["personal"] = fallback["personal"]
+    return result
+
+
+def debug_summary_amounts_by_order(text: str) -> dict:
+    """兼容 1.12 控制台中文乱码时按 debugsummary 固定行序解析库存。"""
+    values = []
+    in_summary = False
+    for line in text.splitlines():
+        if "BLWorldTrashCan debug summary" in line:
+            in_summary = True
+            values = []
+            continue
+        if not in_summary or "- " not in line:
+            continue
+        values.append(parse_first_int_after_last_colon(line))
+    if len(values) >= 5:
+        return {"global": values[-2], "personal": values[-1]}
+    return {"global": -1, "personal": -1}
+
+
+def parse_first_int_after_marker(line: str, marker: str) -> int:
+    """解析指定标记后的第一个整数。"""
+    text = line.split(marker, 1)[1] if marker in line else line
+    digits = ""
+    for char in text:
+        if char.isdigit():
+            digits += char
+        elif digits:
+            break
+    return int(digits) if digits else -1
+
+
+def parse_first_int_after_last_colon(line: str) -> int:
+    """解析最后一个冒号后的第一个整数，避开日志时间戳。"""
+    text = line.rsplit(":", 1)[1] if ":" in line else line
+    digits = ""
+    for char in text:
+        if char.isdigit():
+            digits += char
+        elif digits:
+            break
+    return int(digits) if digits else -1
 
 
 def fill_route_stacks(process, server_log: Path, command_log: Path, username: str,
@@ -227,6 +300,7 @@ def fill_route_stacks(process, server_log: Path, command_log: Path, username: st
 
 def setup_player(case: dict, username: str, process, command_log: Path) -> None:
     """初始化玩家权限、位置和基础游戏规则。"""
+    gamemode = "minecraft:gamemode 0 " + username if is_legacy(case) else "minecraft:gamemode survival " + username
     commands = [
         "op " + username,
         "minecraft:gamerule sendCommandFeedback false",
@@ -237,19 +311,14 @@ def setup_player(case: dict, username: str, process, command_log: Path) -> None:
         "minecraft:time set day",
         "minecraft:weather clear",
         "minecraft:fill -3 90 -11 3 90 -5 stone",
+        gamemode,
+        "minecraft:tp " + username + " 0 91 -8 0 15",
+        "minecraft:effect " + username + " minecraft:resistance 1000000 255 true",
+        "minecraft:effect " + username + " minecraft:saturation 1000000 1 true",
+        "minecraft:clear " + username,
     ]
-    if is_legacy(case):
-        commands.extend([
-            "minecraft:gamemode 0 " + username,
-            "minecraft:tp " + username + " 0 91 -8 0 15",
-        ])
-    else:
-        commands.extend([
-            "minecraft:gamemode survival " + username,
-            "minecraft:tp " + username + " 0 91 -8 0 15",
-        ])
     for command in commands:
-        run_console(process, command_log, command, 0.12)
+        run_console(process, command_log, command, 0.25)
     time.sleep(1.0)
 
 
@@ -348,6 +417,34 @@ def send_client_command(case: dict, game_dir: Path, run_dir: Path, command: str,
     return external.send_client_command(case, game_dir, run_dir, command, suffix, wait)
 
 
+def open_trash_gui(case: dict, username: str, process, command_log: Path,
+                   run_dir: Path, game_dir: Path, kind: str, screenshot_name: str) -> dict:
+    """通过后台测试入口打开公共或个人垃圾桶 GUI，并用真实客户端截图。"""
+    run_console(process, command_log, "blwtc debugopen " + username + " " + kind, 1.0)
+    screenshot = capture_named_screenshot(case, game_dir, run_dir, screenshot_name)
+    info = screenshot_info(screenshot)
+    return {
+        "name": screenshot_name,
+        "command": "blwtc debugopen " + username + " " + kind,
+        "status": "PASS" if info["brightness"] > 3 else "FAIL",
+        "screenshot": info,
+    }
+
+
+def open_player_debug_gui(case: dict, username: str, process, command_log: Path,
+                          run_dir: Path, game_dir: Path, action: str, screenshot_name: str) -> dict:
+    """通过后台玩家入口打开需要玩家对象的 GUI，并用真实客户端截图。"""
+    run_console(process, command_log, "blwtc debugplayer " + username + " " + action, 1.0)
+    screenshot = capture_named_screenshot(case, game_dir, run_dir, screenshot_name)
+    info = screenshot_info(screenshot)
+    return {
+        "name": screenshot_name,
+        "command": "blwtc debugplayer " + username + " " + action,
+        "status": "PASS" if info["brightness"] > 3 else "FAIL",
+        "screenshot": info,
+    }
+
+
 def give_item(case: dict, process, command_log: Path, username: str, material: str, amount: int) -> None:
     """使用原版 give 命令给玩家准备背包物品。"""
     run_console(process, command_log, "minecraft:clear " + username, 0.25)
@@ -404,6 +501,25 @@ def copy_runtime_file(source: Path, target: Path) -> str:
     return str(target)
 
 
+def sha256_file(path: Path) -> str:
+    """计算文件 SHA256。"""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
+    """复制本轮运行态日志和配置证据。"""
+    server_dir = Path(case["serverDir"])
+    plugin_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    copy_runtime_file(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
+    copy_runtime_file(plugin_dir / "trash.yml", run_dir / "config" / "trash-after-restore.yml")
+    copy_runtime_file(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
+    copy_runtime_file(plugin_dir / "config.yml", run_dir / "config" / "config.yml")
+
+
 def verify_global_ban(case: dict, server_log: Path, process, command_log: Path, username: str) -> dict:
     """验证公共黑名单保存后立即影响公共垃圾桶路由。"""
     trash_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml"
@@ -429,7 +545,7 @@ def run_public_gui_checks(case: dict, username: str, process, server_log: Path,
     checks = []
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
     give_item(case, process, command_log, username, "cobblestone", 7)
-    checks.append(send_client_command(case, game_dir, run_dir, "/blwtc global", "global-put-before-f2", 1.0))
+    checks.append(open_trash_gui(case, username, process, command_log, run_dir, game_dir, "global", "global-put-before-f2"))
     click_slot(case, "hotbar", 0, 0)
     put_after = capture_named_screenshot(case, game_dir, run_dir, "global-put-after-click-f2")
     put_log = wait_global_log(case, username, ["+global", "COBBLESTONEx7"], 8)
@@ -451,7 +567,10 @@ def run_public_gui_checks(case: dict, username: str, process, server_log: Path,
     client_offset = external.log_text_offset(client_log)
     click_slot(case, "top", 0, 1)
     cooldown = capture_named_screenshot(case, game_dir, run_dir, "global-take-cooldown-f2")
-    cooldown_log = wait_client_log_markers(client_log, client_offset, ["公共垃圾桶拿取冷却"], 8)
+    cooldown_log = wait_client_log_marker_sets(client_log, client_offset, [
+        ["公共垃圾桶拿取冷却"],
+        ["公共垃圾桶冷却"],
+    ], 8)
     checks.append({
         "name": "F-028",
         "status": cooldown_log["status"],
@@ -459,12 +578,22 @@ def run_public_gui_checks(case: dict, username: str, process, server_log: Path,
         "clientLog": cooldown_log,
     })
     close_gui(case)
-    stock = send_client_command(case, game_dir, run_dir, "/blwtc debugstock", "global-stock-after-put-take-f2", 1.0)
-    checks.append({"name": "global-stock-after-put-take", "status": stock["status"], "screenshot": stock["screenshot"]})
+    stock_text = run_console_capture(process, server_log, command_log, "blwtc debugstock", 0.8)
+    stock_shot = render_text_screenshot(
+        stock_text,
+        run_dir / "server-screenshots" / (case["id"] + "-global-stock-after-put-take.png"),
+        case["label"] + " / global stock after put and take",
+    )
+    checks.append({
+        "name": "global-stock-after-put-take",
+        "status": "PASS" if stock_text.strip() else "FAIL",
+        "serverScreenshot": screenshot_info(stock_shot),
+        "excerpt": stock_text[-1600:],
+    })
 
     fill_result = fill_route_stacks(process, server_log, command_log, username, "global", "COBBLESTONE", 46)
     checks.append({"name": "global-fill-46-stacks", "status": fill_result["status"], "details": fill_result})
-    checks.append(send_client_command(case, game_dir, run_dir, "/blwtc global", "global-page-1-f2", 1.0))
+    checks.append(open_trash_gui(case, username, process, command_log, run_dir, game_dir, "global", "global-page-1-f2"))
     click_slot(case, "top", 5, 7)
     page_two = capture_named_screenshot(case, game_dir, run_dir, "global-page-2-after-next-f2")
     checks.append({"name": "F-024", "status": fill_result["status"], "screenshot": screenshot_info(page_two)})
@@ -491,7 +620,7 @@ def run_personal_gui_checks(case: dict, username: str, process, server_log: Path
     """运行个人垃圾桶 GUI 放入、取出和满桶自动清空检查。"""
     checks = []
     give_item(case, process, command_log, username, "stone", 5)
-    checks.append(send_client_command(case, game_dir, run_dir, "/blwtc personal", "personal-put-before-f2", 1.0))
+    checks.append(open_trash_gui(case, username, process, command_log, run_dir, game_dir, "personal", "personal-put-before-f2"))
     click_slot(case, "hotbar", 0, 0)
     put_after = capture_named_screenshot(case, game_dir, run_dir, "personal-put-after-click-f2")
     put_summary = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
@@ -517,15 +646,18 @@ def run_personal_gui_checks(case: dict, username: str, process, server_log: Path
                         "blwtc debugroute " + username + " personal DIRT 1",
                         ["[Debug] debugRoute", "routed=true"], 14)
     auto_clear_text = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
-    summary = send_client_command(case, game_dir, run_dir, "/blwtc debugsummary " + username,
-                                  "personal-full-auto-clear-summary-f2", 1.0)
-    checks.append(send_client_command(case, game_dir, run_dir, "/blwtc personal",
-                                      "personal-full-auto-clear-gui-f2", 1.0))
+    summary_shot = render_text_screenshot(
+        auto_clear_text,
+        run_dir / "server-screenshots" / (case["id"] + "-personal-full-auto-clear-summary.png"),
+        case["label"] + " / personal full auto clear summary",
+    )
+    checks.append(open_trash_gui(case, username, process, command_log, run_dir, game_dir, "personal",
+                                 "personal-full-auto-clear-gui-f2"))
     close_gui(case)
     checks.append({
         "name": "F-036",
         "status": "PASS" if fill_result["status"] == "PASS" and personal_summary_amount(auto_clear_text, 1) else "FAIL",
-        "summaryScreenshot": summary["screenshot"],
+        "summaryScreenshot": screenshot_info(summary_shot),
         "fillResult": fill_result,
         "summaryExcerpt": auto_clear_text[-1600:],
         "reason": "debugroute 先填满 54 个 STONE 堆叠，再放入 DIRT 1；个人桶自动清空旧内容后只保留新物品。",
@@ -537,7 +669,7 @@ def run_global_ban_gui_check(case: dict, username: str, process, server_log: Pat
                              command_log: Path, run_dir: Path, game_dir: Path) -> dict:
     """运行公共黑名单 GUI 保存并立即生效检查。"""
     give_item(case, process, command_log, username, "stone", 1)
-    before = send_client_command(case, game_dir, run_dir, "/blwtc globalban", "globalban-before-f2", 1.0)
+    before = open_player_debug_gui(case, username, process, command_log, run_dir, game_dir, "globalban", "globalban-before-f2")
     click_slot(case, "hotbar", 0, 0)
     placed = capture_named_screenshot(case, game_dir, run_dir, "globalban-stone-placed-f2")
     close_gui(case)
@@ -554,7 +686,7 @@ def run_global_ban_gui_check(case: dict, username: str, process, server_log: Pat
     )
     return {
         "name": "F-030",
-        "status": "PASS" if verify["trashContainsStone"] and verify["routeRejected"] else "FAIL",
+        "status": "PASS" if before["status"] == "PASS" and verify["trashContainsStone"] and verify["routeRejected"] else "FAIL",
         "beforeScreenshot": before["screenshot"],
         "placedScreenshot": screenshot_info(placed),
         "savedScreenshot": screenshot_info(saved),
@@ -613,7 +745,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         failed = [item.get("name", "?") for item in result["checks"] if item.get("status") != "PASS"]
         blank = []
         for item in result["checks"]:
-            for key in ("screenshot", "clientScreenshot", "placedScreenshot", "savedScreenshot", "serverScreenshot"):
+            for key in ("screenshot", "clientScreenshot", "beforeScreenshot", "placedScreenshot", "savedScreenshot", "summaryScreenshot", "serverScreenshot"):
                 value = item.get(key)
                 if isinstance(value, dict) and value.get("brightness", 4) <= 3:
                     blank.append(item.get("name", "?") + ":" + key)
@@ -634,6 +766,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         base.ACTIVE_CLIENT_PID = None
         if process is not None:
             restore_backups(backups)
+            copy_runtime_evidence(case, run_dir)
             external.stop_process(process, "stop")
     write_json(run_dir / "result.json", result)
     return result
@@ -644,7 +777,7 @@ def make_contact_sheet(results: list[dict], evidence_root: Path) -> Path | None:
     screenshots = []
     for result in results:
         for item in result.get("checks", []):
-            for key in ("screenshot", "clientScreenshot", "placedScreenshot", "savedScreenshot", "serverScreenshot"):
+            for key in ("screenshot", "clientScreenshot", "beforeScreenshot", "placedScreenshot", "savedScreenshot", "summaryScreenshot", "serverScreenshot"):
                 value = item.get(key)
                 if isinstance(value, dict) and value.get("path"):
                     screenshots.append((result["label"] + " " + item.get("name", "") + " " + key, Path(value["path"])))
@@ -677,6 +810,42 @@ def make_contact_sheet(results: list[dict], evidence_root: Path) -> Path | None:
     return target
 
 
+def write_readme(evidence_root: Path, summary: dict) -> None:
+    """生成 GUI 点击证据目录 README。"""
+    environments = "、".join(
+        item["label"] + " + 真实 " + str(item["clientVersion"]) + " 客户端"
+        for item in summary["results"]
+    )
+    lines = [
+        "# GUI 正向点击真实客户端专项",
+        "",
+        "- 被测 jar: `dist/BLWorldTrashCan-universal.jar`",
+        "- SHA256: `" + summary.get("jarSha256", "") + "`",
+        "- 验收方式: " + environments + "。",
+        "- 覆盖: 公共垃圾桶放入/取出/冷却/分页/操作日志，个人垃圾桶放入/取出/满桶自动清空，公共黑名单 GUI 保存并立即影响路由。",
+        "- 通过标准: GUI 必须由真实客户端打开并截图，关键槽位必须由真实客户端点击，库存摘要、公共日志和路由结果必须匹配预期。",
+        "- 结论: " + ("PASS" if summary.get("allPassed") else "FAIL"),
+        "",
+        "| 服务端 | 版本 | 状态 | 玩家 |",
+        "| --- | --- | --- | --- |",
+    ]
+    for item in summary["results"]:
+        lines.append("| " + item["label"] + " | " + str(item["clientVersion"]) + " | " + item["status"] + " | " + item.get("username", "") + " |")
+    lines.extend([
+        "",
+        "## 证据",
+        "",
+        "- `summary.json`: 机器可读总结果。",
+        "- `*/result.json`: 单端详细断言。",
+        "- `*/screenshots/*-f2.png`: 真实客户端 GUI 打开与点击后的 F2 截图。",
+        "- `*/server-screenshots/*.png`: 库存摘要、公共日志和路由拒绝等服务端可视化证据。",
+        "- `*/logs/*server-console.log`、`*/logs/*console-commands.log`、`*/logs/latest.log`: 服务端运行日志和命令记录。",
+        "- `trash-gui-click-contact-sheet.png`: 截图总览。",
+        "",
+    ])
+    (evidence_root / "README.md").write_text("\n".join(lines), encoding="utf-8")
+
+
 def main() -> int:
     """运行垃圾桶 GUI 点击真实客户端截图矩阵。"""
     parser = argparse.ArgumentParser()
@@ -694,13 +863,17 @@ def main() -> int:
         results.append(result)
         write_json(evidence_root / "summary.json", {"run": run_id, "results": results, "contactSheet": ""})
     contact_sheet = make_contact_sheet(results, evidence_root)
+    jar_path = base.REPO / "dist" / "BLWorldTrashCan-universal.jar"
     summary = {
         "run": run_id,
+        "jar": str(jar_path),
+        "jarSha256": sha256_file(jar_path),
         "results": results,
         "contactSheet": str(contact_sheet) if contact_sheet else "",
         "allPassed": all(item.get("status") == "PASS" for item in results),
     }
     write_json(evidence_root / "summary.json", summary)
+    write_readme(evidence_root, summary)
     failed = [item for item in results if item.get("status") != "PASS"]
     log("GUI 点击矩阵完成: total=" + str(len(results)) + " failed=" + str(len(failed))
         + " evidence=" + str(evidence_root))

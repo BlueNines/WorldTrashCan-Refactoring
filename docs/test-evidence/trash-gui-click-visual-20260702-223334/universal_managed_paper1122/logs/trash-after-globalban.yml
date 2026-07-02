@@ -1,0 +1,35 @@
+# 世界垃圾桶设置。
+world-trash:
+  enabled: true
+  sign-create-text: '[世界垃圾桶]'
+  sign-created-text: '&#5AC8FA[&#FFD166世界垃圾桶&#5AC8FA]'
+  default-max-count: 3
+  allow-load-unloaded-chunks: false
+  banned-worlds:
+  - world
+  - DIM-1
+  - DIM1
+global-trash:
+  enabled: true
+  max-pages: 5
+  take-delay-millis: 60000
+  allow-player-put: true
+  clear-every-cleanups: 3
+  log-enabled: true
+  gui:
+    back-model-id: -1
+    next-model-id: -1
+    background-model-id: -1
+  banned-materials:
+  - STONE
+personal-trash:
+  enabled: true
+  track-player-dropped-items: true
+  auto-clear-when-full: true
+  take-cost: -1
+  notify:
+    enabled: true
+    max-display-items: 3
+  damage-recovery:
+    mode: disabled
+    delay-seconds: 6

@@ -1,0 +1,49 @@
+Completely ignored arguments: [legacy]
+[22:38:16] [Client thread/INFO]: Setting user: RGBaper1122
+[22:38:17] [Client thread/INFO]: LWJGL Version: 2.9.4
+[22:38:17] [Client thread/INFO]: Reloading ResourceManager: Default
+[22:38:18] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[22:38:18] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[22:38:18] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[22:38:18] [Thread-3/INFO]: OpenAL initialized.
+[22:38:18] [Sound Library Loader/INFO]: Sound engine started
+[22:38:19] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[22:38:19] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[22:38:20] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[22:38:41] [Client thread/INFO]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.2)
+[22:38:41] [Client thread/INFO]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[22:38:41] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[22:38:43] [Client thread/INFO]: [CHAT] [Server: Opped RGBaper1122]
+[22:38:48] [Client thread/INFO]: [CHAT] RGBaper1122 has made the advancement [Stone Age]
+[22:38:48] [Client thread/INFO]: Loaded 15 advancements
+[22:38:51] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.38.51.png
+[22:38:52] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.38.51_2.png
+[22:38:55] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.38.55.png
+[22:38:55] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.38.55_2.png
+[22:38:58] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.38.58.png
+[22:38:59] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.38.59.png
+[22:39:00] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 公共垃圾桶冷却剩余 56.3 秒。
+[22:39:00] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 公共垃圾桶冷却剩余 56.2 秒。
+[22:39:00] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 公共垃圾桶冷却剩余 56.1 秒。
+[22:39:02] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.02.png
+[22:39:03] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.03.png
+[22:39:10] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.10.png
+[22:39:10] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.10_2.png
+[22:39:14] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.14.png
+[22:39:14] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.14_2.png
+[22:39:17] [Client thread/INFO]: Loaded 19 advancements
+[22:39:20] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.20.png
+[22:39:21] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.20_2.png
+[22:39:24] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.24.png
+[22:39:24] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.24_2.png
+[22:39:28] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.28.png
+[22:39:29] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.29.png
+[22:39:38] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.38.png
+[22:39:38] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.38_2.png
+[22:39:44] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.44.png
+[22:39:44] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.44_2.png
+[22:39:48] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.47.png
+[22:39:48] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.48.png
+[22:39:49] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 已保存公共垃圾桶黑名单，数量: 1 (已立即生效)
+[22:39:52] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.51.png
+[22:39:52] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.39.52.png

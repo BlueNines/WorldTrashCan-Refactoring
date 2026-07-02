@@ -1,0 +1,300 @@
+{
+  "run": "trash-gui-click-visual-20260702-223334",
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+  "jarSha256": "b2219edc7eee635d6899a30d6a40310453e8ce378a65dc967a239c3731132c04",
+  "results": [
+    {
+      "id": "universal_managed_paper1122",
+      "sourceId": "managed_paper1122",
+      "label": "paper-1.12.2-managed-universal",
+      "version": "1.12.2",
+      "clientVersion": "1.12.2",
+      "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+      "plugin": "BLWorldTrashCan-universal.jar",
+      "status": "PASS",
+      "artifact": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
+        "name": "BLWorldTrashCan-universal.jar",
+        "size": 526658,
+        "sha256": "b2219edc7eee635d6899a30d6a40310453e8ce378a65dc967a239c3731132c04",
+        "pluginYmlVersion": "7.0.0",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
+      },
+      "checks": [
+        {
+          "name": "global-put-before-f2",
+          "command": "blwtc debugopen RGBaper1122 global",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-put-before-f2.png",
+            "size": 50782,
+            "sha256": "582c43fe1434e346a2aae74c9c4a6d3009e65e0b62298570ba5e324e4d82e61a",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 86.64518229166667
+          }
+        },
+        {
+          "name": "F-027",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-put-after-click-f2.png",
+            "size": 40073,
+            "sha256": "4d9ff85c2dc63d6aff33330b1ad13ea3f19653409de64ac15368efbd0837dc80",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 83.533203125
+          },
+          "logExcerpt": "global-trash-2026-07-02.log 2026-07-02 22:20:21 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:20:25 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:26:14 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:26:17 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:29:27 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:29:31 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:33:55 RGBaper1122 +global COBBLESTONEx7"
+        },
+        {
+          "name": "F-026",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-take-after-click-f2.png",
+            "size": 46551,
+            "sha256": "86d80c599ba0e0f6c2883cb09c72f8bbee5363e46266bf334bfb83d1ef17a94f",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 83.7822265625
+          },
+          "logExcerpt": "global-trash-2026-07-02.log 2026-07-02 22:20:21 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:20:25 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:26:14 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:26:17 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:29:27 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:29:31 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:33:55 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:33:59 RGBaper1122 -global COBBLESTONEx7"
+        },
+        {
+          "name": "F-028",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-take-cooldown-f2.png",
+            "size": 48789,
+            "sha256": "35fdbc2805fe43f5ec9f932b20acc079feed25bae358a91737705f264912cfee",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 83.751953125
+          },
+          "clientLog": {
+            "status": "PASS",
+            "markers": [
+              "公共垃圾桶冷却"
+            ],
+            "excerpt": "[22:34:03] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 公共垃圾桶冷却剩余 56.3 秒。\n[22:34:03] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] 公共垃圾桶冷却剩余 56.2 秒。\n[22:34:05] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.34.05.png\n[22:34:05] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-02_22.34.05_2.png\n"
+          }
+        },
+        {
+          "name": "global-stock-after-put-take",
+          "status": "PASS",
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-global-stock-after-put-take.png",
+            "size": 18673,
+            "sha256": "1b02b51b1dcbdcf047a21da43867f08e210dd607b58d2b83a04b80425cd86d1b",
+            "dimensions": [
+              1600,
+              240
+            ],
+            "brightness": 30.237630208333332
+          },
+          "excerpt": "[22:34:08 INFO]: ����Ͱ���:\n[22:34:08 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:34:08 INFO]: - ��������Ͱҳ��: 5\n[22:34:08 INFO]: - �Ѽ��ظ�������Ͱ: 0\n"
+        },
+        {
+          "name": "global-fill-46-stacks",
+          "status": "PASS",
+          "details": {
+            "status": "PASS",
+            "stacks": 46,
+            "excerpt": "BBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n[22:34:10 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[22:34:10 INFO]: ·�ɲ��Գɹ���\n"
+          }
+        },
+        {
+          "name": "global-page-1-f2",
+          "command": "blwtc debugopen RGBaper1122 global",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-page-1-f2.png",
+            "size": 55378,
+            "sha256": "94253db7d9a310fd045d4b7a70927fd28531df1065d4c828dbc4a8198db26cc6",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 80.7685546875
+          }
+        },
+        {
+          "name": "F-024",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-global-page-2-after-next-f2.png",
+            "size": 44586,
+            "sha256": "ee2f3cfd5f4272c7fd232ee7853b762b3755fe1a997bb4c13f1add84e4cf0486",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 83.1064453125
+          }
+        },
+        {
+          "name": "F-029",
+          "status": "PASS",
+          "client": "公共垃圾桶取放截图已保存",
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-global-trash-operation-log.png",
+            "size": 62786,
+            "sha256": "c553c7413bd65c93f284fc3d4a046435ebd42f0ab8807831aea09d19175ff04f",
+            "dimensions": [
+              1600,
+              312
+            ],
+            "brightness": 37.353190104166664
+          },
+          "logExcerpt": "global-trash-2026-07-02.log 2026-07-02 22:20:21 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:20:25 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:26:14 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:26:17 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:29:27 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:29:31 RGBaper1122 -global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:33:55 RGBaper1122 +global COBBLESTONEx7\nglobal-trash-2026-07-02.log 2026-07-02 22:33:59 RGBaper1122 -global COBBLESTONEx7"
+        },
+        {
+          "name": "personal-put-before-f2",
+          "command": "blwtc debugopen RGBaper1122 personal",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-put-before-f2.png",
+            "size": 43183,
+            "sha256": "2e51b5d5fd262c0c18bb33b32b3b55ba37aeeecd32ced5e188093a97084f5e3b",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 87.09309895833333
+          }
+        },
+        {
+          "name": "F-035",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-put-after-click-f2.png",
+            "size": 39385,
+            "sha256": "6518e0b0fe2219dc53b8a37dbb3dcdf77138f4700349114d6a4fbe189d4459e5",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 82.44010416666667
+          },
+          "summaryExcerpt": "[22:34:27 INFO]: BLWorldTrashCan debug summary:\n[22:34:27 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:34:27 INFO]: - ����: rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260702_223334\n[22:34:27 INFO]: - ��������Ͱ����: 0\n[22:34:27 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:34:27 INFO]: - ����δ��������: 0\n[22:34:27 INFO]: - ��������Ͱ��Ʒ: 2944 (�ѵ� 46)\n[22:34:27 INFO]: - ��������Ͱ��Ʒ: 5 (�ѵ� 1)\n"
+        },
+        {
+          "name": "F-034",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-take-after-click-f2.png",
+            "size": 40710,
+            "sha256": "598cf737a2d230eb1129ddd92e8e8fe0a20430a145825b17e71b98c67057c2f1",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 82.73958333333333
+          },
+          "summaryExcerpt": "[22:34:32 INFO]: BLWorldTrashCan debug summary:\n[22:34:32 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:34:32 INFO]: - ����: rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260702_223334\n[22:34:32 INFO]: - ��������Ͱ����: 0\n[22:34:32 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:34:32 INFO]: - ����δ��������: 0\n[22:34:32 INFO]: - ��������Ͱ��Ʒ: 2944 (�ѵ� 46)\n[22:34:32 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n"
+        },
+        {
+          "name": "personal-full-auto-clear-gui-f2",
+          "command": "blwtc debugopen RGBaper1122 personal",
+          "status": "PASS",
+          "screenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-personal-full-auto-clear-gui-f2.png",
+            "size": 40316,
+            "sha256": "e7c5a1633dc4aa9aabd4ffdba9483ebee1f5512d483a44a6f5d133bb635deed6",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 82.572265625
+          }
+        },
+        {
+          "name": "F-036",
+          "status": "PASS",
+          "summaryScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-personal-full-auto-clear-summary.png",
+            "size": 40320,
+            "sha256": "4790dd32e1665cc6c1789a64fec40616b166522d33b04859bca17927ca28444c",
+            "dimensions": [
+              1600,
+              312
+            ],
+            "brightness": 33.07421875
+          },
+          "fillResult": {
+            "status": "PASS",
+            "stacks": 54,
+            "excerpt": "bugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:36 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:36 INFO]: ·�ɲ��Գɹ���\n[22:34:37 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:37 INFO]: ·�ɲ��Գɹ���\n[22:34:37 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:37 INFO]: ·�ɲ��Գɹ���\n[22:34:37 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:37 INFO]: ·�ɲ��Գɹ���\n[22:34:37 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[22:34:37 INFO]: ·�ɲ��Գɹ���\n"
+          },
+          "summaryExcerpt": "[22:34:37 INFO]: BLWorldTrashCan debug summary:\n[22:34:37 INFO]: - ƽ̨: legacy-1.12 (universal)\n[22:34:37 INFO]: - ����: rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260702_223334\n[22:34:37 INFO]: - ��������Ͱ����: 0\n[22:34:37 INFO]: - ��������Ͱ��Ʒ: 0 (�ѵ� 0)\n[22:34:37 INFO]: - ����δ��������: 0\n[22:34:37 INFO]: - ��������Ͱ��Ʒ: 2944 (�ѵ� 46)\n[22:34:37 INFO]: - ��������Ͱ��Ʒ: 1 (�ѵ� 1)\n",
+          "reason": "debugroute 先填满 54 个 STONE 堆叠，再放入 DIRT 1；个人桶自动清空旧内容后只保留新物品。"
+        },
+        {
+          "name": "F-030",
+          "status": "PASS",
+          "beforeScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-globalban-before-f2.png",
+            "size": 39135,
+            "sha256": "c0a776044541d8e06f4fde848e8c104b9ce9f53c0e275e5fe1e0cd3f86a3aa21",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 82.59049479166667
+          },
+          "placedScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-globalban-stone-placed-f2.png",
+            "size": 41662,
+            "sha256": "245efda887b4fa3e7e947237ef1862cd408ec28271b5cc0b48dbba154421faa2",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 82.14388020833333
+          },
+          "savedScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-globalban-after-close-save-f2.png",
+            "size": 58681,
+            "sha256": "bc623b033c208b609f908000d778d544d7d2ab72df79076e830a873ae63b4b98",
+            "dimensions": [
+              884,
+              521
+            ],
+            "brightness": 53.724283854166664
+          },
+          "serverScreenshot": {
+            "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-globalban-route-rejected.png",
+            "size": 18723,
+            "sha256": "bc437f455bf1e843082a7cf6912aa15a21e34679742336279772fd0cf767776e",
+            "dimensions": [
+              1600,
+              240
+            ],
+            "brightness": 30.574544270833332
+          },
+          "trashSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\universal_managed_paper1122\\logs\\trash-after-globalban.yml",
+          "verify": {
+            "trashContainsStone": true,
+            "routeRejected": true,
+            "excerpt": "[22:34:55 INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=1, routed=false\n[22:34:55 INFO]: ·�ɲ��Գɹ���\n"
+          }
+        }
+      ],
+      "patchedTrashConfig": "E:\\server_work\\paper-1.12.2-universal-test-server\\plugins\\BLWorldTrashCan\\trash.yml",
+      "username": "RGBaper1122",
+      "clientPid": 18776,
+      "failedChecks": [],
+      "blankScreenshots": []
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260702-223334\\trash-gui-click-contact-sheet.png",
+  "allPassed": true
+}

@@ -1,0 +1,133 @@
+[22:25:56] blwtc reload
+[22:26:04] op RGBaper1122
+[22:26:04] minecraft:gamerule sendCommandFeedback false
+[22:26:04] minecraft:gamerule commandBlockOutput false
+[22:26:04] minecraft:gamerule doMobSpawning false
+[22:26:05] minecraft:gamerule keepInventory true
+[22:26:05] minecraft:gamerule fallDamage false
+[22:26:05] minecraft:time set day
+[22:26:05] minecraft:weather clear
+[22:26:06] minecraft:fill -3 90 -11 3 90 -5 stone
+[22:26:06] minecraft:gamemode 0 RGBaper1122
+[22:26:06] minecraft:tp RGBaper1122 0 91 -8 0 15
+[22:26:06] minecraft:effect RGBaper1122 minecraft:resistance 1000000 255 true
+[22:26:07] minecraft:effect RGBaper1122 minecraft:saturation 1000000 1 true
+[22:26:07] minecraft:clear RGBaper1122
+[22:26:08] blwtc platform
+[22:26:09] minecraft:clear RGBaper1122
+[22:26:09] minecraft:give RGBaper1122 cobblestone 7
+[22:26:10] blwtc debugopen RGBaper1122 global
+[22:26:26] blwtc debugstock
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:27] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:29] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:29] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[22:26:29] blwtc debugopen RGBaper1122 global
+[22:26:37] minecraft:clear RGBaper1122
+[22:26:38] minecraft:give RGBaper1122 stone 5
+[22:26:38] blwtc debugopen RGBaper1122 personal
+[22:26:45] blwtc debugsummary RGBaper1122
+[22:26:50] blwtc debugsummary RGBaper1122
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:53] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:54] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal STONE 64
+[22:26:55] blwtc debugroute RGBaper1122 personal DIRT 1
+[22:26:55] blwtc debugsummary RGBaper1122
+[22:26:56] blwtc debugopen RGBaper1122 personal
+[22:27:01] minecraft:clear RGBaper1122
+[22:27:02] minecraft:give RGBaper1122 stone 1
+[22:27:03] blwtc debugplayer RGBaper1122 globalban
+[22:27:14] blwtc debugroute RGBaper1122 global STONE 1

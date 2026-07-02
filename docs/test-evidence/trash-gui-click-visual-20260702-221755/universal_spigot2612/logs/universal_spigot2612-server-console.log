@@ -1,0 +1,803 @@
+Unbundling libraries to E:\server_work\spigot-26.1.2-test-server\bundler
+Starting server
+Loading libraries, please wait...
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.jna.Native in an unnamed module (file:/E:/server_work/spigot-26.1.2-test-server/bundler/libraries/jna-5.17.0.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.joml.MemUtil$MemUtilUnsafe (file:/E:/server_work/spigot-26.1.2-test-server/bundler/libraries/joml-1.10.8.jar)
+WARNING: Please consider reporting this to the maintainers of class org.joml.MemUtil$MemUtilUnsafe
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+[22:17:59] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[22:17:59] [ServerMain/INFO]: Found new data pack file/bukkit, loading it automatically
+[22:17:59] [Worker-Main-12/INFO]: No existing world data, creating new world
+[22:17:59] [Worker-Main-12/ERROR]: No key layers in MapLike[{}]
+[22:18:00] [ServerMain/INFO]: Loaded 1515 recipes
+[22:17:59] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[22:17:59] [ServerMain/INFO]: Found new data pack file/bukkit, loading it automatically
+[22:17:59] [Worker-Main-12/INFO]: No existing world data, creating new world
+[22:17:59] [Worker-Main-12/ERROR]: No key layers in MapLike[{}]
+[22:18:00] [ServerMain/INFO]: Loaded 1515 recipes
+[22:18:00] [Server thread/INFO]: Starting minecraft server version 26.1.2
+[22:18:00] [Server thread/INFO]: Loading properties
+[22:18:00] [Server thread/INFO]: This server is running Spigot version 4629-Spigot-566f972-bb990d0 (MC: 26.1.2) (Implementing API version 26.1.2-R0.1-SNAPSHOT)
+[22:18:00] [Server thread/INFO]: *** This version of Spigot contains changes to some enums. If you notice that plugins no longer work after updating, please report this to the developers of those plugins first. ***
+[22:18:00] [Server thread/INFO]: *** If you cannot update those plugins, you can try setting `settings.compatibility.enum-compatibility-mode` to `true` in `bukkit.yml`. ***
+[22:18:00] [Server thread/INFO]: Debug logging is disabled
+[22:18:00] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[22:18:00] [Server thread/INFO]: Using 4 threads for Netty based IO
+[22:18:00] [Server thread/INFO]: Default game type: CREATIVE
+[22:18:00] [Server thread/INFO]: Generating keypair
+[22:18:00] [Server thread/INFO]: Starting Minecraft server on *:30027
+[22:18:01] [Server thread/WARN]: Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[22:18:05] [Server thread/WARN]: Legacy plugin PermissionDenyFixture v1.0.0 does not specify an api-version.
+[22:18:05] [Server thread/WARN]: Legacy plugin BlLevelManager v1.0-SNAPSHOT does not specify an api-version.
+[22:18:05] [Server thread/WARN]: Legacy plugin ResLinkUniversalBootstrap v2.0 does not specify an api-version.
+[22:18:05] [Server thread/INFO]: [LuckPerms] Loading LuckPerms v5.5.17
+[22:18:06] [Server thread/INFO]: [LuckPerms] Loading configuration...
+[22:18:06] [Server thread/INFO]: [PermissionDenyFixture] Loading PermissionDenyFixture v1.0.0
+[22:18:06] [Server thread/INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.12.2
+[22:18:07] [Server thread/INFO]: [CMILib] Loading CMILib v1.5.9.0
+[22:18:07] [Server thread/INFO]: [BlLevelManager] Loading BlLevelManager v1.0-SNAPSHOT
+[22:18:07] [Server thread/INFO]: [BLWorldTrashCan] Loading BLWorldTrashCan v7.0.0
+[22:18:07] [Server thread/INFO]: [Residence] Loading Residence v6.0.1.6
+[22:18:07] [Server thread/INFO]: [ResLinkResidenceFixture] Loading ResLinkResidenceFixture v0.1.0-SNAPSHOT
+[22:18:07] [Server thread/INFO]: [ResLinkUniversalBootstrap] Loading ResLinkUniversalBootstrap v2.0
+[22:18:07] [Server thread/INFO]: [LuckPerms] Enabling LuckPerms v5.5.17
+[22:18:07] [Server thread/INFO]:         __    
+[22:18:07] [Server thread/INFO]:   |    |__)   LuckPerms v5.5.17
+[22:18:07] [Server thread/INFO]:   |___ |      Running on Bukkit - Spigot
+[22:18:07] [Server thread/INFO]: 
+[22:18:07] [Server thread/INFO]: [LuckPerms] Loading storage provider... [H2]
+[22:18:08] [Server thread/INFO]: [LuckPerms] Loading internal permission managers...
+[22:18:08] [Server thread/INFO]: [LuckPerms] Performing initial data load...
+[22:18:08] [Server thread/INFO]: [LuckPerms] Successfully enabled. (took 491ms)
+[22:18:08] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[22:18:08] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[22:18:08] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[22:18:08] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[22:18:08] [Server thread/INFO]: Preparing level "rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755"
+[22:18:08] [Server thread/ERROR]: No key layers in MapLike[{}]
+[22:18:08] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755] --------
+[22:18:08] [Server thread/INFO]: Item Despawn Rate: 6000
+[22:18:08] [Server thread/INFO]: View Distance: 3
+[22:18:08] [Server thread/INFO]: Simulation Distance: 2
+[22:18:08] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1 Hopper Can Load Chunks: false
+[22:18:08] [Server thread/INFO]: Experience Merge Radius: 3.0
+[22:18:08] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Ra 48 / Mi 16 / Tiv true / Isa false
+[22:18:08] [Server thread/INFO]: Item Merge Radius: 2.5
+[22:18:08] [Server thread/INFO]: Arrow Despawn Rate: 1200 Trident Respawn Rate:1200
+[22:18:08] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[22:18:08] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[22:18:08] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[22:18:08] [Server thread/INFO]: Mob Spawn Range: 6
+[22:18:08] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Cane Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Melon Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Beetroot Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Carrot Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Potato Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Vine Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Bamboo Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: SweetBerry Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Kelp Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: TwistingVines Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: WeepingVines Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: CaveVines Growth Modifier: 100%
+[22:18:08] [Server thread/INFO]: Max TNT Explosions: 100
+[22:18:08] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Di 128 / Other 64
+[22:18:08] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[22:18:08] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Desert: 14357617 Igloo: 14357618 Jungle: 14357619 Swamp: 14357620 Monument: 10387313 Ocean: 14357621 Shipwreck: 165745295 End City: 10387313 Slime: 987234911 Nether: 30084232 Mansion: 10387319 Fossil: 14357921 Portal: 34222645
+[22:18:08] [Server thread/INFO]: Selecting global world spawn...
+[22:18:09] [Server thread/ERROR]: No key layers in MapLike[{}]
+[22:18:09] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755_nether] --------
+[22:18:09] [Server thread/INFO]: Item Despawn Rate: 6000
+[22:18:09] [Server thread/INFO]: View Distance: 3
+[22:18:09] [Server thread/INFO]: Simulation Distance: 2
+[22:18:09] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1 Hopper Can Load Chunks: false
+[22:18:09] [Server thread/INFO]: Experience Merge Radius: 3.0
+[22:18:09] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Ra 48 / Mi 16 / Tiv true / Isa false
+[22:18:09] [Server thread/INFO]: Item Merge Radius: 2.5
+[22:18:09] [Server thread/INFO]: Arrow Despawn Rate: 1200 Trident Respawn Rate:1200
+[22:18:09] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[22:18:09] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[22:18:09] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[22:18:09] [Server thread/INFO]: Mob Spawn Range: 6
+[22:18:09] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Cane Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Melon Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Beetroot Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Carrot Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Potato Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Vine Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Bamboo Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: SweetBerry Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Kelp Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: TwistingVines Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: WeepingVines Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: CaveVines Growth Modifier: 100%
+[22:18:09] [Server thread/INFO]: Max TNT Explosions: 100
+[22:18:09] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Di 128 / Other 64
+[22:18:09] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[22:18:09] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Desert: 14357617 Igloo: 14357618 Jungle: 14357619 Swamp: 14357620 Monument: 10387313 Ocean: 14357621 Shipwreck: 165745295 End City: 10387313 Slime: 987234911 Nether: 30084232 Mansion: 10387319 Fossil: 14357921 Portal: 34222645
+[22:18:09] [Server thread/INFO]: Selecting global world spawn...
+[22:18:11] [Server thread/ERROR]: No key layers in MapLike[{}]
+[22:18:11] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755_the_end] --------
+[22:18:11] [Server thread/INFO]: Item Despawn Rate: 6000
+[22:18:11] [Server thread/INFO]: View Distance: 3
+[22:18:11] [Server thread/INFO]: Simulation Distance: 2
+[22:18:11] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1 Hopper Can Load Chunks: false
+[22:18:11] [Server thread/INFO]: Experience Merge Radius: 3.0
+[22:18:11] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Ra 48 / Mi 16 / Tiv true / Isa false
+[22:18:11] [Server thread/INFO]: Item Merge Radius: 2.5
+[22:18:11] [Server thread/INFO]: Arrow Despawn Rate: 1200 Trident Respawn Rate:1200
+[22:18:11] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[22:18:11] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[22:18:11] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[22:18:11] [Server thread/INFO]: Mob Spawn Range: 6
+[22:18:11] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Cane Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Melon Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Beetroot Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Carrot Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Potato Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Vine Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Bamboo Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: SweetBerry Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Kelp Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: TwistingVines Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: WeepingVines Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: CaveVines Growth Modifier: 100%
+[22:18:11] [Server thread/INFO]: Max TNT Explosions: 100
+[22:18:11] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Di 128 / Other 64
+[22:18:11] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[22:18:11] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Desert: 14357617 Igloo: 14357618 Jungle: 14357619 Swamp: 14357620 Monument: 10387313 Ocean: 14357621 Shipwreck: 165745295 End City: 10387313 Slime: 987234911 Nether: 30084232 Mansion: 10387319 Fossil: 14357921 Portal: 34222645
+[22:18:11] [Server thread/INFO]: Selecting global world spawn...
+[22:18:13] [Server thread/INFO]: Loading 0 persistent chunks...
+[22:18:13] [Server thread/INFO]: Preparing spawn area: 100%
+[22:18:13] [Server thread/INFO]: Time elapsed: 4869 ms
+[22:18:13] [Server thread/INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0
+[22:18:13] [Server thread/INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+[22:18:13] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.12.2
+[22:18:13] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[22:18:13] [Server thread/INFO]: [CMILib] Enabling CMILib v1.5.9.0
+[22:18:13] [Server thread/WARN]: java.lang.NoSuchMethodError: 'java.lang.String org.bukkit.Bukkit.getMinecraftVersion()'
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Version.Version.tryToFindVersion(Version.java:512)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Version.Version.getCurrent(Version.java:624)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Version.Version.<clinit>(Version.java:206)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Items.ItemManager.load(ItemManager.java:76)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.CMILib.onEnable(CMILib.java:225)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:267)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:342)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:492)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:584)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:498)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.loadWorld0(MinecraftServer.java:720)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.loadLevel(MinecraftServer.java:515)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:373)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1091)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:358)
+[22:18:13] [Server thread/WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+[22:18:13] [Server thread/WARN]: java.lang.NoSuchMethodError: 'java.lang.String org.bukkit.Bukkit.getVersionMessage()'
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Version.Version.tryToFindVersion(Version.java:523)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Version.Version.getCurrent(Version.java:624)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Version.Version.<clinit>(Version.java:206)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.Items.ItemManager.load(ItemManager.java:76)
+[22:18:13] [Server thread/WARN]: 	at net.Zrips.CMILib.CMILib.onEnable(CMILib.java:225)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:267)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:342)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:492)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:584)
+[22:18:13] [Server thread/WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:498)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.loadWorld0(MinecraftServer.java:720)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.loadLevel(MinecraftServer.java:515)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:373)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1091)
+[22:18:13] [Server thread/WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:358)
+[22:18:13] [Server thread/WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+[22:18:13] [Server thread/INFO]: Could not determine exact version, using custom: 26.1.2 Legacy: false
+[22:18:13] [Server thread/INFO]: Server version: v99_99_99 - 26.1.2 - spigot  4629-Spigot-566f972-bb990d0 (MC: 26.1.2)
+[22:18:13] [Server thread/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[22:18:13] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: cmil [1.5.9.0]
+[22:18:13] [Server thread/INFO]: PlaceholderAPI hooked.
+[22:18:13] [Server thread/INFO]: Updated (EN) language file. Took 45ms
+[22:18:13] [Server thread/INFO]: [BlLevelManager] Enabling BlLevelManager v1.0-SNAPSHOT
+[22:18:13] [Server thread/WARN]: [BlLevelManager] §8[§bBlLevel§8] §e主存储初始化失败，已切换为本地 YAML。原因: Access denied for user 'minecraft'@'localhost' (using password: YES)
+[22:18:13] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: bllevel [1.0]
+[22:18:13] [Server thread/INFO]: [BlLevelManager] §8[§bBlLevel§8] §a插件已启用。
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[22:18:13] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Universal runtime: paper
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
+[22:18:13] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[22:18:13] [Server thread/INFO]: [Residence] Enabling Residence v6.0.1.6
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260608_212037) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260608_212037_nether) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260608_212037_the_end) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (reslink_proxy_server1_20260613-063629_the_end) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (reslink_proxy_server1_20260613-063629_nether) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (reslink_proxy_server1_20260613-063629) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-154534_the_end) name
+[22:18:13] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-154534) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-154534_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-155841) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-155841_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-155841_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-160955) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-160955_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-160955_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-161529) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-161529_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-161529_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-162044) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-162044_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-162044_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-163113_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-163113_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-163113) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-165030_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-165030_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-165030) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-173940_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-173940_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-173940) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-174340) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-174340_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-174340_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-180053_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-180053) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-180053_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-212143) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-212143_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_universal_2612_server1_20260613-212143_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_051639_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_051639_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_051639) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_053236) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_053236_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_053236_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_055325_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_055325_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_055325) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_055754) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_055754_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_055754_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_060011) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_060011_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_060011_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_091611_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_091611_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_091611) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_094306) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_094306_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_094306_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_095849_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_095849) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_095849_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_101314_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_101314_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_20260618_101314) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-004000_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-004000) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-004000_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-004737_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-004737_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-004737) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-005833_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-005833) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-005833_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-010245_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-010245_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-010245) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-010649_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-010649_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-010649) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-011030) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-011030_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (reslink_perm_count_s1_20260620-011030_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_210904) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_210904_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_210904_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_214100) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_214100_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_214100_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_214947) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_214947_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_guard_visual_20260626_214947_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_global_refresh_visual_20260627_014123_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_global_refresh_visual_20260627_014123_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_global_refresh_visual_20260627_014123) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_manual_clear_guard_override_visual_20260628_004304) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_manual_clear_guard_override_visual_20260628_004304_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_manual_clear_guard_override_visual_20260628_004304_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_091811_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_091811) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_091811_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092007_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092007_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092007) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092427) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092427_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092427_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092840_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092840_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_visual_20260630_092840) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260630_094704) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260630_094704_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260630_094704_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260630_095327) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260630_095327_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260630_095327_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260701_155008_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260701_155008_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260701_155008) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260701_155408_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260701_155408) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_trash_gui_click_visual_20260701_155408_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162437_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162437_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162437) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162819) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162819_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162819_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162955_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162955_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_162955) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_163536_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_163536_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_language_visual_20260701_163536) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_181352) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_181352_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_181352_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_181801) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_181801_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_181801_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_182556_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_182556) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_182556_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_183011_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_183011_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_183011) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_183142) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_183142_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_183142_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_184245_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_184245_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_184245) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_190056_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_190056_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_cleanup_notify_click_20260701_190056) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195606) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195606_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195606_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195757_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195757) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_195757_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_200044_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_200044) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_200044_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_200346) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_200346_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_vault_payment_visual_20260702_200346_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_static_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_static) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_static_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_213616_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_213616_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_213616) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_213946_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_213946_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_213946) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_225500) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_231000) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_231000_the_end) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find world with (rgb_visual_universal_spigot2612_gui_operation_permission_visual_20260702_231000_nether) name
+[22:18:14] [Server thread/INFO]: [Residence] Can't find effect for Selected Frame with this name, it was set to default
+[22:18:14] [Server thread/INFO]: [Residence] Can't find effect for Selected Sides with this name, it was set to default
+[22:18:14] [Server thread/INFO]: [Residence] Can't find effect for Overlap Frame with this name, it was set to default
+[22:18:14] [Server thread/INFO]: [Residence] an't find effect for Selected Sides with this name, it was set to default
+[22:18:14] [Server thread/INFO]: [Residence] Loaded (2) groups
+[22:18:14] [Server thread/INFO]: [Residence] Found LuckPerms5 Plugin!
+[22:18:14] [Server thread/INFO]: [Residence] Preloaded 24 player cached data
+[22:18:14] [Server thread/INFO]: [Residence] Scanning for economy systems...
+[22:18:14] [Server thread/INFO]: [Residence] Vault NOT found!
+[22:18:14] [Server thread/INFO]: [Residence] CMIEconomy NOT found!
+[22:18:14] [Server thread/INFO]: [Residence] Essentials Economy NOT found!
+[22:18:14] [Server thread/INFO]: [Residence] Unable to find an economy system...
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_proxy_server1_20260613-063629 data into memory. (8 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-174340 data into memory. (1 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-154534 data into memory. (1 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-163113 data into memory. (0 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-155841 data into memory. (1 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-162044 data into memory. (0 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-180053 data into memory. (1 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_perm_count_s1_20260620-011030 data into memory. (1 ms) -> 1 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded rgb_visual_universal_spigot2612_20260608_212037 data into memory. (0 ms) -> 6 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-165030 data into memory. (0 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [Residence] Loaded reslink_universal_2612_server1_20260613-212143 data into memory. (1 ms) -> 3 residences
+[22:18:14] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: residence [6.0.1.6]
+[22:18:14] [Server thread/INFO]: [Residence] PlaceholderAPI was found - Enabling capabilities.
+[22:18:14] [Server thread/INFO]: [Residence] Enabled! Version 6.0.1.6 by Zrips
+[22:18:14] [Server thread/INFO]: [ResLinkResidenceFixture] Enabling ResLinkResidenceFixture v0.1.0-SNAPSHOT
+[22:18:14] [Server thread/INFO]: [ResLinkUniversalBootstrap] Enabling ResLinkUniversalBootstrap v2.0
+[22:18:14] [Server thread/INFO]: [ResLink] Enabling ResLink v2.0
+[22:18:14] [Server thread/WARN]: [ResLink] Loaded class com.bekvon.bukkit.residence.event.ResidenceCommandEvent from Residence v6.0.1.6 which is not a depend or softdepend of this plugin.
+[22:18:14] [Server thread/INFO]: [ResLink] Residence integration registered
+[22:18:14] [Server thread/WARN]: [ResLink] Loaded class me.clip.placeholderapi.expansion.PlaceholderExpansion from PlaceholderAPI v2.12.2 which is not a depend or softdepend of this plugin.
+[22:18:14] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: reslink [2.0]
+[22:18:14] [Server thread/INFO]: [ResLink] PlaceholderAPI expansion registered
+[22:18:14] [Server thread/INFO]: [ResLink] ResLink modern platform enabled
+[22:18:14] [Server thread/INFO]: [ResLinkUniversalBootstrap] ResLink universal selected Bukkit platform: modern, jar=E:\server_work\spigot-26.1.2-test-server\plugins\ResLink\runtime-jars\ResLink-modern-1783001894387.jar
+[22:18:14] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[22:18:14] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[22:18:14] [Server thread/INFO]: Done (6.304s)! For help, type "help"
+[22:18:14] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755]'/minecraft:overworld
+[22:18:14] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755_nether]'/minecraft:the_nether
+[22:18:14] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755_the_end]'/minecraft:the_end
+[22:18:14] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[22:18:14] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22:18:14] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22:18:14] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[22:18:14] [Server thread/INFO]: 0 placeholder hook(s) registered!
+[22:18:14] [Craft Scheduler Thread - 3/INFO]: [ResLink] Redis health check passed by enable
+[22:18:14] [Craft Scheduler Thread - 3/INFO]: ResLink-MySQL - Starting...
+[22:18:14] [Craft Scheduler Thread - 3/INFO]: ResLink-MySQL - Start completed.
+[22:18:14] [Craft Scheduler Thread - 3/INFO]: [ResLink] Placeholder cache refreshed by enable: residences=31
+[22:18:14] [Craft Scheduler Thread - 3/INFO]: [ResLink] MySQL initialized by enable
+[22:18:14] [reslink-redis-notification/INFO]: [ResLink] Redis notification subscriber connected
+[22:18:14] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[22:18:14] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[22:18:14] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[22:18:14] [Server thread/INFO]: [BLWorldTrashCan] BLWorldTrashCan 已重载。
+[22:18:16] [Craft Scheduler Thread - 2/INFO]: _________________/ Residence \_________________
+[22:18:16] [Craft Scheduler Thread - 2/INFO]: | 6.0.1.8 is now available! Your version: 6.0.1.6
+[22:18:16] [Craft Scheduler Thread - 2/INFO]: ----------------------------------------
+[22:18:16] [Craft Scheduler Thread - 1/INFO]: New version of CMILib was detected. Please update it (1.5.9.0 -> 1.5.9.9)
+[22:18:23] [User Authenticator #1/INFO]: UUID of player RGBigot2612 is fe3c448f-3acd-388d-be7d-19e41f972e02
+[22:18:24] [Server thread/INFO]: RGBigot2612 joined the game
+[22:18:24] [Server thread/INFO]: RGBigot2612[/127.0.0.1:51170] logged in with entity id 1 at ([rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755]0.5, -60.0, -3.5)
+[22:18:25] [Server thread/INFO]: Nothing changed. The player already is an operator
+[22:18:25] [Server thread/INFO]: Incorrect argument for command
+[22:18:25] [Server thread/INFO]: gamerule sendCommandFeedback false<--[HERE]
+[22:18:26] [Server thread/INFO]: Incorrect argument for command
+[22:18:26] [Server thread/INFO]: gamerule commandBlockOutput false<--[HERE]
+[22:18:26] [Server thread/INFO]: Incorrect argument for command
+[22:18:26] [Server thread/INFO]: gamerule doMobSpawning false<--[HERE]
+[22:18:26] [Server thread/INFO]: Incorrect argument for command
+[22:18:26] [Server thread/INFO]: gamerule keepInventory true<--[HERE]
+[22:18:26] [Server thread/INFO]: Incorrect argument for command
+[22:18:26] [Server thread/INFO]: gamerule fallDamage false<--[HERE]
+[22:18:27] [Server thread/INFO]: Set minecraft:overworld to time marker minecraft:day
+[22:18:27] [Server thread/INFO]: Set the weather to clear
+[22:18:27] [Server thread/INFO]: Successfully filled 49 block(s)
+[22:18:28] [Server thread/INFO]: Teleported RGBigot2612 to 0.500000, 91.000000, -7.500000
+[22:18:28] [Server thread/INFO]: No items were found on player RGBigot2612
+[22:18:29] [Server thread/INFO]: [BLWorldTrashCan] 当前平台: paper-1.16-1.20 (universal)
+[22:18:29] [Server thread/INFO]: - scheduler-global: 启用
+[22:18:29] [Server thread/INFO]: - scheduler-region: 禁用
+[22:18:29] [Server thread/INFO]: - inventory-basic: 启用
+[22:18:29] [Server thread/INFO]: - item-pdc-tag: 启用
+[22:18:29] [Server thread/INFO]: - item-legacy-tag: 禁用
+[22:18:29] [Server thread/INFO]: - rgb-message: 启用
+[22:18:29] [Server thread/INFO]: - clickable-message: 启用
+[22:18:29] [Server thread/INFO]: - boss-bar: 启用
+[22:18:29] [Server thread/INFO]: - sign-legacy: 禁用
+[22:18:29] [Server thread/INFO]: - sign-modern: 启用
+[22:18:29] [Server thread/INFO]: - entity-move-event: 启用
+[22:18:29] [Server thread/INFO]: - folia-region-safe: 禁用
+[22:18:30] [Server thread/INFO]: No items were found on player RGBigot2612
+[22:18:30] [Server thread/INFO]: RGBigot2612 has made the advancement [Stone Age]
+[22:18:30] [Server thread/INFO]: Gave 7 [Cobblestone] to RGBigot2612
+[22:18:31] [Server thread/INFO]: 已为玩家打开公共垃圾桶: RGBigot2612
+[22:18:47] [Server thread/INFO]: 垃圾桶库存:
+[22:18:47] [Server thread/INFO]: - 公共垃圾桶物品: 0 (堆叠 0)
+[22:18:47] [Server thread/INFO]: - 公共垃圾桶页数: 5
+[22:18:47] [Server thread/INFO]: - 已加载个人垃圾桶: 0
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:48] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:48] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[22:18:49] [Server thread/INFO]: 路由测试成功。
+[22:18:49] [Server thread/INFO]: 已为玩家打开公共垃圾桶: RGBigot2612
+[22:18:58] [Server thread/INFO]: Removed 7 item(s) from player RGBigot2612
+[22:18:58] [Server thread/INFO]: Gave 5 [Stone] to RGBigot2612
+[22:18:59] [Server thread/INFO]: 已为玩家打开个人垃圾桶: RGBigot2612
+[22:19:06] [Server thread/INFO]: BLWorldTrashCan debug summary:
+[22:19:06] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)
+[22:19:06] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755
+[22:19:06] [Server thread/INFO]: - 世界垃圾桶数量: 0
+[22:19:06] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)
+[22:19:06] [Server thread/INFO]: - 跳过未加载区块: 0
+[22:19:06] [Server thread/INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)
+[22:19:06] [Server thread/INFO]: - 个人垃圾桶物品: 5 (堆叠 1)
+[22:19:10] [Server thread/INFO]: BLWorldTrashCan debug summary:
+[22:19:10] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)
+[22:19:10] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755
+[22:19:10] [Server thread/INFO]: - 世界垃圾桶数量: 0
+[22:19:10] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)
+[22:19:10] [Server thread/INFO]: - 跳过未加载区块: 0
+[22:19:10] [Server thread/INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)
+[22:19:10] [Server thread/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:13] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:13] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:14] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:14] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:15] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=DIRT, amount=1, routed=true
+[22:19:15] [Server thread/INFO]: 路由测试成功。
+[22:19:16] [Server thread/INFO]: BLWorldTrashCan debug summary:
+[22:19:16] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)
+[22:19:16] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755
+[22:19:16] [Server thread/INFO]: - 世界垃圾桶数量: 0
+[22:19:16] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)
+[22:19:16] [Server thread/INFO]: - 跳过未加载区块: 0
+[22:19:16] [Server thread/INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)
+[22:19:16] [Server thread/INFO]: - 个人垃圾桶物品: 1 (堆叠 1)
+[22:19:17] [Server thread/INFO]: 已为玩家打开个人垃圾桶: RGBigot2612
+[22:19:22] [Server thread/INFO]: Removed 5 item(s) from player RGBigot2612
+[22:19:22] [Server thread/INFO]: Gave 1 [Stone] to RGBigot2612
+[22:19:23] [Server thread/INFO]: 已为玩家打开公共黑名单 GUI。
+[22:19:30] [Server thread/INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[22:19:30] [Server thread/INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 4 个世界垃圾桶数据。
+[22:19:30] [Server thread/INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[22:19:33] [Server thread/INFO]: [BLWorldTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=STONE, amount=1, routed=false
+[22:19:33] [Server thread/INFO]: 路由测试成功。
+[22:19:59] [Server thread/INFO]: RGBigot2612 lost connection: Disconnected
+[22:19:59] [Server thread/INFO]: RGBigot2612 left the game
+[22:19:59] [Server thread/INFO]: Stopping the server
+[22:19:59] [Server thread/INFO]: Stopping server
+[22:19:59] [Server thread/INFO]: [ResLink] Disabling ResLink v2.0
+[22:19:59] [Server thread/INFO]: ResLink-MySQL - Shutdown initiated...
+[22:19:59] [Server thread/INFO]: ResLink-MySQL - Shutdown completed.
+[22:19:59] [Server thread/INFO]: [ResLink] ResLink modern platform disabled
+[22:19:59] [Server thread/INFO]: [ResLinkUniversalBootstrap] Disabling ResLinkUniversalBootstrap v2.0
+[22:19:59] [Server thread/INFO]: [ResLinkResidenceFixture] Disabling ResLinkResidenceFixture v0.1.0-SNAPSHOT
+[22:19:59] [Server thread/INFO]: [Residence] Disabling Residence v6.0.1.6
+[22:19:59] [Server thread/INFO]: [Residence] Disabled!
+[22:19:59] [Server thread/INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
+[22:19:59] [Server thread/INFO]: [BlLevelManager] Disabling BlLevelManager v1.0-SNAPSHOT
+[22:19:59] [Server thread/INFO]: [BlLevelManager] §8[§bBlLevel§8] §e插件已关闭。
+[22:19:59] [Server thread/INFO]: [CMILib] Disabling CMILib v1.5.9.0
+[22:19:59] [Server thread/INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.12.2
+[22:19:59] [Server thread/INFO]: [PermissionDenyFixture] Disabling PermissionDenyFixture v1.0.0
+[22:19:59] [Server thread/INFO]: [LuckPerms] Disabling LuckPerms v5.5.17
+[22:19:59] [Server thread/INFO]: [LuckPerms] Starting shutdown process...
+[22:19:59] [Server thread/INFO]: [LuckPerms] Closing storage...
+[22:19:59] [Server thread/INFO]: [LuckPerms] Goodbye!
+[22:19:59] [Server thread/INFO]: Saving players
+[22:19:59] [Server thread/INFO]: Saving worlds
+[22:19:59] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755]'/minecraft:overworld
+[22:19:59] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755_nether]'/minecraft:the_nether
+[22:20:00] [Server thread/INFO]: Saving chunks for level 'ServerLevel[rgb_visual_universal_spigot2612_trash_gui_click_visual_20260702_221755_the_end]'/minecraft:the_end
+[22:20:00] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[22:20:00] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22:20:00] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22:20:00] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved

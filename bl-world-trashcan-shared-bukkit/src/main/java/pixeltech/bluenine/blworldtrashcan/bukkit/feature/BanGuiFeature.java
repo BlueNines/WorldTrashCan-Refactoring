@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
@@ -83,26 +84,35 @@ public final class BanGuiFeature implements Feature, Listener {
     /** 打开当前世界的世界垃圾桶黑名单 GUI。 */
     public void openWorldBan(Player player) {
         World world = player.getWorld();
-        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE,
+        BanContext context = new BanContext(BanType.WORLD, world.getName());
+        Inventory inventory = createInventory(context,
                 message("ban-gui.world-title", "&8世界黑名单: {world}", "{world}", world.getName()));
         fillInventory(inventory, trashRouter.getWorldBannedMaterials(world));
-        contexts.put(inventory, new BanContext(BanType.WORLD, world.getName()));
         player.openInventory(inventory);
     }
 
     /** 打开公共垃圾桶黑名单 GUI。 */
     public void openGlobalBan(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE,
-                message("ban-gui.global-title", "&8公共垃圾桶黑名单"));
+        BanContext context = new BanContext(BanType.GLOBAL, "");
+        Inventory inventory = createInventory(context, message("ban-gui.global-title", "&8公共垃圾桶黑名单"));
         fillInventory(inventory, configSupplier.get().getTrashConfig().getGlobalTrashBannedMaterials());
-        contexts.put(inventory, new BanContext(BanType.GLOBAL, ""));
         player.openInventory(inventory);
+    }
+
+    /** 创建带上下文 holder 的黑名单 GUI。 */
+    private Inventory createInventory(BanContext context, String title) {
+        BanHolder holder = new BanHolder(context);
+        Inventory inventory = Bukkit.createInventory(holder, INVENTORY_SIZE, title);
+        holder.setInventory(inventory);
+        contexts.put(inventory, context);
+        return inventory;
     }
 
     /** GUI 点击时用明确 token 语义编辑黑名单，避免原版光标物品关闭时未落入 Inventory。 */
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        BanContext context = contexts.get(event.getInventory());
+        Inventory topInventory = event.getView().getTopInventory();
+        BanContext context = contextOf(topInventory);
         if (context == null) {
             return;
         }
@@ -114,27 +124,46 @@ public final class BanGuiFeature implements Feature, Listener {
         if (rawSlot < 0) {
             return;
         }
-        if (rawSlot < event.getInventory().getSize()) {
-            removeToken(event.getInventory(), rawSlot);
+        if (rawSlot < topInventory.getSize()) {
+            removeToken(topInventory, rawSlot);
             return;
         }
-        addToken(event.getInventory(), event.getCurrentItem(), (Player) event.getWhoClicked());
+        addToken(topInventory, event.getCurrentItem(), (Player) event.getWhoClicked());
     }
 
     /** GUI 关闭时保存黑名单。 */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        BanContext context = contexts.remove(event.getInventory());
+        Inventory topInventory = event.getView().getTopInventory();
+        BanContext context = removeContext(topInventory);
         if (context == null || !(event.getPlayer() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getPlayer();
-        Set<String> materials = collectMaterials(event.getInventory());
+        Set<String> materials = collectMaterials(topInventory);
         if (context.type == BanType.WORLD) {
             saveWorldBan(player, context.worldName, materials);
             return;
         }
         saveGlobalBan(player, materials);
+    }
+
+    /** 从 Inventory holder 或兼容 map 读取上下文。 */
+    private BanContext contextOf(Inventory inventory) {
+        InventoryHolder holder = inventory.getHolder();
+        if (holder instanceof BanHolder) {
+            return ((BanHolder) holder).context;
+        }
+        return contexts.get(inventory);
+    }
+
+    /** 移除 GUI 上下文，holder 作为 1.12 包装对象不稳定时的兜底。 */
+    private BanContext removeContext(Inventory inventory) {
+        BanContext context = contexts.remove(inventory);
+        if (context != null) {
+            return context;
+        }
+        return contextOf(inventory);
     }
 
     /** 保存世界黑名单。 */
@@ -270,6 +299,28 @@ public final class BanGuiFeature implements Feature, Listener {
         private BanContext(BanType type, String worldName) {
             this.type = type;
             this.worldName = worldName;
+        }
+    }
+
+    /** 黑名单 GUI 的 Bukkit holder，用于跨版本稳定绑定上下文。 */
+    private static final class BanHolder implements InventoryHolder {
+        private final BanContext context;
+        private Inventory inventory;
+
+        /** 创建带上下文的 holder。 */
+        private BanHolder(BanContext context) {
+            this.context = context;
+        }
+
+        /** 绑定 Bukkit 创建出的 Inventory。 */
+        private void setInventory(Inventory inventory) {
+            this.inventory = inventory;
+        }
+
+        /** 返回当前 holder 关联的 Inventory。 */
+        @Override
+        public Inventory getInventory() {
+            return inventory;
         }
     }
 }

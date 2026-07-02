@@ -17,7 +17,7 @@
 | universal 整包完整回归 | `universal-full-regression-1122-2612-20260608-192725/` | 1.12.2、Paper 26.1.2、Spigot 26.1.2 基础功能回归 |
 | 80 项完整矩阵基线 | `universal-function-matrix-1122-2612-20260608-213500/` | 2026-06-08 完整功能矩阵基线 |
 | Folia 清理通知视觉 | `cleanup-notify-visual-20260630-092840/` | Chat、ActionBar、BossBar、Title、Sound、Command 通知专项 |
-| GUI 真实点击 | `trash-gui-click-visual-20260701-155408/` | 公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
+| GUI 真实点击 | `trash-gui-click-visual-20260702-223605/` | Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端；公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-231000/` | Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 三端，玩家已能打开 GUI 时显式 deny 公共/个人 take/put 后真实点击不产生取放 |
 | 旧配置迁移 | `legacy-migration-universal-20260701-165606/` | 旧目录和当前目录旧结构迁移 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
@@ -43,6 +43,9 @@
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212027/` | 首版夹具把 Spigot 26.1.2 同 tick 实体 UUID 可见性和箭实体稳定性当成前提；业务日志已显示关闭总开关跳过实体，最终由 `entity-cleanup-toggle-20260702-212255/` 收敛 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-213616/` | 插件实际已提示取出无权限，但脚本未匹配“没有权限从公共/个人垃圾桶取出物品”，并把时间戳解析成库存数量 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-225500/` | 三端扩展首轮失败：1.12.2 玩家死亡导致截图停留死亡界面，Folia 客户端聊天输入未进入服务端；最终改用安全创造初始化和 `debugopen` 打开 GUI |
+| GUI 真实点击 | `trash-gui-click-visual-20260702-221755/` | 三端扩展首轮失败：脚本仍按单端和单一中文文案判断，且 1.12.2 公共黑名单保存未通过 |
+| GUI 真实点击 | `trash-gui-click-visual-20260702-222553/` | 修正脚本后暴露真实业务缺陷：Paper 1.12.2 公共黑名单 GUI 点击玩家背包物品后未写入 `trash.yml`，路由仍 `routed=true` |
+| GUI 真实点击 | `trash-gui-click-visual-20260702-222906/` | 首次 holder 修复仍未完全收敛 1.12.2 上下文问题，F-030 继续失败 |
 | 清理通知点击 | `cleanup-notify-click-20260701-181352/` | 通知可见但点击未触发 `/blwtc stats` |
 | 清理通知点击 | `cleanup-notify-click-20260701-181801/` | 只给顶层 Bungee 组件补点击事件后仍失败 |
 | 清理通知点击 | `cleanup-notify-click-20260701-182556/` | 硬编码点击点位偏离实际文本 |
