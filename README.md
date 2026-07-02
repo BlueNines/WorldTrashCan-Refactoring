@@ -79,7 +79,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 6 项审计和完整 7 项审计均为 `failed: 0`。
+当前默认 8 项审计和完整 9 项审计均为 `failed: 0`。
 
 ## 配置文件
 

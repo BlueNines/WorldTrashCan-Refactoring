@@ -14,6 +14,10 @@ PYTHON_AUDITS = [
     ("test-evidence-index", [sys.executable, "tools/rgb-visual-matrix/check_test_evidence_index.py"]),
     ("chunk-load-guards", [sys.executable, "tools/rgb-visual-matrix/check_chunk_load_guards.py"]),
 ]
+GIT_AUDITS = [
+    ("git-diff-check", ["git", "diff", "--check", "--", "."]),
+    ("git-diff-cached-check", ["git", "diff", "--cached", "--check", "--", "."]),
+]
 MAVEN_TEST = (
     "maven-test",
     [str(REPO / "build" / "tools" / "apache-maven-3.9.9" / "bin" / "mvn.cmd"), "-q", "test"],
@@ -44,6 +48,7 @@ def run_command(name: str, command: list[str]) -> dict:
 def run_audits(include_maven_test: bool) -> dict:
     """运行交付前后台审计。"""
     commands = list(PYTHON_AUDITS)
+    commands.extend(GIT_AUDITS)
     if include_maven_test:
         commands.append(MAVEN_TEST)
     results = []
