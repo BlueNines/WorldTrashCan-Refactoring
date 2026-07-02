@@ -56,6 +56,14 @@ py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 
 当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `47a9850582ece315a2f6d70ef5370be7a940b48c6d3c22aed35103ca3eecdd94`。
 
+`plugin.yml` 的源码和 dist 交付接口还有独立审计脚本，检查 5 个源码 `plugin.yml` 和 5 个 dist jar 内 `plugin.yml` 的稳定字段、softdepend、命令别名、23 个权限节点和默认值：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_plugin_yml_parity.py
+```
+
+当前审计覆盖 5 个源码 `plugin.yml`、5 个 dist `plugin.yml`、2 个命令入口和 23 个权限节点，结果为 `errors: 0`。
+
 更新当前 dist 后还需要运行以下脚本，确认 README、长期硬化清单和执行记录没有继续写着旧交付包 SHA：
 
 ```powershell
@@ -119,7 +127,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 15 项审计和完整 16 项审计均为 `failed: 0`。
+当前默认 16 项审计和完整 17 项审计均为 `failed: 0`。
 
 ## 配置文件
 

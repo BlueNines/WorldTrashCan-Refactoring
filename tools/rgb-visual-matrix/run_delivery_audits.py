@@ -10,6 +10,7 @@ PYTHON_AUDITS = [
     ("dist-sync-dry-run", [sys.executable, "tools/rgb-visual-matrix/sync_dist_jars.py", "--dry-run"]),
     ("dist-package-integrity", [sys.executable, "tools/rgb-visual-matrix/check_dist_package_integrity.py"]),
     ("current-dist-hash-docs", [sys.executable, "tools/rgb-visual-matrix/check_current_dist_hash_docs.py"]),
+    ("plugin-yml-parity", [sys.executable, "tools/rgb-visual-matrix/check_plugin_yml_parity.py"]),
     ("resource-yaml-comments", [sys.executable, "tools/rgb-visual-matrix/check_resource_yaml_comments.py"]),
     ("default-resource-key-parity", [sys.executable, "tools/rgb-visual-matrix/check_default_resource_key_parity.py"]),
     ("test-evidence-index", [sys.executable, "tools/rgb-visual-matrix/check_test_evidence_index.py"]),
