@@ -61,3 +61,4 @@
 4. 不删除测试服 `logs`、`world*`、`cache`、`assets`，也不为了让目录变干净而丢弃失败日志。
 5. 新增最终证据后，同步更新插件根 `README.md`、完整功能矩阵、长期硬化缺口清单或重构执行记录，并提交推送到当前插件仓库。
 6. 证据目录可以提交 `summary.json`、命令日志、服务端日志、客户端截图、配置备份和 README；备份 jar 默认留在本地恢复缓存，通过 `.gitignore` 排除。
+7. 提交前运行 `py -3 tools/rgb-visual-matrix/check_test_evidence_index.py`，确认最终证据、失败对照、上层文档引用和备份 jar 跟踪状态没有退化。

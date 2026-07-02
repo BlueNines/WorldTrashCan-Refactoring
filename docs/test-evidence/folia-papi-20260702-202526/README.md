@@ -12,4 +12,4 @@
 - `summary.json`: 机器可读结果。
 - `logs/server-console.log`: 完整服务端输出。
 - `logs/console-commands.log`: 本轮发送的命令。
-- `backup/BLWorldTrashCan-universal.before.jar`: 测试前旧 jar 备份。
+- `backup/BLWorldTrashCan-universal.before.jar`: 测试前旧 jar 本地恢复缓存，不提交到 Git。
