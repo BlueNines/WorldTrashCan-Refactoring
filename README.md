@@ -48,6 +48,14 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 
 当前同步脚本会从根 `pom.xml` 读取版本号，并输出五个交付 jar 的 SHA256；`--dry-run` 可只比较 target 和 dist 是否一致。
 
+同步后可运行以下脚本检查五个交付 jar 的包完整性，范围包含 `plugin.yml` 版本和主类、Java class major、默认资源、bStats 类、PrismaticAPI 重定位，以及通用总包是否包含四个平台实现：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
+```
+
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`。
+
 ## 配置文件
 
 默认资源均带中文注释：
