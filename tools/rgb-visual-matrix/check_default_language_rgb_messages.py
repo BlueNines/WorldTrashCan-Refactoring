@@ -7,7 +7,13 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DIST = REPO / "dist"
-SOURCE_MESSAGES = sorted(REPO.glob("bl-world-trashcan-plugin-*/src/main/resources/messages/message_zh.yml"))
+LANGUAGES = [
+    "message_zh.yml",
+    "message_zh_TW.yml",
+    "message_en.yml",
+    "message_es.yml",
+]
+SOURCE_MESSAGES = sorted(REPO.glob("bl-world-trashcan-plugin-*/src/main/resources/messages/message_*.yml"))
 DIST_JARS = [
     "BLWorldTrashCan-legacy-1.12.jar",
     "BLWorldTrashCan-bukkit-1.13-1.15.jar",
@@ -26,29 +32,33 @@ def read_text(path: Path) -> str:
 
 
 def check_message_text(label: str, text: str, errors: list[str]) -> int:
-    """检查默认简体消息是否使用 RGB 且不残留老式颜色。"""
+    """检查默认语言消息是否使用 RGB 且不残留老式颜色。"""
     rgb_count = len(RGB_PATTERN.findall(text))
     if rgb_count < 20:
         errors.append(label + ": RGB 颜色数量过少，疑似不是 RGB 默认消息")
     for match in LEGACY_COLOR_PATTERN.finditer(text):
         line = text.count("\n", 0, match.start()) + 1
-        errors.append(label + ":" + str(line) + ": 默认简体 message 不应残留老式颜色 " + match.group(0))
+        errors.append(label + ":" + str(line) + ": 默认语言 message 不应残留老式颜色 " + match.group(0))
     return rgb_count
 
 
 def check_source_messages(errors: list[str]) -> dict[str, int]:
-    """检查四个平台源码默认简体消息。"""
+    """检查四个平台源码默认语言消息。"""
     counts = {}
-    if len(SOURCE_MESSAGES) != 4:
-        errors.append("源码 message_zh.yml 数量不是 4，实际 " + str(len(SOURCE_MESSAGES)))
+    expected = 4 * len(LANGUAGES)
+    if len(SOURCE_MESSAGES) != expected:
+        errors.append("源码 message_*.yml 数量不是 " + str(expected) + "，实际 " + str(len(SOURCE_MESSAGES)))
     for path in SOURCE_MESSAGES:
+        if path.name not in LANGUAGES:
+            errors.append(path.relative_to(REPO).as_posix() + ": 非预期默认语言文件")
+            continue
         relative = path.relative_to(REPO).as_posix()
         counts[relative] = check_message_text(relative, read_text(path), errors)
     return counts
 
 
 def check_dist_messages(errors: list[str]) -> dict[str, int]:
-    """检查 dist 交付包内默认简体消息。"""
+    """检查 dist 交付包内默认语言消息。"""
     counts = {}
     for jar_name in DIST_JARS:
         jar_path = DIST / jar_name
@@ -56,11 +66,14 @@ def check_dist_messages(errors: list[str]) -> dict[str, int]:
             errors.append(jar_name + ": dist jar 不存在")
             continue
         with zipfile.ZipFile(jar_path) as archive:
-            if "messages/message_zh.yml" not in archive.namelist():
-                errors.append(jar_name + ": 缺少 messages/message_zh.yml")
-                continue
-            text = archive.read("messages/message_zh.yml").decode("utf-8", errors="replace")
-            counts[jar_name] = check_message_text(jar_name + "!messages/message_zh.yml", text, errors)
+            names = set(archive.namelist())
+            for language in LANGUAGES:
+                resource = "messages/" + language
+                if resource not in names:
+                    errors.append(jar_name + ": 缺少 " + resource)
+                    continue
+                text = archive.read(resource).decode("utf-8", errors="replace")
+                counts[jar_name + "!" + resource] = check_message_text(jar_name + "!" + resource, text, errors)
     return counts
 
 
@@ -81,7 +94,7 @@ def check_renderer_fallback(errors: list[str]) -> None:
 
 
 def run_checks() -> dict:
-    """执行默认简体 RGB 消息审计。"""
+    """执行默认语言 RGB 消息审计。"""
     errors = []
     source_counts = check_source_messages(errors)
     dist_counts = check_dist_messages(errors)
@@ -98,7 +111,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查默认简体 message 是否保持 RGB，并兼容低版本降级。")
+    parser = argparse.ArgumentParser(description="检查默认多语言 message 是否保持 RGB，并兼容低版本降级。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

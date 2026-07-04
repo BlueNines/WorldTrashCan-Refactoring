@@ -1,97 +1,97 @@
 # 插件前綴，會自動替換 {prefix}。
-prefix: "&7[&bBLWorldTrashCan&7] "
+prefix: "&#64748B[&#5AC8FABLWorldTrashCan&#64748B] "
 
 # 通用無權限提示。
-no-permission: "{prefix}&c你沒有權限執行該指令。"
+no-permission: "{prefix}&#FFD166你沒有權限執行該指令。"
 
 # 重載成功提示。
-reload-success: "{prefix}&a設定已重載。"
+reload-success: "{prefix}&#5AC8FA設定已重載。"
 
 # 公共垃圾桶相關訊息。
 global-trash:
   # 公共垃圾桶未啟用時提示。
-  disabled: "{prefix}&c公共垃圾桶未啟用。"
+  disabled: "{prefix}&#FFD166公共垃圾桶未啟用。"
   # 玩家沒有權限從公共垃圾桶取出物品。
-  no-take-permission: "{prefix}&c你沒有權限從公共垃圾桶取出物品。"
+  no-take-permission: "{prefix}&#FFD166你沒有權限從公共垃圾桶取出物品。"
   # 公共垃圾桶拿取冷卻提示，{time} 為剩餘秒數。
-  take-cooldown: "{prefix}&c公共垃圾桶拿取冷卻剩餘 {time} 秒。"
+  take-cooldown: "{prefix}&#FFD166公共垃圾桶拿取冷卻剩餘 {time} 秒。"
   # 公共垃圾桶 GUI 文案。
   gui:
     # GUI 標題，{page} 當前頁，{max} 總頁數。
-    title: "&8公共垃圾桶 {page}/{max}"
+    title: "&#0F172A公共垃圾桶 {page}/{max}"
     # 上一頁按鈕名稱。
-    back: "&a上一頁"
+    back: "&#5AC8FA上一頁"
     # 下一頁按鈕名稱。
-    next: "&a下一頁"
+    next: "&#5AC8FA下一頁"
 
 # 個人垃圾桶相關訊息。
 personal-trash:
   # 個人垃圾桶未啟用時提示。
-  disabled: "{prefix}&c個人垃圾桶未啟用。"
+  disabled: "{prefix}&#FFD166個人垃圾桶未啟用。"
   # 玩家沒有權限從個人垃圾桶取出物品。
-  no-take-permission: "{prefix}&c你沒有權限從個人垃圾桶取出物品。"
+  no-take-permission: "{prefix}&#FFD166你沒有權限從個人垃圾桶取出物品。"
   # 玩家餘額不足時提示。
-  not-enough-money: "{prefix}&c餘額不足，無法取出該物品。"
+  not-enough-money: "{prefix}&#FFD166餘額不足，無法取出該物品。"
   # 玩家背包空间不足时提示。
-  inventory-full: "{prefix}&c背包空間不足，無法取出該物品。"
+  inventory-full: "{prefix}&#FFD166背包空間不足，無法取出該物品。"
   # 玩家成功支付取出費用，{cost} 為扣費顯示。
-  pay-success: "{prefix}&a已支付 {cost}。"
+  pay-success: "{prefix}&#5AC8FA已支付 {cost}。"
   # 個人垃圾桶 GUI 文案。
   gui:
     # GUI 標題，{player} 為玩家名。
-    title: "&8{player} 的個人垃圾桶"
+    title: "&#0F172A{player} 的個人垃圾桶"
   # 自動進入個人垃圾桶時的提示文案。
   recycle:
     # 單個來源進入個人垃圾桶時發送，{items} 為格式化後的物品列表。
-    single: "{prefix}&a已回收到個人垃圾桶: {items}"
+    single: "{prefix}&#5AC8FA已回收到個人垃圾桶: {items}"
     # 批量清理進入個人垃圾桶時發送，{items} 為格式化後的物品列表。
-    batch: "{prefix}&a本次清理已回收到個人垃圾桶: {items}"
+    batch: "{prefix}&#5AC8FA本次清理已回收到個人垃圾桶: {items}"
     # 物品列表整體格式，{items} 為已經拼接好的物品條目。
-    list: "&7[{items}&7]"
+    list: "&#64748B[{items}&#64748B]"
     # 多個物品條目之間的分隔符。
-    separator: "&7, "
+    separator: "&#64748B, "
     # 單個物品數量大於 1 時的條目格式，{name} 為物品名，{amount} 為總數量。
-    item: "&f{name}&7*&f{amount}"
+    item: "&#C9D4E2{name}&#64748B*&#C9D4E2{amount}"
     # 單個物品數量等於 1 時的條目格式，{name} 為物品名。
-    item-single: "&f{name}"
+    item-single: "&#C9D4E2{name}"
     # 物品條目超過 trash.yml 中 max-display-items 後追加的省略標記。
-    ellipsis: "&7..."
+    ellipsis: "&#64748B..."
 
 # 黑名單 GUI 相關訊息。
 ban-gui:
   # 世界黑名單 GUI 標題，{world} 為世界名。
-  world-title: "&8世界黑名單: {world}"
+  world-title: "&#0F172A世界黑名單: {world}"
   # 公共垃圾桶黑名單 GUI 標題。
-  global-title: "&8公共垃圾桶黑名單"
+  global-title: "&#0F172A公共垃圾桶黑名單"
   # 保存世界黑名單時世界不存在。
-  world-missing: "{prefix}&c世界不存在，無法保存黑名單: {world}"
+  world-missing: "{prefix}&#FFD166世界不存在，無法保存黑名單: {world}"
   # 世界黑名單保存成功，{count} 為物品數量。
-  world-save-success: "{prefix}&a已保存世界垃圾桶黑名單，數量: &f{count}"
+  world-save-success: "{prefix}&#5AC8FA已保存世界垃圾桶黑名單，數量: &#C9D4E2{count}"
   # 世界黑名單保存失敗。
-  world-save-fail: "{prefix}&c保存世界垃圾桶黑名單失敗，請查看後台日誌。"
+  world-save-fail: "{prefix}&#FFD166保存世界垃圾桶黑名單失敗，請查看後台日誌。"
   # 公共黑名單保存成功，{count} 為物品數量。
-  global-save-success: "{prefix}&a已保存公共垃圾桶黑名單，數量: &f{count} &7(已立即生效)"
+  global-save-success: "{prefix}&#5AC8FA已保存公共垃圾桶黑名單，數量: &#C9D4E2{count} &#64748B(已立即生效)"
   # 公共黑名單保存失敗。
-  global-save-fail: "{prefix}&c保存公共垃圾桶黑名單失敗，請查看後台日誌。"
+  global-save-fail: "{prefix}&#FFD166保存公共垃圾桶黑名單失敗，請查看後台日誌。"
 
 # 防護和查詢相關訊息。
 protection:
   # 關閉防丟棄模式。
-  drop-mode-off: "{prefix}&a已關閉防丟棄模式。"
+  drop-mode-off: "{prefix}&#5AC8FA已關閉防丟棄模式。"
   # 開啟防丟棄模式。
-  drop-mode-on: "{prefix}&a已開啟防丟棄模式。"
+  drop-mode-on: "{prefix}&#5AC8FA已開啟防丟棄模式。"
   # 防丟棄模式攔截玩家丟棄。
-  drop-blocked: "{prefix}&c防丟棄模式已阻止本次丟棄。"
+  drop-blocked: "{prefix}&#FFD166防丟棄模式已阻止本次丟棄。"
   # look 查詢等待玩家右鍵實體。
-  look-prompt: "{prefix}&a請右鍵一個實體以查詢實體名稱。"
+  look-prompt: "{prefix}&#5AC8FA請右鍵一個實體以查詢實體名稱。"
   # look 查詢實體結果，{name} 為實體名，{type} 為實體類型。
-  entity-result: "{prefix}&a實體: &f{name} &7({type})"
+  entity-result: "{prefix}&#5AC8FA實體: &#C9D4E2{name} &#64748B({type})"
   # 當前區塊實體列表標題。
-  chunk-entities-title: "{prefix}&a當前區塊實體:"
+  chunk-entities-title: "{prefix}&#5AC8FA當前區塊實體:"
   # 當前區塊實體單行，{text} 為實體名和數量。
-  chunk-entity-line: "{prefix}&a{text}"
+  chunk-entity-line: "{prefix}&#5AC8FA{text}"
   # 手持物品查詢結果，{material} 為物品類型。
-  hand-item: "{prefix}&a手持物品: &f{material}"
+  hand-item: "{prefix}&#5AC8FA手持物品: &#C9D4E2{material}"
 
 # 實體限制相關訊息。
 entity-limit:
@@ -101,109 +101,109 @@ entity-limit:
 # 世界垃圾桶相關訊息。
 world-trash:
   # 當前世界禁止創建世界垃圾桶。
-  create-banned-world: "{prefix}&c該世界禁止創建世界垃圾桶。"
+  create-banned-world: "{prefix}&#FFD166該世界禁止創建世界垃圾桶。"
   # 告示牌沒有連接到可用容器。
-  create-not-container: "{prefix}&c告示牌必須貼在容器上，或放在容器上方。"
+  create-not-container: "{prefix}&#FFD166告示牌必須貼在容器上，或放在容器上方。"
   # 當前世界垃圾桶數量達到上限。
-  create-reach-limit: "{prefix}&c該世界的世界垃圾桶數量已達到上限。"
+  create-reach-limit: "{prefix}&#FFD166該世界的世界垃圾桶數量已達到上限。"
   # 創建世界垃圾桶成功，{world} 為世界名。
-  create-success: "{prefix}&a已在世界 &f{world} &a創建世界垃圾桶。"
+  create-success: "{prefix}&#5AC8FA已在世界 &#C9D4E2{world} &#5AC8FA創建世界垃圾桶。"
   # 創建世界垃圾桶保存失敗。
-  create-save-fail: "{prefix}&c世界垃圾桶保存失敗，請查看後台日誌。"
+  create-save-fail: "{prefix}&#FFD166世界垃圾桶保存失敗，請查看後台日誌。"
   # 移除世界垃圾桶登記成功。
-  remove-success: "{prefix}&a已移除該世界垃圾桶登記。"
+  remove-success: "{prefix}&#5AC8FA已移除該世界垃圾桶登記。"
 # 主指令相關訊息。
 command:
   # 通用無權限提示。
-  no-permission: "{prefix}&c你沒有權限執行該指令。"
+  no-permission: "{prefix}&#FFD166你沒有權限執行該指令。"
   # 重載成功提示。
-  reload-success: "{prefix}&aBLWorldTrashCan 已重載。"
+  reload-success: "{prefix}&#5AC8FABLWorldTrashCan 已重載。"
   # 手動清理完成提示，{worlds} 世界數，{routed} 回收物品數，{items} 移除物品數，{entities} 移除實體數。
-  clear-success: "{prefix}&a清理完成: &f世界 {worlds}&a, 回收物品 {routed}&a, 移除物品 {items}&a, 移除實體 {entities}&a。"
+  clear-success: "{prefix}&#5AC8FA清理完成: &#C9D4E2世界 {worlds}&#5AC8FA, 回收物品 {routed}&#5AC8FA, 移除物品 {items}&#5AC8FA, 移除實體 {entities}&#5AC8FA。"
   # 手動清理 guards 參數錯誤時提示。
-  clear-guard-usage: "{prefix}&c用法: /wtc clear [true/false]，true 表示忽略 guards，false 表示遵守 guards。"
+  clear-guard-usage: "{prefix}&#FFD166用法: /wtc clear [true/false]，true 表示忽略 guards，false 表示遵守 guards。"
   # Folia 不支援目前清理掃描時提示。
-  folia-clear-unsupported: "{prefix}&c目前 Folia 產物尚未啟用 region-safe 清理，已拒絕執行世界實體掃描。"
+  folia-clear-unsupported: "{prefix}&#FFD166目前 Folia 產物尚未啟用 region-safe 清理，已拒絕執行世界實體掃描。"
   # Folia 上一輪清理仍在執行時提示。
-  folia-clear-running: "{prefix}&e上一輪 Folia region-safe 清理仍在執行，本次沒有重複啟動。"
+  folia-clear-running: "{prefix}&#FFD166上一輪 Folia region-safe 清理仍在執行，本次沒有重複啟動。"
   # Folia 清理任務啟動成功提示。
-  folia-clear-started: "{prefix}&a已啟動 Folia region-safe 清理；完成後請查看後台 [FoliaCleanup] 日誌或執行 /blwtc stats。"
+  folia-clear-started: "{prefix}&#5AC8FA已啟動 Folia region-safe 清理；完成後請查看後台 [FoliaCleanup] 日誌或執行 /blwtc stats。"
   # 沒有打開公共垃圾桶權限時提示。
-  no-global-open-permission: "{prefix}&c你沒有權限打開公共垃圾桶。"
+  no-global-open-permission: "{prefix}&#FFD166你沒有權限打開公共垃圾桶。"
   # 沒有打開個人垃圾桶權限時提示。
-  no-personal-open-permission: "{prefix}&c你沒有權限打開個人垃圾桶。"
+  no-personal-open-permission: "{prefix}&#FFD166你沒有權限打開個人垃圾桶。"
   # /blwtc help 輸出，每行一條。主幫助只展示正式命令；調試命令請使用 /blwtc debughelp。
   help:
-    - "&b/blwtc help &7- 查看幫助"
-    - "&b/blwtc platform &7- 查看目前版本產物能力"
-    - "&b/blwtc clear [true/false] &7- 立即掃地，預設 true 忽略 guards，false 遵守 guards"
-    - "&b/blwtc global &7- 打開公共垃圾桶"
-    - "&b/blwtc personal &7- 打開個人垃圾桶"
-    - "&b/blwtc dropmode &7- 切換防丟棄模式"
-    - "&b/blwtc look &7- 查詢手持物品和右鍵實體類型"
-    - "&b/blwtc ban &7- 打開目前世界垃圾桶物品黑名單"
-    - "&b/blwtc globalban &7- 打開公共垃圾桶物品黑名單"
-    - "&b/blwtc stats &7- 查看清理和垃圾桶統計"
-    - "&b/blwtc add <數量> &7- 增加目前世界可建立的世界垃圾桶數量"
-    - "&b/blwtc add <世界名> <數量> &7- 後台增加指定世界可建立的世界垃圾桶數量"
-    - "&b/blwtc debughelp &7- 查看後台調試命令"
-    - "&b/blwtc reload &7- 重載插件"
+    - "&#5AC8FA/blwtc help &#64748B- 查看幫助"
+    - "&#5AC8FA/blwtc platform &#64748B- 查看目前版本產物能力"
+    - "&#5AC8FA/blwtc clear [true/false] &#64748B- 立即掃地，預設 true 忽略 guards，false 遵守 guards"
+    - "&#5AC8FA/blwtc global &#64748B- 打開公共垃圾桶"
+    - "&#5AC8FA/blwtc personal &#64748B- 打開個人垃圾桶"
+    - "&#5AC8FA/blwtc dropmode &#64748B- 切換防丟棄模式"
+    - "&#5AC8FA/blwtc look &#64748B- 查詢手持物品和右鍵實體類型"
+    - "&#5AC8FA/blwtc ban &#64748B- 打開目前世界垃圾桶物品黑名單"
+    - "&#5AC8FA/blwtc globalban &#64748B- 打開公共垃圾桶物品黑名單"
+    - "&#5AC8FA/blwtc stats &#64748B- 查看清理和垃圾桶統計"
+    - "&#5AC8FA/blwtc add <數量> &#64748B- 增加目前世界可建立的世界垃圾桶數量"
+    - "&#5AC8FA/blwtc add <世界名> <數量> &#64748B- 後台增加指定世界可建立的世界垃圾桶數量"
+    - "&#5AC8FA/blwtc debughelp &#64748B- 查看後台調試命令"
+    - "&#5AC8FA/blwtc reload &#64748B- 重載插件"
   # /blwtc debughelp 輸出，每行一條。調試命令會改變測試服運行狀態，不作為普通玩家功能展示。
   debug-help:
-    - "&b/blwtc debugopen <玩家> <global|personal> &7- 後台測試打開 GUI"
-    - "&b/blwtc debugworldtrash <玩家> &7- 後台建立並登記測試世界垃圾桶"
-    - "&b/blwtc debugroute <玩家> <world|personal|global> <Material> <數量> &7- 後台測試指定路由"
-    - "&b/blwtc debugdrop <玩家> <Material> <數量> [owner] &7- 後台生成測試掉落物"
-    - "&b/blwtc debugdamage <玩家> <Material> <數量> &7- 後台測試仙人掌/岩漿損壞回收"
-    - "&b/blwtc debugstock &7- 後台查看目前垃圾桶庫存"
-    - "&b/blwtc debugsummary <玩家> &7- 查看後台測試摘要"
-    - "&b/blwtc debugdensity &7- 查看實體密度掃描和候選隊列"
-    - "&b/blwtc debugnotify <count> &7- 後台觸發 cleanup.yml 對應編號的正式清理通知"
-    - "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 後台測試玩家入口"
-    - "&b/blwtc debugrgb <玩家> &7- 後台測試 RGB/降級色可見通道"
-    - "&b/blwtc debugrgbchannels <玩家> &7- 後台測試聊天、ActionBar 和 Title RGB/降級色通道"
-    - "&7這些命令會改變測試服運行狀態，只建議用於驗收和排障。"
+    - "&#5AC8FA/blwtc debugopen <玩家> <global|personal> &#64748B- 後台測試打開 GUI"
+    - "&#5AC8FA/blwtc debugworldtrash <玩家> &#64748B- 後台建立並登記測試世界垃圾桶"
+    - "&#5AC8FA/blwtc debugroute <玩家> <world|personal|global> <Material> <數量> &#64748B- 後台測試指定路由"
+    - "&#5AC8FA/blwtc debugdrop <玩家> <Material> <數量> [owner] &#64748B- 後台生成測試掉落物"
+    - "&#5AC8FA/blwtc debugdamage <玩家> <Material> <數量> &#64748B- 後台測試仙人掌/岩漿損壞回收"
+    - "&#5AC8FA/blwtc debugstock &#64748B- 後台查看目前垃圾桶庫存"
+    - "&#5AC8FA/blwtc debugsummary <玩家> &#64748B- 查看後台測試摘要"
+    - "&#5AC8FA/blwtc debugdensity &#64748B- 查看實體密度掃描和候選隊列"
+    - "&#5AC8FA/blwtc debugnotify <count> &#64748B- 後台觸發 cleanup.yml 對應編號的正式清理通知"
+    - "&#5AC8FA/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- 後台測試玩家入口"
+    - "&#5AC8FA/blwtc debugrgb <玩家> &#64748B- 後台測試 RGB/降級色可見通道"
+    - "&#5AC8FA/blwtc debugrgbchannels <玩家> &#64748B- 後台測試聊天、ActionBar 和 Title RGB/降級色通道"
+    - "&#64748B這些命令會改變測試服運行狀態，只建議用於驗收和排障。"
   # 平台資訊標題，{platform} 為平台 ID。
   platform:
-    header: "{prefix}&a目前平台: &f{platform}"
+    header: "{prefix}&#5AC8FA目前平台: &#C9D4E2{platform}"
     # 平台能力已啟用文案。
-    enabled: "&a啟用"
+    enabled: "&#5AC8FA啟用"
     # 平台能力已停用文案。
-    disabled: "&7停用"
+    disabled: "&#64748B停用"
     # 平台能力單行，{capability} 為能力名，{state} 為啟用狀態。
-    line: "&7- &f{capability}&7: {state}"
+    line: "&#64748B- &#C9D4E2{capability}&#64748B: {state}"
   # /blwtc stats 輸出。
   stats:
-    header: "{prefix}&a清理統計:"
-    worlds: "&7- &f世界數: &a{worlds}"
-    routed: "&7- &f回收物品: &a{routed} &7(世界 {world}, 個人 {personal}, 公共 {global})"
-    removed-items: "&7- &f刪除物品: &a{items}"
-    removed-entities: "&7- &f刪除實體: &a{entities}"
-    global-pages: "&7- &f公共垃圾桶頁數: &a{pages}"
-    global-items: "&7- &f公共垃圾桶目前物品: &a{items} &7(堆疊 {stacks})"
-    personal-loaded: "&7- &f已載入個人垃圾桶: &a{count}"
-    remaining: "&7- &f下次清理剩餘秒數: &a{seconds}"
+    header: "{prefix}&#5AC8FA清理統計:"
+    worlds: "&#64748B- &#C9D4E2世界數: &#5AC8FA{worlds}"
+    routed: "&#64748B- &#C9D4E2回收物品: &#5AC8FA{routed} &#64748B(世界 {world}, 個人 {personal}, 公共 {global})"
+    removed-items: "&#64748B- &#C9D4E2刪除物品: &#5AC8FA{items}"
+    removed-entities: "&#64748B- &#C9D4E2刪除實體: &#5AC8FA{entities}"
+    global-pages: "&#64748B- &#C9D4E2公共垃圾桶頁數: &#5AC8FA{pages}"
+    global-items: "&#64748B- &#C9D4E2公共垃圾桶目前物品: &#5AC8FA{items} &#64748B(堆疊 {stacks})"
+    personal-loaded: "&#64748B- &#C9D4E2已載入個人垃圾桶: &#5AC8FA{count}"
+    remaining: "&#64748B- &#C9D4E2下次清理剩餘秒數: &#5AC8FA{seconds}"
   # 找不到世界時提示，{world} 為輸入的世界名。
-  world-not-found: "{prefix}&c未找到世界: &f{world}"
+  world-not-found: "{prefix}&#FFD166未找到世界: &#C9D4E2{world}"
   # 控制台執行 add 未指定世界時提示。
-  add-console-world-required: "{prefix}&c控制台執行 add 時必須指定世界名。"
+  add-console-world-required: "{prefix}&#FFD166控制台執行 add 時必須指定世界名。"
   # add 數量不是正數時提示。
-  add-positive-required: "{prefix}&c數量必須大於 0。"
+  add-positive-required: "{prefix}&#FFD166數量必須大於 0。"
   # add 成功提示，{world} 為世界名，{count} 為調整後的上限。
-  add-success: "{prefix}&a世界 &f{world} &a垃圾桶上限已調整為 &f{count}&a。"
+  add-success: "{prefix}&#5AC8FA世界 &#C9D4E2{world} &#5AC8FA垃圾桶上限已調整為 &#C9D4E2{count}&#5AC8FA。"
   # add 用法提示。
   add-usage:
-    - "&c用法: /blwtc add <數量>"
-    - "&c用法: /blwtc add <世界名> <數量>"
+    - "&#FFD166用法: /blwtc add <數量>"
+    - "&#FFD166用法: /blwtc add <世界名> <數量>"
   # 沒有防丟棄模式權限時提示。
-  no-dropmode-permission: "{prefix}&c你沒有權限使用防丟棄模式。"
+  no-dropmode-permission: "{prefix}&#FFD166你沒有權限使用防丟棄模式。"
   # 沒有 look 查詢權限時提示。
-  no-look-permission: "{prefix}&c你沒有權限使用查詢功能。"
+  no-look-permission: "{prefix}&#FFD166你沒有權限使用查詢功能。"
   # 沒有世界黑名單權限時提示。
-  no-world-ban-permission: "{prefix}&c你沒有權限打開世界黑名單。"
+  no-world-ban-permission: "{prefix}&#FFD166你沒有權限打開世界黑名單。"
   # 沒有公共黑名單權限時提示。
-  no-global-ban-permission: "{prefix}&c你沒有權限打開公共垃圾桶黑名單。"
+  no-global-ban-permission: "{prefix}&#FFD166你沒有權限打開公共垃圾桶黑名單。"
   # 非玩家執行玩家指令時提示。
-  only-player: "{prefix}&c該指令只能由玩家執行。"
+  only-player: "{prefix}&#FFD166該指令只能由玩家執行。"
   # 玩家不在線時提示，{player} 為玩家名。
-  player-offline: "{prefix}&c玩家不在線: {player}"
+  player-offline: "{prefix}&#FFD166玩家不在線: {player}"

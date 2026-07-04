@@ -21,7 +21,7 @@ PYTHON_AUDITS = [
     ("command-entrypoints", [sys.executable, "tools/rgb-visual-matrix/check_command_entrypoints.py"]),
     ("command-parity", [sys.executable, "tools/rgb-visual-matrix/check_command_parity.py"]),
     ("message-key-parity", [sys.executable, "tools/rgb-visual-matrix/check_message_key_parity.py"]),
-    ("default-zh-rgb-messages", [sys.executable, "tools/rgb-visual-matrix/check_default_zh_rgb_messages.py"]),
+    ("default-language-rgb-messages", [sys.executable, "tools/rgb-visual-matrix/check_default_language_rgb_messages.py"]),
     ("papi-placeholder-parity", [sys.executable, "tools/rgb-visual-matrix/check_papi_placeholder_parity.py"]),
     ("chunk-load-guards", [sys.executable, "tools/rgb-visual-matrix/check_chunk_load_guards.py"]),
 ]

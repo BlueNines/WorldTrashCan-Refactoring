@@ -54,7 +54,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `d5dbb68222d5b411c40a0429af8e4698f508cf8dbab0c7e85178252b6f65d1c3`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `fc7ad061169be8ea61a8c4c2bd6ec77e5ed46ba55d13809e6393b9d53fdd6c16`。
 
 `plugin.yml` 的源码和 dist 交付接口还有独立审计脚本，检查 5 个源码 `plugin.yml` 和 5 个 dist jar 内 `plugin.yml` 的稳定字段、softdepend、命令别名、23 个权限节点和默认值：
 
@@ -185,13 +185,13 @@ py -3 tools\rgb-visual-matrix\check_message_key_parity.py
 
 当前审计覆盖 16 个源码语言文件和 20 个 dist 包内语言资源，结果为 `errors: 0`。
 
-默认简体消息需要保持当前蓝黄灰黑 RGB 色板，同时仍允许服主在外部语言文件里继续使用 `&a` 这类传统颜色。新增或调整 `messages/message_zh.yml`、RGB 渲染器或低版本降级逻辑后必须运行：
+默认多语言消息需要保持当前蓝黄灰黑 RGB 色板，同时仍允许服主在外部语言文件里继续使用 `&a` 这类传统颜色。新增或调整 `messages/message_*.yml`、RGB 渲染器或低版本降级逻辑后必须运行：
 
 ```powershell
-py -3 tools\rgb-visual-matrix\check_default_zh_rgb_messages.py
+py -3 tools\rgb-visual-matrix\check_default_language_rgb_messages.py
 ```
 
-当前审计覆盖 4 个源码平台默认简体消息、5 个 dist 包内默认简体消息和 `RichTextRenderer` 的 RGB 降级兼容逻辑，结果为 `errors: 0`。
+当前审计覆盖 16 个源码默认语言文件、20 个 dist 包内默认语言文件和 `RichTextRenderer` 的 RGB 降级兼容逻辑，结果为 `errors: 0`。
 
 ## 扫地启动门禁
 
@@ -279,11 +279,13 @@ scanner:
 
 当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询、手持物品/区块实体查询和密集实体清理提示。密集实体清理对应消息节点为 `entity-limit.gather-cleared`，可使用 `{range}`、`{entity}`、`{size}`、`{max}`、`{removed}` 占位符。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
 
+当前四种默认语言 `message_zh.yml`、`message_zh_TW.yml`、`message_en.yml`、`message_es.yml` 均使用 RGB 默认色板；旧服已有外部语言文件仍可继续使用 `&a`、`&c` 这类传统颜色码，运行时会继续兼容。
+
 ## RGB 与富文本消息
 
 重构版使用 PrismaticAPI `1.5.2` 作为统一富文本渲染库，依赖从 `https://croabeast.github.io/repo/` 获取，并在四个平台产物中 shade 后 relocation 到 `pixeltech.bluenine.blworldtrashcan.libs.croabeast`，避免与服务器上其它插件的 PrismaticAPI 版本冲突。打包时会过滤 PrismaticAPI 自带 `plugin.yml`，最终插件名仍为 `BLWorldTrashCan`。
 
-正式消息入口统一走 `RichTextRenderer`，包括普通 Chat、可点击 Chat、ActionBar、Title、BossBar 标题、GUI 标题和平台层 `sendMessage(UUID, message)`。1.16.5+ 服务端可以使用 `&#RRGGBB` 这类 RGB 写法；1.12.2 和 1.13-1.15 会自动降级为传统 `&` 颜色码，不要求真实 RGB。当前默认简体 `messages/message_zh.yml` 全部使用 RGB 写法；服主已有外部语言文件仍可继续写 `&a`、`&c` 等老式颜色。若 PrismaticAPI 在运行时不可用或抛出兼容异常，`RichTextRenderer` 会先把 `&#RRGGBB` 近似降级为 16 色传统颜色，再处理 `&` 颜色码，避免把原始 RGB 标记发给低版本玩家。
+正式消息入口统一走 `RichTextRenderer`，包括普通 Chat、可点击 Chat、ActionBar、Title、BossBar 标题、GUI 标题和平台层 `sendMessage(UUID, message)`。1.16.5+ 服务端可以使用 `&#RRGGBB` 这类 RGB 写法；1.12.2 和 1.13-1.15 会自动降级为传统 `&` 颜色码，不要求真实 RGB。当前默认多语言 `messages/message_*.yml` 全部使用 RGB 写法；服主已有外部语言文件仍可继续写 `&a`、`&c` 等老式颜色。若 PrismaticAPI 在运行时不可用或抛出兼容异常，`RichTextRenderer` 会先把 `&#RRGGBB` 近似降级为 16 色传统颜色，再处理 `&` 颜色码，避免把原始 RGB 标记发给低版本玩家。
 
 本轮 RGB 视觉验收使用真实原版客户端生成的 F2 截图，不用服务端日志或协议抓包替代截图结论。`/blwtc debugrgb <玩家>` 会向在线玩家发送 Chat、ActionBar、Title、Subtitle、BossBar、GUI 标题、物品名和 Lore 八个可见通道；截图矩阵覆盖 Paper 1.12.2、1.13.2、1.14.4、1.15.2、1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.4。其中 1.12.2-1.15.2 为传统颜色降级证据，1.16.5-1.21.4 为 RGB 视觉证据。可提交截图证明保留在 `docs/test-evidence/rgb-visual-proof-20260607-104606/`，本机原始运行缓存保留在 `build/rgb-visual-matrix/runs/rgb-visual-proof-20260607-104606/`，汇总文件为 `build/rgb-visual-matrix/latest-visual-proof.json`。
 
