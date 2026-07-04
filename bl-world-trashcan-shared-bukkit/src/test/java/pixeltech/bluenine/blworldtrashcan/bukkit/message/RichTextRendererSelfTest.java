@@ -3,6 +3,7 @@ package pixeltech.bluenine.blworldtrashcan.bukkit.message;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /** 不依赖 JUnit 的富文本渲染自测。 */
@@ -17,7 +18,28 @@ public final class RichTextRendererSelfTest {
                 RichTextRenderer.suggest(null, "&a/blwtc clear false", "/blwtc clear false"),
                 ClickEvent.Action.SUGGEST_COMMAND,
                 "/blwtc clear false");
+        assertLegacyFallback();
         System.out.println("RichTextRendererSelfTest passed");
+    }
+
+    /** 断言 PrismaticAPI 兜底路径会降级 RGB 且继续兼容传统 & 颜色。 */
+    private static void assertLegacyFallback() {
+        try {
+            Method method = RichTextRenderer.class.getDeclaredMethod("legacyFallback", String.class);
+            method.setAccessible(true);
+            String rendered = (String) method.invoke(null, "&#FFD166权限 &a通过");
+            if (rendered.contains("&#")) {
+                throw new IllegalStateException("legacy fallback leaked raw RGB marker: " + rendered);
+            }
+            if (!rendered.contains("\u00A7a通过")) {
+                throw new IllegalStateException("legacy fallback did not keep &a color: " + rendered);
+            }
+            if (!rendered.contains("\u00A7")) {
+                throw new IllegalStateException("legacy fallback did not render legacy colors: " + rendered);
+            }
+        } catch (ReflectiveOperationException error) {
+            throw new IllegalStateException("legacy fallback reflection failed", error);
+        }
     }
 
     /** 断言组件树上的所有节点都有预期点击事件。 */

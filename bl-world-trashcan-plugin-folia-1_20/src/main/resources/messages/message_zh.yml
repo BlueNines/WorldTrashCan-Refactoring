@@ -196,14 +196,14 @@ command:
     - "&#FFD166用法: &#C9D4E2/blwtc add <数量>"
     - "&#FFD166用法: &#C9D4E2/blwtc add <世界名> <数量>"
   # 没有防丢弃模式权限时提示。
-  no-dropmode-permission: "{prefix}&c你没有权限使用防丢弃模式。"
+  no-dropmode-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限使用防丢弃模式。"
   # 没有 look 查询权限时提示。
-  no-look-permission: "{prefix}&c你没有权限使用查询功能。"
+  no-look-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限使用查询功能。"
   # 没有世界黑名单权限时提示。
-  no-world-ban-permission: "{prefix}&c你没有权限打开世界黑名单。"
+  no-world-ban-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限打开世界黑名单。"
   # 没有公共黑名单权限时提示。
-  no-global-ban-permission: "{prefix}&c你没有权限打开公共垃圾桶黑名单。"
+  no-global-ban-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限打开公共垃圾桶黑名单。"
   # 非玩家执行玩家命令时提示。
-  only-player: "{prefix}&c该命令只能由玩家执行。"
+  only-player: "{prefix}&#FFD166仅玩家可用 &#64748B| &#C9D4E2该命令只能由玩家执行。"
   # 玩家不在线时提示，{player} 为玩家名。
-  player-offline: "{prefix}&c玩家不在线: {player}"
+  player-offline: "{prefix}&#FFD166玩家不在线 &#64748B| &#C9D4E2{player}"

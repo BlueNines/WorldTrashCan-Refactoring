@@ -9,9 +9,33 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** 统一渲染传统颜色、RGB、渐变和可点击消息。 */
 public final class RichTextRenderer {
+    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("(?i)&#([0-9a-f]{6})");
+    private static final char[] LEGACY_COLOR_CODES = "0123456789abcdef".toCharArray();
+    private static final int[][] LEGACY_COLOR_RGB = {
+            {0, 0, 0},
+            {0, 0, 170},
+            {0, 170, 0},
+            {0, 170, 170},
+            {170, 0, 0},
+            {170, 0, 170},
+            {255, 170, 0},
+            {170, 170, 170},
+            {85, 85, 85},
+            {85, 85, 255},
+            {85, 255, 85},
+            {85, 255, 255},
+            {255, 85, 85},
+            {255, 85, 255},
+            {255, 255, 85},
+            {255, 255, 255},
+    };
+
+    /** 禁止实例化工具类。 */
     private RichTextRenderer() {
     }
 
@@ -21,9 +45,9 @@ public final class RichTextRenderer {
         try {
             return PrismaticAPI.legacy().colorize(raw);
         } catch (RuntimeException error) {
-            return ChatColor.translateAlternateColorCodes('&', raw);
+            return legacyFallback(raw);
         } catch (LinkageError error) {
-            return ChatColor.translateAlternateColorCodes('&', raw);
+            return legacyFallback(raw);
         }
     }
 
@@ -33,9 +57,9 @@ public final class RichTextRenderer {
         try {
             return PrismaticAPI.legacy().colorize(player, raw);
         } catch (RuntimeException error) {
-            return ChatColor.translateAlternateColorCodes('&', raw);
+            return legacyFallback(raw);
         } catch (LinkageError error) {
-            return ChatColor.translateAlternateColorCodes('&', raw);
+            return legacyFallback(raw);
         }
     }
 
@@ -80,6 +104,43 @@ public final class RichTextRenderer {
     /** 去除颜色后返回可执行命令文本。 */
     public static String stripColor(String text) {
         return ChatColor.stripColor(color(text));
+    }
+
+    /** 在 PrismaticAPI 不可用时，把 RGB 近似降级为传统颜色并继续兼容 &a 写法。 */
+    private static String legacyFallback(String raw) {
+        return ChatColor.translateAlternateColorCodes('&', downgradeHexColors(raw));
+    }
+
+    /** 把 &#RRGGBB 颜色转换为最接近的传统 16 色代码。 */
+    private static String downgradeHexColors(String raw) {
+        Matcher matcher = HEX_COLOR_PATTERN.matcher(raw == null ? "" : raw);
+        StringBuffer buffer = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, Matcher.quoteReplacement("&" + nearestLegacyColor(matcher.group(1))));
+        }
+        matcher.appendTail(buffer);
+        return buffer.toString();
+    }
+
+    /** 计算 RGB 最接近的传统颜色代码。 */
+    private static char nearestLegacyColor(String hex) {
+        int red = Integer.parseInt(hex.substring(0, 2), 16);
+        int green = Integer.parseInt(hex.substring(2, 4), 16);
+        int blue = Integer.parseInt(hex.substring(4, 6), 16);
+        int bestIndex = 0;
+        int bestDistance = Integer.MAX_VALUE;
+        for (int index = 0; index < LEGACY_COLOR_RGB.length; index++) {
+            int[] color = LEGACY_COLOR_RGB[index];
+            int redDistance = red - color[0];
+            int greenDistance = green - color[1];
+            int blueDistance = blue - color[2];
+            int distance = redDistance * redDistance + greenDistance * greenDistance + blueDistance * blueDistance;
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestIndex = index;
+            }
+        }
+        return LEGACY_COLOR_CODES[bestIndex];
     }
 
     /** 给已经渲染完成的组件补上点击事件。 */
