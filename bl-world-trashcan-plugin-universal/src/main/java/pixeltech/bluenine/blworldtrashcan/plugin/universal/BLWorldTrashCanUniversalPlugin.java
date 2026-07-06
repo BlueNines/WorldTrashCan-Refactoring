@@ -542,7 +542,10 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
 
     /** 判断当前服务端是否需要使用 region-threaded 分支。 */
     private boolean isFoliaServer() {
-        return containsRegionThreadedMarker(Bukkit.getName()) || containsRegionThreadedMarker(Bukkit.getVersion());
+        return hasRuntimeClass("io.papermc.paper.threadedregions.scheduler.FoliaRegionScheduler")
+                || hasRuntimeClass("io.papermc.paper.threadedregions.RegionizedServer")
+                || containsRegionThreadedMarker(Bukkit.getName())
+                || containsRegionThreadedMarker(Bukkit.getVersion());
     }
 
     /** 解析当前 Minecraft 小版本号。 */
@@ -585,6 +588,16 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         }
         String normalized = value.toLowerCase(Locale.ROOT);
         return normalized.contains("folia") || normalized.contains("luminol");
+    }
+
+    /** 判断当前运行时是否存在指定类，不触发类初始化。 */
+    private boolean hasRuntimeClass(String className) {
+        try {
+            Class.forName(className, false, getClass().getClassLoader());
+            return true;
+        } catch (ClassNotFoundException | LinkageError ignored) {
+            return false;
+        }
     }
 
     /** 保存新架构默认配置文件。 */

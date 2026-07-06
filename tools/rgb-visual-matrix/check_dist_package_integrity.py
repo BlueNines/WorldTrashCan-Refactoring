@@ -233,6 +233,8 @@ def check_universal_region_threaded_detection(errors: list[str]) -> None:
     path = REPO / BSTATS_ENTRY_SOURCES["universal"]
     text = path.read_text(encoding="utf-8", errors="replace")
     required_tokens = [
+        "hasRuntimeClass(\"io.papermc.paper.threadedregions.scheduler.FoliaRegionScheduler\")",
+        "hasRuntimeClass(\"io.papermc.paper.threadedregions.RegionizedServer\")",
         "containsRegionThreadedMarker(Bukkit.getName())",
         "containsRegionThreadedMarker(Bukkit.getVersion())",
         "normalized.contains(\"folia\")",
@@ -307,8 +309,14 @@ def check_archive(expected: dict, version: str) -> dict:
             actual_major = class_major(archive.read(main_class))
             if actual_major != expected["mainMajor"]:
                 errors.append(expected["jar"] + ": 主类 class major 应为 " + str(expected["mainMajor"]) + "，实际 " + str(actual_major))
-            if expected["name"] == "universal" and b"luminol" not in archive.read(main_class).lower():
-                errors.append(expected["jar"] + ": universal 主类未包含 Luminol region-threaded 识别常量")
+            if expected["name"] == "universal":
+                main_class_bytes = archive.read(main_class)
+                if b"FoliaRegionScheduler" not in main_class_bytes:
+                    errors.append(expected["jar"] + ": universal 主类未包含 FoliaRegionScheduler 运行时识别常量")
+                if b"RegionizedServer" not in main_class_bytes:
+                    errors.append(expected["jar"] + ": universal 主类未包含 RegionizedServer 运行时识别常量")
+                if b"luminol" not in main_class_bytes.lower():
+                    errors.append(expected["jar"] + ": universal 主类未包含 Luminol 文本兜底识别常量")
         for platform_class in expected["platformClasses"]:
             if platform_class not in name_set:
                 errors.append(expected["jar"] + ": 缺少平台类 " + platform_class)

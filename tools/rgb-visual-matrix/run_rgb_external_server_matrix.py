@@ -171,6 +171,26 @@ EXTERNAL_MATRIX = [
         "expectPapi": True,
         "expectedPlatform": "paper-1.16-1.20",
     },
+    {
+        "id": "external_luminol2612",
+        "label": "luminol-26.1.2-managed",
+        "version": "26.1.2",
+        "displayVersion": "26.1.2-luminol-folia",
+        "serverDir": base.WORKSPACE / "luminol-26.1.2-test-server",
+        "serverJar": "luminol-26.1.2-paperclip.jar",
+        "port": 30028,
+        "java": JAVA25,
+        "plugin": UNIVERSAL_PLUGIN,
+        "expect": "rgb",
+        "quickPlay": True,
+        "direct": False,
+        "managedConfig": True,
+        "readyTimeout": 360,
+        "joinTimeout": 180,
+        "clearMarker": "[FoliaCleanup]",
+        "clearTimeout": 45,
+        "expectedPlatform": "folia-1.20",
+    },
 ]
 
 
