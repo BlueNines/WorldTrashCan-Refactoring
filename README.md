@@ -32,12 +32,14 @@
 
 `BLWorldTrashCan-universal.jar` 不是把四个平台差异写进一个巨大 `if-else` 主类，而是保留四套平台实现并在启动时选择：
 
-- Folia：当 `Bukkit.getName()` 或 `Bukkit.getVersion()` 明确包含 `folia` 时，加载 `folia-1.20` 分支。
+- Folia/Luminol：当 `Bukkit.getName()` 或 `Bukkit.getVersion()` 明确包含 `folia` 或 `luminol` 时，加载 `folia-1.20` 分支，使用 region-threaded 安全调度。
 - 1.12.x：加载 `legacy-1.12` 分支。
 - 1.13-1.15：加载 `bukkit-1.13-1.15` 分支。
 - 1.16+ 现代 Paper/Spigot：加载 `paper-1.16-1.20` 分支。
 
-通用总包主类、命令适配层和 Paper 现代分支保持 Java 8 class major 52，避免 1.16.5 服主常见 Java 8/17 运行环境出现 class major 不兼容。Folia 分支保持 Java 17 class 并只在 Folia 运行时延迟加载，避免 1.12.2 Java 8 服务端在启用阶段提前解析 Java 17 class。Paper 1.20.4 不能只因为存在 `getGlobalRegionScheduler` 就判定为 Folia；当前 Folia 判定只看服务端名称和版本文本中的 `folia` 标记。
+通用总包主类、命令适配层和 Paper 现代分支保持 Java 8 class major 52，避免 1.16.5 服主常见 Java 8/17 运行环境出现 class major 不兼容。Folia 分支保持 Java 17 class 并只在 Folia/Luminol 运行时延迟加载，避免 1.12.2 Java 8 服务端在启用阶段提前解析 Java 17 class。Paper 1.20.4 不能只因为存在 `getGlobalRegionScheduler` 就判定为 Folia；当前 region-threaded 判定只看服务端名称和版本文本中的 `folia`、`luminol` 这类明确标记。
+
+启动日志里的 `Capability folia-region-safe: disabled` 是整产物能力声明，不代表 universal 没有选择 Folia/Luminol 分支。当前 Folia/Luminol 分支会使用 region-threaded 安全调度启动清理任务，但因为通知系统允许服主配置任意控制台 Command，不能把整个插件包承诺为完全 `FOLIA_REGION_SAFE`。
 
 构建后需要把 Maven 最新 target 产物同步到 `dist`，因为真实测试脚本默认部署 `dist/BLWorldTrashCan-universal.jar`：
 
@@ -54,7 +56,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `fc7ad061169be8ea61a8c4c2bd6ec77e5ed46ba55d13809e6393b9d53fdd6c16`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `5b3beed91adcfa63bb470b236a58f3d87f1741f2c6fe0bc7bf18137746406de9`。
 
 `plugin.yml` 的源码和 dist 交付接口还有独立审计脚本，检查 5 个源码 `plugin.yml` 和 5 个 dist jar 内 `plugin.yml` 的稳定字段、softdepend、命令别名、23 个权限节点和默认值：
 

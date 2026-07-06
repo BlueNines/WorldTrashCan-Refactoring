@@ -228,6 +228,21 @@ def check_no_plugin_bstats_toggle(errors: list[str]) -> None:
                 errors.append(path.relative_to(REPO).as_posix() + ": 默认配置不应包含 bStats 关闭开关")
 
 
+def check_universal_region_threaded_detection(errors: list[str]) -> None:
+    """检查 universal 运行时识别 Folia/Luminol 分支，避免误走 Bukkit scheduler。"""
+    path = REPO / BSTATS_ENTRY_SOURCES["universal"]
+    text = path.read_text(encoding="utf-8", errors="replace")
+    required_tokens = [
+        "containsRegionThreadedMarker(Bukkit.getName())",
+        "containsRegionThreadedMarker(Bukkit.getVersion())",
+        "normalized.contains(\"folia\")",
+        "normalized.contains(\"luminol\")",
+    ]
+    for token in required_tokens:
+        if token not in text:
+            errors.append(path.relative_to(REPO).as_posix() + ": universal 运行时识别缺少 " + token)
+
+
 def check_plugin_yml(label: str, plugin_text: str, expected: dict, version: str, errors: list[str]) -> dict[str, str]:
     """检查 plugin.yml 的关键交付字段。"""
     values = parse_plugin_yml(plugin_text)
@@ -292,6 +307,8 @@ def check_archive(expected: dict, version: str) -> dict:
             actual_major = class_major(archive.read(main_class))
             if actual_major != expected["mainMajor"]:
                 errors.append(expected["jar"] + ": 主类 class major 应为 " + str(expected["mainMajor"]) + "，实际 " + str(actual_major))
+            if expected["name"] == "universal" and b"luminol" not in archive.read(main_class).lower():
+                errors.append(expected["jar"] + ": universal 主类未包含 Luminol region-threaded 识别常量")
         for platform_class in expected["platformClasses"]:
             if platform_class not in name_set:
                 errors.append(expected["jar"] + ": 缺少平台类 " + platform_class)
@@ -323,6 +340,7 @@ def run_checks() -> dict:
     check_bstats_service_id(errors)
     check_bstats_entrypoints(errors)
     check_no_plugin_bstats_toggle(errors)
+    check_universal_region_threaded_detection(errors)
     artifacts = []
     for expected in EXPECTED_ARTIFACTS:
         result = check_archive(expected, version)

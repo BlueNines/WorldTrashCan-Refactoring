@@ -540,9 +540,9 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         }
     }
 
-    /** 判断当前服务端是否是 Folia。 */
+    /** 判断当前服务端是否需要使用 region-threaded 分支。 */
     private boolean isFoliaServer() {
-        return containsFolia(Bukkit.getName()) || containsFolia(Bukkit.getVersion());
+        return containsRegionThreadedMarker(Bukkit.getName()) || containsRegionThreadedMarker(Bukkit.getVersion());
     }
 
     /** 解析当前 Minecraft 小版本号。 */
@@ -578,9 +578,13 @@ public final class BLWorldTrashCanUniversalPlugin extends JavaPlugin {
         }
     }
 
-    /** 判断文本里是否明确标识 Folia。 */
-    private boolean containsFolia(String value) {
-        return value != null && value.toLowerCase(Locale.ROOT).contains("folia");
+    /** 判断文本里是否明确标识 Folia/Luminol 这类 region-threaded 服务端。 */
+    private boolean containsRegionThreadedMarker(String value) {
+        if (value == null) {
+            return false;
+        }
+        String normalized = value.toLowerCase(Locale.ROOT);
+        return normalized.contains("folia") || normalized.contains("luminol");
     }
 
     /** 保存新架构默认配置文件。 */
