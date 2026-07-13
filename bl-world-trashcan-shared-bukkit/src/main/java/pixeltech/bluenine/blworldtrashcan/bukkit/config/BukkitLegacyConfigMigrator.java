@@ -417,7 +417,7 @@ public final class BukkitLegacyConfigMigrator {
     private void migrateNotifyConfig(YamlConfiguration oldConfig, LegacyMigrationPlan plan) throws IOException {
         YamlConfiguration target = loadTarget("cleanup.yml");
         copyBoolean(oldConfig, target, "Set.ChatFlag", "notify.chat.enabled", plan);
-        copyBoolean(oldConfig, target, "Set.ChatConsoleLogFlag", "notify.chat.console-log", plan);
+        copyBoolean(oldConfig, target, "Set.ChatConsoleLogFlag", "notify.console.enabled", plan);
         copyString(oldConfig, target, "Set.ChatClickCommand", "notify.chat.click-command", plan);
         copyStringList(oldConfig, target, "Set.ChatMessageForCount", "notify.chat.messages", plan);
         copyBoolean(oldConfig, target, "Set.ActionBarFlag", "notify.actionbar.enabled", plan);

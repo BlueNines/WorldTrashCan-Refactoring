@@ -26,11 +26,14 @@ import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupDecision;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
+import pixeltech.bluenine.blworldtrashcan.core.model.EntitySnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoutingDecision;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -163,6 +166,7 @@ public final class CleanupFeature implements Feature {
                 + ", entitiesSkipped=" + stats.entitiesSkipped
                 + ", worldTrashSkippedUnloadedChunks=" + trashRouter.getSkippedUnloadedChunkAccesses()
                 + ", globalTrashRefreshed=" + stats.globalTrashRefreshed);
+        logConsoleCleanupDetails(stats, false);
         return stats;
     }
 
@@ -174,6 +178,9 @@ public final class CleanupFeature implements Feature {
     /** 测试用：按正式通知配置直接触发指定编号的清理通知。 */
     public boolean debugNotify(int count) {
         sendNotify(count, lastStats);
+        if (count == 0 || count == -4) {
+            logConsoleCleanupDetails(lastStats, count == -4);
+        }
         plugin.getLogger().info("[Debug] debugNotify count=" + count);
         return true;
     }
@@ -505,10 +512,11 @@ public final class CleanupFeature implements Feature {
 
     /** 清理单个非物品实体。 */
     private void cleanEntity(Entity entity, CleanupPolicy policy, CleanupStats stats) {
-        EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
+        EntitySnapshot snapshot = platform.entitySnapshotMapper().toSnapshot(entity);
+        EntityCleanupDecision decision = policy.decideEntity(snapshot);
         if (decision.getAction() == EntityCleanupAction.REMOVE) {
             entity.remove();
-            stats.entitiesRemoved++;
+            stats.addEntitiesRemoved(snapshot);
             return;
         }
         stats.entitiesSkipped++;
@@ -518,6 +526,7 @@ public final class CleanupFeature implements Feature {
     private void sendNotify(int count, CleanupStats stats) {
         NotifyConfig notifyConfig = configSupplier.get().getNotifyConfig();
         sendChatNotify(notifyConfig, count, stats);
+        sendConsoleNotify(notifyConfig, count, stats);
         sendActionBarNotify(notifyConfig, count, stats);
         sendBossBarNotify(notifyConfig, count, stats);
         sendTitleNotify(notifyConfig, count, stats);
@@ -539,8 +548,27 @@ public final class CleanupFeature implements Feature {
                 player.sendMessage(RichTextRenderer.color(player, message));
             }
         }
-        if (notifyConfig.isChatConsoleLog()) {
-            Bukkit.getConsoleSender().sendMessage(RichTextRenderer.color(message));
+    }
+
+    /** 独立向控制台输出对应编号的聊天通知文案。 */
+    private void sendConsoleNotify(NotifyConfig notifyConfig, int count, CleanupStats stats) {
+        if (!notifyConfig.getConsole().isEnabled()) {
+            return;
+        }
+        String configuredMessage = notifyConfig.getChatMessages().get(count);
+        if (configuredMessage != null) {
+            Bukkit.getConsoleSender().sendMessage(RichTextRenderer.color(applyStats(configuredMessage, stats)));
+        }
+    }
+
+    /** 按控制台配置输出本轮清理详细统计。 */
+    private void logConsoleCleanupDetails(CleanupStats stats, boolean partial) {
+        NotifyConfig.ConsoleConfig consoleConfig = configSupplier.get().getNotifyConfig().getConsole();
+        if (!consoleConfig.isEnabled() || !consoleConfig.isDetailsEnabled()) {
+            return;
+        }
+        for (String line : CleanupConsoleDetailFormatter.format(consoleConfig, stats, partial)) {
+            plugin.getLogger().info("[CleanupDetail] " + line);
         }
     }
 
@@ -741,6 +769,8 @@ public final class CleanupFeature implements Feature {
 
     /** 清理统计。 */
     public static final class CleanupStats {
+        private static final int MAX_TRACKED_ENTITY_GROUPS = 4096;
+        private static final int MAX_ENTITY_LABEL_LENGTH = 128;
         private int worlds;
         private int itemsRouted;
         private int itemsToWorldTrash;
@@ -758,6 +788,8 @@ public final class CleanupFeature implements Feature {
         private int guardTargetEntities = -1;
         private int guardMinTotalEntities;
         private final Map<UUID, List<ItemStack>> personalTrashItemsByOwner = new HashMap<>();
+        private final Map<String, MutableEntityRemovalEntry> entityRemovals = new HashMap<>();
+        private int untrackedEntitiesRemoved;
 
         /** 创建空统计。 */
         public static CleanupStats empty() {
@@ -777,6 +809,11 @@ public final class CleanupFeature implements Feature {
         /** 返回进入任意垃圾桶的物品数量。 */
         public synchronized int getItemsRouted() {
             return itemsRouted;
+        }
+
+        /** 返回本轮成功处理的物品实际数量。 */
+        public synchronized int getItemsHandled() {
+            return itemsRouted + itemsRemoved;
         }
 
         /** 返回进入世界垃圾桶的物品数量。 */
@@ -894,9 +931,91 @@ public final class CleanupFeature implements Feature {
             items.add(itemStack.clone());
         }
 
-        /** 增加移除实体数量。 */
-        public synchronized void addEntitiesRemoved() {
+        /** 增加移除实体数量并记录名称与类型分组。 */
+        public synchronized void addEntitiesRemoved(EntitySnapshot snapshot) {
             entitiesRemoved++;
+            String type = resolveEntityType(snapshot);
+            String name = resolveEntityName(snapshot, type);
+            String key = name + '\u0000' + type;
+            MutableEntityRemovalEntry entry = entityRemovals.get(key);
+            if (entry != null) {
+                entry.count++;
+                return;
+            }
+            if (entityRemovals.size() >= MAX_TRACKED_ENTITY_GROUPS) {
+                untrackedEntitiesRemoved++;
+                return;
+            }
+            entityRemovals.put(key, new MutableEntityRemovalEntry(name, type));
+        }
+
+        /** 返回按清理数量排序后的实体明细快照。 */
+        public synchronized EntityRemovalSummary snapshotEntityRemovalSummary(int maxEntries) {
+            List<EntityRemovalEntry> entries = new ArrayList<>();
+            for (MutableEntityRemovalEntry entry : entityRemovals.values()) {
+                entries.add(new EntityRemovalEntry(entry.name, entry.type, entry.count));
+            }
+            Collections.sort(entries, new Comparator<EntityRemovalEntry>() {
+                /** 按数量降序、名称和类型升序稳定排序。 */
+                @Override
+                public int compare(EntityRemovalEntry left, EntityRemovalEntry right) {
+                    int countCompare = Integer.compare(right.getCount(), left.getCount());
+                    if (countCompare != 0) {
+                        return countCompare;
+                    }
+                    int nameCompare = left.getName().compareToIgnoreCase(right.getName());
+                    return nameCompare != 0 ? nameCompare : left.getType().compareToIgnoreCase(right.getType());
+                }
+            });
+            int safeMaxEntries = Math.max(1, Math.min(100, maxEntries));
+            int shown = Math.min(safeMaxEntries, entries.size());
+            int others = untrackedEntitiesRemoved;
+            for (int index = shown; index < entries.size(); index++) {
+                others += entries.get(index).getCount();
+            }
+            return new EntityRemovalSummary(new ArrayList<>(entries.subList(0, shown)),
+                    entitiesRemoved, getItemsHandled(), entityRemovals.size(), others);
+        }
+
+        /** 按自定义名、实体名、类型的顺序解析日志名称。 */
+        private static String resolveEntityName(EntitySnapshot snapshot, String type) {
+            if (snapshot != null) {
+                String customName = sanitizeEntityLabel(snapshot.getCustomName());
+                if (!customName.isEmpty()) {
+                    return customName;
+                }
+                String name = sanitizeEntityLabel(snapshot.getName());
+                if (!name.isEmpty()) {
+                    return name;
+                }
+            }
+            return type;
+        }
+
+        /** 返回小写实体类型，缺失时使用 unknown。 */
+        private static String resolveEntityType(EntitySnapshot snapshot) {
+            String type = sanitizeEntityLabel(snapshot == null ? "" : snapshot.getTypeKey());
+            return type.isEmpty() ? "unknown" : type.toLowerCase(Locale.ROOT);
+        }
+
+        /** 去除颜色、控制字符和多余空白，并限制日志名称长度。 */
+        private static String sanitizeEntityLabel(String value) {
+            String stripped = RichTextRenderer.stripColor(value == null ? "" : value);
+            StringBuilder result = new StringBuilder(Math.min(MAX_ENTITY_LABEL_LENGTH, stripped.length()));
+            boolean pendingSpace = false;
+            for (int index = 0; index < stripped.length() && result.length() < MAX_ENTITY_LABEL_LENGTH; index++) {
+                char character = stripped.charAt(index);
+                if (Character.isISOControl(character) || Character.isWhitespace(character)) {
+                    pendingSpace = result.length() > 0;
+                    continue;
+                }
+                if (pendingSpace && result.length() < MAX_ENTITY_LABEL_LENGTH) {
+                    result.append(' ');
+                }
+                pendingSpace = false;
+                result.append(character);
+            }
+            return result.toString();
         }
 
         /** 增加跳过实体数量。 */
@@ -927,6 +1046,92 @@ public final class CleanupFeature implements Feature {
         public synchronized void markGuardSkipped(String reason) {
             this.guardSkipped = true;
             this.guardSkipReason = reason == null ? "" : reason;
+        }
+
+        /** 可变的内部实体统计项。 */
+        private static final class MutableEntityRemovalEntry {
+            private final String name;
+            private final String type;
+            private int count = 1;
+
+            /** 创建内部实体统计项。 */
+            private MutableEntityRemovalEntry(String name, String type) {
+                this.name = name;
+                this.type = type;
+            }
+        }
+
+        /** 对外只读的实体清理统计项。 */
+        public static final class EntityRemovalEntry {
+            private final String name;
+            private final String type;
+            private final int count;
+
+            /** 创建只读实体清理统计项。 */
+            private EntityRemovalEntry(String name, String type, int count) {
+                this.name = name;
+                this.type = type;
+                this.count = count;
+            }
+
+            /** 返回实体显示名。 */
+            public String getName() {
+                return name;
+            }
+
+            /** 返回小写实体类型。 */
+            public String getType() {
+                return type;
+            }
+
+            /** 返回清理数量。 */
+            public int getCount() {
+                return count;
+            }
+        }
+
+        /** 一次清理的实体明细只读快照。 */
+        public static final class EntityRemovalSummary {
+            private final List<EntityRemovalEntry> entries;
+            private final int totalEntities;
+            private final int totalItems;
+            private final int trackedGroups;
+            private final int others;
+
+            /** 创建实体明细只读快照。 */
+            private EntityRemovalSummary(List<EntityRemovalEntry> entries, int totalEntities,
+                                         int totalItems, int trackedGroups, int others) {
+                this.entries = Collections.unmodifiableList(entries);
+                this.totalEntities = totalEntities;
+                this.totalItems = totalItems;
+                this.trackedGroups = trackedGroups;
+                this.others = others;
+            }
+
+            /** 返回显示的实体分组。 */
+            public List<EntityRemovalEntry> getEntries() {
+                return entries;
+            }
+
+            /** 返回清理实体总数。 */
+            public int getTotalEntities() {
+                return totalEntities;
+            }
+
+            /** 返回处理物品实际总数。 */
+            public int getTotalItems() {
+                return totalItems;
+            }
+
+            /** 返回实际跟踪到的实体分组数量。 */
+            public int getTrackedGroups() {
+                return trackedGroups;
+            }
+
+            /** 返回未逐项显示的实体总数。 */
+            public int getOthers() {
+                return others;
+            }
         }
     }
 

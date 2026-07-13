@@ -204,11 +204,22 @@ public final class ConfigBundleLoader {
 
     /** 读取通知配置。 */
     private NotifyConfig loadNotifyConfig(ConfigurationSource cleanup) {
+        boolean consoleEnabled = cleanup.contains("notify.console.enabled")
+                ? cleanup.getBoolean("notify.console.enabled", true)
+                : cleanup.getBoolean("notify.chat.console-log", true);
+        NotifyConfig.ConsoleConfig consoleConfig = new NotifyConfig.ConsoleConfig(
+                consoleEnabled,
+                cleanup.getBoolean("notify.console.details-enabled", true),
+                cleanup.getInt("notify.console.max-entries", 10),
+                cleanup.getString("notify.console.entity-format", "{name}_{type}: {count}"),
+                cleanup.getString("notify.console.items-format", "items: {count}"),
+                cleanup.getString("notify.console.others-format", "others: {count}")
+        );
         return new NotifyConfig(
                 cleanup.getBoolean("notify.chat.enabled", true),
-                cleanup.getBoolean("notify.chat.console-log", true),
                 cleanup.getString("notify.chat.click-command", "/worldlisttrashcan globaltrash"),
                 parseTextMessages(cleanup.getStringList("notify.chat.messages")),
+                consoleConfig,
                 cleanup.getBoolean("notify.actionbar.enabled", true),
                 parseTextMessages(cleanup.getStringList("notify.actionbar.messages")),
                 cleanup.getBoolean("notify.bossbar.enabled", false),

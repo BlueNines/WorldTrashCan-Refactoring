@@ -5,6 +5,9 @@ import java.util.Map;
 
 /** 配置读取来源，隔离 Bukkit FileConfiguration 和核心配置解析。 */
 public interface ConfigurationSource {
+    /** 判断配置路径是否存在。 */
+    boolean contains(String path);
+
     /** 读取字符串。 */
     String getString(String path, String fallback);
 

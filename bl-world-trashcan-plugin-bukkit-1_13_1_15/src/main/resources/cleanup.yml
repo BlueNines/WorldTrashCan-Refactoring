@@ -79,8 +79,6 @@ notify:
   chat:
     # 是否启用聊天提醒。
     enabled: true
-    # 是否同步输出到控制台。
-    console-log: true
     # 清理完成消息点击后执行的命令。
     click-command: "/worldlisttrashcan globaltrash"
     # 倒计时聊天提醒，格式：剩余秒数;内容。
@@ -99,6 +97,24 @@ notify:
       - "-1;&#C9D4E2还有 &#FFD166%ClearGlobalCount% &#C9D4E2次清理，公共垃圾桶会刷新"
       - "-2;&#5AC8FA公共垃圾桶的物品已刷新"
       - "-3;&#C9D4E2公共垃圾桶不会自动刷新"
+
+  # 控制台清理日志；独立于聊天提醒，即使 chat.enabled 为 false 也可以继续记录。
+  console:
+    # 是否输出倒计时、完成文案和清理明细；旧配置缺少本项时兼容读取 notify.chat.console-log。
+    enabled: true
+    # 清理成功或 Folia 部分超时时，是否输出按实体名称和类型聚合的详细统计。
+    details-enabled: true
+    # 最多显示清理数量最高的实体分组数；默认 10，运行时限制范围为 1-100。
+    max-entries: 10
+    # 实体明细格式；名称优先使用自定义名，其次 getName()，最后使用 getType()。
+    # 可用占位符：{name} 实体名称、{type} 小写实体类型、{count} 清理数量。
+    entity-format: "{name}_{type}: {count}"
+    # 物品汇总格式；数量是本轮成功入桶或直接删除的物品实际个数，不是掉落物堆叠数。
+    # 可用占位符：{count} 物品实际数量。
+    items-format: "items: {count}"
+    # 实体分组超过 max-entries 时，其余未逐项显示实体的汇总格式。
+    # 可用占位符：{count} 未逐项显示的实体总数。
+    others-format: "others: {count}"
 
   # ActionBar 提醒。
   actionbar:

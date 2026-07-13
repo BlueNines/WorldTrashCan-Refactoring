@@ -15,6 +15,12 @@ public final class BukkitConfigurationSource implements ConfigurationSource {
         this.configuration = configuration;
     }
 
+    /** 判断配置路径是否存在。 */
+    @Override
+    public boolean contains(String path) {
+        return configuration.contains(path);
+    }
+
     /** 读取字符串配置。 */
     @Override
     public String getString(String path, String fallback) {

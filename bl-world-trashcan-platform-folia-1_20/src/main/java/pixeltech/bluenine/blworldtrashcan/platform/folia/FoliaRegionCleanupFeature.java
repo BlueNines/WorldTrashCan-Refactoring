@@ -16,6 +16,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupConsoleDetailFormatter;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
@@ -32,6 +33,7 @@ import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupDecision;
+import pixeltech.bluenine.blworldtrashcan.core.model.EntitySnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoutingDecision;
@@ -179,6 +181,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 @Override
                 public void run() {
                     sendNotify(count, lastStats);
+                    if (count == 0 || count == -4) {
+                        logConsoleCleanupDetails(lastStats, count == -4);
+                    }
                     plugin.getLogger().info("[Debug] debugNotify count=" + count);
                 }
             });
@@ -749,13 +754,14 @@ public final class FoliaRegionCleanupFeature implements Feature {
         if (!tracker.isOpen()) {
             return;
         }
-        EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
+        EntitySnapshot snapshot = platform.entitySnapshotMapper().toSnapshot(entity);
+        EntityCleanupDecision decision = policy.decideEntity(snapshot);
         if (!tracker.isOpen()) {
             return;
         }
         if (decision.getAction() == EntityCleanupAction.REMOVE) {
             entity.remove();
-            stats.addEntitiesRemoved();
+            stats.addEntitiesRemoved(snapshot);
             return;
         }
         stats.addEntitiesSkipped();
@@ -826,6 +832,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 + ", clearEvery=" + currentClearEveryCleanups()
                 + ", worldTrashSkippedUnloadedChunks=" + trashRouter.getSkippedUnloadedChunkAccesses()
                 + ", globalTrashRefreshed=" + stats.isGlobalTrashRefreshed());
+        logConsoleCleanupDetails(stats, timedOut);
         sendNotify(timedOut ? -4 : 0, stats);
         sendNotify(globalTrashStatusNotifyCount(stats), stats);
     }
@@ -878,6 +885,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private void sendNotify(int count, CleanupFeature.CleanupStats stats) {
         NotifyConfig notifyConfig = configSupplier.get().getNotifyConfig();
         sendChatNotify(notifyConfig, count, stats);
+        sendConsoleNotify(notifyConfig, count, stats);
         sendActionBarNotify(notifyConfig, count, stats);
         sendBossBarNotify(notifyConfig, count, stats);
         sendTitleNotify(notifyConfig, count, stats);
@@ -904,8 +912,28 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 player.sendMessage(RichTextRenderer.color(player, message));
             }
         });
-        if (notifyConfig.isChatConsoleLog()) {
-            Bukkit.getConsoleSender().sendMessage(RichTextRenderer.color(message));
+    }
+
+    /** 独立向控制台输出对应编号的聊天通知文案。 */
+    private void sendConsoleNotify(NotifyConfig notifyConfig, int count,
+                                   CleanupFeature.CleanupStats stats) {
+        if (!notifyConfig.getConsole().isEnabled()) {
+            return;
+        }
+        String configuredMessage = notifyConfig.getChatMessages().get(count);
+        if (configuredMessage != null) {
+            Bukkit.getConsoleSender().sendMessage(RichTextRenderer.color(applyStats(configuredMessage, stats)));
+        }
+    }
+
+    /** 按控制台配置输出本轮清理详细统计。 */
+    private void logConsoleCleanupDetails(CleanupFeature.CleanupStats stats, boolean partial) {
+        NotifyConfig.ConsoleConfig consoleConfig = configSupplier.get().getNotifyConfig().getConsole();
+        if (!consoleConfig.isEnabled() || !consoleConfig.isDetailsEnabled()) {
+            return;
+        }
+        for (String line : CleanupConsoleDetailFormatter.format(consoleConfig, stats, partial)) {
+            plugin.getLogger().info("[CleanupDetail] " + line);
         }
     }
 

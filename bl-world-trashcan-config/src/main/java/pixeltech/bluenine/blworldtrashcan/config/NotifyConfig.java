@@ -7,9 +7,9 @@ import java.util.Map;
 /** 清理倒计时通知配置。 */
 public final class NotifyConfig {
     private final boolean chatEnabled;
-    private final boolean chatConsoleLog;
     private final String chatClickCommand;
     private final Map<Integer, String> chatMessages;
+    private final ConsoleConfig console;
     private final boolean actionBarEnabled;
     private final Map<Integer, String> actionBarMessages;
     private final boolean bossBarEnabled;
@@ -22,17 +22,18 @@ public final class NotifyConfig {
     private final Map<Integer, SoundMessage> soundMessages;
 
     /** 创建通知配置。 */
-    public NotifyConfig(boolean chatEnabled, boolean chatConsoleLog, String chatClickCommand,
-                        Map<Integer, String> chatMessages, boolean actionBarEnabled,
+    public NotifyConfig(boolean chatEnabled, String chatClickCommand,
+                        Map<Integer, String> chatMessages, ConsoleConfig console,
+                        boolean actionBarEnabled,
                         Map<Integer, String> actionBarMessages, boolean bossBarEnabled,
                         Map<Integer, BossBarMessage> bossBarMessages, boolean commandEnabled,
                         Map<Integer, List<String>> commandMessages, boolean titleEnabled,
                         Map<Integer, TitleMessage> titleMessages, boolean soundEnabled,
                         Map<Integer, SoundMessage> soundMessages) {
         this.chatEnabled = chatEnabled;
-        this.chatConsoleLog = chatConsoleLog;
         this.chatClickCommand = chatClickCommand == null ? "" : chatClickCommand;
         this.chatMessages = safeMap(chatMessages);
+        this.console = console == null ? ConsoleConfig.defaults() : console;
         this.actionBarEnabled = actionBarEnabled;
         this.actionBarMessages = safeMap(actionBarMessages);
         this.bossBarEnabled = bossBarEnabled;
@@ -50,11 +51,6 @@ public final class NotifyConfig {
         return chatEnabled;
     }
 
-    /** 判断聊天通知是否输出到控制台。 */
-    public boolean isChatConsoleLog() {
-        return chatConsoleLog;
-    }
-
     /** 返回清理完成聊天点击命令。 */
     public String getChatClickCommand() {
         return chatClickCommand;
@@ -63,6 +59,11 @@ public final class NotifyConfig {
     /** 返回聊天通知映射。 */
     public Map<Integer, String> getChatMessages() {
         return chatMessages;
+    }
+
+    /** 返回控制台通知配置。 */
+    public ConsoleConfig getConsole() {
+        return console;
     }
 
     /** 判断 ActionBar 通知是否启用。 */
@@ -118,6 +119,69 @@ public final class NotifyConfig {
     /** 返回不可变映射。 */
     private static <K, V> Map<K, V> safeMap(Map<K, V> value) {
         return value == null ? Collections.<K, V>emptyMap() : Collections.unmodifiableMap(value);
+    }
+
+    /** 控制台清理日志配置。 */
+    public static final class ConsoleConfig {
+        private static final int MAX_ENTRIES_LIMIT = 100;
+        private final boolean enabled;
+        private final boolean detailsEnabled;
+        private final int maxEntries;
+        private final String entityFormat;
+        private final String itemsFormat;
+        private final String othersFormat;
+
+        /** 创建控制台清理日志配置。 */
+        public ConsoleConfig(boolean enabled, boolean detailsEnabled, int maxEntries,
+                             String entityFormat, String itemsFormat, String othersFormat) {
+            this.enabled = enabled;
+            this.detailsEnabled = detailsEnabled;
+            this.maxEntries = Math.max(1, Math.min(MAX_ENTRIES_LIMIT, maxEntries));
+            this.entityFormat = safeText(entityFormat, "{name}_{type}: {count}");
+            this.itemsFormat = safeText(itemsFormat, "items: {count}");
+            this.othersFormat = safeText(othersFormat, "others: {count}");
+        }
+
+        /** 返回默认控制台清理日志配置。 */
+        private static ConsoleConfig defaults() {
+            return new ConsoleConfig(true, true, 10,
+                    "{name}_{type}: {count}", "items: {count}", "others: {count}");
+        }
+
+        /** 判断控制台通知是否启用。 */
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /** 判断清理完成后是否输出详细统计。 */
+        public boolean isDetailsEnabled() {
+            return detailsEnabled;
+        }
+
+        /** 返回最多显示的实体分组数量。 */
+        public int getMaxEntries() {
+            return maxEntries;
+        }
+
+        /** 返回实体明细格式。 */
+        public String getEntityFormat() {
+            return entityFormat;
+        }
+
+        /** 返回物品汇总格式。 */
+        public String getItemsFormat() {
+            return itemsFormat;
+        }
+
+        /** 返回未显示实体汇总格式。 */
+        public String getOthersFormat() {
+            return othersFormat;
+        }
+
+        /** 返回非空格式文本。 */
+        private static String safeText(String value, String fallback) {
+            return value == null || value.trim().isEmpty() ? fallback : value;
+        }
     }
 
     /** BossBar 通知内容。 */
