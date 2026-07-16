@@ -26,10 +26,10 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             "dropmode", "look", "ban", "globalban");
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify", "debugplayer", "debugrgb", "debugrgbchannels");
-    private final BLWorldTrashCanUniversalPlugin plugin;
+    private final BlWorldTrashCanUniversalPlugin plugin;
 
     /** 创建命令执行器。 */
-    public UniversalCommand(BLWorldTrashCanUniversalPlugin plugin) {
+    public UniversalCommand(BlWorldTrashCanUniversalPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -175,7 +175,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         plugin.reloadPlugin();
-        sender.sendMessage(message("command.reload-success", "{prefix}&aBLWorldTrashCan 已重载。"));
+        sender.sendMessage(message("command.reload-success", "{prefix}&aBlWorldTrashCan 已重载。"));
     }
 
     /** 处理立即清理命令。 */

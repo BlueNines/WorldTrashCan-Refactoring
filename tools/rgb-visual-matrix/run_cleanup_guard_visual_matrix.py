@@ -95,7 +95,7 @@ def ensure_cleanup_guard_block(text: str) -> str:
 
 def write_cleanup_guard_config(case: dict, min_online: int, min_entities: int) -> None:
     """写入本轮测试需要的扫地门禁配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     if not target.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法写入门禁测试配置: " + str(target))
     original = ensure_cleanup_guard_block(target.read_text(encoding="utf-8", errors="replace"))
@@ -204,7 +204,7 @@ def read_since(path: Path, offset: int) -> str:
 
 def cleanup_minus5_excerpt(case: dict) -> str:
     """读取当前服务端 cleanup.yml 中的 -5 通知配置片段。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     if not target.is_file():
         return "cleanup.yml 当前 -5 通知配置: 文件不存在\n"
     lines = []
@@ -218,7 +218,7 @@ def cleanup_minus5_excerpt(case: dict) -> str:
 
 def copy_scenario_config(case: dict, run_dir: Path, scenario_id: str) -> Path:
     """归档当前场景运行时的 cleanup.yml。"""
-    source = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    source = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     target = run_dir / "logs" / (case["id"] + "-" + scenario_id + "-cleanup.yml")
     target.parent.mkdir(parents=True, exist_ok=True)
     if source.is_file():
@@ -268,7 +268,7 @@ def render_server_log_screenshot(text: str, target: Path, title: str) -> Path:
     lines = [title, ""]
     useful = []
     for line in text.splitlines():
-        if "Cleanup" in line or "BLWorldTrashCan" in line or "blwtc" in line or "扫地" in line:
+        if "Cleanup" in line or "BlWorldTrashCan" in line or "blwtc" in line or "扫地" in line:
             useful.append(line)
     lines.extend(useful[-34:] if useful else text.splitlines()[-34:])
     width = 1500
@@ -393,7 +393,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
         prepared = prepared_clients[case["version"]]
         client, username, game_dir = base.launch_client(case, prepared, run_dir)
         base.ACTIVE_CLIENT_PID = client.pid

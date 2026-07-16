@@ -25,7 +25,7 @@ pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0.05
 
 
-USER_AGENT = "Codex-BLWorldTrashCan-RGB-Visual-Test"
+USER_AGENT = "Codex-BlWorldTrashCan-RGB-Visual-Test"
 MOJANG_MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 PAPER_API = "https://api.papermc.io/v2/projects/paper/versions/{version}/builds"
 PAPER_JAR = "https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{build}/downloads/{name}"
@@ -66,7 +66,7 @@ def paste_text(text: str) -> None:
 
 
 def repo_root() -> Path:
-    """返回 BLWorldTrashCan 重构仓库根目录。"""
+    """返回 BlWorldTrashCan 重构仓库根目录。"""
     path = Path(__file__).resolve()
     for parent in path.parents:
         if (parent / "pom.xml").is_file() and (parent / "bl-world-trashcan-core").is_dir():
@@ -91,16 +91,16 @@ ACTIVE_CLIENT_PID = None
 
 
 MATRIX = [
-    {"id": "paper1122", "version": "1.12.2", "server": "paper-1.12.2-test-server", "port": 25565, "rcon": 25575, "java": JAVA8, "plugin": "BLWorldTrashCan-legacy-1.12.jar", "expect": "downgrade"},
-    {"id": "paper1132", "version": "1.13.2", "server": "paper-1.13.2-test-server", "port": 25613, "rcon": 25683, "java": JAVA8, "plugin": "BLWorldTrashCan-bukkit-1.13-1.15.jar", "expect": "downgrade"},
-    {"id": "paper1144", "version": "1.14.4", "server": "paper-1.14.4-test-server", "port": 25572, "rcon": 25582, "java": JAVA8, "plugin": "BLWorldTrashCan-bukkit-1.13-1.15.jar", "expect": "downgrade"},
-    {"id": "paper1152", "version": "1.15.2", "server": "paper-1.15.2-test-server", "port": 25573, "rcon": 25583, "java": JAVA8, "plugin": "BLWorldTrashCan-bukkit-1.13-1.15.jar", "expect": "downgrade", "direct": False, "multiplayerY": 0.61, "keyboardNav": True},
-    {"id": "paper1165", "version": "1.16.5", "server": "paper-1.16.5-test-server", "port": 25567, "rcon": 25577, "java": JAVA8, "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
-    {"id": "paper1171", "version": "1.17.1", "server": "paper-1.17.1-test-server", "port": 25568, "rcon": 25578, "java": JAVA17, "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
-    {"id": "paper1182", "version": "1.18.2", "server": "paper-1.18.2-test-server", "port": 25569, "rcon": 25579, "java": JAVA17, "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
-    {"id": "paper1194", "version": "1.19.4", "server": "paper-1.19.4-test-server", "port": 25570, "rcon": 25580, "java": JAVA17, "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
-    {"id": "paper1204", "version": "1.20.4", "server": "paper-1.20.4-test-server", "port": 25566, "rcon": 25576, "java": JAVA17, "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb", "quickPlay": True, "direct": False},
-    {"id": "paper1214", "version": "1.21.4", "server": "paper-1.21.4-test-server", "port": 25574, "rcon": 25584, "java": JAVA21, "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb", "quickPlay": True, "direct": False},
+    {"id": "paper1122", "version": "1.12.2", "server": "paper-1.12.2-test-server", "port": 25565, "rcon": 25575, "java": JAVA8, "plugin": "BlWorldTrashCan-legacy-1.12.jar", "expect": "downgrade"},
+    {"id": "paper1132", "version": "1.13.2", "server": "paper-1.13.2-test-server", "port": 25613, "rcon": 25683, "java": JAVA8, "plugin": "BlWorldTrashCan-bukkit-1.13-1.15.jar", "expect": "downgrade"},
+    {"id": "paper1144", "version": "1.14.4", "server": "paper-1.14.4-test-server", "port": 25572, "rcon": 25582, "java": JAVA8, "plugin": "BlWorldTrashCan-bukkit-1.13-1.15.jar", "expect": "downgrade"},
+    {"id": "paper1152", "version": "1.15.2", "server": "paper-1.15.2-test-server", "port": 25573, "rcon": 25583, "java": JAVA8, "plugin": "BlWorldTrashCan-bukkit-1.13-1.15.jar", "expect": "downgrade", "direct": False, "multiplayerY": 0.61, "keyboardNav": True},
+    {"id": "paper1165", "version": "1.16.5", "server": "paper-1.16.5-test-server", "port": 25567, "rcon": 25577, "java": JAVA8, "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
+    {"id": "paper1171", "version": "1.17.1", "server": "paper-1.17.1-test-server", "port": 25568, "rcon": 25578, "java": JAVA17, "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
+    {"id": "paper1182", "version": "1.18.2", "server": "paper-1.18.2-test-server", "port": 25569, "rcon": 25579, "java": JAVA17, "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
+    {"id": "paper1194", "version": "1.19.4", "server": "paper-1.19.4-test-server", "port": 25570, "rcon": 25580, "java": JAVA17, "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb"},
+    {"id": "paper1204", "version": "1.20.4", "server": "paper-1.20.4-test-server", "port": 25566, "rcon": 25576, "java": JAVA17, "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb", "quickPlay": True, "direct": False},
+    {"id": "paper1214", "version": "1.21.4", "server": "paper-1.21.4-test-server", "port": 25574, "rcon": 25584, "java": JAVA21, "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar", "expect": "rgb", "quickPlay": True, "direct": False},
 ]
 
 
@@ -351,7 +351,7 @@ def choose_subst_drive(target: Path) -> Path:
     """为 Java 8 客户端选择一个 ASCII 映射盘路径。"""
     target.mkdir(parents=True, exist_ok=True)
     sentinel = target / ".blwtc-rgb-client-cache"
-    sentinel.write_text("BLWorldTrashCan RGB client cache\n", encoding="utf-8")
+    sentinel.write_text("BlWorldTrashCan RGB client cache\n", encoding="utf-8")
     for drive in ["R:", "S:", "T:", "U:"]:
         root = Path(drive + "\\")
         if root.exists():
@@ -440,7 +440,7 @@ def launch_client(case: dict, prepared: dict, run_dir: Path) -> tuple[subprocess
         "-Dfile.encoding=UTF-8",
         "-Djava.library.path=" + str(natives),
         "-Dorg.lwjgl.librarypath=" + str(natives),
-        "-Dminecraft.launcher.brand=BLWTCVisualMatrix",
+        "-Dminecraft.launcher.brand=BlWTCVisualMatrix",
         "-Dminecraft.launcher.version=1",
         "-cp",
         classpath,
@@ -475,7 +475,7 @@ def nbt_byte_tag(name: str, value: int) -> bytes:
 def write_servers_dat(case: dict, game_dir: Path) -> None:
     """写入只包含当前测试服的 Minecraft servers.dat。"""
     server = (
-        nbt_string_tag("name", "BLWTC RGB " + case["version"]) +
+        nbt_string_tag("name", "BlWTC RGB " + case["version"]) +
         nbt_string_tag("ip", "127.0.0.1:" + str(case["port"])) +
         nbt_byte_tag("hideAddress", 0) +
         b"\x00"
@@ -550,7 +550,7 @@ def write_server_properties(case: dict, server_dir: Path) -> None:
         "view-distance": "2",
         "simulation-distance": "2",
         "spawn-protection": "0",
-        "motd": "BLWTC RGB Visual Matrix " + case["version"],
+        "motd": "BlWTC RGB Visual Matrix " + case["version"],
     })
     text = "\n".join(key + "=" + value for key, value in values.items()) + "\n"
     path.write_text(text, encoding="utf-8")
@@ -564,7 +564,7 @@ def deploy_plugin(case: dict, server_dir: Path) -> None:
         raise RuntimeError("插件产物不存在: " + str(source))
     plugins = server_dir / "plugins"
     plugins.mkdir(parents=True, exist_ok=True)
-    for old in plugins.glob("BLWorldTrashCan*.jar"):
+    for old in plugins.glob("BlWorldTrashCan*.jar"):
         old.unlink()
     shutil.copy2(source, plugins / source.name)
 

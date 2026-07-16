@@ -1,4 +1,4 @@
-# BLWorldTrashCan 重构实现
+# BlWorldTrashCan 重构实现
 
 这是 `WorldListTrashCan` 的重构实现工作区。原项目只作为行为基准保留，新实现按“共同核心 + 多版本轻量产物 + 通用总包”拆分，避免把 Legacy、Paper、Folia 差异硬堆进同一个主类。
 
@@ -6,11 +6,13 @@
 
 ## 产物
 
-- `dist/BLWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
-- `dist/BLWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
-- `dist/BLWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.4、外部 Paper 1.21.8 和外部 Paper 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
-- `dist/BLWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 Folia 测试服完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。清理通知的 Chat、ActionBar、BossBar、Title、Sound 和 Command 已补真实客户端专项截图与日志证据；当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 Command 通知允许服主配置任意控制台命令。
-- `dist/BLWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在 6 个外部服务端全部使用同一个 universal 整包完成真实客户端 RGB 三通道截图和基础功能回归，也已在 Paper 1.12.2、Paper 26.1.2 与 Spigot 26.1.2 使用同一个 universal 整包完成真实客户端 RGB 截图、基础功能和完整功能矩阵复测。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 以及 26.1.2 RGB 截图矩阵以真实客户端 F2 截图为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
+- `dist/BlWorldTrashCan-legacy-1.12.jar`：Paper/Spigot 1.12.2 测试产物，已在 `paper-1.12.2-test-server` 启动验证。
+- `dist/BlWorldTrashCan-bukkit-1.13-1.15.jar`：Bukkit/Spigot 1.13-1.15 产物，已在 `paper-1.13.2-test-server` 用 Java 8 完成启动 smoke 和 RCON 命令复测。
+- `dist/BlWorldTrashCan-paper-1.16-1.20.jar`：现代 Paper 产物，已用真实原版客户端 F2 截图覆盖 1.16.5、1.17.1、1.18.2、1.19.4、1.20.4、1.21.4、外部 Paper 1.21.8 和外部 Paper 1.21.11 的 RGB 可见通道；文件名暂沿用重构阶段命名。
+- `dist/BlWorldTrashCan-folia-1.20.jar`：Folia 1.20 产物，已在 Folia 测试服完成启动、region-safe 清理、Folia 专用实体限制和通知后台 smoke；世界实体扫描清理使用 Folia region/entity scheduler 分段执行，`/blwtc clear` 为异步启动语义。清理通知的 Chat、ActionBar、BossBar、Title、Sound 和 Command 已补真实客户端专项截图与日志证据；当前仍不声明整产物 `FOLIA_REGION_SAFE`，因为 Command 通知允许服主配置任意控制台命令。
+- `dist/BlWorldTrashCan-universal.jar`：通用总包，面向习惯“一个 jar 跨端切换”的服主；已完成四端 console smoke，并在 6 个外部服务端全部使用同一个 universal 整包完成真实客户端 RGB 三通道截图和基础功能回归，也已在 Paper 1.12.2、Paper 26.1.2 与 Spigot 26.1.2 使用同一个 universal 整包完成真实客户端 RGB 截图、基础功能和完整功能矩阵复测。进阶用户仍可以继续使用上面四个轻量分版本 jar，减少包体和运行时选择逻辑。本轮 1.12.2-1.21.4 以及 26.1.2 RGB 截图矩阵以真实客户端 F2 截图为准，旧协议客户端证据不再作为玩家可见 RGB 的最终结论。
+
+从 2026-07-16 起，对外品牌大小写统一为 `BlWorldTrashCan`。`plugin.yml`、默认消息前缀、日志前缀、Java 主类和 dist 文件名均使用 `Bl`，不再使用全大写前缀。兼容接口保持不变：`/blwtc`、`/blworldtrashcan`、`blworldtrashcan.*` 权限和 PAPI 标识继续使用原有全小写写法。Linux 服务端升级时，插件会在保存默认配置前从旧大小写数据目录补拷当前目录缺失的文件，不覆盖新目录已有文件，也不删除旧目录；Windows 上两个目录指向同一路径时会自动跳过。
 
 ## 模块
 
@@ -30,7 +32,7 @@
 
 ## 通用总包运行策略
 
-`BLWorldTrashCan-universal.jar` 不是把四个平台差异写进一个巨大 `if-else` 主类，而是保留四套平台实现并在启动时选择：
+`BlWorldTrashCan-universal.jar` 不是把四个平台差异写进一个巨大 `if-else` 主类，而是保留四套平台实现并在启动时选择：
 
 - Folia/Luminol：优先探测运行时是否存在 `io.papermc.paper.threadedregions.scheduler.FoliaRegionScheduler` 或 `io.papermc.paper.threadedregions.RegionizedServer`；若类探测不可用，再按 `Bukkit.getName()` 或 `Bukkit.getVersion()` 中明确包含的 `folia`、`luminol` 文本兜底，加载 `folia-1.20` 分支并使用 region-threaded 安全调度。
 - 1.12.x：加载 `legacy-1.12` 分支。
@@ -41,7 +43,7 @@
 
 启动日志里的 `Capability folia-region-safe: disabled` 是整产物能力声明，不代表 universal 没有选择 Folia/Luminol 分支。当前 Folia/Luminol 分支会使用 region-threaded 安全调度启动清理任务，但因为通知系统允许服主配置任意控制台 Command，不能把整个插件包承诺为完全 `FOLIA_REGION_SAFE`。2026-07-07 已在 `C:\Users\pc\Desktop\ai开发插件\luminol-26.1.2-test-server` 使用真实客户端验证通用总包会识别为 `folia-1.20 (universal)`，并完成 RGB、清理、路由和公共/个人 GUI 基础功能验收。
 
-构建后需要把 Maven 最新 target 产物同步到 `dist`，因为真实测试脚本默认部署 `dist/BLWorldTrashCan-universal.jar`：
+构建后需要把 Maven 最新 target 产物同步到 `dist`，因为真实测试脚本默认部署 `dist/BlWorldTrashCan-universal.jar`：
 
 ```powershell
 build\tools\apache-maven-3.9.9\bin\mvn.cmd -q clean package
@@ -56,7 +58,15 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BLWorldTrashCan-universal.jar` SHA256 为 `6453cc80f049c3620b62b2e795c10a056f5a549eae545d2bdcb2db504c7a3d9e`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BlWorldTrashCan-universal.jar` SHA256 为 `265b80f26264f65ea594140073c57bfad1df823f808bfa1fc48335e95ece1737`。
+
+公开品牌大小写有独立审计脚本，检查源码文件名和内容、默认资源、文档、dist 文件名以及 jar 内 `plugin.yml`，防止重新出现旧的全大写品牌：
+
+```powershell
+py -3 tools\rgb-visual-matrix\check_brand_case.py
+```
+
+当前结果为 5 个 dist 产物全部通过，`errors: 0`；源码文件数量由脚本按当前 Git 跟踪内容动态统计。
 
 `plugin.yml` 的源码和 dist 交付接口还有独立审计脚本，检查 5 个源码 `plugin.yml` 和 5 个 dist jar 内 `plugin.yml` 的稳定字段、softdepend、命令别名、23 个权限节点和默认值：
 
@@ -74,13 +84,13 @@ py -3 tools\rgb-visual-matrix\check_current_dist_hash_docs.py
 
 当前审计覆盖 5 个 dist jar，结果为 `errors: 0`。
 
-完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-089、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
+完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-090、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
 
 ```powershell
 py -3 tools\rgb-visual-matrix\check_function_matrix_doc.py
 ```
 
-当前矩阵为 F-001 到 F-089 共 89 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
+当前矩阵为 F-001 到 F-090 共 90 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
 
 常规帮助、普通补全和 debug 帮助分离也有独立审计脚本，检查 Java fallback、一参 tab 补全、源码语言文件和 dist jar 内语言文件：`/blwtc help` 只允许保留 `/blwtc debughelp` 入口，空前缀 tab 补全只显示正式命令与 `debughelp`，具体 `debug*` 命令必须只出现在 `/blwtc debughelp` 面板或输入 `debug` 前缀后的补全中：
 
@@ -145,7 +155,7 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py
 py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 ```
 
-当前默认 19 项审计和完整 20 项审计均为 `failed: 0`。
+当前默认 20 项审计和完整 21 项审计均为 `failed: 0`。
 
 ## 配置文件
 
@@ -217,7 +227,7 @@ notify:
 - 超出 `max-entries` 的实体数量合并到 `others`；内部最多跟踪 4096 个实体名称与类型组合，避免异常自定义名撑大内存。
 - Folia 只在实体所属 region 读取名称并合并字符串计数，不会把 Bukkit 实体对象保存到统计结果中；超时时明细标记为 `partial=true`。
 
-2026-07-14 已使用同一个 `dist/BLWorldTrashCan-universal.jar` 在隔离 Paper 1.12.2 和 Luminol 26.1.2 上完成真实后台矩阵。两端都生成 5 个颜色不同但同名的盔甲架、4 只普通羊、1 只猪和 97 个实际物品；最终日志均为 `神话最强怪_armor_stand: 5`、`Sheep_sheep: 4`、`others: 1`、`items: 97`，且夹具确认清理后残留为 0。机器摘要：`build/cleanup-console-detail-matrix/20260714-024646/summary.json`。
+2026-07-14 已使用同一个 `dist/BlWorldTrashCan-universal.jar` 在隔离 Paper 1.12.2 和 Luminol 26.1.2 上完成真实后台矩阵。两端都生成 5 个颜色不同但同名的盔甲架、4 只普通羊、1 只猪和 97 个实际物品；最终日志均为 `神话最强怪_armor_stand: 5`、`Sheep_sheep: 4`、`others: 1`、`items: 97`，且夹具确认清理后残留为 0。机器摘要：`build/cleanup-console-detail-matrix/20260714-024646/summary.json`。
 
 ## 扫地启动门禁
 
@@ -291,17 +301,17 @@ scanner:
 
 这套设计接受一定延迟，优先保证清理插件自身占用低且不会因为密集实体瞬间生成而卡住主线程。`/blwtc debugdensity` 可查看 loaded/selected chunk、索引实体数、候选队列、删除成功/跳过、TTL/重试/丢弃等统计，用于压测和排障。
 
-2026-06-18 已用 `dist/BLWorldTrashCan-universal.jar` 完成低占用实体密度压测，SHA256 为 `CB78511DBD9645F7127CC4D02C06BF37E89920378BBC2CCC0FED6EE2E933403B`。测试端覆盖 Paper 1.12.2 与 Folia 1.21.8，均临时启用密集 cow 限制、生成 300 只 cow，并把 `scanner.max-removes-per-run` 压到 `1` 验证预算化删除。Paper 1.12.2 最终剩余 1 只，候选队列/去重 `0/0`；Folia 1.21.8 最终剩余 6 只，候选队列/去重 `0/0`。两端均通过 `debugdensity` 证明候选创建、取出、完成和删除/跳过生命周期闭合，证据目录为 `docs/test-evidence/entity-density-low-overhead-20260618-015437/`。
+2026-06-18 已用 `dist/BlWorldTrashCan-universal.jar` 完成低占用实体密度压测，SHA256 为 `CB78511DBD9645F7127CC4D02C06BF37E89920378BBC2CCC0FED6EE2E933403B`。测试端覆盖 Paper 1.12.2 与 Folia 1.21.8，均临时启用密集 cow 限制、生成 300 只 cow，并把 `scanner.max-removes-per-run` 压到 `1` 验证预算化删除。Paper 1.12.2 最终剩余 1 只，候选队列/去重 `0/0`；Folia 1.21.8 最终剩余 6 只，候选队列/去重 `0/0`。两端均通过 `debugdensity` 证明候选创建、取出、完成和删除/跳过生命周期闭合，证据目录为 `docs/test-evidence/entity-density-low-overhead-20260618-015437/`。
 
-2026-06-18 另用同一个 `dist/BLWorldTrashCan-universal.jar` 完成真实客户端游戏内截图矩阵，SHA256 为 `73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56`，`plugin.yml` 版本 `7.0.0`。测试覆盖 `E:\server_work\1.21.11spigot`、`E:\server_work\folia1.21.8`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\spigot-26.1.2-test-server`、`E:\server_work\1.21.11arclight-neoforge`、`E:\server_work\1.20.1fabric.banner` 六个服务端；每端均由真实客户端进服、生成 80 只 cow，分别截取 before、正式清理提示 notify、玩家 `/blwtc debugdensity` 输出三列 F2 游戏内 PNG。`summary.json` 同时断言客户端日志出现正式“密集实体清理”提示和玩家命令输出“实体密度扫描统计”，避免只凭服务端日志或截图误判。证据目录为 `docs/test-evidence/entity-density-visual-20260618-101314/`，总览图为 `entity-density-visual-contact-sheet.png`。
+2026-06-18 另用同一个 `dist/BlWorldTrashCan-universal.jar` 完成真实客户端游戏内截图矩阵，SHA256 为 `73d1069403d50ebad4e37720fd801f0109f186e91b6f2f428239282f2699bd56`，`plugin.yml` 版本 `7.0.0`。测试覆盖 `E:\server_work\1.21.11spigot`、`E:\server_work\folia1.21.8`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\spigot-26.1.2-test-server`、`E:\server_work\1.21.11arclight-neoforge`、`E:\server_work\1.20.1fabric.banner` 六个服务端；每端均由真实客户端进服、生成 80 只 cow，分别截取 before、正式清理提示 notify、玩家 `/blwtc debugdensity` 输出三列 F2 游戏内 PNG。`summary.json` 同时断言客户端日志出现正式“密集实体清理”提示和玩家命令输出“实体密度扫描统计”，避免只凭服务端日志或截图误判。证据目录为 `docs/test-evidence/entity-density-visual-20260618-101314/`，总览图为 `entity-density-visual-contact-sheet.png`。
 
 2026-06-28 对照旧版 `GatherEntityLimitCount: 实体类型;数量;范围;清理数量` 语义修复 `remove-count`：它表示密集条件触发后本轮最多清理多少只，不是只清理“当前数量 - max-count”的差值。重构版现在按 `min(remove-count, 当前密集数量)` 选择候选，删除阶段不再因为前面候选已经把数量降到上限附近而跳过同轮剩余候选；同一半径内已经有待删除候选时，后续跨 chunk 快照不会再重复创建第二组候选。关闭密集实体限制后，已排队候选也会直接消费而不继续删除。最终整包 SHA256 为 `38c33ad0a32e782c0878b858e9f8cd6cb871d858afd97ae6e216b504720958a7`，在 `E:\server_work\folia1.21.8` 与 `E:\server_work\1.21.11spigot` 用真实客户端验证 `spawn-count: 20`、`max-count: 8`、`remove-count: 5`，正式聊天提示每条均为“本次已清理 5 只”，并保存 before/notify/debugdensity F2 截图。证据目录为 `docs/test-evidence/entity-density-visual-20260628-032747/` 和 `docs/test-evidence/entity-density-visual-20260628-032445/`。
 
 ## 消息与语言
 
-`config.yml` 的 `language` 指定 `plugins/BLWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会优先回退到当前语言对应的 jar 内置节点，再回退到默认中文节点，避免升级后命令、GUI 或提示变成空白。旧外部语言文件如果仍把调试命令堆在 `command.help` 主帮助里，运行时会改用当前语言的 jar 内置主帮助，避免英文语言切换时被强制退回中文主帮助。
+`config.yml` 的 `language` 指定 `plugins/BlWorldTrashCan/messages/` 下的语言文件名，默认 `message_zh.yml`。插件会在启动或重载时保存 jar 内自带语言文件；如果旧服已有外部语言文件且缺少新节点，正式玩家文案会优先回退到当前语言对应的 jar 内置节点，再回退到默认中文节点，避免升级后命令、GUI 或提示变成空白。旧外部语言文件如果仍把调试命令堆在 `command.help` 主帮助里，运行时会改用当前语言的 jar 内置主帮助，避免英文语言切换时被强制退回中文主帮助。
 
-2026-07-01 已用 `dist/BLWorldTrashCan-universal.jar` 完成多语言真实客户端专项，SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。测试端覆盖 Paper 1.12.2 managed、Spigot 26.1.2 managed 和 Folia 1.21.8：每端先切换到 `message_en.yml` 并由真实客户端执行 `/blwtc help`，确认英文主帮助；再删除外部 `message_zh.yml` 的 `command.help` 节点并重载，确认中文帮助从 jar 内默认节点回退出来。证据目录为 `docs/test-evidence/language-visual-20260701-163536/`。
+2026-07-01 已用 `dist/BlWorldTrashCan-universal.jar` 完成多语言真实客户端专项，SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。测试端覆盖 Paper 1.12.2 managed、Spigot 26.1.2 managed 和 Folia 1.21.8：每端先切换到 `message_en.yml` 并由真实客户端执行 `/blwtc help`，确认英文主帮助；再删除外部 `message_zh.yml` 的 `command.help` 节点并重载，确认中文帮助从 jar 内默认节点回退出来。证据目录为 `docs/test-evidence/language-visual-20260701-163536/`。
 
 当前已外置的正式玩家文案包括：主命令、帮助、平台能力、统计、add 命令、公共/个人垃圾桶、个人垃圾桶自动回收提示、世界垃圾桶创建/移除、黑名单 GUI、防丢弃模式、look 查询、手持物品/区块实体查询和密集实体清理提示。密集实体清理对应消息节点为 `entity-limit.gather-cleared`，可使用 `{range}`、`{entity}`、`{size}`、`{max}`、`{removed}` 占位符。后台 `debug*` 测试命令仍保留内部中文调试文案，用于验收夹具，不作为普通玩家语言包范围。
 
@@ -309,7 +319,7 @@ scanner:
 
 ## RGB 与富文本消息
 
-重构版使用 PrismaticAPI `1.5.2` 作为统一富文本渲染库，依赖从 `https://croabeast.github.io/repo/` 获取，并在四个平台产物中 shade 后 relocation 到 `pixeltech.bluenine.blworldtrashcan.libs.croabeast`，避免与服务器上其它插件的 PrismaticAPI 版本冲突。打包时会过滤 PrismaticAPI 自带 `plugin.yml`，最终插件名仍为 `BLWorldTrashCan`。
+重构版使用 PrismaticAPI `1.5.2` 作为统一富文本渲染库，依赖从 `https://croabeast.github.io/repo/` 获取，并在四个平台产物中 shade 后 relocation 到 `pixeltech.bluenine.blworldtrashcan.libs.croabeast`，避免与服务器上其它插件的 PrismaticAPI 版本冲突。打包时会过滤 PrismaticAPI 自带 `plugin.yml`，最终插件名仍为 `BlWorldTrashCan`。
 
 正式消息入口统一走 `RichTextRenderer`，包括普通 Chat、可点击 Chat、ActionBar、Title、BossBar 标题、GUI 标题和平台层 `sendMessage(UUID, message)`。1.16.5+ 服务端可以使用 `&#RRGGBB` 这类 RGB 写法；1.12.2 和 1.13-1.15 会自动降级为传统 `&` 颜色码，不要求真实 RGB。当前默认多语言 `messages/message_*.yml` 全部使用 RGB 写法；服主已有外部语言文件仍可继续写 `&a`、`&c` 等老式颜色。若 PrismaticAPI 在运行时不可用或抛出兼容异常，`RichTextRenderer` 会先把 `&#RRGGBB` 近似降级为 16 色传统颜色，再处理 `&` 颜色码，避免把原始 RGB 标记发给低版本玩家。
 
@@ -317,19 +327,19 @@ scanner:
 
 外部服务端补充矩阵同样使用真实客户端 F2 截图，并额外校验 `blwtc platform` 确实被插件接收，避免把插件未加载或命令未注册误判为通过。覆盖 `E:\server_work\server_1.21.8_0`、`E:\server_work\server_cat_1.12.2`、`E:\server_work\folia1.21.8`、`E:\server_work\1.21.11spigot`、`E:\server_work\1.21.11arclight-neoforge` 和 `E:\server_work\1.20.1fabric.banner`，6/6 PASS。可提交截图和日志证据保留在 `docs/test-evidence/rgb-external-server-proof-20260607-155341/`。
 
-同一批外部服务端已补做 universal 整包复测，6 个端全部部署 `BLWorldTrashCan-universal.jar`。本轮 RGB 截图限定聊天框、ActionBar、Title/Subtitle，不再使用箱子 GUI、物品名或 Lore 作为颜色证据；每个端同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
+同一批外部服务端已补做 universal 整包复测，6 个端全部部署 `BlWorldTrashCan-universal.jar`。本轮 RGB 截图限定聊天框、ActionBar、Title/Subtitle，不再使用箱子 GUI、物品名或 Lore 作为颜色证据；每个端同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 
-针对上一轮 Title 颜色接近传统 `&a`、`&6` 的人工观感问题，已再次使用高辨识度 RGB 文案重测同一批外部服务端。Title 改为多段 `RGB TITLE FF1493`，分别使用 `#FF1493`、`#00E5FF`、`#BAFF00`，Subtitle 使用 `#7B2CFF` 与 `#FF4F00`；聊天框和 ActionBar 也显示 `RGB-FF1493`、`RGB-00E5FF`、`RGB-BAFF00`、`RGB-7B2CFF`、`RGB-FF4F00` 文本标记。6 个端仍全部使用同一个 `BLWorldTrashCan-universal.jar`，截图、日志和基础功能证据保留在 `docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
+针对上一轮 Title 颜色接近传统 `&a`、`&6` 的人工观感问题，已再次使用高辨识度 RGB 文案重测同一批外部服务端。Title 改为多段 `RGB TITLE FF1493`，分别使用 `#FF1493`、`#00E5FF`、`#BAFF00`，Subtitle 使用 `#7B2CFF` 与 `#FF4F00`；聊天框和 ActionBar 也显示 `RGB-FF1493`、`RGB-00E5FF`、`RGB-BAFF00`、`RGB-7B2CFF`、`RGB-FF4F00` 文本标记。6 个端仍全部使用同一个 `BlWorldTrashCan-universal.jar`，截图、日志和基础功能证据保留在 `docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
 
-26.1.2 兼容验收已补充 Paper 与 Spigot 两端：Paper 26.1.2 build 69 通过 Paper fill API 获取服务端 jar，Spigot 26.1.2 通过 BuildTools 使用 Java 25 构建。两个测试服都部署同一个 `BLWorldTrashCan-universal.jar`，使用真实原版 26.1.2 客户端 F2 截图验证 Chat、ActionBar、Title/Subtitle RGB，同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-26-1-spigot-paper-proof-20260608-005225/`。
+26.1.2 兼容验收已补充 Paper 与 Spigot 两端：Paper 26.1.2 build 69 通过 Paper fill API 获取服务端 jar，Spigot 26.1.2 通过 BuildTools 使用 Java 25 构建。两个测试服都部署同一个 `BlWorldTrashCan-universal.jar`，使用真实原版 26.1.2 客户端 F2 截图验证 Chat、ActionBar、Title/Subtitle RGB，同时执行 `reload`、世界垃圾桶创建、公共/个人/世界路由、损坏回收、玩家掉落 owner、手动清理、摘要、公共/个人 GUI 打开共 11 项基础功能检查，全部 PASS。可提交证据目录：`docs/test-evidence/rgb-26-1-spigot-paper-proof-20260608-005225/`。
 
-2026-06-08 完整功能复测只使用 `dist/BLWorldTrashCan-universal.jar`，测试服 `plugins` 目录中的文件名也保持为 `BLWorldTrashCan-universal.jar`，没有混入任何轻量特供 jar。覆盖 Paper 1.12.2、Paper 26.1.2 和 Spigot 26.1.2，三端 artifact 的 SHA256 都是 `da30aecf3b4b5976ac95778bdb4301f08e72fd33f1edda16e3617e5045e85117`；真实客户端截图、GUI 打开、路由、清理、PAPI、bStats 配置、reload 自愈、旧短命令 `wtc` 和旧长命令 `WorldListTrashCan` 均 PASS。`add <world> <amount>` 额外读取 `data/worlds.yml` 验证 `max-count` 从 `3` 增加到 `5`。可提交证据目录：`docs/test-evidence/universal-full-regression-1122-2612-20260608-192725/`。
+2026-06-08 完整功能复测只使用 `dist/BlWorldTrashCan-universal.jar`，测试服 `plugins` 目录中的文件名也保持为 `BlWorldTrashCan-universal.jar`，没有混入任何轻量特供 jar。覆盖 Paper 1.12.2、Paper 26.1.2 和 Spigot 26.1.2，三端 artifact 的 SHA256 都是 `da30aecf3b4b5976ac95778bdb4301f08e72fd33f1edda16e3617e5045e85117`；真实客户端截图、GUI 打开、路由、清理、PAPI、bStats 配置、reload 自愈、旧短命令 `wtc` 和旧长命令 `WorldListTrashCan` 均 PASS。`add <world> <amount>` 额外读取 `data/worlds.yml` 验证 `max-count` 从 `3` 增加到 `5`。可提交证据目录：`docs/test-evidence/universal-full-regression-1122-2612-20260608-192725/`。
 
-2026-07-02 已把 GUI 正向点击专项从单端扩展为三端真实客户端矩阵。本轮只部署 `dist/BLWorldTrashCan-universal.jar`，SHA256 为 `b2219edc7eee635d6899a30d6a40310453e8ce378a65dc967a239c3731132c04`，`plugin.yml` 版本 `7.0.0`，覆盖 Spigot 26.1.2 managed + 真实 26.1.2 客户端、Paper 1.12.2 managed universal + 真实 1.12.2 客户端、Folia 1.21.8 + 真实 1.21.8 客户端。已通过 F-024 公共分页、F-026 公共取出、F-027 公共放入、F-028 公共取出冷却、F-029 公共操作日志、F-030 公共黑名单 GUI 保存并立即生效、F-034 个人取出、F-035 个人放入、F-036 个人满桶自动清空。公共黑名单 GUI 现在使用明确 token 点击模型：点击玩家背包物品只复制一个 Material token 到上方黑名单 GUI，不消耗玩家物品；点击上方 token 会移除；关闭 GUI 后保存 `trash.yml` 并刷新运行期配置。1.12.2 曾暴露 `Inventory` 对象身份不稳定导致上下文丢失的问题，已改为 `InventoryHolder` 绑定上下文。最终证据目录：`docs/test-evidence/trash-gui-click-visual-20260702-223605/`，测试脚本：`tools/rgb-visual-matrix/run_trash_gui_click_visual_matrix.py`。
+2026-07-02 已把 GUI 正向点击专项从单端扩展为三端真实客户端矩阵。本轮只部署 `dist/BlWorldTrashCan-universal.jar`，SHA256 为 `b2219edc7eee635d6899a30d6a40310453e8ce378a65dc967a239c3731132c04`，`plugin.yml` 版本 `7.0.0`，覆盖 Spigot 26.1.2 managed + 真实 26.1.2 客户端、Paper 1.12.2 managed universal + 真实 1.12.2 客户端、Folia 1.21.8 + 真实 1.21.8 客户端。已通过 F-024 公共分页、F-026 公共取出、F-027 公共放入、F-028 公共取出冷却、F-029 公共操作日志、F-030 公共黑名单 GUI 保存并立即生效、F-034 个人取出、F-035 个人放入、F-036 个人满桶自动清空。公共黑名单 GUI 现在使用明确 token 点击模型：点击玩家背包物品只复制一个 Material token 到上方黑名单 GUI，不消耗玩家物品；点击上方 token 会移除；关闭 GUI 后保存 `trash.yml` 并刷新运行期配置。1.12.2 曾暴露 `Inventory` 对象身份不稳定导致上下文丢失的问题，已改为 `InventoryHolder` 绑定上下文。最终证据目录：`docs/test-evidence/trash-gui-click-visual-20260702-223605/`，测试脚本：`tools/rgb-visual-matrix/run_trash_gui_click_visual_matrix.py`。
 
 2026-07-02 已补做 Vault 扣费 F-037 专项验收。本轮修复 universal 总包反射 VaultAPI 时查找 `withdrawPlayer(Player,double)` 的签名错误，改为 VaultAPI 1.7 实际存在的 `withdrawPlayer(OfflinePlayer,double)`；同时个人垃圾桶取出改为先确认玩家主背包存储槽能完整接收物品，再扣费。测试脚本 `tools/rgb-visual-matrix/run_vault_payment_matrix.py` 会临时编译插件名为 `Vault` 的 fake Economy 夹具，启动 Spigot 26.1.2 managed 测试服和真实 26.1.2 客户端，点击个人垃圾桶 GUI 验证余额充足扣费成功、余额不足不取出不扣费、背包满不取出不扣费。最终整包 SHA256 为 `18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4`，证据目录：`docs/test-evidence/vault-payment-visual-20260702-200346/`。
 
-2026-07-01 已补做世界实体上限专项验收。本轮只部署 `dist/BLWorldTrashCan-universal.jar`，SHA256 为 `0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84`，用 Paper 1.12.2 与 Spigot 26.1.2 隔离真实服务端验证 F-070/F-072。测试先关闭实体限制铺底 2 只 COW，再开启 `world-limits` 等待低占用索引建立；达到缓存上限后第 3 只 COW 被正式生成路径拦截，随后把 `world`、`world_nether`、`world_the_end` 写入 `ignored-worlds` 后同样生成被放行，且 `debugdensity` 显示 ignored 状态下本轮扫描选择为 `0/0`。证据目录：`docs/test-evidence/world-entity-limit-20260701-180527/`，测试脚本：`tools/rgb-visual-matrix/run_world_entity_limit_matrix.py`。
+2026-07-01 已补做世界实体上限专项验收。本轮只部署 `dist/BlWorldTrashCan-universal.jar`，SHA256 为 `0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84`，用 Paper 1.12.2 与 Spigot 26.1.2 隔离真实服务端验证 F-070/F-072。测试先关闭实体限制铺底 2 只 COW，再开启 `world-limits` 等待低占用索引建立；达到缓存上限后第 3 只 COW 被正式生成路径拦截，随后把 `world`、`world_nether`、`world_the_end` 写入 `ignored-worlds` 后同样生成被放行，且 `debugdensity` 显示 ignored 状态下本轮扫描选择为 `0/0`。证据目录：`docs/test-evidence/world-entity-limit-20260701-180527/`，测试脚本：`tools/rgb-visual-matrix/run_world_entity_limit_matrix.py`。
 
 BossBar 需要区分两类颜色：BossBar 标题文本可以按上面的富文本规则渲染；BossBar 条本身的颜色仍受 Bukkit `BarColor` 枚举限制，不支持任意 `#RRGGBB`。
 
@@ -364,7 +374,9 @@ personal-trash:
 
 ## 旧配置迁移
 
-插件启动时默认会尝试执行一次旧 `WorldListTrashCan` 配置迁移。迁移器优先识别当前 `plugins/BLWorldTrashCan` 目录中的旧结构；如果当前目录不是旧结构，则读取相邻旧目录 `plugins/WorldListTrashCan`。
+插件启动时默认会尝试执行一次旧 `WorldListTrashCan` 配置迁移。迁移器优先识别当前 `plugins/BlWorldTrashCan` 目录中的旧结构；如果当前目录不是旧结构，则读取相邻旧目录 `plugins/WorldListTrashCan`。
+
+品牌大小写升级兼容在旧结构迁移之前执行：若 Linux 服务端仍有旧大小写数据目录，插件会递归补拷新目录中不存在的文件，再继续默认配置自愈和旧 `WorldListTrashCan` 结构迁移。已有新目录文件始终优先，不会被旧目录覆盖。
 
 可在 `config.yml` 调整：
 
@@ -376,29 +388,29 @@ migration-legacy-folder: "WorldListTrashCan"
 - `migration-enabled`：是否允许迁移，默认 `true`。
 - `migration-legacy-folder`：旧插件数据目录名或绝对路径，默认 `WorldListTrashCan`。
 - 迁移完成后会生成 `legacy-migration-report.md`，后续启动看到该报告就不会重复迁移。
-- 如果旧配置在当前 `plugins/BLWorldTrashCan` 目录，迁移前会先备份到 `legacy-migration-backup/`。
+- 如果旧配置在当前 `plugins/BlWorldTrashCan` 目录，迁移前会先备份到 `legacy-migration-backup/`。
 - 当前会自动迁移主配置、清理配置、通知配置、保护配置、实体限制配置、公共/个人/世界垃圾桶配置，以及旧 `data/data.yml` 中的世界垃圾桶运行数据。
 - 公共垃圾桶 GUI 的旧 `ModelId` 会迁移到 `global-trash.gui.*-model-id`；低版本没有 `CustomModelData` API 时会自动忽略外观字段，不影响 GUI 打开。
 - 旧 `BossBarFlag` 和 `BossBarMessageForCount` 会迁移到 `bossbar.enabled` 与 `bossbar.messages`，格式仍为 `剩余秒数;内容;样式;颜色`。
 - 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”。
 
-2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 重新做 F-005 旧配置迁移专项验收。测试脚本 `tools/rgb-visual-matrix/run_legacy_migration_matrix.py` 会启动独立 Paper 1.12.2 临时服务端，分别覆盖相邻旧目录 `plugins/WorldListTrashCan` 和当前目录旧结构 `plugins/BLWorldTrashCan` 两种迁移来源，并通过 RCON、迁移报告、新拆分配置和世界垃圾桶数据断言确认迁移生效。通过证据：`docs/test-evidence/legacy-migration-universal-20260701-165606/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
+2026-07-01 已使用 `dist/BlWorldTrashCan-universal.jar` 重新做 F-005 旧配置迁移专项验收。测试脚本 `tools/rgb-visual-matrix/run_legacy_migration_matrix.py` 会启动独立 Paper 1.12.2 临时服务端，分别覆盖相邻旧目录 `plugins/WorldListTrashCan` 和当前目录旧结构 `plugins/BlWorldTrashCan` 两种迁移来源，并通过 RCON、迁移报告、新拆分配置和世界垃圾桶数据断言确认迁移生效。通过证据：`docs/test-evidence/legacy-migration-universal-20260701-165606/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
 
 ## 世界垃圾桶边界
 
-2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 完成 F-019 至 F-022 世界垃圾桶边界专项验收。测试脚本 `tools/rgb-visual-matrix/run_world_trash_boundary_matrix.py` 在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，触发正式 `SignChangeEvent`、`BlockBreakEvent` 和 `/blwtc clear true` 路由流程。已验证禁止世界普通玩家创建被拒绝、破坏容器移除 `data/worlds.yml` 登记、世界物品黑名单会降级到公共垃圾桶、未加载区块不会被同步加载且会降级到公共垃圾桶；两端日志均出现 `worldTrashSkippedUnloadedChunks=1`。通过证据：`docs/test-evidence/world-trash-boundary-20260701-172919/`，失败对照：`docs/test-evidence/world-trash-boundary-20260701-172343/`、`docs/test-evidence/world-trash-boundary-20260701-172602/`、`docs/test-evidence/world-trash-boundary-20260701-172748/`、`docs/test-evidence/world-trash-boundary-20260701-172836/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
+2026-07-01 已使用 `dist/BlWorldTrashCan-universal.jar` 完成 F-019 至 F-022 世界垃圾桶边界专项验收。测试脚本 `tools/rgb-visual-matrix/run_world_trash_boundary_matrix.py` 在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，触发正式 `SignChangeEvent`、`BlockBreakEvent` 和 `/blwtc clear true` 路由流程。已验证禁止世界普通玩家创建被拒绝、破坏容器移除 `data/worlds.yml` 登记、世界物品黑名单会降级到公共垃圾桶、未加载区块不会被同步加载且会降级到公共垃圾桶；两端日志均出现 `worldTrashSkippedUnloadedChunks=1`。通过证据：`docs/test-evidence/world-trash-boundary-20260701-172919/`，失败对照：`docs/test-evidence/world-trash-boundary-20260701-172343/`、`docs/test-evidence/world-trash-boundary-20260701-172602/`、`docs/test-evidence/world-trash-boundary-20260701-172748/`、`docs/test-evidence/world-trash-boundary-20260701-172836/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
 
 ## 船内实体保护
 
 `cleanup.yml` 的 `entities.ignore-entities-in-boat` 用于保护正在船内的实体。启用实体清理时，如果动物、怪物或其它实体位于船内，本轮清理会跳过该实体，避免扫地功能误删玩家正在运输或展示的生物。
 
-2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 完成 F-054 船内实体保护专项验收。测试脚本 `tools/rgb-visual-matrix/run_boat_entity_protection_matrix.py` 会在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，生成一只船内牛和一只普通牛，并执行正式 `/blwtc clear true`。最终断言船内牛仍存在且 `protectedInsideBoat=true`，普通牛 `normalExists=false`，证明 legacy 与现代 universal 分支均遵守 `ignore-entities-in-boat`。通过证据：`docs/test-evidence/boat-entity-protection-20260701-171046/`，失败对照：`docs/test-evidence/boat-entity-protection-20260701-170854/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
+2026-07-01 已使用 `dist/BlWorldTrashCan-universal.jar` 完成 F-054 船内实体保护专项验收。测试脚本 `tools/rgb-visual-matrix/run_boat_entity_protection_matrix.py` 会在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，生成一只船内牛和一只普通牛，并执行正式 `/blwtc clear true`。最终断言船内牛仍存在且 `protectedInsideBoat=true`，普通牛 `normalExists=false`，证明 legacy 与现代 universal 分支均遵守 `ignore-entities-in-boat`。通过证据：`docs/test-evidence/boat-entity-protection-20260701-171046/`，失败对照：`docs/test-evidence/boat-entity-protection-20260701-170854/`，被测整包 SHA256 为 `18b2f29229dba529098a94748db6abf8b729c81a0c3ab749a461d28d8d14f55b`。
 
 ## 保护功能专项
 
 `protections.yml` 的 `simple-optimize.remove-unpickable-arrow` 会清理不可拾取箭矢，`simple-optimize.prevent-farmland-trampling` 会阻止玩家和实体踩踏农田。现代 Spigot/Paper 中箭矢拾取状态从旧 `Arrow.PickupStatus` 迁移到 `AbstractArrow.PickupStatus`，正式插件已改为反射读取 `getPickupStatus`，避免高版本 API 变动导致不可拾取箭矢不被清理。
 
-2026-07-01 已使用 `dist/BLWorldTrashCan-universal.jar` 完成 F-068/F-069 保护边界专项验收。测试脚本 `tools/rgb-visual-matrix/run_protection_boundary_matrix.py` 会先同步 Maven 最新 universal 产物到 `dist`，再在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，触发正式 `ProjectileHitEvent`、`EntityShootBowEvent`、`EntityInteractEvent` 和 `PlayerInteractEvent(Action.PHYSICAL)`。最终断言不可拾取箭矢与骷髅/无限弓追踪箭矢均被移除，实体和玩家踩踏农田事件均被取消。通过证据：`docs/test-evidence/protection-boundary-20260701-174709/`，失败对照：`docs/test-evidence/protection-boundary-20260701-173858/`、`docs/test-evidence/protection-boundary-20260701-174200/`、`docs/test-evidence/protection-boundary-20260701-174348/`，被测整包 SHA256 为 `0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84`。
+2026-07-01 已使用 `dist/BlWorldTrashCan-universal.jar` 完成 F-068/F-069 保护边界专项验收。测试脚本 `tools/rgb-visual-matrix/run_protection_boundary_matrix.py` 会先同步 Maven 最新 universal 产物到 `dist`，再在 Paper 1.12.2 与 Spigot 26.1.2 隔离服务端中加载临时 Bukkit 夹具，触发正式 `ProjectileHitEvent`、`EntityShootBowEvent`、`EntityInteractEvent` 和 `PlayerInteractEvent(Action.PHYSICAL)`。最终断言不可拾取箭矢与骷髅/无限弓追踪箭矢均被移除，实体和玩家踩踏农田事件均被取消。通过证据：`docs/test-evidence/protection-boundary-20260701-174709/`，失败对照：`docs/test-evidence/protection-boundary-20260701-173858/`、`docs/test-evidence/protection-boundary-20260701-174200/`、`docs/test-evidence/protection-boundary-20260701-174348/`，被测整包 SHA256 为 `0b8fe41981a5933058983d644c14fb80de11f5825e9ce02d2ce12faacf19df84`。
 
 ## 命令
 
@@ -511,7 +523,7 @@ py -3 tools\rgb-visual-matrix\check_papi_placeholder_parity.py
 
 bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供单独统计开关，也不会创建第二套统计配置。bStats 官方模板保留全局 `enabled` 关闭项；不能通过修改 Metrics 类绕过或隐藏该 opt-out，否则不符合 bStats 使用规则。
 
-2026-06-08 已用 `BLWorldTrashCan-universal.jar` 的 `7.0.0` 构建完成 bStats 端到端验证：服务端加载 `BLWorldTrashCan v7.0.0`，bStats 上报包包含 `"pluginVersion":"7.0.0"` 和 `"id":24350`，bStats 返回响应；等待 bStats 页面半点刷新后，[WorldTrashCan / 24350](https://bstats.org/plugin/bukkit/WorldTrashCan/24350) 的 `Plugin Version` 图表出现 `7.0.0`，数量 `1`。证据目录：`docs/test-evidence/bstats-7.0.0-proof-20260608-062316/`。
+2026-06-08 已用 `BlWorldTrashCan-universal.jar` 的 `7.0.0` 构建完成 bStats 端到端验证：服务端加载 `BlWorldTrashCan v7.0.0`，bStats 上报包包含 `"pluginVersion":"7.0.0"` 和 `"id":24350`，bStats 返回响应；等待 bStats 页面半点刷新后，[WorldTrashCan / 24350](https://bstats.org/plugin/bukkit/WorldTrashCan/24350) 的 `Plugin Version` 图表出现 `7.0.0`，数量 `1`。证据目录：`docs/test-evidence/bstats-7.0.0-proof-20260608-062316/`。
 
 ## 验证记录
 
@@ -522,19 +534,19 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - `core -> config -> storage -> shared-bukkit -> platform-legacy -> platform-bukkit -> platform-paper -> platform-folia -> plugin-legacy -> plugin-bukkit -> plugin-paper -> plugin-folia`
 - `CorePolicySelfTest passed`
 - 最终产物大小：Legacy `197741` bytes，Bukkit `199286` bytes，Paper `199758` bytes，Folia `257818` bytes。
-- 1.12.2 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`
+- 1.12.2 测试服加载 `BlWorldTrashCan v0.1.0-SNAPSHOT`
 - Legacy 1.12 产物主类 class major version 为 52，确认面向 Java 8；jar 内 `platform.yml` 目标为 `legacy-1.12`。
 - Bukkit 1.13-1.15 产物主类 class major version 为 52，确认面向 Java 8。
 - Paper 1.16-1.20 产物主类 class major version 为 61，确认面向 Java 17。
 - Folia 1.20 产物主类 class major version 为 61，确认面向 Java 17。
-- Paper 1.20.4 测试服加载 `BLWorldTrashCan v0.1.0-SNAPSHOT`，`platform` 显示 `paper-1.16-1.20`，`stats` 和 `clear` 正常返回。
+- Paper 1.20.4 测试服加载 `BlWorldTrashCan v0.1.0-SNAPSHOT`，`platform` 显示 `paper-1.16-1.20`，`stats` 和 `clear` 正常返回。
 - `Material.STAINED_GLASS_PANE` 跨版本修复后，Legacy 1.12 测试服重新加载新产物，`platform` 显示 `legacy-1.12`，`stats` 和 `clear` 正常返回。
 - 旧配置迁移器已在独立 `paper-1.12.2-migration-test-server` 验证相邻旧目录和当前插件目录旧结构两种入口；迁移后 `legacy-migration-report.md`、`legacy-migration-backup/`、`trash.yml`、`cleanup.yml`、`data/worlds.yml` 均符合预期。
-- Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BLWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
+- Bukkit 1.13.2 测试服加载当前 Folia 保护构建后的 `BlWorldTrashCan-bukkit-1.13-1.15.jar`，`platform` 显示 `bukkit-1.13-1.15`，`stats` 和 `clear` 正常返回，确认共享清理保护没有误伤普通 Bukkit 世界扫描。
 - Folia 1.20.1 测试服首轮执行 `/blwtc clear` 暴露 global thread 扫描实体的 region 线程错误；当前版本已改为 Folia 专用清理 Feature，通过 `RegionScheduler` 扫描已加载 chunk，通过实体调度删除物品，控制台 `summon` 4 个圆石掉落物后执行 `/blwtc clear`，日志输出 `worlds=3, itemsRouted=4`，`/blwtc stats` 显示公共垃圾桶物品 `4`、堆叠 `1`。
 - Folia 产物已接入专用 `FoliaEntityLimitFeature`：单世界实体上限用 `EntityAddToWorldEvent` / `EntityRemoveFromWorldEvent` 维护数量缓存并用 region-safe 复算兜底；后续低占用密集实体扫描改为分片 chunk 快照和异步候选队列，不再按旧实现只看当前 chunk。
 - Folia 专用清理已补齐通知触发：短间隔后台 smoke 验证 Chat 控制台日志、完成后 `-1/-2` 提示、Command 通知和 `[FoliaCleanup]` 汇总均会输出；玩家可见 RGB Chat、ActionBar、Title 已在 Folia 1.21.8 的通道截图矩阵中覆盖。2026-06-30 又用真实客户端专项矩阵补齐清理通知 Chat、ActionBar、BossBar、Title、Sound 和 Command，证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。
-- 2026-06-15 Folia 1.21.8 压力回归只使用 `dist/BLWorldTrashCan-universal.jar`，SHA256 `A84D2EC08402500505D9BE4F0EDFD404AF86A861AC0DC98F8C86FC53832E7CCC`。147 个已加载 chunk 的基线清理 `timedOut=false`；约 5946 个 `ai_wtc_pressure` armor_stand canary 被清理，立即二次 `/blwtc clear` 命中运行中保护；`chunk-batch-size: 1`、`chunk-batch-delay-ticks: 2`、`timeout-seconds: 1` 稳定触发两次 `timedOut=true`，第二次能重新启动证明 `cleanupRunning` 已释放；超时通知改为 `-4`“Folia 清理超时”，不再误报“清理成功”。证据目录：`docs/test-evidence/folia-cleanup-pressure-20260615-030918/`。
+- 2026-06-15 Folia 1.21.8 压力回归只使用 `dist/BlWorldTrashCan-universal.jar`，SHA256 `A84D2EC08402500505D9BE4F0EDFD404AF86A861AC0DC98F8C86FC53832E7CCC`。147 个已加载 chunk 的基线清理 `timedOut=false`；约 5946 个 `ai_wtc_pressure` armor_stand canary 被清理，立即二次 `/blwtc clear` 命中运行中保护；`chunk-batch-size: 1`、`chunk-batch-delay-ticks: 2`、`timeout-seconds: 1` 稳定触发两次 `timedOut=true`，第二次能重新启动证明 `cleanupRunning` 已释放；超时通知改为 `-4`“Folia 清理超时”，不再误报“清理成功”。证据目录：`docs/test-evidence/folia-cleanup-pressure-20260615-030918/`。
 - 四个平台默认 `cleanup.yml` 的 `notify.*` 已补回旧配置里的清理后 `-1/-2` 提醒：Chat、ActionBar、BossBar、Title 都默认包含“公共垃圾桶未刷新/已刷新”两类消息；包内检查确认四个 dist jar 的 `cleanup.yml` 均包含这些条目。
 - 世界垃圾桶默认不再写入未加载区块；`paper-1.13.2-test-server` 用远处未加载区块坐标验证，清理日志出现 `worldTrashSkippedUnloadedChunks=1`，掉落物降级进入公共垃圾桶，未强制访问远处箱子。
 - RCON 验证 `platform`、`stats`、`debugstock`、`debugsummary`、`debugworldtrash`、`debugroute`、`debugdrop`、`clear`、`debugopen`、`debugplayer`
@@ -544,36 +556,36 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 旧插件仙人掌/岩浆损坏回收的 `UseModel/Delay` 已自动迁移为 `personal-trash.damage-recovery.mode/delay-seconds`，默认仍为关闭，开启后只在短时间内追踪玩家主动丢弃物，避免长期占用内存；后台测试入口为 `/blwtc debugdamage <玩家> <Material> <数量>`。
 - 仙人掌/岩浆损坏回收已在 `paper-1.12.2-test-server` 使用真实 Forge 1.12.2 客户端验证：客户端发送 `/blwtc debugdamage AIClientAlpha STONE 2`，服务端日志出现 `debugDamageRecovery ... recovered=true`，`/blwtc debugstock` 显示公共垃圾桶物品 `2`、堆叠 `1`。
 - 公共垃圾桶 GUI `ModelId` 和 BossBar 旧配置已补齐：四个平台默认 `trash.yml` 增加 `global-trash.gui.back/next/background-model-id`，默认 `cleanup.yml` 的 `notify.bossbar.messages` 增加 BossBar 消息；迁移器不再把这些字段列为人工确认。
-- BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BLWorldTrashCan 自身异常。测试后已恢复临时 `cleanup.yml`。
-- Legacy 1.12 产物已补齐旧 `%Wtc_ClearTime%` PAPI 变量注册逻辑，已在 `paper-1.12.2-test-server` 安装 PlaceholderAPI 2.11.6 时验证：`papi parse --null %Wtc_ClearTime%` 返回 `296`，日志出现 `Successfully registered internal expansion: Wtc` 和 `[BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%`。
-- Bukkit 1.13.2 和 Paper 1.20.4 已补做 `%Wtc_ClearTime%` PAPI 验证：`papi parse --null %Wtc_ClearTime%` 分别返回 `315`、`333`；`plugins` 均显示 `BLWorldTrashCan` 和 `PlaceholderAPI` 已启用。
-- Folia 1.20.1 尝试安装本地 PlaceholderAPI 2.11.6 验证 PAPI 时，Folia 在加载阶段拒绝该前置，原因是 `PlaceholderAPI v2.11.6` 未声明支持 Folia；BLWorldTrashCan 因未检测到 PlaceholderAPI 正常跳过变量注册。本轮已将该临时 PAPI jar 改名为 disabled，避免污染后续 Folia 测试。
-- Folia PAPI 已在 2026-07-02 使用 `E:\server_work\folia1.21.8`、`[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 和最终 `dist/BLWorldTrashCan-universal.jar` 验证通过：`papi parse --null %Wtc_ClearTime%` 返回 `358`，日志出现 `Successfully registered internal expansion: Wtc [7.0.0]`，证据目录 `docs/test-evidence/folia-papi-20260702-202801/`。
+- BossBar 已在 `paper-1.12.2-test-server` 用真实 Forge 1.12.2 客户端在线验证：真实玩家 `babyZiXuan` 在线时，RCON 执行 `/blwtc clear` 成功，短间隔自动清理连续输出 `AI BossBar smoke 2/1/done`，日志未发现 BlWorldTrashCan 自身异常。测试后已恢复临时 `cleanup.yml`。
+- Legacy 1.12 产物已补齐旧 `%Wtc_ClearTime%` PAPI 变量注册逻辑，已在 `paper-1.12.2-test-server` 安装 PlaceholderAPI 2.11.6 时验证：`papi parse --null %Wtc_ClearTime%` 返回 `296`，日志出现 `Successfully registered internal expansion: Wtc` 和 `[BlWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%`。
+- Bukkit 1.13.2 和 Paper 1.20.4 已补做 `%Wtc_ClearTime%` PAPI 验证：`papi parse --null %Wtc_ClearTime%` 分别返回 `315`、`333`；`plugins` 均显示 `BlWorldTrashCan` 和 `PlaceholderAPI` 已启用。
+- Folia 1.20.1 尝试安装本地 PlaceholderAPI 2.11.6 验证 PAPI 时，Folia 在加载阶段拒绝该前置，原因是 `PlaceholderAPI v2.11.6` 未声明支持 Folia；BlWorldTrashCan 因未检测到 PlaceholderAPI 正常跳过变量注册。本轮已将该临时 PAPI jar 改名为 disabled，避免污染后续 Folia 测试。
+- Folia PAPI 已在 2026-07-02 使用 `E:\server_work\folia1.21.8`、`[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 和最终 `dist/BlWorldTrashCan-universal.jar` 验证通过：`papi parse --null %Wtc_ClearTime%` 返回 `358`，日志出现 `Successfully registered internal expansion: Wtc [7.0.0]`，证据目录 `docs/test-evidence/folia-papi-20260702-202801/`。
 - 旧命令 `/WorldListTrashCan add [世界名] <数量>` 已在新命令 `/blwtc add <世界名> <数量>` 中恢复控制台指定世界路径；`paper-1.12.2-test-server` 通过 RCON 验证 `blwtc add world 1` 成功、`blwtc add missing_world 1` 提示世界不存在、控制台 `blwtc add 1` 提示必须指定世界名，并确认 `data/worlds.yml` 落盘为 `world.max-count: 4`。
-- 多语言消息服务已接入四个平台产物并完成 Legacy 1.12 smoke：临时把测试服 `plugins/BLWorldTrashCan/config.yml` 的 `language` 改为 `message_en.yml`，启动后日志显示 `[Message] 已加载语言文件: messages/message_en.yml`，RCON 执行 `blwtc reload/help/platform/stats` 均返回英文文案；测试后 config 已恢复为 `message_zh.yml`，日志和生成的语言文件保留。
-- Legacy 1.12 命令类已补齐公共/个人垃圾桶打开权限校验：`global/globaltrash/trash` 同时接受 `blworldtrashcan.global.open` 与旧权限 `WorldListTrashCan.GlobalTrashOpen`，`personal/playertrash` 同时接受 `blworldtrashcan.personal.open` 与旧权限 `WorldListTrashCan.PlayerTrash`。本轮 1.12.2 smoke 验证 `WorldListTrashCan`、`WTC`、`wtc` 兼容入口可用，控制台打开 GUI 分支仍返回“该命令只能由玩家执行”，且日志未发现 BLWorldTrashCan 自身异常。
+- 多语言消息服务已接入四个平台产物并完成 Legacy 1.12 smoke：临时把测试服 `plugins/BlWorldTrashCan/config.yml` 的 `language` 改为 `message_en.yml`，启动后日志显示 `[Message] 已加载语言文件: messages/message_en.yml`，RCON 执行 `blwtc reload/help/platform/stats` 均返回英文文案；测试后 config 已恢复为 `message_zh.yml`，日志和生成的语言文件保留。
+- Legacy 1.12 命令类已补齐公共/个人垃圾桶打开权限校验：`global/globaltrash/trash` 同时接受 `blworldtrashcan.global.open` 与旧权限 `WorldListTrashCan.GlobalTrashOpen`，`personal/playertrash` 同时接受 `blworldtrashcan.personal.open` 与旧权限 `WorldListTrashCan.PlayerTrash`。本轮 1.12.2 smoke 验证 `WorldListTrashCan`、`WTC`、`wtc` 兼容入口可用，控制台打开 GUI 分支仍返回“该命令只能由玩家执行”，且日志未发现 BlWorldTrashCan 自身异常。
 - 公共黑名单 GUI 保存后已改为即时刷新运行期配置：关闭 `/blwtc globalban` GUI 保存 `trash.yml` 后会调用插件自身 reload 流程，立即刷新 `ConfigBundle`、公共垃圾桶黑名单和路由服务；四个平台语言文件的保存提示已从“需要 reload”改为“已立即生效”。本轮重新打包四个平台，并在 1.12.2 测试服验证新 Legacy jar 正常加载、`platform/stats/reload` 正常返回。
-- 旧配置 `Set.ClearEntity.Flag` 已补齐迁移到 `cleanup.yml` 的 `entities.enabled`，默认值为 `true`。关闭该总开关时，经验球、怪物、动物、投射物和实体黑名单都会整体跳过；2026-07-02 已补做实体清理总开关运行态专项，使用 `dist/BLWorldTrashCan-universal.jar` 在 Paper 1.12.2 与 Spigot 26.1.2 隔离真实服务端中临时生成牛、僵尸、箭、经验球和黑名单命名实体。`entities.enabled=false` 后正式 `/blwtc clear true` 移除实体为 0 且 5 个目标全部保留；切回 `entities.enabled=true` 后同一批目标全部被清理。证据目录：`docs/test-evidence/entity-cleanup-toggle-20260702-212255/`，被测整包 SHA256 为 `18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4`。
-- 公共/个人垃圾桶 GUI 取出、放入物品的权限检查已恢复旧插件 OP 旁路：现在同时接受 OP、新权限节点和旧权限节点。2026-07-02 已补做“玩家能打开 GUI 后再显式 deny 取放权限”的真实客户端专项，Paper 1.12.2 managed、Spigot 26.1.2 managed、Folia 1.21.8 三端均使用 `dist/BLWorldTrashCan-universal.jar` 覆盖公共取出、公共放入、个人取出、个人放入四个 deny 分支；取出会出现客户端无权限提示，放入会被拒绝且垃圾桶库存与公共操作日志不变化。证据目录：`docs/test-evidence/gui-operation-permission-visual-20260702-231000/`，失败对照：`docs/test-evidence/gui-operation-permission-visual-20260702-213616/`、`docs/test-evidence/gui-operation-permission-visual-20260702-225500/`。
-- 四个平台命令类已补齐旧插件 OP 旁路：`reload/clear/add/debug*` 走 OP 或 `blworldtrashcan.admin`，`global/personal/dropmode/look/ban/globalban` 走 OP 或对应新旧权限节点。四个 jar 的命令 class 字节码均确认包含 `CommandSender.isOp()` 分支；1.12.2 测试服 RCON smoke 验证 `blwtc platform`、旧入口 `WorldListTrashCan platform`、`stats/reload/clear/add`、`%Wtc_ClearTime%` 和 `debugstock` 正常返回。2026-07-02 已补做真实玩家负向权限专项：新增 `tools/rgb-visual-matrix/run_permission_negative_visual_matrix.py`，使用 `dist/BLWorldTrashCan-universal.jar` 和临时 `PermissionDenyFixture` 权限夹具，在 Paper 1.12.2 managed、Spigot 26.1.2 managed、Folia 1.21.8 三端用真实客户端验证非 OP `/blwtc reload` 被拒绝、显式 deny `global.open`/`personal.open` 后 `/blwtc global` 与 `/blwtc personal` 被拒绝、OP 后 `/blwtc reload` 成功。证据目录：`docs/test-evidence/permission-negative-visual-20260702-210300/`。
-- 世界垃圾桶 `/blwtc add <世界名> <数量>` 写入的 `data/worlds.yml` 上限现在会参与正式创建限制：`WorldTrashRouter` 使用单世界运行数据计算有效上限，告示牌创建的 OP 路径会按旧插件行为绕过数量上限。1.12.2 测试服使用真实 Forge 客户端 `AIClientAlpha` 进服后，RCON 通过在线 `Player` 对象连续执行 `debugworldtrash`：上限 5 时新增到 5 成功、第 6 个失败；执行 `blwtc add world 1` 后上限变 6，再新增 1 个成功、第 7 个失败。最终 `data/worlds.yml` 落盘为 `world.max-count: 6` 且 6 个位置，窄匹配未发现 BLWorldTrashCan 自身异常。
-- 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BLWorldTrashCan 自身异常。
+- 旧配置 `Set.ClearEntity.Flag` 已补齐迁移到 `cleanup.yml` 的 `entities.enabled`，默认值为 `true`。关闭该总开关时，经验球、怪物、动物、投射物和实体黑名单都会整体跳过；2026-07-02 已补做实体清理总开关运行态专项，使用 `dist/BlWorldTrashCan-universal.jar` 在 Paper 1.12.2 与 Spigot 26.1.2 隔离真实服务端中临时生成牛、僵尸、箭、经验球和黑名单命名实体。`entities.enabled=false` 后正式 `/blwtc clear true` 移除实体为 0 且 5 个目标全部保留；切回 `entities.enabled=true` 后同一批目标全部被清理。证据目录：`docs/test-evidence/entity-cleanup-toggle-20260702-212255/`，被测整包 SHA256 为 `18d92a709d48fc291dd77c74a3be7d543f5bb20fa0fc01c4c70ab00eb33773d4`。
+- 公共/个人垃圾桶 GUI 取出、放入物品的权限检查已恢复旧插件 OP 旁路：现在同时接受 OP、新权限节点和旧权限节点。2026-07-02 已补做“玩家能打开 GUI 后再显式 deny 取放权限”的真实客户端专项，Paper 1.12.2 managed、Spigot 26.1.2 managed、Folia 1.21.8 三端均使用 `dist/BlWorldTrashCan-universal.jar` 覆盖公共取出、公共放入、个人取出、个人放入四个 deny 分支；取出会出现客户端无权限提示，放入会被拒绝且垃圾桶库存与公共操作日志不变化。证据目录：`docs/test-evidence/gui-operation-permission-visual-20260702-231000/`，失败对照：`docs/test-evidence/gui-operation-permission-visual-20260702-213616/`、`docs/test-evidence/gui-operation-permission-visual-20260702-225500/`。
+- 四个平台命令类已补齐旧插件 OP 旁路：`reload/clear/add/debug*` 走 OP 或 `blworldtrashcan.admin`，`global/personal/dropmode/look/ban/globalban` 走 OP 或对应新旧权限节点。四个 jar 的命令 class 字节码均确认包含 `CommandSender.isOp()` 分支；1.12.2 测试服 RCON smoke 验证 `blwtc platform`、旧入口 `WorldListTrashCan platform`、`stats/reload/clear/add`、`%Wtc_ClearTime%` 和 `debugstock` 正常返回。2026-07-02 已补做真实玩家负向权限专项：新增 `tools/rgb-visual-matrix/run_permission_negative_visual_matrix.py`，使用 `dist/BlWorldTrashCan-universal.jar` 和临时 `PermissionDenyFixture` 权限夹具，在 Paper 1.12.2 managed、Spigot 26.1.2 managed、Folia 1.21.8 三端用真实客户端验证非 OP `/blwtc reload` 被拒绝、显式 deny `global.open`/`personal.open` 后 `/blwtc global` 与 `/blwtc personal` 被拒绝、OP 后 `/blwtc reload` 成功。证据目录：`docs/test-evidence/permission-negative-visual-20260702-210300/`。
+- 世界垃圾桶 `/blwtc add <世界名> <数量>` 写入的 `data/worlds.yml` 上限现在会参与正式创建限制：`WorldTrashRouter` 使用单世界运行数据计算有效上限，告示牌创建的 OP 路径会按旧插件行为绕过数量上限。1.12.2 测试服使用真实 Forge 客户端 `AIClientAlpha` 进服后，RCON 通过在线 `Player` 对象连续执行 `debugworldtrash`：上限 5 时新增到 5 成功、第 6 个失败；执行 `blwtc add world 1` 后上限变 6，再新增 1 个成功、第 7 个失败。最终 `data/worlds.yml` 落盘为 `world.max-count: 6` 且 6 个位置，窄匹配未发现 BlWorldTrashCan 自身异常。
+- 旧配置 `Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan` 迁移到 `personal-trash.track-player-dropped-items` 后，Legacy/Bukkit 这类无 PDC 平台现在会用短期运行态 owner 追踪补齐普通清理路由；Paper/Folia 仍优先使用 PDC，并用同一追踪器兜底。1.12.2 测试服临时清空 `world` 的世界垃圾桶登记后，真实客户端 `AIClientAlpha` 在线执行：`debugdrop AIClientAlpha STONE 2 owner` 后 `/blwtc clear` 显示回收 2 个物品、个人路由 1 个堆叠，`debugsummary` 显示个人垃圾桶物品 `2`；未带 owner 的 `debugdrop AIClientAlpha COBBLESTONE 3` 对照用例进入公共垃圾桶，个人桶保持 `2`。测试后已恢复原 `data/worlds.yml`，窄匹配未发现 BlWorldTrashCan 自身异常。
 - 个人垃圾桶自动回收提示已在 `paper-1.12.2-test-server` 用真实 `client-1.12.2` 客户端验证：`debugdamage babyZiXuan STONE 2` 后客户端收到 `已回收到个人垃圾桶: [STONE*2]`；三类 `debugdrop ... owner` 后 `/blwtc clear` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT]`；四类物品时按 `max-display-items: 3` 收到 `本次清理已回收到个人垃圾桶: [STONE*5, COBBLESTONE*30, DIRT, ...]`。RCON `debugsummary/stats` 同时确认世界/公共垃圾桶为 0，个人路由分别为 1、3、4 个堆叠；测试后已恢复临时 `config.yml`、`trash.yml`、`messages/message_zh.yml` 和 `data/worlds.yml`。
 - Paper/Folia 的玩家掉落 owner 标记现在写在掉落实体 PDC 上，不再写入 `ItemStack` 的 `ItemMeta`，避免隐藏 PDC 破坏物品叠加；公共、个人、世界垃圾桶入库前会清理旧版本残留在 `ItemStack` 上的 `player_uuid` 标记。
-- bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit/Paper 主类和 universal 内 Paper 分支均为 class major 52，Folia 主类为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BLWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BLWorldTrashCan 或 bStats 异常。
+- bStats 已合规接入四个平台产物：四个 jar 均包含 `Metrics.class` 和 `BStatsMetricsService.class`，四个平台入口均有 `BStatsMetricsService.start(...)` 与 `Metrics.shutdown()` 调用；Legacy/Bukkit/Paper 主类和 universal 内 Paper 分支均为 class major 52，Folia 主类为 class major 61。`paper-1.20.4-test-server` 验证新 Paper jar 正常加载，RCON `plugins` 显示 `BlWorldTrashCan` 和 `PlaceholderAPI`，`blwtc platform` 显示 `paper-1.16-1.20`，`blwtc stats` 正常返回；`plugins/bStats/config.yml` 保持官方全局配置且 `enabled: true`。窄匹配未发现 BlWorldTrashCan 或 bStats 异常。
 - 7.0.0 版本构建已验证 5 个交付 jar 内 `plugin.yml` 均为 `version: 7.0.0`；`paper-1.20.4-test-server` 部署 universal 7.0.0 后，bStats serviceId `24350` 的服务端上报、返回响应和页面 `Plugin Version` 图表刷新均完成闭环。
 - `/wtc reload` 已修复默认 yml 缺失时不会补回的问题：四个平台 `reloadPlugin()` 会先执行默认资源补齐，再读取配置和刷新功能模块。当前默认资源不再包含 `notify.yml`；清理通知已合并到 `cleanup.yml` 的 `notify.*` 区域。
 - PrismaticAPI RGB 消息已完成构建和客户端侧视觉矩阵：四个平台 jar 均包含 relocation 后的 `pixeltech/bluenine/blworldtrashcan/libs/croabeast/prismatic/PrismaticAPI.class`，且不残留原始 `me/croabeast` 类。`/blwtc debugrgb <玩家>` 已用真实原版客户端 F2 截图验证 GUI 标题、聊天文本、物品名和 Lore 等可见内容。通过版本包括 Paper 1.12.2、1.13.2、1.14.4、1.15.2、1.16.5、1.17.1、1.18.2、1.19.4、1.20.4 和 1.21.4；低版本为降级色，1.16.5+ 为 RGB。截图证据目录：`docs/test-evidence/rgb-visual-proof-20260607-104606/`。
 - 默认中文文案已改为蓝、黄、灰、黑的 RGB 色板：冷蓝 `#38BDF8/#2563EB`，鎏金 `#F5B82E/#E7C873`，雾灰 `#D5DEE9/#AAB6C5/#64748B`，深墨 `#111827/#0F172A`。`/blwtc debugrgbchannels <玩家>` 已补齐到四个轻量产物和 universal 产物，用于只展示聊天栏、ActionBar、Title 的 RGB 通道。Paper 1.20.4 + 原版 1.20.4 客户端验证通过，截图证据目录：`docs/test-evidence/rgb-blue-gold-palette-20260608-072705/`。
-- 通用总包 `BLWorldTrashCan-universal.jar` 已完成构建和四端 console smoke：同一个 jar 在 `paper-1.12.2-test-server` 识别为 `legacy-1.12`，在 `paper-1.13.2-test-server` 识别为 `bukkit-1.13-1.15`，在 `paper-1.20.4-test-server` 识别为 `paper-1.16-1.20`，在 `folia-1.20.1-test-server` 识别为 `folia-1.20`。通用总包内 PrismaticAPI 已 relocation，原始 `me/croabeast` 类数量为 0；主类 Java 8 加载 smoke 输出 `loaded-universal-main`。
+- 通用总包 `BlWorldTrashCan-universal.jar` 已完成构建和四端 console smoke：同一个 jar 在 `paper-1.12.2-test-server` 识别为 `legacy-1.12`，在 `paper-1.13.2-test-server` 识别为 `bukkit-1.13-1.15`，在 `paper-1.20.4-test-server` 识别为 `paper-1.16-1.20`，在 `folia-1.20.1-test-server` 识别为 `folia-1.20`。通用总包内 PrismaticAPI 已 relocation，原始 `me/croabeast` 类数量为 0；主类 Java 8 加载 smoke 输出 `loaded-universal-main`。
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
-- 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `BLWorldTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
-- 2026-06-07 已补做高辨识度 RGB 二次复测：上一轮颜色被指出接近传统 `&a`、`&6` 后，调试 Title 改为多段 RGB 的 `RGB TITLE FF1493`，Subtitle 改为 `SUBTITLE FF4F00`。同一批 6 个外部端全部使用 `BLWorldTrashCan-universal.jar` 重跑，RGB 截图仍限定聊天框、ActionBar、Title/Subtitle，每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
-- 2026-06-08 已新增 `docs/重构版完整功能与测试矩阵.md`，初版把重构版拆成 80 个功能项，当前已扩展到 F-089 共 89 个功能项，并按功能文档执行 universal 整包真实客户端矩阵测试。被测 jar 为 `dist/BLWorldTrashCan-universal.jar`，SHA256 `9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399`，jar 内 `plugin.yml` 为 `version: 7.0.0` 且旧入口包含 `WorldListTrashCan/WTC/wtc`。Paper 1.12.2、Paper 26.1.2、Spigot 26.1.2 三端矩阵结果均为 PASS、无 FAIL；该历史矩阵当轮仍有明确 `SKIP` 项，不能单独视为最终通过。证据目录：`docs/test-evidence/universal-function-matrix-1122-2612-20260608-213500/`。截至 2026-07-02，当轮通用专项 `SKIP` 已由后续旧配置迁移、GUI 真实点击、世界垃圾桶边界、保护边界、世界实体上限、密集实体、多语言、清理通知点击和 Vault/Economy 专项收敛为 PASS；当前长期硬化清单没有未实现旧功能或已知代码级 P0/P1/P2 缺口。
-- 2026-06-26 已补验扫地门禁 `-5` 正式通知：修复旧 `cleanup.yml` 不自动补齐新增 `-5` 文案、普通 Bukkit/Paper/Legacy 跳过路径不发送正式通知的问题。`dist/BLWorldTrashCan-universal.jar` SHA256 `5D0BB85487F632DD3BC221D5BC749C5DEB3AF2FF92748E14A0C71A00CB134A0D`，Spigot 26.1.2、Folia 1.21.8、Paper 1.12.2 均用真实客户端和服务端截图复测 PASS；1.12.2 控制台中文乱码，因此以服务端截图中的 `cleanup.yml` `-5` 配置行、`skippedByGuard=true` 汇总和客户端可见中文截图共同验收。证据目录：`docs/test-evidence/cleanup-guard-visual-20260626-214947/`、`docs/test-evidence/cleanup-guard-visual-20260626-215753/`。
-- 2026-06-27 已修复公共垃圾桶按次数刷新时序：`global-trash.clear-every-cleanups: 3` 触发时先清空旧公共垃圾桶，再把本轮清理物品写入公共垃圾桶，避免第 3 次清理把本轮新物品一起清空。`dist/BLWorldTrashCan-universal.jar` SHA256 `52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466`，Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 均用真实客户端连续三轮 `/blwtc clear` + `/blwtc debugstock` 截图复测 PASS；第 3 轮服务端日志为 `globalTrashRefreshed=true`，客户端库存仍为公共垃圾桶物品 `1`。证据目录：`docs/test-evidence/global-refresh-visual-20260627-013926/`、`docs/test-evidence/global-refresh-visual-20260627-014123/`、`docs/test-evidence/global-refresh-visual-20260627-014340/`。
-- 2026-06-30 已补做清理通知专项真实客户端矩阵：同一个 `dist/BLWorldTrashCan-universal.jar`，SHA256 `9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时开启 `notify.chat/actionbar/bossbar/title/sound/command`，分别触发 `/blwtc debugnotify 0` 和 `/blwtc debugnotify -5`；真实客户端截图可见 Chat、ActionBar、BossBar、Title，客户端字幕 `Experience gained` 作为 Sound 辅助证据，服务端日志 `AI_WTC_NOTIFY_COMMAND_*` 作为 Command 执行证据。证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。
-- 2026-07-01 已补做清理通知 Chat 可点击命令专项：同一个 `dist/BLWorldTrashCan-universal.jar`，SHA256 `8e664bac3b5091c3db35e0e3db74d6c51680ccba854f7733923f9c86c384b2e9`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时把 `notify.chat.click-command` 设置为 `/blwtc stats`，触发 `/blwtc debugnotify 0` 后用真实客户端点击 `AI_CLICK_NOTIFY_0` 文本，客户端日志均出现“清理统计”和“公共垃圾桶”，证明 F-058 完成通知点击命令生效。证据目录：`docs/test-evidence/cleanup-notify-click-20260701-190056/`。
+- 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `BlWorldTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
+- 2026-06-07 已补做高辨识度 RGB 二次复测：上一轮颜色被指出接近传统 `&a`、`&6` 后，调试 Title 改为多段 RGB 的 `RGB TITLE FF1493`，Subtitle 改为 `SUBTITLE FF4F00`。同一批 6 个外部端全部使用 `BlWorldTrashCan-universal.jar` 重跑，RGB 截图仍限定聊天框、ActionBar、Title/Subtitle，每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
+- 2026-06-08 已新增 `docs/重构版完整功能与测试矩阵.md`，初版把重构版拆成 80 个功能项，当前已扩展到 F-090 共 90 个功能项，并按功能文档执行 universal 整包真实客户端矩阵测试。被测 jar 为 `dist/BlWorldTrashCan-universal.jar`，SHA256 `9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399`，jar 内 `plugin.yml` 为 `version: 7.0.0` 且旧入口包含 `WorldListTrashCan/WTC/wtc`。Paper 1.12.2、Paper 26.1.2、Spigot 26.1.2 三端矩阵结果均为 PASS、无 FAIL；该历史矩阵当轮仍有明确 `SKIP` 项，不能单独视为最终通过。证据目录：`docs/test-evidence/universal-function-matrix-1122-2612-20260608-213500/`。截至 2026-07-02，当轮通用专项 `SKIP` 已由后续旧配置迁移、GUI 真实点击、世界垃圾桶边界、保护边界、世界实体上限、密集实体、多语言、清理通知点击和 Vault/Economy 专项收敛为 PASS；当前长期硬化清单没有未实现旧功能或已知代码级 P0/P1/P2 缺口。
+- 2026-06-26 已补验扫地门禁 `-5` 正式通知：修复旧 `cleanup.yml` 不自动补齐新增 `-5` 文案、普通 Bukkit/Paper/Legacy 跳过路径不发送正式通知的问题。`dist/BlWorldTrashCan-universal.jar` SHA256 `5D0BB85487F632DD3BC221D5BC749C5DEB3AF2FF92748E14A0C71A00CB134A0D`，Spigot 26.1.2、Folia 1.21.8、Paper 1.12.2 均用真实客户端和服务端截图复测 PASS；1.12.2 控制台中文乱码，因此以服务端截图中的 `cleanup.yml` `-5` 配置行、`skippedByGuard=true` 汇总和客户端可见中文截图共同验收。证据目录：`docs/test-evidence/cleanup-guard-visual-20260626-214947/`、`docs/test-evidence/cleanup-guard-visual-20260626-215753/`。
+- 2026-06-27 已修复公共垃圾桶按次数刷新时序：`global-trash.clear-every-cleanups: 3` 触发时先清空旧公共垃圾桶，再把本轮清理物品写入公共垃圾桶，避免第 3 次清理把本轮新物品一起清空。`dist/BlWorldTrashCan-universal.jar` SHA256 `52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466`，Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 均用真实客户端连续三轮 `/blwtc clear` + `/blwtc debugstock` 截图复测 PASS；第 3 轮服务端日志为 `globalTrashRefreshed=true`，客户端库存仍为公共垃圾桶物品 `1`。证据目录：`docs/test-evidence/global-refresh-visual-20260627-013926/`、`docs/test-evidence/global-refresh-visual-20260627-014123/`、`docs/test-evidence/global-refresh-visual-20260627-014340/`。
+- 2026-06-30 已补做清理通知专项真实客户端矩阵：同一个 `dist/BlWorldTrashCan-universal.jar`，SHA256 `9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时开启 `notify.chat/actionbar/bossbar/title/sound/command`，分别触发 `/blwtc debugnotify 0` 和 `/blwtc debugnotify -5`；真实客户端截图可见 Chat、ActionBar、BossBar、Title，客户端字幕 `Experience gained` 作为 Sound 辅助证据，服务端日志 `AI_WTC_NOTIFY_COMMAND_*` 作为 Command 执行证据。证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。
+- 2026-07-01 已补做清理通知 Chat 可点击命令专项：同一个 `dist/BlWorldTrashCan-universal.jar`，SHA256 `8e664bac3b5091c3db35e0e3db74d6c51680ccba854f7733923f9c86c384b2e9`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时把 `notify.chat.click-command` 设置为 `/blwtc stats`，触发 `/blwtc debugnotify 0` 后用真实客户端点击 `AI_CLICK_NOTIFY_0` 文本，客户端日志均出现“清理统计”和“公共垃圾桶”，证明 F-058 完成通知点击命令生效。证据目录：`docs/test-evidence/cleanup-notify-click-20260701-190056/`。
 - 2026-07-02 已把 GUI 正向点击专项扩展为 Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端矩阵：同一个 universal jar `b2219edc7eee635d6899a30d6a40310453e8ce378a65dc967a239c3731132c04` 覆盖公共/个人垃圾桶取放、公共取出冷却、公共分页、公共操作日志、公共黑名单保存和路由负向、个人满桶自动清空，全部 PASS。1.12.2 黑名单 GUI 关闭保存失败的根因是旧实现依赖 `Inventory` 对象身份取上下文，已改为 holder 绑定上下文。证据目录：`docs/test-evidence/trash-gui-click-visual-20260702-223605/`。
 
 本轮关键日志：
@@ -696,9 +708,9 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 
 已知测试环境噪声：
 
-- 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BLWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
-- 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BLWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
-- 通用总包 1.12.2 smoke summary 里的 `ErrorPattern=true` 来自测试服其它前置插件噪声；同轮日志中 BLWorldTrashCan 已正常启用，平台识别、命令和停服流程均有证据。
+- 打开 GUI 时 EasyCore 会因缺少 `top.wcpe.wcneteasemodrpc.item.texture.match.TextureMatchs` 报 `InventoryOpenEvent` 异常；RCON 返回和 BlWorldTrashCan debug 日志均显示本插件 GUI 打开调用已执行。
+- 测试服上其他前置插件存在 MythicMobs 版本兼容警告和 Druid/MySQL 连接超时日志；本轮日志未发现 BlWorldTrashCan 自身的 `UnsupportedClassVersionError`、`NoSuchMethodError`、`NoSuchFieldError` 或插件启用失败。
+- 通用总包 1.12.2 smoke summary 里的 `ErrorPattern=true` 来自测试服其它前置插件噪声；同轮日志中 BlWorldTrashCan 已正常启用，平台识别、命令和停服流程均有证据。
 - 2026-06-07 真实客户端工作流回归中，Paper/Forge 日志只用于辅助定位；玩家可见功能结论以 `client-response.properties`、`client-workflow-assertions.txt`、`client-chat.log`、`client-screen.log` 和真实 PNG 截图为准。
 - Paper 1.13.2 不能使用默认 Java 21 启动，本轮误用 Java 21 时服务端输出 `Unsupported Java detected (65.0). Only up to Java 12 is supported.`；有效复测使用 `C:\Program Files\Java\jdk-1.8\bin\java.exe` 启动。
 - Folia 当前已经完成世界清理、专用实体限制、低占用密集实体扫描和多轮真实客户端回归；清理通知 Chat、ActionBar、BossBar、Title、Sound 和 Command 也已补专项真实客户端截图与日志证据。但这仍不等于整产物 `FOLIA_REGION_SAFE`，因为 Command 通知可能被服主配置成触发其它插件的非 region-safe 行为。

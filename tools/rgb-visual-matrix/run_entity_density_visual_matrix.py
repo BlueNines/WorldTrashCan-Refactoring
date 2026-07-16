@@ -15,7 +15,7 @@ import run_rgb_visual_matrix as base
 
 BUILD_ROOT = base.REPO / "build" / "entity-density-visual-matrix"
 EVIDENCE_ROOT = base.REPO / "docs" / "test-evidence"
-TEST_ENTITY_NAME = "AI_BLWTC_DENSITY"
+TEST_ENTITY_NAME = "AI_BlWTC_DENSITY"
 TARGET_CASE_IDS = [
     "external_paper12111",
     "external_folia1218",
@@ -144,7 +144,7 @@ def entity_limit_config(enabled: bool, remove_count: int) -> str:
 
 def write_entity_config(case: dict, enabled: bool, remove_count: int) -> Path:
     """写入本轮测试专用 entity-limits.yml。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "entity-limits.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "entity-limits.yml"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(entity_limit_config(enabled, remove_count), encoding="utf-8")
     return target
@@ -152,7 +152,7 @@ def write_entity_config(case: dict, enabled: bool, remove_count: int) -> Path:
 
 def write_quiet_cleanup_config(case: dict) -> None:
     """关闭定时扫地，避免它抢占密集实体提示截图和聊天日志。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     if not target.is_file():
         return
     original = target.read_text(encoding="utf-8", errors="replace")
@@ -474,8 +474,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
     try:
         backup_dir = run_dir / "logs" / "config-backup"
         backups.append(backup_file(Path(case["serverDir"]) / "server.properties", backup_dir, "server.properties.before"))
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "entity-limits.yml", backup_dir, "entity-limits.yml.before"))
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml", backup_dir, "cleanup.yml.before"))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "entity-limits.yml", backup_dir, "entity-limits.yml.before"))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir, "cleanup.yml.before"))
         external.deploy_plugin(case)
         write_quiet_server_properties(case)
         write_quiet_cleanup_config(case)

@@ -20,7 +20,7 @@ import run_rgb_visual_matrix as base
 
 EVIDENCE_ROOT = base.REPO / "docs" / "test-evidence"
 UNIVERSAL_TARGET = base.REPO / "bl-world-trashcan-plugin-universal" / "target" / "bl-world-trashcan-plugin-universal-7.0.0.jar"
-UNIVERSAL_DIST = base.REPO / "dist" / "BLWorldTrashCan-universal.jar"
+UNIVERSAL_DIST = base.REPO / "dist" / "BlWorldTrashCan-universal.jar"
 MANUAL_TRASH_ITEMS = [
     {"id": "resin_clump", "amount": 24},
     {"id": "creaking_heart", "amount": 2},
@@ -71,7 +71,7 @@ def new_material_case(case_id: str, label: str, version: str, server_dir: Path, 
         "serverJar": server_jar,
         "port": port,
         "java": base.JAVA21,
-        "plugin": "BLWorldTrashCan-universal.jar",
+        "plugin": "BlWorldTrashCan-universal.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -153,7 +153,7 @@ def backup_and_deploy_plugin(case: dict, run_dir: Path) -> dict:
     artifact = sync_universal_dist()
     plugins_dir = Path(case["serverDir"]) / "plugins"
     backed_up = []
-    patterns = ["BLWorldTrashCan*.jar", "WorldListTrashCan*.jar", "wtc.jar"]
+    patterns = ["BlWorldTrashCan*.jar", "WorldListTrashCan*.jar", "wtc.jar"]
     old_plugins = []
     for pattern in patterns:
         old_plugins.extend(sorted(plugins_dir.glob(pattern)))
@@ -266,7 +266,7 @@ def ensure_cleanup_guard_block(text: str) -> str:
 
 def write_test_config(case: dict, run_dir: Path) -> list[dict]:
     """写入本轮新材质验收需要的最小配置。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
     backup_dir = run_dir / "logs" / "config-backup"
     trash = data_dir / "trash.yml"
     cleanup = data_dir / "cleanup.yml"
@@ -573,13 +573,13 @@ def run_case(case: dict, evidence_root: Path) -> dict:
         final_stock = wait_stock(server_log, final_stock_offset, final_expected_items, final_expected_stacks)
         result["finalStock"] = final_stock
         server_text = external.read_text(server_log)
-        result["legacyWarningForBLWorldTrashCan"] = "Legacy plugin BLWorldTrashCan" in server_text
+        result["legacyWarningForBlWorldTrashCan"] = "Legacy plugin BlWorldTrashCan" in server_text
         result["serverEvidenceScreenshot"] = render_text_image(
             "manualStock:\n" + manual_stock.get("text", "")[-1600:]
             + "\n\ncleanupLog:\n" + cleanup_log[-2000:]
             + "\n\nfinalStock:\n" + final_stock.get("text", "")[-1600:],
             run_dir / "server-screenshots" / (case["id"] + "-new-material-server-log.png"),
-            "BLWorldTrashCan 新版本物品公共垃圾桶验收日志",
+            "BlWorldTrashCan 新版本物品公共垃圾桶验收日志",
         )
         contact_sheet = make_contact_sheet([Path(item) for item in result["screenshots"]],
                                            evidence_root / "new-material-trash-contact-sheet.png")
@@ -588,7 +588,7 @@ def run_case(case: dict, evidence_root: Path) -> dict:
             manual_stock.get("status") == "PASS"
             and final_stock.get("status") == "PASS"
             and cleanup_marker in cleanup_log
-            and not result["legacyWarningForBLWorldTrashCan"]
+            and not result["legacyWarningForBlWorldTrashCan"]
             and bool(result["screenshots"])
         ) else "FAIL"
     except Exception as exc:

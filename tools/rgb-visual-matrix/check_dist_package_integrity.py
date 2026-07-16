@@ -56,11 +56,11 @@ BSTATS_CLASSES = {
     "pixeltech/bluenine/blworldtrashcan/bukkit/bstats/BStatsMetricsService.class",
 }
 BSTATS_ENTRY_SOURCES = {
-    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BLWorldTrashCanLegacyPlugin.java",
-    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BLWorldTrashCanBukkitPlugin.java",
-    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BLWorldTrashCanPlugin.java",
-    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BLWorldTrashCanFoliaPlugin.java",
-    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BLWorldTrashCanUniversalPlugin.java",
+    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyPlugin.java",
+    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitPlugin.java",
+    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanPlugin.java",
+    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaPlugin.java",
+    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BlWorldTrashCanUniversalPlugin.java",
 }
 PLUGIN_CONFIG_RESOURCE_NAMES = {
     "config.yml",
@@ -74,8 +74,8 @@ PLUGIN_CONFIG_RESOURCE_NAMES = {
 EXPECTED_ARTIFACTS = [
     {
         "name": "legacy-1.12",
-        "jar": "BLWorldTrashCan-legacy-1.12.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.legacy.BLWorldTrashCanLegacyPlugin",
+        "jar": "BlWorldTrashCan-legacy-1.12.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.legacy.BlWorldTrashCanLegacyPlugin",
         "apiVersion": None,
         "foliaSupported": None,
         "mainMajor": 52,
@@ -85,8 +85,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "bukkit-1.13-1.15",
-        "jar": "BLWorldTrashCan-bukkit-1.13-1.15.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.bukkit.BLWorldTrashCanBukkitPlugin",
+        "jar": "BlWorldTrashCan-bukkit-1.13-1.15.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.bukkit.BlWorldTrashCanBukkitPlugin",
         "apiVersion": "1.13",
         "foliaSupported": None,
         "mainMajor": 52,
@@ -96,8 +96,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "paper-1.16-1.20",
-        "jar": "BLWorldTrashCan-paper-1.16-1.20.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.BLWorldTrashCanPlugin",
+        "jar": "BlWorldTrashCan-paper-1.16-1.20.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.BlWorldTrashCanPlugin",
         "apiVersion": "1.16",
         "foliaSupported": None,
         "mainMajor": 52,
@@ -107,8 +107,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "folia-1.20",
-        "jar": "BLWorldTrashCan-folia-1.20.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.folia.BLWorldTrashCanFoliaPlugin",
+        "jar": "BlWorldTrashCan-folia-1.20.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.folia.BlWorldTrashCanFoliaPlugin",
         "apiVersion": "1.20",
         "foliaSupported": "true",
         "mainMajor": 61,
@@ -119,8 +119,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "universal",
-        "jar": "BLWorldTrashCan-universal.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin",
+        "jar": "BlWorldTrashCan-universal.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BlWorldTrashCanUniversalPlugin",
         "apiVersion": "1.13",
         "foliaSupported": "true",
         "mainMajor": 52,
@@ -248,8 +248,8 @@ def check_universal_region_threaded_detection(errors: list[str]) -> None:
 def check_plugin_yml(label: str, plugin_text: str, expected: dict, version: str, errors: list[str]) -> dict[str, str]:
     """检查 plugin.yml 的关键交付字段。"""
     values = parse_plugin_yml(plugin_text)
-    if values.get("name") != "BLWorldTrashCan":
-        errors.append(label + ": plugin.yml name 不是 BLWorldTrashCan")
+    if values.get("name") != "BlWorldTrashCan":
+        errors.append(label + ": plugin.yml name 不是 BlWorldTrashCan")
     if values.get("version") != version:
         errors.append(label + ": plugin.yml version 不是 " + version)
     if values.get("main") != expected["main"]:
@@ -365,7 +365,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BLWorldTrashCan dist 交付 jar 的包完整性。")
+    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan dist 交付 jar 的包完整性。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

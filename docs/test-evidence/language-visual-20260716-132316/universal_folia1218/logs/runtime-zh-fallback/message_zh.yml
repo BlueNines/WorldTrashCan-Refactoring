@@ -1,0 +1,169 @@
+# 插件前缀，会自动替换 {prefix}。
+prefix: "&7[&bBlWorldTrashCan&7] "
+
+# 通用无权限提示。
+no-permission: "{prefix}&c你没有权限执行该命令。"
+
+# 重载成功提示。
+reload-success: "{prefix}&a配置已重载。"
+
+# 公共垃圾桶相关消息。
+global-trash:
+  # 公共垃圾桶未启用时提示。
+  disabled: "{prefix}&c公共垃圾桶未启用。"
+  # 玩家没有权限从公共垃圾桶取出物品。
+  no-take-permission: "{prefix}&c你没有权限从公共垃圾桶取出物品。"
+  # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
+  take-cooldown: "{prefix}&c公共垃圾桶拿取冷却剩余 {time} 秒。"
+  # 公共垃圾桶 GUI 文案。
+  gui:
+    # GUI 标题，{page} 当前页，{max} 总页数。
+    title: "&8公共垃圾桶 {page}/{max}"
+    # 上一页按钮名称。
+    back: "&a上一页"
+    # 下一页按钮名称。
+    next: "&a下一页"
+
+# 个人垃圾桶相关消息。
+personal-trash:
+  # 个人垃圾桶未启用时提示。
+  disabled: "{prefix}&c个人垃圾桶未启用。"
+  # 玩家没有权限从个人垃圾桶取出物品。
+  no-take-permission: "{prefix}&c你没有权限从个人垃圾桶取出物品。"
+  # 玩家余额不足时提示。
+  not-enough-money: "{prefix}&c余额不足，无法取出该物品。"
+  # 玩家成功支付取出费用，{cost} 为扣费显示。
+  pay-success: "{prefix}&a已支付 {cost}。"
+  # 个人垃圾桶 GUI 文案。
+  gui:
+    # GUI 标题，{player} 为玩家名。
+    title: "&8{player} 的个人垃圾桶"
+  # 自动进入个人垃圾桶时的提示文案。
+  recycle:
+    # 单个来源进入个人垃圾桶时发送，{items} 为格式化后的物品列表。
+    single: "{prefix}&a已回收到个人垃圾桶: {items}"
+    # 批量清理进入个人垃圾桶时发送，{items} 为格式化后的物品列表。
+    batch: "{prefix}&a本次清理已回收到个人垃圾桶: {items}"
+    # 物品列表整体格式，{items} 为已经拼接好的物品条目。
+    list: "&7[{items}&7]"
+    # 多个物品条目之间的分隔符。
+    separator: "&7, "
+    # 单个物品数量大于 1 时的条目格式，{name} 为物品名，{amount} 为总数量。
+    item: "&f{name}&7*&f{amount}"
+    # 单个物品数量等于 1 时的条目格式，{name} 为物品名。
+    item-single: "&f{name}"
+    # 物品条目超过 trash.yml 中 max-display-items 后追加的省略标记。
+    ellipsis: "&7..."
+
+# 黑名单 GUI 相关消息。
+ban-gui:
+  # 世界黑名单 GUI 标题，{world} 为世界名。
+  world-title: "&8世界黑名单: {world}"
+  # 公共垃圾桶黑名单 GUI 标题。
+  global-title: "&8公共垃圾桶黑名单"
+  # 保存世界黑名单时世界不存在。
+  world-missing: "{prefix}&c世界不存在，无法保存黑名单: {world}"
+  # 世界黑名单保存成功，{count} 为物品数量。
+  world-save-success: "{prefix}&a已保存世界垃圾桶黑名单，数量: &f{count}"
+  # 世界黑名单保存失败。
+  world-save-fail: "{prefix}&c保存世界垃圾桶黑名单失败，请查看后台日志。"
+  # 公共黑名单保存成功，{count} 为物品数量。
+  global-save-success: "{prefix}&a已保存公共垃圾桶黑名单，数量: &f{count} &7(已立即生效)"
+  # 公共黑名单保存失败。
+  global-save-fail: "{prefix}&c保存公共垃圾桶黑名单失败，请查看后台日志。"
+
+# 防护和查询相关消息。
+protection:
+  # 关闭防丢弃模式。
+  drop-mode-off: "{prefix}&a已关闭防丢弃模式。"
+  # 开启防丢弃模式。
+  drop-mode-on: "{prefix}&a已开启防丢弃模式。"
+  # 防丢弃模式拦截玩家丢弃。
+  drop-blocked: "{prefix}&c防丢弃模式已阻止本次丢弃。"
+  # look 查询等待玩家右键实体。
+  look-prompt: "{prefix}&a请右键一个实体以查询实体名称。"
+  # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
+  entity-result: "{prefix}&a实体: &f{name} &7({type})"
+  # 当前区块实体列表标题。
+  chunk-entities-title: "{prefix}&a当前区块实体:"
+  # 当前区块实体单行，{text} 为实体名和数量。
+  chunk-entity-line: "{prefix}&a{text}"
+  # 手持物品查询结果，{material} 为物品类型。
+  hand-item: "{prefix}&a手持物品: &f{material}"
+
+# 世界垃圾桶相关消息。
+world-trash:
+  # 当前世界禁止创建世界垃圾桶。
+  create-banned-world: "{prefix}&c该世界禁止创建世界垃圾桶。"
+  # 告示牌没有连接到可用容器。
+  create-not-container: "{prefix}&c告示牌必须贴在容器上，或放在容器上方。"
+  # 当前世界垃圾桶数量达到上限。
+  create-reach-limit: "{prefix}&c该世界的世界垃圾桶数量已达到上限。"
+  # 创建世界垃圾桶成功，{world} 为世界名。
+  create-success: "{prefix}&a已在世界 &f{world} &a创建世界垃圾桶。"
+  # 创建世界垃圾桶保存失败。
+  create-save-fail: "{prefix}&c世界垃圾桶保存失败，请查看后台日志。"
+  # 移除世界垃圾桶登记成功。
+  remove-success: "{prefix}&a已移除该世界垃圾桶登记。"
+# 主命令相关消息。
+command:
+  # 通用无权限提示。
+  no-permission: "{prefix}&c你没有权限执行该命令。"
+  # 重载成功提示。
+  reload-success: "{prefix}&aBlWorldTrashCan 已重载。"
+  # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
+  clear-success: "{prefix}&a清理完成: &f世界 {worlds}&a, 回收物品 {routed}&a, 移除物品 {items}&a, 移除实体 {entities}&a。"
+  # Folia 不支持当前清理扫描时提示。
+  folia-clear-unsupported: "{prefix}&c当前 Folia 产物尚未启用 region-safe 清理，已拒绝执行世界实体扫描。"
+  # Folia 上一轮清理仍在运行时提示。
+  folia-clear-running: "{prefix}&e上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。"
+  # Folia 清理任务启动成功提示。
+  folia-clear-started: "{prefix}&a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /blwtc stats。"
+  # 没有打开公共垃圾桶权限时提示。
+  no-global-open-permission: "{prefix}&c你没有权限打开公共垃圾桶。"
+  # 没有打开个人垃圾桶权限时提示。
+  no-personal-open-permission: "{prefix}&c你没有权限打开个人垃圾桶。"
+  # /blwtc help 输出，每行一条。
+  platform:
+    header: "{prefix}&a当前平台: &f{platform}"
+    # 平台能力已启用文案。
+    enabled: "&a启用"
+    # 平台能力已禁用文案。
+    disabled: "&7禁用"
+    # 平台能力单行，{capability} 为能力名，{state} 为启用状态。
+    line: "&7- &f{capability}&7: {state}"
+  # /blwtc stats 输出。
+  stats:
+    header: "{prefix}&a清理统计:"
+    worlds: "&7- &f世界数: &a{worlds}"
+    routed: "&7- &f回收物品: &a{routed} &7(世界 {world}, 个人 {personal}, 公共 {global})"
+    removed-items: "&7- &f删除物品: &a{items}"
+    removed-entities: "&7- &f删除实体: &a{entities}"
+    global-pages: "&7- &f公共垃圾桶页数: &a{pages}"
+    global-items: "&7- &f公共垃圾桶当前物品: &a{items} &7(堆叠 {stacks})"
+    personal-loaded: "&7- &f已加载个人垃圾桶: &a{count}"
+    remaining: "&7- &f下次清理剩余秒数: &a{seconds}"
+  # 找不到世界时提示，{world} 为输入的世界名。
+  world-not-found: "{prefix}&c未找到世界: &f{world}"
+  # 控制台执行 add 未指定世界时提示。
+  add-console-world-required: "{prefix}&c控制台执行 add 时必须指定世界名。"
+  # add 数量不是正数时提示。
+  add-positive-required: "{prefix}&c数量必须大于 0。"
+  # add 成功提示，{world} 为世界名，{count} 为调整后的上限。
+  add-success: "{prefix}&a世界 &f{world} &a垃圾桶上限已调整为 &f{count}&a。"
+  # add 用法提示。
+  add-usage:
+    - "&c用法: /blwtc add <数量>"
+    - "&c用法: /blwtc add <世界名> <数量>"
+  # 没有防丢弃模式权限时提示。
+  no-dropmode-permission: "{prefix}&c你没有权限使用防丢弃模式。"
+  # 没有 look 查询权限时提示。
+  no-look-permission: "{prefix}&c你没有权限使用查询功能。"
+  # 没有世界黑名单权限时提示。
+  no-world-ban-permission: "{prefix}&c你没有权限打开世界黑名单。"
+  # 没有公共黑名单权限时提示。
+  no-global-ban-permission: "{prefix}&c你没有权限打开公共垃圾桶黑名单。"
+  # 非玩家执行玩家命令时提示。
+  only-player: "{prefix}&c该命令只能由玩家执行。"
+  # 玩家不在线时提示，{player} 为玩家名。
+  player-offline: "{prefix}&c玩家不在线: {player}"

@@ -175,7 +175,7 @@ def debug_summary_amounts_by_order(text: str) -> dict:
     values = []
     in_summary = False
     for line in text.splitlines():
-        if "BLWorldTrashCan debug summary" in line:
+        if "BlWorldTrashCan debug summary" in line:
             in_summary = True
             values = []
             continue
@@ -215,7 +215,7 @@ def parse_first_int_after_last_colon(line: str) -> int:
 
 def snapshot_global_logs(case: dict) -> dict:
     """记录公共垃圾桶日志当前位置。"""
-    log_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "logs"
+    log_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "logs"
     snapshot = {}
     for path in sorted(log_dir.glob("global-trash-*.log")):
         snapshot[str(path)] = path.stat().st_size
@@ -224,7 +224,7 @@ def snapshot_global_logs(case: dict) -> dict:
 
 def read_global_logs_since(case: dict, snapshot: dict, username: str) -> str:
     """读取公共垃圾桶操作日志增量中当前玩家相关行。"""
-    log_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "logs"
+    log_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "logs"
     lines = []
     for path in sorted(log_dir.glob("global-trash-*.log")):
         start = snapshot.get(str(path), 0)
@@ -475,7 +475,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        trash_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml"
+        trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
         backups.append(backup_file(trash_file, backup_dir))
         gui.patch_trash_config(case)
         copy_runtime_file(trash_file, run_dir / "logs" / "trash-after-patch.yml")
@@ -544,7 +544,7 @@ def copy_runtime_file(source: Path, target: Path) -> str:
 def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
     """复制本轮运行态证据。"""
     server_dir = Path(case["serverDir"])
-    plugin_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
     copy_runtime_file(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     copy_runtime_file(plugin_dir / "trash.yml", run_dir / "config" / "trash-after-restore.yml")
     copy_runtime_file(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
@@ -595,7 +595,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# GUI 取放权限真实客户端专项",
         "",
-        "- 被测 jar: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测 jar: `dist/BlWorldTrashCan-universal.jar`",
         "- SHA256: `" + summary.get("jarSha256", "") + "`",
         "- 验收方式: " + environments + " + 临时 PermissionDenyFixture。",
         "- 覆盖: 公共取出 deny、公共放入 deny、个人取出 deny、个人放入 deny。",
@@ -644,7 +644,7 @@ def main() -> int:
         results.append(run_case(case, prepared_clients, evidence_root))
         write_json(evidence_root / "summary.json", {"status": "RUNNING", "results": results})
     contact_sheet = make_contact_sheet(results, evidence_root)
-    jar_path = base.REPO / "dist" / "BLWorldTrashCan-universal.jar"
+    jar_path = base.REPO / "dist" / "BlWorldTrashCan-universal.jar"
     summary = {
         "status": "PASS" if all(item["status"] == "PASS" for item in results) else "FAIL",
         "jar": str(jar_path),

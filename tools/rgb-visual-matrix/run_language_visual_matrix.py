@@ -31,6 +31,17 @@ def write_json(path: Path, data) -> None:
     path.write_text(json.dumps(to_json_value(data), ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def normalize_log_file_for_git(path: Path) -> None:
+    """移除 PTY 日志行尾的回车和空白，不改变可见日志内容。"""
+    if not path.is_file():
+        return
+    original = path.read_text(encoding="utf-8", errors="replace")
+    normalized = "\n".join(line.rstrip(" \t\r") for line in original.splitlines())
+    if original:
+        normalized += "\n"
+    path.write_text(normalized, encoding="utf-8")
+
+
 def to_json_value(value):
     """把 Path 等对象转换成 JSON 可写值。"""
     if isinstance(value, Path):
@@ -87,12 +98,12 @@ def restore_backups(backups: list[dict]) -> None:
 
 def config_file(case: dict) -> Path:
     """返回运行时 config.yml 路径。"""
-    return Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "config.yml"
+    return Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "config.yml"
 
 
 def message_file(case: dict, file_name: str) -> Path:
     """返回运行时语言文件路径。"""
-    return Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "messages" / file_name
+    return Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "messages" / file_name
 
 
 def set_language(case: dict, language_file: str) -> Path:
@@ -244,7 +255,7 @@ def render_log_screenshot(text: str, target: Path, title: str) -> Path:
     lines = [title, ""]
     useful = []
     for line in external.strip_ansi(text).splitlines():
-        if "[Message]" in line or "BLWorldTrashCan" in line or "[CHAT]" in line:
+        if "[Message]" in line or "BlWorldTrashCan" in line or "[CHAT]" in line:
             useful.append(line)
     lines.extend(useful[-34:] if useful else external.strip_ansi(text).splitlines()[-34:])
     width = 1600
@@ -307,6 +318,32 @@ def send_help_and_capture(case: dict, game_dir: Path, run_dir: Path, suffix: str
     return {
         "command": "/blwtc help",
         "suffix": suffix,
+        "markers": markers,
+        "attempts": attempts,
+        "clientCheck": marker_check,
+        "clientScreenshot": screenshot_info(screenshot),
+    }
+
+
+def send_reload_and_capture(case: dict, game_dir: Path, run_dir: Path) -> dict:
+    """由真实客户端重载插件并记录公开品牌前缀。"""
+    ensure_ingame_view(case)
+    client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
+    offset = external.log_text_offset(client_log)
+    attempts = []
+    send_chat_by_window_message(case, "/blwtc reload")
+    time.sleep(1.2)
+    markers = ["BlWorldTrashCan", "reloaded."]
+    marker_check = wait_client_markers(client_log, offset, markers, 4)
+    attempts.append({"method": "window-message", "status": marker_check["status"]})
+    if marker_check["status"] != "PASS":
+        send_chat_by_clipboard(case, "/blwtc reload")
+        time.sleep(1.2)
+        marker_check = wait_client_markers(client_log, offset, markers, 7)
+        attempts.append({"method": "clipboard", "status": marker_check["status"]})
+    screenshot = capture_named_screenshot(case, game_dir, run_dir, "brand-case-reload-f2")
+    return {
+        "command": "/blwtc reload",
         "markers": markers,
         "attempts": attempts,
         "clientCheck": marker_check,
@@ -379,6 +416,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
             "name": "F-073-language-switch-to-english",
             "reload": english_reload,
             "runtimeFiles": copy_runtime_files(case, run_dir, "english"),
+            "brand": send_reload_and_capture(case, game_dir, run_dir),
             "help": send_help_and_capture(
                 case,
                 game_dir,
@@ -419,6 +457,11 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
                 failed.append(check["name"] + "-client-log")
             if help_check["clientScreenshot"]["brightness"] <= 3:
                 failed.append(check["name"] + "-blank-client-screenshot")
+            brand_check = check.get("brand")
+            if brand_check and brand_check["clientCheck"]["status"] != "PASS":
+                failed.append(check["name"] + "-brand-client-log")
+            if brand_check and brand_check["clientScreenshot"]["brightness"] <= 3:
+                failed.append(check["name"] + "-blank-brand-screenshot")
         if result["serverScreenshot"]["brightness"] <= 3:
             failed.append("blank-server-screenshot")
         result["failedChecks"] = failed
@@ -438,6 +481,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         if process is not None:
             restore_backups(backups)
             external.stop_process(process, "stop")
+        normalize_log_file_for_git(server_log)
     write_json(run_dir / "result.json", result)
     return result
 
@@ -448,6 +492,8 @@ def make_contact_sheet(results: list[dict], evidence_root: Path) -> Path | None:
     for result in results:
         for item in result.get("checks", []):
             screenshots.append((result["label"] + " " + item["name"], Path(item["help"]["clientScreenshot"]["path"])))
+            if item.get("brand"):
+                screenshots.append((result["label"] + " brand-case", Path(item["brand"]["clientScreenshot"]["path"])))
         if result.get("serverScreenshot"):
             screenshots.append((result["label"] + " server-log", Path(result["serverScreenshot"]["path"])))
     if not screenshots:

@@ -42,7 +42,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/** BLWorldTrashCan 控制台清理明细验收夹具。 */
+/** BlWorldTrashCan 控制台清理明细验收夹具。 */
 public final class CleanupConsoleFixturePlugin extends JavaPlugin implements CommandExecutor {
     private final Set<UUID> tracked = new HashSet<>();
     private World world;
@@ -196,13 +196,13 @@ public final class CleanupConsoleFixturePlugin extends JavaPlugin implements Com
 '''
 
 
-PLUGIN_YML = """name: BLWtcCleanupConsoleFixture
+PLUGIN_YML = """name: BlWtcCleanupConsoleFixture
 version: 1.0.0
 main: ai.blwtc.fixture.CleanupConsoleFixturePlugin
 folia-supported: true
 commands:
   cleanupconsolefixture:
-    description: BLWorldTrashCan cleanup console detail fixture
+    description: BlWorldTrashCan cleanup console detail fixture
 """
 
 
@@ -234,7 +234,7 @@ def build_fixture(run_root: Path) -> Path:
     source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
-    fixture_jar = run_root / "BLWtcCleanupConsoleFixture.jar"
+    fixture_jar = run_root / "BlWtcCleanupConsoleFixture.jar"
     source_dir.mkdir(parents=True, exist_ok=True)
     classes_dir.mkdir(parents=True, exist_ok=True)
     resources_dir.mkdir(parents=True, exist_ok=True)
@@ -292,7 +292,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
             source = LUMINOL2612_RUNTIME / directory_name
             if source.is_dir():
                 shutil.copytree(source, server_dir / directory_name, dirs_exist_ok=True)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BLWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     port = legacy.find_free_port()
@@ -321,7 +321,7 @@ def wait_for_rcon(port: int, timeout_seconds: int = 360) -> None:
 
 def patch_cleanup_config(server_dir: Path) -> str:
     """配置可重复、无门禁且只显示前两组的清理场景。"""
-    cleanup = server_dir / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    cleanup = server_dir / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     if not cleanup.is_file():
         raise RuntimeError("cleanup.yml 不存在: " + str(cleanup))
     text = cleanup.read_text(encoding="utf-8")

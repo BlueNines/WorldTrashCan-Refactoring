@@ -1,6 +1,6 @@
-name: BLWorldTrashCan
+name: BlWorldTrashCan
 version: ${project.version}
-main: pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin
+main: pixeltech.bluenine.blworldtrashcan.plugin.universal.BlWorldTrashCanUniversalPlugin
 api-version: '1.13'
 folia-supported: true
 author: BlueNine
@@ -9,7 +9,7 @@ softdepend:
   - PlaceholderAPI
 commands:
   blworldtrashcan:
-    description: BLWorldTrashCan 主命令
+    description: BlWorldTrashCan 主命令
     aliases:
       - blwtc
   worldlisttrashcan:

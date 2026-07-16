@@ -127,7 +127,7 @@ def replace_yaml_list(text: str, path: str, values: list[str]) -> str:
 
 def patch_trash_config(case: dict) -> Path:
     """写入 GUI 点击专项需要的运行时 trash.yml 配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
     if not target.is_file():
         raise RuntimeError("trash.yml 不存在，无法写入 GUI 点击测试配置: " + str(target))
     text = target.read_text(encoding="utf-8", errors="replace")
@@ -246,7 +246,7 @@ def debug_summary_amounts_by_order(text: str) -> dict:
     values = []
     in_summary = False
     for line in text.splitlines():
-        if "BLWorldTrashCan debug summary" in line:
+        if "BlWorldTrashCan debug summary" in line:
             in_summary = True
             values = []
             continue
@@ -482,7 +482,7 @@ def render_text_screenshot(text: str, target: Path, title: str) -> Path:
 
 def read_global_trash_log(case: dict, username: str) -> str:
     """读取公共垃圾桶操作日志中当前玩家相关行。"""
-    log_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "logs"
+    log_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "logs"
     lines = []
     for path in sorted(log_dir.glob("global-trash-*.log")):
         text = path.read_text(encoding="utf-8", errors="replace")
@@ -513,7 +513,7 @@ def sha256_file(path: Path) -> str:
 def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
     """复制本轮运行态日志和配置证据。"""
     server_dir = Path(case["serverDir"])
-    plugin_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
     copy_runtime_file(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     copy_runtime_file(plugin_dir / "trash.yml", run_dir / "config" / "trash-after-restore.yml")
     copy_runtime_file(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
@@ -522,7 +522,7 @@ def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
 
 def verify_global_ban(case: dict, server_log: Path, process, command_log: Path, username: str) -> dict:
     """验证公共黑名单保存后立即影响公共垃圾桶路由。"""
-    trash_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml"
+    trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
     trash_text = trash_file.read_text(encoding="utf-8", errors="replace") if trash_file.is_file() else ""
     offset = external.log_text_offset(server_log)
     run_console(process, command_log, "blwtc debugroute " + username + " global STONE 1", 0.6)
@@ -676,7 +676,7 @@ def run_global_ban_gui_check(case: dict, username: str, process, server_log: Pat
     saved = capture_named_screenshot(case, game_dir, run_dir, "globalban-after-close-save-f2")
     verify = verify_global_ban(case, server_log, process, command_log, username)
     trash_copy = copy_runtime_file(
-        Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml",
+        Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml",
         run_dir / "logs" / "trash-after-globalban.yml",
     )
     server_shot = render_text_screenshot(
@@ -724,7 +724,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        trash_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml"
+        trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
         backups.append(backup_file(trash_file, backup_dir))
         result["patchedTrashConfig"] = str(patch_trash_config(case))
         copy_runtime_file(trash_file, run_dir / "logs" / "trash-after-patch.yml")
@@ -819,7 +819,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# GUI 正向点击真实客户端专项",
         "",
-        "- 被测 jar: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测 jar: `dist/BlWorldTrashCan-universal.jar`",
         "- SHA256: `" + summary.get("jarSha256", "") + "`",
         "- 验收方式: " + environments + "。",
         "- 覆盖: 公共垃圾桶放入/取出/冷却/分页/操作日志，个人垃圾桶放入/取出/满桶自动清空，公共黑名单 GUI 保存并立即影响路由。",
@@ -863,7 +863,7 @@ def main() -> int:
         results.append(result)
         write_json(evidence_root / "summary.json", {"run": run_id, "results": results, "contactSheet": ""})
     contact_sheet = make_contact_sheet(results, evidence_root)
-    jar_path = base.REPO / "dist" / "BLWorldTrashCan-universal.jar"
+    jar_path = base.REPO / "dist" / "BlWorldTrashCan-universal.jar"
     summary = {
         "run": run_id,
         "jar": str(jar_path),

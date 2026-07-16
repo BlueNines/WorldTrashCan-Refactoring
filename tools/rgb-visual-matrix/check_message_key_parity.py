@@ -14,11 +14,11 @@ SOURCE_PLATFORMS = {
     "folia": "bl-world-trashcan-plugin-folia-1_20/src/main/resources/messages",
 }
 DIST_JARS = {
-    "legacy": "dist/BLWorldTrashCan-legacy-1.12.jar",
-    "bukkit": "dist/BLWorldTrashCan-bukkit-1.13-1.15.jar",
-    "paper": "dist/BLWorldTrashCan-paper-1.16-1.20.jar",
-    "folia": "dist/BLWorldTrashCan-folia-1.20.jar",
-    "universal": "dist/BLWorldTrashCan-universal.jar",
+    "legacy": "dist/BlWorldTrashCan-legacy-1.12.jar",
+    "bukkit": "dist/BlWorldTrashCan-bukkit-1.13-1.15.jar",
+    "paper": "dist/BlWorldTrashCan-paper-1.16-1.20.jar",
+    "folia": "dist/BlWorldTrashCan-folia-1.20.jar",
+    "universal": "dist/BlWorldTrashCan-universal.jar",
 }
 KEY_PATTERN = re.compile(r"^(\s*)([A-Za-z0-9_.-]+):(?:\s*(.*))?$")
 
@@ -192,7 +192,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BLWorldTrashCan 多语言消息文件键结构一致性。")
+    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 多语言消息文件键结构一致性。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

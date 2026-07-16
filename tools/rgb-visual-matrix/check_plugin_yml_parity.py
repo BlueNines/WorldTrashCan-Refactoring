@@ -10,41 +10,41 @@ REPO = Path(__file__).resolve().parents[2]
 SOURCE_PLUGIN_YMLS = {
     "legacy": {
         "path": "bl-world-trashcan-plugin-legacy-1_12/src/main/resources/plugin.yml",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.legacy.BLWorldTrashCanLegacyPlugin",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.legacy.BlWorldTrashCanLegacyPlugin",
         "apiVersion": None,
         "foliaSupported": None,
     },
     "bukkit": {
         "path": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/resources/plugin.yml",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.bukkit.BLWorldTrashCanBukkitPlugin",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.bukkit.BlWorldTrashCanBukkitPlugin",
         "apiVersion": "1.13",
         "foliaSupported": None,
     },
     "paper": {
         "path": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/resources/plugin.yml",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.BLWorldTrashCanPlugin",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.BlWorldTrashCanPlugin",
         "apiVersion": "1.16",
         "foliaSupported": None,
     },
     "folia": {
         "path": "bl-world-trashcan-plugin-folia-1_20/src/main/resources/plugin.yml",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.folia.BLWorldTrashCanFoliaPlugin",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.folia.BlWorldTrashCanFoliaPlugin",
         "apiVersion": "1.20",
         "foliaSupported": "true",
     },
     "universal": {
         "path": "bl-world-trashcan-plugin-universal/src/main/resources/plugin.yml",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BlWorldTrashCanUniversalPlugin",
         "apiVersion": "1.13",
         "foliaSupported": "true",
     },
 }
 DIST_PLUGIN_YMLS = {
-    "legacy": ("dist/BLWorldTrashCan-legacy-1.12.jar", SOURCE_PLUGIN_YMLS["legacy"]),
-    "bukkit": ("dist/BLWorldTrashCan-bukkit-1.13-1.15.jar", SOURCE_PLUGIN_YMLS["bukkit"]),
-    "paper": ("dist/BLWorldTrashCan-paper-1.16-1.20.jar", SOURCE_PLUGIN_YMLS["paper"]),
-    "folia": ("dist/BLWorldTrashCan-folia-1.20.jar", SOURCE_PLUGIN_YMLS["folia"]),
-    "universal": ("dist/BLWorldTrashCan-universal.jar", SOURCE_PLUGIN_YMLS["universal"]),
+    "legacy": ("dist/BlWorldTrashCan-legacy-1.12.jar", SOURCE_PLUGIN_YMLS["legacy"]),
+    "bukkit": ("dist/BlWorldTrashCan-bukkit-1.13-1.15.jar", SOURCE_PLUGIN_YMLS["bukkit"]),
+    "paper": ("dist/BlWorldTrashCan-paper-1.16-1.20.jar", SOURCE_PLUGIN_YMLS["paper"]),
+    "folia": ("dist/BlWorldTrashCan-folia-1.20.jar", SOURCE_PLUGIN_YMLS["folia"]),
+    "universal": ("dist/BlWorldTrashCan-universal.jar", SOURCE_PLUGIN_YMLS["universal"]),
 }
 EXPECTED_COMMAND_ALIASES = {
     "blworldtrashcan": ["blwtc"],
@@ -187,8 +187,8 @@ def check_plugin_text(label: str, text: str, expected: dict, expected_version: s
     """检查单份 plugin.yml 的稳定交付接口。"""
     errors = []
     values = top_values(text)
-    if values.get("name") != "BLWorldTrashCan":
-        errors.append(label + ": name 不是 BLWorldTrashCan")
+    if values.get("name") != "BlWorldTrashCan":
+        errors.append(label + ": name 不是 BlWorldTrashCan")
     if values.get("version") != expected_version:
         errors.append(label + ": version 不是 " + expected_version)
     if values.get("main") != expected["main"]:
@@ -284,7 +284,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BLWorldTrashCan plugin.yml 源码和 dist 交付接口一致性。")
+    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan plugin.yml 源码和 dist 交付接口一致性。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

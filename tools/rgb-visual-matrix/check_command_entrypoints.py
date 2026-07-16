@@ -13,11 +13,11 @@ EXPECTED_COMMAND_ALIASES = {
 }
 REQUIRED_RUNTIME_REGISTRATIONS = {"blworldtrashcan", "worldlisttrashcan"}
 ENTRY_SOURCES = {
-    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BLWorldTrashCanLegacyPlugin.java",
-    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BLWorldTrashCanBukkitPlugin.java",
-    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BLWorldTrashCanPlugin.java",
-    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BLWorldTrashCanFoliaPlugin.java",
-    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BLWorldTrashCanUniversalPlugin.java",
+    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyPlugin.java",
+    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitPlugin.java",
+    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanPlugin.java",
+    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaPlugin.java",
+    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BlWorldTrashCanUniversalPlugin.java",
 }
 
 
@@ -120,7 +120,7 @@ def check_dist_plugin_ymls() -> tuple[list[str], int]:
     """检查 dist jar 内 plugin.yml。"""
     errors = []
     jar_count = 0
-    for jar_path in sorted(DIST.glob("BLWorldTrashCan-*.jar")):
+    for jar_path in sorted(DIST.glob("BlWorldTrashCan-*.jar")):
         jar_count += 1
         with zipfile.ZipFile(jar_path) as archive:
             if "plugin.yml" not in archive.namelist():
@@ -159,7 +159,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BLWorldTrashCan 新旧命令入口声明和运行时注册。")
+    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 新旧命令入口声明和运行时注册。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

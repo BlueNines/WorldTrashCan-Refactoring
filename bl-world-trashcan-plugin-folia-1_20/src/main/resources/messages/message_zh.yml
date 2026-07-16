@@ -117,7 +117,7 @@ command:
   # 通用无权限提示。
   no-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限执行该命令。"
   # 重载成功提示。
-  reload-success: "{prefix}&#5AC8FABLWorldTrashCan &#C9D4E2已重载。"
+  reload-success: "{prefix}&#5AC8FABlWorldTrashCan &#C9D4E2已重载。"
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&#5AC8FA清理完成 &#64748B| &#C9D4E2世界 &#FFD166{worlds}&#64748B, &#C9D4E2回收 &#FFD166{routed}&#64748B, &#C9D4E2移除物品 &#FFD166{items}&#64748B, &#C9D4E2移除实体 &#FFD166{entities}&#C9D4E2。"
   # 手动清理 guards 参数错误时提示。

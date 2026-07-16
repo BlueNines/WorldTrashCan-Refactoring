@@ -1,0 +1,13 @@
+[13:23:43] op RGBolia1218
+[13:23:43] minecraft:gamerule sendCommandFeedback false
+[13:23:43] minecraft:gamerule commandBlockOutput false
+[13:23:43] minecraft:gamerule doMobSpawning false
+[13:23:43] minecraft:gamerule keepInventory true
+[13:23:43] minecraft:gamerule fallDamage false
+[13:23:43] minecraft:time set day
+[13:23:43] minecraft:weather clear
+[13:23:44] minecraft:gamemode creative RGBolia1218
+[13:23:44] minecraft:tp RGBolia1218 0 91 -8 0 15
+[13:23:45] blwtc platform
+[13:23:45] blwtc reload
+[13:24:05] blwtc reload

@@ -54,7 +54,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
 
-/** BLWorldTrashCan 保护边界验收夹具。 */
+/** BlWorldTrashCan 保护边界验收夹具。 */
 public final class ProtectionFixturePlugin extends JavaPlugin implements CommandExecutor {
     private static final UUID FAKE_PLAYER_ID = UUID.fromString("00000000-0000-0000-0000-00000000a168");
     private static final int ARROW_OFFSET = 16;
@@ -395,12 +395,12 @@ public final class ProtectionFixturePlugin extends JavaPlugin implements Command
 '''
 
 
-PLUGIN_YML = """name: BLWtcProtectionFixture
+PLUGIN_YML = """name: BlWtcProtectionFixture
 version: 1.0.0
 main: ai.blwtc.fixture.ProtectionFixturePlugin
 commands:
   protectionfixture:
-    description: BLWorldTrashCan protection boundary fixture
+    description: BlWorldTrashCan protection boundary fixture
 """
 
 
@@ -454,7 +454,7 @@ def build_fixture(run_root: Path) -> Path:
     source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
-    fixture_jar = run_root / "BLWtcProtectionFixture.jar"
+    fixture_jar = run_root / "BlWtcProtectionFixture.jar"
     if classes_dir.exists():
         shutil.rmtree(classes_dir)
     if resources_dir.exists():
@@ -517,7 +517,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
     shutil.copy2(case["serverJar"], server_dir / Path(case["serverJar"]).name)
     if case.get("copyPaperCache"):
         legacy.copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BLWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(
@@ -529,7 +529,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
 
 def patch_protections_config(server_dir: Path) -> Path:
     """修改 protections.yml，明确开启本轮保护开关。"""
-    protections = server_dir / "plugins" / "BLWorldTrashCan" / "protections.yml"
+    protections = server_dir / "plugins" / "BlWorldTrashCan" / "protections.yml"
     if not protections.is_file():
         raise RuntimeError("protections.yml 不存在，无法配置保护边界测试: " + str(protections))
     text = protections.read_text(encoding="utf-8")
@@ -598,8 +598,8 @@ def run_rcon(case: dict, command: str, responses: dict, entries: list[str], key:
 
 def assert_case(case: dict, responses: dict, protections_file: Path) -> dict:
     """断言单端保护边界结果。"""
-    require("BLWorldTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 BLWorldTrashCan")
-    require("BLWtcProtectionFixture", responses.get("plugins", ""), case["id"] + " 插件列表缺少夹具")
+    require("BlWorldTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 BlWorldTrashCan")
+    require("BlWtcProtectionFixture", responses.get("plugins", ""), case["id"] + " 插件列表缺少夹具")
     require(case["expectedPlatform"], responses.get("platform", ""), case["id"] + " 平台不符合预期")
     require("universal", responses.get("platform", ""), case["id"] + " 未加载 universal 分支")
     require_all(["AI_PROTECTION_ARROW", "pickupStatusSet=true", "unpickableRemoved=true", "trackedRemoved=true"], responses.get("arrow", ""), case["id"] + " F-068 失败")
@@ -631,7 +631,7 @@ def require_all(needles: list[str], text: str, message: str) -> None:
 def copy_case_evidence(server_dir: Path, case_dir: Path) -> None:
     """复制单个保护边界用例证据。"""
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-    plugin_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
     copy_if_exists(plugin_dir / "protections.yml", case_dir / "config" / "protections-after-patch.yml")
     copy_if_exists(plugin_dir / "config.yml", case_dir / "config" / "config.yml")
 
@@ -648,7 +648,7 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# F-068/F-069 保护边界专项验收",
         "",
-        "- 被测插件: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具触发正式 ProjectileHitEvent、EntityShootBowEvent、EntityInteractEvent、PlayerInteractEvent",
         "- 通过标准: 不可拾取箭矢和追踪箭矢命中后被移除；实体和玩家踩踏农田事件均被取消",

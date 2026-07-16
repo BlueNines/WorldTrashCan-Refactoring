@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** BLWorldTrashCan 权限负向验收用临时插件。 */
+/** BlWorldTrashCan 权限负向验收用临时插件。 */
 public final class PermissionDenyFixture extends JavaPlugin implements CommandExecutor {
     private final Map<String, List<PermissionAttachment>> attachments = new HashMap<String, List<PermissionAttachment>>();
 
@@ -235,7 +235,7 @@ def build_permission_fixture() -> Path:
         "folia-supported: true\n"
         "commands:\n"
         "  permfixture:\n"
-        "    description: BLWorldTrashCan permission test fixture\n"
+        "    description: BlWorldTrashCan permission test fixture\n"
     )
     (classes_dir / "plugin.yml").write_text(plugin_yml, encoding="utf-8")
     jar_path = BUILD_ROOT / "PermissionDenyFixture.jar"
@@ -503,7 +503,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
 def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
     """复制本轮运行态证据。"""
     server_dir = Path(case["serverDir"])
-    plugin_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
     copy_if_exists(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     copy_if_exists(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
     copy_if_exists(plugin_dir / "config.yml", run_dir / "config" / "config.yml")
@@ -522,7 +522,7 @@ def write_readme(evidence_root: Path, results: list[dict]) -> None:
         "# 权限负向真实客户端专项",
         "",
         "- 目标: 收敛 F-016 和 README 中保留的真实玩家负向权限缺口。",
-        "- 被测 jar: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测 jar: `dist/BlWorldTrashCan-universal.jar`",
         "- 验收: 真实客户端非 OP 执行 `/blwtc reload` 必须收到无权限提示；通过临时权限夹具显式 deny `global.open`/`personal.open` 后，`/blwtc global` 和 `/blwtc personal` 必须收到无权限提示；RCON `op` 后 `/blwtc reload` 必须成功。",
         "- 证据: 每端保留 F2 截图、客户端 stdout、服务端 console、命令日志、`latest.log` 和 `summary.json`。",
         "",

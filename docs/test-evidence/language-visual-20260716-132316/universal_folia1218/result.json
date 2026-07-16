@@ -1,0 +1,166 @@
+{
+  "id": "universal_folia1218",
+  "sourceId": "external_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "clientVersion": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "BlWorldTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BlWorldTrashCan-universal.jar",
+    "name": "BlWorldTrashCan-universal.jar",
+    "size": 544995,
+    "sha256": "265b80f26264f65ea594140073c57bfad1df823f808bfa1fc48335e95ece1737",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BlWorldTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "F-073-language-switch-to-english",
+      "reload": {
+        "markers": [
+          "[Message]",
+          "messages/message_en.yml"
+        ],
+        "excerpt": "> \n  \n[13:23:45 INFO]: [BlWorldTrashCan] [Message] 已更新外部语言文件的品牌大小写: messages/message_en.yml\n> \n  \n[13:23:45 INFO]: [BlWorldTrashCan] [Message] 已加载语言文件: messages/message_en.yml\n> \n  \n[13:23:45 INFO]: [BlWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。\n> \n  \n[13:23:45 INFO]: [BlWorldTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 360 秒。\n> \n  \n[13:23:45 INFO]: [BlWorldTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n> \n  \n[13:23:45 INFO]: [BlWorldTrashCan] BlWorldTrashCan reloaded.\n> "
+      },
+      "runtimeFiles": {
+        "config.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\logs\\runtime-english\\config.yml",
+        "message_zh.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\logs\\runtime-english\\message_zh.yml",
+        "message_en.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\logs\\runtime-english\\message_en.yml"
+      },
+      "brand": {
+        "command": "/blwtc reload",
+        "markers": [
+          "BlWorldTrashCan",
+          "reloaded."
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "BlWorldTrashCan",
+            "reloaded."
+          ],
+          "excerpt": "[13:23:52] [Render thread/INFO]: [System] [CHAT] [BlWorldTrashCan] BlWorldTrashCan reloaded.\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\screenshots\\universal_folia1218-brand-case-reload-f2.png",
+          "size": 382227,
+          "sha256": "a20cbf75c7f57324c5e87f1f9a9dfb418d51a500587c2cded501429bc21b503d",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 105.14713541666667
+        }
+      },
+      "help": {
+        "command": "/blwtc help",
+        "suffix": "language-english-help-f2",
+        "markers": [
+          "Show help",
+          "Open global trash",
+          "Show cleanup and trash statistics"
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "Show help",
+            "Open global trash",
+            "Show cleanup and trash statistics"
+          ],
+          "excerpt": "[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc help - Show help\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc platform - Show this build's capabilities\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc clear [true/false] - Run cleanup; default true ignores guards, false obeys guards\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc global - Open global trash\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc personal - Open personal trash\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc dropmode - Toggle drop protection\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc look - Inspect held item and right-clicked entity type\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc ban - Open this world's trash blacklist\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc globalban - Open the global trash blacklist\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc stats - Show cleanup and trash statistics\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc add <amount> - Add world trash slots to your current world\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc add <world> <amount> - Add world trash slots to a specific world\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc debughelp - Show debug commands\n[13:24:01] [Render thread/INFO]: [System] [CHAT] /blwtc reload - Reload the plugin\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\screenshots\\universal_folia1218-language-english-help-f2.png",
+          "size": 378047,
+          "sha256": "9f9cac1f48b20b1d9402bed9f9fd218d452fc95c1844192b3c07e61d23b1ede9",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 95.9287109375
+        }
+      }
+    },
+    {
+      "name": "F-074-missing-external-node-fallback",
+      "removedNode": {
+        "path": "E:\\server_work\\folia1.21.8\\plugins\\BlWorldTrashCan\\messages\\message_zh.yml",
+        "removed": true
+      },
+      "reload": {
+        "markers": [
+          "[Message]",
+          "messages/message_zh.yml"
+        ],
+        "excerpt": "> \n  \n[13:24:05 INFO]: [BlWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n> \n  \n[13:24:05 INFO]: [BlWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。\n> \n  \n[13:24:05 INFO]: [BlWorldTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 360 秒。\n> \n  \n[13:24:05 INFO]: [BlWorldTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n> \n  \n[13:24:05 INFO]: [BlWorldTrashCan] BlWorldTrashCan 已重载。\n> "
+      },
+      "runtimeFiles": {
+        "config.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\logs\\runtime-zh-fallback\\config.yml",
+        "message_zh.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\logs\\runtime-zh-fallback\\message_zh.yml",
+        "message_en.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\logs\\runtime-zh-fallback\\message_en.yml"
+      },
+      "help": {
+        "command": "/blwtc help",
+        "suffix": "language-zh-fallback-help-f2",
+        "markers": [
+          "查看帮助",
+          "打开公共垃圾桶",
+          "查看清理和垃圾桶统计"
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "查看帮助",
+            "打开公共垃圾桶",
+            "查看清理和垃圾桶统计"
+          ],
+          "excerpt": "[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc help - 查看帮助\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc platform - 查看当前版本产物能力\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc clear [true/false] - 立即扫地，默认 true 忽略 guards，false 遵守 guards\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc global - 打开公共垃圾桶\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc personal - 打开个人垃圾桶\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc dropmode - 切换防丢弃模式\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc look - 查询手持物品和右键实体类型\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc ban - 打开当前世界垃圾桶物品黑名单\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc globalban - 打开公共垃圾桶物品黑名单\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc stats - 查看清理和垃圾桶统计\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc add <数量> - 增加当前世界可创建的世界垃圾桶数量\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc debughelp - 查看后台调试命令\n[13:24:11] [Render thread/INFO]: [System] [CHAT] /blwtc reload - 重载插件\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\screenshots\\universal_folia1218-language-zh-fallback-help-f2.png",
+          "size": 389372,
+          "sha256": "69785f4948687413f51261c756a4200c7e4ad11b91159009185e452eb94e654d",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 98.6630859375
+        }
+      }
+    }
+  ],
+  "username": "RGBolia1218",
+  "clientPid": 20684,
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260716-132316\\universal_folia1218\\server-screenshots\\universal_folia1218-language-server-log.png",
+    "size": 294649,
+    "sha256": "d984b43b58251330c0003a75a677a8555ac62bc246dccd7b5c5d24e3b6afc0d3",
+    "dimensions": [
+      1600,
+      988
+    ],
+    "brightness": 39.239908854166664
+  },
+  "failedChecks": []
+}

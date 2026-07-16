@@ -1,5 +1,5 @@
 # 插件前缀，会自动替换 {prefix}。
-prefix: "&#64748B[&#5AC8FABLWorldTrashCan&#64748B] "
+prefix: "&#64748B[&#5AC8FABlWorldTrashCan&#64748B] "
 
 # 通用无权限提示。
 no-permission: "{prefix}&#FFD166No tienes permiso para usar este comando."
@@ -117,7 +117,7 @@ command:
   # 通用无权限提示。
   no-permission: "{prefix}&#FFD166No tienes permiso para usar este comando."
   # 重载成功提示。
-  reload-success: "{prefix}&#5AC8FABLWorldTrashCan recargado."
+  reload-success: "{prefix}&#5AC8FABlWorldTrashCan recargado."
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&#5AC8FALimpieza terminada: &#C9D4E2mundos {worlds}&#5AC8FA, objetos enviados {routed}&#5AC8FA, objetos eliminados {items}&#5AC8FA, entidades eliminadas {entities}&#5AC8FA."
   # 手动清理 guards 参数错误时提示。

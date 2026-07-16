@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/** BLWorldTrashCan Vault 扣费验收用临时 Vault 插件。 */
+/** BlWorldTrashCan Vault 扣费验收用临时 Vault 插件。 */
 public final class FakeVaultPlugin extends JavaPlugin implements CommandExecutor, Economy {
     private final Map<String, Double> balances = new HashMap<String, Double>();
     private final Map<String, Integer> withdrawals = new HashMap<String, Integer>();
@@ -478,7 +478,7 @@ main: ai.blwtc.fixture.FakeVaultPlugin
 load: STARTUP
 commands:
   fakevault:
-    description: Fake Vault economy fixture for BLWorldTrashCan validation
+    description: Fake Vault economy fixture for BlWorldTrashCan validation
 """
 
 
@@ -618,7 +618,7 @@ def restore_fixture(install_state: dict | None) -> None:
 
 def backup_runtime_config(case: dict, run_dir: Path) -> list[dict]:
     """备份本轮会临时修改的运行时配置文件。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
     backups = []
     for file_name in ("trash.yml",):
         target = data_dir / file_name
@@ -639,7 +639,7 @@ def restore_runtime_config(backups: list[dict]) -> None:
 
 def patch_trash_config(case: dict) -> Path:
     """写入 Vault 扣费验收需要的 trash.yml 配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "trash.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
     if not target.is_file():
         raise RuntimeError("trash.yml 不存在，无法配置 Vault 扣费测试: " + str(target))
     text = target.read_text(encoding="utf-8", errors="replace")
@@ -842,7 +842,7 @@ def evidence_font() -> ImageFont.ImageFont:
 
 def copy_runtime_evidence(case: dict, run_dir: Path, server_log: Path, command_log: Path, result: dict) -> None:
     """归档运行时日志、配置和服务端文本截图。"""
-    plugin_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    plugin_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
     gui.copy_runtime_file(plugin_dir / "trash.yml", run_dir / "logs" / "trash-after-vault-test.yml")
     gui.copy_runtime_file(Path(case["serverDir"]) / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     if command_log.is_file():
@@ -976,7 +976,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# F-037 Vault 扣费专项验收",
         "",
-        "- 被测插件: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
         "- 夹具插件: 临时 `Vault-FakeEconomy.jar`，插件名为 `Vault`，注册 VaultAPI `Economy` 服务",
         "- 验收方式: 真实服务端 + 真实客户端打开个人垃圾桶 GUI 并点击取出槽位",
         "- 覆盖场景: 余额充足扣费成功；余额不足不取出不扣费；背包满不取出不扣费",

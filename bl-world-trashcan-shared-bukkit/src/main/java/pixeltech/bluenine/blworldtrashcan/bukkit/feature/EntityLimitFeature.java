@@ -129,7 +129,7 @@ public final class EntityLimitFeature implements Feature, Listener {
             /** 创建实体限制候选计算线程。 */
             @Override
             public Thread newThread(Runnable runnable) {
-                Thread thread = new Thread(runnable, "BLWorldTrashCan-EntityLimitWorker");
+                Thread thread = new Thread(runnable, "BlWorldTrashCan-EntityLimitWorker");
                 thread.setDaemon(true);
                 return thread;
             }

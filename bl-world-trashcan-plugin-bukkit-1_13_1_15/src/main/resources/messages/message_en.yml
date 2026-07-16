@@ -1,5 +1,5 @@
 # 插件前缀，会自动替换 {prefix}。
-prefix: "&#64748B[&#5AC8FABLWorldTrashCan&#64748B] "
+prefix: "&#64748B[&#5AC8FABlWorldTrashCan&#64748B] "
 
 # 通用无权限提示。
 no-permission: "{prefix}&#FFD166You do not have permission to use this command."
@@ -117,7 +117,7 @@ command:
   # 通用无权限提示。
   no-permission: "{prefix}&#FFD166You do not have permission to use this command."
   # 重载成功提示。
-  reload-success: "{prefix}&#5AC8FABLWorldTrashCan reloaded."
+  reload-success: "{prefix}&#5AC8FABlWorldTrashCan reloaded."
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&#5AC8FACleanup finished: &#C9D4E2worlds {worlds}&#5AC8FA, routed items {routed}&#5AC8FA, removed items {items}&#5AC8FA, removed entities {entities}&#5AC8FA."
   # 手动清理 guards 参数错误时提示。

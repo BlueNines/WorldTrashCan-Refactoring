@@ -21,7 +21,7 @@ JAVA8_CAT = Path(r"C:\Program Files\Java\jdk-1.8\bin\java.exe")
 JAVA21 = Path(r"C:\Program Files\Java\jdk-21\bin\java.exe")
 JAVA17 = base.JAVA17
 JAVA25 = base.REPO / "build" / "tools" / "jre-25.0.3+9" / "bin" / "java.exe"
-UNIVERSAL_PLUGIN = "BLWorldTrashCan-universal.jar"
+UNIVERSAL_PLUGIN = "BlWorldTrashCan-universal.jar"
 PAPI_1122 = base.WORKSPACE / "paper-1.12.2-test-server" / "plugins" / "placeholderapi-2.11.6.jar"
 PAPI_MODERN = SERVER_WORK / "1.21.11spigot" / "plugins" / "PlaceholderAPI-2.12.2.jar"
 ANSI_PATTERN = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
@@ -56,7 +56,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "paper-1.21.8-60.jar",
         "port": 30001,
         "java": JAVA21,
-        "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar",
+        "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -69,7 +69,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "CatServer-4168d848-universal.jar",
         "port": 25565,
         "java": JAVA8_CAT,
-        "plugin": "BLWorldTrashCan-legacy-1.12.jar",
+        "plugin": "BlWorldTrashCan-legacy-1.12.jar",
         "expect": "downgrade",
         "modernJvmArgs": False,
     },
@@ -81,7 +81,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "folia-1.21.8-6.jar",
         "port": 30004,
         "java": JAVA21,
-        "plugin": "BLWorldTrashCan-folia-1.20.jar",
+        "plugin": "BlWorldTrashCan-folia-1.20.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -94,7 +94,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "paper-1.21.11-127.jar",
         "port": 30001,
         "java": JAVA21,
-        "plugin": "BLWorldTrashCan-paper-1.16-1.20.jar",
+        "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -108,7 +108,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "arclight-neoforge-1.21.1-1.0.2-SNAPSHOT-668f9f3.jar",
         "port": 30001,
         "java": JAVA21,
-        "plugin": "BLWorldTrashCan-universal.jar",
+        "plugin": "BlWorldTrashCan-universal.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -123,7 +123,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "taiyitist-server-1.20.1-84706762.jar",
         "port": 25565,
         "java": JAVA21,
-        "plugin": "BLWorldTrashCan-universal.jar",
+        "plugin": "BlWorldTrashCan-universal.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -302,7 +302,7 @@ def update_yaml_scalars(text: str, replacements: dict[str, str]) -> str:
 
 def prepare_test_config(case: dict, run_dir: Path) -> list[tuple[Path, Path]]:
     """临时写入稳定测试配置并把原文件备份到证据目录。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
     backups = []
     config_plan = {
         "trash.yml": {
@@ -361,7 +361,7 @@ def refresh_universal_dist_plugin(case: dict) -> None:
 
 
 def deploy_plugin(case: dict) -> Path:
-    """把本轮测试用 BLWorldTrashCan jar 部署到目标服务端 plugins 目录。"""
+    """把本轮测试用 BlWorldTrashCan jar 部署到目标服务端 plugins 目录。"""
     refresh_universal_dist_plugin(case)
     server_dir = Path(case["serverDir"])
     plugins_dir = server_dir / "plugins"
@@ -369,7 +369,7 @@ def deploy_plugin(case: dict) -> Path:
     source = base.REPO / "dist" / case["plugin"]
     if not source.is_file():
         raise RuntimeError("缺少待部署插件 jar: " + str(source))
-    for old in plugins_dir.glob("BLWorldTrashCan*.jar"):
+    for old in plugins_dir.glob("BlWorldTrashCan*.jar"):
         old.unlink()
     target = plugins_dir / case["plugin"]
     shutil.copy2(source, target)
@@ -425,7 +425,7 @@ def write_managed_server_properties(case: dict) -> None:
         "spawn-protection": "0",
         "white-list": "false",
         "enforce-secure-profile": "false",
-        "motd": "BLWTC RGB 26.1 " + str(case.get("label", case["id"])),
+        "motd": "BlWTC RGB 26.1 " + str(case.get("label", case["id"])),
     })
     text = "\n".join(key + "=" + value for key, value in values.items()) + "\n"
     path.write_text(text, encoding="utf-8")
@@ -538,7 +538,7 @@ def wait_platform_command_accepted(log_path: Path, offset: int) -> None:
         plain = strip_ansi(text)
         if "Unknown or incomplete command" in plain or "Unknown command" in plain:
             raise RuntimeError("blwtc platform 未被服务端识别: " + str(log_path))
-        if "[BLWorldTrashCan] 当前平台" in plain or "- rgb-message:" in plain:
+        if "[BlWorldTrashCan] 当前平台" in plain or "- rgb-message:" in plain:
             return
         time.sleep(0.5)
     raise TimeoutError("未看到 blwtc platform 的插件输出: " + str(log_path))
@@ -722,7 +722,7 @@ def run_basic_function_checks(case: dict, username: str, server_process: subproc
         {
             "name": "summary",
             "command": "blwtc debugsummary {player}",
-            "markers": ["BLWorldTrashCan debug summary"],
+            "markers": ["BlWorldTrashCan debug summary"],
             "timeout": 8,
         },
         {
@@ -831,7 +831,7 @@ def run_command_check(case: dict, server_process: subprocess.Popen, server_log: 
 def verify_reload_self_heal(case: dict, server_process: subprocess.Popen, server_log: Path,
                             command_log: Path, run_dir: Path) -> dict:
     """删除一个默认语言文件后执行 reload，验证资源会自动补回。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "messages" / "message_es.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "messages" / "message_es.yml"
     backup = run_dir / "logs" / "self-heal-backup" / "message_es.yml"
     backup.parent.mkdir(parents=True, exist_ok=True)
     if target.is_file():
@@ -852,7 +852,7 @@ def verify_reload_self_heal(case: dict, server_process: subprocess.Popen, server
 
 def verify_data_files(case: dict) -> dict:
     """检查世界垃圾桶数据和 bStats 全局配置是否已落盘。"""
-    data_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "data" / "worlds.yml"
+    data_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "data" / "worlds.yml"
     bstats_file = Path(case["serverDir"]) / "plugins" / "bStats" / "config.yml"
     data_text = read_text(data_file)
     bstats_text = read_text(bstats_file)
@@ -913,7 +913,7 @@ def verify_all_default_resources_self_heal(case: dict, server_process: subproces
                                            server_log: Path, command_log: Path,
                                            run_dir: Path) -> dict:
     """删除所有默认资源后 reload，验证资源会补回，再恢复测试前文件。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
     resources = [
         "config.yml",
         "platform.yml",
@@ -1073,7 +1073,7 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
     run_checked_matrix_command(results, "F-010", "reload 重载", case, server_process, server_log, command_log,
                                "blwtc reload", ["[Message]"], 12)
     run_checked_matrix_command(results, "F-012", "stats 统计", case, server_process, server_log, command_log,
-                               "blwtc stats", ["[BLWorldTrashCan]"], 12)
+                               "blwtc stats", ["[BlWorldTrashCan]"], 12)
 
     single = run_checked_matrix_command(results, "F-038", "单个损坏回收提示", case, server_process, server_log, command_log,
                                         "blwtc debugdamage " + username + " SAND 3",
@@ -1203,7 +1203,7 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
 
 def read_world_max_count(case: dict, world_name: str) -> int | None:
     """从 worlds.yml 读取指定世界的 max-count。"""
-    data_file = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "data" / "worlds.yml"
+    data_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "data" / "worlds.yml"
     if not data_file.is_file():
         return None
     in_target_world = False
@@ -1296,7 +1296,7 @@ def run_full_function_checks(case: dict, username: str, server_process: subproce
         ("help", "blwtc help", ["/blwtc platform"]),
         ("alias-wtc-platform", "wtc platform", [platform_marker, "(universal)"]),
         ("alias-worldlist-platform", "WorldListTrashCan platform", [platform_marker, "(universal)"]),
-        ("stats", "blwtc stats", ["[BLWorldTrashCan]"]),
+        ("stats", "blwtc stats", ["[BlWorldTrashCan]"]),
         ("debugstock", "blwtc debugstock", []),
         ("debugplayer-dropmode", "blwtc debugplayer " + username + " dropmode", []),
         ("debugplayer-look", "blwtc debugplayer " + username + " look", []),

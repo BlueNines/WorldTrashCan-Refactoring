@@ -1,0 +1,52 @@
+Completely ignored arguments: [legacy]
+[13:14:37] [Client thread/INFO]: Setting user: RGBaper1122
+[13:14:38] [Client thread/INFO]: LWJGL Version: 2.9.4
+[13:14:38] [Client thread/INFO]: Reloading ResourceManager: Default
+[13:14:38] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[13:14:38] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[13:14:38] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[13:14:38] [Thread-3/INFO]: OpenAL initialized.
+[13:14:39] [Sound Library Loader/INFO]: Sound engine started
+[13:14:39] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[13:14:40] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[13:14:40] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[13:14:42] [Client thread/INFO]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.3)
+[13:14:42] [Client thread/INFO]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[13:14:42] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[13:14:43] [Client thread/INFO]: [CHAT] [Server: Opped RGBaper1122]
+[13:14:53] [Client thread/INFO]: [CHAT] [BLWorldTrashCan] BLWorldTrashCan reloaded.
+[13:15:10] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-16_13.15.10.png
+[13:15:11] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-16_13.15.11.png
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc help - Show help
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc platform - Show this build's capabilities
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc clear [true/false] - Run cleanup; default true ignores guards, false obeys guards
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc global - Open global trash
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc personal - Open personal trash
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc dropmode - Toggle drop protection
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc look - Inspect held item and right-clicked entity type
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc ban - Open this world's trash blacklist
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc globalban - Open the global trash blacklist
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc stats - Show cleanup and trash statistics
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc add <amount> - Add world trash slots to your current world
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc add <world> <amount> - Add world trash slots to a specific world
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc debughelp - Show debug commands
+[13:15:18] [Client thread/INFO]: [CHAT] /blwtc reload - Reload the plugin
+[13:15:20] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-16_13.15.20.png
+[13:15:21] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-16_13.15.21.png
+[13:15:28] [Client thread/INFO]: [CHAT] <RGBaper1122> r/blwtc help
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc help - 查看帮助
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc platform - 查看当前版本产物能力
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc clear [true/false] - 立即扫地，默认 true 忽略 guards，false 遵守 guards
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc global - 打开公共垃圾桶
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc personal - 打开个人垃圾桶
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc dropmode - 切换防丢弃模式
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc look - 查询手持物品和右键实体类型
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc ban - 打开当前世界垃圾桶物品黑名单
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc globalban - 打开公共垃圾桶物品黑名单
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc stats - 查看清理和垃圾桶统计
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc add <数量> - 增加当前世界可创建的世界垃圾桶数量
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc debughelp - 查看后台调试命令
+[13:15:33] [Client thread/INFO]: [CHAT] /blwtc reload - 重载插件
+[13:15:38] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-16_13.15.38.png
+[13:15:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-16_13.15.39.png

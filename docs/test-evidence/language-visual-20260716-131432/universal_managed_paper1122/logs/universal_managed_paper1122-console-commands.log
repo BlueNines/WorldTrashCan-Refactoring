@@ -1,0 +1,13 @@
+[13:14:43] op RGBaper1122
+[13:14:43] minecraft:gamerule sendCommandFeedback false
+[13:14:44] minecraft:gamerule commandBlockOutput false
+[13:14:44] minecraft:gamerule doMobSpawning false
+[13:14:44] minecraft:gamerule keepInventory true
+[13:14:44] minecraft:gamerule fallDamage false
+[13:14:44] minecraft:time set day
+[13:14:44] minecraft:weather clear
+[13:14:44] minecraft:gamemode 1 RGBaper1122
+[13:14:44] minecraft:tp RGBaper1122 0 91 -8 0 15
+[13:14:46] blwtc platform
+[13:14:46] blwtc reload
+[13:15:21] blwtc reload

@@ -9,7 +9,7 @@ REPO = Path(__file__).resolve().parents[2]
 MATRIX_DOC = REPO / "docs" / "重构版完整功能与测试矩阵.md"
 LONG_TERM_DOC = REPO / "docs" / "长期硬化缺口清单.md"
 README_DOC = REPO / "README.md"
-MIN_EXPECTED_FEATURE_ID = 89
+MIN_EXPECTED_FEATURE_ID = 90
 UNRESOLVED_PREFIX = "当前仍未收敛的通用专项项："
 SKIP_MARKER = "2026-06-08 当轮仍为 `SKIP` 的通用专项夹具项："
 SETTLED_MARKER = "截至 2026-07-02，以下当轮 `SKIP` 项已由后续专项收敛为 PASS："
@@ -189,7 +189,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BLWorldTrashCan 完整功能矩阵文档。")
+    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 完整功能矩阵文档。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

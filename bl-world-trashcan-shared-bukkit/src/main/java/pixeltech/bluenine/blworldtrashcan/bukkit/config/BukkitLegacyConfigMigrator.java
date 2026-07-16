@@ -681,7 +681,7 @@ public final class BukkitLegacyConfigMigrator {
             ensureDirectory(parent);
         }
         try (Writer writer = new OutputStreamWriter(Files.newOutputStream(reportFile.toPath()), UTF8)) {
-            writer.write("# BLWorldTrashCan 旧配置迁移报告\n\n");
+            writer.write("# BlWorldTrashCan 旧配置迁移报告\n\n");
             writer.write("- 迁移时间: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "\n");
             writer.write("- 来源目录: `" + source.folder.getAbsolutePath() + "`\n");
             writer.write("- 来源类型: " + (source.currentDataFolder ? "当前插件数据目录旧结构" : "相邻旧插件数据目录") + "\n\n");

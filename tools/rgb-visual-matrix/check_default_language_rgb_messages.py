@@ -15,11 +15,11 @@ LANGUAGES = [
 ]
 SOURCE_MESSAGES = sorted(REPO.glob("bl-world-trashcan-plugin-*/src/main/resources/messages/message_*.yml"))
 DIST_JARS = [
-    "BLWorldTrashCan-legacy-1.12.jar",
-    "BLWorldTrashCan-bukkit-1.13-1.15.jar",
-    "BLWorldTrashCan-paper-1.16-1.20.jar",
-    "BLWorldTrashCan-folia-1.20.jar",
-    "BLWorldTrashCan-universal.jar",
+    "BlWorldTrashCan-legacy-1.12.jar",
+    "BlWorldTrashCan-bukkit-1.13-1.15.jar",
+    "BlWorldTrashCan-paper-1.16-1.20.jar",
+    "BlWorldTrashCan-folia-1.20.jar",
+    "BlWorldTrashCan-universal.jar",
 ]
 RGB_PATTERN = re.compile(r"&#[0-9A-Fa-f]{6}")
 LEGACY_COLOR_PATTERN = re.compile(r"&[0-9A-FK-ORa-fk-or]")

@@ -1,13 +1,13 @@
-name: BLWorldTrashCan
+name: BlWorldTrashCan
 version: ${project.version}
-main: pixeltech.bluenine.blworldtrashcan.plugin.legacy.BLWorldTrashCanLegacyPlugin
+main: pixeltech.bluenine.blworldtrashcan.plugin.legacy.BlWorldTrashCanLegacyPlugin
 author: BlueNine
 softdepend:
   - Vault
   - PlaceholderAPI
 commands:
   blworldtrashcan:
-    description: BLWorldTrashCan 主命令
+    description: BlWorldTrashCan 主命令
     aliases:
       - blwtc
   worldlisttrashcan:

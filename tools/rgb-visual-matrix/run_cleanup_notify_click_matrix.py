@@ -143,7 +143,7 @@ def replace_notify_block(text: str) -> str:
 
 def write_notify_config(case: dict) -> Path:
     """写入本轮点击专项配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     if not target.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法写入通知点击配置: " + str(target))
     original = target.read_text(encoding="utf-8", errors="replace")
@@ -323,7 +323,7 @@ def click_chat_notification(case: dict, client_log: Path, stats_offset: int, run
 
 def copy_runtime_config(case: dict, run_dir: Path) -> str:
     """归档当前运行时 cleanup.yml。"""
-    source = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    source = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     target = run_dir / "logs" / "config-after-patch" / "cleanup.yml"
     if source.is_file():
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -359,7 +359,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
         write_notify_config(case)
         result["patchedCleanupConfig"] = copy_runtime_config(case, run_dir)
         reload_plugin(process, command_log, server_log)

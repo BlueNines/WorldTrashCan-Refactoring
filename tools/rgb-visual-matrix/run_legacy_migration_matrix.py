@@ -19,7 +19,7 @@ def log(message: str) -> None:
 
 
 def repo_root() -> Path:
-    """返回 BLWorldTrashCan 重构仓库根目录。"""
+    """返回 BlWorldTrashCan 重构仓库根目录。"""
     path = Path(__file__).resolve()
     for parent in path.parents:
         if (parent / "pom.xml").is_file() and (parent / "bl-world-trashcan-core").is_dir():
@@ -38,7 +38,7 @@ EVIDENCE_ROOT = REPO / "docs" / "test-evidence"
 BUILD_ROOT = REPO / "build" / "legacy-migration-matrix"
 JAVA8 = Path(r"C:\Program Files\Java\jre1.8.0_451\bin\java.exe")
 PAPER1122_JAR = WORKSPACE / "paper-1.12.2-test-server" / "paper-1.12.2-1620.jar"
-UNIVERSAL_JAR = REPO / "dist" / "BLWorldTrashCan-universal.jar"
+UNIVERSAL_JAR = REPO / "dist" / "BlWorldTrashCan-universal.jar"
 
 
 def write_json(path: Path, data) -> None:
@@ -145,7 +145,7 @@ def make_server_properties(port: int, rcon_port: int) -> str:
         "rcon.port=" + str(rcon_port),
         "rcon.password=" + RCON_PASSWORD,
         "online-mode=false",
-        "motd=BLWorldTrashCan legacy migration matrix",
+        "motd=BlWorldTrashCan legacy migration matrix",
         "level-name=world",
         "spawn-protection=0",
         "view-distance=4",
@@ -301,7 +301,7 @@ def prepare_server(case: dict, run_root: Path) -> Path:
     (server_dir / "plugins").mkdir(parents=True)
     shutil.copy2(PAPER1122_JAR, server_dir / PAPER1122_JAR.name)
     copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BLWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(make_server_properties(case["port"], case["rcon"]), encoding="utf-8")
     write_legacy_source(server_dir, case)
@@ -325,7 +325,7 @@ def write_legacy_source(server_dir: Path, case: dict) -> None:
         config_text = adjacent_old_config()
         data_text = legacy_data(9, "STONE", "DIRT")
     else:
-        target = server_dir / "plugins" / "BLWorldTrashCan"
+        target = server_dir / "plugins" / "BlWorldTrashCan"
         config_text = current_old_config()
         data_text = legacy_data(11, "COBBLESTONE", "STONE")
     (target / "data").mkdir(parents=True, exist_ok=True)
@@ -398,7 +398,7 @@ def terminate_server(process: subprocess.Popen) -> None:
 
 def assert_case(case: dict, server_dir: Path, responses: dict) -> dict:
     """断言单个迁移用例的生成配置、报告和命令 smoke。"""
-    data_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    data_dir = server_dir / "plugins" / "BlWorldTrashCan"
     generated = {
         "config": data_dir / "config.yml",
         "cleanup": data_dir / "cleanup.yml",
@@ -428,8 +428,8 @@ def assert_case(case: dict, server_dir: Path, responses: dict) -> dict:
     plugins_output = responses.get("plugins", "")
     platform_output = responses.get("blwtc platform", "")
     stats_output = responses.get("blwtc stats", "")
-    if "BLWorldTrashCan" not in plugins_output:
-        raise AssertionError(case["id"] + " plugins 未显示 BLWorldTrashCan: " + plugins_output)
+    if "BlWorldTrashCan" not in plugins_output:
+        raise AssertionError(case["id"] + " plugins 未显示 BlWorldTrashCan: " + plugins_output)
     if "legacy-1.12" not in platform_output or "universal" not in platform_output:
         raise AssertionError(case["id"] + " platform 未显示 legacy-1.12 universal: " + platform_output)
     if str(case["maxPages"]) not in stats_output:
@@ -480,11 +480,11 @@ def assert_text(path: Path, needles: list[str]) -> list[dict]:
 def copy_case_evidence(case: dict, server_dir: Path, evidence_dir: Path) -> None:
     """复制单个用例的旧源、生成配置、迁移报告和服务端日志。"""
     case_dir = evidence_dir / case["id"]
-    copy_dir(server_dir / "plugins" / "BLWorldTrashCan", case_dir / "generated-plugin-data")
+    copy_dir(server_dir / "plugins" / "BlWorldTrashCan", case_dir / "generated-plugin-data")
     if case["source"] == "adjacent":
         copy_dir(server_dir / "plugins" / "WorldListTrashCan", case_dir / "legacy-source")
     else:
-        source_dir = server_dir / "plugins" / "BLWorldTrashCan" / "legacy-migration-backup"
+        source_dir = server_dir / "plugins" / "BlWorldTrashCan" / "legacy-migration-backup"
         copy_dir(source_dir, case_dir / "legacy-source")
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
 
@@ -511,11 +511,11 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# F-005 旧配置迁移专项验收",
         "",
-        "- 被测插件: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 服务端: Paper 1.12.2 独立临时测试服，Java 8",
         "- 验收方式: 真实服务端启动 + RCON 命令 smoke + 迁移后文件断言",
-        "- 覆盖来源: 相邻旧目录 `plugins/WorldListTrashCan`、当前目录旧结构 `plugins/BLWorldTrashCan`",
+        "- 覆盖来源: 相邻旧目录 `plugins/WorldListTrashCan`、当前目录旧结构 `plugins/BlWorldTrashCan`",
         "- 结论: " + ("PASS" if summary["allPassed"] else "FAIL"),
         "",
         "## 证据",

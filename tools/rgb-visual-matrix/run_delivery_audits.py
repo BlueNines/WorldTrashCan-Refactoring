@@ -8,6 +8,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 PYTHON_AUDITS = [
     ("dist-sync-dry-run", [sys.executable, "tools/rgb-visual-matrix/sync_dist_jars.py", "--dry-run"]),
+    ("brand-case", [sys.executable, "tools/rgb-visual-matrix/check_brand_case.py"]),
     ("dist-package-integrity", [sys.executable, "tools/rgb-visual-matrix/check_dist_package_integrity.py"]),
     ("current-dist-hash-docs", [sys.executable, "tools/rgb-visual-matrix/check_current_dist_hash_docs.py"]),
     ("plugin-yml-parity", [sys.executable, "tools/rgb-visual-matrix/check_plugin_yml_parity.py"]),
@@ -89,7 +90,7 @@ def print_text_result(result: dict) -> None:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="运行 BLWorldTrashCan 交付前后台审计。")
+    parser = argparse.ArgumentParser(description="运行 BlWorldTrashCan 交付前后台审计。")
     parser.add_argument("--with-maven-test", action="store_true", help="额外运行 Maven 单元测试。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()

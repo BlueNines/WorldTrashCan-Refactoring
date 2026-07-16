@@ -55,7 +55,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-/** BLWorldTrashCan 世界垃圾桶边界验收夹具。 */
+/** BlWorldTrashCan 世界垃圾桶边界验收夹具。 */
 public final class WorldTrashFixturePlugin extends JavaPlugin implements CommandExecutor {
     private static final UUID FAKE_PLAYER_ID = UUID.fromString("00000000-0000-0000-0000-00000000a119");
     private static final int BREAK_OFFSET = 12;
@@ -301,9 +301,9 @@ public final class WorldTrashFixturePlugin extends JavaPlugin implements Command
         }
     }
 
-    /** 返回 BLWorldTrashCan 世界数据文件。 */
+    /** 返回 BlWorldTrashCan 世界数据文件。 */
     private File dataFile() {
-        return new File(getServer().getPluginManager().getPlugin("BLWorldTrashCan").getDataFolder(), "data/worlds.yml");
+        return new File(getServer().getPluginManager().getPlugin("BlWorldTrashCan").getDataFolder(), "data/worlds.yml");
     }
 
     /** 统计容器内物品总量。 */
@@ -477,12 +477,12 @@ public final class WorldTrashFixturePlugin extends JavaPlugin implements Command
 '''
 
 
-PLUGIN_YML = """name: BLWtcWorldTrashFixture
+PLUGIN_YML = """name: BlWtcWorldTrashFixture
 version: 1.0.0
 main: ai.blwtc.fixture.WorldTrashFixturePlugin
 commands:
   worldtrashfixture:
-    description: BLWorldTrashCan world trash boundary fixture
+    description: BlWorldTrashCan world trash boundary fixture
 """
 
 
@@ -521,7 +521,7 @@ def build_fixture(run_root: Path) -> Path:
     source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
-    fixture_jar = run_root / "BLWtcWorldTrashFixture.jar"
+    fixture_jar = run_root / "BlWtcWorldTrashFixture.jar"
     if classes_dir.exists():
         shutil.rmtree(classes_dir)
     if resources_dir.exists():
@@ -584,7 +584,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
     shutil.copy2(case["serverJar"], server_dir / Path(case["serverJar"]).name)
     if case.get("copyPaperCache"):
         legacy.copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BLWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(
@@ -596,7 +596,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
 
 def patch_cleanup_config(server_dir: Path) -> Path:
     """修改 cleanup.yml，使手动清理无门禁且不自动后台扫地。"""
-    cleanup = server_dir / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    cleanup = server_dir / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     text = cleanup.read_text(encoding="utf-8")
     replacements = {
         "interval-seconds: 360": "interval-seconds: 0",
@@ -611,7 +611,7 @@ def patch_cleanup_config(server_dir: Path) -> Path:
 
 def patch_trash_config(server_dir: Path, banned_world: bool) -> Path:
     """修改 trash.yml，使测试场景路由明确。"""
-    trash = server_dir / "plugins" / "BLWorldTrashCan" / "trash.yml"
+    trash = server_dir / "plugins" / "BlWorldTrashCan" / "trash.yml"
     text = trash.read_text(encoding="utf-8")
     text = text.replace("clear-every-cleanups: 3", "clear-every-cleanups: 0")
     text = replace_banned_worlds(text, ["world"] if banned_world else [])
@@ -706,8 +706,8 @@ def run_rcon(case: dict, command: str, responses: dict, entries: list[str], key:
 
 def assert_case(case: dict, responses: dict, cleanup_file: Path, trash_file: Path, stdout_log: Path) -> dict:
     """断言单端世界垃圾桶边界结果。"""
-    require("BLWorldTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 BLWorldTrashCan")
-    require("BLWtcWorldTrashFixture", responses.get("plugins", ""), case["id"] + " 插件列表缺少夹具")
+    require("BlWorldTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 BlWorldTrashCan")
+    require("BlWtcWorldTrashFixture", responses.get("plugins", ""), case["id"] + " 插件列表缺少夹具")
     require(case["expectedPlatform"], responses.get("platform", ""), case["id"] + " 平台不符合预期")
     require("universal", responses.get("platform", ""), case["id"] + " 未加载 universal 分支")
     require_all(["AI_WORLD_TRASH_BANNED", "registered=false"], responses.get("banned", ""), case["id"] + " F-019 失败")
@@ -771,7 +771,7 @@ def require_all(needles: list[str], text: str, message: str) -> None:
 def copy_case_evidence(server_dir: Path, case_dir: Path) -> None:
     """复制单端证据。"""
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-    plugin_dir = server_dir / "plugins" / "BLWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
     copy_if_exists(plugin_dir / "cleanup.yml", case_dir / "config" / "cleanup-after-patch.yml")
     copy_if_exists(plugin_dir / "trash.yml", case_dir / "config" / "trash-after-patch.yml")
     copy_if_exists(plugin_dir / "data" / "worlds.yml", case_dir / "data" / "worlds.yml")
@@ -789,7 +789,7 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# F-019 至 F-022 世界垃圾桶边界专项验收",
         "",
-        "- 被测插件: `dist/BLWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具触发正式事件/RCON 正式清理",
         "- 覆盖功能: F-019 禁止世界普通玩家创建、F-020 破坏登记移除、F-021 世界物品黑名单降级、F-022 未加载区块降级",

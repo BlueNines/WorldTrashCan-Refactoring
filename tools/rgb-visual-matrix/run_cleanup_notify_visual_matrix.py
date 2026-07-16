@@ -161,7 +161,7 @@ def replace_notify_block(text: str) -> str:
 
 def write_notify_config(case: dict) -> Path:
     """写入本轮清理通知专项验收配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     if not target.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法写入通知测试配置: " + str(target))
     original = target.read_text(encoding="utf-8", errors="replace")
@@ -274,7 +274,7 @@ def render_server_log_screenshot(text: str, target: Path, title: str) -> Path:
     lines = [title, ""]
     useful = []
     for line in external.strip_ansi(text).splitlines():
-        if "AI_WTC_NOTIFY" in line or "debugNotify" in line or "BLWorldTrashCan" in line or "AI_NOTIFY" in line:
+        if "AI_WTC_NOTIFY" in line or "debugNotify" in line or "BlWorldTrashCan" in line or "AI_NOTIFY" in line:
             useful.append(line)
     lines.extend(useful[-36:] if useful else external.strip_ansi(text).splitlines()[-36:])
     width = 1600
@@ -362,7 +362,7 @@ def trigger_notify(case: dict, process, server_log: Path, command_log: Path, gam
 
 def copy_runtime_config(case: dict, run_dir: Path) -> Path:
     """归档当前运行时 cleanup.yml。"""
-    source = Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml"
+    source = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
     target = run_dir / "logs" / "config-after-patch" / "cleanup.yml"
     target.parent.mkdir(parents=True, exist_ok=True)
     if source.is_file():
@@ -399,7 +399,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         enable_client_subtitles(case)
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BLWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
         write_notify_config(case)
         result["patchedCleanupConfig"] = str(copy_runtime_config(case, run_dir))
         reload_plugin(process, command_log, server_log)

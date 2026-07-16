@@ -177,7 +177,7 @@ def check_dist_messages() -> tuple[list[str], int, int]:
     errors = []
     jar_count = 0
     message_count = 0
-    for jar_path in sorted(DIST.glob("BLWorldTrashCan-*.jar")):
+    for jar_path in sorted(DIST.glob("BlWorldTrashCan-*.jar")):
         jar_count += 1
         with zipfile.ZipFile(jar_path) as archive:
             names = sorted(name for name in archive.namelist() if name.startswith("messages/message_") and name.endswith(".yml"))
@@ -218,7 +218,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BLWorldTrashCan 普通帮助和 debug 帮助是否分离。")
+    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 普通帮助和 debug 帮助是否分离。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

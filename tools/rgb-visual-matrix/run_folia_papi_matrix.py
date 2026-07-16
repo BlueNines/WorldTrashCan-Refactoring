@@ -15,9 +15,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 EVIDENCE_ROOT = REPO / "docs" / "test-evidence"
 SERVER_DIR = Path(r"E:\server_work\folia1.21.8")
-PLUGIN_JAR = REPO / "dist" / "BLWorldTrashCan-universal.jar"
+PLUGIN_JAR = REPO / "dist" / "BlWorldTrashCan-universal.jar"
 SERVER_JAR = SERVER_DIR / "folia-1.21.8-6.jar"
-PLUGIN_TARGET = SERVER_DIR / "plugins" / "BLWorldTrashCan-universal.jar"
+PLUGIN_TARGET = SERVER_DIR / "plugins" / "BlWorldTrashCan-universal.jar"
 JAVA25 = REPO / "build" / "tools" / "jre-25.0.3+9" / "bin" / "java.exe"
 SERVER_PORT = 30004
 READY_TIMEOUT_SECONDS = 120
@@ -51,7 +51,7 @@ def copy_artifact(run_dir: Path) -> dict:
     backup_dir.mkdir(parents=True, exist_ok=True)
     backup_path = None
     if PLUGIN_TARGET.exists():
-        backup_path = backup_dir / "BLWorldTrashCan-universal.before.jar"
+        backup_path = backup_dir / "BlWorldTrashCan-universal.before.jar"
         shutil.copy2(PLUGIN_TARGET, backup_path)
     shutil.copy2(PLUGIN_JAR, PLUGIN_TARGET)
     return {
@@ -149,7 +149,7 @@ def write_readme(run_dir: Path, result: dict) -> None:
     artifact = result.get("artifact", {})
     (run_dir / "README.md").write_text(
         "# Folia PAPI 变量验收\n\n"
-        f"- 被测插件: `dist/BLWorldTrashCan-universal.jar`\n"
+        f"- 被测插件: `dist/BlWorldTrashCan-universal.jar`\n"
         f"- 服务端: `E:\\server_work\\folia1.21.8`\n"
         f"- 前置: `[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar`\n"
         f"- 验收命令: `papi parse --null %Wtc_ClearTime%`\n"
@@ -159,7 +159,7 @@ def write_readme(run_dir: Path, result: dict) -> None:
         "- `summary.json`: 机器可读结果。\n"
         "- `logs/server-console.log`: 完整服务端输出。\n"
         "- `logs/console-commands.log`: 本轮发送的命令。\n"
-        "- `backup/BLWorldTrashCan-universal.before.jar`: 测试前旧 jar 备份。\n",
+        "- `backup/BlWorldTrashCan-universal.before.jar`: 测试前旧 jar 备份。\n",
         encoding="utf-8",
     )
 
@@ -238,7 +238,7 @@ def run_matrix() -> dict:
             "ready": ready,
             "placeholderApiLoaded": "PlaceholderAPI" in text and "Enabling PlaceholderAPI" in text,
             "wtcExpansionRegistered": "Successfully registered internal expansion: Wtc" in text,
-            "pluginLoaded": "BLWorldTrashCan" in text and "Universal runtime: folia" in text,
+            "pluginLoaded": "BlWorldTrashCan" in text and "Universal runtime: folia" in text,
             "papiValue": value,
             "papiValueNumeric": value.isdigit(),
             "noUnknownCommand": "Unknown command" not in block,
