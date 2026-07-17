@@ -1,4 +1,4 @@
-# BLWorldTrashCan 测试证据索引
+# BlWorldTrashCan 测试证据索引
 
 本目录只保存重构版测试证据。证据目录很多，不能只因为某个目录存在就把它写成通过结论；必须同时查看对应 `README.md`、`summary.json`、截图、日志和上层文档引用。
 
@@ -18,8 +18,9 @@
 | 80 项完整矩阵基线 | `universal-function-matrix-1122-2612-20260608-213500/` | 2026-06-08 完整功能矩阵基线 |
 | Folia 清理通知视觉 | `cleanup-notify-visual-20260630-092840/` | Chat、ActionBar、BossBar、Title、Sound、Command 通知专项 |
 | GUI 真实点击 | `trash-gui-click-visual-20260702-223605/` | Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端；公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
+| 公共垃圾桶字符布局 | `global-trash-layout-visual-20260717-185333/` | Paper 1.12.2 与 Folia 1.21.8 真实客户端；2 行布局、RGB/传统色 Tooltip、翻页、缩容零丢失、只读溢出页、取出后恢复写入、非法布局回退 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-231000/` | Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 三端，玩家已能打开 GUI 时显式 deny 公共/个人 take/put 后真实点击不产生取放 |
-| 旧配置迁移 | `legacy-migration-universal-20260701-165606/` | 旧目录和当前目录旧结构迁移 |
+| 旧配置迁移 | `legacy-migration-universal-20260717-182917/` | 旧目录和当前目录旧结构迁移，并覆盖旧 GUI ModelId 到新字符布局路径 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
 | 船内实体保护 | `boat-entity-protection-20260701-171046/` | 船内实体保留、普通实体清理 |
 | 世界垃圾桶边界 | `world-trash-boundary-20260701-172919/` | 创建上限、破坏移除、禁用世界、黑名单降级、未加载区块降级 |

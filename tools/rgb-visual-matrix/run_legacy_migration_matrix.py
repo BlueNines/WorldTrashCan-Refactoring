@@ -449,7 +449,7 @@ def expected_assertions(case: dict) -> dict:
         return {
             "config": ["language: legacy_adjacent.yml", "debug: true"],
             "cleanup": ["interval-seconds: 123", "ignored-worlds:", "- legacy_ignore", "enabled: false", "ignore-entities-in-boat: true", "click-command: /wtc stats", "旧ActionBar", "旧BossBar"],
-            "trash": ["max-pages: 7", "take-delay-millis: 250", "default-max-count: 9", "take-cost: 4.5", "mode: global-trash", "delay-seconds: 5", "- DIRT", "- COBBLESTONE", "background-model-id: 103"],
+            "trash": ["max-pages: 7", "take-delay-millis: 250", "default-max-count: 9", "take-cost: 4.5", "mode: global-trash", "delay-seconds: 5", "- DIRT", "- COBBLESTONE", "model-id: 103"],
             "protections": ["interval-seconds: 1.5", "interval-seconds: 2.5", "drop-protection:", "enabled: true", "remove-unpickable-arrow: true", "prevent-farmland-trampling: true"],
             "entityLimits": ["world-limits:", "gather-limits:", "entity: ZOMBIE", "entity: DROPPED_ITEM", "remove-count: 4"],
             "worlds": ["1,64,1", "2,65,3", "max-count: 9", "- STONE", "- DIRT"],
@@ -458,7 +458,7 @@ def expected_assertions(case: dict) -> dict:
     return {
         "config": ["language: legacy_current.yml", "debug: true", "migration-enabled: true"],
         "cleanup": ["interval-seconds: 77", "ignored-worlds:", "- legacy_ignore", "enabled: false", "ignore-entities-in-boat: true", "旧ActionBar", "旧BossBar"],
-        "trash": ["max-pages: 8", "take-delay-millis: 300", "default-max-count: 11", "take-cost: 9.5", "mode: personal-trash", "delay-seconds: 6", "- DIRT", "- COBBLESTONE", "background-model-id: 103"],
+        "trash": ["max-pages: 8", "take-delay-millis: 300", "default-max-count: 11", "take-cost: 9.5", "mode: personal-trash", "delay-seconds: 6", "- DIRT", "- COBBLESTONE", "model-id: 103"],
         "protections": ["interval-seconds: 1.5", "interval-seconds: 2.5", "drop-protection:", "enabled: true", "remove-unpickable-arrow: true", "prevent-farmland-trampling: true"],
         "entityLimits": ["world-limits:", "gather-limits:", "entity: ZOMBIE", "entity: DROPPED_ITEM", "remove-count: 4"],
         "worlds": ["1,64,1", "2,65,3", "max-count: 11", "- COBBLESTONE", "- STONE"],

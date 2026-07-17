@@ -1,0 +1,231 @@
+[18:53:34] [Server thread/INFO]: Starting minecraft server version 1.12.2
+[18:53:34] [Server thread/INFO]: Loading properties
+[18:53:34] [Server thread/INFO]: Default game type: SURVIVAL
+[18:53:34] [Server thread/INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[18:53:35] [Server thread/INFO]: Debug logging is disabled
+[18:53:35] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[18:53:35] [Server thread/INFO]: Using 4 threads for Netty based IO
+[18:53:35] [Server thread/INFO]: Generating keypair
+[18:53:35] [Server thread/INFO]: Starting Minecraft server on *:30012
+[18:53:35] [Server thread/INFO]: Using default channel type
+[18:53:35] [Server thread/INFO]: Set PluginClassLoader as parallel capable
+[18:53:35] [Server thread/INFO]: [PermissionDenyFixture] Loading PermissionDenyFixture v1.0.0
+[18:53:35] [Server thread/INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.11.6
+[18:53:35] [Server thread/INFO]: [BlWorldTrashCan] Loading BlWorldTrashCan v7.0.0
+[18:53:35] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[18:53:35] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[18:53:35] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[18:53:35] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[18:53:35] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[18:53:35] [Server thread/INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[18:53:35] [Server thread/INFO]: Preparing level "rgb_visual_universal_managed_paper1122_global_trash_layout_visual_20260717_185333"
+[18:53:35] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_global_trash_layout_visual_20260717_185333] --------
+[18:53:35] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[18:53:35] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[18:53:35] [Server thread/INFO]: Experience Merge Radius: 3.0
+[18:53:35] [Server thread/INFO]: Item Merge Radius: 2.5
+[18:53:35] [Server thread/INFO]: Item Despawn Rate: 6000
+[18:53:35] [Server thread/INFO]: View Distance: 2
+[18:53:35] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[18:53:35] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[18:53:35] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[18:53:35] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Cane Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Melon Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Vine Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[18:53:35] [Server thread/INFO]: Mob Spawn Range: 4
+[18:53:35] [Server thread/INFO]: Structure Info Saving: true
+[18:53:35] [Server thread/INFO]: Random Lighting Updates: false
+[18:53:35] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[18:53:35] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[18:53:35] [Server thread/INFO]: Max TNT Explosions: 100
+[18:53:35] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[18:53:35] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_global_trash_layout_visual_20260717_185333_nether] --------
+[18:53:35] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[18:53:35] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[18:53:35] [Server thread/INFO]: Experience Merge Radius: 3.0
+[18:53:35] [Server thread/INFO]: Item Merge Radius: 2.5
+[18:53:35] [Server thread/INFO]: Item Despawn Rate: 6000
+[18:53:35] [Server thread/INFO]: View Distance: 2
+[18:53:35] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[18:53:35] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[18:53:35] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[18:53:35] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Cane Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Melon Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Vine Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[18:53:35] [Server thread/INFO]: Mob Spawn Range: 4
+[18:53:35] [Server thread/INFO]: Structure Info Saving: true
+[18:53:35] [Server thread/INFO]: Random Lighting Updates: false
+[18:53:35] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[18:53:35] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[18:53:35] [Server thread/INFO]: Max TNT Explosions: 100
+[18:53:35] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[18:53:35] [Server thread/INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_global_trash_layout_visual_20260717_185333_the_end] --------
+[18:53:35] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[18:53:35] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[18:53:35] [Server thread/INFO]: Experience Merge Radius: 3.0
+[18:53:35] [Server thread/INFO]: Item Merge Radius: 2.5
+[18:53:35] [Server thread/INFO]: Item Despawn Rate: 6000
+[18:53:35] [Server thread/INFO]: View Distance: 2
+[18:53:35] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[18:53:35] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[18:53:35] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[18:53:35] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Cane Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Melon Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Vine Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[18:53:35] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[18:53:35] [Server thread/INFO]: Mob Spawn Range: 4
+[18:53:35] [Server thread/INFO]: Structure Info Saving: true
+[18:53:35] [Server thread/INFO]: Random Lighting Updates: false
+[18:53:35] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[18:53:35] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[18:53:35] [Server thread/INFO]: Max TNT Explosions: 100
+[18:53:35] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[18:53:35] [Server thread/INFO]: Preparing start region for level 0 (Seed: 6677041268427118421)
+[18:53:35] [Server thread/INFO]: Preparing start region for level 1 (Seed: 6677041268427118421)
+[18:53:35] [Server thread/INFO]: Preparing start region for level 2 (Seed: 6677041268427118421)
+[18:53:35] [Server thread/INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0
+[18:53:35] [Server thread/INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+[18:53:35] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[18:53:35] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[18:53:35] [Server thread/INFO]: [BlWorldTrashCan] Enabling BlWorldTrashCan v7.0.0
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [TrashRouter] �Ѽ��� 4 ����������Ͱ���ݡ�
+[18:53:36] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [PlaceholderAPI] ��ע�����: %Wtc_ClearTime%
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Universal runtime: legacy
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Platform: legacy-1.12
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability scheduler-global: enabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability scheduler-region: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability inventory-basic: enabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability item-pdc-tag: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability item-legacy-tag: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability rgb-message: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability clickable-message: enabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability boss-bar: enabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability sign-legacy: enabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability sign-modern: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability entity-move-event: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] Capability folia-region-safe: disabled
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [Cleanup] ��ʱ�������������� 360 �롣
+[18:53:36] [Server thread/INFO]: Done (0.774s)! For help, type "help" or "?"
+[18:53:36] [Server thread/INFO]: Timings Reset
+[18:53:36] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[18:53:36] [Server thread/INFO]: 0 placeholder hook(s) registered!
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [TrashRouter] �Ѽ��� 4 ����������Ͱ���ݡ�
+[18:53:36] [Server thread/INFO]: [BlWorldTrashCan] [Cleanup] ��ʱ�������������� 360 �롣
+[18:53:36] [Server thread/INFO]: [BLWorldTrashCan] BlWorldTrashCan �����ء�
+[18:53:36] [Server thread/INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:
+[18:53:36] [Server thread/INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[18:53:41] [User Authenticator #1/INFO]: UUID of player RGBaper1122 is 492a4a1c-1269-347c-a86f-e86c5e9d0cca
+[18:53:41] [Server thread/INFO]: RGBaper1122[/127.0.0.1:63737] logged in with entity id 3 at ([rgb_visual_universal_managed_paper1122_global_trash_layout_visual_20260717_185333]-752.5, 4.0, -226.5)
+[18:53:43] [Server thread/INFO]: Opped RGBaper1122
+[18:53:43] [Server thread/INFO]: Game rule sendCommandFeedback has been updated to false
+[18:53:43] [Server thread/INFO]: Game rule commandBlockOutput has been updated to false
+[18:53:44] [Server thread/INFO]: Game rule doMobSpawning has been updated to false
+[18:53:44] [Server thread/INFO]: Game rule keepInventory has been updated to true
+[18:53:44] [Server thread/INFO]: Game rule fallDamage has been updated to false
+[18:53:44] [Server thread/INFO]: Set the time to 1000
+[18:53:45] [Server thread/INFO]: Changing to clear weather
+[18:53:45] [Server thread/INFO]: Cannot place blocks outside of the world
+[18:53:45] [Server thread/INFO]: Set RGBaper1122's game mode to Survival Mode
+[18:53:45] [Server thread/INFO]: Teleported RGBaper1122 to 0.5, 91.0, -7.5
+[18:53:45] [Server thread/WARN]: RGBaper1122 moved too quickly! 753.0,87.0,219.0
+[18:53:46] [Server thread/INFO]: Given Resistance (ID 11) * 255 to RGBaper1122 for 1000000 seconds
+[18:53:46] [Server thread/INFO]: Given Saturation (ID 23) * 1 to RGBaper1122 for 1000000 seconds
+[18:53:46] [Server thread/INFO]: Could not clear the inventory of RGBaper1122, no items to remove
+[18:53:47] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:47] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:48] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:48] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:48] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:48] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:49] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:49] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:49] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:49] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:50] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:50] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:50] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:50] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:51] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:51] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:51] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:51] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:52] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:52] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:52] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:52] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:53] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[18:53:53] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:53:53] [Server thread/INFO]: ����Ͱ���:
+[18:53:53] [Server thread/INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)
+[18:53:53] [Server thread/INFO]: - ��������Ͱҳ��: 5
+[18:53:53] [Server thread/INFO]: - �Ѽ��ظ�������Ͱ: 0
+[18:53:54] [Server thread/INFO]: [BlWorldTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml
+[18:53:54] [Server thread/WARN]: [BlWorldTrashCan] [GlobalTrash] �²��������������������ɾ���Ʒ���Ѵ��� 1 ����ʱ���ҳ����Щҳ���ȡ��������������Ʒ��
+[18:53:54] [Server thread/INFO]: [BlWorldTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=1, visiblePages=2
+[18:53:54] [Server thread/INFO]: [BlWorldTrashCan] [TrashRouter] �Ѽ��� 4 ����������Ͱ���ݡ�
+[18:53:54] [Server thread/INFO]: [BlWorldTrashCan] [Cleanup] ��ʱ�������������� 360 �롣
+[18:53:54] [Server thread/INFO]: [BLWorldTrashCan] BlWorldTrashCan �����ء�
+[18:53:55] [Server thread/INFO]: ����Ͱ���:
+[18:53:55] [Server thread/INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)
+[18:53:55] [Server thread/INFO]: - ��������Ͱҳ��: 2
+[18:53:55] [Server thread/INFO]: - �Ѽ��ظ�������Ͱ: 0
+[18:53:56] [Server thread/INFO]: ��Ϊ��Ҵ򿪹�������Ͱ: RGBaper1122
+[18:54:14] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=false
+[18:54:14] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:54:14] [Server thread/INFO]: ����Ͱ���:
+[18:54:14] [Server thread/INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)
+[18:54:14] [Server thread/INFO]: - ��������Ͱҳ��: 2
+[18:54:14] [Server thread/INFO]: - �Ѽ��ظ�������Ͱ: 0
+[18:54:15] [Server thread/INFO]: ��Ϊ��Ҵ򿪹�������Ͱ: RGBaper1122
+[18:54:28] [Server thread/INFO]: ����Ͱ���:
+[18:54:28] [Server thread/INFO]: - ��������Ͱ��Ʒ: 704 (�ѵ� 11)
+[18:54:28] [Server thread/INFO]: - ��������Ͱҳ��: 2
+[18:54:28] [Server thread/INFO]: - �Ѽ��ظ�������Ͱ: 0
+[18:54:28] [Server thread/INFO]: [BlWorldTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[18:54:28] [Server thread/INFO]: ·�ɲ��Գɹ���
+[18:54:29] [Server thread/INFO]: ����Ͱ���:
+[18:54:29] [Server thread/INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)
+[18:54:29] [Server thread/INFO]: - ��������Ͱҳ��: 2
+[18:54:29] [Server thread/INFO]: - �Ѽ��ظ�������Ͱ: 0
+[18:54:30] [Server thread/INFO]: ��Ϊ��Ҵ򿪹�������Ͱ: RGBaper1122
+[18:54:35] [Server thread/INFO]: [BlWorldTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml
+[18:54:35] [Server thread/WARN]: [BlWorldTrashCan] [GlobalTrash] ��������Ͱ������Ч���ѻ���Ĭ�ϲ���: global-trash.gui.layout.position ֻ������ 1-6 �У���ǰΪ 7 ��
+[18:54:35] [Server thread/INFO]: [BlWorldTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=1, visiblePages=1
+[18:54:35] [Server thread/INFO]: [BlWorldTrashCan] [TrashRouter] �Ѽ��� 4 ����������Ͱ���ݡ�
+[18:54:35] [Server thread/INFO]: [BlWorldTrashCan] [Cleanup] ��ʱ�������������� 360 �롣
+[18:54:35] [Server thread/INFO]: [BLWorldTrashCan] BlWorldTrashCan �����ء�
+[18:54:35] [Server thread/INFO]: ����Ͱ���:
+[18:54:35] [Server thread/INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)
+[18:54:35] [Server thread/INFO]: - ��������Ͱҳ��: 1
+[18:54:35] [Server thread/INFO]: - �Ѽ��ظ�������Ͱ: 0
+[18:54:36] [Server thread/INFO]: ��Ϊ��Ҵ򿪹�������Ͱ: RGBaper1122
+[18:55:06] [Server thread/INFO]: RGBaper1122 lost connection: Internal Exception: java.io.IOException: 远程主机强迫关闭了一个现有的连接�?
+[18:55:06] [Server thread/INFO]: RGBaper1122 left the game

@@ -390,11 +390,11 @@ public final class BukkitLegacyConfigMigrator {
         copyInt(oldConfig, target, "Set.GlobalTrash.EveryClearGlobalTrash", "global-trash.clear-every-cleanups", plan);
         copyBoolean(oldConfig, target, "Set.GlobalTrash.Log.Enable", "global-trash.log-enabled", plan);
         copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackItem.ModelId",
-                "global-trash.gui.back-model-id", plan);
+                "global-trash.gui.layout.items.a.model-id", plan);
         copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.NextItem.ModelId",
-                "global-trash.gui.next-model-id", plan);
+                "global-trash.gui.layout.items.c.model-id", plan);
         copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackgroundItem.ModelId",
-                "global-trash.gui.background-model-id", plan);
+                "global-trash.gui.layout.items.b.model-id", plan);
         copyStringList(oldConfig, target, "GlobalBanItem", "global-trash.banned-materials", plan);
         copyString(oldConfig, target, "Set.SighCheckName", "world-trash.sign-create-text", plan);
         copyString(oldConfig, target, "Set.SighCheckedName", "world-trash.sign-created-text", plan);

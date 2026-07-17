@@ -14,6 +14,11 @@ public final class ConfigBundleLoader {
     /** 读取完整配置集合。 */
     public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
                              ConfigurationSource protections, ConfigurationSource entityLimits) {
+        int legacyBackModelId = trash.getInt("global-trash.gui.back-model-id", -1);
+        int legacyNextModelId = trash.getInt("global-trash.gui.next-model-id", -1);
+        int legacyBackgroundModelId = trash.getInt("global-trash.gui.background-model-id", -1);
+        TrashConfig.GlobalTrashLayoutConfig globalTrashLayout = new GlobalTrashLayoutParser().parse(
+                trash, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId);
         CleanupSettings cleanupSettings = new CleanupSettings(
                 toSet(cleanup.getStringList("ignored-materials")),
                 toSet(cleanup.getStringList("ignored-name-fragments")),
@@ -59,9 +64,7 @@ public final class ConfigBundleLoader {
                         trash.getInt("global-trash.clear-every-cleanups", 3),
                         trash.getBoolean("global-trash.allow-player-put", true),
                         trash.getBoolean("global-trash.log-enabled", true),
-                        trash.getInt("global-trash.gui.back-model-id", -1),
-                        trash.getInt("global-trash.gui.next-model-id", -1),
-                        trash.getInt("global-trash.gui.background-model-id", -1),
+                        globalTrashLayout,
                         toSet(trash.getStringList("global-trash.banned-materials"))
                 ),
                 new TrashConfig.PersonalTrashConfig(

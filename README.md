@@ -58,7 +58,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BlWorldTrashCan-universal.jar` SHA256 为 `265b80f26264f65ea594140073c57bfad1df823f808bfa1fc48335e95ece1737`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/BlWorldTrashCan-universal.jar` SHA256 为 `5031a1bfdebb6f4b7e985a659ce303e3cfdc47cdab7af66993a6011c34d84347`。
 
 公开品牌大小写有独立审计脚本，检查源码文件名和内容、默认资源、文档、dist 文件名以及 jar 内 `plugin.yml`，防止重新出现旧的全大写品牌：
 
@@ -84,13 +84,13 @@ py -3 tools\rgb-visual-matrix\check_current_dist_hash_docs.py
 
 当前审计覆盖 5 个 dist jar，结果为 `errors: 0`。
 
-完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-090、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
+完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-091、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
 
 ```powershell
 py -3 tools\rgb-visual-matrix\check_function_matrix_doc.py
 ```
 
-当前矩阵为 F-001 到 F-090 共 90 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
+当前矩阵为 F-001 到 F-091 共 91 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
 
 常规帮助、普通补全和 debug 帮助分离也有独立审计脚本，检查 Java fallback、一参 tab 补全、源码语言文件和 dist jar 内语言文件：`/blwtc help` 只允许保留 `/blwtc debughelp` 入口，空前缀 tab 补全只显示正式命令与 `debughelp`，具体 `debug*` 命令必须只出现在 `/blwtc debughelp` 面板或输入 `debug` 前缀后的补全中：
 
@@ -138,7 +138,7 @@ py -3 tools\rgb-visual-matrix\check_chunk_load_guards.py
 py -3 tools\rgb-visual-matrix\check_test_script_destructive_guards.py
 ```
 
-当前审计覆盖 `tools/rgb-visual-matrix` 下 40 个 Python 脚本、21 个 `shutil.rmtree` 调用和 23 个 `unlink` 调用，结果为 `errors: 0`。
+当前审计覆盖 `tools/rgb-visual-matrix` 下 42 个 Python 脚本、21 个 `shutil.rmtree` 调用和 23 个 `unlink` 调用，结果为 `errors: 0`。
 
 统一预检本身的数量和文档口径也有独立审计，防止新增审计后 README、长期清单或执行记录仍保留旧数字：
 
@@ -204,6 +204,60 @@ py -3 tools\rgb-visual-matrix\check_default_language_rgb_messages.py
 ```
 
 当前审计覆盖 16 个源码默认语言文件、20 个 dist 包内默认语言文件和 `RichTextRenderer` 的 RGB 降级兼容逻辑，结果为 `errors: 0`。
+
+## 公共垃圾桶 GUI 布局
+
+`trash.yml` 的 `global-trash.gui.layout` 可以用单字符定义公共垃圾桶每页的行数、内容槽和翻页按钮。布局支持 1-6 行，每行必须正好包含 9 个英文字母、数字或下划线；单页不会超过原版箱子 GUI 的 54 格限制，总容量仍由每页 `content` 槽数量和 `global-trash.max-pages` 共同决定。
+
+```yaml
+global-trash:
+  gui:
+    layout:
+      position:
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "abbbbbbbc"
+      items:
+        x:
+          type: "content"
+        a:
+          type: "previous-page"
+          model-id: -1
+          material:
+            - "ARROW"
+          unavailable-item: "b"
+          name: "&#5AC8FA上一页"
+          lore:
+            - "&#C9D4E2当前第 &#FFD166{page} &#C9D4E2页"
+        b:
+          type: "background"
+          model-id: -1
+          material:
+            - "BLACK_STAINED_GLASS_PANE"
+            - "STAINED_GLASS_PANE"
+            - "GLASS_PANE"
+          name: " "
+          lore: []
+        c:
+          type: "next-page"
+          model-id: -1
+          material:
+            - "ARROW"
+          unavailable-item: "b"
+```
+
+- `content` 是真正存放公共垃圾桶物品的槽位，不生成展示物。
+- `previous-page`、`next-page` 和 `background` 支持材质候选、`model-id`、`name` 和 `lore`。
+- `name`、`lore` 支持 RGB、传统颜色以及 `{page}`、`{max-page}`、`{previous-page}`、`{next-page}`。
+- 翻页按钮没有目标页时使用 `unavailable-item` 指向的展示物；留空则显示为空槽。
+- 布局错误时会输出具体中文原因并回退六行默认布局，不会创建超过 54 格的无效 GUI。
+- reload 后布局容量允许缩小；旧存量放不下时会追加可访问的临时溢出页。溢出页只允许取出，不接收新物品，避免缩容时静默删除垃圾桶内容。
+- 旧版 `global-trash.gui.back-model-id`、`next-model-id`、`background-model-id` 仍可在缺少新布局时生成兼容默认布局。
+
+2026-07-17 已使用同一个 `dist/BlWorldTrashCan-universal.jar` 在 Paper 1.12.2 与 Folia 1.21.8 上完成真实客户端专项。两端均先写入 12 个满堆叠，再 reload 缩成 2 行、9 个内容槽、1 个正常页；日志和库存证明 12 堆全部保留为 1 个正常页加 1 个临时溢出页，新路由在正常页已满时返回 `routed=false`，玩家真实点击取出一堆后新路由恢复为 `routed=true`。真实 F2 截图同时证明翻页、材质候选降级、RGB/传统色名称与 Lore、页码占位符和 7 行非法布局回退 6 行。最终证据：`docs/test-evidence/global-trash-layout-visual-20260717-185333/`。
 
 ## 清理控制台明细
 
@@ -390,7 +444,7 @@ migration-legacy-folder: "WorldListTrashCan"
 - 迁移完成后会生成 `legacy-migration-report.md`，后续启动看到该报告就不会重复迁移。
 - 如果旧配置在当前 `plugins/BlWorldTrashCan` 目录，迁移前会先备份到 `legacy-migration-backup/`。
 - 当前会自动迁移主配置、清理配置、通知配置、保护配置、实体限制配置、公共/个人/世界垃圾桶配置，以及旧 `data/data.yml` 中的世界垃圾桶运行数据。
-- 公共垃圾桶 GUI 的旧 `ModelId` 会迁移到 `global-trash.gui.*-model-id`；低版本没有 `CustomModelData` API 时会自动忽略外观字段，不影响 GUI 打开。
+- 公共垃圾桶 GUI 的旧 `ModelId` 会迁移到 `global-trash.gui.layout.items.a/c/b.model-id`；低版本没有 `CustomModelData` API 时会自动忽略外观字段，不影响 GUI 打开。
 - 旧 `BossBarFlag` 和 `BossBarMessageForCount` 会迁移到 `bossbar.enabled` 与 `bossbar.messages`，格式仍为 `剩余秒数;内容;样式;颜色`。
 - 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”。
 
@@ -581,7 +635,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
 - 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `BlWorldTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 - 2026-06-07 已补做高辨识度 RGB 二次复测：上一轮颜色被指出接近传统 `&a`、`&6` 后，调试 Title 改为多段 RGB 的 `RGB TITLE FF1493`，Subtitle 改为 `SUBTITLE FF4F00`。同一批 6 个外部端全部使用 `BlWorldTrashCan-universal.jar` 重跑，RGB 截图仍限定聊天框、ActionBar、Title/Subtitle，每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
-- 2026-06-08 已新增 `docs/重构版完整功能与测试矩阵.md`，初版把重构版拆成 80 个功能项，当前已扩展到 F-090 共 90 个功能项，并按功能文档执行 universal 整包真实客户端矩阵测试。被测 jar 为 `dist/BlWorldTrashCan-universal.jar`，SHA256 `9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399`，jar 内 `plugin.yml` 为 `version: 7.0.0` 且旧入口包含 `WorldListTrashCan/WTC/wtc`。Paper 1.12.2、Paper 26.1.2、Spigot 26.1.2 三端矩阵结果均为 PASS、无 FAIL；该历史矩阵当轮仍有明确 `SKIP` 项，不能单独视为最终通过。证据目录：`docs/test-evidence/universal-function-matrix-1122-2612-20260608-213500/`。截至 2026-07-02，当轮通用专项 `SKIP` 已由后续旧配置迁移、GUI 真实点击、世界垃圾桶边界、保护边界、世界实体上限、密集实体、多语言、清理通知点击和 Vault/Economy 专项收敛为 PASS；当前长期硬化清单没有未实现旧功能或已知代码级 P0/P1/P2 缺口。
+- 2026-06-08 已新增 `docs/重构版完整功能与测试矩阵.md`，初版把重构版拆成 80 个功能项，当前已扩展到 F-091 共 91 个功能项，并按功能文档执行 universal 整包真实客户端矩阵测试。被测 jar 为 `dist/BlWorldTrashCan-universal.jar`，SHA256 `9396d8c524ff44b03d3f2a1b4d7e7848e64c93043cc9ea4635ca5967bb7e0399`，jar 内 `plugin.yml` 为 `version: 7.0.0` 且旧入口包含 `WorldListTrashCan/WTC/wtc`。Paper 1.12.2、Paper 26.1.2、Spigot 26.1.2 三端矩阵结果均为 PASS、无 FAIL；该历史矩阵当轮仍有明确 `SKIP` 项，不能单独视为最终通过。证据目录：`docs/test-evidence/universal-function-matrix-1122-2612-20260608-213500/`。截至 2026-07-02，当轮通用专项 `SKIP` 已由后续旧配置迁移、GUI 真实点击、世界垃圾桶边界、保护边界、世界实体上限、密集实体、多语言、清理通知点击和 Vault/Economy 专项收敛为 PASS；当前长期硬化清单没有未实现旧功能或已知代码级 P0/P1/P2 缺口。
 - 2026-06-26 已补验扫地门禁 `-5` 正式通知：修复旧 `cleanup.yml` 不自动补齐新增 `-5` 文案、普通 Bukkit/Paper/Legacy 跳过路径不发送正式通知的问题。`dist/BlWorldTrashCan-universal.jar` SHA256 `5D0BB85487F632DD3BC221D5BC749C5DEB3AF2FF92748E14A0C71A00CB134A0D`，Spigot 26.1.2、Folia 1.21.8、Paper 1.12.2 均用真实客户端和服务端截图复测 PASS；1.12.2 控制台中文乱码，因此以服务端截图中的 `cleanup.yml` `-5` 配置行、`skippedByGuard=true` 汇总和客户端可见中文截图共同验收。证据目录：`docs/test-evidence/cleanup-guard-visual-20260626-214947/`、`docs/test-evidence/cleanup-guard-visual-20260626-215753/`。
 - 2026-06-27 已修复公共垃圾桶按次数刷新时序：`global-trash.clear-every-cleanups: 3` 触发时先清空旧公共垃圾桶，再把本轮清理物品写入公共垃圾桶，避免第 3 次清理把本轮新物品一起清空。`dist/BlWorldTrashCan-universal.jar` SHA256 `52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466`，Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 均用真实客户端连续三轮 `/blwtc clear` + `/blwtc debugstock` 截图复测 PASS；第 3 轮服务端日志为 `globalTrashRefreshed=true`，客户端库存仍为公共垃圾桶物品 `1`。证据目录：`docs/test-evidence/global-refresh-visual-20260627-013926/`、`docs/test-evidence/global-refresh-visual-20260627-014123/`、`docs/test-evidence/global-refresh-visual-20260627-014340/`。
 - 2026-06-30 已补做清理通知专项真实客户端矩阵：同一个 `dist/BlWorldTrashCan-universal.jar`，SHA256 `9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时开启 `notify.chat/actionbar/bossbar/title/sound/command`，分别触发 `/blwtc debugnotify 0` 和 `/blwtc debugnotify -5`；真实客户端截图可见 Chat、ActionBar、BossBar、Title，客户端字幕 `Experience gained` 作为 Sound 辅助证据，服务端日志 `AI_WTC_NOTIFY_COMMAND_*` 作为 Command 执行证据。证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。

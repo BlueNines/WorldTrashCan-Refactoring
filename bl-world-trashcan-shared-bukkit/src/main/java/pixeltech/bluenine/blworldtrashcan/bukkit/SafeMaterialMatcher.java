@@ -2,6 +2,7 @@ package pixeltech.bluenine.blworldtrashcan.bukkit;
 
 import org.bukkit.Material;
 
+import java.util.List;
 import java.util.Locale;
 
 /** 跨服务端安全解析 Bukkit Material 名称。 */
@@ -33,6 +34,20 @@ public final class SafeMaterialMatcher {
 
     /** 按顺序解析多个候选名。 */
     public static Material first(String... values) {
+        for (String value : values) {
+            Material material = match(value);
+            if (material != null && material != Material.AIR) {
+                return material;
+            }
+        }
+        return null;
+    }
+
+    /** 按列表顺序解析多个候选名。 */
+    public static Material first(List<String> values) {
+        if (values == null || values.isEmpty()) {
+            return null;
+        }
         for (String value : values) {
             Material material = match(value);
             if (material != null && material != Material.AIR) {

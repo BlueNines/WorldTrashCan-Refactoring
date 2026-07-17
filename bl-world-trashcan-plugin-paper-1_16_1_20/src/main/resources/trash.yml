@@ -32,14 +32,71 @@ global-trash:
   clear-every-cleanups: 3
   # 是否记录玩家从公共垃圾桶拿取、放入物品的日志。
   log-enabled: true
-  # 公共垃圾桶 GUI 外观设置。
+  # 公共垃圾桶 GUI 布局设置。
   gui:
-    # 上一页按钮的 CustomModelData；-1 表示不设置，低版本会自动忽略该外观字段。
-    back-model-id: -1
-    # 下一页按钮的 CustomModelData；-1 表示不设置，低版本会自动忽略该外观字段。
-    next-model-id: -1
-    # 背景按钮的 CustomModelData；-1 表示不设置，低版本会自动忽略该外观字段。
-    background-model-id: -1
+    # 小型字符布局配置，决定菜单行数、内容槽和按钮位置。
+    layout:
+      # 菜单槽位布局；支持 1-6 行，每行必须正好包含 9 个英文字母、数字或下划线。
+      position:
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "abbbbbbbc"
+      # position 中每个字符对应的槽位定义。
+      items:
+        # x 是默认公共垃圾桶内容槽字符。
+        x:
+          # content 表示公共垃圾桶内容槽；内容槽不会生成展示物。
+          type: "content"
+        # a 是默认上一页按钮字符。
+        a:
+          # previous-page 表示上一页按钮。
+          type: "previous-page"
+          # CustomModelData；-1 表示不设置，低版本会自动忽略。
+          model-id: -1
+          # 按顺序使用当前服务端存在的第一个材质；全部无效时降级为 STONE 并输出警告。
+          material:
+            - "ARROW"
+          # 没有上一页时显示哪个布局字符对应的展示物；留空表示该槽位显示为空。
+          unavailable-item: "b"
+          # 可选名称；不配置时读取当前语言文件的上一页名称，支持 RGB、传统颜色和页码占位符。
+          # name: "&#5AC8FA上一页"
+          # 可选 Lore；支持 {page}、{max-page}、{previous-page}、{next-page}，留空请写 []。
+          # lore:
+          #   - "&#C9D4E2当前第 &#FFD166{page} &#C9D4E2页"
+        # b 是默认背景板字符。
+        b:
+          # background 表示不可操作的背景展示物。
+          type: "background"
+          # CustomModelData；-1 表示不设置，低版本会自动忽略。
+          model-id: -1
+          # 新版本优先使用黑色玻璃板，旧版本按顺序降级。
+          material:
+            - "BLACK_STAINED_GLASS_PANE"
+            - "STAINED_GLASS_PANE"
+            - "GLASS_PANE"
+          # 单个空格用于隐藏原版物品名称；写成空字符串则完全不设置自定义名称。
+          name: " "
+          # 背景板默认没有 Lore。
+          lore: []
+        # c 是默认下一页按钮字符。
+        c:
+          # next-page 表示下一页按钮。
+          type: "next-page"
+          # CustomModelData；-1 表示不设置，低版本会自动忽略。
+          model-id: -1
+          # 按顺序使用当前服务端存在的第一个材质。
+          material:
+            - "ARROW"
+          # 没有下一页时显示哪个布局字符对应的展示物；留空表示该槽位显示为空。
+          unavailable-item: "b"
+          # 可选名称；不配置时读取当前语言文件的下一页名称。
+          # name: "&#5AC8FA下一页"
+          # 可选 Lore；留空请写 []。
+          # lore:
+          #   - "&#C9D4E2共 &#FFD166{max-page} &#C9D4E2页"
   # 不允许进入公共垃圾桶的物品类型。
   banned-materials:
     - "EGG"

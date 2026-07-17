@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -150,6 +151,12 @@ public final class TrashFeature implements Feature, Listener {
             return;
         }
         personalTrashService.handleClick(event);
+    }
+
+    /** 阻止拖拽修改公共垃圾桶 GUI 的内容槽和展示物。 */
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        globalTrashService.handleDrag(event);
     }
 
     /** 给玩家主动丢弃的物品写入所属玩家标记。 */

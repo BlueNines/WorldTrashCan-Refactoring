@@ -1,0 +1,41 @@
+[18:53:36] blwtc reload
+[18:53:43] op RGBaper1122
+[18:53:43] minecraft:gamerule sendCommandFeedback false
+[18:53:43] minecraft:gamerule commandBlockOutput false
+[18:53:44] minecraft:gamerule doMobSpawning false
+[18:53:44] minecraft:gamerule keepInventory true
+[18:53:44] minecraft:gamerule fallDamage false
+[18:53:44] minecraft:time set day
+[18:53:45] minecraft:weather clear
+[18:53:45] minecraft:fill -3 90 -11 3 90 -5 stone
+[18:53:45] minecraft:gamemode 0 RGBaper1122
+[18:53:45] minecraft:tp RGBaper1122 0 91 -8 0 15
+[18:53:46] minecraft:effect RGBaper1122 minecraft:resistance 1000000 255 true
+[18:53:46] minecraft:effect RGBaper1122 minecraft:saturation 1000000 1 true
+[18:53:46] minecraft:clear RGBaper1122
+[18:53:47] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:48] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:48] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:49] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:49] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:50] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:50] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:51] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:51] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:52] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:52] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:53] blwtc debugroute RGBaper1122 global STONE 64
+[18:53:53] blwtc debugstock
+[18:53:54] blwtc reload
+[18:53:55] blwtc debugstock
+[18:53:56] blwtc debugopen RGBaper1122 global
+[18:54:14] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[18:54:14] blwtc debugstock
+[18:54:15] blwtc debugopen RGBaper1122 global
+[18:54:27] blwtc debugstock
+[18:54:28] blwtc debugroute RGBaper1122 global COBBLESTONE 64
+[18:54:29] blwtc debugstock
+[18:54:30] blwtc debugopen RGBaper1122 global
+[18:54:35] blwtc reload
+[18:54:35] blwtc debugstock
+[18:54:36] blwtc debugopen RGBaper1122 global
