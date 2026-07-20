@@ -22,7 +22,7 @@ DEBUG_COMMANDS = {
     "debugrgbchannels",
 }
 HELP_ALLOWED_DEBUG_COMMANDS = {"debughelp"}
-COMMAND_PATTERN = re.compile(r"/blwtc\s+(debug[a-z]+)", re.IGNORECASE)
+COMMAND_PATTERN = re.compile(r"/wtc\s+(debug[a-z]+)", re.IGNORECASE)
 QUOTED_DEBUG_COMMAND_PATTERN = re.compile(r'"(debug[a-z]+)"', re.IGNORECASE)
 
 
@@ -74,7 +74,7 @@ def extract_method_body(text: str, method_name: str) -> str:
 
 
 def debug_commands_in_text(text: str) -> set[str]:
-    """提取文本中出现的 /blwtc debug* 命令名。"""
+    """提取文本中出现的 /wtc debug* 命令名。"""
     return {match.group(1).lower() for match in COMMAND_PATTERN.finditer(text)}
 
 
@@ -115,7 +115,7 @@ def check_help_lists(label: str, help_text: str, debug_help_text: str) -> list[s
     if illegal_help_debugs:
         errors.append(label + ": command.help 混入具体调试命令: " + ", ".join(illegal_help_debugs))
     if "debughelp" not in help_debugs:
-        errors.append(label + ": command.help 缺少 /blwtc debughelp 入口")
+        errors.append(label + ": command.help 缺少 /wtc debughelp 入口")
 
     debug_commands = debug_commands_in_text(debug_help_text)
     missing = sorted(DEBUG_COMMANDS - debug_commands)
@@ -177,7 +177,7 @@ def check_dist_messages() -> tuple[list[str], int, int]:
     errors = []
     jar_count = 0
     message_count = 0
-    for jar_path in sorted(DIST.glob("BlWorldTrashCan-*.jar")):
+    for jar_path in sorted(DIST.glob("WorldListTrashCan-*.jar")):
         jar_count += 1
         with zipfile.ZipFile(jar_path) as archive:
             names = sorted(name for name in archive.namelist() if name.startswith("messages/message_") and name.endswith(".yml"))
@@ -218,7 +218,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 普通帮助和 debug 帮助是否分离。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan 普通帮助和 debug 帮助是否分离。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

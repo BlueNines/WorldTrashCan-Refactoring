@@ -175,7 +175,7 @@ def debug_summary_amounts_by_order(text: str) -> dict:
     values = []
     in_summary = False
     for line in text.splitlines():
-        if "BlWorldTrashCan debug summary" in line:
+        if "WorldListTrashCan debug summary" in line:
             in_summary = True
             values = []
             continue
@@ -215,7 +215,7 @@ def parse_first_int_after_last_colon(line: str) -> int:
 
 def snapshot_global_logs(case: dict) -> dict:
     """记录公共垃圾桶日志当前位置。"""
-    log_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "logs"
+    log_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "logs"
     snapshot = {}
     for path in sorted(log_dir.glob("global-trash-*.log")):
         snapshot[str(path)] = path.stat().st_size
@@ -224,7 +224,7 @@ def snapshot_global_logs(case: dict) -> dict:
 
 def read_global_logs_since(case: dict, snapshot: dict, username: str) -> str:
     """读取公共垃圾桶操作日志增量中当前玩家相关行。"""
-    log_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "logs"
+    log_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "logs"
     lines = []
     for path in sorted(log_dir.glob("global-trash-*.log")):
         start = snapshot.get(str(path), 0)
@@ -288,14 +288,14 @@ def prepare_player(case: dict, username: str, process, command_log: Path) -> Non
 def open_trash_gui(case: dict, username: str, process, command_log: Path,
                    run_dir: Path, game_dir: Path, kind: str, screenshot_name: str) -> dict:
     """通过后台测试入口打开真实客户端 GUI 并截图。"""
-    run_console(process, command_log, "blwtc debugopen " + username + " " + kind, 1.0)
+    run_console(process, command_log, "wtc debugopen " + username + " " + kind, 1.0)
     return capture_named_screenshot(case, game_dir, run_dir, screenshot_name)
 
 
 def route_item(process, server_log: Path, command_log: Path, username: str,
                route: str, material: str, amount: int) -> str:
     """用 debugroute 准备垃圾桶库存。"""
-    command = "blwtc debugroute " + username + " " + route + " " + material + " " + str(amount)
+    command = "wtc debugroute " + username + " " + route + " " + material + " " + str(amount)
     return run_console_expect(process, server_log, command_log, command, ["[Debug] debugRoute", "routed=true"], 12.0)
 
 
@@ -312,7 +312,7 @@ def run_global_take_denied(case: dict, username: str, process, server_log: Path,
     route_item(process, server_log, command_log, username, "global", "COBBLESTONE", 7)
     run_console(process, command_log, "minecraft:clear " + username, 0.25)
     deny_permissions(process, server_log, command_log, username, [
-        "blworldtrashcan.global.take",
+        "WorldListTrashCan.GlobalTrashTakeItem",
         "WorldListTrashCan.GlobalTrashTakeItem",
     ])
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
@@ -331,7 +331,7 @@ def run_global_take_denied(case: dict, username: str, process, server_log: Path,
         ["permission", "global"],
     ], 8.0)
     gui.close_gui(case)
-    summary = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    summary = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     amounts = debug_summary_amounts(summary)
     log_delta = read_global_logs_since(case, log_snapshot, username)
     status = "PASS" if client_check["status"] == "PASS" and amounts["global"] == 7 and "-global" not in log_delta else "FAIL"
@@ -352,10 +352,10 @@ def run_global_put_denied(case: dict, username: str, process, server_log: Path,
     """验证公共垃圾桶放入权限 deny 后无法放入。"""
     clear_permissions(process, server_log, command_log, username)
     deny_permissions(process, server_log, command_log, username, [
-        "blworldtrashcan.global.put",
+        "WorldListTrashCan.GlobalTrashPutItem",
         "WorldListTrashCan.GlobalTrashPutItem",
     ])
-    before = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    before = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     before_amounts = debug_summary_amounts(before)
     give_item(process, command_log, username, "stone", 5)
     log_snapshot = snapshot_global_logs(case)
@@ -364,7 +364,7 @@ def run_global_put_denied(case: dict, username: str, process, server_log: Path,
     time.sleep(1.0)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, "global-put-denied-after-click-f2")
     gui.close_gui(case)
-    after = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    after = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     after_amounts = debug_summary_amounts(after)
     log_delta = read_global_logs_since(case, log_snapshot, username)
     status = "PASS" if after_amounts["global"] == before_amounts["global"] and "+global" not in log_delta else "FAIL"
@@ -387,7 +387,7 @@ def run_personal_take_denied(case: dict, username: str, process, server_log: Pat
     route_item(process, server_log, command_log, username, "personal", "DIRT", 3)
     run_console(process, command_log, "minecraft:clear " + username, 0.25)
     deny_permissions(process, server_log, command_log, username, [
-        "blworldtrashcan.personal.take",
+        "WorldListTrashCan.PersonalTrashTakeItem",
         "WorldListTrashCan.PersonalTrashTakeItem",
     ])
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
@@ -405,7 +405,7 @@ def run_personal_take_denied(case: dict, username: str, process, server_log: Pat
         ["permiso", "personal"],
     ], 8.0)
     gui.close_gui(case)
-    summary = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    summary = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     amounts = debug_summary_amounts(summary)
     status = "PASS" if client_check["status"] == "PASS" and amounts["personal"] == 3 else "FAIL"
     return {
@@ -424,10 +424,10 @@ def run_personal_put_denied(case: dict, username: str, process, server_log: Path
     """验证个人垃圾桶放入权限 deny 后无法放入。"""
     clear_permissions(process, server_log, command_log, username)
     deny_permissions(process, server_log, command_log, username, [
-        "blworldtrashcan.personal.put",
+        "WorldListTrashCan.PersonalTrashPutItem",
         "WorldListTrashCan.PersonalTrashPutItem",
     ])
-    before = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    before = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     before_amounts = debug_summary_amounts(before)
     give_item(process, command_log, username, "stone", 4)
     open_result = open_trash_gui(case, username, process, command_log, run_dir, game_dir, "personal", "personal-put-denied-open-f2")
@@ -435,7 +435,7 @@ def run_personal_put_denied(case: dict, username: str, process, server_log: Path
     time.sleep(1.0)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, "personal-put-denied-after-click-f2")
     gui.close_gui(case)
-    after = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    after = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     after_amounts = debug_summary_amounts(after)
     status = "PASS" if after_amounts["personal"] == before_amounts["personal"] else "FAIL"
     return {
@@ -475,7 +475,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+        trash_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
         backups.append(backup_file(trash_file, backup_dir))
         gui.patch_trash_config(case)
         copy_runtime_file(trash_file, run_dir / "logs" / "trash-after-patch.yml")
@@ -544,7 +544,7 @@ def copy_runtime_file(source: Path, target: Path) -> str:
 def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
     """复制本轮运行态证据。"""
     server_dir = Path(case["serverDir"])
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_runtime_file(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     copy_runtime_file(plugin_dir / "trash.yml", run_dir / "config" / "trash-after-restore.yml")
     copy_runtime_file(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
@@ -595,7 +595,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# GUI 取放权限真实客户端专项",
         "",
-        "- 被测 jar: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测 jar: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary.get("jarSha256", "") + "`",
         "- 验收方式: " + environments + " + 临时 PermissionDenyFixture。",
         "- 覆盖: 公共取出 deny、公共放入 deny、个人取出 deny、个人放入 deny。",
@@ -644,7 +644,7 @@ def main() -> int:
         results.append(run_case(case, prepared_clients, evidence_root))
         write_json(evidence_root / "summary.json", {"status": "RUNNING", "results": results})
     contact_sheet = make_contact_sheet(results, evidence_root)
-    jar_path = base.REPO / "dist" / "BlWorldTrashCan-universal.jar"
+    jar_path = base.REPO / "dist" / "WorldListTrashCan-universal.jar"
     summary = {
         "status": "PASS" if all(item["status"] == "PASS" for item in results) else "FAIL",
         "jar": str(jar_path),

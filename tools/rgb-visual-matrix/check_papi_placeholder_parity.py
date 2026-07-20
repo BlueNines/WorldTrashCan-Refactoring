@@ -6,38 +6,38 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXPANSION_SOURCES = {
-    "legacy": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyExpansion.java",
-    "bukkit": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitExpansion.java",
-    "paper": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanExpansion.java",
-    "folia": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaExpansion.java",
+    "legacy": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/WorldListTrashCanLegacyExpansion.java",
+    "bukkit": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/WorldListTrashCanBukkitExpansion.java",
+    "paper": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/WorldListTrashCanExpansion.java",
+    "folia": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaExpansion.java",
     "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/UniversalPlaceholderExpansion.java",
 }
 ENTRY_SOURCES = {
-    "legacy": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyPlugin.java",
-    "bukkit": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitPlugin.java",
-    "paper": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanPlugin.java",
-    "folia": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaPlugin.java",
-    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BlWorldTrashCanUniversalPlugin.java",
+    "legacy": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/WorldListTrashCanLegacyPlugin.java",
+    "bukkit": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/WorldListTrashCanBukkitPlugin.java",
+    "paper": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/WorldListTrashCanPlugin.java",
+    "folia": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaPlugin.java",
+    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/WorldListTrashCanUniversalPlugin.java",
 }
 DIST_EXPANSIONS = {
     "legacy": (
-        "dist/BlWorldTrashCan-legacy-1.12.jar",
-        "pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyExpansion.class",
+        "dist/WorldListTrashCan-legacy-1.12.jar",
+        "pixeltech/bluenine/blworldtrashcan/plugin/legacy/WorldListTrashCanLegacyExpansion.class",
     ),
     "bukkit": (
-        "dist/BlWorldTrashCan-bukkit-1.13-1.15.jar",
-        "pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitExpansion.class",
+        "dist/WorldListTrashCan-bukkit-1.13-1.15.jar",
+        "pixeltech/bluenine/blworldtrashcan/plugin/bukkit/WorldListTrashCanBukkitExpansion.class",
     ),
     "paper": (
-        "dist/BlWorldTrashCan-paper-1.16-1.20.jar",
-        "pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanExpansion.class",
+        "dist/WorldListTrashCan-paper-1.16-1.20.jar",
+        "pixeltech/bluenine/blworldtrashcan/plugin/WorldListTrashCanExpansion.class",
     ),
     "folia": (
-        "dist/BlWorldTrashCan-folia-1.20.jar",
-        "pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaExpansion.class",
+        "dist/WorldListTrashCan-folia-1.20.jar",
+        "pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaExpansion.class",
     ),
     "universal": (
-        "dist/BlWorldTrashCan-universal.jar",
+        "dist/WorldListTrashCan-universal.jar",
         "pixeltech/bluenine/blworldtrashcan/plugin/universal/UniversalPlaceholderExpansion.class",
     ),
 }
@@ -137,7 +137,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan PAPI 变量注册和交付一致性。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan PAPI 变量注册和交付一致性。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

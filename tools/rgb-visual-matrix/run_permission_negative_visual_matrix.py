@@ -25,7 +25,7 @@ TARGET_CASE_IDS = [
 
 
 FIXTURE_SOURCE = r'''
-package ai.blwtc.permission;
+package ai.wtc.permission;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** BlWorldTrashCan 权限负向验收用临时插件。 */
+/** WorldListTrashCan 权限负向验收用临时插件。 */
 public final class PermissionDenyFixture extends JavaPlugin implements CommandExecutor {
     private final Map<String, List<PermissionAttachment>> attachments = new HashMap<String, List<PermissionAttachment>>();
 
@@ -116,9 +116,9 @@ public final class PermissionDenyFixture extends JavaPlugin implements CommandEx
         }
         sender.sendMessage("AI_PERMFIXTURE_STATUS player=" + player.getName()
                 + " op=" + player.isOp()
-                + " global=" + player.hasPermission("blworldtrashcan.global.open")
-                + " personal=" + player.hasPermission("blworldtrashcan.personal.open")
-                + " admin=" + player.hasPermission("blworldtrashcan.admin"));
+                + " global=" + player.hasPermission("WorldListTrashCan.GlobalTrashOpen")
+                + " personal=" + player.hasPermission("WorldListTrashCan.PlayerTrash")
+                + " admin=" + player.hasPermission("WorldListTrashCan.Admin"));
     }
 
     /** 清理全部玩家附件。 */
@@ -214,7 +214,7 @@ def build_permission_fixture() -> Path:
         raise RuntimeError("缺少 Bukkit API jar，无法编译权限夹具: " + str(BUKKIT_API_JAR))
     if BUILD_ROOT.exists():
         shutil.rmtree(BUILD_ROOT)
-    source_dir = BUILD_ROOT / "src" / "ai" / "blwtc" / "permission"
+    source_dir = BUILD_ROOT / "src" / "ai" / "wtc" / "permission"
     classes_dir = BUILD_ROOT / "classes"
     source_dir.mkdir(parents=True, exist_ok=True)
     classes_dir.mkdir(parents=True, exist_ok=True)
@@ -231,11 +231,11 @@ def build_permission_fixture() -> Path:
     plugin_yml = (
         "name: PermissionDenyFixture\n"
         "version: 1.0.0\n"
-        "main: ai.blwtc.permission.PermissionDenyFixture\n"
+        "main: ai.wtc.permission.PermissionDenyFixture\n"
         "folia-supported: true\n"
         "commands:\n"
         "  permfixture:\n"
-        "    description: BlWorldTrashCan permission test fixture\n"
+        "    description: WorldListTrashCan permission test fixture\n"
     )
     (classes_dir / "plugin.yml").write_text(plugin_yml, encoding="utf-8")
     jar_path = BUILD_ROOT / "PermissionDenyFixture.jar"
@@ -379,7 +379,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         run_console(process, command_log, "deop " + username, 0.5)
         client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
         denied_offset = external.log_text_offset(client_log)
-        denied = send_client_command(case, game_dir, run_dir, "/blwtc reload", "permission-denied-reload-f2", 1.0)
+        denied = send_client_command(case, game_dir, run_dir, "/wtc reload", "permission-denied-reload-f2", 1.0)
         denied_check = wait_client_marker_sets(client_log, denied_offset, [
             ["权限不足"],
             ["没有权限"],
@@ -390,10 +390,10 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         assert_client_check(denied_check, case["id"] + " reload negative")
 
         global_fixture = run_console_expect(process, server_log, command_log,
-                                            "permfixture deny " + username + " blworldtrashcan.global.open WorldListTrashCan.GlobalTrashOpen",
-                                            ["AI_PERMFIXTURE_DENY", "permissions=2"])
+                                            "permfixture deny " + username + " WorldListTrashCan.GlobalTrashOpen",
+                                            ["AI_PERMFIXTURE_DENY", "permissions=1"])
         open_offset = external.log_text_offset(client_log)
-        denied_global = send_client_command(case, game_dir, run_dir, "/blwtc global", "permission-denied-global-f2", 1.0)
+        denied_global = send_client_command(case, game_dir, run_dir, "/wtc global", "permission-denied-global-f2", 1.0)
         global_check = wait_client_marker_sets(client_log, open_offset, [
             ["权限不足", "公共垃圾桶"],
             ["不能打开公共垃圾桶"],
@@ -408,10 +408,10 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
                            "permfixture clear " + username,
                            ["AI_PERMFIXTURE_CLEAR"])
         personal_fixture = run_console_expect(process, server_log, command_log,
-                                              "permfixture deny " + username + " blworldtrashcan.personal.open WorldListTrashCan.PlayerTrash",
-                                              ["AI_PERMFIXTURE_DENY", "permissions=2"])
+                                              "permfixture deny " + username + " WorldListTrashCan.PlayerTrash",
+                                              ["AI_PERMFIXTURE_DENY", "permissions=1"])
         personal_offset = external.log_text_offset(client_log)
-        denied_personal = send_client_command(case, game_dir, run_dir, "/blwtc personal", "permission-denied-personal-f2", 1.0)
+        denied_personal = send_client_command(case, game_dir, run_dir, "/wtc personal", "permission-denied-personal-f2", 1.0)
         personal_check = wait_client_marker_sets(client_log, personal_offset, [
             ["权限不足", "个人垃圾桶"],
             ["不能打开个人垃圾桶"],
@@ -427,7 +427,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
                            ["AI_PERMFIXTURE_CLEAR"])
         run_console(process, command_log, "op " + username, 0.7)
         allowed_offset = external.log_text_offset(client_log)
-        allowed = send_client_command(case, game_dir, run_dir, "/blwtc reload", "permission-allowed-reload-f2", 1.4)
+        allowed = send_client_command(case, game_dir, run_dir, "/wtc reload", "permission-allowed-reload-f2", 1.4)
         allowed_check = wait_client_marker_sets(client_log, allowed_offset, [
             ["已重载"],
             ["配置已重载"],
@@ -437,7 +437,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         ], 8.0)
         assert_client_check(allowed_check, case["id"] + " reload op")
 
-        platform_output = run_console_capture(process, server_log, command_log, "blwtc platform", 1.0)
+        platform_output = run_console_capture(process, server_log, command_log, "wtc platform", 1.0)
         result.update({
             "status": "PASS",
             "deniedReload": {
@@ -503,7 +503,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
 def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
     """复制本轮运行态证据。"""
     server_dir = Path(case["serverDir"])
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_if_exists(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     copy_if_exists(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
     copy_if_exists(plugin_dir / "config.yml", run_dir / "config" / "config.yml")
@@ -522,8 +522,8 @@ def write_readme(evidence_root: Path, results: list[dict]) -> None:
         "# 权限负向真实客户端专项",
         "",
         "- 目标: 收敛 F-016 和 README 中保留的真实玩家负向权限缺口。",
-        "- 被测 jar: `dist/BlWorldTrashCan-universal.jar`",
-        "- 验收: 真实客户端非 OP 执行 `/blwtc reload` 必须收到无权限提示；通过临时权限夹具显式 deny `global.open`/`personal.open` 后，`/blwtc global` 和 `/blwtc personal` 必须收到无权限提示；RCON `op` 后 `/blwtc reload` 必须成功。",
+        "- 被测 jar: `dist/WorldListTrashCan-universal.jar`",
+        "- 验收: 真实客户端非 OP 执行 `/wtc reload` 必须收到无权限提示；通过临时权限夹具显式 deny `global.open`/`personal.open` 后，`/wtc global` 和 `/wtc personal` 必须收到无权限提示；RCON `op` 后 `/wtc reload` 必须成功。",
         "- 证据: 每端保留 F2 截图、客户端 stdout、服务端 console、命令日志、`latest.log` 和 `summary.json`。",
         "",
         "| 服务端 | 版本 | 状态 | 玩家 |",

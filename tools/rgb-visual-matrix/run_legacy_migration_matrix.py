@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 import shutil
 import socket
 import struct
@@ -8,7 +9,7 @@ import time
 from pathlib import Path
 
 
-RCON_PASSWORD = "blwtc"
+RCON_PASSWORD = "wtc"
 RCON_TIMEOUT_SECONDS = 180
 SERVER_TIMEOUT_SECONDS = 240
 
@@ -19,7 +20,7 @@ def log(message: str) -> None:
 
 
 def repo_root() -> Path:
-    """返回 BlWorldTrashCan 重构仓库根目录。"""
+    """返回 WorldListTrashCan 重构仓库根目录。"""
     path = Path(__file__).resolve()
     for parent in path.parents:
         if (parent / "pom.xml").is_file() and (parent / "bl-world-trashcan-core").is_dir():
@@ -38,7 +39,7 @@ EVIDENCE_ROOT = REPO / "docs" / "test-evidence"
 BUILD_ROOT = REPO / "build" / "legacy-migration-matrix"
 JAVA8 = Path(r"C:\Program Files\Java\jre1.8.0_451\bin\java.exe")
 PAPER1122_JAR = WORKSPACE / "paper-1.12.2-test-server" / "paper-1.12.2-1620.jar"
-UNIVERSAL_JAR = REPO / "dist" / "BlWorldTrashCan-universal.jar"
+UNIVERSAL_JAR = REPO / "dist" / "WorldListTrashCan-universal.jar"
 
 
 def write_json(path: Path, data) -> None:
@@ -75,11 +76,8 @@ def find_free_port() -> int:
 
 
 def ensure_inputs() -> None:
-    """确认本轮验证需要的 jar 和 Java 可用。"""
-    missing = []
-    for path in (JAVA8, PAPER1122_JAR, UNIVERSAL_JAR):
-        if not path.is_file():
-            missing.append(str(path))
+    """确认迁移矩阵需要的 Jar 和 Java 可用。"""
+    missing = [str(path) for path in (JAVA8, PAPER1122_JAR, UNIVERSAL_JAR) if not path.is_file()]
     if missing:
         raise RuntimeError("缺少 F-005 迁移验证输入: " + "; ".join(missing))
 
@@ -106,8 +104,7 @@ def recv_rcon(sock: socket.socket) -> tuple[int, int, str]:
     length = struct.unpack("<i", recv_exact(sock, 4))[0]
     packet = recv_exact(sock, length)
     packet_id, packet_type = struct.unpack("<ii", packet[:8])
-    payload = packet[8:-2].decode("utf-8", errors="replace")
-    return packet_id, packet_type, payload
+    return packet_id, packet_type, packet[8:-2].decode("utf-8", errors="replace")
 
 
 def rcon_command(port: int, command: str) -> str:
@@ -145,7 +142,7 @@ def make_server_properties(port: int, rcon_port: int) -> str:
         "rcon.port=" + str(rcon_port),
         "rcon.password=" + RCON_PASSWORD,
         "online-mode=false",
-        "motd=BlWorldTrashCan legacy migration matrix",
+        "motd=WorldListTrashCan legacy migration matrix",
         "level-name=world",
         "spawn-protection=0",
         "view-distance=4",
@@ -156,32 +153,15 @@ def make_server_properties(port: int, rcon_port: int) -> str:
     ])
 
 
-def adjacent_old_config() -> str:
-    """返回相邻旧目录迁移用的旧 config.yml。"""
-    return legacy_config("legacy_adjacent.yml", 123, 7, 250, 9, 4.5, 5, "global-trash")
-
-
-def current_old_config() -> str:
-    """返回当前目录旧结构迁移用的旧 config.yml。"""
-    return legacy_config("legacy_current.yml", 77, 8, 300, 11, 9.5, 6, "personal-trash")
-
-
-def legacy_config(language: str, interval: int, max_pages: int, delay: int,
-                  world_max: int, take_cost: float, recovery_delay: int, recovery_mode: str) -> str:
-    """生成旧 WorldListTrashCan config.yml 测试夹具。"""
-    use_model = 1 if recovery_mode == "global-trash" else 2
+def legacy_config(case: dict) -> str:
+    """生成旧版单文件 config.yml 测试夹具。"""
+    use_model = 1 if case["recoveryMode"] == "global-trash" else 2
     return f"""Set:
-  Lang: {language}
+  Lang: {case['language']}
   Debug: true
-  SecondCount: {interval}
+  SecondCount: {case['interval']}
   WorldClearWhiteList:
   - legacy_ignore
-  NoClearContainerType:
-  - DIAMOND
-  NoClearContainerName:
-  - 不清理名称
-  NoClearContainerLore:
-  - 不清理Lore
   ClearEntity:
     Flag: false
     ClearExpBottle: true
@@ -190,14 +170,10 @@ def legacy_config(language: str, interval: int, max_pages: int, delay: int,
     ClearProjectile: true
     ClearReNameEntity: false
     IgnoreEntitiesInBoat: true
-    WhiteNameList:
-    - 保护实体
-    BlackNameList:
-    - 强制实体
   GlobalTrash:
     Flag: true
-    MaxPage: {max_pages}
-    Delay: {delay}
+    MaxPage: {case['maxPages']}
+    Delay: {case['takeDelay']}
     EveryClearGlobalTrash: 3
     Log:
       Enable: true
@@ -210,18 +186,18 @@ def legacy_config(language: str, interval: int, max_pages: int, delay: int,
         ModelId: 103
   SighCheckName: '[trash]'
   SighCheckedName: '[created]'
-  DefaultRashCanMax: {world_max}
+  DefaultRashCanMax: {case['worldMax']}
   BanWorldNameList:
   - banned_world
   PersonalTrashCan:
     Flag: true
     NoWorldTrashCanEnterPersonalTrashCan: true
     OriginalFeatureClearItemAddGlobalTrash:
-      Delay: {recovery_delay}
+      Delay: {case['recoveryDelay']}
       UseModel: {use_model}
       Model2:
         AutoClear: true
-        Coins: {take_cost}
+        Coins: {case['takeCost']}
   ChatFlag: true
   ChatConsoleLogFlag: true
   ChatClickCommand: '/wtc stats'
@@ -279,37 +255,38 @@ GatherEntityLimitCount:
 """
 
 
-def legacy_data(max_count: int, material: str, second_material: str) -> str:
-    """生成旧 WorldListTrashCan data/data.yml 测试夹具。"""
+def legacy_data(case: dict) -> str:
+    """生成旧版 data/data.yml 测试夹具。"""
     return f"""WorldData:
   world:
     SignLocation:
     - '1,64,1'
     - '2.8,65.2,3.9'
-    RashMaxCount: {max_count}
+    RashMaxCount: {case['worldMax']}
     BanItem:
-    - {material}
-    - {second_material}
+    - {case['firstMaterial']}
+    - {case['secondMaterial']}
 """
 
 
 def prepare_server(case: dict, run_root: Path) -> Path:
-    """准备独立 Paper 1.12.2 迁移测试服目录。"""
+    """准备一个独立 Paper 1.12.2 迁移测试服。"""
     server_dir = run_root / case["id"] / "server"
     if server_dir.exists():
         shutil.rmtree(server_dir)
     (server_dir / "plugins").mkdir(parents=True)
     shutil.copy2(PAPER1122_JAR, server_dir / PAPER1122_JAR.name)
     copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "WorldListTrashCan-universal.jar")
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
-    (server_dir / "server.properties").write_text(make_server_properties(case["port"], case["rcon"]), encoding="utf-8")
+    (server_dir / "server.properties").write_text(
+        make_server_properties(case["port"], case["rcon"]), encoding="utf-8")
     write_legacy_source(server_dir, case)
     return server_dir
 
 
 def copy_paper_runtime_cache(server_dir: Path) -> None:
-    """复制 Paper 1.12.2 已有运行缓存，避免临时服重复下载 vanilla jar。"""
+    """复制 Paper 1.12.2 运行缓存，避免重复下载。"""
     source_server = PAPER1122_JAR.parent
     for name in ("cache", "libraries"):
         source = source_server / name
@@ -319,29 +296,34 @@ def copy_paper_runtime_cache(server_dir: Path) -> None:
 
 
 def write_legacy_source(server_dir: Path, case: dict) -> None:
-    """写入指定迁移来源的旧配置和旧数据。"""
-    if case["source"] == "adjacent":
-        target = server_dir / "plugins" / "WorldListTrashCan"
-        config_text = adjacent_old_config()
-        data_text = legacy_data(9, "STONE", "DIRT")
-    else:
-        target = server_dir / "plugins" / "BlWorldTrashCan"
-        config_text = current_old_config()
-        data_text = legacy_data(11, "COBBLESTONE", "STONE")
-    (target / "data").mkdir(parents=True, exist_ok=True)
-    (target / "config.yml").write_text(config_text, encoding="utf-8")
-    (target / "data" / "data.yml").write_text(data_text, encoding="utf-8")
+    """按用例写入根目录旧结构或未完成备份结构。"""
+    data_dir = server_dir / "plugins" / "WorldListTrashCan"
+    backup_dir = data_dir / "old-version-config"
+    source_dir = backup_dir if case["source"] == "backup-only" else data_dir
+    (source_dir / "data").mkdir(parents=True, exist_ok=True)
+    (source_dir / "config.yml").write_text(legacy_config(case), encoding="utf-8")
+    (source_dir / "data" / "data.yml").write_text(legacy_data(case), encoding="utf-8")
+    (source_dir / "logs").mkdir(parents=True, exist_ok=True)
+    (source_dir / "logs" / "legacy.log").write_text("legacy-log-must-be-kept\n", encoding="utf-8")
+    (source_dir / "custom.yml").write_text("custom: keep\n", encoding="utf-8")
+    if case["source"] == "partial-archive":
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        (backup_dir / "config.yml").write_text(legacy_config(case), encoding="utf-8")
+    if case["source"] == "backup-only":
+        staging = data_dir / ".migration-staging"
+        staging.mkdir(parents=True, exist_ok=True)
+        (staging / "stale.txt").write_text("interrupted\n", encoding="utf-8")
 
 
-def run_case(case: dict, run_root: Path, evidence_dir: Path) -> dict:
-    """运行单个迁移用例并返回断言结果。"""
-    log("准备迁移用例 " + case["id"])
-    server_dir = prepare_server(case, run_root)
-    stdout_log = evidence_dir / case["id"] / "logs" / "server-stdout.log"
-    stderr_log = evidence_dir / case["id"] / "logs" / "server-stderr.log"
-    command_log = evidence_dir / case["id"] / "logs" / "rcon-commands.log"
-    stdout_log.parent.mkdir(parents=True, exist_ok=True)
-    with stdout_log.open("w", encoding="utf-8", errors="replace") as stdout, stderr_log.open("w", encoding="utf-8", errors="replace") as stderr:
+def run_server_phase(case: dict, server_dir: Path, evidence_dir: Path, phase: str,
+                     commands: list[str]) -> dict[str, str]:
+    """启动一次服务端、执行命令并保留该阶段完整日志。"""
+    phase_dir = evidence_dir / case["id"] / "logs" / phase
+    phase_dir.mkdir(parents=True, exist_ok=True)
+    stdout_log = phase_dir / "server-stdout.log"
+    stderr_log = phase_dir / "server-stderr.log"
+    with stdout_log.open("w", encoding="utf-8", errors="replace") as stdout, \
+            stderr_log.open("w", encoding="utf-8", errors="replace") as stderr:
         process = subprocess.Popen(
             [str(JAVA8), "-Xms512M", "-Xmx1024M", "-jar", PAPER1122_JAR.name, "nogui"],
             cwd=server_dir,
@@ -354,23 +336,22 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path) -> dict:
         )
         try:
             wait_for_rcon(case["rcon"])
-            commands = ["plugins", "blwtc platform", "blwtc stats", "blwtc clear true"]
             responses = {}
-            command_entries = []
+            entries = []
             for command in commands:
                 body = rcon_command(case["rcon"], command)
                 responses[command] = body
-                command_entries.append("> " + command + "\n" + body.rstrip())
-                time.sleep(0.3)
-            command_log.parent.mkdir(parents=True, exist_ok=True)
-            command_log.write_text("\n\n".join(command_entries) + "\n", encoding="utf-8")
-            time.sleep(1.0)
-            result = assert_case(case, server_dir, responses)
+                entries.append("> " + command + "\n" + body.rstrip())
+                time.sleep(0.25)
+            (phase_dir / "rcon-commands.log").write_text(
+                "\n\n".join(entries) + "\n", encoding="utf-8")
+            time.sleep(0.75)
             stop_server(process, case["rcon"])
         finally:
             terminate_server(process)
-    copy_case_evidence(case, server_dir, evidence_dir)
-    return result
+    copy_if_exists(server_dir / "logs" / "latest.log", phase_dir / "latest.log")
+    return responses
+
 
 def stop_server(process: subprocess.Popen, rcon_port: int) -> None:
     """优先通过 RCON 停止服务端。"""
@@ -396,9 +377,34 @@ def terminate_server(process: subprocess.Popen) -> None:
         process.wait(timeout=30)
 
 
-def assert_case(case: dict, server_dir: Path, responses: dict) -> dict:
-    """断言单个迁移用例的生成配置、报告和命令 smoke。"""
-    data_dir = server_dir / "plugins" / "BlWorldTrashCan"
+def run_case(case: dict, run_root: Path, evidence_dir: Path) -> dict:
+    """执行首迁、二次启动和可选旧配置回放拒绝验证。"""
+    log("准备迁移用例 " + case["id"])
+    server_dir = prepare_server(case, run_root)
+    commands = ["plugins", "wtc platform", "wtc stats", "wtc clear true"]
+    first_responses = run_server_phase(case, server_dir, evidence_dir, "01-first-start", commands)
+    first_checks = assert_migrated(case, server_dir, first_responses)
+    marker = server_dir / "plugins" / "WorldListTrashCan" / "old-version-config" / "migration-complete.yml"
+    marker_before = marker.read_bytes()
+    second_responses = run_server_phase(case, server_dir, evidence_dir, "02-marker-restart", commands)
+    second_checks = assert_marker_restart(case, server_dir, second_responses, marker_before, evidence_dir)
+    snapshot_case_data(case, server_dir, evidence_dir)
+    reject_checks = []
+    if case.get("checkReject"):
+        reject_checks = run_reintroduced_legacy_rejection(case, server_dir, evidence_dir)
+    return {
+        "id": case["id"],
+        "source": case["source"],
+        "passed": True,
+        "checks": first_checks + second_checks + reject_checks,
+        "commands": {"first": first_responses, "restart": second_responses},
+    }
+
+
+def assert_migrated(case: dict, server_dir: Path, responses: dict[str, str]) -> list[dict]:
+    """断言旧结构已隔离、配置已迁移并且插件可正常运行。"""
+    data_dir = server_dir / "plugins" / "WorldListTrashCan"
+    backup = data_dir / "old-version-config"
     generated = {
         "config": data_dir / "config.yml",
         "cleanup": data_dir / "cleanup.yml",
@@ -406,68 +412,93 @@ def assert_case(case: dict, server_dir: Path, responses: dict) -> dict:
         "protections": data_dir / "protections.yml",
         "entityLimits": data_dir / "entity-limits.yml",
         "worlds": data_dir / "data" / "worlds.yml",
-        "report": data_dir / "legacy-migration-report.md",
+        "report": backup / "migration-report.md",
+        "marker": backup / "migration-complete.yml",
+        "oldConfig": backup / "config.yml",
+        "oldData": backup / "data" / "data.yml",
+        "oldLog": backup / "logs" / "legacy.log",
+        "oldCustom": backup / "custom.yml",
     }
     for name, path in generated.items():
         if not path.is_file():
-            raise AssertionError(case["id"] + " 缺少生成文件 " + name + ": " + str(path))
-    assertions = expected_assertions(case)
+            raise AssertionError(case["id"] + " 缺少文件 " + name + ": " + str(path))
     checks = []
-    checks.extend(assert_text(generated["config"], assertions["config"]))
-    checks.extend(assert_text(generated["cleanup"], assertions["cleanup"]))
-    checks.extend(assert_text(generated["trash"], assertions["trash"]))
-    checks.extend(assert_text(generated["protections"], assertions["protections"]))
-    checks.extend(assert_text(generated["entityLimits"], assertions["entityLimits"]))
-    checks.extend(assert_text(generated["worlds"], assertions["worlds"]))
-    checks.extend(assert_text(generated["report"], assertions["report"]))
-    if case["source"] == "current":
-        backup = data_dir / "legacy-migration-backup" / "config.yml"
-        if not backup.is_file():
-            raise AssertionError(case["id"] + " 当前目录旧结构未生成备份: " + str(backup))
-        checks.append({"file": str(backup), "needle": "Set:", "ok": True})
-    plugins_output = responses.get("plugins", "")
-    platform_output = responses.get("blwtc platform", "")
-    stats_output = responses.get("blwtc stats", "")
-    if "BlWorldTrashCan" not in plugins_output:
-        raise AssertionError(case["id"] + " plugins 未显示 BlWorldTrashCan: " + plugins_output)
-    if "legacy-1.12" not in platform_output or "universal" not in platform_output:
-        raise AssertionError(case["id"] + " platform 未显示 legacy-1.12 universal: " + platform_output)
-    if str(case["maxPages"]) not in stats_output:
-        raise AssertionError(case["id"] + " stats 未包含迁移后的公共页数: " + stats_output)
-    return {
-        "id": case["id"],
-        "source": case["source"],
-        "passed": True,
-        "checks": checks,
-        "commands": responses,
-    }
+    checks.extend(assert_text(generated["config"], [
+        "config-schema-version: 2", "language: " + case["language"], "debug: true"]))
+    checks.extend(assert_text(generated["cleanup"], [
+        "interval-seconds: " + str(case["interval"]), "- legacy_ignore", "旧ActionBar", "旧BossBar"]))
+    checks.extend(assert_text(generated["trash"], [
+        "max-pages: " + str(case["maxPages"]),
+        "take-delay-millis: " + str(case["takeDelay"]),
+        "default-max-count: " + str(case["worldMax"]),
+        "mode: " + case["recoveryMode"],
+        "model-id: 103",
+    ]))
+    checks.extend(assert_text(generated["protections"], [
+        "interval-seconds: 1.5", "interval-seconds: 2.5", "remove-unpickable-arrow: true"]))
+    checks.extend(assert_text(generated["entityLimits"], [
+        "entity: ZOMBIE", "entity: DROPPED_ITEM", "remove-count: 4"]))
+    checks.extend(assert_text(generated["worlds"], [
+        "1,64,1", "2,65,3", "max-count: " + str(case["worldMax"]), case["firstMaterial"]]))
+    checks.extend(assert_text(generated["report"], [
+        "old-version-config 隔离备份", "Set.SecondCount -> interval-seconds"]))
+    checks.extend(assert_text(generated["marker"], [
+        "status: complete", "target-config-schema-version: 2", "target-plugin-version: \"7.0.0\""]))
+    checks.extend(assert_text(generated["oldLog"], ["legacy-log-must-be-kept"]))
+    checks.extend(assert_text(generated["oldCustom"], ["custom: keep"]))
+    marker_text = generated["marker"].read_text(encoding="utf-8")
+    if not re.search(r'source-sha256: "[0-9a-f]{64}"', marker_text):
+        raise AssertionError(case["id"] + " 完成标记缺少 64 位 source-sha256")
+    root_config = generated["config"].read_text(encoding="utf-8", errors="replace")
+    if "Set:" in root_config or "GlobalBanItem:" in root_config:
+        raise AssertionError(case["id"] + " 根目录仍在直接使用旧配置结构")
+    assert_runtime_commands(case, responses)
+    return checks
 
 
-def expected_assertions(case: dict) -> dict:
-    """返回当前用例应当在生成文件中出现的关键文本。"""
-    if case["source"] == "adjacent":
-        return {
-            "config": ["language: legacy_adjacent.yml", "debug: true"],
-            "cleanup": ["interval-seconds: 123", "ignored-worlds:", "- legacy_ignore", "enabled: false", "ignore-entities-in-boat: true", "click-command: /wtc stats", "旧ActionBar", "旧BossBar"],
-            "trash": ["max-pages: 7", "take-delay-millis: 250", "default-max-count: 9", "take-cost: 4.5", "mode: global-trash", "delay-seconds: 5", "- DIRT", "- COBBLESTONE", "model-id: 103"],
-            "protections": ["interval-seconds: 1.5", "interval-seconds: 2.5", "drop-protection:", "enabled: true", "remove-unpickable-arrow: true", "prevent-farmland-trampling: true"],
-            "entityLimits": ["world-limits:", "gather-limits:", "entity: ZOMBIE", "entity: DROPPED_ITEM", "remove-count: 4"],
-            "worlds": ["1,64,1", "2,65,3", "max-count: 9", "- STONE", "- DIRT"],
-            "report": ["相邻旧插件数据目录", "Set.SecondCount -> interval-seconds", "GatherEntityLimitCount.DefaultCount -> gather-limits.defaults"],
-        }
-    return {
-        "config": ["language: legacy_current.yml", "debug: true", "migration-enabled: true"],
-        "cleanup": ["interval-seconds: 77", "ignored-worlds:", "- legacy_ignore", "enabled: false", "ignore-entities-in-boat: true", "旧ActionBar", "旧BossBar"],
-        "trash": ["max-pages: 8", "take-delay-millis: 300", "default-max-count: 11", "take-cost: 9.5", "mode: personal-trash", "delay-seconds: 6", "- DIRT", "- COBBLESTONE", "model-id: 103"],
-        "protections": ["interval-seconds: 1.5", "interval-seconds: 2.5", "drop-protection:", "enabled: true", "remove-unpickable-arrow: true", "prevent-farmland-trampling: true"],
-        "entityLimits": ["world-limits:", "gather-limits:", "entity: ZOMBIE", "entity: DROPPED_ITEM", "remove-count: 4"],
-        "worlds": ["1,64,1", "2,65,3", "max-count: 11", "- COBBLESTONE", "- STONE"],
-        "report": ["当前插件数据目录旧结构", "Set.SecondCount -> interval-seconds", "GatherEntityLimitCount.DefaultCount -> gather-limits.defaults"],
-    }
+def assert_runtime_commands(case: dict, responses: dict[str, str]) -> None:
+    """断言规范命令入口和迁移后的运行数据可用。"""
+    if "WorldListTrashCan" not in responses.get("plugins", ""):
+        raise AssertionError(case["id"] + " plugins 未显示 WorldListTrashCan")
+    platform = responses.get("wtc platform", "")
+    if "legacy-1.12" not in platform or "universal" not in platform:
+        raise AssertionError(case["id"] + " platform 未显示 legacy-1.12 universal: " + platform)
+    if str(case["maxPages"]) not in responses.get("wtc stats", ""):
+        raise AssertionError(case["id"] + " stats 未包含迁移后的公共页数")
+
+
+def assert_marker_restart(case: dict, server_dir: Path, responses: dict[str, str],
+                          marker_before: bytes, evidence_dir: Path) -> list[dict]:
+    """断言完成标记使第二次启动跳过迁移且业务仍可用。"""
+    marker = server_dir / "plugins" / "WorldListTrashCan" / "old-version-config" / "migration-complete.yml"
+    if marker.read_bytes() != marker_before:
+        raise AssertionError(case["id"] + " 第二次启动改写了迁移完成标记")
+    stdout = evidence_dir / case["id"] / "logs" / "02-marker-restart" / "server-stdout.log"
+    stdout_text = stdout.read_text(encoding="utf-8", errors="replace")
+    if "[Migration] 已完成旧 WorldListTrashCan 配置迁移" in stdout_text:
+        raise AssertionError(case["id"] + " 第二次启动重复执行了迁移")
+    assert_runtime_commands(case, responses)
+    return [{"file": str(marker), "needle": "restart-marker-unchanged", "ok": True}]
+
+
+def run_reintroduced_legacy_rejection(case: dict, server_dir: Path, evidence_dir: Path) -> list[dict]:
+    """把旧结构重新放回根目录并断言插件拒绝加载。"""
+    data_dir = server_dir / "plugins" / "WorldListTrashCan"
+    (data_dir / "config.yml").write_text(legacy_config(case), encoding="utf-8")
+    responses = run_server_phase(case, server_dir, evidence_dir, "03-reintroduced-legacy-rejected", [
+        "plugins", "wtc platform"])
+    stdout = evidence_dir / case["id"] / "logs" / "03-reintroduced-legacy-rejected" / "server-stdout.log"
+    text = stdout.read_text(encoding="utf-8", errors="replace")
+    if "[MigrationGuard] legacy-root-after-complete" not in text:
+        raise AssertionError(case["id"] + " 重新放回旧配置后没有明确拒绝原因")
+    platform = responses.get("wtc platform", "")
+    if "legacy-1.12" in platform or "universal" in platform:
+        raise AssertionError(case["id"] + " 重新放回旧配置后插件仍在处理命令")
+    return [{"file": str(stdout), "needle": "[MigrationGuard] legacy-root-after-complete", "ok": True}]
 
 
 def assert_text(path: Path, needles: list[str]) -> list[dict]:
-    """断言文件中包含所有关键文本。"""
+    """断言 UTF-8 文本中包含全部关键内容。"""
     text = path.read_text(encoding="utf-8", errors="replace")
     checks = []
     for needle in needles:
@@ -477,26 +508,13 @@ def assert_text(path: Path, needles: list[str]) -> list[dict]:
     return checks
 
 
-def copy_case_evidence(case: dict, server_dir: Path, evidence_dir: Path) -> None:
-    """复制单个用例的旧源、生成配置、迁移报告和服务端日志。"""
-    case_dir = evidence_dir / case["id"]
-    copy_dir(server_dir / "plugins" / "BlWorldTrashCan", case_dir / "generated-plugin-data")
-    if case["source"] == "adjacent":
-        copy_dir(server_dir / "plugins" / "WorldListTrashCan", case_dir / "legacy-source")
-    else:
-        source_dir = server_dir / "plugins" / "BlWorldTrashCan" / "legacy-migration-backup"
-        copy_dir(source_dir, case_dir / "legacy-source")
-    copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-
-
-def copy_dir(source: Path, target: Path) -> None:
-    """复制目录到证据目录。"""
-    if not source.exists():
-        return
+def snapshot_case_data(case: dict, server_dir: Path, evidence_dir: Path) -> None:
+    """在破坏性拒绝用例前复制迁移后的完整插件数据。"""
+    source = server_dir / "plugins" / "WorldListTrashCan"
+    target = evidence_dir / case["id"] / "generated-plugin-data"
     if target.exists():
         shutil.rmtree(target)
-    ignore = shutil.ignore_patterns("*.jar", "world", "world_*", "cache", "assets")
-    shutil.copytree(source, target, ignore=ignore)
+    shutil.copytree(source, target, ignore=shutil.ignore_patterns("*.jar"))
 
 
 def copy_if_exists(source: Path, target: Path) -> None:
@@ -507,15 +525,15 @@ def copy_if_exists(source: Path, target: Path) -> None:
 
 
 def write_readme(evidence_dir: Path, summary: dict) -> None:
-    """写入本轮 F-005 迁移证据说明。"""
+    """写入迁移专项证据说明。"""
     lines = [
-        "# F-005 旧配置迁移专项验收",
+        "# F-005 同名旧配置隔离与迁移专项验收",
         "",
-        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 服务端: Paper 1.12.2 独立临时测试服，Java 8",
-        "- 验收方式: 真实服务端启动 + RCON 命令 smoke + 迁移后文件断言",
-        "- 覆盖来源: 相邻旧目录 `plugins/WorldListTrashCan`、当前目录旧结构 `plugins/BlWorldTrashCan`",
+        "- 验收方式: 真实服务端启动 + RCON + 文件级断言",
+        "- 覆盖: 首次迁移、完整目录隔离、日志保留、中断重入、无标记备份重试、标记跳过、旧结构回放拒绝",
         "- 结论: " + ("PASS" if summary["allPassed"] else "FAIL"),
         "",
         "## 证据",
@@ -526,17 +544,38 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
             "### " + result["id"],
             "",
             "- 来源类型: `" + result["source"] + "`",
-            "- 生成配置: `" + result["id"] + "/generated-plugin-data/`",
-            "- 旧源备份: `" + result["id"] + "/legacy-source/`",
-            "- 服务端日志: `" + result["id"] + "/logs/latest.log`、`" + result["id"] + "/logs/server-stdout.log`",
-            "- RCON 记录: `" + result["id"] + "/logs/rcon-commands.log`",
+            "- 迁移后数据: `" + result["id"] + "/generated-plugin-data/`",
+            "- 首次启动: `" + result["id"] + "/logs/01-first-start/`",
+            "- 标记重启: `" + result["id"] + "/logs/02-marker-restart/`",
+            "- 旧结构回放拒绝: `" + result["id"] + "/logs/03-reintroduced-legacy-rejected/`（仅对应开启该断言的用例）",
             "",
         ])
     (evidence_dir / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def case_data(identifier: str, source: str, index: int, check_reject: bool = False) -> dict:
+    """创建一组具有独立迁移值的测试用例。"""
+    return {
+        "id": identifier,
+        "source": source,
+        "port": find_free_port(),
+        "rcon": find_free_port(),
+        "language": "legacy_case_" + str(index) + ".yml",
+        "interval": 70 + index,
+        "maxPages": 6 + index,
+        "takeDelay": 200 + index,
+        "worldMax": 8 + index,
+        "takeCost": 3.5 + index,
+        "recoveryDelay": 4 + index,
+        "recoveryMode": "personal-trash" if index % 2 else "global-trash",
+        "firstMaterial": "COBBLESTONE" if index % 2 else "STONE",
+        "secondMaterial": "STONE" if index % 2 else "DIRT",
+        "checkReject": check_reject,
+    }
+
+
 def main() -> int:
-    """执行 F-005 旧配置迁移专项矩阵。"""
+    """执行 F-005 同名旧配置隔离与迁移矩阵。"""
     ensure_inputs()
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     run_root = BUILD_ROOT / timestamp
@@ -544,12 +583,11 @@ def main() -> int:
     run_root.mkdir(parents=True, exist_ok=True)
     evidence_dir.mkdir(parents=True, exist_ok=True)
     cases = [
-        {"id": "adjacent-legacy-folder", "source": "adjacent", "port": find_free_port(), "rcon": find_free_port(), "maxPages": 7},
-        {"id": "current-plugin-folder", "source": "current", "port": find_free_port(), "rcon": find_free_port(), "maxPages": 8},
+        case_data("current-root", "current", 1, True),
+        case_data("partial-archive-resume", "partial-archive", 2),
+        case_data("backup-only-retry", "backup-only", 3),
     ]
-    results = []
-    for case in cases:
-        results.append(run_case(case, run_root, evidence_dir))
+    results = [run_case(case, run_root, evidence_dir) for case in cases]
     summary = {
         "timestamp": timestamp,
         "allPassed": all(item["passed"] for item in results),

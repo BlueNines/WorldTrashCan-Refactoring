@@ -1,0 +1,18 @@
+# 聊天防刷屏。
+chat-rate-limit:
+  enabled: true
+  interval-seconds: 1.5
+  message: '&c慢一点'
+  command: say chat-rate
+command-rate-limit:
+  enabled: true
+  interval-seconds: 2.5
+  message: '&c命令慢一点'
+  whitelist:
+  - /login
+  command: say command-rate
+drop-protection:
+  enabled: true
+simple-optimize:
+  remove-unpickable-arrow: true
+  prevent-farmland-trampling: true

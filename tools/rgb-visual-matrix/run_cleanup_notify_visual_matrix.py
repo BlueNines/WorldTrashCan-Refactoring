@@ -161,7 +161,7 @@ def replace_notify_block(text: str) -> str:
 
 def write_notify_config(case: dict) -> Path:
     """写入本轮清理通知专项验收配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not target.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法写入通知测试配置: " + str(target))
     original = target.read_text(encoding="utf-8", errors="replace")
@@ -223,8 +223,8 @@ def setup_player(case: dict, username: str, process, command_log: Path) -> None:
 def reload_plugin(process, command_log: Path, server_log: Path) -> None:
     """重载插件配置并等待配置生效。"""
     offset = external.log_text_offset(server_log)
-    run_console(process, command_log, "blwtc reload", 0.5)
-    external.wait_command_markers(server_log, offset, ["[Message]"], 12, "blwtc reload")
+    run_console(process, command_log, "wtc reload", 0.5)
+    external.wait_command_markers(server_log, offset, ["[Message]"], 12, "wtc reload")
 
 
 def capture_named_screenshot(case: dict, game_dir: Path, run_dir: Path, name: str) -> Path:
@@ -274,7 +274,7 @@ def render_server_log_screenshot(text: str, target: Path, title: str) -> Path:
     lines = [title, ""]
     useful = []
     for line in external.strip_ansi(text).splitlines():
-        if "AI_WTC_NOTIFY" in line or "debugNotify" in line or "BlWorldTrashCan" in line or "AI_NOTIFY" in line:
+        if "AI_WTC_NOTIFY" in line or "debugNotify" in line or "WorldListTrashCan" in line or "AI_NOTIFY" in line:
             useful.append(line)
     lines.extend(useful[-36:] if useful else external.strip_ansi(text).splitlines()[-36:])
     width = 1600
@@ -332,7 +332,7 @@ def trigger_notify(case: dict, process, server_log: Path, command_log: Path, gam
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
     client_offset = external.log_text_offset(client_log)
     server_offset = external.log_text_offset(server_log)
-    run_console(process, command_log, "blwtc debugnotify " + str(count), 0.8)
+    run_console(process, command_log, "wtc debugnotify " + str(count), 0.8)
     server_check = wait_notify_server_markers(server_log, server_offset, count, 12)
     time.sleep(0.8)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, "notify-" + label + "-f2")
@@ -362,7 +362,7 @@ def trigger_notify(case: dict, process, server_log: Path, command_log: Path, gam
 
 def copy_runtime_config(case: dict, run_dir: Path) -> Path:
     """归档当前运行时 cleanup.yml。"""
-    source = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    source = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     target = run_dir / "logs" / "config-after-patch" / "cleanup.yml"
     target.parent.mkdir(parents=True, exist_ok=True)
     if source.is_file():
@@ -399,7 +399,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         enable_client_subtitles(case)
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml", backup_dir))
         write_notify_config(case)
         result["patchedCleanupConfig"] = str(copy_runtime_config(case, run_dir))
         reload_plugin(process, command_log, server_log)
@@ -411,7 +411,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform", 0.5)
+        run_console(process, command_log, "wtc platform", 0.5)
         external.wait_platform_command_accepted(server_log, platform_offset)
         result["checks"].append(trigger_notify(case, process, server_log, command_log, game_dir, run_dir, 0))
         time.sleep(1.2)

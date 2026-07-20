@@ -213,7 +213,7 @@ public final class GlobalTrashService {
 
     /** 玩家从公共垃圾桶取出物品。 */
     private void takeItem(Player player, Inventory inventory, int slot) {
-        if (!hasTrashPermission(player, "blworldtrashcan.global.take", "WorldListTrashCan.GlobalTrashTakeItem")) {
+        if (!hasTrashPermission(player, "WorldListTrashCan.GlobalTrashTakeItem")) {
             player.sendMessage(message("global-trash.no-take-permission", "&c你没有权限从公共垃圾桶取出物品。"));
             return;
         }
@@ -242,7 +242,7 @@ public final class GlobalTrashService {
 
     /** 玩家手动把背包物品放入公共垃圾桶。 */
     private void putFromPlayer(Player player, InventoryClickEvent event) {
-        if (!hasTrashPermission(player, "blworldtrashcan.global.put", "WorldListTrashCan.GlobalTrashPutItem")) {
+        if (!hasTrashPermission(player, "WorldListTrashCan.GlobalTrashPutItem")) {
             return;
         }
         ItemStack itemStack = event.getCurrentItem();
@@ -256,9 +256,9 @@ public final class GlobalTrashService {
         }
     }
 
-    /** 判断玩家是否拥有公共垃圾桶操作权限，保留旧插件 OP 旁路。 */
-    private boolean hasTrashPermission(Player player, String modernPermission, String legacyPermission) {
-        return player != null && (player.isOp() || player.hasPermission(modernPermission) || player.hasPermission(legacyPermission));
+    /** 判断玩家是否拥有公共垃圾桶操作权限，并保留 OP 旁路。 */
+    private boolean hasTrashPermission(Player player, String permission) {
+        return player != null && (player.isOp() || player.hasPermission(permission));
     }
 
     /** 判断玩家是否处于取出冷却。 */
@@ -380,7 +380,7 @@ public final class GlobalTrashService {
 
     /** 创建仅用于重排旧内容的临时背包。 */
     private Inventory createScratchPage() {
-        return Bukkit.createInventory(null, layout.getInventorySize(), "BlWorldTrashCan packing");
+        return Bukkit.createInventory(null, layout.getInventorySize(), "WorldListTrashCan packing");
     }
 
     /** 把临时背包的内容槽复制到最终 GUI。 */

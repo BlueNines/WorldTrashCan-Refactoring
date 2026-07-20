@@ -1,0 +1,2 @@
+# 原始测试日志包含服务端终端控制序列和横幅尾空格，保留原文并跳过 Git whitespace 误报。
+docs/test-evidence/** -whitespace

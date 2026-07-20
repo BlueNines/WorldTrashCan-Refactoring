@@ -20,7 +20,7 @@ import run_rgb_visual_matrix as base
 
 EVIDENCE_ROOT = base.REPO / "docs" / "test-evidence"
 UNIVERSAL_TARGET = base.REPO / "bl-world-trashcan-plugin-universal" / "target" / "bl-world-trashcan-plugin-universal-7.0.0.jar"
-UNIVERSAL_DIST = base.REPO / "dist" / "BlWorldTrashCan-universal.jar"
+UNIVERSAL_DIST = base.REPO / "dist" / "WorldListTrashCan-universal.jar"
 MANUAL_TRASH_ITEMS = [
     {"id": "resin_clump", "amount": 24},
     {"id": "creaking_heart", "amount": 2},
@@ -71,7 +71,7 @@ def new_material_case(case_id: str, label: str, version: str, server_dir: Path, 
         "serverJar": server_jar,
         "port": port,
         "java": base.JAVA21,
-        "plugin": "BlWorldTrashCan-universal.jar",
+        "plugin": "WorldListTrashCan-universal.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -153,7 +153,7 @@ def backup_and_deploy_plugin(case: dict, run_dir: Path) -> dict:
     artifact = sync_universal_dist()
     plugins_dir = Path(case["serverDir"]) / "plugins"
     backed_up = []
-    patterns = ["BlWorldTrashCan*.jar", "WorldListTrashCan*.jar", "wtc.jar"]
+    patterns = ["WorldListTrashCan*.jar", "WorldListTrashCan*.jar", "wtc.jar"]
     old_plugins = []
     for pattern in patterns:
         old_plugins.extend(sorted(plugins_dir.glob(pattern)))
@@ -210,7 +210,7 @@ def launch_server_with_plugin(case: dict, run_dir: Path) -> tuple[subprocess.Pop
         encoding="utf-8",
         errors="replace",
     )
-    process._blwtc_log_file = log_file
+    process._wtc_log_file = log_file
     try:
         external.wait_server_ready(process, log_path, int(case["port"]), int(case.get("readyTimeout", 180)))
         return process, deploy
@@ -225,7 +225,7 @@ def close_server_process(process: subprocess.Popen) -> None:
     try:
         external.stop_process(process, "stop")
     finally:
-        log_file = getattr(process, "_blwtc_log_file", None)
+        log_file = getattr(process, "_wtc_log_file", None)
         if log_file is not None:
             log_file.close()
 
@@ -266,7 +266,7 @@ def ensure_cleanup_guard_block(text: str) -> str:
 
 def write_test_config(case: dict, run_dir: Path) -> list[dict]:
     """写入本轮新材质验收需要的最小配置。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan"
     backup_dir = run_dir / "logs" / "config-backup"
     trash = data_dir / "trash.yml"
     cleanup = data_dir / "cleanup.yml"
@@ -421,7 +421,7 @@ def wait_stock(server_log: Path, offset: int, expected_items: int, expected_stac
 def spawn_cleanup_items(username: str, process: subprocess.Popen, command_log: Path) -> None:
     """生成要通过扫地进入公共垃圾桶的新版本掉落物。"""
     for item in CLEANUP_TRASH_ITEMS:
-        command = "blwtc debugdrop " + username + " " + item["material"] + " " + str(item["amount"])
+        command = "wtc debugdrop " + username + " " + item["material"] + " " + str(item["amount"])
         send_console(process, command_log, command, 0.35)
     time.sleep(1.0)
 
@@ -508,7 +508,7 @@ def run_case(case: dict, evidence_root: Path) -> dict:
         process, deploy = launch_server_with_plugin(case, run_dir)
         result["deploy"] = deploy
         config_backups = write_test_config(case, run_dir)
-        send_console(process, command_log, "blwtc reload", 1.0)
+        send_console(process, command_log, "wtc reload", 1.0)
         prepared = base.ensure_client(case["version"])
         client, username, game_dir = base.launch_client(case, prepared, run_dir)
         base.ACTIVE_CLIENT_PID = client.pid
@@ -516,11 +516,11 @@ def run_case(case: dict, evidence_root: Path) -> dict:
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         give_manual_items(username, process, command_log)
-        open_screenshot = guard.send_command_and_screenshot(case, game_dir, run_dir, "/blwtc global", "manual-open-global-f2", 1.2)
+        open_screenshot = guard.send_command_and_screenshot(case, game_dir, run_dir, "/wtc global", "manual-open-global-f2", 1.2)
         result["screenshots"].append(Path(open_screenshot))
         click_manual_hotbar_items(case)
         stock_offset = external.log_text_offset(server_log)
-        send_console(process, command_log, "blwtc debugstock", 0.6)
+        send_console(process, command_log, "wtc debugstock", 0.6)
         manual_expected_items = total_amount(MANUAL_TRASH_ITEMS)
         manual_expected_stacks = len(MANUAL_TRASH_ITEMS)
         cleanup_expected_items = total_amount(CLEANUP_TRASH_ITEMS)
@@ -552,12 +552,12 @@ def run_case(case: dict, evidence_root: Path) -> dict:
         time.sleep(0.8)
         spawn_cleanup_items(username, process, command_log)
         clear_offset = external.log_text_offset(server_log)
-        clear_screenshot = guard.send_command_and_screenshot(case, game_dir, run_dir, "/blwtc clear", "cleanup-clear-command-f2", 2.2)
+        clear_screenshot = guard.send_command_and_screenshot(case, game_dir, run_dir, "/wtc clear", "cleanup-clear-command-f2", 2.2)
         result["screenshots"].append(Path(clear_screenshot))
         cleanup_marker = "itemsRouted=" + str(cleanup_expected_items)
         cleanup_log = wait_server_text(server_log, clear_offset, ["[Cleanup]", cleanup_marker], 16.0)
         result["cleanupLogExcerpt"] = cleanup_log[-2400:]
-        open_after = guard.send_command_and_screenshot(case, game_dir, run_dir, "/blwtc global", "cleanup-open-global-f2", 1.2)
+        open_after = guard.send_command_and_screenshot(case, game_dir, run_dir, "/wtc global", "cleanup-open-global-f2", 1.2)
         result["screenshots"].append(Path(open_after))
         for index, item in enumerate(CLEANUP_TRASH_ITEMS):
             screenshot = capture_hovered_slot(
@@ -569,17 +569,17 @@ def run_case(case: dict, evidence_root: Path) -> dict:
             )
             result["screenshots"].append(screenshot)
         final_stock_offset = external.log_text_offset(server_log)
-        send_console(process, command_log, "blwtc debugstock", 0.6)
+        send_console(process, command_log, "wtc debugstock", 0.6)
         final_stock = wait_stock(server_log, final_stock_offset, final_expected_items, final_expected_stacks)
         result["finalStock"] = final_stock
         server_text = external.read_text(server_log)
-        result["legacyWarningForBlWorldTrashCan"] = "Legacy plugin BlWorldTrashCan" in server_text
+        result["legacyWarningForWorldListTrashCan"] = "Legacy plugin WorldListTrashCan" in server_text
         result["serverEvidenceScreenshot"] = render_text_image(
             "manualStock:\n" + manual_stock.get("text", "")[-1600:]
             + "\n\ncleanupLog:\n" + cleanup_log[-2000:]
             + "\n\nfinalStock:\n" + final_stock.get("text", "")[-1600:],
             run_dir / "server-screenshots" / (case["id"] + "-new-material-server-log.png"),
-            "BlWorldTrashCan 新版本物品公共垃圾桶验收日志",
+            "WorldListTrashCan 新版本物品公共垃圾桶验收日志",
         )
         contact_sheet = make_contact_sheet([Path(item) for item in result["screenshots"]],
                                            evidence_root / "new-material-trash-contact-sheet.png")
@@ -588,7 +588,7 @@ def run_case(case: dict, evidence_root: Path) -> dict:
             manual_stock.get("status") == "PASS"
             and final_stock.get("status") == "PASS"
             and cleanup_marker in cleanup_log
-            and not result["legacyWarningForBlWorldTrashCan"]
+            and not result["legacyWarningForWorldListTrashCan"]
             and bool(result["screenshots"])
         ) else "FAIL"
     except Exception as exc:

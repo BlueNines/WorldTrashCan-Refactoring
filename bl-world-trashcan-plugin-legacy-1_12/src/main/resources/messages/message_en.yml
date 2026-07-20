@@ -1,5 +1,5 @@
 # 插件前缀，会自动替换 {prefix}。
-prefix: "&#64748B[&#5AC8FABlWorldTrashCan&#64748B] "
+prefix: "&#64748B[&#5AC8FAWorldListTrashCan&#64748B] "
 
 # 通用无权限提示。
 no-permission: "{prefix}&#FFD166You do not have permission to use this command."
@@ -117,7 +117,7 @@ command:
   # 通用无权限提示。
   no-permission: "{prefix}&#FFD166You do not have permission to use this command."
   # 重载成功提示。
-  reload-success: "{prefix}&#5AC8FABlWorldTrashCan reloaded."
+  reload-success: "{prefix}&#5AC8FAWorldListTrashCan reloaded."
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&#5AC8FACleanup finished: &#C9D4E2worlds {worlds}&#5AC8FA, routed items {routed}&#5AC8FA, removed items {items}&#5AC8FA, removed entities {entities}&#5AC8FA."
   # 手动清理 guards 参数错误时提示。
@@ -127,41 +127,41 @@ command:
   # Folia 上一轮清理仍在运行时提示。
   folia-clear-running: "{prefix}&#FFD166The previous Folia region-safe cleanup is still running; this request was skipped."
   # Folia 清理任务启动成功提示。
-  folia-clear-started: "{prefix}&#5AC8FAStarted Folia region-safe cleanup; check [FoliaCleanup] logs or run /blwtc stats after it finishes."
+  folia-clear-started: "{prefix}&#5AC8FAStarted Folia region-safe cleanup; check [FoliaCleanup] logs or run /wtc stats after it finishes."
   # 没有打开公共垃圾桶权限时提示。
   no-global-open-permission: "{prefix}&#FFD166You do not have permission to open global trash."
   # 没有打开个人垃圾桶权限时提示。
   no-personal-open-permission: "{prefix}&#FFD166You do not have permission to open personal trash."
-  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
+  # /wtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /wtc debughelp。
   help:
-    - "&#5AC8FA/blwtc help &#64748B- Show help"
-    - "&#5AC8FA/blwtc platform &#64748B- Show this build's capabilities"
-    - "&#5AC8FA/blwtc clear [true/false] &#64748B- Run cleanup; default true ignores guards, false obeys guards"
-    - "&#5AC8FA/blwtc global &#64748B- Open global trash"
-    - "&#5AC8FA/blwtc personal &#64748B- Open personal trash"
-    - "&#5AC8FA/blwtc dropmode &#64748B- Toggle drop protection"
-    - "&#5AC8FA/blwtc look &#64748B- Inspect held item and right-clicked entity type"
-    - "&#5AC8FA/blwtc ban &#64748B- Open this world's trash blacklist"
-    - "&#5AC8FA/blwtc globalban &#64748B- Open the global trash blacklist"
-    - "&#5AC8FA/blwtc stats &#64748B- Show cleanup and trash statistics"
-    - "&#5AC8FA/blwtc add <amount> &#64748B- Add world trash slots to your current world"
-    - "&#5AC8FA/blwtc add <world> <amount> &#64748B- Add world trash slots to a specific world"
-    - "&#5AC8FA/blwtc debughelp &#64748B- Show debug commands"
-    - "&#5AC8FA/blwtc reload &#64748B- Reload the plugin"
-  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
+    - "&#5AC8FA/wtc help &#64748B- Show help"
+    - "&#5AC8FA/wtc platform &#64748B- Show this build's capabilities"
+    - "&#5AC8FA/wtc clear [true/false] &#64748B- Run cleanup; default true ignores guards, false obeys guards"
+    - "&#5AC8FA/wtc global &#64748B- Open global trash"
+    - "&#5AC8FA/wtc personal &#64748B- Open personal trash"
+    - "&#5AC8FA/wtc dropmode &#64748B- Toggle drop protection"
+    - "&#5AC8FA/wtc look &#64748B- Inspect held item and right-clicked entity type"
+    - "&#5AC8FA/wtc ban &#64748B- Open this world's trash blacklist"
+    - "&#5AC8FA/wtc globalban &#64748B- Open the global trash blacklist"
+    - "&#5AC8FA/wtc stats &#64748B- Show cleanup and trash statistics"
+    - "&#5AC8FA/wtc add <amount> &#64748B- Add world trash slots to your current world"
+    - "&#5AC8FA/wtc add <world> <amount> &#64748B- Add world trash slots to a specific world"
+    - "&#5AC8FA/wtc debughelp &#64748B- Show debug commands"
+    - "&#5AC8FA/wtc reload &#64748B- Reload the plugin"
+  # /wtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
   debug-help:
-    - "&#5AC8FA/blwtc debugopen <player> <global|personal> &#64748B- Test opening a GUI"
-    - "&#5AC8FA/blwtc debugworldtrash <player> &#64748B- Create and register a test world trash can"
-    - "&#5AC8FA/blwtc debugroute <player> <world|personal|global> <Material> <amount> &#64748B- Test a trash route"
-    - "&#5AC8FA/blwtc debugdrop <player> <Material> <amount> [owner] &#64748B- Spawn a test dropped item"
-    - "&#5AC8FA/blwtc debugdamage <player> <Material> <amount> &#64748B- Test damage recovery"
-    - "&#5AC8FA/blwtc debugstock &#64748B- Show backend trash stock"
-    - "&#5AC8FA/blwtc debugsummary <player> &#64748B- Show backend test summary"
-    - "&#5AC8FA/blwtc debugdensity &#64748B- Show entity density scanner and candidate queue"
-    - "&#5AC8FA/blwtc debugnotify <count> &#64748B- Trigger a cleanup.yml notification count through the real notification pipeline"
-    - "&#5AC8FA/blwtc debugplayer <player> <dropmode|look|ban|globalban> &#64748B- Test player-only entry points"
-    - "&#5AC8FA/blwtc debugrgb <player> &#64748B- Test RGB/fallback visible channels"
-    - "&#5AC8FA/blwtc debugrgbchannels <player> &#64748B- Test Chat, ActionBar and Title RGB/fallback channels"
+    - "&#5AC8FA/wtc debugopen <player> <global|personal> &#64748B- Test opening a GUI"
+    - "&#5AC8FA/wtc debugworldtrash <player> &#64748B- Create and register a test world trash can"
+    - "&#5AC8FA/wtc debugroute <player> <world|personal|global> <Material> <amount> &#64748B- Test a trash route"
+    - "&#5AC8FA/wtc debugdrop <player> <Material> <amount> [owner] &#64748B- Spawn a test dropped item"
+    - "&#5AC8FA/wtc debugdamage <player> <Material> <amount> &#64748B- Test damage recovery"
+    - "&#5AC8FA/wtc debugstock &#64748B- Show backend trash stock"
+    - "&#5AC8FA/wtc debugsummary <player> &#64748B- Show backend test summary"
+    - "&#5AC8FA/wtc debugdensity &#64748B- Show entity density scanner and candidate queue"
+    - "&#5AC8FA/wtc debugnotify <count> &#64748B- Trigger a cleanup.yml notification count through the real notification pipeline"
+    - "&#5AC8FA/wtc debugplayer <player> <dropmode|look|ban|globalban> &#64748B- Test player-only entry points"
+    - "&#5AC8FA/wtc debugrgb <player> &#64748B- Test RGB/fallback visible channels"
+    - "&#5AC8FA/wtc debugrgbchannels <player> &#64748B- Test Chat, ActionBar and Title RGB/fallback channels"
     - "&#64748BThese commands change test-server state; use them only for validation and diagnostics."
   # 平台信息标题，{platform} 为平台 ID。
   platform:
@@ -172,7 +172,7 @@ command:
     disabled: "&#64748BDisabled"
     # 平台能力单行，{capability} 为能力名，{state} 为启用状态。
     line: "&#64748B- &#C9D4E2{capability}&#64748B: {state}"
-  # /blwtc stats 输出。
+  # /wtc stats 输出。
   stats:
     header: "{prefix}&#5AC8FACleanup statistics:"
     worlds: "&#64748B- &#C9D4E2Worlds: &#5AC8FA{worlds}"
@@ -193,8 +193,8 @@ command:
   add-success: "{prefix}&#5AC8FAWorld &#C9D4E2{world} &#5AC8FAtrash can limit is now &#C9D4E2{count}&#5AC8FA."
   # add 用法提示。
   add-usage:
-    - "&#FFD166Usage: /blwtc add <amount>"
-    - "&#FFD166Usage: /blwtc add <world> <amount>"
+    - "&#FFD166Usage: /wtc add <amount>"
+    - "&#FFD166Usage: /wtc add <world> <amount>"
   # 没有防丢弃模式权限时提示。
   no-dropmode-permission: "{prefix}&#FFD166You do not have permission to use drop protection."
   # 没有 look 查询权限时提示。

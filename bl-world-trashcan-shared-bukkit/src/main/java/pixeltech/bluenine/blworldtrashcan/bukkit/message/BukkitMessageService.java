@@ -5,13 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,10 +15,6 @@ import java.util.List;
 /** 读取并格式化插件消息文件。 */
 public final class BukkitMessageService {
     private static final String DEFAULT_FILE = "message_zh.yml";
-    private static final String LEGACY_BRAND_NAME = "B" + "LWorldTrashCan";
-    private static final String LEGACY_SHORT_BRAND = "B" + "LWTC";
-    private static final String LEGACY_MIXED_SHORT_BRAND = "B" + "LWtc";
-    private static final String CURRENT_BRAND_NAME = "BlWorldTrashCan";
     private final JavaPlugin plugin;
     private YamlConfiguration bundledDefaultMessages = new YamlConfiguration();
     private YamlConfiguration bundledActiveMessages = new YamlConfiguration();
@@ -41,10 +32,6 @@ public final class BukkitMessageService {
         activeFile = normalizeLanguageFile(languageFile);
         saveBundledMessage(DEFAULT_FILE);
         saveBundledMessage(activeFile);
-        migrateExternalBrandCase(DEFAULT_FILE);
-        if (!DEFAULT_FILE.equals(activeFile)) {
-            migrateExternalBrandCase(activeFile);
-        }
         bundledDefaultMessages = loadBundled(DEFAULT_FILE);
         bundledActiveMessages = DEFAULT_FILE.equals(activeFile) ? bundledDefaultMessages : loadBundled(activeFile);
         fallbackMessages = loadResourceOrFile(DEFAULT_FILE);
@@ -131,45 +118,6 @@ public final class BukkitMessageService {
         }
     }
 
-    /** 把旧外部语言文件中的公开品牌大小写原子迁移为当前写法。 */
-    private void migrateExternalBrandCase(String fileName) {
-        Path target = new File(plugin.getDataFolder(), "messages/" + fileName).toPath();
-        if (!Files.isRegularFile(target)) {
-            return;
-        }
-        try {
-            String original = new String(Files.readAllBytes(target), StandardCharsets.UTF_8);
-            String updated = normalizeBrandCase(original);
-            if (updated.equals(original)) {
-                return;
-            }
-            Path temporary = target.resolveSibling(target.getFileName().toString() + ".brand-case.tmp");
-            Files.write(temporary, updated.getBytes(StandardCharsets.UTF_8));
-            moveReplacing(temporary, target);
-            plugin.getLogger().info("[Message] 已更新外部语言文件的品牌大小写: messages/" + fileName);
-        } catch (IOException exception) {
-            plugin.getLogger().warning("[Message] 更新外部语言文件品牌大小写失败 messages/"
-                    + fileName + ": " + exception.getMessage());
-        }
-    }
-
-    /** 替换完整名称和历史短名称的旧品牌大小写。 */
-    static String normalizeBrandCase(String text) {
-        String value = text == null ? "" : text;
-        return value.replace(LEGACY_BRAND_NAME, CURRENT_BRAND_NAME)
-                .replace(LEGACY_SHORT_BRAND, "BlWTC")
-                .replace(LEGACY_MIXED_SHORT_BRAND, "BlWtc");
-    }
-
-    /** 优先原子替换语言文件，不支持时退回普通覆盖移动。 */
-    private static void moveReplacing(Path source, Path target) throws IOException {
-        try {
-            Files.move(source, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-        } catch (AtomicMoveNotSupportedException ignored) {
-            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
-
     /** 加载外部文件，外部不存在时加载 jar 内资源。 */
     private YamlConfiguration loadResourceOrFile(String fileName) {
         File file = new File(plugin.getDataFolder(), "messages/" + fileName);
@@ -226,15 +174,15 @@ public final class BukkitMessageService {
     /** 判断 help 列表是否仍是旧版调试命令堆叠写法。 */
     private boolean containsLegacyDebugHelp(List<String> raw) {
         for (String line : raw) {
-            if (line.contains("/blwtc debugopen")
-                    || line.contains("/blwtc debugworldtrash")
-                    || line.contains("/blwtc debugroute")
-                    || line.contains("/blwtc debugdrop")
-                    || line.contains("/blwtc debugdamage")
-                    || line.contains("/blwtc debugstock")
-                    || line.contains("/blwtc debugsummary")
-                    || line.contains("/blwtc debugplayer")
-                    || line.contains("/blwtc debugrgbchannels")) {
+            if (line.contains("/wtc debugopen")
+                    || line.contains("/wtc debugworldtrash")
+                    || line.contains("/wtc debugroute")
+                    || line.contains("/wtc debugdrop")
+                    || line.contains("/wtc debugdamage")
+                    || line.contains("/wtc debugstock")
+                    || line.contains("/wtc debugsummary")
+                    || line.contains("/wtc debugplayer")
+                    || line.contains("/wtc debugrgbchannels")) {
                 return true;
             }
         }
@@ -264,7 +212,7 @@ public final class BukkitMessageService {
             raw = fallbackMessages.getString("prefix");
         }
         if (raw == null) {
-            raw = bundledDefaultMessages.getString("prefix", "&7[&bBlWorldTrashCan&7] ");
+            raw = bundledDefaultMessages.getString("prefix", "&7[&bWorldListTrashCan&7] ");
         }
         return raw;
     }

@@ -1,0 +1,41 @@
+[02:48:45] wtc reload
+[02:48:55] op RGBolia1218
+[02:48:55] minecraft:gamerule sendCommandFeedback false
+[02:48:55] minecraft:gamerule commandBlockOutput false
+[02:48:55] minecraft:gamerule doMobSpawning false
+[02:48:56] minecraft:gamerule keepInventory true
+[02:48:56] minecraft:gamerule fallDamage false
+[02:48:56] minecraft:time set day
+[02:48:56] minecraft:weather clear
+[02:48:57] minecraft:fill -3 90 -11 3 90 -5 stone
+[02:48:57] minecraft:gamemode survival RGBolia1218
+[02:48:57] minecraft:tp RGBolia1218 0 91 -8 0 15
+[02:48:57] minecraft:effect RGBolia1218 minecraft:resistance 1000000 255 true
+[02:48:58] minecraft:effect RGBolia1218 minecraft:saturation 1000000 1 true
+[02:48:58] minecraft:clear RGBolia1218
+[02:48:59] wtc debugroute RGBolia1218 global STONE 64
+[02:49:00] wtc debugroute RGBolia1218 global STONE 64
+[02:49:00] wtc debugroute RGBolia1218 global STONE 64
+[02:49:01] wtc debugroute RGBolia1218 global STONE 64
+[02:49:01] wtc debugroute RGBolia1218 global STONE 64
+[02:49:02] wtc debugroute RGBolia1218 global STONE 64
+[02:49:02] wtc debugroute RGBolia1218 global STONE 64
+[02:49:03] wtc debugroute RGBolia1218 global STONE 64
+[02:49:03] wtc debugroute RGBolia1218 global STONE 64
+[02:49:04] wtc debugroute RGBolia1218 global STONE 64
+[02:49:04] wtc debugroute RGBolia1218 global STONE 64
+[02:49:05] wtc debugroute RGBolia1218 global STONE 64
+[02:49:05] wtc debugstock
+[02:49:06] wtc reload
+[02:49:07] wtc debugstock
+[02:49:07] wtc debugopen RGBolia1218 global
+[02:49:25] wtc debugroute RGBolia1218 global COBBLESTONE 64
+[02:49:25] wtc debugstock
+[02:49:26] wtc debugopen RGBolia1218 global
+[02:49:37] wtc debugstock
+[02:49:38] wtc debugroute RGBolia1218 global COBBLESTONE 64
+[02:49:39] wtc debugstock
+[02:49:40] wtc debugopen RGBolia1218 global
+[02:49:44] wtc reload
+[02:49:45] wtc debugstock
+[02:49:46] wtc debugopen RGBolia1218 global

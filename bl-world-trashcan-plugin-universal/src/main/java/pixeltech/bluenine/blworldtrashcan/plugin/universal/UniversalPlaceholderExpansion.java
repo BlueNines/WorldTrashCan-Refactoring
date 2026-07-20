@@ -5,10 +5,10 @@ import org.bukkit.OfflinePlayer;
 
 /** PlaceholderAPI 变量扩展，兼容旧 %Wtc_ClearTime% 写法。 */
 public final class UniversalPlaceholderExpansion extends PlaceholderExpansion {
-    private final BlWorldTrashCanUniversalPlugin plugin;
+    private final WorldListTrashCanUniversalPlugin plugin;
 
     /** 创建 PAPI 扩展。 */
-    public UniversalPlaceholderExpansion(BlWorldTrashCanUniversalPlugin plugin) {
+    public UniversalPlaceholderExpansion(WorldListTrashCanUniversalPlugin plugin) {
         this.plugin = plugin;
     }
 

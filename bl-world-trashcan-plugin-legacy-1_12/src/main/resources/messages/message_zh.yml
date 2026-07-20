@@ -1,5 +1,5 @@
 # 插件前缀，会自动替换 {prefix}。
-prefix: "&#1B2430[&#5AC8FABL&#C9D4E2World&#FFD166Trash&#5AC8FACan&#1B2430] "
+prefix: "&#1B2430[&#5AC8FAWorld&#FFD166List&#C9D4E2Trash&#5AC8FACan&#1B2430] "
 
 # 通用无权限提示。
 no-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限执行该命令。"
@@ -117,7 +117,7 @@ command:
   # 通用无权限提示。
   no-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限执行该命令。"
   # 重载成功提示。
-  reload-success: "{prefix}&#5AC8FABlWorldTrashCan &#C9D4E2已重载。"
+  reload-success: "{prefix}&#5AC8FAWorldListTrashCan &#C9D4E2已重载。"
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&#5AC8FA清理完成 &#64748B| &#C9D4E2世界 &#FFD166{worlds}&#64748B, &#C9D4E2回收 &#FFD166{routed}&#64748B, &#C9D4E2移除物品 &#FFD166{items}&#64748B, &#C9D4E2移除实体 &#FFD166{entities}&#C9D4E2。"
   # 手动清理 guards 参数错误时提示。
@@ -127,41 +127,41 @@ command:
   # Folia 上一轮清理仍在运行时提示。
   folia-clear-running: "{prefix}&#FFD166上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。"
   # Folia 清理任务启动成功提示。
-  folia-clear-started: "{prefix}&#5AC8FA已启动 Folia region-safe 清理；完成后请查看后台 &#FFD166[FoliaCleanup] &#C9D4E2日志或执行 &#FFD166/blwtc stats&#C9D4E2。"
+  folia-clear-started: "{prefix}&#5AC8FA已启动 Folia region-safe 清理；完成后请查看后台 &#FFD166[FoliaCleanup] &#C9D4E2日志或执行 &#FFD166/wtc stats&#C9D4E2。"
   # 没有打开公共垃圾桶权限时提示。
   no-global-open-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能打开公共垃圾桶。"
   # 没有打开个人垃圾桶权限时提示。
   no-personal-open-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能打开个人垃圾桶。"
-  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
+  # /wtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /wtc debughelp。
   help:
-    - "&#5AC8FA/blwtc help &#64748B- &#C9D4E2查看帮助"
-    - "&#5AC8FA/blwtc platform &#64748B- &#C9D4E2查看当前版本产物能力"
-    - "&#5AC8FA/blwtc clear [true/false] &#64748B- &#C9D4E2立即扫地，默认 true 忽略 guards，false 遵守 guards"
-    - "&#5AC8FA/blwtc global &#64748B- &#C9D4E2打开公共垃圾桶"
-    - "&#5AC8FA/blwtc personal &#64748B- &#C9D4E2打开个人垃圾桶"
-    - "&#5AC8FA/blwtc dropmode &#64748B- &#C9D4E2切换防丢弃模式"
-    - "&#5AC8FA/blwtc look &#64748B- &#C9D4E2查询手持物品和右键实体类型"
-    - "&#5AC8FA/blwtc ban &#64748B- &#C9D4E2打开当前世界垃圾桶物品黑名单"
-    - "&#5AC8FA/blwtc globalban &#64748B- &#C9D4E2打开公共垃圾桶物品黑名单"
-    - "&#5AC8FA/blwtc stats &#64748B- &#C9D4E2查看清理和垃圾桶统计"
-    - "&#5AC8FA/blwtc add <数量> &#64748B- &#C9D4E2增加当前世界可创建的世界垃圾桶数量"
-    - "&#5AC8FA/blwtc add <世界名> <数量> &#64748B- &#C9D4E2后台增加指定世界可创建的世界垃圾桶数量"
-    - "&#5AC8FA/blwtc debughelp &#64748B- &#C9D4E2查看后台调试命令"
-    - "&#5AC8FA/blwtc reload &#64748B- &#C9D4E2重载插件"
-  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
+    - "&#5AC8FA/wtc help &#64748B- &#C9D4E2查看帮助"
+    - "&#5AC8FA/wtc platform &#64748B- &#C9D4E2查看当前版本产物能力"
+    - "&#5AC8FA/wtc clear [true/false] &#64748B- &#C9D4E2立即扫地，默认 true 忽略 guards，false 遵守 guards"
+    - "&#5AC8FA/wtc global &#64748B- &#C9D4E2打开公共垃圾桶"
+    - "&#5AC8FA/wtc personal &#64748B- &#C9D4E2打开个人垃圾桶"
+    - "&#5AC8FA/wtc dropmode &#64748B- &#C9D4E2切换防丢弃模式"
+    - "&#5AC8FA/wtc look &#64748B- &#C9D4E2查询手持物品和右键实体类型"
+    - "&#5AC8FA/wtc ban &#64748B- &#C9D4E2打开当前世界垃圾桶物品黑名单"
+    - "&#5AC8FA/wtc globalban &#64748B- &#C9D4E2打开公共垃圾桶物品黑名单"
+    - "&#5AC8FA/wtc stats &#64748B- &#C9D4E2查看清理和垃圾桶统计"
+    - "&#5AC8FA/wtc add <数量> &#64748B- &#C9D4E2增加当前世界可创建的世界垃圾桶数量"
+    - "&#5AC8FA/wtc add <世界名> <数量> &#64748B- &#C9D4E2后台增加指定世界可创建的世界垃圾桶数量"
+    - "&#5AC8FA/wtc debughelp &#64748B- &#C9D4E2查看后台调试命令"
+    - "&#5AC8FA/wtc reload &#64748B- &#C9D4E2重载插件"
+  # /wtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
   debug-help:
-    - "&#5AC8FA/blwtc debugopen <玩家> <global|personal> &#64748B- &#C9D4E2后台测试打开 GUI"
-    - "&#5AC8FA/blwtc debugworldtrash <玩家> &#64748B- &#C9D4E2后台创建并登记测试世界垃圾桶"
-    - "&#5AC8FA/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> &#64748B- &#C9D4E2后台测试指定路由"
-    - "&#5AC8FA/blwtc debugdrop <玩家> <Material> <数量> [owner] &#64748B- &#C9D4E2后台生成测试掉落物"
-    - "&#5AC8FA/blwtc debugdamage <玩家> <Material> <数量> &#64748B- &#C9D4E2后台测试仙人掌/岩浆损坏回收"
-    - "&#5AC8FA/blwtc debugstock &#64748B- &#C9D4E2后台查看当前垃圾桶库存"
-    - "&#5AC8FA/blwtc debugsummary <玩家> &#64748B- &#C9D4E2查看后台测试摘要"
-    - "&#5AC8FA/blwtc debugdensity &#64748B- &#C9D4E2查看实体密度扫描和候选队列"
-    - "&#5AC8FA/blwtc debugnotify <count> &#64748B- &#C9D4E2后台触发 cleanup.yml 对应编号的正式清理通知"
-    - "&#5AC8FA/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- &#C9D4E2后台测试玩家入口"
-    - "&#5AC8FA/blwtc debugrgb <玩家> &#64748B- &#C9D4E2后台测试 RGB/降级色可见通道"
-    - "&#5AC8FA/blwtc debugrgbchannels <玩家> &#64748B- &#C9D4E2后台测试聊天、ActionBar 和 Title RGB/降级色通道"
+    - "&#5AC8FA/wtc debugopen <玩家> <global|personal> &#64748B- &#C9D4E2后台测试打开 GUI"
+    - "&#5AC8FA/wtc debugworldtrash <玩家> &#64748B- &#C9D4E2后台创建并登记测试世界垃圾桶"
+    - "&#5AC8FA/wtc debugroute <玩家> <world|personal|global> <Material> <数量> &#64748B- &#C9D4E2后台测试指定路由"
+    - "&#5AC8FA/wtc debugdrop <玩家> <Material> <数量> [owner] &#64748B- &#C9D4E2后台生成测试掉落物"
+    - "&#5AC8FA/wtc debugdamage <玩家> <Material> <数量> &#64748B- &#C9D4E2后台测试仙人掌/岩浆损坏回收"
+    - "&#5AC8FA/wtc debugstock &#64748B- &#C9D4E2后台查看当前垃圾桶库存"
+    - "&#5AC8FA/wtc debugsummary <玩家> &#64748B- &#C9D4E2查看后台测试摘要"
+    - "&#5AC8FA/wtc debugdensity &#64748B- &#C9D4E2查看实体密度扫描和候选队列"
+    - "&#5AC8FA/wtc debugnotify <count> &#64748B- &#C9D4E2后台触发 cleanup.yml 对应编号的正式清理通知"
+    - "&#5AC8FA/wtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- &#C9D4E2后台测试玩家入口"
+    - "&#5AC8FA/wtc debugrgb <玩家> &#64748B- &#C9D4E2后台测试 RGB/降级色可见通道"
+    - "&#5AC8FA/wtc debugrgbchannels <玩家> &#64748B- &#C9D4E2后台测试聊天、ActionBar 和 Title RGB/降级色通道"
     - "&#64748B这些命令会改变测试服运行态，只建议用于验收和排障。"
   # 平台信息标题，{platform} 为平台 ID。
   platform:
@@ -172,7 +172,7 @@ command:
     disabled: "&#64748B禁用"
     # 平台能力单行，{capability} 为能力名，{state} 为启用状态。
     line: "&#64748B- &#C9D4E2{capability}&#64748B: {state}"
-  # /blwtc stats 输出。
+  # /wtc stats 输出。
   stats:
     header: "{prefix}&#5AC8FA清理统计:"
     worlds: "&#64748B- &#C9D4E2世界数: &#FFD166{worlds}"
@@ -193,8 +193,8 @@ command:
   add-success: "{prefix}&#5AC8FA世界 &#FFD166{world} &#5AC8FA垃圾桶上限已调整为 &#FFD166{count}&#C9D4E2。"
   # add 用法提示。
   add-usage:
-    - "&#FFD166用法: &#C9D4E2/blwtc add <数量>"
-    - "&#FFD166用法: &#C9D4E2/blwtc add <世界名> <数量>"
+    - "&#FFD166用法: &#C9D4E2/wtc add <数量>"
+    - "&#FFD166用法: &#C9D4E2/wtc add <世界名> <数量>"
   # 没有防丢弃模式权限时提示。
   no-dropmode-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限使用防丢弃模式。"
   # 没有 look 查询权限时提示。

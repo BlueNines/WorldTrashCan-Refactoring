@@ -18,7 +18,7 @@ def read_text(path: Path) -> str:
 
 def load_runner_module():
     """加载统一预检入口模块。"""
-    spec = importlib.util.spec_from_file_location("blwtc_delivery_audits", RUNNER)
+    spec = importlib.util.spec_from_file_location("wtc_delivery_audits", RUNNER)
     if spec is None or spec.loader is None:
         raise RuntimeError("无法加载 run_delivery_audits.py")
     module = importlib.util.module_from_spec(spec)

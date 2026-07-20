@@ -13,8 +13,14 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +31,12 @@ import java.util.Map;
 /** 旧 WorldListTrashCan 配置到新拆分配置的 Bukkit 迁移器。 */
 public final class BukkitLegacyConfigMigrator {
     private static final Charset UTF8 = Charset.forName("UTF-8");
-    private static final String REPORT_FILE = "legacy-migration-report.md";
+    private static final String CONFIG_SCHEMA_KEY = "config-schema-version";
+    private static final int CONFIG_SCHEMA_VERSION = 2;
+    private static final String BACKUP_FOLDER = "old-version-config";
+    private static final String STAGING_FOLDER = ".migration-staging";
+    private static final String REPORT_FILE = "migration-report.md";
+    private static final String COMPLETE_FILE = "migration-complete.yml";
     private static final String CLEANUP_FILE = "cleanup.yml";
     private static final int CLEANUP_GUARD_NOTIFY_KEY = -5;
     private static final String CLEANUP_GUARD_NOTIFY_COMMENT = "# -5 表示本轮被扫地启动门禁跳过。";
@@ -35,7 +46,21 @@ public final class BukkitLegacyConfigMigrator {
             "notify.bossbar.messages",
             "notify.title.messages"
     };
+    private static final String[] DEFAULT_RESOURCES = {
+            "config.yml",
+            "platform.yml",
+            "cleanup.yml",
+            "trash.yml",
+            "entity-limits.yml",
+            "protections.yml",
+            "messages/message_zh.yml",
+            "messages/message_zh_TW.yml",
+            "messages/message_en.yml",
+            "messages/message_es.yml",
+            "data/worlds.yml"
+    };
     private final JavaPlugin plugin;
+    private File targetRoot;
 
     /** 创建旧配置迁移器。 */
     public BukkitLegacyConfigMigrator(JavaPlugin plugin) {
@@ -44,31 +69,41 @@ public final class BukkitLegacyConfigMigrator {
 
     /** 如果检测到旧配置且尚未迁移，则执行一次迁移。 */
     public boolean migrateIfNeeded() {
-        ensureCurrentRuntimeDefaults();
-        if (!plugin.getConfig().getBoolean("migration-enabled", true)) {
+        File dataFolder = plugin.getDataFolder();
+        File backupFolder = new File(dataFolder, BACKUP_FOLDER);
+        File completeFile = new File(backupFolder, COMPLETE_FILE);
+        if (completeFile.isFile()) {
+            rejectLegacyFilesAfterCompletedMigration(dataFolder);
             return false;
         }
-        File reportFile = new File(plugin.getDataFolder(), REPORT_FILE);
-        if (reportFile.exists()) {
-            return false;
-        }
-        LegacySource source = findLegacySource();
+        LegacySource source = findLegacySource(dataFolder, backupFolder);
         if (source == null) {
             return false;
         }
         try {
-            migrate(source, reportFile);
-            plugin.reloadConfig();
-            plugin.getLogger().info("[Migration] 已完成旧 WorldListTrashCan 配置迁移，报告: " + reportFile.getName());
+            ensureDirectory(dataFolder);
+            if (source.currentDataFolder) {
+                archiveCurrentDataFolder(dataFolder, backupFolder);
+                source = legacySourceFromFolder(backupFolder, false);
+            }
+            if (source == null) {
+                throw new IOException("旧配置完成备份后无法重新读取");
+            }
+            File stagingFolder = new File(dataFolder, STAGING_FOLDER);
+            File reportFile = new File(backupFolder, REPORT_FILE);
+            migrate(source, reportFile, stagingFolder);
+            writeCompleteMarker(completeFile, source);
+            plugin.getLogger().info("[Migration] 已完成旧 WorldListTrashCan 配置迁移，旧文件: "
+                    + BACKUP_FOLDER + "，报告: " + BACKUP_FOLDER + "/" + REPORT_FILE);
             return true;
         } catch (IOException exception) {
             plugin.getLogger().severe("[Migration] 旧配置迁移失败: " + exception.getMessage());
-            return false;
+            throw new IllegalStateException("旧配置迁移失败，已阻止插件继续加载", exception);
         }
     }
 
     /** 补齐当前版本运行时需要的新增默认配置。 */
-    private void ensureCurrentRuntimeDefaults() {
+    public void repairCurrentRuntimeDefaults() {
         try {
             if (mergeCleanupGuardNotifyDefaults()) {
                 plugin.getLogger().info("[Config] 已补齐 cleanup.yml 缺失的 -5 扫地门禁通知默认文案。");
@@ -271,33 +306,23 @@ public final class BukkitLegacyConfigMigrator {
         return builder.toString();
     }
 
-    /** 查找可迁移的旧配置来源。 */
-    private LegacySource findLegacySource() {
-        File dataFolder = plugin.getDataFolder();
-        File currentConfig = new File(dataFolder, "config.yml");
-        File currentData = new File(dataFolder, "data/data.yml");
-        if (isLegacySource(currentConfig, currentData)) {
-            return new LegacySource(dataFolder, currentConfig, currentData, true);
+    /** 查找当前目录或未完成备份中的旧配置来源。 */
+    private LegacySource findLegacySource(File dataFolder, File backupFolder) {
+        LegacySource current = legacySourceFromFolder(dataFolder, true);
+        if (current != null) {
+            return current;
         }
-        File parent = dataFolder.getParentFile();
-        if (parent == null) {
-            return null;
-        }
-        String configuredFolder = plugin.getConfig().getString("migration-legacy-folder", "WorldListTrashCan");
-        File legacyFolder = resolveLegacyFolder(parent, configuredFolder);
-        File legacyConfig = new File(legacyFolder, "config.yml");
-        File legacyData = new File(legacyFolder, "data/data.yml");
-        if (isLegacySource(legacyConfig, legacyData)) {
-            return new LegacySource(legacyFolder, legacyConfig, legacyData, false);
-        }
-        return null;
+        return legacySourceFromFolder(backupFolder, false);
     }
 
-    /** 解析旧插件数据目录配置。 */
-    private File resolveLegacyFolder(File parent, String configuredFolder) {
-        String value = configuredFolder == null || configuredFolder.trim().isEmpty() ? "WorldListTrashCan" : configuredFolder.trim();
-        File file = new File(value);
-        return file.isAbsolute() ? file : new File(parent, value);
+    /** 从指定目录创建旧配置来源。 */
+    private LegacySource legacySourceFromFolder(File folder, boolean currentDataFolder) {
+        File configFile = new File(folder, "config.yml");
+        File dataFile = new File(folder, "data/data.yml");
+        if (!isLegacySource(configFile, dataFile)) {
+            return null;
+        }
+        return new LegacySource(folder, configFile, dataFile, currentDataFolder);
     }
 
     /** 判断给定文件是否包含旧配置结构。 */
@@ -316,7 +341,10 @@ public final class BukkitLegacyConfigMigrator {
     }
 
     /** 执行旧配置到新配置的迁移。 */
-    private void migrate(LegacySource source, File reportFile) throws IOException {
+    private void migrate(LegacySource source, File reportFile, File stagingFolder) throws IOException {
+        recreateDirectory(stagingFolder);
+        saveDefaultResources(stagingFolder);
+        targetRoot = stagingFolder;
         LegacyMigrationPlan plan = new LegacyMigrationPlan();
         YamlConfiguration oldConfig = source.configFile.exists()
                 ? YamlConfiguration.loadConfiguration(source.configFile)
@@ -324,10 +352,6 @@ public final class BukkitLegacyConfigMigrator {
         YamlConfiguration oldData = source.dataFile.exists()
                 ? YamlConfiguration.loadConfiguration(source.dataFile)
                 : new YamlConfiguration();
-        if (source.currentDataFolder) {
-            backupCurrentLegacyFiles(source);
-            plugin.saveResource("config.yml", true);
-        }
         migrateMainConfig(oldConfig, plan);
         migrateCleanupConfig(oldConfig, plan);
         migrateTrashConfig(oldConfig, plan);
@@ -336,26 +360,192 @@ public final class BukkitLegacyConfigMigrator {
         migrateEntityLimitConfig(oldConfig, plan);
         migrateWorldTrashData(oldData, plan);
         recordUnsupportedKeys(oldConfig, plan);
+        validateNewConfigTree(stagingFolder);
         writeReport(reportFile, source, plan);
+        publishStaging(stagingFolder, plugin.getDataFolder());
+        validateNewConfigTree(plugin.getDataFolder());
     }
 
-    /** 备份当前目录中的旧配置文件。 */
-    private void backupCurrentLegacyFiles(LegacySource source) throws IOException {
-        File backupDir = new File(plugin.getDataFolder(), "legacy-migration-backup");
-        ensureDirectory(backupDir);
-        if (source.configFile.exists()) {
-            Files.copy(source.configFile.toPath(), new File(backupDir, "config.yml").toPath(), StandardCopyOption.REPLACE_EXISTING);
+    /** 将旧插件数据目录的全部内容移动到 old-version-config。 */
+    private void archiveCurrentDataFolder(File dataFolder, File backupFolder) throws IOException {
+        ensureDirectory(dataFolder);
+        ensureDirectory(backupFolder);
+        File[] children = dataFolder.listFiles();
+        if (children == null) {
+            throw new IOException("无法读取插件数据目录: " + dataFolder.getAbsolutePath());
         }
-        if (source.dataFile.exists()) {
-            File dataBackupDir = new File(backupDir, "data");
-            ensureDirectory(dataBackupDir);
-            Files.copy(source.dataFile.toPath(), new File(dataBackupDir, "data.yml").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        for (File child : children) {
+            if (child.equals(backupFolder) || STAGING_FOLDER.equals(child.getName())) {
+                continue;
+            }
+            File target = new File(backupFolder, child.getName());
+            moveIntoBackup(child, target);
         }
+    }
+
+    /** 可重入地把旧文件移动到备份目录，内容冲突时拒绝覆盖。 */
+    private void moveIntoBackup(File source, File target) throws IOException {
+        if (!target.exists()) {
+            Files.move(source.toPath(), target.toPath());
+            return;
+        }
+        if (source.isDirectory() && target.isDirectory()) {
+            File[] children = source.listFiles();
+            if (children == null) {
+                throw new IOException("无法读取待备份目录: " + source.getAbsolutePath());
+            }
+            for (File child : children) {
+                moveIntoBackup(child, new File(target, child.getName()));
+            }
+            Files.deleteIfExists(source.toPath());
+            return;
+        }
+        if (source.isFile() && target.isFile() && sameFileContent(source, target)) {
+            Files.deleteIfExists(source.toPath());
+            return;
+        }
+        throw new IOException("旧配置备份目标存在不同内容，拒绝覆盖: " + target.getAbsolutePath());
+    }
+
+    /** 流式比较两个文件，避免为日志等大文件一次性分配内存。 */
+    private boolean sameFileContent(File first, File second) throws IOException {
+        if (first.length() != second.length()) {
+            return false;
+        }
+        try (InputStream firstInput = Files.newInputStream(first.toPath());
+             InputStream secondInput = Files.newInputStream(second.toPath())) {
+            byte[] firstBuffer = new byte[8192];
+            byte[] secondBuffer = new byte[8192];
+            while (true) {
+                int firstRead = firstInput.read(firstBuffer);
+                int secondRead = secondInput.read(secondBuffer);
+                if (firstRead != secondRead) {
+                    return false;
+                }
+                if (firstRead < 0) {
+                    return true;
+                }
+                for (int index = 0; index < firstRead; index++) {
+                    if (firstBuffer[index] != secondBuffer[index]) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    /** 在成功标记存在时拒绝重新放回根目录的旧配置。 */
+    private void rejectLegacyFilesAfterCompletedMigration(File dataFolder) {
+        LegacySource source = legacySourceFromFolder(dataFolder, true);
+        if (source != null) {
+            plugin.getLogger().severe("[MigrationGuard] legacy-root-after-complete");
+            throw new IllegalStateException("检测到迁移完成后重新放回的旧版配置，请移除根目录旧文件后重启");
+        }
+    }
+
+    /** 重新创建空的迁移暂存目录。 */
+    private void recreateDirectory(File directory) throws IOException {
+        if (directory.exists()) {
+            deleteTree(directory.toPath());
+        }
+        ensureDirectory(directory);
+    }
+
+    /** 删除迁移器自己创建的目录树。 */
+    private void deleteTree(Path root) throws IOException {
+        Path expectedParent = plugin.getDataFolder().getCanonicalFile().toPath();
+        Path resolved = root.toFile().getCanonicalFile().toPath();
+        if (!resolved.startsWith(expectedParent) || resolved.equals(expectedParent)) {
+            throw new IOException("拒绝删除插件数据目录之外的路径: " + resolved);
+        }
+        Files.walkFileTree(resolved, new SimpleFileVisitor<Path>() {
+            /** 删除普通文件。 */
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                Files.deleteIfExists(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            /** 删除已经清空的目录。 */
+            @Override
+            public FileVisitResult postVisitDirectory(Path directory, IOException exception) throws IOException {
+                if (exception != null) {
+                    throw exception;
+                }
+                Files.deleteIfExists(directory);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    /** 把 jar 内新版默认资源保存到暂存目录。 */
+    private void saveDefaultResources(File stagingFolder) throws IOException {
+        for (String resource : DEFAULT_RESOURCES) {
+            InputStream inputStream = plugin.getResource(resource);
+            if (inputStream == null) {
+                throw new IOException("插件 jar 缺少默认资源: " + resource);
+            }
+            File target = new File(stagingFolder, resource);
+            File parent = target.getParentFile();
+            if (parent != null) {
+                ensureDirectory(parent);
+            }
+            try (InputStream input = inputStream) {
+                Files.copy(input, target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+    }
+
+    /** 校验新版配置目录的文件、格式版本和 YAML 语法。 */
+    private void validateNewConfigTree(File root) throws IOException {
+        for (String resource : DEFAULT_RESOURCES) {
+            File file = new File(root, resource);
+            if (!file.isFile()) {
+                throw new IOException("新版配置缺少文件: " + resource);
+            }
+            if (resource.endsWith(".yml") || resource.endsWith(".yaml")) {
+                YamlConfiguration yaml = new YamlConfiguration();
+                try {
+                    yaml.load(file);
+                } catch (Exception exception) {
+                    throw new IOException("新版配置 YAML 无法解析: " + resource + ": " + exception.getMessage(), exception);
+                }
+                if ("config.yml".equals(resource)
+                        && yaml.getInt(CONFIG_SCHEMA_KEY, -1) != CONFIG_SCHEMA_VERSION) {
+                    throw new IOException("config.yml 缺少正确的 " + CONFIG_SCHEMA_KEY);
+                }
+            }
+        }
+    }
+
+    /** 将校验通过的暂存配置发布到插件数据目录。 */
+    private void publishStaging(final File stagingFolder, final File dataFolder) throws IOException {
+        final Path sourceRoot = stagingFolder.toPath();
+        final Path targetRootPath = dataFolder.toPath();
+        Files.walkFileTree(sourceRoot, new SimpleFileVisitor<Path>() {
+            /** 创建目标子目录。 */
+            @Override
+            public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
+                Path relative = sourceRoot.relativize(directory);
+                Files.createDirectories(targetRootPath.resolve(relative));
+                return FileVisitResult.CONTINUE;
+            }
+
+            /** 发布单个配置文件。 */
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                Path target = targetRootPath.resolve(sourceRoot.relativize(file));
+                Files.move(file, target, StandardCopyOption.REPLACE_EXISTING);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        deleteTree(stagingFolder.toPath());
     }
 
     /** 迁移主配置。 */
     private void migrateMainConfig(YamlConfiguration oldConfig, LegacyMigrationPlan plan) throws IOException {
         YamlConfiguration target = loadTarget("config.yml");
+        target.set(CONFIG_SCHEMA_KEY, CONFIG_SCHEMA_VERSION);
         copyString(oldConfig, target, "Set.Lang", "language", plan);
         copyBoolean(oldConfig, target, "Set.Debug", "debug", plan);
         saveTarget(target, "config.yml");
@@ -661,12 +851,12 @@ public final class BukkitLegacyConfigMigrator {
 
     /** 加载目标 YAML。 */
     private YamlConfiguration loadTarget(String path) {
-        return YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), path));
+        return YamlConfiguration.loadConfiguration(new File(targetRoot, path));
     }
 
     /** 保存目标 YAML。 */
     private void saveTarget(YamlConfiguration target, String path) throws IOException {
-        File file = new File(plugin.getDataFolder(), path);
+        File file = new File(targetRoot, path);
         File parent = file.getParentFile();
         if (parent != null) {
             ensureDirectory(parent);
@@ -681,17 +871,59 @@ public final class BukkitLegacyConfigMigrator {
             ensureDirectory(parent);
         }
         try (Writer writer = new OutputStreamWriter(Files.newOutputStream(reportFile.toPath()), UTF8)) {
-            writer.write("# BlWorldTrashCan 旧配置迁移报告\n\n");
+            writer.write("# WorldListTrashCan 旧配置迁移报告\n\n");
             writer.write("- 迁移时间: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "\n");
             writer.write("- 来源目录: `" + source.folder.getAbsolutePath() + "`\n");
-            writer.write("- 来源类型: " + (source.currentDataFolder ? "当前插件数据目录旧结构" : "相邻旧插件数据目录") + "\n\n");
+            writer.write("- 来源类型: old-version-config 隔离备份\n\n");
             writeSection(writer, "自动迁移字段", plan.getMigratedKeys());
             writeSection(writer, "已废弃字段", plan.getDeprecatedKeys());
             writeSection(writer, "需要人工确认字段", plan.getManualKeys());
             writer.write("## 说明\n\n");
             writer.write("- 迁移器只迁移当前新实现已经承接的旧功能字段。\n");
-            writer.write("- 已生成本报告后，后续启动不会重复迁移；如需重跑，请先备份并删除本报告。\n");
+            writer.write("- 只有 migration-complete.yml 表示迁移成功；迁移失败不会生成成功标记。\n");
             writer.write("- Bukkit YAML 保存运行时配置会重写文件注释；默认带注释配置仍保留在插件 jar 内。\n");
+        }
+    }
+
+    /** 在所有配置发布并复核成功后写入一次性完成标记。 */
+    private void writeCompleteMarker(File completeFile, LegacySource source) throws IOException {
+        File parent = completeFile.getParentFile();
+        if (parent != null) {
+            ensureDirectory(parent);
+        }
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        StringBuilder text = new StringBuilder();
+        text.append("status: complete\n");
+        text.append("source-format: legacy-single-config\n");
+        text.append("target-config-schema-version: ").append(CONFIG_SCHEMA_VERSION).append('\n');
+        text.append("target-plugin-version: \"")
+                .append(escapeYamlDoubleQuoted(plugin.getDescription().getVersion())).append("\"\n");
+        text.append("migrated-at: \"").append(timestamp).append("\"\n");
+        text.append("source-sha256: \"").append(sourceFingerprint(source)).append("\"\n");
+        Files.write(completeFile.toPath(), text.toString().getBytes(UTF8));
+    }
+
+    /** 计算旧主配置和旧世界数据的联合 SHA-256。 */
+    private String sourceFingerprint(LegacySource source) throws IOException {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            updateDigest(digest, source.configFile);
+            updateDigest(digest, source.dataFile);
+            byte[] result = digest.digest();
+            StringBuilder hex = new StringBuilder(result.length * 2);
+            for (byte value : result) {
+                hex.append(String.format("%02x", value & 0xff));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IOException("当前 Java 环境不支持 SHA-256", exception);
+        }
+    }
+
+    /** 把存在的旧文件内容加入摘要。 */
+    private void updateDigest(MessageDigest digest, File file) throws IOException {
+        if (file.isFile()) {
+            digest.update(Files.readAllBytes(file.toPath()));
         }
     }
 

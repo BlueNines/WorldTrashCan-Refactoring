@@ -1,0 +1,13 @@
+{
+  "cwd": "E:\\server_work\\paper-1.12.2-universal-test-server",
+  "command": [
+    "C:\\Program Files\\Java\\jre1.8.0_451\\bin\\java.exe",
+    "-Xms1024M",
+    "-Xmx4096M",
+    "-jar",
+    "paper-1.12.2-1620.jar",
+    "nogui"
+  ],
+  "plugin": "WorldListTrashCan-universal.jar",
+  "port": 30012
+}

@@ -9,7 +9,7 @@
     <version>7.0.0</version>
     <packaging>pom</packaging>
 
-    <name>BlWorldTrashCan Parent</name>
+    <name>WorldListTrashCan Parent</name>
 
     <modules>
         <module>bl-world-trashcan-core</module>

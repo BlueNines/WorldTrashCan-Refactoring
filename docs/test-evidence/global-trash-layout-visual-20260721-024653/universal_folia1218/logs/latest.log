@@ -1,0 +1,234 @@
+[02:48:29] [ServerMain/INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
+[02:48:29] [ServerMain/INFO]: [bootstrap] Loading Folia 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) for Minecraft 1.21.8
+[02:48:29] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[02:48:30] [ServerMain/INFO]: [PluginInitializerManager] Initialized 3 plugins
+[02:48:30] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (3):
+ - PermissionDenyFixture (1.0.0), PlaceholderAPI (2.11.7-DEV-null), WorldListTrashCan (7.0.0)
+[02:48:33] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[02:48:34] [ServerMain/INFO]: Loaded 1407 recipes
+[02:48:34] [ServerMain/INFO]: Loaded 1520 advancements
+[02:48:34] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[02:48:34] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 229.4ms
+[02:48:35] [Server thread/INFO]: Starting minecraft server version 1.21.8
+[02:48:35] [Server thread/INFO]: Loading properties
+[02:48:35] [Server thread/INFO]: This server is running Folia version 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
+[02:48:35] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[02:48:35] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[02:48:35] [Server thread/INFO]: Using 4 threads for Netty based IO
+[02:48:35] [Server thread/INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
+[02:48:35] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[02:48:35] [Server thread/INFO]: [io.papermc.paper.threadedregions.TickRegions] Regionised ticking is enabled with 2 tick threads
+[02:48:35] [Server thread/INFO]: Default game type: SURVIVAL
+[02:48:35] [Server thread/INFO]: Generating keypair
+[02:48:35] [Server thread/INFO]: Starting Minecraft server on *:30004
+[02:48:35] [Server thread/INFO]: Using default channel type
+[02:48:35] [Server thread/INFO]: Paper: Using Java compression from Velocity.
+[02:48:35] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
+[02:48:36] [Server thread/WARN]: [org.bukkit.craftbukkit.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[02:48:43] [Server thread/WARN]: Legacy plugin PermissionDenyFixture v1.0.0 does not specify an api-version.
+[02:48:43] [Server thread/INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.7-DEV-null
+[02:48:43] [Server thread/INFO]: [WorldListTrashCan] Loading server plugin WorldListTrashCan v7.0.0
+[02:48:43] [Server thread/INFO]: [PermissionDenyFixture] Loading server plugin PermissionDenyFixture v1.0.0
+[02:48:43] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[02:48:43] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[02:48:43] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[02:48:43] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[02:48:43] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[02:48:43] [Server thread/INFO]: Preparing level "world"
+[02:48:44] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[02:48:44] [Server thread/INFO]: Time elapsed: 3 ms
+[02:48:44] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[02:48:44] [Server thread/INFO]: Time elapsed: 0 ms
+[02:48:44] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[02:48:44] [Server thread/INFO]: Time elapsed: 0 ms
+[02:48:44] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.7-DEV-null
+[02:48:44] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=32, visiblePages=32
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[02:48:44] [Server thread/INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Universal runtime: folia
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Platform: folia-1.20
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability scheduler-global: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability scheduler-region: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability inventory-basic: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability item-pdc-tag: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability item-legacy-tag: disabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability rgb-message: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability clickable-message: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability boss-bar: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability sign-legacy: disabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability sign-modern: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability entity-move-event: enabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] Capability folia-region-safe: disabled
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+[02:48:44] [Server thread/INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+[02:48:44] [Server thread/INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0*
+[02:48:44] [Server thread/INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+[02:48:44] [Server thread/INFO]: [spark] The spark plugin has been preferred but was not loaded. The bundled spark profiler will enabled instead.
+[02:48:44] [Server thread/INFO]: [spark] The spark profiler will not be enabled because it is currently disabled in the configuration.
+[02:48:44] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[02:48:44] [Server thread/INFO]: Done preparing level "world" (0.876s)
+[02:48:44] [Server thread/INFO]: Done (15.921s)! For help, type "help"
+[02:48:44] [Region Scheduler Thread #0/INFO]: 0 placeholder hook(s) registered!
+[02:48:44] [Region Scheduler Thread #1/INFO]: Initialising world 'world' before it can be ticked...
+[02:48:44] [Region Scheduler Thread #1/INFO]: Initialised world 'world'
+[02:48:44] [Region Scheduler Thread #1/INFO]: Initialising world 'world_nether' before it can be ticked...
+[02:48:44] [Region Scheduler Thread #1/INFO]: Initialised world 'world_nether'
+[02:48:44] [Region Scheduler Thread #0/INFO]: Initialising world 'world_the_end' before it can be ticked...
+[02:48:44] [Region Scheduler Thread #0/INFO]: Initialised world 'world_the_end'
+[02:48:45] [Region Scheduler Thread #1/INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:
+[02:48:45] [Region Scheduler Thread #1/INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[02:48:45] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:48:45] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[02:48:45] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[02:48:45] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+[02:48:45] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+[02:48:45] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。
+[02:48:48] [Region Scheduler Thread #1/INFO]: 5秒
+[02:48:50] [Region Scheduler Thread #0/INFO]: 3秒
+[02:48:51] [Region Scheduler Thread #1/INFO]: 2秒
+[02:48:52] [Region Scheduler Thread #1/INFO]: 1秒
+[02:48:52] [User Authenticator #0/INFO]: UUID of player RGBolia1218 is eea599c9-a6e7-3374-be36-45fda92be0e8
+[02:48:53] [Region Scheduler Thread #1/INFO]: RGBolia1218 joined the game
+[02:48:53] [Region Scheduler Thread #1/INFO]: RGBolia1218[/127.0.0.1:49268] logged in with entity id 15 at ([world]0.5, 91.0, -7.5)
+[02:48:53] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=150, worlds=3, timedOut=false
+[02:48:55] [Region Scheduler Thread #1/INFO]: Nothing changed. The player already is an operator
+[02:48:55] [Region Scheduler Thread #0/INFO]: Gamerule sendCommandFeedback is now set to: false
+[02:48:55] [Region Scheduler Thread #0/INFO]: Gamerule commandBlockOutput is now set to: false
+[02:48:55] [Region Scheduler Thread #0/INFO]: Gamerule doMobSpawning is now set to: false
+[02:48:56] [Region Scheduler Thread #0/INFO]: Gamerule keepInventory is now set to: true
+[02:48:56] [Region Scheduler Thread #1/INFO]: Gamerule fallDamage is now set to: false
+[02:48:56] [Region Scheduler Thread #1/INFO]: 5秒
+[02:48:56] [Region Scheduler Thread #1/INFO]: Set the time to 1000
+[02:48:56] [Region Scheduler Thread #1/INFO]: Set the weather to clear
+[02:48:57] [Region Scheduler Thread #1/INFO]: No blocks were filled
+[02:48:57] [Region Scheduler Thread #0/INFO]: Teleported RGBolia1218 to 0.500000, 91.000000, -7.500000
+[02:48:57] [Region Scheduler Thread #1/INFO]: Incorrect argument for command
+...ft:effect RGBolia1218 minecraft:resistance 1000000 255 true<--[HERE]
+[02:48:58] [Region Scheduler Thread #1/INFO]: Incorrect argument for command
+...ft:effect RGBolia1218 minecraft:saturation 1000000 1 true<--[HERE]
+[02:48:58] [Region Scheduler Thread #1/INFO]: Removed 1 item(s) from player RGBolia1218
+[02:48:58] [Region Scheduler Thread #0/INFO]: 3秒
+[02:48:59] [Region Scheduler Thread #0/INFO]: 2秒
+[02:48:59] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:48:59] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:00] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:00] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:00] [Region Scheduler Thread #0/INFO]: 1秒
+[02:49:00] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:00] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:01] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:01] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:01] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:01] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:02] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:49:02] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:02] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:02] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:02] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:03] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:03] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:03] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:03] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:04] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:04] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:04] [Region Scheduler Thread #0/INFO]: 5秒
+[02:49:04] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:04] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:05] [Region Scheduler Thread #0/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:05] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=64, routed=true
+[02:49:05] [Region Scheduler Thread #0/INFO]: 垃圾桶库存:
+[02:49:05] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 768 (堆叠 12)
+[02:49:05] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶页数: 5
+[02:49:05] [Region Scheduler Thread #0/INFO]: - 已加载个人垃圾桶: 0
+[02:49:06] [Region Scheduler Thread #0/INFO]: 3秒
+[02:49:06] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:49:06] [Region Scheduler Thread #0/WARN]: [WorldListTrashCan] [GlobalTrash] 新布局正常容量不足以容纳旧物品，已创建 1 个临时溢出页；这些页面可取出但不接收新物品。
+[02:49:06] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=1, visiblePages=2
+[02:49:06] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[02:49:06] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+[02:49:06] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+[02:49:06] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。
+[02:49:07] [Region Scheduler Thread #1/INFO]: 垃圾桶库存:
+[02:49:07] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶物品: 768 (堆叠 12)
+[02:49:07] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶页数: 2
+[02:49:07] [Region Scheduler Thread #1/INFO]: - 已加载个人垃圾桶: 0
+[02:49:07] [Region Scheduler Thread #1/INFO]: 已为玩家打开公共垃圾桶: RGBolia1218
+[02:49:09] [Region Scheduler Thread #1/INFO]: 5秒
+[02:49:11] [Region Scheduler Thread #1/INFO]: 3秒
+[02:49:12] [Region Scheduler Thread #1/INFO]: 2秒
+[02:49:13] [Region Scheduler Thread #1/INFO]: 1秒
+[02:49:15] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:49:17] [Region Scheduler Thread #1/INFO]: 5秒
+[02:49:19] [Region Scheduler Thread #1/INFO]: 3秒
+[02:49:20] [Region Scheduler Thread #1/INFO]: 2秒
+[02:49:21] [Region Scheduler Thread #1/INFO]: 1秒
+[02:49:23] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:49:25] [Region Scheduler Thread #1/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:25] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=false
+[02:49:25] [Region Scheduler Thread #1/INFO]: 5秒
+[02:49:25] [Region Scheduler Thread #1/INFO]: 垃圾桶库存:
+[02:49:25] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶物品: 768 (堆叠 12)
+[02:49:25] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶页数: 2
+[02:49:25] [Region Scheduler Thread #1/INFO]: - 已加载个人垃圾桶: 0
+[02:49:26] [Region Scheduler Thread #1/INFO]: 已为玩家打开公共垃圾桶: RGBolia1218
+[02:49:27] [Region Scheduler Thread #1/INFO]: 3秒
+[02:49:28] [Region Scheduler Thread #1/INFO]: 2秒
+[02:49:29] [Region Scheduler Thread #1/INFO]: 1秒
+[02:49:31] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:49:33] [Region Scheduler Thread #1/INFO]: 5秒
+[02:49:35] [Region Scheduler Thread #1/INFO]: 3秒
+[02:49:36] [Region Scheduler Thread #1/INFO]: 2秒
+[02:49:37] [Region Scheduler Thread #1/INFO]: 1秒
+[02:49:37] [Region Scheduler Thread #1/INFO]: 垃圾桶库存:
+[02:49:37] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶物品: 704 (堆叠 11)
+[02:49:37] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶页数: 2
+[02:49:37] [Region Scheduler Thread #1/INFO]: - 已加载个人垃圾桶: 0
+[02:49:38] [Region Scheduler Thread #1/INFO]: 已提交路由测试任务，请查看后台日志。
+[02:49:38] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:49:39] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:49:39] [Region Scheduler Thread #1/INFO]: 垃圾桶库存:
+[02:49:39] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶物品: 768 (堆叠 12)
+[02:49:39] [Region Scheduler Thread #1/INFO]: - 公共垃圾桶页数: 2
+[02:49:39] [Region Scheduler Thread #1/INFO]: - 已加载个人垃圾桶: 0
+[02:49:40] [Region Scheduler Thread #1/INFO]: 已为玩家打开公共垃圾桶: RGBolia1218
+[02:49:41] [Region Scheduler Thread #1/INFO]: 5秒
+[02:49:43] [Region Scheduler Thread #1/INFO]: 3秒
+[02:49:44] [Region Scheduler Thread #1/INFO]: 2秒
+[02:49:44] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:49:44] [Region Scheduler Thread #1/WARN]: [WorldListTrashCan] [GlobalTrash] 公共垃圾桶布局无效，已回退默认布局: global-trash.gui.layout.position 只能配置 1-6 行，当前为 7 行
+[02:49:44] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=1, visiblePages=1
+[02:49:44] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[02:49:44] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+[02:49:44] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+[02:49:44] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。
+[02:49:45] [Region Scheduler Thread #0/INFO]: 垃圾桶库存:
+[02:49:45] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶物品: 768 (堆叠 12)
+[02:49:45] [Region Scheduler Thread #0/INFO]: - 公共垃圾桶页数: 1
+[02:49:45] [Region Scheduler Thread #0/INFO]: - 已加载个人垃圾桶: 0
+[02:49:46] [Region Scheduler Thread #0/INFO]: 已为玩家打开公共垃圾桶: RGBolia1218
+[02:49:47] [Region Scheduler Thread #0/INFO]: 5秒
+[02:49:49] [Region Scheduler Thread #0/INFO]: 3秒
+[02:49:50] [Region Scheduler Thread #0/INFO]: 2秒
+[02:49:51] [Region Scheduler Thread #1/INFO]: 1秒
+[02:49:53] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:49:55] [Region Scheduler Thread #1/INFO]: 5秒
+[02:49:57] [Region Scheduler Thread #1/INFO]: 3秒
+[02:49:58] [Region Scheduler Thread #1/INFO]: 2秒
+[02:49:59] [Region Scheduler Thread #1/INFO]: 1秒
+[02:50:01] [Region Scheduler Thread #1/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:50:03] [Region Scheduler Thread #0/INFO]: 5秒
+[02:50:05] [Region Scheduler Thread #0/INFO]: 3秒
+[02:50:06] [Region Scheduler Thread #0/INFO]: 2秒
+[02:50:07] [Region Scheduler Thread #0/INFO]: 1秒
+[02:50:09] [Region Scheduler Thread #0/INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+[02:50:11] [Region Scheduler Thread #1/INFO]: 5秒
+[02:50:13] [Region Scheduler Thread #1/INFO]: 3秒
+[02:50:14] [Region Scheduler Thread #1/INFO]: 2秒
+[02:50:15] [Region Scheduler Thread #1/INFO]: 1秒
+[02:50:15] [Region Scheduler Thread #1/INFO]: RGBolia1218 lost connection: Disconnected
+[02:50:16] [Region Scheduler Thread #1/INFO]: RGBolia1218 left the game

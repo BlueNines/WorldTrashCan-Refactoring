@@ -213,7 +213,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(guard.backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(guard.backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml", backup_dir))
         prepared = prepared_clients[case["version"]]
         client, username, game_dir = base.launch_client(case, prepared, run_dir)
         base.ACTIVE_CLIENT_PID = client.pid

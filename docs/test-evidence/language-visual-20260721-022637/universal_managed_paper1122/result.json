@@ -1,0 +1,166 @@
+{
+  "id": "universal_managed_paper1122",
+  "sourceId": "managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "clientVersion": "1.12.2",
+  "serverDir": "E:\\server_work\\paper-1.12.2-universal-test-server",
+  "plugin": "WorldListTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 560737,
+    "sha256": "d821feef1a5e9158f027c530c048527195183d4954e41af13701ec8373b9ea24",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "F-073-language-switch-to-english",
+      "reload": {
+        "markers": [
+          "[Message]",
+          "messages/message_en.yml"
+        ],
+        "excerpt": "[02:26:48 INFO]: [WorldListTrashCan] [Message] �Ѽ��������ļ�: messages/message_en.yml\n[02:26:48 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5\n[02:26:48 INFO]: [WorldListTrashCan] [TrashRouter] �Ѽ��� 0 ����������Ͱ���ݡ�\n[02:26:48 INFO]: [WorldListTrashCan] [Cleanup] ��ʱ��������������� 360 �롣\n[02:26:48 INFO]: [WorldListTrashCan] WorldListTrashCan reloaded.\n"
+      },
+      "runtimeFiles": {
+        "config.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\logs\\runtime-english\\config.yml",
+        "message_zh.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\logs\\runtime-english\\message_zh.yml",
+        "message_en.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\logs\\runtime-english\\message_en.yml"
+      },
+      "brand": {
+        "command": "/wtc reload",
+        "markers": [
+          "WorldListTrashCan",
+          "reloaded."
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "WorldListTrashCan",
+            "reloaded."
+          ],
+          "excerpt": "[02:26:55] [Client thread/INFO]: [CHAT] [WorldListTrashCan] WorldListTrashCan reloaded.\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-brand-case-reload-f2.png",
+          "size": 28175,
+          "sha256": "6c7b9bc460fc982202d452f278fbcbbff1261c3b7afd14b78e57220e9458ebaf",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 174.85286458333334
+        }
+      },
+      "help": {
+        "command": "/wtc help",
+        "suffix": "language-english-help-f2",
+        "markers": [
+          "Show help",
+          "Open global trash",
+          "Show cleanup and trash statistics"
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "Show help",
+            "Open global trash",
+            "Show cleanup and trash statistics"
+          ],
+          "excerpt": "[02:27:05] [Client thread/INFO]: [CHAT] /wtc help - Show help\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc platform - Show this build's capabilities\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc clear [true/false] - Run cleanup; default true ignores guards, false obeys guards\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc global - Open global trash\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc personal - Open personal trash\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc dropmode - Toggle drop protection\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc look - Inspect held item and right-clicked entity type\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc ban - Open this world's trash blacklist\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc globalban - Open the global trash blacklist\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc stats - Show cleanup and trash statistics\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc add <amount> - Add world trash slots to your current world\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc add <world> <amount> - Add world trash slots to a specific world\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc debughelp - Show debug commands\n[02:27:05] [Client thread/INFO]: [CHAT] /wtc reload - Reload the plugin\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-language-english-help-f2.png",
+          "size": 32923,
+          "sha256": "be136f8da1d6dfeba925a071d59802bf6fe77e81f64c097fe9400b0cdb51f174",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 152.59798177083334
+        }
+      }
+    },
+    {
+      "name": "F-074-missing-external-node-fallback",
+      "removedNode": {
+        "path": "E:\\server_work\\paper-1.12.2-universal-test-server\\plugins\\WorldListTrashCan\\messages\\message_zh.yml",
+        "removed": true
+      },
+      "reload": {
+        "markers": [
+          "[Message]",
+          "messages/message_zh.yml"
+        ],
+        "excerpt": "[02:27:08 INFO]: [WorldListTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml\n[02:27:08 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5\n[02:27:08 INFO]: [WorldListTrashCan] [TrashRouter] �Ѽ��� 0 ����������Ͱ���ݡ�\n[02:27:08 INFO]: [WorldListTrashCan] [Cleanup] ��ʱ��������������� 360 �롣\n[02:27:08 INFO]: [WorldListTrashCan] WorldListTrashCan �����ء�\n"
+      },
+      "runtimeFiles": {
+        "config.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\logs\\runtime-zh-fallback\\config.yml",
+        "message_zh.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\logs\\runtime-zh-fallback\\message_zh.yml",
+        "message_en.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\logs\\runtime-zh-fallback\\message_en.yml"
+      },
+      "help": {
+        "command": "/wtc help",
+        "suffix": "language-zh-fallback-help-f2",
+        "markers": [
+          "查看帮助",
+          "打开公共垃圾桶",
+          "查看清理和垃圾桶统计"
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "查看帮助",
+            "打开公共垃圾桶",
+            "查看清理和垃圾桶统计"
+          ],
+          "excerpt": "[02:27:14] [Client thread/INFO]: [CHAT] /wtc help - 查看帮助\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc platform - 查看当前版本产物能力\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc clear [true/false] - 立即扫地，默认 true 忽略 guards，false 遵守 guards\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc global - 打开公共垃圾桶\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc personal - 打开个人垃圾桶\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc dropmode - 切换防丢弃模式\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc look - 查询手持物品和右键实体类型\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc ban - 打开当前世界垃圾桶物品黑名单\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc globalban - 打开公共垃圾桶物品黑名单\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc stats - 查看清理和垃圾桶统计\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc add <数量> - 增加当前世界可创建的世界垃圾桶数量\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量\n[02:27:14] [Client thread/INFO]: [CHAT] /wtc debughelp - 查看后台调试命令\n[02:27:15] [Client thread/INFO]: [CHAT] /wtc reload - 重载插件\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-language-zh-fallback-help-f2.png",
+          "size": 37015,
+          "sha256": "e2fab07aba74b470e833adf684049fbdd9ab7f95f44c9e38d003d22841fb7880",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 156.97819010416666
+        }
+      }
+    }
+  ],
+  "username": "RGBaper1122",
+  "clientPid": 15368,
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-language-server-log.png",
+    "size": 246394,
+    "sha256": "1f1ccb781e702f5107c3b0d5fe50fde3eb5eaef99f347b93b0d0005a1a50096b",
+    "dimensions": [
+      1600,
+      988
+    ],
+    "brightness": 39.733072916666664
+  },
+  "failedChecks": []
+}

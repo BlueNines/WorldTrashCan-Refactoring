@@ -127,7 +127,7 @@ def replace_yaml_list(text: str, path: str, values: list[str]) -> str:
 
 def patch_trash_config(case: dict) -> Path:
     """写入 GUI 点击专项需要的运行时 trash.yml 配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
     if not target.is_file():
         raise RuntimeError("trash.yml 不存在，无法写入 GUI 点击测试配置: " + str(target))
     text = target.read_text(encoding="utf-8", errors="replace")
@@ -246,7 +246,7 @@ def debug_summary_amounts_by_order(text: str) -> dict:
     values = []
     in_summary = False
     for line in text.splitlines():
-        if "BlWorldTrashCan debug summary" in line:
+        if "WorldListTrashCan debug summary" in line:
             in_summary = True
             values = []
             continue
@@ -287,7 +287,7 @@ def fill_route_stacks(process, server_log: Path, command_log: Path, username: st
     """用多次 64 堆路由填充垃圾桶，规避 debugroute 单次数量上限。"""
     offset = external.log_text_offset(server_log)
     for _ in range(stacks):
-        run_console(process, command_log, "blwtc debugroute " + username + " " + route + " " + material + " 64", 0.04)
+        run_console(process, command_log, "wtc debugroute " + username + " " + route + " " + material + " 64", 0.04)
     deadline = time.time() + max(12.0, stacks * 0.4)
     text = ""
     while time.time() < deadline:
@@ -325,8 +325,8 @@ def setup_player(case: dict, username: str, process, command_log: Path) -> None:
 def reload_plugin(process, command_log: Path, server_log: Path) -> None:
     """重载插件配置并等待配置生效。"""
     offset = external.log_text_offset(server_log)
-    run_console(process, command_log, "blwtc reload", 0.5)
-    external.wait_command_markers(server_log, offset, ["[Message]"], 12, "blwtc reload")
+    run_console(process, command_log, "wtc reload", 0.5)
+    external.wait_command_markers(server_log, offset, ["[Message]"], 12, "wtc reload")
 
 
 def capture_named_screenshot(case: dict, game_dir: Path, run_dir: Path, name: str) -> Path:
@@ -420,12 +420,12 @@ def send_client_command(case: dict, game_dir: Path, run_dir: Path, command: str,
 def open_trash_gui(case: dict, username: str, process, command_log: Path,
                    run_dir: Path, game_dir: Path, kind: str, screenshot_name: str) -> dict:
     """通过后台测试入口打开公共或个人垃圾桶 GUI，并用真实客户端截图。"""
-    run_console(process, command_log, "blwtc debugopen " + username + " " + kind, 1.0)
+    run_console(process, command_log, "wtc debugopen " + username + " " + kind, 1.0)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, screenshot_name)
     info = screenshot_info(screenshot)
     return {
         "name": screenshot_name,
-        "command": "blwtc debugopen " + username + " " + kind,
+        "command": "wtc debugopen " + username + " " + kind,
         "status": "PASS" if info["brightness"] > 3 else "FAIL",
         "screenshot": info,
     }
@@ -434,12 +434,12 @@ def open_trash_gui(case: dict, username: str, process, command_log: Path,
 def open_player_debug_gui(case: dict, username: str, process, command_log: Path,
                           run_dir: Path, game_dir: Path, action: str, screenshot_name: str) -> dict:
     """通过后台玩家入口打开需要玩家对象的 GUI，并用真实客户端截图。"""
-    run_console(process, command_log, "blwtc debugplayer " + username + " " + action, 1.0)
+    run_console(process, command_log, "wtc debugplayer " + username + " " + action, 1.0)
     screenshot = capture_named_screenshot(case, game_dir, run_dir, screenshot_name)
     info = screenshot_info(screenshot)
     return {
         "name": screenshot_name,
-        "command": "blwtc debugplayer " + username + " " + action,
+        "command": "wtc debugplayer " + username + " " + action,
         "status": "PASS" if info["brightness"] > 3 else "FAIL",
         "screenshot": info,
     }
@@ -482,7 +482,7 @@ def render_text_screenshot(text: str, target: Path, title: str) -> Path:
 
 def read_global_trash_log(case: dict, username: str) -> str:
     """读取公共垃圾桶操作日志中当前玩家相关行。"""
-    log_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "logs"
+    log_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "logs"
     lines = []
     for path in sorted(log_dir.glob("global-trash-*.log")):
         text = path.read_text(encoding="utf-8", errors="replace")
@@ -513,7 +513,7 @@ def sha256_file(path: Path) -> str:
 def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
     """复制本轮运行态日志和配置证据。"""
     server_dir = Path(case["serverDir"])
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_runtime_file(server_dir / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     copy_runtime_file(plugin_dir / "trash.yml", run_dir / "config" / "trash-after-restore.yml")
     copy_runtime_file(plugin_dir / "messages" / "message_zh.yml", run_dir / "config" / "message_zh.yml")
@@ -522,10 +522,10 @@ def copy_runtime_evidence(case: dict, run_dir: Path) -> None:
 
 def verify_global_ban(case: dict, server_log: Path, process, command_log: Path, username: str) -> dict:
     """验证公共黑名单保存后立即影响公共垃圾桶路由。"""
-    trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+    trash_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
     trash_text = trash_file.read_text(encoding="utf-8", errors="replace") if trash_file.is_file() else ""
     offset = external.log_text_offset(server_log)
-    run_console(process, command_log, "blwtc debugroute " + username + " global STONE 1", 0.6)
+    run_console(process, command_log, "wtc debugroute " + username + " global STONE 1", 0.6)
     text = external.read_text_since(server_log, offset)
     deadline = time.time() + 12
     while time.time() < deadline and "debugRoute" not in text:
@@ -578,7 +578,7 @@ def run_public_gui_checks(case: dict, username: str, process, server_log: Path,
         "clientLog": cooldown_log,
     })
     close_gui(case)
-    stock_text = run_console_capture(process, server_log, command_log, "blwtc debugstock", 0.8)
+    stock_text = run_console_capture(process, server_log, command_log, "wtc debugstock", 0.8)
     stock_shot = render_text_screenshot(
         stock_text,
         run_dir / "server-screenshots" / (case["id"] + "-global-stock-after-put-take.png"),
@@ -623,7 +623,7 @@ def run_personal_gui_checks(case: dict, username: str, process, server_log: Path
     checks.append(open_trash_gui(case, username, process, command_log, run_dir, game_dir, "personal", "personal-put-before-f2"))
     click_slot(case, "hotbar", 0, 0)
     put_after = capture_named_screenshot(case, game_dir, run_dir, "personal-put-after-click-f2")
-    put_summary = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    put_summary = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     checks.append({
         "name": "F-035",
         "status": "PASS" if personal_summary_amount(put_summary, 5) else "FAIL",
@@ -632,7 +632,7 @@ def run_personal_gui_checks(case: dict, username: str, process, server_log: Path
     })
     click_slot(case, "top", 0, 0)
     take_after = capture_named_screenshot(case, game_dir, run_dir, "personal-take-after-click-f2")
-    take_summary = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    take_summary = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     checks.append({
         "name": "F-034",
         "status": "PASS" if personal_summary_amount(take_summary, 0) else "FAIL",
@@ -643,9 +643,9 @@ def run_personal_gui_checks(case: dict, username: str, process, server_log: Path
 
     fill_result = fill_route_stacks(process, server_log, command_log, username, "personal", "STONE", 54)
     run_checked_console(process, server_log, command_log,
-                        "blwtc debugroute " + username + " personal DIRT 1",
+                        "wtc debugroute " + username + " personal DIRT 1",
                         ["[Debug] debugRoute", "routed=true"], 14)
-    auto_clear_text = run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    auto_clear_text = run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
     summary_shot = render_text_screenshot(
         auto_clear_text,
         run_dir / "server-screenshots" / (case["id"] + "-personal-full-auto-clear-summary.png"),
@@ -676,7 +676,7 @@ def run_global_ban_gui_check(case: dict, username: str, process, server_log: Pat
     saved = capture_named_screenshot(case, game_dir, run_dir, "globalban-after-close-save-f2")
     verify = verify_global_ban(case, server_log, process, command_log, username)
     trash_copy = copy_runtime_file(
-        Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml",
+        Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml",
         run_dir / "logs" / "trash-after-globalban.yml",
     )
     server_shot = render_text_screenshot(
@@ -724,7 +724,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+        trash_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
         backups.append(backup_file(trash_file, backup_dir))
         result["patchedTrashConfig"] = str(patch_trash_config(case))
         copy_runtime_file(trash_file, run_dir / "logs" / "trash-after-patch.yml")
@@ -737,7 +737,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform", 0.5)
+        run_console(process, command_log, "wtc platform", 0.5)
         external.wait_platform_command_accepted(server_log, platform_offset)
         result["checks"].extend(run_public_gui_checks(case, username, process, server_log, command_log, run_dir, game_dir))
         result["checks"].extend(run_personal_gui_checks(case, username, process, server_log, command_log, run_dir, game_dir))
@@ -819,7 +819,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# GUI 正向点击真实客户端专项",
         "",
-        "- 被测 jar: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测 jar: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary.get("jarSha256", "") + "`",
         "- 验收方式: " + environments + "。",
         "- 覆盖: 公共垃圾桶放入/取出/冷却/分页/操作日志，个人垃圾桶放入/取出/满桶自动清空，公共黑名单 GUI 保存并立即影响路由。",
@@ -863,7 +863,7 @@ def main() -> int:
         results.append(result)
         write_json(evidence_root / "summary.json", {"run": run_id, "results": results, "contactSheet": ""})
     contact_sheet = make_contact_sheet(results, evidence_root)
-    jar_path = base.REPO / "dist" / "BlWorldTrashCan-universal.jar"
+    jar_path = base.REPO / "dist" / "WorldListTrashCan-universal.jar"
     summary = {
         "run": run_id,
         "jar": str(jar_path),

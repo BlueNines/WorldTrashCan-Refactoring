@@ -1,0 +1,193 @@
+# 插件前缀，会自动替换 {prefix}。
+prefix: "&#1B2430[&#5AC8FAWorld&#FFD166List&#C9D4E2Trash&#5AC8FACan&#1B2430] "
+
+# 通用无权限提示。
+no-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限执行该命令。"
+
+# 重载成功提示。
+reload-success: "{prefix}&#5AC8FA配置已重载。"
+
+# 公共垃圾桶相关消息。
+global-trash:
+  # 公共垃圾桶未启用时提示。
+  disabled: "{prefix}&#FFD166公共垃圾桶未启用。"
+  # 玩家没有权限从公共垃圾桶取出物品。
+  no-take-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能从公共垃圾桶取出物品。"
+  # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
+  take-cooldown: "{prefix}&#C9D4E2公共垃圾桶冷却剩余 &#FFD166{time} &#C9D4E2秒。"
+  # 公共垃圾桶 GUI 文案。
+  gui:
+    # GUI 标题，{page} 当前页，{max} 总页数。
+    title: "&#0F172A公共垃圾桶 &#5AC8FA{page}&#64748B/&#FFD166{max}"
+    # 上一页按钮名称。
+    back: "&#5AC8FA上一页"
+    # 下一页按钮名称。
+    next: "&#FFD166下一页"
+
+# 个人垃圾桶相关消息。
+personal-trash:
+  # 个人垃圾桶未启用时提示。
+  disabled: "{prefix}&#FFD166个人垃圾桶未启用。"
+  # 玩家没有权限从个人垃圾桶取出物品。
+  no-take-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能从个人垃圾桶取出物品。"
+  # 玩家余额不足时提示。
+  not-enough-money: "{prefix}&#FFD166余额不足 &#64748B| &#C9D4E2无法取出该物品。"
+  # 玩家背包空间不足时提示。
+  inventory-full: "{prefix}&#FFD166背包空间不足 &#64748B| &#C9D4E2无法取出该物品。"
+  # 玩家成功支付取出费用，{cost} 为扣费显示。
+  pay-success: "{prefix}&#5AC8FA已支付 &#FFD166{cost}&#C9D4E2。"
+  # 个人垃圾桶 GUI 文案。
+  gui:
+    # GUI 标题，{player} 为玩家名。
+    title: "&#0F172A{player} &#C9D4E2的个人垃圾桶"
+  # 自动进入个人垃圾桶时的提示文案。
+  recycle:
+    # 单个来源进入个人垃圾桶时发送，{items} 为格式化后的物品列表。
+    single: "{prefix}&#5AC8FA已回收到个人垃圾桶 &#64748B| {items}"
+    # 批量清理进入个人垃圾桶时发送，{items} 为格式化后的物品列表。
+    batch: "{prefix}&#5AC8FA本次清理已回收到个人垃圾桶 &#64748B| {items}"
+    # 物品列表整体格式，{items} 为已经拼接好的物品条目。
+    list: "&#1B2430[&#C9D4E2{items}&#1B2430]"
+    # 多个物品条目之间的分隔符。
+    separator: "&#64748B, "
+    # 单个物品数量大于 1 时的条目格式，{name} 为物品名，{amount} 为总数量。
+    item: "&#C9D4E2{name}&#64748B*&#FFD166{amount}"
+    # 单个物品数量等于 1 时的条目格式，{name} 为物品名。
+    item-single: "&#C9D4E2{name}"
+    # 物品条目超过 trash.yml 中 max-display-items 后追加的省略标记。
+    ellipsis: "&#64748B..."
+
+# 黑名单 GUI 相关消息。
+ban-gui:
+  # 世界黑名单 GUI 标题，{world} 为世界名。
+  world-title: "&#0F172A世界黑名单 &#64748B| &#FFD166{world}"
+  # 公共垃圾桶黑名单 GUI 标题。
+  global-title: "&#0F172A公共垃圾桶黑名单"
+  # 保存世界黑名单时世界不存在。
+  world-missing: "{prefix}&#FFD166世界不存在 &#64748B| &#C9D4E2无法保存黑名单: &#FFD166{world}"
+  # 世界黑名单保存成功，{count} 为物品数量。
+  world-save-success: "{prefix}&#5AC8FA已保存世界垃圾桶黑名单，数量: &#FFD166{count}"
+  # 世界黑名单保存失败。
+  world-save-fail: "{prefix}&#FFD166保存世界垃圾桶黑名单失败 &#64748B| &#C9D4E2请查看后台日志。"
+  # 公共黑名单保存成功，{count} 为物品数量。
+  global-save-success: "{prefix}&#5AC8FA已保存公共垃圾桶黑名单，数量: &#FFD166{count} &#64748B(已立即生效)"
+  # 公共黑名单保存失败。
+  global-save-fail: "{prefix}&#FFD166保存公共垃圾桶黑名单失败 &#64748B| &#C9D4E2请查看后台日志。"
+
+# 防护和查询相关消息。
+protection:
+  # 关闭防丢弃模式。
+  drop-mode-off: "{prefix}&#5AC8FA已关闭防丢弃模式。"
+  # 开启防丢弃模式。
+  drop-mode-on: "{prefix}&#5AC8FA已开启防丢弃模式。"
+  # 防丢弃模式拦截玩家丢弃。
+  drop-blocked: "{prefix}&#FFD166防丢弃模式已阻止本次丢弃。"
+  # look 查询等待玩家右键实体。
+  look-prompt: "{prefix}&#C9D4E2请右键一个实体以查询实体名称。"
+  # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
+  entity-result: "{prefix}&#5AC8FA实体 &#64748B| &#C9D4E2{name} &#64748B({type})"
+  # 当前区块实体列表标题。
+  chunk-entities-title: "{prefix}&#5AC8FA当前区块实体:"
+  # 当前区块实体单行，{text} 为实体名和数量。
+  chunk-entity-line: "{prefix}&#C9D4E2{text}"
+  # 手持物品查询结果，{material} 为物品类型。
+  hand-item: "{prefix}&#5AC8FA手持物品 &#64748B| &#FFD166{material}"
+
+# 实体限制相关消息。
+entity-limit:
+  # 密集实体清理完成时发送给附近玩家，{range} 检测半径，{entity} 实体类型，{size} 清理前附近数量，{max} 允许上限，{removed} 本次清理数量。
+  gather-cleared: "{prefix}&#FFD166密集实体清理 &#64748B| &#C9D4E2你的附近 &#FFD166{range} &#C9D4E2格内有 &#FFD166{entity} x {size} &#C9D4E2只，超过上限 &#FFD166{max}&#C9D4E2，本次已清理 &#5AC8FA{removed} &#C9D4E2只。"
+
+# 世界垃圾桶相关消息。
+world-trash:
+  # 当前世界禁止创建世界垃圾桶。
+  create-banned-world: "{prefix}&#FFD166该世界禁止创建世界垃圾桶。"
+  # 告示牌没有连接到可用容器。
+  create-not-container: "{prefix}&#FFD166告示牌必须贴在容器上，或放在容器上方。"
+  # 当前世界垃圾桶数量达到上限。
+  create-reach-limit: "{prefix}&#FFD166该世界的世界垃圾桶数量已达到上限。"
+  # 创建世界垃圾桶成功，{world} 为世界名。
+  create-success: "{prefix}&#5AC8FA已在世界 &#FFD166{world} &#5AC8FA创建世界垃圾桶。"
+  # 创建世界垃圾桶保存失败。
+  create-save-fail: "{prefix}&#FFD166世界垃圾桶保存失败 &#64748B| &#C9D4E2请查看后台日志。"
+  # 移除世界垃圾桶登记成功。
+  remove-success: "{prefix}&#5AC8FA已移除该世界垃圾桶登记。"
+# 主命令相关消息。
+command:
+  # 通用无权限提示。
+  no-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限执行该命令。"
+  # 重载成功提示。
+  reload-success: "{prefix}&#5AC8FAWorldListTrashCan &#C9D4E2已重载。"
+  # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
+  clear-success: "{prefix}&#5AC8FA清理完成 &#64748B| &#C9D4E2世界 &#FFD166{worlds}&#64748B, &#C9D4E2回收 &#FFD166{routed}&#64748B, &#C9D4E2移除物品 &#FFD166{items}&#64748B, &#C9D4E2移除实体 &#FFD166{entities}&#C9D4E2。"
+  # 手动清理 guards 参数错误时提示。
+  clear-guard-usage: "{prefix}&#FFD166用法 &#64748B| &#C9D4E2/wtc clear [true/false]，true 表示忽略 guards，false 表示遵守 guards。"
+  # Folia 不支持当前清理扫描时提示。
+  folia-clear-unsupported: "{prefix}&#FFD166当前 Folia 产物尚未启用 region-safe 清理，已拒绝执行世界实体扫描。"
+  # Folia 上一轮清理仍在运行时提示。
+  folia-clear-running: "{prefix}&#FFD166上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。"
+  # Folia 清理任务启动成功提示。
+  folia-clear-started: "{prefix}&#5AC8FA已启动 Folia region-safe 清理；完成后请查看后台 &#FFD166[FoliaCleanup] &#C9D4E2日志或执行 &#FFD166/wtc stats&#C9D4E2。"
+  # 没有打开公共垃圾桶权限时提示。
+  no-global-open-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能打开公共垃圾桶。"
+  # 没有打开个人垃圾桶权限时提示。
+  no-personal-open-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能打开个人垃圾桶。"
+  # /wtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /wtc debughelp。
+  debug-help:
+    - "&#5AC8FA/wtc debugopen <玩家> <global|personal> &#64748B- &#C9D4E2后台测试打开 GUI"
+    - "&#5AC8FA/wtc debugworldtrash <玩家> &#64748B- &#C9D4E2后台创建并登记测试世界垃圾桶"
+    - "&#5AC8FA/wtc debugroute <玩家> <world|personal|global> <Material> <数量> &#64748B- &#C9D4E2后台测试指定路由"
+    - "&#5AC8FA/wtc debugdrop <玩家> <Material> <数量> [owner] &#64748B- &#C9D4E2后台生成测试掉落物"
+    - "&#5AC8FA/wtc debugdamage <玩家> <Material> <数量> &#64748B- &#C9D4E2后台测试仙人掌/岩浆损坏回收"
+    - "&#5AC8FA/wtc debugstock &#64748B- &#C9D4E2后台查看当前垃圾桶库存"
+    - "&#5AC8FA/wtc debugsummary <玩家> &#64748B- &#C9D4E2查看后台测试摘要"
+    - "&#5AC8FA/wtc debugdensity &#64748B- &#C9D4E2查看实体密度扫描和候选队列"
+    - "&#5AC8FA/wtc debugnotify <count> &#64748B- &#C9D4E2后台触发 cleanup.yml 对应编号的正式清理通知"
+    - "&#5AC8FA/wtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- &#C9D4E2后台测试玩家入口"
+    - "&#5AC8FA/wtc debugrgb <玩家> &#64748B- &#C9D4E2后台测试 RGB/降级色可见通道"
+    - "&#5AC8FA/wtc debugrgbchannels <玩家> &#64748B- &#C9D4E2后台测试聊天、ActionBar 和 Title RGB/降级色通道"
+    - "&#64748B这些命令会改变测试服运行态，只建议用于验收和排障。"
+  # 平台信息标题，{platform} 为平台 ID。
+  platform:
+    header: "{prefix}&#5AC8FA当前平台 &#64748B| &#FFD166{platform}"
+    # 平台能力已启用文案。
+    enabled: "&#5AC8FA启用"
+    # 平台能力已禁用文案。
+    disabled: "&#64748B禁用"
+    # 平台能力单行，{capability} 为能力名，{state} 为启用状态。
+    line: "&#64748B- &#C9D4E2{capability}&#64748B: {state}"
+  # /wtc stats 输出。
+  stats:
+    header: "{prefix}&#5AC8FA清理统计:"
+    worlds: "&#64748B- &#C9D4E2世界数: &#FFD166{worlds}"
+    routed: "&#64748B- &#C9D4E2回收物品: &#FFD166{routed} &#64748B(世界 {world}, 个人 {personal}, 公共 {global})"
+    removed-items: "&#64748B- &#C9D4E2删除物品: &#FFD166{items}"
+    removed-entities: "&#64748B- &#C9D4E2删除实体: &#FFD166{entities}"
+    global-pages: "&#64748B- &#C9D4E2公共垃圾桶页数: &#FFD166{pages}"
+    global-items: "&#64748B- &#C9D4E2公共垃圾桶当前物品: &#FFD166{items} &#64748B(堆叠 {stacks})"
+    personal-loaded: "&#64748B- &#C9D4E2已加载个人垃圾桶: &#FFD166{count}"
+    remaining: "&#64748B- &#C9D4E2下次清理剩余秒数: &#FFD166{seconds}"
+  # 找不到世界时提示，{world} 为输入的世界名。
+  world-not-found: "{prefix}&#FFD166未找到世界: &#C9D4E2{world}"
+  # 控制台执行 add 未指定世界时提示。
+  add-console-world-required: "{prefix}&#FFD166控制台执行 add 时必须指定世界名。"
+  # add 数量不是正数时提示。
+  add-positive-required: "{prefix}&#FFD166数量必须大于 0。"
+  # add 成功提示，{world} 为世界名，{count} 为调整后的上限。
+  add-success: "{prefix}&#5AC8FA世界 &#FFD166{world} &#5AC8FA垃圾桶上限已调整为 &#FFD166{count}&#C9D4E2。"
+  # add 用法提示。
+  add-usage:
+    - "&#FFD166用法: &#C9D4E2/wtc add <数量>"
+    - "&#FFD166用法: &#C9D4E2/wtc add <世界名> <数量>"
+  # 没有防丢弃模式权限时提示。
+  no-dropmode-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限使用防丢弃模式。"
+  # 没有 look 查询权限时提示。
+  no-look-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限使用查询功能。"
+  # 没有世界黑名单权限时提示。
+  no-world-ban-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限打开世界黑名单。"
+  # 没有公共黑名单权限时提示。
+  no-global-ban-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限打开公共垃圾桶黑名单。"
+  # 非玩家执行玩家命令时提示。
+  only-player: "{prefix}&#FFD166仅玩家可用 &#64748B| &#C9D4E2该命令只能由玩家执行。"
+  # 玩家不在线时提示，{player} 为玩家名。
+  player-offline: "{prefix}&#FFD166玩家不在线 &#64748B| &#C9D4E2{player}"

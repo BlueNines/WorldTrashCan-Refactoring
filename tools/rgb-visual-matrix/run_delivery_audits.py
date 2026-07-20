@@ -90,7 +90,7 @@ def print_text_result(result: dict) -> None:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="运行 BlWorldTrashCan 交付前后台审计。")
+    parser = argparse.ArgumentParser(description="运行 WorldListTrashCan 交付前后台审计。")
     parser.add_argument("--with-maven-test", action="store_true", help="额外运行 Maven 单元测试。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()

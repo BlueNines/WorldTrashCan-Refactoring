@@ -1,0 +1,291 @@
+{
+  "id": "universal_spigot2612",
+  "sourceId": "external_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "clientVersion": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "plugin": "WorldListTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 560737,
+    "sha256": "d821feef1a5e9158f027c530c048527195183d4954e41af13701ec8373b9ea24",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "global-put-before-f2",
+      "command": "wtc debugopen RGBigot2612 global",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-global-put-before-f2.png",
+        "size": 74897,
+        "sha256": "c480f4e896376b7110ee0999e1b02fbf71c1b7898627c2b98f2087160acc5463",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 86.5810546875
+      }
+    },
+    {
+      "name": "F-027",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-global-put-after-click-f2.png",
+        "size": 62415,
+        "sha256": "f4172eb03081765da1449997b79031145e2ff4d41ff41bca16a7727af9a00378",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 87.11751302083333
+      },
+      "logExcerpt": "global-trash-2026-07-21.log 2026-07-21 02:39:16 RGBigot2612 +global COBBLESTONEx7"
+    },
+    {
+      "name": "F-026",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-global-take-after-click-f2.png",
+        "size": 64723,
+        "sha256": "e7b2a0eaa53243ab0f2427c97eb27d6b6091c9ac22fc66450a10cebafe2cc705",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 87.49674479166667
+      },
+      "logExcerpt": "global-trash-2026-07-21.log 2026-07-21 02:39:16 RGBigot2612 +global COBBLESTONEx7\nglobal-trash-2026-07-21.log 2026-07-21 02:39:20 RGBigot2612 -global COBBLESTONEx7"
+    },
+    {
+      "name": "F-028",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-global-take-cooldown-f2.png",
+        "size": 66943,
+        "sha256": "0a937f17f200dc0ca1fd9575c104be06b284baa3c9bf9b57a0be338b7389a7cd",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 86.8974609375
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "公共垃圾桶冷却"
+        ],
+        "excerpt": "[02:39:23] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 公共垃圾桶冷却剩余 56.3 秒。\n[02:39:24] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 公共垃圾桶冷却剩余 56.2 秒。\n[02:39:24] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 公共垃圾桶冷却剩余 56.1 秒。\n[02:39:25] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-21_02.39.25.png\n[02:39:26] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-21_02.39.26.png\n"
+      }
+    },
+    {
+      "name": "global-stock-after-put-take",
+      "status": "PASS",
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\server-screenshots\\universal_spigot2612-global-stock-after-put-take.png",
+        "size": 39538,
+        "sha256": "ef4fba747b4ac2500325b71929eabc1897842492343192b99629d69a11334931",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 31.428059895833332
+      },
+      "excerpt": "[02:39:28] [Server thread/INFO]: 垃圾桶库存:\n[02:39:28] [Server thread/INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\n[02:39:28] [Server thread/INFO]: - 公共垃圾桶页数: 5\n[02:39:28] [Server thread/INFO]: - 已加载个人垃圾桶: 0\n"
+    },
+    {
+      "name": "global-fill-46-stacks",
+      "status": "PASS",
+      "details": {
+        "status": "PASS",
+        "stacks": 46,
+        "excerpt": "r thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n[02:39:31] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:39:31] [Server thread/INFO]: 路由测试成功。\n"
+      }
+    },
+    {
+      "name": "global-page-1-f2",
+      "command": "wtc debugopen RGBigot2612 global",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-global-page-1-f2.png",
+        "size": 70510,
+        "sha256": "988f6c0ae6cc1e23dc98d1e86b6422d616fa784556da356ce25760631eed169d",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 85.28548177083333
+      }
+    },
+    {
+      "name": "F-024",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-global-page-2-after-next-f2.png",
+        "size": 70027,
+        "sha256": "4cec83c4ae8068a8814504a08d5bd3dfeb7d0e9174867f34777e866bfa3a4c91",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 85.26171875
+      }
+    },
+    {
+      "name": "F-029",
+      "status": "PASS",
+      "client": "公共垃圾桶取放截图已保存",
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\server-screenshots\\universal_spigot2612-global-trash-operation-log.png",
+        "size": 20732,
+        "sha256": "66515707ff5946894de16da836e406bfd738465c8452bfcda99f69a851db542f",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 30.555013020833332
+      },
+      "logExcerpt": "global-trash-2026-07-21.log 2026-07-21 02:39:16 RGBigot2612 +global COBBLESTONEx7\nglobal-trash-2026-07-21.log 2026-07-21 02:39:20 RGBigot2612 -global COBBLESTONEx7"
+    },
+    {
+      "name": "personal-put-before-f2",
+      "command": "wtc debugopen RGBigot2612 personal",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-put-before-f2.png",
+        "size": 60840,
+        "sha256": "195cac3454ddf1d666b12c506c56d168833ab1b5934ec5151cb0cad17ad6de99",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 93.25651041666667
+      }
+    },
+    {
+      "name": "F-035",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-put-after-click-f2.png",
+        "size": 58435,
+        "sha256": "aaed7d40a3e33cc91f34a1364fa647306f93313ef12a9b93b81673d5306c03d5",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 88.2958984375
+      },
+      "summaryExcerpt": "[02:39:47] [Server thread/INFO]: WorldListTrashCan debug summary:\n[02:39:47] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[02:39:47] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_trash_gui_click_visual_20260721_023817\n[02:39:47] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[02:39:47] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[02:39:47] [Server thread/INFO]: - 跳过未加载区块: 0\n[02:39:47] [Server thread/INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)\n[02:39:47] [Server thread/INFO]: - 个人垃圾桶物品: 5 (堆叠 1)\n"
+    },
+    {
+      "name": "F-034",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-take-after-click-f2.png",
+        "size": 57908,
+        "sha256": "522f410ef6603f830aafbf01e27a16cd0ed6c156c738894ecdb9307e1f603c85",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 88.58951822916667
+      },
+      "summaryExcerpt": "[02:39:52] [Server thread/INFO]: WorldListTrashCan debug summary:\n[02:39:52] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[02:39:52] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_trash_gui_click_visual_20260721_023817\n[02:39:52] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[02:39:52] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[02:39:52] [Server thread/INFO]: - 跳过未加载区块: 0\n[02:39:52] [Server thread/INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)\n[02:39:52] [Server thread/INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n"
+    },
+    {
+      "name": "personal-full-auto-clear-gui-f2",
+      "command": "wtc debugopen RGBigot2612 personal",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-personal-full-auto-clear-gui-f2.png",
+        "size": 59256,
+        "sha256": "b7e91e1dc03bc03333726c0367fd7ee8244c4a3cba30406ed3587b4a61127114",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 88.65201822916667
+      }
+    },
+    {
+      "name": "F-036",
+      "status": "PASS",
+      "summaryScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\server-screenshots\\universal_spigot2612-personal-full-auto-clear-summary.png",
+        "size": 75095,
+        "sha256": "4caef001b230b056c6a6e144a04e86876c090f5ad59a93a1cb9bf25e3ca5b2b4",
+        "dimensions": [
+          1600,
+          312
+        ],
+        "brightness": 34.884440104166664
+      },
+      "fillResult": {
+        "status": "PASS",
+        "stacks": 54,
+        "excerpt": "=STONE, amount=64, routed=true\n[02:39:56] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n[02:39:57] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n[02:39:57] [Server thread/INFO]: 路由测试成功。\n"
+      },
+      "summaryExcerpt": "[02:39:57] [Server thread/INFO]: WorldListTrashCan debug summary:\n[02:39:57] [Server thread/INFO]: - 平台: paper-1.16-1.20 (universal)\n[02:39:57] [Server thread/INFO]: - 世界: rgb_visual_universal_spigot2612_trash_gui_click_visual_20260721_023817\n[02:39:57] [Server thread/INFO]: - 世界垃圾桶数量: 0\n[02:39:57] [Server thread/INFO]: - 世界垃圾桶物品: 0 (堆叠 0)\n[02:39:57] [Server thread/INFO]: - 跳过未加载区块: 0\n[02:39:57] [Server thread/INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)\n[02:39:57] [Server thread/INFO]: - 个人垃圾桶物品: 1 (堆叠 1)\n",
+      "reason": "debugroute 先填满 54 个 STONE 堆叠，再放入 DIRT 1；个人桶自动清空旧内容后只保留新物品。"
+    },
+    {
+      "name": "F-030",
+      "status": "PASS",
+      "beforeScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-globalban-before-f2.png",
+        "size": 58767,
+        "sha256": "ae320e92242823d554678d80f77bc36d34f82a208741e2b6fa37da4c80ea1dc7",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 88.51236979166667
+      },
+      "placedScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-globalban-stone-placed-f2.png",
+        "size": 60792,
+        "sha256": "1ae6f6bc1e6bce1f08f2adda65379be8c797194c541407861a7cd0bafa963b67",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 87.85384114583333
+      },
+      "savedScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\screenshots\\universal_spigot2612-globalban-after-close-save-f2.png",
+        "size": 223442,
+        "sha256": "d65dada453f95295f61db9b6ee14a580a3268b06a2de710b4242dc5de88af5f7",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 122.94694010416667
+      },
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\server-screenshots\\universal_spigot2612-globalban-route-rejected.png",
+        "size": 24450,
+        "sha256": "7ee38a6851d00f54db9678f0419d5f17f789db118df74f7a73a2cf444e2f5c8f",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 31.161458333333332
+      },
+      "trashSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_spigot2612\\logs\\trash-after-globalban.yml",
+      "verify": {
+        "trashContainsStone": true,
+        "routeRejected": true,
+        "excerpt": "[02:40:15] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBigot2612, route=GLOBAL_TRASH, material=STONE, amount=1, routed=false\n[02:40:15] [Server thread/INFO]: 路由测试成功。\n"
+      }
+    }
+  ],
+  "patchedTrashConfig": "E:\\server_work\\spigot-26.1.2-test-server\\plugins\\WorldListTrashCan\\trash.yml",
+  "username": "RGBigot2612",
+  "clientPid": 20236,
+  "failedChecks": [],
+  "blankScreenshots": []
+}

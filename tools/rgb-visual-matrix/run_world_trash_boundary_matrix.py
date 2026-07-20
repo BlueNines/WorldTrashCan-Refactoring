@@ -20,7 +20,7 @@ BUKKIT_API_JAR = Path.home() / ".m2" / "repository" / "org" / "spigotmc" / "spig
 
 
 FIXTURE_SOURCE = r'''
-package ai.blwtc.fixture;
+package ai.wtc.fixture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -55,7 +55,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-/** BlWorldTrashCan 世界垃圾桶边界验收夹具。 */
+/** WorldListTrashCan 世界垃圾桶边界验收夹具。 */
 public final class WorldTrashFixturePlugin extends JavaPlugin implements CommandExecutor {
     private static final UUID FAKE_PLAYER_ID = UUID.fromString("00000000-0000-0000-0000-00000000a119");
     private static final int BREAK_OFFSET = 12;
@@ -301,9 +301,9 @@ public final class WorldTrashFixturePlugin extends JavaPlugin implements Command
         }
     }
 
-    /** 返回 BlWorldTrashCan 世界数据文件。 */
+    /** 返回 WorldListTrashCan 世界数据文件。 */
     private File dataFile() {
-        return new File(getServer().getPluginManager().getPlugin("BlWorldTrashCan").getDataFolder(), "data/worlds.yml");
+        return new File(getServer().getPluginManager().getPlugin("WorldListTrashCan").getDataFolder(), "data/worlds.yml");
     }
 
     /** 统计容器内物品总量。 */
@@ -479,10 +479,10 @@ public final class WorldTrashFixturePlugin extends JavaPlugin implements Command
 
 PLUGIN_YML = """name: BlWtcWorldTrashFixture
 version: 1.0.0
-main: ai.blwtc.fixture.WorldTrashFixturePlugin
+main: ai.wtc.fixture.WorldTrashFixturePlugin
 commands:
   worldtrashfixture:
-    description: BlWorldTrashCan world trash boundary fixture
+    description: WorldListTrashCan world trash boundary fixture
 """
 
 
@@ -518,7 +518,7 @@ def ensure_inputs() -> None:
 
 def build_fixture(run_root: Path) -> Path:
     """编译临时 Bukkit 测试插件。"""
-    source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
+    source_dir = run_root / "fixture-src" / "ai" / "wtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
     fixture_jar = run_root / "BlWtcWorldTrashFixture.jar"
@@ -584,7 +584,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
     shutil.copy2(case["serverJar"], server_dir / Path(case["serverJar"]).name)
     if case.get("copyPaperCache"):
         legacy.copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "WorldListTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(
@@ -596,7 +596,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
 
 def patch_cleanup_config(server_dir: Path) -> Path:
     """修改 cleanup.yml，使手动清理无门禁且不自动后台扫地。"""
-    cleanup = server_dir / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    cleanup = server_dir / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     text = cleanup.read_text(encoding="utf-8")
     replacements = {
         "interval-seconds: 360": "interval-seconds: 0",
@@ -611,7 +611,7 @@ def patch_cleanup_config(server_dir: Path) -> Path:
 
 def patch_trash_config(server_dir: Path, banned_world: bool) -> Path:
     """修改 trash.yml，使测试场景路由明确。"""
-    trash = server_dir / "plugins" / "BlWorldTrashCan" / "trash.yml"
+    trash = server_dir / "plugins" / "WorldListTrashCan" / "trash.yml"
     text = trash.read_text(encoding="utf-8")
     text = text.replace("clear-every-cleanups: 3", "clear-every-cleanups: 0")
     text = replace_banned_worlds(text, ["world"] if banned_world else [])
@@ -662,27 +662,27 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
             cleanup_file = patch_cleanup_config(server_dir)
             trash_file = patch_trash_config(server_dir, banned_world=True)
             run_rcon(case, "plugins", responses, entries, "plugins")
-            run_rcon(case, "blwtc platform", responses, entries, "platform")
-            run_rcon(case, "blwtc reload", responses, entries, "reload-banned")
+            run_rcon(case, "wtc platform", responses, entries, "platform")
+            run_rcon(case, "wtc reload", responses, entries, "reload-banned")
             run_rcon(case, "worldtrashfixture cleanup", responses, entries, "fixture-cleanup-1")
             run_rcon(case, "worldtrashfixture banned", responses, entries, "banned")
             trash_file = patch_trash_config(server_dir, banned_world=False)
-            run_rcon(case, "blwtc reload", responses, entries, "reload-unbanned")
+            run_rcon(case, "wtc reload", responses, entries, "reload-unbanned")
             run_rcon(case, "worldtrashfixture break", responses, entries, "break")
             run_rcon(case, "worldtrashfixture prepareblacklist", responses, entries, "prepare-blacklist")
-            run_rcon(case, "blwtc reload", responses, entries, "reload-blacklist")
-            run_rcon(case, "blwtc stats", responses, entries, "stats-before-blacklist")
+            run_rcon(case, "wtc reload", responses, entries, "reload-blacklist")
+            run_rcon(case, "wtc stats", responses, entries, "stats-before-blacklist")
             run_rcon(case, "worldtrashfixture drop STONE 5", responses, entries, "drop-blacklist")
-            run_rcon(case, "blwtc clear true", responses, entries, "clear-blacklist")
+            run_rcon(case, "wtc clear true", responses, entries, "clear-blacklist")
             run_rcon(case, "worldtrashfixture assertblacklist", responses, entries, "assert-blacklist")
-            run_rcon(case, "blwtc stats", responses, entries, "stats-blacklist")
+            run_rcon(case, "wtc stats", responses, entries, "stats-blacklist")
             run_rcon(case, "worldtrashfixture prepareunloaded", responses, entries, "prepare-unloaded")
-            run_rcon(case, "blwtc reload", responses, entries, "reload-unloaded")
-            run_rcon(case, "blwtc stats", responses, entries, "stats-before-unloaded")
+            run_rcon(case, "wtc reload", responses, entries, "reload-unloaded")
+            run_rcon(case, "wtc stats", responses, entries, "stats-before-unloaded")
             run_rcon(case, "worldtrashfixture drop STONE 7", responses, entries, "drop-unloaded")
-            run_rcon(case, "blwtc clear true", responses, entries, "clear-unloaded")
+            run_rcon(case, "wtc clear true", responses, entries, "clear-unloaded")
             run_rcon(case, "worldtrashfixture assertunloaded", responses, entries, "assert-unloaded")
-            run_rcon(case, "blwtc stats", responses, entries, "stats-unloaded")
+            run_rcon(case, "wtc stats", responses, entries, "stats-unloaded")
             run_rcon(case, "worldtrashfixture cleanup", responses, entries, "fixture-cleanup-2")
             command_log.write_text("\n\n".join(entries) + "\n", encoding="utf-8")
             time.sleep(1.0)
@@ -706,7 +706,7 @@ def run_rcon(case: dict, command: str, responses: dict, entries: list[str], key:
 
 def assert_case(case: dict, responses: dict, cleanup_file: Path, trash_file: Path, stdout_log: Path) -> dict:
     """断言单端世界垃圾桶边界结果。"""
-    require("BlWorldTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 BlWorldTrashCan")
+    require("WorldListTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 WorldListTrashCan")
     require("BlWtcWorldTrashFixture", responses.get("plugins", ""), case["id"] + " 插件列表缺少夹具")
     require(case["expectedPlatform"], responses.get("platform", ""), case["id"] + " 平台不符合预期")
     require("universal", responses.get("platform", ""), case["id"] + " 未加载 universal 分支")
@@ -771,7 +771,7 @@ def require_all(needles: list[str], text: str, message: str) -> None:
 def copy_case_evidence(server_dir: Path, case_dir: Path) -> None:
     """复制单端证据。"""
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_if_exists(plugin_dir / "cleanup.yml", case_dir / "config" / "cleanup-after-patch.yml")
     copy_if_exists(plugin_dir / "trash.yml", case_dir / "config" / "trash-after-patch.yml")
     copy_if_exists(plugin_dir / "data" / "worlds.yml", case_dir / "data" / "worlds.yml")
@@ -789,7 +789,7 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# F-019 至 F-022 世界垃圾桶边界专项验收",
         "",
-        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具触发正式事件/RCON 正式清理",
         "- 覆盖功能: F-019 禁止世界普通玩家创建、F-020 破坏登记移除、F-021 世界物品黑名单降级、F-022 未加载区块降级",

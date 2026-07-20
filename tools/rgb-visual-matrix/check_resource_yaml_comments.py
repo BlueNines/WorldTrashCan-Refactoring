@@ -58,7 +58,7 @@ def dist_jar_files() -> list[Path]:
     dist = REPO / "dist"
     if not dist.is_dir():
         return []
-    return sorted(dist.glob("BlWorldTrashCan-*.jar"))
+    return sorted(dist.glob("WorldListTrashCan-*.jar"))
 
 
 def read_lines(path: Path) -> list[str]:
@@ -168,7 +168,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 默认配置资源的中文注释。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan 默认配置资源的中文注释。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

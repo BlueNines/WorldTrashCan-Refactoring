@@ -11,13 +11,13 @@ public final class RichTextRendererSelfTest {
     /** 执行富文本渲染自测。 */
     public static void main(String[] args) {
         assertClickEvent("run command RGB text",
-                RichTextRenderer.clickable(null, "&#5AC8FAAI_CLICK_NOTIFY_0 &#FFD166点我", "/blwtc stats"),
+                RichTextRenderer.clickable(null, "&#5AC8FAAI_CLICK_NOTIFY_0 &#FFD166点我", "/wtc stats"),
                 ClickEvent.Action.RUN_COMMAND,
-                "/blwtc stats");
+                "/wtc stats");
         assertClickEvent("suggest command legacy text",
-                RichTextRenderer.suggest(null, "&a/blwtc clear false", "/blwtc clear false"),
+                RichTextRenderer.suggest(null, "&a/wtc clear false", "/wtc clear false"),
                 ClickEvent.Action.SUGGEST_COMMAND,
-                "/blwtc clear false");
+                "/wtc clear false");
         assertLegacyFallback();
         System.out.println("RichTextRendererSelfTest passed");
     }

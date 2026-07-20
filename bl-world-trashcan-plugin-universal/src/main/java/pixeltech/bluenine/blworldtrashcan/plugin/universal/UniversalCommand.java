@@ -26,10 +26,10 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             "dropmode", "look", "ban", "globalban");
     private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify", "debugplayer", "debugrgb", "debugrgbchannels");
-    private final BlWorldTrashCanUniversalPlugin plugin;
+    private final WorldListTrashCanUniversalPlugin plugin;
 
     /** 创建命令执行器。 */
-    public UniversalCommand(BlWorldTrashCanUniversalPlugin plugin) {
+    public UniversalCommand(WorldListTrashCanUniversalPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -175,7 +175,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         plugin.reloadPlugin();
-        sender.sendMessage(message("command.reload-success", "{prefix}&aBlWorldTrashCan 已重载。"));
+        sender.sendMessage(message("command.reload-success", "{prefix}&aWorldListTrashCan 已重载。"));
     }
 
     /** 处理立即清理命令。 */
@@ -207,7 +207,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(message("command.folia-clear-running", "{prefix}&e上一轮 Folia region-safe 清理仍在运行，本次没有重复启动。"));
             return;
         }
-        sender.sendMessage(message("command.folia-clear-started", "{prefix}&a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /blwtc stats。"));
+        sender.sendMessage(message("command.folia-clear-started", "{prefix}&a已启动 Folia region-safe 清理；完成后请查看后台 [FoliaCleanup] 日志或执行 /wtc stats。"));
     }
 
     /** 发送 clear guards 参数用法。 */
@@ -259,7 +259,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!hasAnyPermission(sender, "blworldtrashcan.global.open", "WorldListTrashCan.GlobalTrashOpen")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.GlobalTrashOpen")) {
             sender.sendMessage(message("command.no-global-open-permission", "{prefix}&c你没有权限打开公共垃圾桶。"));
             return;
         }
@@ -271,7 +271,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!hasAnyPermission(sender, "blworldtrashcan.personal.open", "WorldListTrashCan.PlayerTrash")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.PlayerTrash")) {
             sender.sendMessage(message("command.no-personal-open-permission", "{prefix}&c你没有权限打开个人垃圾桶。"));
             return;
         }
@@ -281,37 +281,37 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
     /** 发送帮助。 */
     private void sendHelp(CommandSender sender) {
         sendMessageList(sender, "command.help", Arrays.asList(
-                "&b/blwtc help &7- 查看帮助",
-                "&b/blwtc platform &7- 查看当前版本产物能力",
-                "&b/blwtc clear [true/false] &7- 立即扫地，默认 true 忽略 guards，false 遵守 guards",
-                "&b/blwtc global &7- 打开公共垃圾桶",
-                "&b/blwtc personal &7- 打开个人垃圾桶",
-                "&b/blwtc dropmode &7- 切换防丢弃模式",
-                "&b/blwtc look &7- 查询手持物品和右键实体类型",
-                "&b/blwtc ban &7- 打开当前世界垃圾桶物品黑名单",
-                "&b/blwtc globalban &7- 打开公共垃圾桶物品黑名单",
-                "&b/blwtc stats &7- 查看清理和垃圾桶统计",
-                "&b/blwtc add <数量> &7- 增加当前世界可创建的世界垃圾桶数量",
-                "&b/blwtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
-                "&b/blwtc debughelp &7- 查看后台调试命令",
-                "&b/blwtc reload &7- 重载插件"));
+                "&b/wtc help &7- 查看帮助",
+                "&b/wtc platform &7- 查看当前版本产物能力",
+                "&b/wtc clear [true/false] &7- 立即扫地，默认 true 忽略 guards，false 遵守 guards",
+                "&b/wtc global &7- 打开公共垃圾桶",
+                "&b/wtc personal &7- 打开个人垃圾桶",
+                "&b/wtc dropmode &7- 切换防丢弃模式",
+                "&b/wtc look &7- 查询手持物品和右键实体类型",
+                "&b/wtc ban &7- 打开当前世界垃圾桶物品黑名单",
+                "&b/wtc globalban &7- 打开公共垃圾桶物品黑名单",
+                "&b/wtc stats &7- 查看清理和垃圾桶统计",
+                "&b/wtc add <数量> &7- 增加当前世界可创建的世界垃圾桶数量",
+                "&b/wtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
+                "&b/wtc debughelp &7- 查看后台调试命令",
+                "&b/wtc reload &7- 重载插件"));
     }
 
     /** 发送调试命令帮助。 */
     private void sendDebugHelp(CommandSender sender) {
         sendMessageList(sender, "command.debug-help", Arrays.asList(
-                "&b/blwtc debugopen <玩家> <global|personal> &7- 后台测试打开 GUI",
-                "&b/blwtc debugworldtrash <玩家> &7- 后台创建并登记测试世界垃圾桶",
-                "&b/blwtc debugroute <玩家> <world|personal|global> <Material> <数量> &7- 后台测试指定路由",
-                "&b/blwtc debugdrop <玩家> <Material> <数量> [owner] &7- 后台生成测试掉落物",
-                "&b/blwtc debugdamage <玩家> <Material> <数量> &7- 后台测试仙人掌/岩浆损坏回收",
-                "&b/blwtc debugstock &7- 后台查看当前垃圾桶库存",
-                "&b/blwtc debugsummary <玩家> &7- 查看后台测试摘要",
-                "&b/blwtc debugdensity &7- 查看实体密度扫描和候选队列",
-                "&b/blwtc debugnotify <count> &7- 后台触发 cleanup.yml 对应编号的正式清理通知",
-                "&b/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
-                "&b/blwtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
-                "&b/blwtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB/降级色通道",
+                "&b/wtc debugopen <玩家> <global|personal> &7- 后台测试打开 GUI",
+                "&b/wtc debugworldtrash <玩家> &7- 后台创建并登记测试世界垃圾桶",
+                "&b/wtc debugroute <玩家> <world|personal|global> <Material> <数量> &7- 后台测试指定路由",
+                "&b/wtc debugdrop <玩家> <Material> <数量> [owner] &7- 后台生成测试掉落物",
+                "&b/wtc debugdamage <玩家> <Material> <数量> &7- 后台测试仙人掌/岩浆损坏回收",
+                "&b/wtc debugstock &7- 后台查看当前垃圾桶库存",
+                "&b/wtc debugsummary <玩家> &7- 查看后台测试摘要",
+                "&b/wtc debugdensity &7- 查看实体密度扫描和候选队列",
+                "&b/wtc debugnotify <count> &7- 后台触发 cleanup.yml 对应编号的正式清理通知",
+                "&b/wtc debugplayer <玩家> <dropmode|look|ban|globalban> &7- 后台测试玩家入口",
+                "&b/wtc debugrgb <玩家> &7- 后台测试 RGB/降级色可见通道",
+                "&b/wtc debugrgbchannels <玩家> &7- 后台测试聊天、ActionBar 和 Title RGB/降级色通道",
                 "&7这些命令会改变测试服运行态，只建议用于验收和排障。"));
     }
 
@@ -381,7 +381,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
 
     /** 发送 add 命令用法。 */
     private void sendAddUsage(CommandSender sender) {
-        sendMessageList(sender, "command.add-usage", Arrays.asList("&c用法: /blwtc add <数量>", "&c用法: /blwtc add <世界名> <数量>"));
+        sendMessageList(sender, "command.add-usage", Arrays.asList("&c用法: /wtc add <数量>", "&c用法: /wtc add <世界名> <数量>"));
     }
 
     /** 处理防丢弃模式切换。 */
@@ -389,7 +389,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!hasAnyPermission(sender, "blworldtrashcan.dropmode", "WorldListTrashCan.DropMode")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.DropMode")) {
             sender.sendMessage(message("command.no-dropmode-permission", "{prefix}&c你没有权限使用防丢弃模式。"));
             return;
         }
@@ -401,7 +401,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!hasAnyPermission(sender, "blworldtrashcan.look", "WorldListTrashCan.Look")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.Look")) {
             sender.sendMessage(message("command.no-look-permission", "{prefix}&c你没有权限使用查询功能。"));
             return;
         }
@@ -413,7 +413,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!hasAnyPermission(sender, "WorldListTrashCan.BanGui", "blworldtrashcan.admin")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.BanGui", "WorldListTrashCan.Admin")) {
             sender.sendMessage(message("command.no-world-ban-permission", "{prefix}&c你没有权限打开世界黑名单。"));
             return;
         }
@@ -425,7 +425,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         if (!requirePlayer(sender)) {
             return;
         }
-        if (!hasAnyPermission(sender, "WorldListTrashCan.GlobalBan", "blworldtrashcan.admin")) {
+        if (!hasAnyPermission(sender, "WorldListTrashCan.GlobalBan", "WorldListTrashCan.Admin")) {
             sender.sendMessage(message("command.no-global-ban-permission", "{prefix}&c你没有权限打开公共垃圾桶黑名单。"));
             return;
         }
@@ -439,7 +439,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 3) {
-            sender.sendMessage("§c用法: /blwtc debugopen <玩家> <global|personal>");
+            sender.sendMessage("§c用法: /wtc debugopen <玩家> <global|personal>");
             return;
         }
         Player player = plugin.getServer().getPlayerExact(args[1]);
@@ -467,7 +467,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("§c用法: /blwtc debugworldtrash <玩家>");
+            sender.sendMessage("§c用法: /wtc debugworldtrash <玩家>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -487,7 +487,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 5) {
-            sender.sendMessage("§c用法: /blwtc debugroute <玩家> <world|personal|global> <Material> <数量>");
+            sender.sendMessage("§c用法: /wtc debugroute <玩家> <world|personal|global> <Material> <数量>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -511,7 +511,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 4) {
-            sender.sendMessage("§c用法: /blwtc debugdrop <玩家> <Material> <数量> [owner]");
+            sender.sendMessage("§c用法: /wtc debugdrop <玩家> <Material> <数量> [owner]");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -535,7 +535,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 4) {
-            sender.sendMessage("§c用法: /blwtc debugdamage <玩家> <Material> <数量>");
+            sender.sendMessage("§c用法: /wtc debugdamage <玩家> <Material> <数量>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -571,7 +571,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("§c用法: /blwtc debugsummary <玩家>");
+            sender.sendMessage("§c用法: /wtc debugsummary <玩家>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -601,7 +601,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("§c用法: /blwtc debugnotify <count>");
+            sender.sendMessage("§c用法: /wtc debugnotify <count>");
             return;
         }
         int count = parseInt(args[1], Integer.MIN_VALUE);
@@ -622,7 +622,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 3) {
-            sender.sendMessage("§c用法: /blwtc debugplayer <玩家> <dropmode|look|ban|globalban>");
+            sender.sendMessage("§c用法: /wtc debugplayer <玩家> <dropmode|look|ban|globalban>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -660,7 +660,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("§c用法: /blwtc debugrgb <玩家>");
+            sender.sendMessage("§c用法: /wtc debugrgb <玩家>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -680,7 +680,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("§c用法: /blwtc debugrgbchannels <玩家>");
+            sender.sendMessage("§c用法: /wtc debugrgbchannels <玩家>");
             return;
         }
         Player player = requireOnlinePlayer(sender, args[1]);
@@ -717,7 +717,7 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
 
     /** 判断发送者是否拥有管理权限，兼容旧插件 OP 管理语义。 */
     private boolean hasAdminPermission(CommandSender sender) {
-        return sender != null && (sender.isOp() || sender.hasPermission("blworldtrashcan.admin"));
+        return sender != null && (sender.isOp() || sender.hasPermission("WorldListTrashCan.Admin"));
     }
 
     /** 判断发送者是否拥有任一权限，保留旧插件 OP 旁路。 */

@@ -144,7 +144,7 @@ def entity_limit_config(enabled: bool, remove_count: int) -> str:
 
 def write_entity_config(case: dict, enabled: bool, remove_count: int) -> Path:
     """写入本轮测试专用 entity-limits.yml。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "entity-limits.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "entity-limits.yml"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(entity_limit_config(enabled, remove_count), encoding="utf-8")
     return target
@@ -152,7 +152,7 @@ def write_entity_config(case: dict, enabled: bool, remove_count: int) -> Path:
 
 def write_quiet_cleanup_config(case: dict) -> None:
     """关闭定时扫地，避免它抢占密集实体提示截图和聊天日志。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not target.is_file():
         return
     original = target.read_text(encoding="utf-8", errors="replace")
@@ -296,7 +296,7 @@ def wait_density_effect(case: dict, process, server_log: Path, command_log: Path
     last = {}
     while time.time() < deadline:
         offset = external.log_text_offset(server_log)
-        external.send_console_command(process, "blwtc debugdensity", command_log)
+        external.send_console_command(process, "wtc debugdensity", command_log)
         time.sleep(2.0)
         text = external.read_text_since(server_log, offset)
         parsed = parse_density(text)
@@ -474,8 +474,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
     try:
         backup_dir = run_dir / "logs" / "config-backup"
         backups.append(backup_file(Path(case["serverDir"]) / "server.properties", backup_dir, "server.properties.before"))
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "entity-limits.yml", backup_dir, "entity-limits.yml.before"))
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir, "cleanup.yml.before"))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "entity-limits.yml", backup_dir, "entity-limits.yml.before"))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml", backup_dir, "cleanup.yml.before"))
         external.deploy_plugin(case)
         write_quiet_server_properties(case)
         write_quiet_cleanup_config(case)
@@ -488,7 +488,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         result["clientPid"] = client.pid
         external.wait_player_online(case, username, server_log)
         offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform")
+        run_console(process, command_log, "wtc platform")
         external.wait_platform_command_accepted(server_log, offset)
         run_setup(case, username, process, command_log)
         spawn_dense_entities(case, process, command_log, spawn_count)
@@ -499,8 +499,8 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         client_notice_offset = external.log_text_offset(client_log)
         write_entity_config(case, True, remove_count)
         offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc reload")
-        external.wait_command_markers(server_log, offset, ["[Message]"], 12, "blwtc reload")
+        run_console(process, command_log, "wtc reload")
+        external.wait_command_markers(server_log, offset, ["[Message]"], 12, "wtc reload")
         run_console(process, command_log, summon_command(case))
         density = wait_density_effect(case, process, server_log, command_log)
         result["densityCheck"] = density
@@ -514,7 +514,7 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, spawn_count: in
         result["notifyScreenshot"] = str(notify)
         run_console(process, command_log, "op " + username)
         client_debug_offset = external.log_text_offset(client_log)
-        after_command = send_ingame_command(case, game_dir, run_dir, "/blwtc debugdensity", "density-after-debugdensity-f2", 3.0)
+        after_command = send_ingame_command(case, game_dir, run_dir, "/wtc debugdensity", "density-after-debugdensity-f2", 3.0)
         result["afterScreenshot"] = after_command["screenshot"]
         result["afterClientCommand"] = after_command
         debug_check = wait_client_debugdensity(client_log, client_debug_offset)

@@ -95,7 +95,7 @@ def ensure_cleanup_guard_block(text: str) -> str:
 
 def write_cleanup_guard_config(case: dict, min_online: int, min_entities: int) -> None:
     """写入本轮测试需要的扫地门禁配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not target.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法写入门禁测试配置: " + str(target))
     original = ensure_cleanup_guard_block(target.read_text(encoding="utf-8", errors="replace"))
@@ -154,13 +154,13 @@ def setup_player(case: dict, username: str, process, command_log: Path) -> None:
 
 def reload_plugin(process, command_log: Path) -> None:
     """重载插件配置并等待其生效。"""
-    run_console(process, command_log, "blwtc reload", 1.0)
+    run_console(process, command_log, "wtc reload", 1.0)
 
 
 def spawn_test_drops(username: str, process, command_log: Path, count: int) -> None:
     """用插件调试命令生成指定数量的可清理掉落物实体。"""
     for _ in range(count):
-        run_console(process, command_log, "blwtc debugdrop " + username + " STONE 1", 0.2)
+        run_console(process, command_log, "wtc debugdrop " + username + " STONE 1", 0.2)
     time.sleep(1.0)
 
 
@@ -204,7 +204,7 @@ def read_since(path: Path, offset: int) -> str:
 
 def cleanup_minus5_excerpt(case: dict) -> str:
     """读取当前服务端 cleanup.yml 中的 -5 通知配置片段。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not target.is_file():
         return "cleanup.yml 当前 -5 通知配置: 文件不存在\n"
     lines = []
@@ -218,7 +218,7 @@ def cleanup_minus5_excerpt(case: dict) -> str:
 
 def copy_scenario_config(case: dict, run_dir: Path, scenario_id: str) -> Path:
     """归档当前场景运行时的 cleanup.yml。"""
-    source = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    source = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     target = run_dir / "logs" / (case["id"] + "-" + scenario_id + "-cleanup.yml")
     target.parent.mkdir(parents=True, exist_ok=True)
     if source.is_file():
@@ -246,11 +246,11 @@ def wait_platform_output(server_log: Path, offset: int) -> None:
     while time.time() < deadline:
         text = read_since(server_log, offset)
         if "Unknown or incomplete command" in text or "Unknown command" in text:
-            raise RuntimeError("blwtc platform 未被服务端识别: " + str(server_log))
+            raise RuntimeError("wtc platform 未被服务端识别: " + str(server_log))
         if "rgb-message" in text or "scheduler-region" in text or "当前平台" in text:
             return
         time.sleep(0.4)
-    raise TimeoutError("未看到 blwtc platform 的插件输出: " + str(server_log))
+    raise TimeoutError("未看到 wtc platform 的插件输出: " + str(server_log))
 
 
 def font() -> ImageFont.ImageFont:
@@ -268,7 +268,7 @@ def render_server_log_screenshot(text: str, target: Path, title: str) -> Path:
     lines = [title, ""]
     useful = []
     for line in text.splitlines():
-        if "Cleanup" in line or "BlWorldTrashCan" in line or "blwtc" in line or "扫地" in line:
+        if "Cleanup" in line or "WorldListTrashCan" in line or "wtc" in line or "扫地" in line:
             useful.append(line)
     lines.extend(useful[-34:] if useful else text.splitlines()[-34:])
     width = 1500
@@ -307,11 +307,11 @@ def run_guard_scenario(case: dict, username: str, process, game_dir: Path, run_d
     if scenario.get("drops", 0) > 0:
         spawn_test_drops(username, process, command_log, int(scenario["drops"]))
     offset = external.log_text_offset(server_log)
-    clear_shot = send_command_and_screenshot(case, game_dir, run_dir, "/blwtc clear",
+    clear_shot = send_command_and_screenshot(case, game_dir, run_dir, "/wtc clear",
                                              scenario["id"] + "-clear", scenario.get("clearWait", 2.5))
     if is_folia(case):
         time.sleep(4.0)
-    stats_shot = send_command_and_screenshot(case, game_dir, run_dir, "/blwtc stats",
+    stats_shot = send_command_and_screenshot(case, game_dir, run_dir, "/wtc stats",
                                              scenario["id"] + "-stats", 1.5)
     if scenario["expectGuard"]:
         markers = ["skippedByGuard=true"] if is_legacy(case) else ["skippedByGuard=true", "本轮扫地已跳过"]
@@ -393,7 +393,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml", backup_dir))
         prepared = prepared_clients[case["version"]]
         client, username, game_dir = base.launch_client(case, prepared, run_dir)
         base.ACTIVE_CLIENT_PID = client.pid
@@ -401,7 +401,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform", 0.8)
+        run_console(process, command_log, "wtc platform", 0.8)
         wait_platform_output(server_log, platform_offset)
         for scenario in scenarios():
             scenario_result = run_guard_scenario(

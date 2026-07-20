@@ -19,7 +19,7 @@ BUKKIT_API_JAR = Path.home() / ".m2" / "repository" / "org" / "spigotmc" / "spig
 
 
 FIXTURE_SOURCE = r'''
-package ai.blwtc.fixture;
+package ai.wtc.fixture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -39,7 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** BlWorldTrashCan 实体清理总开关验收夹具。 */
+/** WorldListTrashCan 实体清理总开关验收夹具。 */
 public final class EntityToggleFixturePlugin extends JavaPlugin implements CommandExecutor {
     private static final String PREFIX = "AI_ENTITY_TOGGLE_";
     private final Map<String, UUID> trackedEntities = new LinkedHashMap<>();
@@ -228,10 +228,10 @@ public final class EntityToggleFixturePlugin extends JavaPlugin implements Comma
 
 PLUGIN_YML = """name: BlWtcEntityToggleFixture
 version: 1.0.0
-main: ai.blwtc.fixture.EntityToggleFixturePlugin
+main: ai.wtc.fixture.EntityToggleFixturePlugin
 commands:
   entitytogglefixture:
-    description: BlWorldTrashCan entity cleanup toggle fixture
+    description: WorldListTrashCan entity cleanup toggle fixture
 """
 
 
@@ -267,7 +267,7 @@ def ensure_inputs() -> None:
 
 def build_fixture(run_root: Path) -> Path:
     """编译临时 Bukkit 测试插件。"""
-    source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
+    source_dir = run_root / "fixture-src" / "ai" / "wtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
     fixture_jar = run_root / "BlWtcEntityToggleFixture.jar"
@@ -333,7 +333,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
     shutil.copy2(case["serverJar"], server_dir / Path(case["serverJar"]).name)
     if case.get("copyPaperCache"):
         legacy.copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "WorldListTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(
@@ -345,7 +345,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
 
 def patch_cleanup_config(server_dir: Path, entity_enabled: bool) -> Path:
     """修改 cleanup.yml，使实体总开关语义可被运行态验证。"""
-    cleanup = server_dir / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    cleanup = server_dir / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not cleanup.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法配置实体总开关验证: " + str(cleanup))
     text = cleanup.read_text(encoding="utf-8")
@@ -398,11 +398,11 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
             copy_if_exists(disabled_cleanup, case_dir / "config" / "cleanup-disabled-after-patch.yml")
             commands = [
                 ("plugins", "plugins", 0.4),
-                ("blwtc platform", "blwtc platform", 0.4),
-                ("blwtc reload", "blwtc reload", 0.4),
+                ("wtc platform", "wtc platform", 0.4),
+                ("wtc reload", "wtc reload", 0.4),
                 ("entitytogglefixture prepare", "entitytogglefixture prepare", 1.0),
                 ("entitytogglefixture assert_ready", "entitytogglefixture assert_disabled", 0.4),
-                ("blwtc clear true", "blwtc clear true", 0.4),
+                ("wtc clear true", "wtc clear true", 0.4),
                 ("entitytogglefixture assert_disabled", "entitytogglefixture assert_disabled", 0.4),
             ]
             responses = {}
@@ -415,10 +415,10 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
             enabled_cleanup = patch_cleanup_config(server_dir, True)
             enabled_cleanup_text = enabled_cleanup.read_text(encoding="utf-8")
             enabled_commands = (
-                ("blwtc reload #enabled", "blwtc reload"),
-                ("blwtc clear true #enabled", "blwtc clear true"),
+                ("wtc reload #enabled", "wtc reload"),
+                ("wtc clear true #enabled", "wtc clear true"),
                 ("entitytogglefixture assert_enabled", "entitytogglefixture assert_enabled"),
-                ("blwtc stats", "blwtc stats"),
+                ("wtc stats", "wtc stats"),
                 ("entitytogglefixture cleanup", "entitytogglefixture cleanup"),
             )
             for response_key, command in enabled_commands:
@@ -439,13 +439,13 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
 def assert_case(case: dict, responses: dict, disabled_cleanup_text: str, enabled_cleanup_text: str) -> dict:
     """断言实体清理总开关用例结果。"""
     plugins = responses.get("plugins", "")
-    platform = responses.get("blwtc platform", "")
+    platform = responses.get("wtc platform", "")
     prepared = responses.get("entitytogglefixture prepare", "")
     ready_result = responses.get("entitytogglefixture assert_ready", "")
     disabled_result = responses.get("entitytogglefixture assert_disabled", "")
     enabled_result = responses.get("entitytogglefixture assert_enabled", "")
-    stats = responses.get("blwtc stats", "")
-    if "BlWorldTrashCan" not in plugins or "BlWtcEntityToggleFixture" not in plugins:
+    stats = responses.get("wtc stats", "")
+    if "WorldListTrashCan" not in plugins or "BlWtcEntityToggleFixture" not in plugins:
         raise AssertionError(case["id"] + " 插件列表未包含主插件和夹具: " + plugins)
     if case["expectedPlatform"] not in platform or "universal" not in platform:
         raise AssertionError(case["id"] + " 平台输出不符合预期: " + platform)
@@ -484,7 +484,7 @@ def assert_case(case: dict, responses: dict, disabled_cleanup_text: str, enabled
 def copy_case_evidence(case: dict, server_dir: Path, case_dir: Path) -> None:
     """复制单个实体总开关用例证据。"""
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_if_exists(plugin_dir / "cleanup.yml", case_dir / "config" / "cleanup-enabled-after-patch.yml")
     copy_if_exists(plugin_dir / "config.yml", case_dir / "config" / "config.yml")
 
@@ -501,9 +501,9 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# 实体清理总开关专项验收",
         "",
-        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
-        "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具生成牛/僵尸/箭/经验球/黑名单命名实体 + 正式 `/blwtc clear true`",
+        "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具生成牛/僵尸/箭/经验球/黑名单命名实体 + 正式 `/wtc clear true`",
         "- 通过标准: `entities.enabled=false` 时 5 个实体全部保留；切回 `entities.enabled=true` 后同一批实体全部被正式清理",
         "- 结论: " + ("PASS" if summary["allPassed"] else "FAIL"),
         "",

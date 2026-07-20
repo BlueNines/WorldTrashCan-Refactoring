@@ -1,0 +1,166 @@
+{
+  "id": "universal_spigot2612",
+  "sourceId": "external_spigot2612",
+  "label": "spigot-26.1.2-managed",
+  "version": "26.1.2",
+  "clientVersion": "26.1.2",
+  "serverDir": "E:\\server_work\\spigot-26.1.2-test-server",
+  "plugin": "WorldListTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 560737,
+    "sha256": "d821feef1a5e9158f027c530c048527195183d4954e41af13701ec8373b9ea24",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "F-073-language-switch-to-english",
+      "reload": {
+        "markers": [
+          "[Message]",
+          "messages/message_en.yml"
+        ],
+        "excerpt": "[02:28:49] [Server thread/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_en.yml\n[02:28:49] [Server thread/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5\n[02:28:49] [Server thread/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。\n[02:28:49] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。\n[02:28:49] [Server thread/INFO]: [WorldListTrashCan] WorldListTrashCan reloaded.\n"
+      },
+      "runtimeFiles": {
+        "config.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\logs\\runtime-english\\config.yml",
+        "message_zh.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\logs\\runtime-english\\message_zh.yml",
+        "message_en.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\logs\\runtime-english\\message_en.yml"
+      },
+      "brand": {
+        "command": "/wtc reload",
+        "markers": [
+          "WorldListTrashCan",
+          "reloaded."
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "WorldListTrashCan",
+            "reloaded."
+          ],
+          "excerpt": "[02:28:56] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] WorldListTrashCan reloaded.\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\screenshots\\universal_spigot2612-brand-case-reload-f2.png",
+          "size": 296252,
+          "sha256": "3cdd46d8f2e5188b1e070596cbb15a88d718e5bddd45d5e830e1e9edc46965b6",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 122.32194010416667
+        }
+      },
+      "help": {
+        "command": "/wtc help",
+        "suffix": "language-english-help-f2",
+        "markers": [
+          "Show help",
+          "Open global trash",
+          "Show cleanup and trash statistics"
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "Show help",
+            "Open global trash",
+            "Show cleanup and trash statistics"
+          ],
+          "excerpt": "[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc help - Show help\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc platform - Show this build's capabilities\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc clear [true/false] - Run cleanup; default true ignores guards, false obeys guards\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc global - Open global trash\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc personal - Open personal trash\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc dropmode - Toggle drop protection\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc look - Inspect held item and right-clicked entity type\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc ban - Open this world's trash blacklist\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc globalban - Open the global trash blacklist\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc stats - Show cleanup and trash statistics\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc add <amount> - Add world trash slots to your current world\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc add <world> <amount> - Add world trash slots to a specific world\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc debughelp - Show debug commands\n[02:29:05] [Render thread/INFO]: [System] [CHAT] /wtc reload - Reload the plugin\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\screenshots\\universal_spigot2612-language-english-help-f2.png",
+          "size": 281279,
+          "sha256": "d13982d0ff348e13ae1121692b886471bc0969869037e23a115d7b314cf2508b",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 116.98111979166667
+        }
+      }
+    },
+    {
+      "name": "F-074-missing-external-node-fallback",
+      "removedNode": {
+        "path": "E:\\server_work\\spigot-26.1.2-test-server\\plugins\\WorldListTrashCan\\messages\\message_zh.yml",
+        "removed": true
+      },
+      "reload": {
+        "markers": [
+          "[Message]",
+          "messages/message_zh.yml"
+        ],
+        "excerpt": "[02:29:08] [Server thread/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[02:29:08] [Server thread/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5\n[02:29:08] [Server thread/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。\n[02:29:08] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。\n[02:29:08] [Server thread/INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。\n"
+      },
+      "runtimeFiles": {
+        "config.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\logs\\runtime-zh-fallback\\config.yml",
+        "message_zh.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\logs\\runtime-zh-fallback\\message_zh.yml",
+        "message_en.yml": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\logs\\runtime-zh-fallback\\message_en.yml"
+      },
+      "help": {
+        "command": "/wtc help",
+        "suffix": "language-zh-fallback-help-f2",
+        "markers": [
+          "查看帮助",
+          "打开公共垃圾桶",
+          "查看清理和垃圾桶统计"
+        ],
+        "attempts": [
+          {
+            "method": "window-message",
+            "status": "PASS"
+          }
+        ],
+        "clientCheck": {
+          "status": "PASS",
+          "markers": [
+            "查看帮助",
+            "打开公共垃圾桶",
+            "查看清理和垃圾桶统计"
+          ],
+          "excerpt": "[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc help - 查看帮助\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc platform - 查看当前版本产物能力\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc clear [true/false] - 立即扫地，默认 true 忽略 guards，false 遵守 guards\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc global - 打开公共垃圾桶\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc personal - 打开个人垃圾桶\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc dropmode - 切换防丢弃模式\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc look - 查询手持物品和右键实体类型\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc ban - 打开当前世界垃圾桶物品黑名单\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc globalban - 打开公共垃圾桶物品黑名单\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc stats - 查看清理和垃圾桶统计\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc add <数量> - 增加当前世界可创建的世界垃圾桶数量\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc add <世界名> <数量> - 后台增加指定世界可创建的世界垃圾桶数量\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc debughelp - 查看后台调试命令\n[02:29:15] [Render thread/INFO]: [System] [CHAT] /wtc reload - 重载插件\n"
+        },
+        "clientScreenshot": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\screenshots\\universal_spigot2612-language-zh-fallback-help-f2.png",
+          "size": 297615,
+          "sha256": "64bb7b547b3392c1ca41ee7af4a923023b27877b8a79eeac1526c84307d2c5a5",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 118.748046875
+        }
+      }
+    }
+  ],
+  "username": "RGBigot2612",
+  "clientPid": 24796,
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\language-visual-20260721-022637\\universal_spigot2612\\server-screenshots\\universal_spigot2612-language-server-log.png",
+    "size": 325244,
+    "sha256": "b819946ff9d964449dc5d85019efa872260aaebe1db1833cc3fd4bde9a935fb5",
+    "dimensions": [
+      1600,
+      988
+    ],
+    "brightness": 42.132161458333336
+  },
+  "failedChecks": []
+}

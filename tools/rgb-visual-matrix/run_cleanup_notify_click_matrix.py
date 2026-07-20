@@ -96,10 +96,10 @@ def notification_block() -> str:
         "    # 是否同步输出到控制台。\n"
         "    console-log: true\n"
         "    # 清理完成消息点击后执行的命令。本专项用 stats 输出证明点击真的执行。\n"
-        "    click-command: \"/blwtc stats\"\n"
+        "    click-command: \"/wtc stats\"\n"
         "    # 倒计时聊天提醒，格式：剩余秒数;内容。\n"
         "    messages:\n"
-        "      - \"0;&#5AC8FAAI_CLICK_NOTIFY_0 &#FFD166点我执行 /blwtc stats\"\n"
+        "      - \"0;&#5AC8FAAI_CLICK_NOTIFY_0 &#FFD166点我执行 /wtc stats\"\n"
         "      - \"-5;&#FF4F00AI_CLICK_NOTIFY_MINUS5 不参与 F-058 点击验收\"\n"
         "\n"
         "  actionbar:\n"
@@ -143,7 +143,7 @@ def replace_notify_block(text: str) -> str:
 
 def write_notify_config(case: dict) -> Path:
     """写入本轮点击专项配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not target.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法写入通知点击配置: " + str(target))
     original = target.read_text(encoding="utf-8", errors="replace")
@@ -187,8 +187,8 @@ def setup_player(case: dict, username: str, process, command_log: Path) -> None:
 def reload_plugin(process, command_log: Path, server_log: Path) -> None:
     """重载插件配置并等待配置生效。"""
     offset = external.log_text_offset(server_log)
-    run_console(process, command_log, "blwtc reload", 0.5)
-    external.wait_command_markers(server_log, offset, ["[Message]"], 12, "blwtc reload")
+    run_console(process, command_log, "wtc reload", 0.5)
+    external.wait_command_markers(server_log, offset, ["[Message]"], 12, "wtc reload")
 
 
 def screenshot_info(path: Path) -> dict:
@@ -229,7 +229,7 @@ def wait_client_markers(client_log: Path, offset: int, markers: list[str], timeo
 
 
 def wait_stats_output(client_log: Path, offset: int, timeout: float) -> dict:
-    """等待点击命令产生 /blwtc stats 输出。"""
+    """等待点击命令产生 /wtc stats 输出。"""
     deadline = time.time() + timeout
     last_text = ""
     while time.time() < deadline:
@@ -323,7 +323,7 @@ def click_chat_notification(case: dict, client_log: Path, stats_offset: int, run
 
 def copy_runtime_config(case: dict, run_dir: Path) -> str:
     """归档当前运行时 cleanup.yml。"""
-    source = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    source = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     target = run_dir / "logs" / "config-after-patch" / "cleanup.yml"
     if source.is_file():
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -359,7 +359,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml", backup_dir))
         write_notify_config(case)
         result["patchedCleanupConfig"] = copy_runtime_config(case, run_dir)
         reload_plugin(process, command_log, server_log)
@@ -371,14 +371,14 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform", 0.5)
+        run_console(process, command_log, "wtc platform", 0.5)
         external.wait_platform_command_accepted(server_log, platform_offset)
         client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
         notify_offset = external.log_text_offset(client_log)
         stats_offset = notify_offset
         server_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc debugnotify 0", 0.8)
-        external.wait_command_markers(server_log, server_offset, ["debugNotify count=0"], 12, "blwtc debugnotify 0")
+        run_console(process, command_log, "wtc debugnotify 0", 0.8)
+        external.wait_command_markers(server_log, server_offset, ["debugNotify count=0"], 12, "wtc debugnotify 0")
         notify_check = wait_client_markers(client_log, notify_offset, ["AI_CLICK_NOTIFY_0"], 8)
         result["notifyCheck"] = notify_check
         before = capture_named_screenshot(case, game_dir, run_dir, "notify-before-click-f2")

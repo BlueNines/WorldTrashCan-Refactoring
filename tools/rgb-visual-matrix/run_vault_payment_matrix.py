@@ -29,7 +29,7 @@ DEFAULT_CASE_IDS = ["external_spigot2612"]
 
 
 FIXTURE_SOURCE = r'''
-package ai.blwtc.fixture;
+package ai.wtc.fixture;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/** BlWorldTrashCan Vault 扣费验收用临时 Vault 插件。 */
+/** WorldListTrashCan Vault 扣费验收用临时 Vault 插件。 */
 public final class FakeVaultPlugin extends JavaPlugin implements CommandExecutor, Economy {
     private final Map<String, Double> balances = new HashMap<String, Double>();
     private final Map<String, Integer> withdrawals = new HashMap<String, Integer>();
@@ -474,11 +474,11 @@ public final class FakeVaultPlugin extends JavaPlugin implements CommandExecutor
 
 PLUGIN_YML = """name: Vault
 version: 1.7.3-test
-main: ai.blwtc.fixture.FakeVaultPlugin
+main: ai.wtc.fixture.FakeVaultPlugin
 load: STARTUP
 commands:
   fakevault:
-    description: Fake Vault economy fixture for BlWorldTrashCan validation
+    description: Fake Vault economy fixture for WorldListTrashCan validation
 """
 
 
@@ -538,7 +538,7 @@ def selected_cases(case_id: str | None) -> list[dict]:
 
 def build_fixture(run_root: Path) -> Path:
     """编译并打包临时 Vault/Economy 夹具插件。"""
-    source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
+    source_dir = run_root / "fixture-src" / "ai" / "wtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
     fixture_jar = run_root / "Vault-FakeEconomy.jar"
@@ -618,7 +618,7 @@ def restore_fixture(install_state: dict | None) -> None:
 
 def backup_runtime_config(case: dict, run_dir: Path) -> list[dict]:
     """备份本轮会临时修改的运行时配置文件。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan"
     backups = []
     for file_name in ("trash.yml",):
         target = data_dir / file_name
@@ -639,7 +639,7 @@ def restore_runtime_config(backups: list[dict]) -> None:
 
 def patch_trash_config(case: dict) -> Path:
     """写入 Vault 扣费验收需要的 trash.yml 配置。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
     if not target.is_file():
         raise RuntimeError("trash.yml 不存在，无法配置 Vault 扣费测试: " + str(target))
     text = target.read_text(encoding="utf-8", errors="replace")
@@ -690,7 +690,7 @@ def close_gui(case: dict) -> None:
 
 def open_personal(case: dict, game_dir: Path, run_dir: Path, suffix: str) -> dict:
     """让真实客户端打开个人垃圾桶并截图。"""
-    return gui.send_client_command(case, game_dir, run_dir, "/blwtc personal", suffix, 1.0)
+    return gui.send_client_command(case, game_dir, run_dir, "/wtc personal", suffix, 1.0)
 
 
 def click_personal_first_slot(case: dict, game_dir: Path, run_dir: Path, suffix: str) -> dict:
@@ -709,7 +709,7 @@ def fakevault_balance(process, server_log: Path, command_log: Path, username: st
 
 def debugsummary(process, server_log: Path, command_log: Path, username: str) -> str:
     """查询插件后台个人垃圾桶摘要。"""
-    return run_console_capture(process, server_log, command_log, "blwtc debugsummary " + username, 0.8)
+    return run_console_capture(process, server_log, command_log, "wtc debugsummary " + username, 0.8)
 
 
 def personal_amount(text: str) -> int | None:
@@ -734,7 +734,7 @@ def run_success_scenario(case: dict, username: str, process, server_log: Path,
     run_checked_console(process, server_log, command_log, "fakevault set " + username + " 100", ["AI_FAKEVAULT_SET", "$100.00"], 8)
     run_checked_console(process, server_log, command_log, "fakevault clearinv " + username, ["AI_FAKEVAULT_CLEARINV", "online=true"], 8)
     route = run_checked_console(process, server_log, command_log,
-                                "blwtc debugroute " + username + " personal STONE 1",
+                                "wtc debugroute " + username + " personal STONE 1",
                                 ["[Debug] debugRoute", "route=PERSONAL_TRASH", "routed=true"], 12)
     before = open_personal(case, game_dir, run_dir, "vault-success-before-click-f2")
     click = click_personal_first_slot(case, game_dir, run_dir, "vault-success-after-click-chat-f2")
@@ -761,7 +761,7 @@ def run_insufficient_scenario(case: dict, username: str, process, server_log: Pa
     run_checked_console(process, server_log, command_log, "fakevault set " + username + " 5", ["AI_FAKEVAULT_SET", "$5.00"], 8)
     run_checked_console(process, server_log, command_log, "fakevault clearinv " + username, ["AI_FAKEVAULT_CLEARINV", "online=true"], 8)
     route = run_checked_console(process, server_log, command_log,
-                                "blwtc debugroute " + username + " personal DIRT 1",
+                                "wtc debugroute " + username + " personal DIRT 1",
                                 ["[Debug] debugRoute", "route=PERSONAL_TRASH", "routed=true"], 12)
     before = open_personal(case, game_dir, run_dir, "vault-insufficient-before-click-f2")
     click = click_personal_first_slot(case, game_dir, run_dir, "vault-insufficient-after-click-chat-f2")
@@ -788,7 +788,7 @@ def run_full_inventory_scenario(case: dict, username: str, process, server_log: 
     run_checked_console(process, server_log, command_log, "fakevault set " + username + " 100", ["AI_FAKEVAULT_SET", "$100.00"], 8)
     run_checked_console(process, server_log, command_log, "fakevault fill " + username + " COBBLESTONE", ["AI_FAKEVAULT_FILL", "slots=36"], 8)
     route = run_checked_console(process, server_log, command_log,
-                                "blwtc debugroute " + username + " personal STONE 1",
+                                "wtc debugroute " + username + " personal STONE 1",
                                 ["[Debug] debugRoute", "route=PERSONAL_TRASH", "routed=true"], 12)
     before_summary = debugsummary(process, server_log, command_log, username)
     before_amount = personal_amount(before_summary)
@@ -842,7 +842,7 @@ def evidence_font() -> ImageFont.ImageFont:
 
 def copy_runtime_evidence(case: dict, run_dir: Path, server_log: Path, command_log: Path, result: dict) -> None:
     """归档运行时日志、配置和服务端文本截图。"""
-    plugin_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
+    plugin_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan"
     gui.copy_runtime_file(plugin_dir / "trash.yml", run_dir / "logs" / "trash-after-vault-test.yml")
     gui.copy_runtime_file(Path(case["serverDir"]) / "logs" / "latest.log", run_dir / "logs" / "latest.log")
     if command_log.is_file():
@@ -900,7 +900,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path, fixture_ja
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform", 0.4)
+        run_console(process, command_log, "wtc platform", 0.4)
         external.wait_platform_command_accepted(server_log, platform_offset)
         result["checks"].append(run_success_scenario(case, username, process, server_log, command_log, run_dir, game_dir))
         result["checks"].append(run_insufficient_scenario(case, username, process, server_log, command_log, run_dir, game_dir))
@@ -976,7 +976,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# F-037 Vault 扣费专项验收",
         "",
-        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/WorldListTrashCan-universal.jar`",
         "- 夹具插件: 临时 `Vault-FakeEconomy.jar`，插件名为 `Vault`，注册 VaultAPI `Economy` 服务",
         "- 验收方式: 真实服务端 + 真实客户端打开个人垃圾桶 GUI 并点击取出槽位",
         "- 覆盖场景: 余额充足扣费成功；余额不足不取出不扣费；背包满不取出不扣费",

@@ -1,0 +1,157 @@
+Loading libraries, please wait...
+2026-07-21 02:19:04,670 main WARN Disabling terminal, you're running in an unsupported environment.
+[02:19:05 INFO]: Starting minecraft server version 1.12.2
+[02:19:05 INFO]: Loading properties
+[02:19:05 INFO]: Default game type: SURVIVAL
+[02:19:05 INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[02:19:05 INFO]: Debug logging is disabled
+[02:19:05 INFO]: Server Ping Player Sample Count: 12
+[02:19:05 INFO]: Using 4 threads for Netty based IO
+[02:19:05 INFO]: Generating keypair
+[02:19:05 INFO]: Starting Minecraft server on *:60732
+[02:19:05 INFO]: Using default channel type
+[02:19:05 INFO]: Set PluginClassLoader as parallel capable
+[02:19:05 INFO]: [WorldListTrashCan] Loading WorldListTrashCan v7.0.0
+[02:19:05 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[02:19:05 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[02:19:05 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[02:19:05 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[02:19:05 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[02:19:05 INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[02:19:05 INFO]: Preparing level "world"
+[02:19:05 INFO]: -------- World Settings For [world] --------
+[02:19:05 INFO]: Nerfing mobs spawned from spawners: false
+[02:19:05 INFO]: Item Merge Radius: 2.5
+[02:19:05 INFO]: Item Despawn Rate: 6000
+[02:19:05 INFO]: View Distance: 4
+[02:19:05 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[02:19:05 INFO]: Arrow Despawn Rate: 1200
+[02:19:05 INFO]: Experience Merge Radius: 3.0
+[02:19:05 INFO]: Zombie Aggressive Towards Villager: true
+[02:19:05 INFO]: Mob Spawn Range: 4
+[02:19:05 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[02:19:05 INFO]: Random Lighting Updates: false
+[02:19:05 INFO]: Structure Info Saving: true
+[02:19:05 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[02:19:05 INFO]: Cactus Growth Modifier: 100%
+[02:19:05 INFO]: Cane Growth Modifier: 100%
+[02:19:05 INFO]: Melon Growth Modifier: 100%
+[02:19:05 INFO]: Mushroom Growth Modifier: 100%
+[02:19:05 INFO]: Pumpkin Growth Modifier: 100%
+[02:19:05 INFO]: Sapling Growth Modifier: 100%
+[02:19:05 INFO]: Wheat Growth Modifier: 100%
+[02:19:05 INFO]: NetherWart Growth Modifier: 100%
+[02:19:05 INFO]: Vine Growth Modifier: 100%
+[02:19:05 INFO]: Cocoa Growth Modifier: 100%
+[02:19:05 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[02:19:05 INFO]: Max TNT Explosions: 100
+[02:19:05 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[02:19:05 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[02:19:05 INFO]: -------- World Settings For [world_nether] --------
+[02:19:05 INFO]: Nerfing mobs spawned from spawners: false
+[02:19:05 INFO]: Item Merge Radius: 2.5
+[02:19:05 INFO]: Item Despawn Rate: 6000
+[02:19:05 INFO]: View Distance: 4
+[02:19:05 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[02:19:05 INFO]: Arrow Despawn Rate: 1200
+[02:19:05 INFO]: Experience Merge Radius: 3.0
+[02:19:05 INFO]: Zombie Aggressive Towards Villager: true
+[02:19:05 INFO]: Mob Spawn Range: 4
+[02:19:05 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[02:19:05 INFO]: Random Lighting Updates: false
+[02:19:05 INFO]: Structure Info Saving: true
+[02:19:05 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[02:19:05 INFO]: Cactus Growth Modifier: 100%
+[02:19:05 INFO]: Cane Growth Modifier: 100%
+[02:19:05 INFO]: Melon Growth Modifier: 100%
+[02:19:05 INFO]: Mushroom Growth Modifier: 100%
+[02:19:05 INFO]: Pumpkin Growth Modifier: 100%
+[02:19:05 INFO]: Sapling Growth Modifier: 100%
+[02:19:05 INFO]: Wheat Growth Modifier: 100%
+[02:19:05 INFO]: NetherWart Growth Modifier: 100%
+[02:19:05 INFO]: Vine Growth Modifier: 100%
+[02:19:05 INFO]: Cocoa Growth Modifier: 100%
+[02:19:05 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[02:19:05 INFO]: Max TNT Explosions: 100
+[02:19:05 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[02:19:05 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[02:19:06 INFO]: -------- World Settings For [world_the_end] --------
+[02:19:06 INFO]: Nerfing mobs spawned from spawners: false
+[02:19:06 INFO]: Item Merge Radius: 2.5
+[02:19:06 INFO]: Item Despawn Rate: 6000
+[02:19:06 INFO]: View Distance: 4
+[02:19:06 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[02:19:06 INFO]: Arrow Despawn Rate: 1200
+[02:19:06 INFO]: Experience Merge Radius: 3.0
+[02:19:06 INFO]: Zombie Aggressive Towards Villager: true
+[02:19:06 INFO]: Mob Spawn Range: 4
+[02:19:06 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[02:19:06 INFO]: Random Lighting Updates: false
+[02:19:06 INFO]: Structure Info Saving: true
+[02:19:06 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[02:19:06 INFO]: Cactus Growth Modifier: 100%
+[02:19:06 INFO]: Cane Growth Modifier: 100%
+[02:19:06 INFO]: Melon Growth Modifier: 100%
+[02:19:06 INFO]: Mushroom Growth Modifier: 100%
+[02:19:06 INFO]: Pumpkin Growth Modifier: 100%
+[02:19:06 INFO]: Sapling Growth Modifier: 100%
+[02:19:06 INFO]: Wheat Growth Modifier: 100%
+[02:19:06 INFO]: NetherWart Growth Modifier: 100%
+[02:19:06 INFO]: Vine Growth Modifier: 100%
+[02:19:06 INFO]: Cocoa Growth Modifier: 100%
+[02:19:06 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[02:19:06 INFO]: Max TNT Explosions: 100
+[02:19:06 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[02:19:06 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[02:19:06 INFO]: Preparing start region for level 0 (Seed: 2591561638149005873)
+[02:19:06 INFO]: Preparing start region for level 1 (Seed: 2591561638149005873)
+[02:19:06 INFO]: Preparing start region for level 2 (Seed: 2591561638149005873)
+[02:19:06 INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+[02:19:06 ERROR]: [WorldListTrashCan] [MigrationGuard] legacy-root-after-complete
+[02:19:06 ERROR]: [WorldListTrashCan] [Universal] 启动失败，已禁用插件: 检测到迁移完成后重新放回的旧版配置，请移除根目录旧文件后重启
+java.lang.IllegalStateException: 检测到迁移完成后重新放回的旧版配置，请移除根目录旧文件后重启
+	at pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator.rejectLegacyFilesAfterCompletedMigration(BukkitLegacyConfigMigrator.java:442) ~[?:?]
+	at pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator.migrateIfNeeded(BukkitLegacyConfigMigrator.java:76) ~[?:?]
+	at pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin.startPlugin(WorldListTrashCanUniversalPlugin.java:398) ~[?:?]
+	at pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin.onEnable(WorldListTrashCanUniversalPlugin.java:81) ~[?:?]
+	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:264) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:316) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:405) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugin(CraftServer.java:395) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugins(CraftServer.java:344) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.t(MinecraftServer.java:442) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.l(MinecraftServer.java:403) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.a(MinecraftServer.java:341) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.DedicatedServer.init(DedicatedServer.java:289) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.run(MinecraftServer.java:616) ~[patched_1.12.2.jar:git-Paper-1620]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_451]
+[02:19:06 INFO]: [WorldListTrashCan] Disabling WorldListTrashCan v7.0.0
+[02:19:06 INFO]: Done (0.626s)! For help, type "help" or "?"
+[02:19:06 INFO]: Starting remote control listener
+[02:19:06 INFO]: RCON running on 0.0.0.0:60733
+[02:19:06 INFO]: Timings Reset
+[02:19:07 INFO]: Rcon connection from: /127.0.0.1
+[02:19:07 INFO]: Rcon connection from: /127.0.0.1
+[02:19:07 INFO]: Rcon connection from: /127.0.0.1
+[02:19:07 WARN]: Unexpected exception while parsing console command "wtc platform"
+org.bukkit.command.CommandException: Cannot execute command 'wtc' in plugin WorldListTrashCan v7.0.0 - plugin is disabled.
+	at org.bukkit.command.PluginCommand.execute(PluginCommand.java:36) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.command.SimpleCommandMap.dispatch(SimpleCommandMap.java:152) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.dispatchCommand(CraftServer.java:685) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.dispatchServerCommand(CraftServer.java:648) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.DedicatedServer$5.evaluate(DedicatedServer.java:709) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.DedicatedServer$5.evaluate(DedicatedServer.java:697) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.util.Waitable.run(Waitable.java:24) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.D(MinecraftServer.java:861) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.DedicatedServer.D(DedicatedServer.java:423) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.C(MinecraftServer.java:774) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.run(MinecraftServer.java:666) ~[patched_1.12.2.jar:git-Paper-1620]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_451]
+[02:19:08 INFO]: Rcon connection from: /127.0.0.1
+[02:19:08 INFO]: [Rcon: Stopping the server]
+[02:19:08 INFO]: Stopping server
+[02:19:08 INFO]: Saving players
+[02:19:08 INFO]: Saving worlds
+[02:19:08 INFO]: Saving chunks for level 'world'/overworld
+[02:19:08 INFO]: Saving chunks for level 'world_nether'/the_nether
+[02:19:08 INFO]: Saving chunks for level 'world_the_end'/the_end

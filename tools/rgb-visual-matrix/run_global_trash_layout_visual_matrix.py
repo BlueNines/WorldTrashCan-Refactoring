@@ -124,7 +124,7 @@ def layout_body(rows: list[str]) -> list[str]:
 
 def patch_layout(case: dict, rows: list[str], max_pages: int) -> Path:
     """写入本轮布局并清空公共垃圾桶黑名单。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
     if not target.is_file():
         raise RuntimeError("运行时 trash.yml 不存在: " + str(target))
     text = target.read_text(encoding="utf-8", errors="replace")
@@ -145,13 +145,13 @@ def reload_and_wait(case: dict, process, server_log: Path, command_log: Path,
                     expected_markers: list[str]) -> str:
     """重载插件并等待布局日志完整出现。"""
     offset = external.log_text_offset(server_log)
-    gui.run_console(process, command_log, "blwtc reload", 0.6)
-    return external.wait_command_markers(server_log, offset, expected_markers, 20, "blwtc reload")
+    gui.run_console(process, command_log, "wtc reload", 0.6)
+    return external.wait_command_markers(server_log, offset, expected_markers, 20, "wtc reload")
 
 
 def run_stock(process, server_log: Path, command_log: Path) -> str:
     """执行库存摘要并返回新增控制台文本。"""
-    return gui.run_console_capture(process, server_log, command_log, "blwtc debugstock", 0.8)
+    return gui.run_console_capture(process, server_log, command_log, "wtc debugstock", 0.8)
 
 
 def wait_stock(process, server_log: Path, command_log: Path,
@@ -180,7 +180,7 @@ def route_stack(case: dict, username: str, process, server_log: Path,
                 command_log: Path, material: str, expect_success: bool) -> str:
     """通过后台路由入口放入一整组物品并校验成功或失败。"""
     offset = external.log_text_offset(server_log)
-    command = "blwtc debugroute " + username + " global " + material + " 64"
+    command = "wtc debugroute " + username + " global " + material + " 64"
     gui.run_console(process, command_log, command, 0.5)
     deadline = time.time() + 12
     last = ""
@@ -259,7 +259,7 @@ def capture(case: dict, game_dir: Path, run_dir: Path, name: str) -> dict:
 
 def open_global(case: dict, username: str, process, command_log: Path) -> None:
     """通过后台入口为真实在线玩家打开公共垃圾桶。"""
-    gui.run_console(process, command_log, "blwtc debugopen " + username + " global", 1.0)
+    gui.run_console(process, command_log, "wtc debugopen " + username + " global", 1.0)
 
 
 def close_inventory(case: dict) -> None:
@@ -311,7 +311,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         log("启动布局专项: " + case["id"])
         process = external.launch_server(case, run_dir)
-        trash_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml"
+        trash_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
         backups.append(gui.backup_file(trash_file, run_dir / "logs" / "config-backup"))
         patch_layout(case, ["xxxxxxxxx"] * 5 + ["abbbbbbbc"], 5)
         result["checks"]["largeReload"] = reload_and_wait(
@@ -425,7 +425,7 @@ def write_readme(evidence_root: Path, summary: dict) -> None:
     lines = [
         "# 公共垃圾桶字符布局真实客户端专项",
         "",
-        "- 被测产物: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测产物: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 客户端: 真实 1.12.2 与真实 1.21.8 客户端。",
         "- 覆盖: 两行字符布局、材质候选降级、RGB/传统颜色名称与 Lore、页码占位符、真实翻页、缩容零丢失、临时溢出页不接收新物品、正常页释放容量后恢复写入、七行非法布局回退六行。",

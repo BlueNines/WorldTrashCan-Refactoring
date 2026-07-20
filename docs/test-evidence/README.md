@@ -1,4 +1,4 @@
-# BlWorldTrashCan 测试证据索引
+# WorldListTrashCan 测试证据索引
 
 本目录只保存重构版测试证据。证据目录很多，不能只因为某个目录存在就把它写成通过结论；必须同时查看对应 `README.md`、`summary.json`、截图、日志和上层文档引用。
 
@@ -17,20 +17,20 @@
 | universal 整包完整回归 | `universal-full-regression-1122-2612-20260608-192725/` | 1.12.2、Paper 26.1.2、Spigot 26.1.2 基础功能回归 |
 | 80 项完整矩阵基线 | `universal-function-matrix-1122-2612-20260608-213500/` | 2026-06-08 完整功能矩阵基线 |
 | Folia 清理通知视觉 | `cleanup-notify-visual-20260630-092840/` | Chat、ActionBar、BossBar、Title、Sound、Command 通知专项 |
-| GUI 真实点击 | `trash-gui-click-visual-20260702-223605/` | Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端；公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
-| 公共垃圾桶字符布局 | `global-trash-layout-visual-20260717-185333/` | Paper 1.12.2 与 Folia 1.21.8 真实客户端；2 行布局、RGB/传统色 Tooltip、翻页、缩容零丢失、只读溢出页、取出后恢复写入、非法布局回退 |
+| GUI 真实点击 | `trash-gui-click-visual-20260721-023817/` | 当前 universal 整包；Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端；公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
+| 公共垃圾桶字符布局 | `global-trash-layout-visual-20260721-024653/` | 当前 universal 整包；Paper 1.12.2 与 Folia 1.21.8 真实客户端；2 行布局、RGB/传统色 Tooltip、翻页、缩容零丢失、只读溢出页、取出后恢复写入、非法布局回退 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-231000/` | Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 三端，玩家已能打开 GUI 时显式 deny 公共/个人 take/put 后真实点击不产生取放 |
-| 旧配置迁移 | `legacy-migration-universal-20260717-182917/` | 旧目录和当前目录旧结构迁移，并覆盖旧 GUI ModelId 到新字符布局路径 |
+| 旧配置迁移 | `legacy-migration-universal-20260721-021850/` | 同名目录旧结构隔离、完整备份、日志保留、中断重入、无标记重试、标记跳过和旧结构回放拒绝 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
 | 船内实体保护 | `boat-entity-protection-20260701-171046/` | 船内实体保留、普通实体清理 |
 | 世界垃圾桶边界 | `world-trash-boundary-20260701-172919/` | 创建上限、破坏移除、禁用世界、黑名单降级、未加载区块降级 |
 | 保护边界 | `protection-boundary-20260701-174709/` | 不可拾取箭矢、防踩踏农田 |
 | 世界实体上限 | `world-entity-limit-20260701-180527/` | 世界实体上限和忽略世界 |
 | 清理通知点击 | `cleanup-notify-click-20260701-190056/` | Chat 可点击命令真实客户端点击 |
-| 多语言切换与缺节点回退 | `language-visual-20260701-163536/` | 非默认语言切换和 jar 内默认节点回退 |
+| 多语言切换、缺节点回退与公开品牌 | `language-visual-20260721-022637/` | 当前 universal 整包；三端真实客户端验证英文帮助、中文缺节点回退和 `WorldListTrashCan` 前缀 |
 | Vault 扣费 | `vault-payment-visual-20260702-200346/` | 余额充足、余额不足、背包满三分支 |
 | Folia PAPI | `folia-papi-20260702-202801/` | Folia 1.21.8 + PlaceholderAPI 2.11.7 DEV 解析 `%Wtc_ClearTime%` |
-| 权限负向真实客户端 | `permission-negative-visual-20260702-210300/` | 非 OP 管理命令拒绝、显式 deny 公共/个人打开权限、OP 正向重载 |
+| 权限负向真实客户端 | `permission-negative-visual-20260721-final2/` | 当前 universal 整包；三端验证非 OP 管理命令拒绝、公共/个人打开权限拒绝、OP 正向重载 |
 
 ## 当前失败对照
 

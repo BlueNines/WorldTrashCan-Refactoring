@@ -290,7 +290,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 测试证据索引。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan 测试证据索引。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

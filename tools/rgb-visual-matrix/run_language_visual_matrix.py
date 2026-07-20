@@ -98,12 +98,12 @@ def restore_backups(backups: list[dict]) -> None:
 
 def config_file(case: dict) -> Path:
     """返回运行时 config.yml 路径。"""
-    return Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "config.yml"
+    return Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "config.yml"
 
 
 def message_file(case: dict, file_name: str) -> Path:
     """返回运行时语言文件路径。"""
-    return Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "messages" / file_name
+    return Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "messages" / file_name
 
 
 def set_language(case: dict, language_file: str) -> Path:
@@ -175,9 +175,9 @@ def run_console(process, command_log: Path, command: str, wait: float = 0.25) ->
 def reload_plugin(process, command_log: Path, server_log: Path, expected_file: str) -> dict:
     """重载插件配置并等待指定语言文件加载。"""
     offset = external.log_text_offset(server_log)
-    run_console(process, command_log, "blwtc reload", 0.5)
+    run_console(process, command_log, "wtc reload", 0.5)
     markers = ["[Message]", "messages/" + expected_file]
-    text = external.wait_command_markers(server_log, offset, markers, 12, "blwtc reload")
+    text = external.wait_command_markers(server_log, offset, markers, 12, "wtc reload")
     return {"markers": markers, "excerpt": external.strip_ansi(text)[-2000:]}
 
 
@@ -255,7 +255,7 @@ def render_log_screenshot(text: str, target: Path, title: str) -> Path:
     lines = [title, ""]
     useful = []
     for line in external.strip_ansi(text).splitlines():
-        if "[Message]" in line or "BlWorldTrashCan" in line or "[CHAT]" in line:
+        if "[Message]" in line or "WorldListTrashCan" in line or "[CHAT]" in line:
             useful.append(line)
     lines.extend(useful[-34:] if useful else external.strip_ansi(text).splitlines()[-34:])
     width = 1600
@@ -300,23 +300,23 @@ def send_chat_by_clipboard(case: dict, command: str) -> None:
 
 def send_help_and_capture(case: dict, game_dir: Path, run_dir: Path, suffix: str,
                           markers: list[str], wait_seconds: float = 1.2) -> dict:
-    """由真实客户端执行 /blwtc help、等待日志并保存截图。"""
+    """由真实客户端执行 /wtc help、等待日志并保存截图。"""
     ensure_ingame_view(case)
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
     offset = external.log_text_offset(client_log)
     attempts = []
-    send_chat_by_window_message(case, "/blwtc help")
+    send_chat_by_window_message(case, "/wtc help")
     time.sleep(wait_seconds)
     marker_check = wait_client_markers(client_log, offset, markers, 4)
     attempts.append({"method": "window-message", "status": marker_check["status"]})
     if marker_check["status"] != "PASS":
-        send_chat_by_clipboard(case, "/blwtc help")
+        send_chat_by_clipboard(case, "/wtc help")
         time.sleep(wait_seconds)
         marker_check = wait_client_markers(client_log, offset, markers, 7)
         attempts.append({"method": "clipboard", "status": marker_check["status"]})
     screenshot = capture_named_screenshot(case, game_dir, run_dir, suffix)
     return {
-        "command": "/blwtc help",
+        "command": "/wtc help",
         "suffix": suffix,
         "markers": markers,
         "attempts": attempts,
@@ -331,19 +331,19 @@ def send_reload_and_capture(case: dict, game_dir: Path, run_dir: Path) -> dict:
     client_log = run_dir / "logs" / (case["id"] + "-client-stdout.log")
     offset = external.log_text_offset(client_log)
     attempts = []
-    send_chat_by_window_message(case, "/blwtc reload")
+    send_chat_by_window_message(case, "/wtc reload")
     time.sleep(1.2)
-    markers = ["BlWorldTrashCan", "reloaded."]
+    markers = ["WorldListTrashCan", "reloaded."]
     marker_check = wait_client_markers(client_log, offset, markers, 4)
     attempts.append({"method": "window-message", "status": marker_check["status"]})
     if marker_check["status"] != "PASS":
-        send_chat_by_clipboard(case, "/blwtc reload")
+        send_chat_by_clipboard(case, "/wtc reload")
         time.sleep(1.2)
         marker_check = wait_client_markers(client_log, offset, markers, 7)
         attempts.append({"method": "clipboard", "status": marker_check["status"]})
     screenshot = capture_named_screenshot(case, game_dir, run_dir, "brand-case-reload-f2")
     return {
-        "command": "/blwtc reload",
+        "command": "/wtc reload",
         "markers": markers,
         "attempts": attempts,
         "clientCheck": marker_check,
@@ -407,7 +407,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         external.wait_player_online(case, username, server_log)
         setup_player(case, username, process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        run_console(process, command_log, "blwtc platform", 0.5)
+        run_console(process, command_log, "wtc platform", 0.5)
         external.wait_platform_command_accepted(server_log, platform_offset)
 
         set_language(case, "message_en.yml")

@@ -8,11 +8,11 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 DIST = REPO / "dist"
 ARTIFACTS = [
-    "BlWorldTrashCan-legacy-1.12.jar",
-    "BlWorldTrashCan-bukkit-1.13-1.15.jar",
-    "BlWorldTrashCan-paper-1.16-1.20.jar",
-    "BlWorldTrashCan-folia-1.20.jar",
-    "BlWorldTrashCan-universal.jar",
+    "WorldListTrashCan-legacy-1.12.jar",
+    "WorldListTrashCan-bukkit-1.13-1.15.jar",
+    "WorldListTrashCan-paper-1.16-1.20.jar",
+    "WorldListTrashCan-folia-1.20.jar",
+    "WorldListTrashCan-universal.jar",
 ]
 
 
@@ -49,7 +49,7 @@ def check_long_term_doc(hashes: dict[str, str], errors: list[str]) -> None:
     if not match:
         errors.append(path.relative_to(REPO).as_posix() + ": 缺少当前 universal jar SHA256 行")
         return
-    actual = hashes["BlWorldTrashCan-universal.jar"]
+    actual = hashes["WorldListTrashCan-universal.jar"]
     if match.group(1) != actual:
         errors.append(path.relative_to(REPO).as_posix() + ": 当前 universal SHA 不是 " + actual)
 
@@ -58,7 +58,7 @@ def check_readme(hashes: dict[str, str], errors: list[str]) -> None:
     """检查 README 是否写入当前 universal SHA。"""
     path = REPO / "README.md"
     text = read_text(path)
-    actual = hashes["BlWorldTrashCan-universal.jar"]
+    actual = hashes["WorldListTrashCan-universal.jar"]
     if actual not in text:
         errors.append(path.relative_to(REPO).as_posix() + ": 未包含当前 universal SHA " + actual)
 

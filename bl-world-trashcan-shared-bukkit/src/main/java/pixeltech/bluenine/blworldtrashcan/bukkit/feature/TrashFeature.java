@@ -102,7 +102,7 @@ public final class TrashFeature implements Feature, Listener {
             return;
         }
         Player player = event.getPlayer();
-        if (!player.hasPermission("blworldtrashcan.world.create") && !player.hasPermission("WorldListTrashCan.Main")) {
+        if (!player.hasPermission("WorldListTrashCan.Main")) {
             return;
         }
         int matchedLine = findLine(event.getLines(), worldConfig.getSignCreateText());

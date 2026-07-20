@@ -1,0 +1,498 @@
+Starting org.bukkit.craftbukkit.Main
+*** Warning, you've not updated in a while! ***
+*** Please download a new build from https://papermc.io/downloads/paper ***
+[02:42:28 INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
+[02:42:28 INFO]: [bootstrap] Loading Folia 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) for Minecraft 1.21.8
+[02:42:29 INFO]: [PluginInitializerManager] Initializing plugins...
+[02:42:29 INFO]: [PluginInitializerManager] Initialized 3 plugins
+[02:42:29 INFO]: [PluginInitializerManager] Bukkit plugins (3):
+ - PermissionDenyFixture (1.0.0), PlaceholderAPI (2.11.7-DEV-null), WorldListTrashCan (7.0.0)
+[02:42:33 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[02:42:34 INFO]: Loaded 1407 recipes
+[02:42:34 INFO]: Loaded 1520 advancements
+[02:42:34 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[02:42:34 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 226.3ms
+[02:42:34 INFO]: Starting minecraft server version 1.21.8
+[02:42:34 INFO]: Loading properties
+[02:42:34 INFO]: This server is running Folia version 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
+[02:42:34 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[02:42:34 INFO]: Server Ping Player Sample Count: 12
+[02:42:34 INFO]: Using 4 threads for Netty based IO
+[02:42:35 INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
+[02:42:35 INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[02:42:35 INFO]: [io.papermc.paper.threadedregions.TickRegions] Regionised ticking is enabled with 2 tick threads
+>   [02:42:35 INFO]: Default game type: SURVIVAL
+>   [02:42:35 INFO]: Generating keypair
+>   [02:42:35 INFO]: Starting Minecraft server on *:30004
+>   [02:42:35 INFO]: Using default channel type
+>   [02:42:35 INFO]: Paper: Using Java compression from Velocity.
+>   [02:42:35 INFO]: Paper: Using Java cipher from Velocity.
+>   [33;1m[02:42:35 WARN]: [org.bukkit.craftbukkit.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[m>   [33;1m[02:42:43 WARN]: Legacy plugin PermissionDenyFixture v1.0.0 does not specify an api-version.
+[m>   [02:42:43 INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.7-DEV-null
+>   [02:42:43 INFO]: [WorldListTrashCan] Loading server plugin WorldListTrashCan v7.0.0
+>   [02:42:43 INFO]: [PermissionDenyFixture] Loading server plugin PermissionDenyFixture v1.0.0
+>   [02:42:43 INFO]: Server permissions file permissions.yml is empty, ignoring it
+>   [33;1m[02:42:43 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[m>   [33;1m[02:42:43 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[m>   [33;1m[02:42:43 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[m>   [33;1m[02:42:43 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[m>   [02:42:43 INFO]: Preparing level "world"
+>   [02:42:44 INFO]: Preparing start region for dimension minecraft:overworld
+>   [02:42:44 INFO]: Time elapsed: 3 ms
+>   [02:42:44 INFO]: Preparing start region for dimension minecraft:the_nether
+>   [02:42:44 INFO]: Time elapsed: 0 ms
+>   [02:42:44 INFO]: Preparing start region for dimension minecraft:the_end
+>   [02:42:44 INFO]: Time elapsed: 0 ms
+>   [02:42:44 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.7-DEV-null
+>   [02:42:44 INFO]: [PlaceholderAPI] Fetching available expansion information...
+>   [02:42:44 INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+>   [02:42:44 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+>   [02:42:44 INFO]: [WorldListTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
+>   [02:42:44 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=32, visiblePages=32
+>   [02:42:44 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+>   [02:42:44 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+>   [02:42:44 INFO]: [WorldListTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+>   [02:42:44 INFO]: [WorldListTrashCan] Universal runtime: folia
+>   [02:42:44 INFO]: [WorldListTrashCan] Platform: folia-1.20
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability scheduler-global: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability scheduler-region: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability inventory-basic: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability item-pdc-tag: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability item-legacy-tag: disabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability rgb-message: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability clickable-message: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability boss-bar: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability sign-legacy: disabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability sign-modern: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability entity-move-event: enabled
+>   [02:42:44 INFO]: [WorldListTrashCan] Capability folia-region-safe: disabled
+>   [02:42:44 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+>   [02:42:44 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+>   [02:42:44 INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0*
+>   [02:42:44 INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+>   [02:42:44 INFO]: [spark] The spark plugin has been preferred but was not loaded. The bundled spark profiler will enabled instead.
+>   [02:42:44 INFO]: [spark] The spark profiler will not be enabled because it is currently disabled in the configuration.
+>   [02:42:44 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+>   [02:42:44 INFO]: Done preparing level "world" (1.356s)
+>   [02:42:44 INFO]: Done (16.541s)! For help, type "help"
+>   [02:42:44 INFO]: [33m0 placeholder hook(s) registered![0m
+> >   [02:42:45 INFO]: Initialising world 'world' before it can be ticked...
+>   [02:42:45 INFO]: Initialised world 'world'
+>   [02:42:45 INFO]: Initialising world 'world_nether' before it can be ticked...
+>   [02:42:45 INFO]: Initialised world 'world_nether'
+>   [02:42:45 INFO]: Initialising world 'world_the_end' before it can be ticked...
+>   [02:42:45 INFO]: Initialised world 'world_the_end'
+>   [02:42:45 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+>   [02:42:45 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+>   [02:42:45 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+>   [02:42:45 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+>   [02:42:45 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+>   [02:42:45 INFO]: [34m[[96mWorld[93mList[94mTrash[96mCan[34m] [96mWorldListTrashCan [94m已重载。[0m
+>   [02:42:45 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:
+>   [02:42:45 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+>   [02:42:48 INFO]: [91m5秒[0m
+>   [02:42:50 INFO]: [91m3秒[0m
+>   [02:42:51 INFO]: [91m2秒[0m
+>   [02:42:52 INFO]: [91m1秒[0m
+>   [02:42:52 INFO]: UUID of player RGBolia1218 is eea599c9-a6e7-3374-be36-45fda92be0e8
+>   [02:42:53 INFO]: [93mRGBolia1218 joined the game[0m
+>   [02:42:53 INFO]: RGBolia1218[/127.0.0.1:64865] logged in with entity id 15 at ([world]0.5, 91.0, -7.5)
+>   [02:42:53 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=150, worlds=3, timedOut=false
+> >   [02:42:54 INFO]: [91mNothing changed. The player already is an operator[0m
+> >   [02:42:54 INFO]: Gamerule sendCommandFeedback is now set to: false
+> >   [02:42:55 INFO]: Gamerule commandBlockOutput is now set to: false
+> >   [02:42:55 INFO]: Gamerule doMobSpawning is now set to: false
+> >   [02:42:55 INFO]: Gamerule keepInventory is now set to: true
+> >   [02:42:55 INFO]: Gamerule fallDamage is now set to: false
+> >   [02:42:56 INFO]: Set the time to 1000
+> >   [02:42:56 INFO]: [91m5秒[0m
+>   [02:42:56 INFO]: Set the weather to clear
+> >   [02:42:56 INFO]: [91mNo blocks were filled[0m
+> >   [02:42:56 INFO]: Set RGBolia1218's game mode to Survival Mode
+> >   [02:42:57 INFO]: Teleported RGBolia1218 to 0.500000, 91.000000, -7.500000
+> >   [02:42:57 INFO]: [91mIncorrect argument for command
+[37m...ft:effect [4m[91mRGBolia1218 minecraft:resistance 1000000 255 true[0m[3m[91m<--[HERE][0m
+> >   [02:42:57 INFO]: [91mIncorrect argument for command
+[37m...ft:effect [4m[91mRGBolia1218 minecraft:saturation 1000000 1 true[0m[3m[91m<--[HERE][0m
+> >   [02:42:57 INFO]: Removed 1 item(s) from player RGBolia1218
+>   [02:42:58 INFO]: [91m3秒[0m
+> >   [02:42:59 INFO]: [34m[[96mWorld[93mList[94mTrash[96mCan[34m] [96m当前平台 [94m| [93mfolia-1.20 (universal)[0m
+>   [02:42:59 INFO]: [94m- [94mscheduler-global[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mscheduler-region[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94minventory-basic[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mitem-pdc-tag[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mitem-legacy-tag[94m: 禁用[0m
+>   [02:42:59 INFO]: [94m- [94mrgb-message[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mclickable-message[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mboss-bar[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94msign-legacy[94m: 禁用[0m
+>   [02:42:59 INFO]: [94m- [94msign-modern[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mentity-move-event[94m: [96m启用[0m
+>   [02:42:59 INFO]: [94m- [94mfolia-region-safe[94m: 禁用[0m
+>   [02:42:59 INFO]: [91m2秒[0m
+> >   [02:42:59 INFO]: Removed 1 item(s) from player RGBolia1218
+> >   [02:42:59 INFO]: Gave 7 [97m[Cobblestone][0m to RGBolia1218
+>   [02:43:00 INFO]: [91m1秒[0m
+> >   [02:43:00 INFO]: [92m已为玩家打开公共垃圾桶: [97mRGBolia1218[0m
+>   [02:43:01 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:43:04 INFO]: [91m5秒[0m
+>   [02:43:06 INFO]: [91m3秒[0m
+>   [02:43:07 INFO]: [91m2秒[0m
+>   [02:43:08 INFO]: [91m1秒[0m
+>   [02:43:09 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:43:12 INFO]: [91m5秒[0m
+>   [02:43:14 INFO]: [91m3秒[0m
+>   [02:43:15 INFO]: [91m2秒[0m
+>   [02:43:16 INFO]: [91m1秒[0m
+> >   [02:43:16 INFO]: [92m垃圾桶库存:[0m
+>   [02:43:16 INFO]: [37m- [97m公共垃圾桶物品: [92m0 [37m(堆叠 0)[0m
+>   [02:43:16 INFO]: [94m- [94m公共垃圾桶页数: [93m5[0m
+>   [02:43:16 INFO]: [94m- [94m已加载个人垃圾桶: [93m0[0m
+> >   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:17 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:17 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:43:17 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> wtc debugroute RGBolia1218 gl                               [02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> wtc debugroute RGBolia1218 glob>   [02:43:18 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:19 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:19 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:19 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+>   [02:43:19 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+> >   [02:43:19 INFO]: [92m已为玩家打开公共垃圾桶: [97mRGBolia1218[0m
+>   [02:43:20 INFO]: [91m5秒[0m
+>   [02:43:22 INFO]: [91m3秒[0m
+>   [02:43:23 INFO]: [91m2秒[0m
+>   [02:43:24 INFO]: [91m1秒[0m
+>   [02:43:25 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+> >   [02:43:28 INFO]: Removed 1 item(s) from player RGBolia1218
+>   [02:43:28 INFO]: [91m5秒[0m
+> >   [02:43:28 INFO]: Gave 5 [97m[Stone][0m to RGBolia1218
+> >   [02:43:29 INFO]: [92m已为玩家打开个人垃圾桶: [97mRGBolia1218[0m
+>   [02:43:30 INFO]: [91m3秒[0m
+>   [02:43:31 INFO]: [91m2秒[0m
+>   [02:43:32 INFO]: [91m1秒[0m
+>   [02:43:33 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+> >   [02:43:35 INFO]: [92mWorldListTrashCan debug summary:[0m
+>   [02:43:35 INFO]: [37m- [97m平台: [92mfolia-1.20 [37m(universal)[0m
+>   [02:43:35 INFO]: [37m- [97m世界: [92mworld[0m
+>   [02:43:35 INFO]: [37m- [97m世界垃圾桶数量: [92m0[0m
+>   [02:43:35 INFO]: [37m- [97m世界垃圾桶物品: [93mFolia 下跳过同步方块库存读取[0m
+>   [02:43:35 INFO]: [37m- [97m跳过未加载区块: [92m0[0m
+>   [02:43:35 INFO]: [37m- [97m公共垃圾桶物品: [92m2944 [37m(堆叠 46)[0m
+>   [02:43:35 INFO]: [37m- [97m个人垃圾桶物品: [92m5 [37m(堆叠 1)[0m
+>   [02:43:36 INFO]: [91m5秒[0m
+>   [02:43:38 INFO]: [91m3秒[0m
+>   [02:43:39 INFO]: [91m2秒[0m
+> >   [02:43:40 INFO]: [92mWorldListTrashCan debug summary:[0m
+>   [02:43:40 INFO]: [37m- [97m平台: [92mfolia-1.20 [37m(universal)[0m
+>   [02:43:40 INFO]: [37m- [97m世界: [92mworld[0m
+>   [02:43:40 INFO]: [37m- [97m世界垃圾桶数量: [92m0[0m
+>   [02:43:40 INFO]: [37m- [97m世界垃圾桶物品: [93mFolia 下跳过同步方块库存读取[0m
+>   [02:43:40 INFO]: [37m- [97m跳过未加载区块: [92m0[0m
+>   [02:43:40 INFO]: [37m- [97m公共垃圾桶物品: [92m2944 [37m(堆叠 46)[0m
+>   [02:43:40 INFO]: [37m- [97m个人垃圾桶物品: [92m0 [37m(堆叠 0)[0m
+>   [02:43:40 INFO]: [91m1秒[0m
+>   [02:43:41 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+> >   [02:43:42 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:42 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> wtc debugroute RGBolia1218 personal STONE 64>   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:43 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [91m5秒[0m
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:44 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:45 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:45 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+> >   [02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+>   [02:43:45 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+> >   [02:43:45 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=DIRT, amount=1, routed=true
+> >   [02:43:45 INFO]: [92mWorldListTrashCan debug summary:[0m
+>   [02:43:45 INFO]: [37m- [97m平台: [92mfolia-1.20 [37m(universal)[0m
+>   [02:43:45 INFO]: [37m- [97m世界: [92mworld[0m
+>   [02:43:45 INFO]: [37m- [97m世界垃圾桶数量: [92m0[0m
+>   [02:43:45 INFO]: [37m- [97m世界垃圾桶物品: [93mFolia 下跳过同步方块库存读取[0m
+>   [02:43:45 INFO]: [37m- [97m跳过未加载区块: [92m0[0m
+>   [02:43:45 INFO]: [37m- [97m公共垃圾桶物品: [92m2944 [37m(堆叠 46)[0m
+>   [02:43:45 INFO]: [37m- [97m个人垃圾桶物品: [92m1 [37m(堆叠 1)[0m
+>   [02:43:46 INFO]: [91m3秒[0m
+> >   [02:43:46 INFO]: [92m已为玩家打开个人垃圾桶: [97mRGBolia1218[0m
+>   [02:43:47 INFO]: [91m2秒[0m
+>   [02:43:48 INFO]: [91m1秒[0m
+>   [02:43:49 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+> >   [02:43:51 INFO]: Removed 1 item(s) from player RGBolia1218
+> >   [02:43:51 INFO]: Gave 1 [97m[Stone][0m to RGBolia1218
+>   [02:43:52 INFO]: [91m5秒[0m
+> >   [02:43:52 INFO]: [92m已为玩家打开公共黑名单 GUI。[0m
+>   [02:43:54 INFO]: [91m3秒[0m
+>   [02:43:55 INFO]: [91m2秒[0m
+>   [02:43:56 INFO]: [91m1秒[0m
+>   [02:43:57 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:44:00 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+>   [02:44:00 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+>   [02:44:00 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+>   [02:44:00 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。
+>   [02:44:00 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
+> >   [02:44:03 INFO]: [92m已提交路由测试任务，请查看后台日志。[0m
+>   [02:44:03 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=1, routed=false
+>   [02:44:03 INFO]: [91m5秒[0m
+>   [02:44:05 INFO]: [91m3秒[0m
+>   [02:44:06 INFO]: [91m2秒[0m
+>   [02:44:07 INFO]: [91m1秒[0m
+>   [02:44:08 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:44:11 INFO]: [91m5秒[0m
+>   [02:44:13 INFO]: [91m3秒[0m
+>   [02:44:14 INFO]: [91m2秒[0m
+>   [02:44:15 INFO]: [91m1秒[0m
+>   [02:44:16 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:44:19 INFO]: [91m5秒[0m
+>   [02:44:21 INFO]: [91m3秒[0m
+>   [02:44:22 INFO]: [91m2秒[0m
+>   [02:44:23 INFO]: [91m1秒[0m
+>   [02:44:24 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false
+>   [02:44:27 INFO]: [91m5秒[0m
+>   [02:44:28 INFO]: RGBolia1218 lost connection: Disconnected
+> >   [02:44:28 INFO]: [93mRGBolia1218 left the game[0m
+>   [02:44:28 INFO]: Stopping the server
+>   [02:44:28 INFO]: [RegionShutdownThread] Awaiting scheduler termination for 60s...
+>   [02:44:28 INFO]: [RegionShutdownThread] Scheduler halted
+>   [02:44:28 INFO]: Stopping server
+>   [02:44:28 INFO]: [PermissionDenyFixture] Disabling PermissionDenyFixture v1.0.0
+>   [02:44:28 INFO]: [WorldListTrashCan] Disabling WorldListTrashCan v7.0.0
+>   [02:44:28 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.7-DEV-null
+>   [02:44:28 INFO]: [RegionShutdownThread] Halting chunk systems...
+>   [02:44:28 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+>   [02:44:28 INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+>   [02:44:28 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+>   [02:44:28 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+>   [02:44:28 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+>   [02:44:28 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+>   [02:44:28 INFO]: [RegionShutdownThread] Halted chunk systems
+>   [02:44:28 INFO]: [RegionShutdownThread] Finishing pending teleports...
+>   [02:44:28 INFO]: [RegionShutdownThread] Finished pending teleports
+>   [02:44:28 INFO]: [RegionShutdownThread] Saving all worlds
+>   [02:44:28 INFO]: [RegionShutdownThread] Saving world data for world 'world'
+>   [02:44:28 INFO]: [RegionShutdownThread] Closing player inventories...
+>   [02:44:29 INFO]: [RegionShutdownThread] Closed player inventories
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving chunks...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, -1] in world 'world'
+>   [02:44:29 INFO]: [ChunkHolderManager] Saved 625 block chunks, 625 entity chunks, 0 poi chunks in world 'world' in 0.43s
+>   [02:44:29 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
+>   [02:44:29 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved chunks
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving level data...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved level data
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved world data for world 'world'
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving world data for world 'world_nether'
+>   [02:44:29 INFO]: [RegionShutdownThread] Closing player inventories...
+>   [02:44:29 INFO]: [RegionShutdownThread] Closed player inventories
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving chunks...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_nether'
+>   [02:44:29 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_nether' in 0.04s
+>   [02:44:29 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
+>   [02:44:29 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved chunks
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving level data...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved level data
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved world data for world 'world_nether'
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving world data for world 'world_the_end'
+>   [02:44:29 INFO]: [RegionShutdownThread] Closing player inventories...
+>   [02:44:29 INFO]: [RegionShutdownThread] Closed player inventories
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving chunks...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_the_end'
+>   [02:44:29 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_the_end' in 0.02s
+>   [02:44:29 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
+>   [02:44:29 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved chunks
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving level data...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved level data
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved world data for world 'world_the_end'
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved all worlds
+>   [02:44:29 INFO]: [RegionShutdownThread] Saving all player data...
+>   [02:44:29 INFO]: [RegionShutdownThread] Saved all player data
+>   [02:44:29 INFO]: Waiting for all RegionFile I/O tasks to complete...
+>   [02:44:29 INFO]: All RegionFile I/O tasks to complete
+>   [02:44:29 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+>   [02:44:29 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...
+> 

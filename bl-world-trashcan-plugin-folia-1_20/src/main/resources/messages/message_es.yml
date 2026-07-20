@@ -1,5 +1,5 @@
 # 插件前缀，会自动替换 {prefix}。
-prefix: "&#64748B[&#5AC8FABlWorldTrashCan&#64748B] "
+prefix: "&#64748B[&#5AC8FAWorldListTrashCan&#64748B] "
 
 # 通用无权限提示。
 no-permission: "{prefix}&#FFD166No tienes permiso para usar este comando."
@@ -117,7 +117,7 @@ command:
   # 通用无权限提示。
   no-permission: "{prefix}&#FFD166No tienes permiso para usar este comando."
   # 重载成功提示。
-  reload-success: "{prefix}&#5AC8FABlWorldTrashCan recargado."
+  reload-success: "{prefix}&#5AC8FAWorldListTrashCan recargado."
   # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
   clear-success: "{prefix}&#5AC8FALimpieza terminada: &#C9D4E2mundos {worlds}&#5AC8FA, objetos enviados {routed}&#5AC8FA, objetos eliminados {items}&#5AC8FA, entidades eliminadas {entities}&#5AC8FA."
   # 手动清理 guards 参数错误时提示。
@@ -127,41 +127,41 @@ command:
   # Folia 上一轮清理仍在运行时提示。
   folia-clear-running: "{prefix}&#FFD166La limpieza region-safe anterior de Folia sigue en ejecucion; esta solicitud se omitio."
   # Folia 清理任务启动成功提示。
-  folia-clear-started: "{prefix}&#5AC8FALimpieza region-safe de Folia iniciada; revisa los logs [FoliaCleanup] o ejecuta /blwtc stats al terminar."
+  folia-clear-started: "{prefix}&#5AC8FALimpieza region-safe de Folia iniciada; revisa los logs [FoliaCleanup] o ejecuta /wtc stats al terminar."
   # 没有打开公共垃圾桶权限时提示。
   no-global-open-permission: "{prefix}&#FFD166No tienes permiso para abrir la papelera global."
   # 没有打开个人垃圾桶权限时提示。
   no-personal-open-permission: "{prefix}&#FFD166No tienes permiso para abrir la papelera personal."
-  # /blwtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /blwtc debughelp。
+  # /wtc help 输出，每行一条。主帮助只展示正式命令；调试命令请使用 /wtc debughelp。
   help:
-    - "&#5AC8FA/blwtc help &#64748B- Ver ayuda"
-    - "&#5AC8FA/blwtc platform &#64748B- Ver capacidades de esta version"
-    - "&#5AC8FA/blwtc clear [true/false] &#64748B- Ejecutar limpieza; true ignora guards, false los respeta"
-    - "&#5AC8FA/blwtc global &#64748B- Abrir papelera global"
-    - "&#5AC8FA/blwtc personal &#64748B- Abrir papelera personal"
-    - "&#5AC8FA/blwtc dropmode &#64748B- Alternar proteccion de soltar"
-    - "&#5AC8FA/blwtc look &#64748B- Inspeccionar item en mano y entidad clicada"
-    - "&#5AC8FA/blwtc ban &#64748B- Abrir blacklist de papeleras del mundo"
-    - "&#5AC8FA/blwtc globalban &#64748B- Abrir blacklist global"
-    - "&#5AC8FA/blwtc stats &#64748B- Ver estadisticas de limpieza y papeleras"
-    - "&#5AC8FA/blwtc add <cantidad> &#64748B- Agregar espacios al mundo actual"
-    - "&#5AC8FA/blwtc add <mundo> <cantidad> &#64748B- Agregar espacios a un mundo especifico"
-    - "&#5AC8FA/blwtc debughelp &#64748B- Ver comandos de depuracion"
-    - "&#5AC8FA/blwtc reload &#64748B- Recargar el plugin"
-  # /blwtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
+    - "&#5AC8FA/wtc help &#64748B- Ver ayuda"
+    - "&#5AC8FA/wtc platform &#64748B- Ver capacidades de esta version"
+    - "&#5AC8FA/wtc clear [true/false] &#64748B- Ejecutar limpieza; true ignora guards, false los respeta"
+    - "&#5AC8FA/wtc global &#64748B- Abrir papelera global"
+    - "&#5AC8FA/wtc personal &#64748B- Abrir papelera personal"
+    - "&#5AC8FA/wtc dropmode &#64748B- Alternar proteccion de soltar"
+    - "&#5AC8FA/wtc look &#64748B- Inspeccionar item en mano y entidad clicada"
+    - "&#5AC8FA/wtc ban &#64748B- Abrir blacklist de papeleras del mundo"
+    - "&#5AC8FA/wtc globalban &#64748B- Abrir blacklist global"
+    - "&#5AC8FA/wtc stats &#64748B- Ver estadisticas de limpieza y papeleras"
+    - "&#5AC8FA/wtc add <cantidad> &#64748B- Agregar espacios al mundo actual"
+    - "&#5AC8FA/wtc add <mundo> <cantidad> &#64748B- Agregar espacios a un mundo especifico"
+    - "&#5AC8FA/wtc debughelp &#64748B- Ver comandos de depuracion"
+    - "&#5AC8FA/wtc reload &#64748B- Recargar el plugin"
+  # /wtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
   debug-help:
-    - "&#5AC8FA/blwtc debugopen <jugador> <global|personal> &#64748B- Probar apertura de GUI"
-    - "&#5AC8FA/blwtc debugworldtrash <jugador> &#64748B- Crear y registrar una papelera de prueba"
-    - "&#5AC8FA/blwtc debugroute <jugador> <world|personal|global> <Material> <cantidad> &#64748B- Probar una ruta"
-    - "&#5AC8FA/blwtc debugdrop <jugador> <Material> <cantidad> [owner] &#64748B- Crear un objeto tirado de prueba"
-    - "&#5AC8FA/blwtc debugdamage <jugador> <Material> <cantidad> &#64748B- Probar recuperacion por dano"
-    - "&#5AC8FA/blwtc debugstock &#64748B- Ver stock interno de papeleras"
-    - "&#5AC8FA/blwtc debugsummary <jugador> &#64748B- Ver resumen de pruebas"
-    - "&#5AC8FA/blwtc debugdensity &#64748B- Ver escaneo de densidad y cola de candidatos"
-    - "&#5AC8FA/blwtc debugnotify <count> &#64748B- Disparar el aviso de cleanup.yml para ese contador"
-    - "&#5AC8FA/blwtc debugplayer <jugador> <dropmode|look|ban|globalban> &#64748B- Probar entradas de jugador"
-    - "&#5AC8FA/blwtc debugrgb <jugador> &#64748B- Probar canales visibles RGB/degradados"
-    - "&#5AC8FA/blwtc debugrgbchannels <jugador> &#64748B- Probar Chat, ActionBar y Title RGB/degradados"
+    - "&#5AC8FA/wtc debugopen <jugador> <global|personal> &#64748B- Probar apertura de GUI"
+    - "&#5AC8FA/wtc debugworldtrash <jugador> &#64748B- Crear y registrar una papelera de prueba"
+    - "&#5AC8FA/wtc debugroute <jugador> <world|personal|global> <Material> <cantidad> &#64748B- Probar una ruta"
+    - "&#5AC8FA/wtc debugdrop <jugador> <Material> <cantidad> [owner] &#64748B- Crear un objeto tirado de prueba"
+    - "&#5AC8FA/wtc debugdamage <jugador> <Material> <cantidad> &#64748B- Probar recuperacion por dano"
+    - "&#5AC8FA/wtc debugstock &#64748B- Ver stock interno de papeleras"
+    - "&#5AC8FA/wtc debugsummary <jugador> &#64748B- Ver resumen de pruebas"
+    - "&#5AC8FA/wtc debugdensity &#64748B- Ver escaneo de densidad y cola de candidatos"
+    - "&#5AC8FA/wtc debugnotify <count> &#64748B- Disparar el aviso de cleanup.yml para ese contador"
+    - "&#5AC8FA/wtc debugplayer <jugador> <dropmode|look|ban|globalban> &#64748B- Probar entradas de jugador"
+    - "&#5AC8FA/wtc debugrgb <jugador> &#64748B- Probar canales visibles RGB/degradados"
+    - "&#5AC8FA/wtc debugrgbchannels <jugador> &#64748B- Probar Chat, ActionBar y Title RGB/degradados"
     - "&#64748BEstos comandos cambian el estado del servidor de pruebas; usalos solo para validacion y diagnostico."
   # 平台信息标题，{platform} 为平台 ID。
   platform:
@@ -172,7 +172,7 @@ command:
     disabled: "&#64748BDesactivado"
     # 平台能力单行，{capability} 为能力名，{state} 为启用状态。
     line: "&#64748B- &#C9D4E2{capability}&#64748B: {state}"
-  # /blwtc stats 输出。
+  # /wtc stats 输出。
   stats:
     header: "{prefix}&#5AC8FAEstadisticas de limpieza:"
     worlds: "&#64748B- &#C9D4E2Mundos: &#5AC8FA{worlds}"
@@ -193,8 +193,8 @@ command:
   add-success: "{prefix}&#5AC8FAEl limite de papeleras del mundo &#C9D4E2{world} &#5AC8FAahora es &#C9D4E2{count}&#5AC8FA."
   # add 用法提示。
   add-usage:
-    - "&#FFD166Uso: /blwtc add <cantidad>"
-    - "&#FFD166Uso: /blwtc add <mundo> <cantidad>"
+    - "&#FFD166Uso: /wtc add <cantidad>"
+    - "&#FFD166Uso: /wtc add <mundo> <cantidad>"
   # 没有防丢弃模式权限时提示。
   no-dropmode-permission: "{prefix}&#FFD166No tienes permiso para usar la proteccion contra tirar objetos."
   # 没有 look 查询权限时提示。

@@ -20,7 +20,7 @@ BUKKIT_API_JAR = Path.home() / ".m2" / "repository" / "org" / "spigotmc" / "spig
 
 
 FIXTURE_SOURCE = r'''
-package ai.blwtc.fixture;
+package ai.wtc.fixture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -37,7 +37,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-/** BlWorldTrashCan 世界实体上限验收夹具。 */
+/** WorldListTrashCan 世界实体上限验收夹具。 */
 public final class WorldEntityLimitFixturePlugin extends JavaPlugin implements CommandExecutor {
     private static final String PREFIX = "AI_WORLD_ENTITY_LIMIT_";
     private static final int BASE_OFFSET = 40;
@@ -239,10 +239,10 @@ public final class WorldEntityLimitFixturePlugin extends JavaPlugin implements C
 
 PLUGIN_YML = """name: BlWtcWorldEntityLimitFixture
 version: 1.0.0
-main: ai.blwtc.fixture.WorldEntityLimitFixturePlugin
+main: ai.wtc.fixture.WorldEntityLimitFixturePlugin
 commands:
   worldentitylimitfixture:
-    description: BlWorldTrashCan world entity limit fixture
+    description: WorldListTrashCan world entity limit fixture
 """
 
 
@@ -293,7 +293,7 @@ def sync_universal_dist() -> None:
 
 def build_fixture(run_root: Path) -> Path:
     """编译临时 Bukkit 测试插件。"""
-    source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
+    source_dir = run_root / "fixture-src" / "ai" / "wtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
     fixture_jar = run_root / "BlWtcWorldEntityLimitFixture.jar"
@@ -404,7 +404,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
     shutil.copy2(case["serverJar"], server_dir / Path(case["serverJar"]).name)
     if case.get("copyPaperCache"):
         legacy.copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "WorldListTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(
@@ -416,9 +416,9 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
 
 def write_entity_limits(server_dir: Path, enabled: bool, ignored_worlds: list[str]) -> Path:
     """写入临时 entity-limits.yml。"""
-    target = server_dir / "plugins" / "BlWorldTrashCan" / "entity-limits.yml"
+    target = server_dir / "plugins" / "WorldListTrashCan" / "entity-limits.yml"
     if not target.parent.is_dir():
-        raise RuntimeError("BlWorldTrashCan 配置目录尚未生成: " + str(target.parent))
+        raise RuntimeError("WorldListTrashCan 配置目录尚未生成: " + str(target.parent))
     target.write_text(entity_limit_config(enabled, ignored_worlds), encoding="utf-8")
     return target
 
@@ -451,19 +451,19 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
             seed_config = write_entity_limits(server_dir, False, [])
             copy_if_exists(seed_config, case_dir / "config" / "entity-limits-seed-disabled.yml")
             run_rcon(case, "plugins", responses, entries, "plugins")
-            run_rcon(case, "blwtc platform", responses, entries, "platform")
-            run_rcon(case, "blwtc reload", responses, entries, "reload-seed-disabled")
+            run_rcon(case, "wtc platform", responses, entries, "platform")
+            run_rcon(case, "wtc reload", responses, entries, "reload-seed-disabled")
             run_rcon(case, "worldentitylimitfixture cleanup", responses, entries, "cleanup-before")
             run_rcon(case, "worldentitylimitfixture seed COW 2", responses, entries, "seed")
             active_config = write_entity_limits(server_dir, True, [])
             copy_if_exists(active_config, case_dir / "config" / "entity-limits-active.yml")
-            run_rcon(case, "blwtc reload", responses, entries, "reload-active")
+            run_rcon(case, "wtc reload", responses, entries, "reload-active")
             responses["debug-active"] = wait_indexed(case, entries, minimum_entities=2)
             run_rcon(case, "worldentitylimitfixture spawncheck COW", responses, entries, "spawn-active")
             run_rcon(case, "worldentitylimitfixture count COW", responses, entries, "count-after-active")
             ignored_config = write_entity_limits(server_dir, True, ["world", "world_nether", "world_the_end"])
             copy_if_exists(ignored_config, case_dir / "config" / "entity-limits-ignored.yml")
-            run_rcon(case, "blwtc reload", responses, entries, "reload-ignored")
+            run_rcon(case, "wtc reload", responses, entries, "reload-ignored")
             responses["debug-ignored"] = wait_ignored(case, entries)
             run_rcon(case, "worldentitylimitfixture spawncheck COW", responses, entries, "spawn-ignored")
             run_rcon(case, "worldentitylimitfixture count COW", responses, entries, "count-after-ignored")
@@ -493,9 +493,9 @@ def wait_indexed(case: dict, entries: list[str], minimum_entities: int) -> str:
     deadline = time.time() + 45
     last = ""
     while time.time() < deadline:
-        body = legacy.rcon_command(case["rcon"], "blwtc debugdensity")
+        body = legacy.rcon_command(case["rcon"], "wtc debugdensity")
         last = body
-        entries.append("> blwtc debugdensity\n" + body.rstrip())
+        entries.append("> wtc debugdensity\n" + body.rstrip())
         if parse_indexed_entities(body) >= minimum_entities:
             return body
         time.sleep(1.0)
@@ -507,9 +507,9 @@ def wait_ignored(case: dict, entries: list[str]) -> str:
     deadline = time.time() + 20
     last = ""
     while time.time() < deadline:
-        body = legacy.rcon_command(case["rcon"], "blwtc debugdensity")
+        body = legacy.rcon_command(case["rcon"], "wtc debugdensity")
         last = body
-        entries.append("> blwtc debugdensity\n" + body.rstrip())
+        entries.append("> wtc debugdensity\n" + body.rstrip())
         loaded_selected = parse_loaded_selected(body)
         if loaded_selected == (0, 0):
             return body
@@ -546,7 +546,7 @@ def parse_loaded_selected(text: str) -> tuple[int, int] | None:
 
 def assert_case(case: dict, responses: dict, active_config: Path, ignored_config: Path, stdout_log: Path) -> dict:
     """断言单端世界实体上限结果。"""
-    require("BlWorldTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 BlWorldTrashCan")
+    require("WorldListTrashCan", responses.get("plugins", ""), case["id"] + " 插件列表缺少 WorldListTrashCan")
     require("BlWtcWorldEntityLimitFixture", responses.get("plugins", ""), case["id"] + " 插件列表缺少夹具")
     require(case["expectedPlatform"], responses.get("platform", ""), case["id"] + " 平台不符合预期")
     require("universal", responses.get("platform", ""), case["id"] + " 未加载 universal 分支")
@@ -585,7 +585,7 @@ def require_all(needles: list[str], text: str, message: str) -> None:
 def copy_case_evidence(server_dir: Path, case_dir: Path) -> None:
     """复制单个世界实体上限用例证据。"""
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_if_exists(plugin_dir / "entity-limits.yml", case_dir / "config" / "entity-limits-after-test.yml")
     copy_if_exists(plugin_dir / "config.yml", case_dir / "config" / "config.yml")
 
@@ -602,7 +602,7 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# F-070/F-072 世界实体上限专项验收",
         "",
-        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
         "- 验收方式: 真实服务端启动 + 低占用索引等待 + 临时 Bukkit 夹具走正式实体生成路径",
         "- 通过标准: 先关闭实体限制铺底 COW=2，再开启上限等待缓存建立，第 3 只被拦截；同一世界写入 `ignored-worlds` 后第 3 只被放行",

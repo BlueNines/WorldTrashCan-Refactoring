@@ -1,0 +1,436 @@
+Loading libraries, please wait...
+2026-07-21 02:40:42,866 main WARN Disabling terminal, you're running in an unsupported environment.
+[02:40:43 INFO]: Starting minecraft server version 1.12.2
+[02:40:43 INFO]: Loading properties
+[02:40:43 INFO]: Default game type: SURVIVAL
+[02:40:43 INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[02:40:43 INFO]: Debug logging is disabled
+[02:40:43 INFO]: Server Ping Player Sample Count: 12
+[02:40:43 INFO]: Using 4 threads for Netty based IO
+[02:40:43 INFO]: Generating keypair
+[02:40:43 INFO]: Starting Minecraft server on *:30012
+[02:40:43 INFO]: Using default channel type
+[02:40:43 INFO]: Set PluginClassLoader as parallel capable
+[02:40:43 INFO]: [PermissionDenyFixture] Loading PermissionDenyFixture v1.0.0
+[02:40:43 INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.11.6
+[02:40:43 INFO]: [WorldListTrashCan] Loading WorldListTrashCan v7.0.0
+[02:40:43 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[02:40:43 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[02:40:43 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[02:40:43 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[02:40:43 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[02:40:43 INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[02:40:43 INFO]: Preparing level "rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817"
+[02:40:43 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817] --------
+[02:40:43 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[02:40:43 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[02:40:43 INFO]: Mob Spawn Range: 4
+[02:40:43 INFO]: Cactus Growth Modifier: 100%
+[02:40:43 INFO]: Cane Growth Modifier: 100%
+[02:40:43 INFO]: Melon Growth Modifier: 100%
+[02:40:43 INFO]: Mushroom Growth Modifier: 100%
+[02:40:43 INFO]: Pumpkin Growth Modifier: 100%
+[02:40:43 INFO]: Sapling Growth Modifier: 100%
+[02:40:43 INFO]: Wheat Growth Modifier: 100%
+[02:40:43 INFO]: NetherWart Growth Modifier: 100%
+[02:40:43 INFO]: Vine Growth Modifier: 100%
+[02:40:43 INFO]: Cocoa Growth Modifier: 100%
+[02:40:43 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[02:40:43 INFO]: Max TNT Explosions: 100
+[02:40:43 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[02:40:43 INFO]: Random Lighting Updates: false
+[02:40:43 INFO]: Structure Info Saving: true
+[02:40:43 INFO]: Arrow Despawn Rate: 1200
+[02:40:43 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[02:40:43 INFO]: Zombie Aggressive Towards Villager: true
+[02:40:43 INFO]: Item Merge Radius: 2.5
+[02:40:43 INFO]: Item Despawn Rate: 6000
+[02:40:43 INFO]: View Distance: 2
+[02:40:43 INFO]: Experience Merge Radius: 3.0
+[02:40:43 INFO]: Nerfing mobs spawned from spawners: false
+[02:40:43 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[02:40:44 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817_nether] --------
+[02:40:44 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[02:40:44 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[02:40:44 INFO]: Mob Spawn Range: 4
+[02:40:44 INFO]: Cactus Growth Modifier: 100%
+[02:40:44 INFO]: Cane Growth Modifier: 100%
+[02:40:44 INFO]: Melon Growth Modifier: 100%
+[02:40:44 INFO]: Mushroom Growth Modifier: 100%
+[02:40:44 INFO]: Pumpkin Growth Modifier: 100%
+[02:40:44 INFO]: Sapling Growth Modifier: 100%
+[02:40:44 INFO]: Wheat Growth Modifier: 100%
+[02:40:44 INFO]: NetherWart Growth Modifier: 100%
+[02:40:44 INFO]: Vine Growth Modifier: 100%
+[02:40:44 INFO]: Cocoa Growth Modifier: 100%
+[02:40:44 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[02:40:44 INFO]: Max TNT Explosions: 100
+[02:40:44 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[02:40:44 INFO]: Random Lighting Updates: false
+[02:40:44 INFO]: Structure Info Saving: true
+[02:40:44 INFO]: Arrow Despawn Rate: 1200
+[02:40:44 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[02:40:44 INFO]: Zombie Aggressive Towards Villager: true
+[02:40:44 INFO]: Item Merge Radius: 2.5
+[02:40:44 INFO]: Item Despawn Rate: 6000
+[02:40:44 INFO]: View Distance: 2
+[02:40:44 INFO]: Experience Merge Radius: 3.0
+[02:40:44 INFO]: Nerfing mobs spawned from spawners: false
+[02:40:44 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[02:40:44 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817_the_end] --------
+[02:40:44 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[02:40:44 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[02:40:44 INFO]: Mob Spawn Range: 4
+[02:40:44 INFO]: Cactus Growth Modifier: 100%
+[02:40:44 INFO]: Cane Growth Modifier: 100%
+[02:40:44 INFO]: Melon Growth Modifier: 100%
+[02:40:44 INFO]: Mushroom Growth Modifier: 100%
+[02:40:44 INFO]: Pumpkin Growth Modifier: 100%
+[02:40:44 INFO]: Sapling Growth Modifier: 100%
+[02:40:44 INFO]: Wheat Growth Modifier: 100%
+[02:40:44 INFO]: NetherWart Growth Modifier: 100%
+[02:40:44 INFO]: Vine Growth Modifier: 100%
+[02:40:44 INFO]: Cocoa Growth Modifier: 100%
+[02:40:44 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[02:40:44 INFO]: Max TNT Explosions: 100
+[02:40:44 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[02:40:44 INFO]: Random Lighting Updates: false
+[02:40:44 INFO]: Structure Info Saving: true
+[02:40:44 INFO]: Arrow Despawn Rate: 1200
+[02:40:44 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[02:40:44 INFO]: Zombie Aggressive Towards Villager: true
+[02:40:44 INFO]: Item Merge Radius: 2.5
+[02:40:44 INFO]: Item Despawn Rate: 6000
+[02:40:44 INFO]: View Distance: 2
+[02:40:44 INFO]: Experience Merge Radius: 3.0
+[02:40:44 INFO]: Nerfing mobs spawned from spawners: false
+[02:40:44 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[02:40:44 INFO]: Preparing start region for level 0 (Seed: 2581296695625361424)
+[02:40:44 INFO]: Preparing start region for level 1 (Seed: 2581296695625361424)
+[02:40:44 INFO]: Preparing start region for level 2 (Seed: 2581296695625361424)
+[02:40:44 INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0
+[02:40:44 INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+[02:40:44 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[02:40:44 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[02:40:44 INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+[02:40:44 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:40:44 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[02:40:44 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[02:40:44 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[02:40:44 INFO]: [WorldListTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[02:40:44 INFO]: [WorldListTrashCan] Universal runtime: legacy
+[02:40:44 INFO]: [WorldListTrashCan] Platform: legacy-1.12
+[02:40:44 INFO]: [WorldListTrashCan] Capability scheduler-global: enabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability scheduler-region: disabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability inventory-basic: enabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability item-pdc-tag: disabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability item-legacy-tag: disabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability rgb-message: disabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability clickable-message: enabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability boss-bar: enabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability sign-legacy: enabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability sign-modern: disabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability entity-move-event: disabled
+[02:40:44 INFO]: [WorldListTrashCan] Capability folia-region-safe: disabled
+[02:40:44 INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[02:40:44 INFO]: Done (0.932s)! For help, type "help" or "?"
+[02:40:44 INFO]: Timings Reset
+[02:40:44 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[02:40:44 INFO]: 0 placeholder hook(s) registered!
+[02:40:45 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:40:45 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[02:40:45 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[02:40:45 INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[02:40:45 INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。
+[02:40:45 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:
+[02:40:45 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[02:40:50 INFO]: UUID of player RGBaper1122 is 492a4a1c-1269-347c-a86f-e86c5e9d0cca
+[02:40:50 INFO]: RGBaper1122[/127.0.0.1:64567] logged in with entity id 3 at ([rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817]981.5, 4.0, 530.5)
+[02:40:51 INFO]: Opped RGBaper1122
+[02:40:52 INFO]: Game rule sendCommandFeedback has been updated to false
+[02:40:52 INFO]: Game rule commandBlockOutput has been updated to false
+[02:40:52 INFO]: Game rule doMobSpawning has been updated to false
+[02:40:52 INFO]: Game rule keepInventory has been updated to true
+[02:40:53 INFO]: Game rule fallDamage has been updated to false
+[02:40:53 INFO]: Set the time to 1000
+[02:40:53 INFO]: Changing to clear weather
+[02:40:53 INFO]: Cannot place blocks outside of the world
+[02:40:54 INFO]: Set RGBaper1122's game mode to Survival Mode
+[02:40:54 INFO]: Teleported RGBaper1122 to 0.5, 91.0, -7.5
+[02:40:54 WARN]: RGBaper1122 moved too quickly! -981.0,87.0,-538.0
+[02:40:54 INFO]: Given Resistance (ID 11) * 255 to RGBaper1122 for 1000000 seconds
+[02:40:54 INFO]: Given Saturation (ID 23) * 1 to RGBaper1122 for 1000000 seconds
+[02:40:55 INFO]: Could not clear the inventory of RGBaper1122, no items to remove
+[02:40:56 INFO]: [WorldListTrashCan] 当前平台 | legacy-1.12 (universal)
+[02:40:56 INFO]: - scheduler-global: 启用
+[02:40:56 INFO]: - scheduler-region: 禁用
+[02:40:56 INFO]: - inventory-basic: 启用
+[02:40:56 INFO]: - item-pdc-tag: 禁用
+[02:40:56 INFO]: - item-legacy-tag: 禁用
+[02:40:56 INFO]: - rgb-message: 禁用
+[02:40:56 INFO]: - clickable-message: 启用
+[02:40:56 INFO]: - boss-bar: 启用
+[02:40:56 INFO]: - sign-legacy: 启用
+[02:40:56 INFO]: - sign-modern: 禁用
+[02:40:56 INFO]: - entity-move-event: 禁用
+[02:40:56 INFO]: - folia-region-safe: 禁用
+[02:40:56 INFO]: Could not clear the inventory of RGBaper1122, no items to remove
+[02:40:57 INFO]: RGBaper1122 has made the advancement [Stone Age]
+[02:40:57 INFO]: Given [Cobblestone] * 7 to RGBaper1122
+[02:40:57 INFO]: 已为玩家打开公共垃圾桶: RGBaper1122
+[02:41:13 INFO]: 垃圾桶库存:
+[02:41:13 INFO]: - 公共垃圾桶物品: 0 (堆叠 0)
+[02:41:13 INFO]: - 公共垃圾桶页数: 5
+[02:41:13 INFO]: - 已加载个人垃圾桶: 0
+[02:41:14 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:14 INFO]: 路由测试成功。
+[02:41:14 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:14 INFO]: 路由测试成功。
+[02:41:14 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:14 INFO]: 路由测试成功。
+[02:41:14 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:14 INFO]: 路由测试成功。
+[02:41:14 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:14 INFO]: 路由测试成功。
+[02:41:14 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:14 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:15 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:15 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true
+[02:41:16 INFO]: 路由测试成功。
+[02:41:16 INFO]: 已为玩家打开公共垃圾桶: RGBaper1122
+[02:41:25 INFO]: Cleared the inventory of RGBaper1122, removing 7 items
+[02:41:25 INFO]: Given [Stone] * 5 to RGBaper1122
+[02:41:26 INFO]: 已为玩家打开个人垃圾桶: RGBaper1122
+[02:41:33 INFO]: WorldListTrashCan debug summary:
+[02:41:33 INFO]: - 平台: legacy-1.12 (universal)
+[02:41:33 INFO]: - 世界: rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817
+[02:41:33 INFO]: - 世界垃圾桶数量: 0
+[02:41:33 INFO]: - 世界垃圾桶物品: 0 (堆叠 0)
+[02:41:33 INFO]: - 跳过未加载区块: 0
+[02:41:33 INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)
+[02:41:33 INFO]: - 个人垃圾桶物品: 5 (堆叠 1)
+[02:41:38 INFO]: WorldListTrashCan debug summary:
+[02:41:38 INFO]: - 平台: legacy-1.12 (universal)
+[02:41:38 INFO]: - 世界: rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817
+[02:41:38 INFO]: - 世界垃圾桶数量: 0
+[02:41:38 INFO]: - 世界垃圾桶物品: 0 (堆叠 0)
+[02:41:38 INFO]: - 跳过未加载区块: 0
+[02:41:38 INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)
+[02:41:38 INFO]: - 个人垃圾桶物品: 0 (堆叠 0)
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:41 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:41 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:42 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:42 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=PERSONAL_TRASH, material=DIRT, amount=1, routed=true
+[02:41:43 INFO]: 路由测试成功。
+[02:41:43 INFO]: WorldListTrashCan debug summary:
+[02:41:43 INFO]: - 平台: legacy-1.12 (universal)
+[02:41:43 INFO]: - 世界: rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817
+[02:41:43 INFO]: - 世界垃圾桶数量: 0
+[02:41:43 INFO]: - 世界垃圾桶物品: 0 (堆叠 0)
+[02:41:43 INFO]: - 跳过未加载区块: 0
+[02:41:43 INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)
+[02:41:43 INFO]: - 个人垃圾桶物品: 1 (堆叠 1)
+[02:41:44 INFO]: 已为玩家打开个人垃圾桶: RGBaper1122
+[02:41:49 INFO]: Cleared the inventory of RGBaper1122, removing 5 items
+[02:41:50 INFO]: Given [Stone] * 1 to RGBaper1122
+[02:41:50 INFO]: 已为玩家打开公共黑名单 GUI。
+[02:41:58 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[02:41:58 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[02:41:58 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[02:41:58 INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[02:42:01 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=STONE, amount=1, routed=false
+[02:42:01 INFO]: 路由测试成功。
+[02:42:27 INFO]: RGBaper1122 lost connection: Internal Exception: java.io.IOException: 杩滅▼涓绘満寮鸿揩鍏抽棴浜嗕竴涓幇鏈夌殑杩炴帴銆?
+[02:42:27 INFO]: RGBaper1122 left the game
+[02:42:27 INFO]: Stopping the server
+[02:42:27 INFO]: Stopping server
+[02:42:27 INFO]: [WorldListTrashCan] Disabling WorldListTrashCan v7.0.0
+[02:42:27 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[02:42:27 INFO]: [PermissionDenyFixture] Disabling PermissionDenyFixture v1.0.0
+[02:42:27 INFO]: Saving players
+[02:42:27 INFO]: Saving worlds
+[02:42:27 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817'/overworld
+[02:42:27 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817_nether'/the_nether
+[02:42:27 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_trash_gui_click_visual_20260721_023817_the_end'/the_end

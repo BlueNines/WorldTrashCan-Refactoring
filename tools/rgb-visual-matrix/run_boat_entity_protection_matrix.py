@@ -19,7 +19,7 @@ BUKKIT_API_JAR = Path.home() / ".m2" / "repository" / "org" / "spigotmc" / "spig
 
 
 FIXTURE_SOURCE = r'''
-package ai.blwtc.fixture;
+package ai.wtc.fixture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +37,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-/** BlWorldTrashCan 船内实体保护验收夹具。 */
+/** WorldListTrashCan 船内实体保护验收夹具。 */
 public final class BoatFixturePlugin extends JavaPlugin implements CommandExecutor {
     private UUID boatId;
     private UUID protectedCowId;
@@ -206,10 +206,10 @@ public final class BoatFixturePlugin extends JavaPlugin implements CommandExecut
 
 PLUGIN_YML = """name: BlWtcBoatFixture
 version: 1.0.0
-main: ai.blwtc.fixture.BoatFixturePlugin
+main: ai.wtc.fixture.BoatFixturePlugin
 commands:
   boatfixture:
-    description: BlWorldTrashCan boat entity protection fixture
+    description: WorldListTrashCan boat entity protection fixture
 """
 
 
@@ -245,7 +245,7 @@ def ensure_inputs() -> None:
 
 def build_fixture(run_root: Path) -> Path:
     """编译临时 Bukkit 测试插件。"""
-    source_dir = run_root / "fixture-src" / "ai" / "blwtc" / "fixture"
+    source_dir = run_root / "fixture-src" / "ai" / "wtc" / "fixture"
     classes_dir = run_root / "fixture-classes"
     resources_dir = run_root / "fixture-resources"
     fixture_jar = run_root / "BlWtcBoatFixture.jar"
@@ -311,7 +311,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
     shutil.copy2(case["serverJar"], server_dir / Path(case["serverJar"]).name)
     if case.get("copyPaperCache"):
         legacy.copy_paper_runtime_cache(server_dir)
-    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "BlWorldTrashCan-universal.jar")
+    shutil.copy2(UNIVERSAL_JAR, server_dir / "plugins" / "WorldListTrashCan-universal.jar")
     shutil.copy2(fixture_jar, server_dir / "plugins" / fixture_jar.name)
     (server_dir / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     (server_dir / "server.properties").write_text(
@@ -323,7 +323,7 @@ def prepare_server(case: dict, run_root: Path, fixture_jar: Path) -> Path:
 
 def patch_cleanup_config(server_dir: Path) -> Path:
     """修改 cleanup.yml，使 F-054 对照清晰可测。"""
-    cleanup = server_dir / "plugins" / "BlWorldTrashCan" / "cleanup.yml"
+    cleanup = server_dir / "plugins" / "WorldListTrashCan" / "cleanup.yml"
     if not cleanup.is_file():
         raise RuntimeError("cleanup.yml 不存在，无法配置 F-054: " + str(cleanup))
     text = cleanup.read_text(encoding="utf-8")
@@ -364,12 +364,12 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
             patched_cleanup = patch_cleanup_config(server_dir)
             commands = [
                 "plugins",
-                "blwtc platform",
-                "blwtc reload",
+                "wtc platform",
+                "wtc reload",
                 "boatfixture prepare",
-                "blwtc clear true",
+                "wtc clear true",
                 "boatfixture assert",
-                "blwtc stats",
+                "wtc stats",
                 "boatfixture cleanup",
             ]
             responses = {}
@@ -392,11 +392,11 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path, fixture_jar: Path) 
 def assert_case(case: dict, responses: dict, patched_cleanup: Path) -> dict:
     """断言 F-054 用例结果。"""
     plugins = responses.get("plugins", "")
-    platform = responses.get("blwtc platform", "")
+    platform = responses.get("wtc platform", "")
     prepared = responses.get("boatfixture prepare", "")
     result = responses.get("boatfixture assert", "")
-    stats = responses.get("blwtc stats", "")
-    if "BlWorldTrashCan" not in plugins or "BlWtcBoatFixture" not in plugins:
+    stats = responses.get("wtc stats", "")
+    if "WorldListTrashCan" not in plugins or "BlWtcBoatFixture" not in plugins:
         raise AssertionError(case["id"] + " 插件列表未包含主插件和夹具: " + plugins)
     if case["expectedPlatform"] not in platform or "universal" not in platform:
         raise AssertionError(case["id"] + " 平台输出不符合预期: " + platform)
@@ -430,7 +430,7 @@ def assert_case(case: dict, responses: dict, patched_cleanup: Path) -> dict:
 def copy_case_evidence(case: dict, server_dir: Path, case_dir: Path) -> None:
     """复制单个 F-054 用例证据。"""
     copy_if_exists(server_dir / "logs" / "latest.log", case_dir / "logs" / "latest.log")
-    plugin_dir = server_dir / "plugins" / "BlWorldTrashCan"
+    plugin_dir = server_dir / "plugins" / "WorldListTrashCan"
     copy_if_exists(plugin_dir / "cleanup.yml", case_dir / "config" / "cleanup-after-patch.yml")
     copy_if_exists(plugin_dir / "config.yml", case_dir / "config" / "config.yml")
 
@@ -447,9 +447,9 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     lines = [
         "# F-054 船内实体保护专项验收",
         "",
-        "- 被测插件: `dist/BlWorldTrashCan-universal.jar`",
+        "- 被测插件: `dist/WorldListTrashCan-universal.jar`",
         "- SHA256: `" + summary["jarSha256"] + "`",
-        "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具生成船内牛/普通牛 + 正式 `/blwtc clear true`",
+        "- 验收方式: 真实服务端启动 + 临时 Bukkit 夹具生成船内牛/普通牛 + 正式 `/wtc clear true`",
         "- 通过标准: 船内牛仍存在且仍在船内，普通牛被清理",
         "- 结论: " + ("PASS" if summary["allPassed"] else "FAIL"),
         "",

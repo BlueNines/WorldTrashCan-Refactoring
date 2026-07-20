@@ -52,7 +52,7 @@ def ensure_cleanup_guard_block(text: str) -> str:
 
 def write_refresh_test_config(case: dict) -> None:
     """写入公共垃圾桶三轮刷新测试配置。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan"
     cleanup = data_dir / "cleanup.yml"
     trash = data_dir / "trash.yml"
     if not cleanup.is_file() or not trash.is_file():
@@ -156,12 +156,12 @@ def run_refresh_round(case: dict, username: str, process, game_dir: Path, run_di
     expected_stock = 1 if round_index == 3 else round_index
     expected_refresh = "true" if round_index == 3 else "false"
     log(case["id"] + " 第 " + str(round_index) + " 轮刷新测试")
-    guard.run_console(process, command_log, "blwtc debugdrop " + username + " STONE 1", 0.8)
+    guard.run_console(process, command_log, "wtc debugdrop " + username + " STONE 1", 0.8)
     if guard.is_folia(case):
         time.sleep(1.5)
     server_offset = external.log_text_offset(server_log)
     clear_shot = guard.send_command_and_screenshot(
-        case, game_dir, run_dir, "/blwtc clear", "round-" + str(round_index) + "-clear", 4.5 if guard.is_folia(case) else 2.0
+        case, game_dir, run_dir, "/wtc clear", "round-" + str(round_index) + "-clear", 4.5 if guard.is_folia(case) else 2.0
     )
     if guard.is_folia(case):
         time.sleep(4.0)
@@ -173,7 +173,7 @@ def run_refresh_round(case: dict, username: str, process, game_dir: Path, run_di
     )
     stock_offset = external.log_text_offset(client_stdout_path(case, run_dir))
     stock_shot = guard.send_command_and_screenshot(
-        case, game_dir, run_dir, "/blwtc debugstock", "round-" + str(round_index) + "-debugstock", 1.5
+        case, game_dir, run_dir, "/wtc debugstock", "round-" + str(round_index) + "-debugstock", 1.5
     )
     client_text, actual_stock = wait_client_stock(client_stdout_path(case, run_dir), stock_offset, expected_stock, 12.0)
     round_result = {
@@ -222,8 +222,8 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         process = external.launch_server(case, run_dir)
         backup_dir = run_dir / "logs" / "config-backup"
-        backups.append(guard.backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "cleanup.yml", backup_dir))
-        backups.append(guard.backup_file(Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "trash.yml", backup_dir))
+        backups.append(guard.backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "cleanup.yml", backup_dir))
+        backups.append(guard.backup_file(Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml", backup_dir))
         prepared = prepared_clients[case["version"]]
         client, username, game_dir = base.launch_client(case, prepared, run_dir)
         base.ACTIVE_CLIENT_PID = client.pid
@@ -233,7 +233,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
         write_refresh_test_config(case)
         guard.reload_plugin(process, command_log)
         platform_offset = external.log_text_offset(server_log)
-        guard.run_console(process, command_log, "blwtc platform", 0.8)
+        guard.run_console(process, command_log, "wtc platform", 0.8)
         guard.wait_platform_output(server_log, platform_offset)
         for round_index in (1, 2, 3):
             round_result = run_refresh_round(

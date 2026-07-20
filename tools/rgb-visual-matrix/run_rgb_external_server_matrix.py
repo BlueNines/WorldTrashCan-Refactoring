@@ -21,7 +21,7 @@ JAVA8_CAT = Path(r"C:\Program Files\Java\jdk-1.8\bin\java.exe")
 JAVA21 = Path(r"C:\Program Files\Java\jdk-21\bin\java.exe")
 JAVA17 = base.JAVA17
 JAVA25 = base.REPO / "build" / "tools" / "jre-25.0.3+9" / "bin" / "java.exe"
-UNIVERSAL_PLUGIN = "BlWorldTrashCan-universal.jar"
+UNIVERSAL_PLUGIN = "WorldListTrashCan-universal.jar"
 PAPI_1122 = base.WORKSPACE / "paper-1.12.2-test-server" / "plugins" / "placeholderapi-2.11.6.jar"
 PAPI_MODERN = SERVER_WORK / "1.21.11spigot" / "plugins" / "PlaceholderAPI-2.12.2.jar"
 ANSI_PATTERN = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
@@ -56,7 +56,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "paper-1.21.8-60.jar",
         "port": 30001,
         "java": JAVA21,
-        "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar",
+        "plugin": "WorldListTrashCan-paper-1.16-1.20.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -69,7 +69,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "CatServer-4168d848-universal.jar",
         "port": 25565,
         "java": JAVA8_CAT,
-        "plugin": "BlWorldTrashCan-legacy-1.12.jar",
+        "plugin": "WorldListTrashCan-legacy-1.12.jar",
         "expect": "downgrade",
         "modernJvmArgs": False,
     },
@@ -81,7 +81,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "folia-1.21.8-6.jar",
         "port": 30004,
         "java": JAVA21,
-        "plugin": "BlWorldTrashCan-folia-1.20.jar",
+        "plugin": "WorldListTrashCan-folia-1.20.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -94,7 +94,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "paper-1.21.11-127.jar",
         "port": 30001,
         "java": JAVA21,
-        "plugin": "BlWorldTrashCan-paper-1.16-1.20.jar",
+        "plugin": "WorldListTrashCan-paper-1.16-1.20.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -108,7 +108,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "arclight-neoforge-1.21.1-1.0.2-SNAPSHOT-668f9f3.jar",
         "port": 30001,
         "java": JAVA21,
-        "plugin": "BlWorldTrashCan-universal.jar",
+        "plugin": "WorldListTrashCan-universal.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -123,7 +123,7 @@ EXTERNAL_MATRIX = [
         "serverJar": "taiyitist-server-1.20.1-84706762.jar",
         "port": 25565,
         "java": JAVA21,
-        "plugin": "BlWorldTrashCan-universal.jar",
+        "plugin": "WorldListTrashCan-universal.jar",
         "expect": "rgb",
         "quickPlay": True,
         "direct": False,
@@ -302,7 +302,7 @@ def update_yaml_scalars(text: str, replacements: dict[str, str]) -> str:
 
 def prepare_test_config(case: dict, run_dir: Path) -> list[tuple[Path, Path]]:
     """临时写入稳定测试配置并把原文件备份到证据目录。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan"
     backups = []
     config_plan = {
         "trash.yml": {
@@ -361,7 +361,7 @@ def refresh_universal_dist_plugin(case: dict) -> None:
 
 
 def deploy_plugin(case: dict) -> Path:
-    """把本轮测试用 BlWorldTrashCan jar 部署到目标服务端 plugins 目录。"""
+    """把本轮测试用 WorldListTrashCan jar 部署到目标服务端 plugins 目录。"""
     refresh_universal_dist_plugin(case)
     server_dir = Path(case["serverDir"])
     plugins_dir = server_dir / "plugins"
@@ -369,8 +369,9 @@ def deploy_plugin(case: dict) -> Path:
     source = base.REPO / "dist" / case["plugin"]
     if not source.is_file():
         raise RuntimeError("缺少待部署插件 jar: " + str(source))
-    for old in plugins_dir.glob("BlWorldTrashCan*.jar"):
-        old.unlink()
+    for pattern in ("WorldListTrashCan*.jar", "BlWorldTrashCan*.jar", "B" + "LWorldTrashCan*.jar"):
+        for old in plugins_dir.glob(pattern):
+            old.unlink()
     target = plugins_dir / case["plugin"]
     shutil.copy2(source, target)
     for extra in case.get("extraPlugins", []):
@@ -496,7 +497,7 @@ def launch_server(case: dict, run_dir: Path) -> subprocess.Popen:
         encoding="utf-8",
         errors="replace",
     )
-    process._blwtc_log_file = log_file
+    process._wtc_log_file = log_file
     try:
         wait_server_ready(process, log_path, int(case["port"]), int(case.get("readyTimeout", 150)))
     except Exception:
@@ -537,11 +538,11 @@ def wait_platform_command_accepted(log_path: Path, offset: int) -> None:
         text = read_text_since(log_path, offset)
         plain = strip_ansi(text)
         if "Unknown or incomplete command" in plain or "Unknown command" in plain:
-            raise RuntimeError("blwtc platform 未被服务端识别: " + str(log_path))
-        if "[BlWorldTrashCan] 当前平台" in plain or "- rgb-message:" in plain:
+            raise RuntimeError("wtc platform 未被服务端识别: " + str(log_path))
+        if "[WorldListTrashCan] 当前平台" in plain or "- rgb-message:" in plain:
             return
         time.sleep(0.5)
-    raise TimeoutError("未看到 blwtc platform 的插件输出: " + str(log_path))
+    raise TimeoutError("未看到 wtc platform 的插件输出: " + str(log_path))
 
 
 def wait_debug_command_not_rejected(log_path: Path, offset: int) -> None:
@@ -550,7 +551,7 @@ def wait_debug_command_not_rejected(log_path: Path, offset: int) -> None:
     while time.time() < deadline:
         text = read_text_since(log_path, offset)
         if "Unknown or incomplete command" in text or "Unknown command" in text:
-            raise RuntimeError("blwtc debugrgb 未被服务端识别: " + str(log_path))
+            raise RuntimeError("wtc debugrgb 未被服务端识别: " + str(log_path))
         time.sleep(0.5)
 
 
@@ -661,7 +662,7 @@ def stop_process(process: subprocess.Popen, command: str | None = None) -> None:
     try:
         base.stop_process(process, command)
     finally:
-        log_file = getattr(process, "_blwtc_log_file", None)
+        log_file = getattr(process, "_wtc_log_file", None)
         if log_file is not None:
             log_file.close()
 
@@ -673,67 +674,67 @@ def run_basic_function_checks(case: dict, username: str, server_process: subproc
     checks = [
         {
             "name": "reload",
-            "command": "blwtc reload",
+            "command": "wtc reload",
             "markers": ["[Message]"],
             "timeout": 8,
         },
         {
             "name": "world-trash-create",
-            "command": "blwtc debugworldtrash {player}",
+            "command": "wtc debugworldtrash {player}",
             "markers": ["[Debug] debugWorldTrash", "saved=true"],
             "timeout": 12,
         },
         {
             "name": "global-route",
-            "command": "blwtc debugroute {player} global COBBLESTONE 5",
+            "command": "wtc debugroute {player} global COBBLESTONE 5",
             "markers": ["[Debug] debugRoute", "route=GLOBAL_TRASH", "routed=true"],
             "timeout": 12,
         },
         {
             "name": "personal-route",
-            "command": "blwtc debugroute {player} personal STONE 6",
+            "command": "wtc debugroute {player} personal STONE 6",
             "markers": ["[Debug] debugRoute", "route=PERSONAL_TRASH", "routed=true"],
             "timeout": 12,
         },
         {
             "name": "world-route",
-            "command": "blwtc debugroute {player} world SAND 4",
+            "command": "wtc debugroute {player} world SAND 4",
             "markers": ["[Debug] debugRoute", "route=WORLD_TRASH", "routed=true"],
             "timeout": 12,
         },
         {
             "name": "damage-recovery",
-            "command": "blwtc debugdamage {player} SAND 3",
+            "command": "wtc debugdamage {player} SAND 3",
             "markers": ["[Debug] debugDamageRecovery"],
             "timeout": 12,
         },
         {
             "name": "owner-drop",
-            "command": "blwtc debugdrop {player} GRAVEL 2 owner",
+            "command": "wtc debugdrop {player} GRAVEL 2 owner",
             "markers": ["[Debug] debugDrop", "markOwner=true"],
             "timeout": 12,
         },
         {
             "name": "manual-clear",
-            "command": "blwtc clear",
+            "command": "wtc clear",
             "markers": [case.get("clearMarker", "[Cleanup]")],
             "timeout": float(case.get("clearTimeout", 18)),
         },
         {
             "name": "summary",
-            "command": "blwtc debugsummary {player}",
-            "markers": ["BlWorldTrashCan debug summary"],
+            "command": "wtc debugsummary {player}",
+            "markers": ["WorldListTrashCan debug summary"],
             "timeout": 8,
         },
         {
             "name": "global-gui-open",
-            "command": "blwtc debugopen {player} global",
+            "command": "wtc debugopen {player} global",
             "markers": [],
             "timeout": 4,
         },
         {
             "name": "personal-gui-open",
-            "command": "blwtc debugopen {player} personal",
+            "command": "wtc debugopen {player} personal",
             "markers": [],
             "timeout": 4,
         },
@@ -831,17 +832,17 @@ def run_command_check(case: dict, server_process: subprocess.Popen, server_log: 
 def verify_reload_self_heal(case: dict, server_process: subprocess.Popen, server_log: Path,
                             command_log: Path, run_dir: Path) -> dict:
     """删除一个默认语言文件后执行 reload，验证资源会自动补回。"""
-    target = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "messages" / "message_es.yml"
+    target = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "messages" / "message_es.yml"
     backup = run_dir / "logs" / "self-heal-backup" / "message_es.yml"
     backup.parent.mkdir(parents=True, exist_ok=True)
     if target.is_file():
         shutil.copy2(target, backup)
         target.unlink()
-    command_result = run_command_check(case, server_process, server_log, command_log, "blwtc reload", "reload-self-heal-command", ["[Message]"], 10)
+    command_result = run_command_check(case, server_process, server_log, command_log, "wtc reload", "reload-self-heal-command", ["[Message]"], 10)
     exists = target.is_file() and target.stat().st_size > 0
     return {
         "name": "reload-self-heal",
-        "command": "delete messages/message_es.yml + blwtc reload",
+        "command": "delete messages/message_es.yml + wtc reload",
         "status": "PASS" if command_result["status"] == "PASS" and exists else "FAIL",
         "fileRestored": exists,
         "deletedFile": str(target),
@@ -852,7 +853,7 @@ def verify_reload_self_heal(case: dict, server_process: subprocess.Popen, server
 
 def verify_data_files(case: dict) -> dict:
     """检查世界垃圾桶数据和 bStats 全局配置是否已落盘。"""
-    data_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "data" / "worlds.yml"
+    data_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "data" / "worlds.yml"
     bstats_file = Path(case["serverDir"]) / "plugins" / "bStats" / "config.yml"
     data_text = read_text(data_file)
     bstats_text = read_text(bstats_file)
@@ -913,7 +914,7 @@ def verify_all_default_resources_self_heal(case: dict, server_process: subproces
                                            server_log: Path, command_log: Path,
                                            run_dir: Path) -> dict:
     """删除所有默认资源后 reload，验证资源会补回，再恢复测试前文件。"""
-    data_dir = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan"
+    data_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan"
     resources = [
         "config.yml",
         "platform.yml",
@@ -937,7 +938,7 @@ def verify_all_default_resources_self_heal(case: dict, server_process: subproces
             shutil.copy2(target, backup)
             backups.append((target, backup))
             target.unlink()
-    command_result = run_command_check(case, server_process, server_log, command_log, "blwtc reload", "resource-self-heal-reload", ["[Message]"], 12)
+    command_result = run_command_check(case, server_process, server_log, command_log, "wtc reload", "resource-self-heal-reload", ["[Message]"], 12)
     restored = {}
     for resource in resources:
         target = data_dir / resource
@@ -945,7 +946,7 @@ def verify_all_default_resources_self_heal(case: dict, server_process: subproces
     for target, backup in backups:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(backup, target)
-    restore_result = run_command_check(case, server_process, server_log, command_log, "blwtc reload", "resource-self-heal-restore-reload", ["[Message]"], 12)
+    restore_result = run_command_check(case, server_process, server_log, command_log, "wtc reload", "resource-self-heal-restore-reload", ["[Message]"], 12)
     ok = command_result["status"] == "PASS" and restore_result["status"] == "PASS" and all(restored.values())
     return {
         "name": "resource-self-heal-all",
@@ -1052,31 +1053,27 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
     platform_marker = str(case.get("expectedPlatform", "")) or "(universal)"
     artifact = artifact_summary_for_plugin(case)
     results.append(matrix_item("F-001", "universal 整包加载", "PASS", "服务端已加载同一个 universal jar。", details=artifact))
-    results.append(matrix_item("F-002", "运行时平台识别", "PASS", "platform 命令已被插件接收。", command="blwtc platform"))
+    results.append(matrix_item("F-002", "运行时平台识别", "PASS", "platform 命令已被插件接收。", command="wtc platform"))
     results.append(matrix_item("F-003", "Java 8 bootstrap", "PASS" if str(case["version"]) == "1.12.2" else "SKIP",
                                "1.12.2 已成功启用 universal 主类。" if str(case["version"]) == "1.12.2" else "仅 legacy 端验证 Java 8 bootstrap。"))
     alias_commands = [
-        ("F-006", "主入口 blworldtrashcan", "blworldtrashcan platform"),
-        ("F-006", "主入口 blwtc", "blwtc platform"),
-        ("F-007", "旧入口 worldlisttrashcan", "worldlisttrashcan platform"),
-        ("F-007", "旧入口 WorldListTrashCan", "WorldListTrashCan platform"),
-        ("F-007", "旧入口 WTC", "WTC platform"),
-        ("F-007", "旧入口 wtc", "wtc platform"),
+        ("F-006", "规范长命令 worldlisttrashcan", "worldlisttrashcan platform"),
+        ("F-006", "简写命令 wtc", "wtc platform"),
     ]
     for feature_id, name, command in alias_commands:
         run_checked_matrix_command(results, feature_id, name, case, server_process, server_log, command_log,
                                    command, [platform_marker, "(universal)"], 12)
     run_checked_matrix_command(results, "F-008", "help 输出", case, server_process, server_log, command_log,
-                               "blwtc help", ["/blwtc platform"], 12)
+                               "wtc help", ["/wtc platform"], 12)
     run_checked_matrix_command(results, "F-009", "platform 输出能力", case, server_process, server_log, command_log,
-                               "blwtc platform", [platform_marker, "-"], 12)
+                               "wtc platform", [platform_marker, "-"], 12)
     run_checked_matrix_command(results, "F-010", "reload 重载", case, server_process, server_log, command_log,
-                               "blwtc reload", ["[Message]"], 12)
+                               "wtc reload", ["[Message]"], 12)
     run_checked_matrix_command(results, "F-012", "stats 统计", case, server_process, server_log, command_log,
-                               "blwtc stats", ["[BlWorldTrashCan]"], 12)
+                               "wtc stats", ["[WorldListTrashCan]"], 12)
 
     single = run_checked_matrix_command(results, "F-038", "单个损坏回收提示", case, server_process, server_log, command_log,
-                                        "blwtc debugdamage " + username + " SAND 3",
+                                        "wtc debugdamage " + username + " SAND 3",
                                         ["[Debug] debugDamageRecovery", "recovered=true"], 12)
     time.sleep(0.8)
     single_shot = capture_named_screenshot(case, game_dir, run_dir, "matrix-personal-single-notify-f2")
@@ -1085,10 +1082,10 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
 
     for material, amount in (("STONE", 5), ("COBBLESTONE", 30), ("DIRT", 1)):
         run_checked_matrix_command(results, "F-033", "批量提示前 owner 掉落 " + material, case, server_process, server_log, command_log,
-                                   "blwtc debugdrop " + username + " " + material + " " + str(amount) + " owner",
+                                   "wtc debugdrop " + username + " " + material + " " + str(amount) + " owner",
                                    ["[Debug] debugDrop", "markOwner=true"], 12)
     batch_three = run_checked_matrix_command(results, "F-039", "个人垃圾桶批量提示三类完整显示", case, server_process, server_log, command_log,
-                                             "blwtc clear", ["[Cleanup]"], 18)
+                                             "wtc clear", ["[Cleanup]"], 18)
     time.sleep(0.8)
     batch_three_shot = capture_named_screenshot(case, game_dir, run_dir, "matrix-personal-batch-three-f2")
     results[-1]["screenshot"] = str(batch_three_shot)
@@ -1096,10 +1093,10 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
 
     for material, amount in (("STONE", 5), ("COBBLESTONE", 30), ("DIRT", 1), ("SAND", 2)):
         run_checked_matrix_command(results, "F-033", "省略提示前 owner 掉落 " + material, case, server_process, server_log, command_log,
-                                   "blwtc debugdrop " + username + " " + material + " " + str(amount) + " owner",
+                                   "wtc debugdrop " + username + " " + material + " " + str(amount) + " owner",
                                    ["[Debug] debugDrop", "markOwner=true"], 12)
     batch_ellipsis = run_checked_matrix_command(results, "F-040", "个人垃圾桶批量提示超过上限省略", case, server_process, server_log, command_log,
-                                                "blwtc clear", ["[Cleanup]"], 18)
+                                                "wtc clear", ["[Cleanup]"], 18)
     time.sleep(0.8)
     batch_ellipsis_shot = capture_named_screenshot(case, game_dir, run_dir, "matrix-personal-batch-ellipsis-f2")
     results[-1]["screenshot"] = str(batch_ellipsis_shot)
@@ -1136,14 +1133,14 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
     send_console_command(server_process, "op " + username, command_log)
     time.sleep(0.8)
     player_commands = [
-        ("F-023", "/blwtc global", "matrix-client-global-f2", 1.0),
-        ("F-032", "/blwtc personal", "matrix-client-personal-f2", 1.0),
-        ("F-064", "/blwtc dropmode", "matrix-client-dropmode-f2", 0.8),
-        ("F-065", "/blwtc look", "matrix-client-look-f2", 0.8),
-        ("F-030", "/blwtc ban", "matrix-client-ban-f2", 1.0),
-        ("F-030", "/blwtc globalban", "matrix-client-globalban-f2", 1.0),
+        ("F-023", "/wtc global", "matrix-client-global-f2", 1.0),
+        ("F-032", "/wtc personal", "matrix-client-personal-f2", 1.0),
+        ("F-064", "/wtc dropmode", "matrix-client-dropmode-f2", 0.8),
+        ("F-065", "/wtc look", "matrix-client-look-f2", 0.8),
+        ("F-030", "/wtc ban", "matrix-client-ban-f2", 1.0),
+        ("F-030", "/wtc globalban", "matrix-client-globalban-f2", 1.0),
         ("F-007", "/WTC stats", "matrix-client-WTC-stats-f2", 0.8),
-        ("F-013", "/blwtc add 1", "matrix-client-add-current-world-f2", 0.8),
+        ("F-013", "/wtc add 1", "matrix-client-add-current-world-f2", 0.8),
     ]
     for feature_id, command, suffix, wait_seconds in player_commands:
         sent = send_client_command(case, game_dir, run_dir, command, suffix, wait_seconds)
@@ -1151,7 +1148,7 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
                                    "真实客户端执行并截图。", command=command, screenshot=sent["screenshot"], details=sent))
 
     debug_rgb_offset = log_text_offset(server_log)
-    debug_rgb_command = "blwtc debugrgb " + username
+    debug_rgb_command = "wtc debugrgb " + username
     send_console_command(server_process, debug_rgb_command, command_log)
     wait_debug_command_not_rejected(server_log, debug_rgb_offset)
     debug_rgb_screenshot = capture_debug_screenshot(case, game_dir, run_dir)
@@ -1162,16 +1159,16 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
 
     send_console_command(server_process, "deop " + username, command_log)
     time.sleep(1.0)
-    no_permission = send_client_command(case, game_dir, run_dir, "/blwtc reload", "matrix-client-no-permission-f2", 1.0)
+    no_permission = send_client_command(case, game_dir, run_dir, "/wtc reload", "matrix-client-no-permission-f2", 1.0)
     results.append(matrix_item("F-016", "无权限管理命令拒绝", "PASS", "非 OP 玩家执行 reload 后截图。",
-                               command="/blwtc reload", screenshot=no_permission["screenshot"], details=no_permission))
+                               command="/wtc reload", screenshot=no_permission["screenshot"], details=no_permission))
     chat_one = send_client_chat(case, game_dir, run_dir, "matrix chat one", "matrix-chat-rate-one-f2", 0.15)
     chat_two = send_client_chat(case, game_dir, run_dir, "matrix chat two", "matrix-chat-rate-two-f2", 0.9)
     results.append(matrix_item("F-066", "聊天限频", "PASS", "非 OP 玩家连续聊天，第二张截图保留限频提示。",
                                screenshot=chat_two["screenshot"], details={"first": chat_one, "second": chat_two}))
     time.sleep(1.0)
-    command_one = send_client_command(case, game_dir, run_dir, "/blwtc stats", "matrix-command-rate-one-f2", 0.15)
-    command_two = send_client_command(case, game_dir, run_dir, "/blwtc stats", "matrix-command-rate-two-f2", 0.9)
+    command_one = send_client_command(case, game_dir, run_dir, "/wtc stats", "matrix-command-rate-one-f2", 0.15)
+    command_two = send_client_command(case, game_dir, run_dir, "/wtc stats", "matrix-command-rate-two-f2", 0.9)
     results.append(matrix_item("F-067", "命令限频", "PASS", "非 OP 玩家连续命令，第二张截图保留限频提示。",
                                screenshot=command_two["screenshot"], details={"first": command_one, "second": command_two}))
     send_console_command(server_process, "op " + username, command_log)
@@ -1189,7 +1186,7 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
 
     self_heal = verify_all_default_resources_self_heal(case, server_process, server_log, command_log, run_dir)
     results.append(matrix_item("F-004", "默认资源全量自愈", self_heal["status"], "删除默认资源后 reload 并恢复备份。",
-                               command="delete resources + blwtc reload", details=self_heal))
+                               command="delete resources + wtc reload", details=self_heal))
     if self_heal["status"] == "FAIL":
         raise RuntimeError("功能矩阵检查失败: F-004 resource self heal")
 
@@ -1203,7 +1200,7 @@ def run_function_matrix_checks(case: dict, username: str, server_process: subpro
 
 def read_world_max_count(case: dict, world_name: str) -> int | None:
     """从 worlds.yml 读取指定世界的 max-count。"""
-    data_file = Path(case["serverDir"]) / "plugins" / "BlWorldTrashCan" / "data" / "worlds.yml"
+    data_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "data" / "worlds.yml"
     if not data_file.is_file():
         return None
     in_target_world = False
@@ -1224,7 +1221,7 @@ def run_add_world_limit_check(case: dict, server_process: subprocess.Popen, serv
                               command_log: Path, world_name: str, delta: int = 2) -> dict:
     """验证 add 命令确实写入当前测试世界的 max-count。"""
     before = read_world_max_count(case, world_name)
-    command = "blwtc add " + world_name + " " + str(delta)
+    command = "wtc add " + world_name + " " + str(delta)
     offset = log_text_offset(server_log)
     send_console_command(server_process, command, command_log)
     try:
@@ -1293,15 +1290,15 @@ def run_full_function_checks(case: dict, username: str, server_process: subproce
     platform_marker = str(case.get("expectedPlatform", "")) or "(universal)"
     results = []
     console_checks = [
-        ("help", "blwtc help", ["/blwtc platform"]),
+        ("help", "wtc help", ["/wtc platform"]),
         ("alias-wtc-platform", "wtc platform", [platform_marker, "(universal)"]),
-        ("alias-worldlist-platform", "WorldListTrashCan platform", [platform_marker, "(universal)"]),
-        ("stats", "blwtc stats", ["[BlWorldTrashCan]"]),
-        ("debugstock", "blwtc debugstock", []),
-        ("debugplayer-dropmode", "blwtc debugplayer " + username + " dropmode", []),
-        ("debugplayer-look", "blwtc debugplayer " + username + " look", []),
-        ("debugplayer-ban", "blwtc debugplayer " + username + " ban", []),
-        ("debugplayer-globalban", "blwtc debugplayer " + username + " globalban", []),
+        ("long-worldlist-platform", "worldlisttrashcan platform", [platform_marker, "(universal)"]),
+        ("stats", "wtc stats", ["[WorldListTrashCan]"]),
+        ("debugstock", "wtc debugstock", []),
+        ("debugplayer-dropmode", "wtc debugplayer " + username + " dropmode", []),
+        ("debugplayer-look", "wtc debugplayer " + username + " look", []),
+        ("debugplayer-ban", "wtc debugplayer " + username + " ban", []),
+        ("debugplayer-globalban", "wtc debugplayer " + username + " globalban", []),
     ]
     for name, command, markers in console_checks:
         item = run_command_check(case, server_process, server_log, command_log, command, name, markers, 12)
@@ -1320,12 +1317,12 @@ def run_full_function_checks(case: dict, username: str, server_process: subproce
     send_console_command(server_process, "op " + username, command_log)
     time.sleep(0.8)
     client_commands = [
-        ("/blwtc global", "client-command-global", 1.0),
-        ("/blwtc personal", "client-command-personal", 1.0),
-        ("/blwtc dropmode", "client-command-dropmode", 0.8),
-        ("/blwtc look", "client-command-look", 0.8),
-        ("/blwtc ban", "client-command-ban", 1.0),
-        ("/blwtc globalban", "client-command-globalban", 1.0),
+        ("/wtc global", "client-command-global", 1.0),
+        ("/wtc personal", "client-command-personal", 1.0),
+        ("/wtc dropmode", "client-command-dropmode", 0.8),
+        ("/wtc look", "client-command-look", 0.8),
+        ("/wtc ban", "client-command-ban", 1.0),
+        ("/wtc globalban", "client-command-globalban", 1.0),
         ("/wtc stats", "client-command-legacy-stats", 0.8),
     ]
     for command, suffix, wait_seconds in client_commands:
@@ -1385,10 +1382,10 @@ def run_case(case: dict, prepared_clients: dict, run_root: Path, channels_only: 
         wait_player_online(case, username, server_log)
         command_log = run_dir / "logs" / (case["id"] + "-console-commands.log")
         platform_offset = log_text_offset(server_log)
-        send_console_command(server_process, "blwtc platform", command_log)
+        send_console_command(server_process, "wtc platform", command_log)
         wait_platform_command_accepted(server_log, platform_offset)
         debug_offset = log_text_offset(server_log)
-        debug_command = "blwtc debugrgbchannels " + username if channels_only else "blwtc debugrgb " + username
+        debug_command = "wtc debugrgbchannels " + username if channels_only else "wtc debugrgb " + username
         send_console_command(server_process, debug_command, command_log)
         if channels_only:
             wait_command_markers(server_log, debug_offset, ["[DebugRGB] channels", username], 8, debug_command)

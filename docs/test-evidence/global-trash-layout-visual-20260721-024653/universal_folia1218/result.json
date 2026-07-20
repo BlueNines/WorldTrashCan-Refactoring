@@ -1,0 +1,114 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "serverVersion": "1.21.8",
+  "clientVersion": "1.21.8",
+  "plugin": "WorldListTrashCan-universal.jar",
+  "status": "PASS",
+  "screenshots": {
+    "page1": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-page-1.png",
+      "size": 213125,
+      "sha256": "dd07c01e56e0ec3f8eb8637099b4bf39cee7d9761162dce86258dd21f07793fb",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 65.09049479166667
+    },
+    "nextTooltip": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-next-tooltip.png",
+      "size": 206223,
+      "sha256": "daf0cd91896467173819eccff516194512117090e25833da331e6060485ad8b3",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 64.56673177083333
+    },
+    "overflowPage": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-overflow-page.png",
+      "size": 211331,
+      "sha256": "eb221a13365d73bc7908dd2e5a0d02b85b23c2cdf58ce1c622d2460379b0cc80",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 65.32877604166667
+    },
+    "previousTooltip": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-previous-tooltip.png",
+      "size": 213819,
+      "sha256": "a0befd7bfcad288a3803e9a7064f3c81d1dc415b931a7e430703595bbe56c38c",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 63.300455729166664
+    },
+    "beforeTake": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-before-take.png",
+      "size": 214074,
+      "sha256": "a7ddce8112886c1ba82befadf20f81159029c8eef97826c3bd0fb5b930c836ed",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 64.82161458333333
+    },
+    "afterTake": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-after-take.png",
+      "size": 212682,
+      "sha256": "ab4a7c3ae33625ba8b38330ff9af456ae9fad9153b6aeccf3388a47a72eebcdf",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 65.08365885416667
+    },
+    "refilledNormalPage": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-refilled-normal-page.png",
+      "size": 213771,
+      "sha256": "7e29cec74e7166b9803cb4b636f2f48673a475ee27bb489d1e56c434b5ac3841",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 64.99869791666667
+    },
+    "invalidFallback": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\screenshots\\universal_folia1218-layout-invalid-fallback-six-rows.png",
+      "size": 184477,
+      "sha256": "7b7428c4ff1fd0014f6e6318ef5007f89306e565c7dc64f4c6e73789df0fba69",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 76.67805989583333
+    }
+  },
+  "checks": {
+    "largeReload": "> \n  \n[02:48:45 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n> \n  \n[02:48:45 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5\n> \n  \n[02:48:45 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。\n> \n  \n[02:48:45 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。\n> \n  \n[02:48:45 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n> \n  \n[02:48:45 INFO]: \u001b[34m[\u001b[96mWorld\u001b[93mList\u001b[94mTrash\u001b[96mCan\u001b[34m] \u001b[96mWorldListTrashCan \u001b[94m已重载。\u001b[0m\n> ",
+    "seedStock": "> \n  \n[02:49:05 INFO]: 垃圾桶库存:\n> \n  \n[02:49:05 INFO]: - 公共垃圾桶物品: 768 (堆叠 12)\n> \n  \n[02:49:05 INFO]: - 公共垃圾桶页数: 5\n> \n  \n[02:49:05 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "shrinkReload": "> \n  \n[02:49:06 INFO]: \u001b[91m3秒\u001b[0m\n> \n  \n[02:49:06 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n> \n  \n\u001b[33;1m[02:49:06 WARN]: [WorldListTrashCan] [GlobalTrash] 新布局正常容量不足以容纳旧物品，已创建 1 个临时溢出页；这些页面可取出但不接收新物品。\n\u001b[m> \n  \n[02:49:06 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=1, visiblePages=2\n> \n  \n[02:49:06 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。\n> \n  \n[02:49:06 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。\n> \n  \n[02:49:06 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n> \n  \n[02:49:06 INFO]: \u001b[34m[\u001b[96mWorld\u001b[93mList\u001b[94mTrash\u001b[96mCan\u001b[34m] \u001b[96mWorldListTrashCan \u001b[94m已重载。\u001b[0m\n> ",
+    "shrinkStock": "> \n  \n[02:49:07 INFO]: 垃圾桶库存:\n> \n  \n[02:49:07 INFO]: - 公共垃圾桶物品: 768 (堆叠 12)\n> \n  \n[02:49:07 INFO]: - 公共垃圾桶页数: 2\n> \n  \n[02:49:07 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "overflowReject": "> \n  \n[02:49:25 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:49:25 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=false\n> \n  \n[02:49:25 INFO]: 5秒\n> ",
+    "overflowRejectStock": "> \n  \n[02:49:25 INFO]: 垃圾桶库存:\n> \n  \n[02:49:25 INFO]: - 公共垃圾桶物品: 768 (堆叠 12)\n> \n  \n[02:49:25 INFO]: - 公共垃圾桶页数: 2\n> \n  \n[02:49:25 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "afterTakeStock": "> \n  \n[02:49:37 INFO]: 垃圾桶库存:\n> \n  \n[02:49:37 INFO]: - 公共垃圾桶物品: 704 (堆叠 11)\n> \n  \n[02:49:37 INFO]: - 公共垃圾桶页数: 2\n> \n  \n[02:49:37 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "routeAfterTake": "> \n  \n[02:49:38 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:49:38 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:49:39 INFO]: [WorldListTrashCan] [FoliaCleanup] skippedByGuard=true, guardReason=target-entities, onlinePlayers=1, minOnlinePlayers=1, targetEntities=4, minTotalEntities=150, worlds=3, timedOut=false\n> ",
+    "refilledStock": "> \n  \n[02:49:39 INFO]: 垃圾桶库存:\n> \n  \n[02:49:39 INFO]: - 公共垃圾桶物品: 768 (堆叠 12)\n> \n  \n[02:49:39 INFO]: - 公共垃圾桶页数: 2\n> \n  \n[02:49:39 INFO]: - 已加载个人垃圾桶: 0\n> ",
+    "invalidFallbackReload": "> \n  \n[02:49:44 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n> \n  \n\u001b[33;1m[02:49:44 WARN]: [WorldListTrashCan] [GlobalTrash] 公共垃圾桶布局无效，已回退默认布局: global-trash.gui.layout.position 只能配置 1-6 行，当前为 7 行\n\u001b[m> \n  \n[02:49:44 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=1, visiblePages=1\n> \n  \n[02:49:44 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。\n> \n  \n[02:49:44 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。\n> \n  \n[02:49:44 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n> \n  \n[02:49:44 INFO]: \u001b[34m[\u001b[96mWorld\u001b[93mList\u001b[94mTrash\u001b[96mCan\u001b[34m] \u001b[96mWorldListTrashCan \u001b[94m已重载。\u001b[0m\n> ",
+    "fallbackStock": "> \n  \n[02:49:45 INFO]: 垃圾桶库存:\n> \n  \n[02:49:45 INFO]: - 公共垃圾桶物品: 768 (堆叠 12)\n> \n  \n[02:49:45 INFO]: - 公共垃圾桶页数: 1\n> \n  \n[02:49:45 INFO]: - 已加载个人垃圾桶: 0\n> "
+  },
+  "username": "RGBolia1218",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_folia1218\\server-screenshots\\universal_folia1218-layout-assertions.png",
+    "size": 118374,
+    "sha256": "684b48f2297d4a462cb52766b4f897e008e1e3efed322008f59433f9132fe6c6",
+    "dimensions": [
+      1600,
+      1092
+    ],
+    "brightness": 30.490559895833332
+  }
+}

@@ -24,18 +24,10 @@ REQUIRED_RESOURCES = {
     "messages/message_es.yml",
 }
 REQUIRED_COMMANDS = {
-    "blworldtrashcan",
     "worldlisttrashcan",
 }
 REQUIRED_PERMISSIONS = {
-    "blworldtrashcan.admin",
-    "blworldtrashcan.use",
-    "blworldtrashcan.global.open",
-    "blworldtrashcan.global.take",
-    "blworldtrashcan.global.put",
-    "blworldtrashcan.personal.open",
-    "blworldtrashcan.personal.take",
-    "blworldtrashcan.personal.put",
+    "WorldListTrashCan.Admin",
     "WorldListTrashCan.Main",
     "WorldListTrashCan.BanGui",
     "WorldListTrashCan.GlobalTrashOpen",
@@ -56,11 +48,11 @@ BSTATS_CLASSES = {
     "pixeltech/bluenine/blworldtrashcan/bukkit/bstats/BStatsMetricsService.class",
 }
 BSTATS_ENTRY_SOURCES = {
-    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyPlugin.java",
-    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitPlugin.java",
-    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanPlugin.java",
-    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaPlugin.java",
-    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BlWorldTrashCanUniversalPlugin.java",
+    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/WorldListTrashCanLegacyPlugin.java",
+    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/WorldListTrashCanBukkitPlugin.java",
+    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/WorldListTrashCanPlugin.java",
+    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaPlugin.java",
+    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/WorldListTrashCanUniversalPlugin.java",
 }
 PLUGIN_CONFIG_RESOURCE_NAMES = {
     "config.yml",
@@ -74,8 +66,8 @@ PLUGIN_CONFIG_RESOURCE_NAMES = {
 EXPECTED_ARTIFACTS = [
     {
         "name": "legacy-1.12",
-        "jar": "BlWorldTrashCan-legacy-1.12.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.legacy.BlWorldTrashCanLegacyPlugin",
+        "jar": "WorldListTrashCan-legacy-1.12.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.legacy.WorldListTrashCanLegacyPlugin",
         "apiVersion": None,
         "foliaSupported": None,
         "mainMajor": 52,
@@ -85,8 +77,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "bukkit-1.13-1.15",
-        "jar": "BlWorldTrashCan-bukkit-1.13-1.15.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.bukkit.BlWorldTrashCanBukkitPlugin",
+        "jar": "WorldListTrashCan-bukkit-1.13-1.15.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.bukkit.WorldListTrashCanBukkitPlugin",
         "apiVersion": "1.13",
         "foliaSupported": None,
         "mainMajor": 52,
@@ -96,8 +88,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "paper-1.16-1.20",
-        "jar": "BlWorldTrashCan-paper-1.16-1.20.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.BlWorldTrashCanPlugin",
+        "jar": "WorldListTrashCan-paper-1.16-1.20.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.WorldListTrashCanPlugin",
         "apiVersion": "1.16",
         "foliaSupported": None,
         "mainMajor": 52,
@@ -107,8 +99,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "folia-1.20",
-        "jar": "BlWorldTrashCan-folia-1.20.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.folia.BlWorldTrashCanFoliaPlugin",
+        "jar": "WorldListTrashCan-folia-1.20.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.folia.WorldListTrashCanFoliaPlugin",
         "apiVersion": "1.20",
         "foliaSupported": "true",
         "mainMajor": 61,
@@ -119,8 +111,8 @@ EXPECTED_ARTIFACTS = [
     },
     {
         "name": "universal",
-        "jar": "BlWorldTrashCan-universal.jar",
-        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BlWorldTrashCanUniversalPlugin",
+        "jar": "WorldListTrashCan-universal.jar",
+        "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin",
         "apiVersion": "1.13",
         "foliaSupported": "true",
         "mainMajor": 52,
@@ -248,8 +240,8 @@ def check_universal_region_threaded_detection(errors: list[str]) -> None:
 def check_plugin_yml(label: str, plugin_text: str, expected: dict, version: str, errors: list[str]) -> dict[str, str]:
     """检查 plugin.yml 的关键交付字段。"""
     values = parse_plugin_yml(plugin_text)
-    if values.get("name") != "BlWorldTrashCan":
-        errors.append(label + ": plugin.yml name 不是 BlWorldTrashCan")
+    if values.get("name") != "WorldListTrashCan":
+        errors.append(label + ": plugin.yml name 不是 WorldListTrashCan")
     if values.get("version") != version:
         errors.append(label + ": plugin.yml version 不是 " + version)
     if values.get("main") != expected["main"]:
@@ -272,8 +264,8 @@ def check_plugin_yml(label: str, plugin_text: str, expected: dict, version: str,
     for permission in sorted(REQUIRED_PERMISSIONS):
         if not has_yaml_child(plugin_text, "permissions", permission):
             errors.append(label + ": permissions 缺少 " + permission)
-    if "WorldListTrashCan" not in plugin_text or "wtc" not in plugin_text:
-        errors.append(label + ": 缺少旧命令 WorldListTrashCan/WTC/wtc 别名")
+    if "worldlisttrashcan" not in plugin_text or "wtc" not in plugin_text:
+        errors.append(label + ": 缺少 worldlisttrashcan/wtc 命令入口")
     return values
 
 
@@ -365,7 +357,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan dist 交付 jar 的包完整性。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan dist 交付 jar 的包完整性。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

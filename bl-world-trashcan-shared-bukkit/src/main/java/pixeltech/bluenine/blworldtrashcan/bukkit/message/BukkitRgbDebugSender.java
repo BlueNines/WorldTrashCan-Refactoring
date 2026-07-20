@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 /** 发送 RGB 调试消息，供真实客户端和协议客户端验收富文本兼容性。 */
 public final class BukkitRgbDebugSender {
-    private static final String CHAT_MESSAGE = "&#111827[&#38BDF8BlWorldTrashCan&#111827] &#D5DEE9清理通道 &#F5B82EONLINE &#64748B| &#38BDF8冷蓝 &#F5B82E鎏金 &#AAB6C5雾灰";
+    private static final String CHAT_MESSAGE = "&#111827[&#38BDF8WorldListTrashCan&#111827] &#D5DEE9清理通道 &#F5B82EONLINE &#64748B| &#38BDF8冷蓝 &#F5B82E鎏金 &#AAB6C5雾灰";
     private static final String ACTION_BAR_MESSAGE = "&#111827▌ &#38BDF8公共垃圾桶 &#D5DEE9正在接收物品 &#F5B82E+64 &#64748B/ &#E7C873高亮提示";
     private static final String TITLE_MESSAGE = "&#2563EB世界&#0F172A垃圾桶";
     private static final String SUBTITLE_MESSAGE = "&#334155冷蓝系统 &#64748B× &#F5B82E鎏金重点";

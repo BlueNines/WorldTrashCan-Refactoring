@@ -1,0 +1,291 @@
+{
+  "id": "universal_folia1218",
+  "sourceId": "external_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "clientVersion": "1.21.8",
+  "serverDir": "E:\\server_work\\folia1.21.8",
+  "plugin": "WorldListTrashCan-universal.jar",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 560737,
+    "sha256": "d821feef1a5e9158f027c530c048527195183d4954e41af13701ec8373b9ea24",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "checks": [
+    {
+      "name": "global-put-before-f2",
+      "command": "wtc debugopen RGBolia1218 global",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-global-put-before-f2.png",
+        "size": 178276,
+        "sha256": "89d1dd26066d1d9401a12c03a515c15e3e47a0be64e483a118ea78138365a9f3",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 75.0263671875
+      }
+    },
+    {
+      "name": "F-027",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-global-put-after-click-f2.png",
+        "size": 181350,
+        "sha256": "2e5a0f1095b340dcb04eb994f1d77f4d1db1401b8e70adb7769bf9fce55d1b15",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 77.30989583333333
+      },
+      "logExcerpt": "global-trash-2026-07-21.log 2026-07-21 02:22:13 RGBolia1218 -global STONEx64\nglobal-trash-2026-07-21.log 2026-07-21 02:43:04 RGBolia1218 +global COBBLESTONEx7"
+    },
+    {
+      "name": "F-026",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-global-take-after-click-f2.png",
+        "size": 180792,
+        "sha256": "e6e190f1c77ec23ad961d696e1df36840e09f810724827b8b7315c856cbbaba0",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 77.6259765625
+      },
+      "logExcerpt": "global-trash-2026-07-21.log 2026-07-21 02:22:13 RGBolia1218 -global STONEx64\nglobal-trash-2026-07-21.log 2026-07-21 02:43:04 RGBolia1218 +global COBBLESTONEx7\nglobal-trash-2026-07-21.log 2026-07-21 02:43:07 RGBolia1218 -global COBBLESTONEx7"
+    },
+    {
+      "name": "F-028",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-global-take-cooldown-f2.png",
+        "size": 183115,
+        "sha256": "0f22dca039362c73f6d1aa8112efe51cdb169d5942b0b215d5a782ff334b001e",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 77.61360677083333
+      },
+      "clientLog": {
+        "status": "PASS",
+        "markers": [
+          "公共垃圾桶冷却"
+        ],
+        "excerpt": "[02:43:11] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 公共垃圾桶冷却剩余 56.3 秒。\n[02:43:11] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 公共垃圾桶冷却剩余 56.2 秒。\n[02:43:11] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 公共垃圾桶冷却剩余 56.2 秒。\n[02:43:12] [Render thread/INFO]: [System] [CHAT] 5秒\n[02:43:13] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-21_02.43.13.png\n[02:43:14] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-21_02.43.14.png\n"
+      }
+    },
+    {
+      "name": "global-stock-after-put-take",
+      "status": "PASS",
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\server-screenshots\\universal_folia1218-global-stock-after-put-take.png",
+        "size": 34987,
+        "sha256": "30b858701ff58c7d96d4ba6f3ad32b3b3e421e7fdad2ee026722dd5d2906ce8a",
+        "dimensions": [
+          1600,
+          442
+        ],
+        "brightness": 28.555013020833332
+      },
+      "excerpt": "> \n  \n[02:43:16 INFO]: 垃圾桶库存:\n> \n  \n[02:43:16 INFO]: - 公共垃圾桶物品: 0 (堆叠 0)\n> \n  \n[02:43:16 INFO]: - 公共垃圾桶页数: 5\n> \n  \n[02:43:16 INFO]: - 已加载个人垃圾桶: 0\n> "
+    },
+    {
+      "name": "global-fill-46-stacks",
+      "status": "PASS",
+      "details": {
+        "status": "PASS",
+        "stacks": 46,
+        "excerpt": "nt=64, routed=true\n> > \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> > \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> wtc debugroute RGBolia1218 gl\n                               \n[02:43:18 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> wtc debugroute RGBolia1218 glob> \n  \n[02:43:18 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:19 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:19 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:19 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> \n  \n[02:43:19 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:19 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n> "
+      }
+    },
+    {
+      "name": "global-page-1-f2",
+      "command": "wtc debugopen RGBolia1218 global",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-global-page-1-f2.png",
+        "size": 191676,
+        "sha256": "9db330b8fe6a99a7d398d92e68ab65a7087754490acf02cfeaabcc42adb54eab",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 74.93196614583333
+      }
+    },
+    {
+      "name": "F-024",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-global-page-2-after-next-f2.png",
+        "size": 191395,
+        "sha256": "8c16074cd30b9bafed5ffbe59599cb8475f667cc4e4bc7ccc087ceaf66b86a63",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 75.0419921875
+      }
+    },
+    {
+      "name": "F-029",
+      "status": "PASS",
+      "client": "公共垃圾桶取放截图已保存",
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\server-screenshots\\universal_folia1218-global-trash-operation-log.png",
+        "size": 27013,
+        "sha256": "8a5050b026f6b14b71e2ea0abdf2350d5013d59b64e2187a510f338d710d258f",
+        "dimensions": [
+          1600,
+          240
+        ],
+        "brightness": 31.830403645833332
+      },
+      "logExcerpt": "global-trash-2026-07-21.log 2026-07-21 02:22:13 RGBolia1218 -global STONEx64\nglobal-trash-2026-07-21.log 2026-07-21 02:43:04 RGBolia1218 +global COBBLESTONEx7\nglobal-trash-2026-07-21.log 2026-07-21 02:43:07 RGBolia1218 -global COBBLESTONEx7"
+    },
+    {
+      "name": "personal-put-before-f2",
+      "command": "wtc debugopen RGBolia1218 personal",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-personal-put-before-f2.png",
+        "size": 180245,
+        "sha256": "003a1bbb154b35ffef3a74e649e0e17f62f35c5d85c191115a8ee47cf9128781",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.38704427083333
+      }
+    },
+    {
+      "name": "F-035",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-personal-put-after-click-f2.png",
+        "size": 180949,
+        "sha256": "b81c738004b3a4a700fbd25195823adaccdd2302beb6046492dcfe815834140b",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.52311197916667
+      },
+      "summaryExcerpt": "> \n  \n[02:43:35 INFO]: WorldListTrashCan debug summary:\n> \n  \n[02:43:35 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[02:43:35 INFO]: - 世界: world\n> \n  \n[02:43:35 INFO]: - 世界垃圾桶数量: 0\n> \n  \n[02:43:35 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[02:43:35 INFO]: - 跳过未加载区块: 0\n> \n  \n[02:43:35 INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)\n> \n  \n[02:43:35 INFO]: - 个人垃圾桶物品: 5 (堆叠 1)\n> \n  \n[02:43:36 INFO]: 5秒\n> "
+    },
+    {
+      "name": "F-034",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-personal-take-after-click-f2.png",
+        "size": 177158,
+        "sha256": "1eb8136782ce33238ae5fa5bfb0abb8edf8cf9990d07708a5cec90649a235966",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.48990885416667
+      },
+      "summaryExcerpt": "> \n  \n[02:43:40 INFO]: WorldListTrashCan debug summary:\n> \n  \n[02:43:40 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[02:43:40 INFO]: - 世界: world\n> \n  \n[02:43:40 INFO]: - 世界垃圾桶数量: 0\n> \n  \n[02:43:40 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[02:43:40 INFO]: - 跳过未加载区块: 0\n> \n  \n[02:43:40 INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)\n> \n  \n[02:43:40 INFO]: - 个人垃圾桶物品: 0 (堆叠 0)\n> \n  \n[02:43:40 INFO]: 1秒\n> "
+    },
+    {
+      "name": "personal-full-auto-clear-gui-f2",
+      "command": "wtc debugopen RGBolia1218 personal",
+      "status": "PASS",
+      "screenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-personal-full-auto-clear-gui-f2.png",
+        "size": 182734,
+        "sha256": "ed78ae2953da9cef34144c1c5234d8ba04900a6c6b16cd2e049372cfbee38c62",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.40592447916667
+      }
+    },
+    {
+      "name": "F-036",
+      "status": "PASS",
+      "summaryScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\server-screenshots\\universal_folia1218-personal-full-auto-clear-summary.png",
+        "size": 70730,
+        "sha256": "568f7d2e888822737535eb13a74e6deffa346d7c6df0b82c0f7dba822f8a71e3",
+        "dimensions": [
+          1600,
+          832
+        ],
+        "brightness": 28.9658203125
+      },
+      "fillResult": {
+        "status": "PASS",
+        "stacks": 54,
+        "excerpt": "务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> > \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> > \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:44 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:45 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:45 INFO]: 已提交路由测试任务，请查看后台日志。\n> > \n  \n[02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> \n  \n[02:43:45 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:43:45 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=PERSONAL_TRASH, material=STONE, amount=64, routed=true\n> "
+      },
+      "summaryExcerpt": "> \n  \n[02:43:45 INFO]: WorldListTrashCan debug summary:\n> \n  \n[02:43:45 INFO]: - 平台: folia-1.20 (universal)\n> \n  \n[02:43:45 INFO]: - 世界: world\n> \n  \n[02:43:45 INFO]: - 世界垃圾桶数量: 0\n> \n  \n[02:43:45 INFO]: - 世界垃圾桶物品: Folia 下跳过同步方块库存读取\n> \n  \n[02:43:45 INFO]: - 跳过未加载区块: 0\n> \n  \n[02:43:45 INFO]: - 公共垃圾桶物品: 2944 (堆叠 46)\n> \n  \n[02:43:45 INFO]: - 个人垃圾桶物品: 1 (堆叠 1)\n> \n  \n[02:43:46 INFO]: 3秒\n> ",
+      "reason": "debugroute 先填满 54 个 STONE 堆叠，再放入 DIRT 1；个人桶自动清空旧内容后只保留新物品。"
+    },
+    {
+      "name": "F-030",
+      "status": "PASS",
+      "beforeScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-globalban-before-f2.png",
+        "size": 180990,
+        "sha256": "e03acdd0f25ad1836cce473c1afceb89e3340939bab675ac5d123cbdc705f8c9",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 78.35026041666667
+      },
+      "placedScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-globalban-stone-placed-f2.png",
+        "size": 184847,
+        "sha256": "90dab5c739e7337815be91ec28b978691de8b0cd5c0a49e0c5f80a7cfc86f268",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 77.79264322916667
+      },
+      "savedScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\screenshots\\universal_folia1218-globalban-after-close-save-f2.png",
+        "size": 350944,
+        "sha256": "45ca64aee44f47e607892b16d17e987a6ecd2b3296f4f92878e63cba6a2c2857",
+        "dimensions": [
+          884,
+          521
+        ],
+        "brightness": 84.20963541666667
+      },
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\server-screenshots\\universal_folia1218-globalban-route-rejected.png",
+        "size": 30135,
+        "sha256": "31d02761af8400037f79a317530b134c8f7fb281d4e89d579bdb901bdbf9bd3b",
+        "dimensions": [
+          1600,
+          364
+        ],
+        "brightness": 29.80859375
+      },
+      "trashSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\trash-gui-click-visual-20260721-023817\\universal_folia1218\\logs\\trash-after-globalban.yml",
+      "verify": {
+        "trashContainsStone": true,
+        "routeRejected": true,
+        "excerpt": "> \n  \n[02:44:03 INFO]: 已提交路由测试任务，请查看后台日志。\n> \n  \n[02:44:03 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBolia1218, route=GLOBAL_TRASH, material=STONE, amount=1, routed=false\n> \n  \n[02:44:03 INFO]: 5秒\n> "
+      }
+    }
+  ],
+  "patchedTrashConfig": "E:\\server_work\\folia1.21.8\\plugins\\WorldListTrashCan\\trash.yml",
+  "username": "RGBolia1218",
+  "clientPid": 22364,
+  "failedChecks": [],
+  "blankScreenshots": []
+}

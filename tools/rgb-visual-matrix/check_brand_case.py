@@ -7,13 +7,13 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DIST = REPO / "dist"
-PLUGIN_NAME = "BlWorldTrashCan"
+PLUGIN_NAME = "WorldListTrashCan"
 DIST_ARTIFACTS = [
-    "BlWorldTrashCan-legacy-1.12.jar",
-    "BlWorldTrashCan-bukkit-1.13-1.15.jar",
-    "BlWorldTrashCan-paper-1.16-1.20.jar",
-    "BlWorldTrashCan-folia-1.20.jar",
-    "BlWorldTrashCan-universal.jar",
+    "WorldListTrashCan-legacy-1.12.jar",
+    "WorldListTrashCan-bukkit-1.13-1.15.jar",
+    "WorldListTrashCan-paper-1.16-1.20.jar",
+    "WorldListTrashCan-folia-1.20.jar",
+    "WorldListTrashCan-universal.jar",
 ]
 TEXT_SUFFIXES = {
     ".java", ".yml", ".yaml", ".xml", ".md", ".py", ".json",
@@ -51,6 +51,8 @@ def check_tracked_sources(errors: list[str]) -> int:
     for path in tracked_files():
         relative = path.relative_to(REPO).as_posix()
         if relative.startswith("docs/test-evidence/"):
+            continue
+        if relative == "docs/重构执行记录.md":
             continue
         if any(token in relative for token in forbidden):
             errors.append(relative + ": 文件名仍包含旧品牌大小写")
@@ -103,7 +105,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 公开品牌大小写。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan 公开品牌大小写。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()

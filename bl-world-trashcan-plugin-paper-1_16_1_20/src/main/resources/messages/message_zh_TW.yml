@@ -1,5 +1,5 @@
 # 插件前綴，會自動替換 {prefix}。
-prefix: "&#64748B[&#5AC8FABlWorldTrashCan&#64748B] "
+prefix: "&#64748B[&#5AC8FAWorldListTrashCan&#64748B] "
 
 # 通用無權限提示。
 no-permission: "{prefix}&#FFD166你沒有權限執行該指令。"
@@ -117,7 +117,7 @@ command:
   # 通用無權限提示。
   no-permission: "{prefix}&#FFD166你沒有權限執行該指令。"
   # 重載成功提示。
-  reload-success: "{prefix}&#5AC8FABlWorldTrashCan 已重載。"
+  reload-success: "{prefix}&#5AC8FAWorldListTrashCan 已重載。"
   # 手動清理完成提示，{worlds} 世界數，{routed} 回收物品數，{items} 移除物品數，{entities} 移除實體數。
   clear-success: "{prefix}&#5AC8FA清理完成: &#C9D4E2世界 {worlds}&#5AC8FA, 回收物品 {routed}&#5AC8FA, 移除物品 {items}&#5AC8FA, 移除實體 {entities}&#5AC8FA。"
   # 手動清理 guards 參數錯誤時提示。
@@ -127,41 +127,41 @@ command:
   # Folia 上一輪清理仍在執行時提示。
   folia-clear-running: "{prefix}&#FFD166上一輪 Folia region-safe 清理仍在執行，本次沒有重複啟動。"
   # Folia 清理任務啟動成功提示。
-  folia-clear-started: "{prefix}&#5AC8FA已啟動 Folia region-safe 清理；完成後請查看後台 [FoliaCleanup] 日誌或執行 /blwtc stats。"
+  folia-clear-started: "{prefix}&#5AC8FA已啟動 Folia region-safe 清理；完成後請查看後台 [FoliaCleanup] 日誌或執行 /wtc stats。"
   # 沒有打開公共垃圾桶權限時提示。
   no-global-open-permission: "{prefix}&#FFD166你沒有權限打開公共垃圾桶。"
   # 沒有打開個人垃圾桶權限時提示。
   no-personal-open-permission: "{prefix}&#FFD166你沒有權限打開個人垃圾桶。"
-  # /blwtc help 輸出，每行一條。主幫助只展示正式命令；調試命令請使用 /blwtc debughelp。
+  # /wtc help 輸出，每行一條。主幫助只展示正式命令；調試命令請使用 /wtc debughelp。
   help:
-    - "&#5AC8FA/blwtc help &#64748B- 查看幫助"
-    - "&#5AC8FA/blwtc platform &#64748B- 查看目前版本產物能力"
-    - "&#5AC8FA/blwtc clear [true/false] &#64748B- 立即掃地，預設 true 忽略 guards，false 遵守 guards"
-    - "&#5AC8FA/blwtc global &#64748B- 打開公共垃圾桶"
-    - "&#5AC8FA/blwtc personal &#64748B- 打開個人垃圾桶"
-    - "&#5AC8FA/blwtc dropmode &#64748B- 切換防丟棄模式"
-    - "&#5AC8FA/blwtc look &#64748B- 查詢手持物品和右鍵實體類型"
-    - "&#5AC8FA/blwtc ban &#64748B- 打開目前世界垃圾桶物品黑名單"
-    - "&#5AC8FA/blwtc globalban &#64748B- 打開公共垃圾桶物品黑名單"
-    - "&#5AC8FA/blwtc stats &#64748B- 查看清理和垃圾桶統計"
-    - "&#5AC8FA/blwtc add <數量> &#64748B- 增加目前世界可建立的世界垃圾桶數量"
-    - "&#5AC8FA/blwtc add <世界名> <數量> &#64748B- 後台增加指定世界可建立的世界垃圾桶數量"
-    - "&#5AC8FA/blwtc debughelp &#64748B- 查看後台調試命令"
-    - "&#5AC8FA/blwtc reload &#64748B- 重載插件"
-  # /blwtc debughelp 輸出，每行一條。調試命令會改變測試服運行狀態，不作為普通玩家功能展示。
+    - "&#5AC8FA/wtc help &#64748B- 查看幫助"
+    - "&#5AC8FA/wtc platform &#64748B- 查看目前版本產物能力"
+    - "&#5AC8FA/wtc clear [true/false] &#64748B- 立即掃地，預設 true 忽略 guards，false 遵守 guards"
+    - "&#5AC8FA/wtc global &#64748B- 打開公共垃圾桶"
+    - "&#5AC8FA/wtc personal &#64748B- 打開個人垃圾桶"
+    - "&#5AC8FA/wtc dropmode &#64748B- 切換防丟棄模式"
+    - "&#5AC8FA/wtc look &#64748B- 查詢手持物品和右鍵實體類型"
+    - "&#5AC8FA/wtc ban &#64748B- 打開目前世界垃圾桶物品黑名單"
+    - "&#5AC8FA/wtc globalban &#64748B- 打開公共垃圾桶物品黑名單"
+    - "&#5AC8FA/wtc stats &#64748B- 查看清理和垃圾桶統計"
+    - "&#5AC8FA/wtc add <數量> &#64748B- 增加目前世界可建立的世界垃圾桶數量"
+    - "&#5AC8FA/wtc add <世界名> <數量> &#64748B- 後台增加指定世界可建立的世界垃圾桶數量"
+    - "&#5AC8FA/wtc debughelp &#64748B- 查看後台調試命令"
+    - "&#5AC8FA/wtc reload &#64748B- 重載插件"
+  # /wtc debughelp 輸出，每行一條。調試命令會改變測試服運行狀態，不作為普通玩家功能展示。
   debug-help:
-    - "&#5AC8FA/blwtc debugopen <玩家> <global|personal> &#64748B- 後台測試打開 GUI"
-    - "&#5AC8FA/blwtc debugworldtrash <玩家> &#64748B- 後台建立並登記測試世界垃圾桶"
-    - "&#5AC8FA/blwtc debugroute <玩家> <world|personal|global> <Material> <數量> &#64748B- 後台測試指定路由"
-    - "&#5AC8FA/blwtc debugdrop <玩家> <Material> <數量> [owner] &#64748B- 後台生成測試掉落物"
-    - "&#5AC8FA/blwtc debugdamage <玩家> <Material> <數量> &#64748B- 後台測試仙人掌/岩漿損壞回收"
-    - "&#5AC8FA/blwtc debugstock &#64748B- 後台查看目前垃圾桶庫存"
-    - "&#5AC8FA/blwtc debugsummary <玩家> &#64748B- 查看後台測試摘要"
-    - "&#5AC8FA/blwtc debugdensity &#64748B- 查看實體密度掃描和候選隊列"
-    - "&#5AC8FA/blwtc debugnotify <count> &#64748B- 後台觸發 cleanup.yml 對應編號的正式清理通知"
-    - "&#5AC8FA/blwtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- 後台測試玩家入口"
-    - "&#5AC8FA/blwtc debugrgb <玩家> &#64748B- 後台測試 RGB/降級色可見通道"
-    - "&#5AC8FA/blwtc debugrgbchannels <玩家> &#64748B- 後台測試聊天、ActionBar 和 Title RGB/降級色通道"
+    - "&#5AC8FA/wtc debugopen <玩家> <global|personal> &#64748B- 後台測試打開 GUI"
+    - "&#5AC8FA/wtc debugworldtrash <玩家> &#64748B- 後台建立並登記測試世界垃圾桶"
+    - "&#5AC8FA/wtc debugroute <玩家> <world|personal|global> <Material> <數量> &#64748B- 後台測試指定路由"
+    - "&#5AC8FA/wtc debugdrop <玩家> <Material> <數量> [owner] &#64748B- 後台生成測試掉落物"
+    - "&#5AC8FA/wtc debugdamage <玩家> <Material> <數量> &#64748B- 後台測試仙人掌/岩漿損壞回收"
+    - "&#5AC8FA/wtc debugstock &#64748B- 後台查看目前垃圾桶庫存"
+    - "&#5AC8FA/wtc debugsummary <玩家> &#64748B- 查看後台測試摘要"
+    - "&#5AC8FA/wtc debugdensity &#64748B- 查看實體密度掃描和候選隊列"
+    - "&#5AC8FA/wtc debugnotify <count> &#64748B- 後台觸發 cleanup.yml 對應編號的正式清理通知"
+    - "&#5AC8FA/wtc debugplayer <玩家> <dropmode|look|ban|globalban> &#64748B- 後台測試玩家入口"
+    - "&#5AC8FA/wtc debugrgb <玩家> &#64748B- 後台測試 RGB/降級色可見通道"
+    - "&#5AC8FA/wtc debugrgbchannels <玩家> &#64748B- 後台測試聊天、ActionBar 和 Title RGB/降級色通道"
     - "&#64748B這些命令會改變測試服運行狀態，只建議用於驗收和排障。"
   # 平台資訊標題，{platform} 為平台 ID。
   platform:
@@ -172,7 +172,7 @@ command:
     disabled: "&#64748B停用"
     # 平台能力單行，{capability} 為能力名，{state} 為啟用狀態。
     line: "&#64748B- &#C9D4E2{capability}&#64748B: {state}"
-  # /blwtc stats 輸出。
+  # /wtc stats 輸出。
   stats:
     header: "{prefix}&#5AC8FA清理統計:"
     worlds: "&#64748B- &#C9D4E2世界數: &#5AC8FA{worlds}"
@@ -193,8 +193,8 @@ command:
   add-success: "{prefix}&#5AC8FA世界 &#C9D4E2{world} &#5AC8FA垃圾桶上限已調整為 &#C9D4E2{count}&#5AC8FA。"
   # add 用法提示。
   add-usage:
-    - "&#FFD166用法: /blwtc add <數量>"
-    - "&#FFD166用法: /blwtc add <世界名> <數量>"
+    - "&#FFD166用法: /wtc add <數量>"
+    - "&#FFD166用法: /wtc add <世界名> <數量>"
   # 沒有防丟棄模式權限時提示。
   no-dropmode-permission: "{prefix}&#FFD166你沒有權限使用防丟棄模式。"
   # 沒有 look 查詢權限時提示。

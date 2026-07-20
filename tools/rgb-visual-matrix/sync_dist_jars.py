@@ -13,31 +13,31 @@ ARTIFACTS = [
         "legacy-1.12",
         "bl-world-trashcan-plugin-legacy-1_12",
         "bl-world-trashcan-plugin-legacy-1_12",
-        DIST / "BlWorldTrashCan-legacy-1.12.jar",
+        DIST / "WorldListTrashCan-legacy-1.12.jar",
     ),
     (
         "bukkit-1.13-1.15",
         "bl-world-trashcan-plugin-bukkit-1_13_1_15",
         "bl-world-trashcan-plugin-bukkit-1_13_1_15",
-        DIST / "BlWorldTrashCan-bukkit-1.13-1.15.jar",
+        DIST / "WorldListTrashCan-bukkit-1.13-1.15.jar",
     ),
     (
         "paper-1.16-1.20",
         "bl-world-trashcan-plugin-paper-1_16_1_20",
         "bl-world-trashcan-plugin-paper-1_16_1_20",
-        DIST / "BlWorldTrashCan-paper-1.16-1.20.jar",
+        DIST / "WorldListTrashCan-paper-1.16-1.20.jar",
     ),
     (
         "folia-1.20",
         "bl-world-trashcan-plugin-folia-1_20",
         "bl-world-trashcan-plugin-folia-1_20",
-        DIST / "BlWorldTrashCan-folia-1.20.jar",
+        DIST / "WorldListTrashCan-folia-1.20.jar",
     ),
     (
         "universal",
         "bl-world-trashcan-plugin-universal",
         "bl-world-trashcan-plugin-universal",
-        DIST / "BlWorldTrashCan-universal.jar",
+        DIST / "WorldListTrashCan-universal.jar",
     ),
 ]
 
@@ -108,7 +108,7 @@ def run_sync(dry_run: bool) -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="把 Maven 最新 target jar 同步到 BlWorldTrashCan dist 目录。")
+    parser = argparse.ArgumentParser(description="把 Maven 最新 target jar 同步到 WorldListTrashCan dist 目录。")
     parser.add_argument("--dry-run", action="store_true", help="只比较哈希，不复制文件。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()

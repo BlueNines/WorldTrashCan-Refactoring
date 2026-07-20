@@ -1,0 +1,114 @@
+{
+  "id": "universal_managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "serverVersion": "1.12.2",
+  "clientVersion": "1.12.2",
+  "plugin": "WorldListTrashCan-universal.jar",
+  "status": "PASS",
+  "screenshots": {
+    "page1": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-page-1.png",
+      "size": 38388,
+      "sha256": "ea91f254998b7627a9af1cf7933c36a244f5fb250bcf3a68ec728e9153127964",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 72.22819010416667
+    },
+    "nextTooltip": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-next-tooltip.png",
+      "size": 40793,
+      "sha256": "c02a5d1a804ca3ca7519a7ffbfc8fbd7a83a1fbae1fa86cb3da97d739c07a754",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 71.93684895833333
+    },
+    "overflowPage": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-overflow-page.png",
+      "size": 42376,
+      "sha256": "be7b8e1469173f548bfe5ad9df93acdd1be0f4c8bc0b618d2d06faf24658bf86",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 72.53125
+    },
+    "previousTooltip": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-previous-tooltip.png",
+      "size": 43581,
+      "sha256": "b50b4ad722b6571d2d6930e4bd57511c360a0d06cd1dfe1ad410c4cd6aa5b418",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 69.84733072916667
+    },
+    "beforeTake": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-before-take.png",
+      "size": 41609,
+      "sha256": "8fbce76cc393609ec17da05179d5c42d320f2e70d3c5578c6687026fc3f8094a",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 71.92740885416667
+    },
+    "afterTake": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-after-take.png",
+      "size": 42060,
+      "sha256": "41fdde0de592f1187fa42d6b1a235c8d68db7ea68136b428ecaca79f4759f92c",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 72.60546875
+    },
+    "refilledNormalPage": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-refilled-normal-page.png",
+      "size": 44212,
+      "sha256": "78078e711aa839e08e5396b6b37aa0bdd41f43f8dbae316b110827e7218a4e1b",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 77.5634765625
+    },
+    "invalidFallback": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-layout-invalid-fallback-six-rows.png",
+      "size": 42541,
+      "sha256": "39570736abbef8260c865675c67e0462b7da044db04fa463ac2d1d73c91a7c1f",
+      "dimensions": [
+        884,
+        521
+      ],
+      "brightness": 82.943359375
+    }
+  },
+  "checks": {
+    "largeReload": "[02:46:57 INFO]: [WorldListTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml\n[02:46:57 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5\n[02:46:57 INFO]: [WorldListTrashCan] [TrashRouter] �Ѽ��� 0 ����������Ͱ���ݡ�\n[02:46:57 INFO]: [WorldListTrashCan] [Cleanup] ��ʱ��������������� 360 �롣\n[02:46:57 INFO]: [WorldListTrashCan] WorldListTrashCan �����ء�\n[02:46:57 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:\n[02:46:57 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/\n",
+    "seedStock": "[02:47:15 INFO]: ����Ͱ���:\n[02:47:15 INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)\n[02:47:15 INFO]: - ��������Ͱҳ��: 5\n[02:47:15 INFO]: - �Ѽ��ظ�������Ͱ: 0\n",
+    "shrinkReload": "[02:47:16 INFO]: [WorldListTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml\n[02:47:16 WARN]: [WorldListTrashCan] [GlobalTrash] �²��������������������ɾ���Ʒ���Ѵ��� 1 ����ʱ���ҳ����Щҳ���ȡ��������������Ʒ��\n[02:47:16 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=1, visiblePages=2\n[02:47:16 INFO]: [WorldListTrashCan] [TrashRouter] �Ѽ��� 0 ����������Ͱ���ݡ�\n[02:47:16 INFO]: [WorldListTrashCan] [Cleanup] ��ʱ��������������� 360 �롣\n[02:47:16 INFO]: [WorldListTrashCan] WorldListTrashCan �����ء�\n",
+    "shrinkStock": "[02:47:16 INFO]: ����Ͱ���:\n[02:47:16 INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)\n[02:47:16 INFO]: - ��������Ͱҳ��: 2\n[02:47:16 INFO]: - �Ѽ��ظ�������Ͱ: 0\n",
+    "overflowReject": "[02:47:35 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=false\n[02:47:35 INFO]: ·�ɲ��Գɹ���\n",
+    "overflowRejectStock": "[02:47:36 INFO]: ����Ͱ���:\n[02:47:36 INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)\n[02:47:36 INFO]: - ��������Ͱҳ��: 2\n[02:47:36 INFO]: - �Ѽ��ظ�������Ͱ: 0\n",
+    "afterTakeStock": "[02:47:48 INFO]: ����Ͱ���:\n[02:47:48 INFO]: - ��������Ͱ��Ʒ: 704 (�ѵ� 11)\n[02:47:48 INFO]: - ��������Ͱҳ��: 2\n[02:47:48 INFO]: - �Ѽ��ظ�������Ͱ: 0\n",
+    "routeAfterTake": "[02:47:49 INFO]: [WorldListTrashCan] [Debug] debugRoute player=RGBaper1122, route=GLOBAL_TRASH, material=COBBLESTONE, amount=64, routed=true\n[02:47:49 INFO]: ·�ɲ��Գɹ���\n",
+    "refilledStock": "[02:47:50 INFO]: ����Ͱ���:\n[02:47:50 INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)\n[02:47:50 INFO]: - ��������Ͱҳ��: 2\n[02:47:50 INFO]: - �Ѽ��ظ�������Ͱ: 0\n",
+    "invalidFallbackReload": "[02:47:56 INFO]: [WorldListTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml\n[02:47:56 WARN]: [WorldListTrashCan] [GlobalTrash] ��������Ͱ������Ч���ѻ���Ĭ�ϲ���: global-trash.gui.layout.position ֻ������ 1-6 �У���ǰΪ 7 ��\n[02:47:56 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=1, visiblePages=1\n[02:47:56 INFO]: [WorldListTrashCan] [TrashRouter] �Ѽ��� 0 ����������Ͱ���ݡ�\n[02:47:56 INFO]: [WorldListTrashCan] [Cleanup] ��ʱ��������������� 360 �롣\n[02:47:56 INFO]: [WorldListTrashCan] WorldListTrashCan �����ء�\n",
+    "fallbackStock": "[02:47:56 INFO]: ����Ͱ���:\n[02:47:56 INFO]: - ��������Ͱ��Ʒ: 768 (�ѵ� 12)\n[02:47:56 INFO]: - ��������Ͱҳ��: 1\n[02:47:56 INFO]: - �Ѽ��ظ�������Ͱ: 0\n"
+  },
+  "username": "RGBaper1122",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-layout-visual-20260721-024653\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-layout-assertions.png",
+    "size": 131624,
+    "sha256": "8d3540404225ccaf35d6a63673060a756b16fa002c74c15adba9757f09c70314",
+    "dimensions": [
+      1600,
+      1092
+    ],
+    "brightness": 33.4306640625
+  }
+}

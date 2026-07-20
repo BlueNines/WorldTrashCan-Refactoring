@@ -8,16 +8,15 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 DIST = REPO / "dist"
 EXPECTED_COMMAND_ALIASES = {
-    "blworldtrashcan": {"blwtc"},
-    "worldlisttrashcan": {"WorldListTrashCan", "WTC", "wtc"},
+    "worldlisttrashcan": {"wtc"},
 }
-REQUIRED_RUNTIME_REGISTRATIONS = {"blworldtrashcan", "worldlisttrashcan"}
+REQUIRED_RUNTIME_REGISTRATIONS = {"worldlisttrashcan"}
 ENTRY_SOURCES = {
-    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/BlWorldTrashCanLegacyPlugin.java",
-    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/BlWorldTrashCanBukkitPlugin.java",
-    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/BlWorldTrashCanPlugin.java",
-    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/BlWorldTrashCanFoliaPlugin.java",
-    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/BlWorldTrashCanUniversalPlugin.java",
+    "legacy-1.12": "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/WorldListTrashCanLegacyPlugin.java",
+    "bukkit-1.13-1.15": "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/WorldListTrashCanBukkitPlugin.java",
+    "paper-1.16-1.20": "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/WorldListTrashCanPlugin.java",
+    "folia-1.20": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaPlugin.java",
+    "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/WorldListTrashCanUniversalPlugin.java",
 }
 
 
@@ -71,7 +70,7 @@ def parse_commands(plugin_text: str) -> dict[str, set[str]]:
 
 
 def check_plugin_yml(label: str, plugin_text: str) -> list[str]:
-    """检查 plugin.yml 的新旧命令入口和别名。"""
+    """检查 plugin.yml 的规范命令入口和别名。"""
     errors = []
     commands = parse_commands(plugin_text)
     for command, expected_aliases in sorted(EXPECTED_COMMAND_ALIASES.items()):
@@ -120,7 +119,7 @@ def check_dist_plugin_ymls() -> tuple[list[str], int]:
     """检查 dist jar 内 plugin.yml。"""
     errors = []
     jar_count = 0
-    for jar_path in sorted(DIST.glob("BlWorldTrashCan-*.jar")):
+    for jar_path in sorted(DIST.glob("WorldListTrashCan-*.jar")):
         jar_count += 1
         with zipfile.ZipFile(jar_path) as archive:
             if "plugin.yml" not in archive.namelist():
@@ -140,7 +139,7 @@ def check_entry_sources() -> tuple[list[str], int]:
 
 
 def run_checks() -> dict:
-    """执行命令入口兼容审计。"""
+    """执行命令入口审计。"""
     source_errors, source_plugin_yml_count = check_source_plugin_ymls()
     dist_errors, dist_jar_count = check_dist_plugin_ymls()
     entry_errors, entry_source_count = check_entry_sources()
@@ -159,7 +158,7 @@ def run_checks() -> dict:
 
 def main() -> int:
     """命令行入口。"""
-    parser = argparse.ArgumentParser(description="检查 BlWorldTrashCan 新旧命令入口声明和运行时注册。")
+    parser = argparse.ArgumentParser(description="检查 WorldListTrashCan 命令入口声明和运行时注册。")
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON。")
     args = parser.parse_args()
     result = run_checks()
