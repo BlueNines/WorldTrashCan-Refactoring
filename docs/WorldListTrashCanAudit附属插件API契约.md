@@ -21,7 +21,8 @@ WorldListTrashCanAudit
   同步复制并序列化当前物品
     -> 投递有界队列
     -> 异步写入 SQLite 或 MySQL
-    -> /wtcaudit 异步查询并打开只读 GUI
+    -> 向主插件注册 /wtc audit
+    -> 异步查询并打开只读 GUI
 ```
 
 主插件负责：
@@ -29,6 +30,7 @@ WorldListTrashCanAudit
 - 判断什么属于一次有效扫地。
 - 保证 `ItemStack` 回调发生在普通 Bukkit 主线程或 Folia 实体所属合法线程。
 - 提供统一的玩家线程调度入口。
+- 提供轻量的一级 `/wtc` 副指令注册入口，并统一处理帮助、权限和补全。
 - 在附属插件不存在时提供空会话。
 - 捕获附属插件非致命异常，保护清理主流程。
 
@@ -38,7 +40,7 @@ WorldListTrashCanAudit
 - 在回调返回前复制并序列化 `ItemStack`。
 - Folia 多区域片段的线程安全聚合。
 - 数据库驱动、连接、建表、事务、查询和过期删除。
-- `/wtcaudit` 命令、权限、多语言和只读 GUI。
+- `/wtc audit` 的执行器、权限、多语言帮助文本和只读 GUI。
 - 禁用时先注销 API，再关闭队列、线程和数据库连接。
 
 ## 二、仓库和交付物
@@ -86,10 +88,6 @@ version: 1.0.0-experimental
 main: pixeltech.worldlisttrashcan.audit.WorldListTrashCanAuditPlugin
 depend:
   - WorldListTrashCan
-commands:
-  wtcaudit:
-    aliases:
-      - wtca
 permissions:
   WorldListTrashCanAudit.open:
     default: op
@@ -101,7 +99,9 @@ permissions:
 - 附属插件可以从主插件 ClassLoader 解析 API 类型。
 - 主插件被禁用时，附属插件不能继续工作。
 
-首版不修改 `/wtc` 命令。这样不需要在主插件五套命令实现中加入可选分支，也不需要建立通用命令扩展系统。
+附属插件不在自己的 `plugin.yml` 中注册独立命令。它通过主插件提供的轻量注册器加入 `/wtc audit`，并显示在 `/wtc help` 常规帮助面板中。
+
+主插件五套命令实现只增加同一个共享注册器委托点，不分别复制附属插件逻辑，也不建立 Brigadier、命令树、优先级或任意层级路由系统。
 
 ## 四、API 模块
 
@@ -115,6 +115,7 @@ world-list-trashcan-api
 
 ```text
 pixeltech.worldlisttrashcan.api.audit
+pixeltech.worldlisttrashcan.api.command
 ```
 
 API 模块只允许包含：
@@ -122,6 +123,7 @@ API 模块只允许包含：
 - 契约接口。
 - 不可变上下文对象。
 - 稳定枚举。
+- 一级副指令定义、处理器和注册句柄。
 - 必要的 Bukkit `Player`、`Plugin` 和 `ItemStack` 类型引用。
 
 API 模块禁止包含：
@@ -137,16 +139,22 @@ API 模块禁止包含：
 
 ## 五、服务发现
 
-主插件使用 Bukkit `ServicesManager` 注册 API v1 服务。附属插件不得通过反射读取主插件字段，也不得强制转换五种不同的主插件入口类。
+主插件使用 Bukkit `ServicesManager` 注册 API v1 服务：
+
+- `WorldListTrashCanAuditBridge`：清理审计和玩家线程调度。
+- `WorldListTrashCanCommandRegistry`：一级 `/wtc` 副指令注册。
+
+附属插件不得通过反射读取主插件字段，也不得强制转换五种不同的主插件入口类。
 
 附属插件启动流程：
 
-1. 从 `ServicesManager` 获取 `WorldListTrashCanAuditBridge`。
-2. 检查 `getApiVersion()` 是否等于 `1`。
-3. 构建尚未连接数据库的审计收口。
-4. 顶层 `enabled: true` 且配置校验通过后初始化数据库资源。
-5. 调用 `register`，取得唯一的 `AuditRegistration`。
-6. 注册成功后才允许记录清理数据。
+1. 从 `ServicesManager` 获取 `WorldListTrashCanAuditBridge` 和 `WorldListTrashCanCommandRegistry`。
+2. 检查两个服务的 `getApiVersion()` 是否都等于 `1`。
+3. 注册 `audit` 副指令，取得 `SubcommandRegistration`；即使存储关闭，也允许命令提示当前状态。
+4. 构建尚未连接数据库的审计收口。
+5. 顶层 `enabled: true` 且配置校验通过后初始化数据库资源。
+6. 调用审计 `register`，取得唯一的 `AuditRegistration`。
+7. 审计注册成功后才允许记录清理数据。
 
 如果 API 缺失或版本不兼容，只禁用附属插件并输出明确错误，不能禁用主插件。
 
@@ -244,17 +252,99 @@ MANUAL
 
 密集实体限制、玩家手动放入垃圾桶、仙人掌、岩浆、虚空和其它插件删除不属于 API v1 的扫地批次。
 
+### 6.8 WorldListTrashCanCommandRegistry
+
+```java
+public interface WorldListTrashCanCommandRegistry {
+
+    int API_VERSION = 1;
+
+    /** 返回当前副指令注册 API 版本。 */
+    int getApiVersion();
+
+    /** 注册一个一级 /wtc 副指令，并返回可重复关闭的注册句柄。 */
+    SubcommandRegistration register(
+            Plugin owner,
+            SubcommandDefinition definition,
+            WorldListTrashCanSubcommand subcommand
+    );
+}
+```
+
+### 6.9 SubcommandDefinition
+
+不可变字段：
+
+```text
+String name
+List<String> aliases
+String permission
+```
+
+约束：
+
+- 名称和别名统一转为小写。
+- 只允许 `[a-z0-9_-]`，长度为 1 到 32。
+- `permission` 不能为 `null`；空字符串表示公开命令，非空权限由附属插件自己的 `plugin.yml` 声明。
+- 不允许与主插件内置命令、内置别名或其它已注册附属命令冲突。
+
+### 6.10 WorldListTrashCanSubcommand
+
+```java
+public interface WorldListTrashCanSubcommand {
+
+    /** 返回帮助面板中的参数用法，不包含 /wtc 和副指令名称。 */
+    String getUsage(CommandSender sender);
+
+    /** 返回帮助面板中的本地化简短描述。 */
+    String getDescription(CommandSender sender);
+
+    /** 执行副指令；args 不包含 /wtc 和一级副指令名称。 */
+    void execute(CommandSender sender, String[] args);
+
+    /** 返回当前参数位置的补全；没有建议时返回空列表。 */
+    List<String> tabComplete(CommandSender sender, String[] args);
+}
+```
+
+帮助文本允许使用主插件已经支持的 `&a` 和 RGB 写法，由主插件统一渲染。以上方法都在命令线程调用，禁止读取数据库、文件或执行阻塞等待。
+
+`getUsage`、`getDescription` 和 `tabComplete` 都不能返回 `null`；没有参数、描述或补全时返回空字符串或空列表。
+
+### 6.11 SubcommandRegistration
+
+```java
+public interface SubcommandRegistration extends AutoCloseable {
+
+    /** 注销副指令；重复调用必须无副作用。 */
+    @Override
+    void close();
+}
+```
+
 ## 七、注册规则
 
 - 同一时间只允许一个审计消费者。
 - 第二次注册必须明确失败，不能偷偷替换现有消费者。
 - `owner`、`sink` 不能为空。
 - 注册句柄 `close()` 必须使用原子方式移除对应消费者。
-- 附属插件 `onDisable` 的第一步必须调用 `close()`。
-- 主插件额外监听 `PluginDisableEvent`，发现注册者被禁用时自动解除引用。
+- 附属插件 `onDisable` 必须先关闭 `SubcommandRegistration`，再关闭 `AuditRegistration`，然后才释放 GUI、队列、线程和数据库连接。
+- 主插件额外监听 `PluginDisableEvent`，发现注册者被禁用时自动解除审计和副指令引用。
 - 主插件关闭时必须先把活动消费者替换为空实现，再继续关闭清理功能。
 
 这些规则用于避免主插件长期持有已经卸载的附属插件对象和 ClassLoader。
+
+### 7.1 副指令注册规则
+
+- 主插件内置命令和别名属于保留名称，附属插件不能覆盖。
+- 同一名称或别名只能被一个附属插件注册。
+- API v1 不提供优先级、强制替换或命令拦截。
+- 所有注册成功的副指令都会出现在常规帮助面板中；无权限发送者自动隐藏。
+- 空参数补全只显示有权限的规范名称 `audit`，不使用别名填满补全列表。
+- 输入规范名称或别名后，剩余参数交给附属插件的 `tabComplete`。
+- 主插件使用不可变命令快照：注册和注销时重建快照，执行、帮助和补全只读快照，不在高频路径加锁。
+- 主插件五套命令实现必须共用同一注册器语义和测试矩阵。
+- `SubcommandRegistration.close()` 和 `PluginDisableEvent` 都必须移除名称、别名、帮助项和处理器引用。
 
 ## 八、线程契约
 
@@ -291,6 +381,15 @@ MANUAL
 - 主插件在执行前再次检查 `owner.isEnabled()` 和玩家在线状态。
 - 附属插件只在此回调中反序列化当前 GUI 页最多 45 个物品并操作 Inventory。
 - 数据库查询必须在调用该方法之前由附属插件异步完成。
+
+### 8.5 副指令回调
+
+- 主插件先处理内置命令，只有未命中内置命令时才查询附属命令快照。
+- 主插件统一检查 `WorldListTrashCanAudit.open`，无权限时不调用附属插件。
+- `/wtc help` 调用 `getUsage` 和 `getDescription`，并把条目放在常规帮助的“附属插件指令”区域。
+- `execute` 只能解析参数、发送轻量提示或启动异步任务，不能同步查询数据库。
+- `tabComplete` 必须快速返回，禁止文件和数据库 I/O。
+- 回调抛出普通异常时，主插件向发送者返回统一错误并限频记录附属插件名称，不影响其它命令。
 
 ## 九、异常隔离
 
@@ -340,17 +439,21 @@ VirtualMachineError
 
 ## 十一、命令与 GUI 边界
 
-- `/wtcaudit` 和 `/wtca` 由附属插件注册。
+- 附属插件通过 `WorldListTrashCanCommandRegistry` 注册 `/wtc audit`。
 - 权限 `WorldListTrashCanAudit.open` 默认 `op`。
+- `/wtc help` 在常规帮助面板显示该副指令，不放入 debug 帮助面板。
+- 第一参数补全按权限显示 `audit`；附属插件卸载后立即消失。
+- 主插件负责帮助面板布局、权限过滤和颜色渲染，附属插件只提供用法和描述。
 - 清理记录和详情 GUI 默认只读。
 - 数据库异步查询完成后，通过 `executeForPlayer` 回到合法玩家线程。
 - 内容槽、按钮槽、拖拽、双击、数字键和 Shift 点击都必须防止复制或放入。
 - 首版不支持从历史记录取回物品。
-- 首版不在主插件 `/wtc help` 中显示附属插件命令。
+- 附属插件关闭存储但自身仍加载时，`/wtc audit` 保留并提示功能关闭；卸载附属插件后命令和帮助条目全部注销。
 
 ## 十二、版本兼容
 
 - API v1 的整数版本固定为 `1`。
+- 审计服务和副指令注册服务都使用 API v1，并分别检查兼容性。
 - 增加新的必要方法或改变线程语义必须升级 API 大版本。
 - 新增不影响旧实现的上下文字段也必须提供兼容读取方式，不能让旧附属插件出现链接错误。
 - 附属插件启动时必须明确记录主插件版本、API 版本和当前平台。
@@ -363,6 +466,7 @@ VirtualMachineError
 - 五个运行 Jar 都必须包含同一份 API v1 class。
 - 附属插件以 `provided` 依赖 API Jar。
 - 附属插件成品不得包含 `pixeltech/worldlisttrashcan/api/audit/` 下的 class。
+- 附属插件成品不得包含 `pixeltech/worldlisttrashcan/api/command/` 下的 class。
 - 附属插件构建不得依赖开发机器上的绝对路径。
 - 本地开发可以先把 API artifact 安装到本机 Maven 仓库；GitHub 构建需要使用公开、可复现的 artifact 来源。
 - 发布时分别记录主插件 Jar、API Jar 和附属插件 Jar 的版本及 SHA-256。
@@ -374,24 +478,27 @@ VirtualMachineError
 - 主插件五个交付 Jar 均能正常启动。
 - 定时扫地、`/wtc clear`、垃圾桶路由和 Folia 清理结果不变。
 - 审计序列化次数、注册消费者数、数据库线程数均为 0。
+- `/wtc help` 和第一参数补全中不存在 `audit`。
 - 主插件 universal 包体不能混入 SQLite/MySQL 驱动。
 
 ### 14.2 安装但关闭附属插件
 
 - `enabled: false` 时不注册消费者、不加载驱动、不创建连接和线程。
-- `/wtcaudit` 明确提示功能关闭。
+- `/wtc help` 显示 `/wtc audit`，执行后明确提示功能关闭。
 - 主插件所有现有功能保持正常。
 
 ### 14.3 正常启用
 
 - Paper 1.12.2、现代 Spigot 和 Folia 1.21.8 使用真实服务端验证。
 - SQLite 和 MySQL 分别完成写入、查询、分页和过期级联删除。
+- `/wtc help`、权限过滤、第一参数补全、`/wtc audit` 执行和附属插件卸载后动态移除均验证通过。
 - 真实客户端截图覆盖记录菜单、加载状态、详情菜单、翻页、返回和无权限分支。
 - 截图生成后必须逐张重新读取，确认确实能证明验收项。
 
 ### 14.4 生命周期和故障
 
 - 附属插件禁用后主插件消费者数立即回到 0。
+- 附属插件禁用后副指令注册数立即回到 0，帮助和补全不再显示 `audit`。
 - 重复启用、禁用不能累计消费者、线程、连接或任务。
 - 数据库断线、队列满、超大物品和序列化失败时主插件扫地仍成功。
 - Folia 多区域并发、超时和迟到回调不能产生内存泄漏或重复写入。
@@ -407,7 +514,8 @@ VirtualMachineError
 - 禁止跨 Folia 区域线程读取实体或物品。
 - 禁止无界队列、无界重试和无界批次缓存。
 - 禁止开放历史物品拿取造成复制。
-- 禁止为了首版增加通用命令扩展、公开插件市场或第三方扩展生态。
+- 禁止副指令接口发展成可覆盖内置命令、带优先级、任意层级命令树或通用命令框架。
+- 禁止附属插件直接修改主插件帮助列表、命令映射或五个平台命令类。
 
 ## 十六、长期流程约束
 
