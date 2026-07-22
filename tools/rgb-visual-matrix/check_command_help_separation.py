@@ -24,6 +24,14 @@ DEBUG_COMMANDS = {
 HELP_ALLOWED_DEBUG_COMMANDS = {"debughelp"}
 COMMAND_PATTERN = re.compile(r"/wtc\s+(debug[a-z]+)", re.IGNORECASE)
 QUOTED_DEBUG_COMMAND_PATTERN = re.compile(r'"(debug[a-z]+)"', re.IGNORECASE)
+COMMAND_SOURCES = (
+    "bl-world-trashcan-plugin-legacy-1_12/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/legacy/WorldListTrashCanLegacyCommand.java",
+    "bl-world-trashcan-plugin-bukkit-1_13_1_15/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/bukkit/WorldListTrashCanBukkitCommand.java",
+    "bl-world-trashcan-plugin-paper-1_16_1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/WorldListTrashCanCommand.java",
+    "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaCommand.java",
+    "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/UniversalCommand.java",
+)
+COMMAND_NAMES_SOURCE = "bl-world-trashcan-shared-bukkit/src/main/java/pixeltech/bluenine/blworldtrashcan/bukkit/command/WorldListTrashCanCommandNames.java"
 
 
 def read_text(path: Path) -> str:
@@ -33,14 +41,7 @@ def read_text(path: Path) -> str:
 
 def tracked_command_sources() -> list[Path]:
     """列出正式命令源码文件。"""
-    files = []
-    for path in REPO.rglob("*Command.java"):
-        relative = path.relative_to(REPO).as_posix()
-        if relative.startswith(("target/", "build/", "manual-build/", "docs/test-evidence/")):
-            continue
-        if "/src/main/java/" in relative:
-            files.append(path)
-    return sorted(files)
+    return [REPO / relative for relative in COMMAND_SOURCES]
 
 
 def source_message_files() -> list[Path]:
@@ -89,6 +90,16 @@ def extract_static_list(text: str, name: str) -> str:
     return match.group(1) if match else ""
 
 
+def extract_shared_list(text: str, name: str) -> str:
+    """提取共享命令名称类中的不可变 Arrays.asList 内容。"""
+    match = re.search(
+        r"\b" + re.escape(name) + r"\s*=\s*Collections\.unmodifiableList\(Arrays\.asList\((.*?)\)\);",
+        text,
+        re.DOTALL,
+    )
+    return match.group(1) if match else ""
+
+
 def yaml_list_after_key(text: str, key: str) -> list[str]:
     """提取两空格缩进键下的 YAML 列表行。"""
     lines = text.splitlines()
@@ -128,6 +139,10 @@ def check_java_sources() -> tuple[list[str], int]:
     """检查 Java fallback 帮助列表。"""
     errors = []
     files = tracked_command_sources()
+    shared_text = read_text(REPO / COMMAND_NAMES_SOURCE)
+    shared_regular = extract_shared_list(shared_text, "REGULAR")
+    if not shared_regular:
+        errors.append(COMMAND_NAMES_SOURCE + ": 缺少共享 REGULAR 普通补全列表")
     for path in files:
         label = path.relative_to(REPO).as_posix()
         text = read_text(path)
@@ -140,7 +155,8 @@ def check_java_sources() -> tuple[list[str], int]:
             errors.append(label + ": 缺少 sendDebugHelp 方法")
             continue
         errors.extend(check_help_lists(label, help_body, debug_help_body))
-        regular_list = extract_static_list(text, "REGULAR_SUB_COMMANDS")
+        uses_shared_names = "WorldListTrashCanCommandNames.regular()" in text
+        regular_list = shared_regular if uses_shared_names else extract_static_list(text, "REGULAR_SUB_COMMANDS")
         if not regular_list:
             errors.append(label + ": 缺少 REGULAR_SUB_COMMANDS 普通补全列表")
             continue
@@ -150,6 +166,10 @@ def check_java_sources() -> tuple[list[str], int]:
         tab_body = extract_method_body(text, "onTabComplete")
         if 'prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS' not in tab_body:
             errors.append(label + ": 一参 tab 补全未按 debug 前缀拆分")
+        if "addonCommands.sendHelp(sender)" not in help_body:
+            errors.append(label + ": 常规帮助没有追加附属插件副指令")
+        if "addonCommands.completeFirstLevel" not in tab_body:
+            errors.append(label + ": 一参 tab 补全没有合并附属插件副指令")
     return errors, len(files)
 
 

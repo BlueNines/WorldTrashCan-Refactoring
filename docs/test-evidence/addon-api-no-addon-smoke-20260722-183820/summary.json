@@ -1,0 +1,59 @@
+{
+  "testedJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+  "jarSha256": "9442f3808f9ce8e4a376c220bcc4d4db7882f4cbf4c88475318123acdab1bac2",
+  "addonInstalled": false,
+  "allPassed": true,
+  "results": [
+    {
+      "id": "paper1122",
+      "label": "Paper 1.12.2",
+      "expectedPlatform": "legacy-1.12",
+      "checks": {
+        "pluginEnabled": true,
+        "platformSelected": true,
+        "helpHasNoAudit": true,
+        "clearAccepted": true,
+        "serverStayedAlive": true,
+        "noAuditDirectory": true,
+        "noAuditRuntime": true,
+        "noDatabaseDriversInPluginJar": true,
+        "noPluginError": true
+      },
+      "passed": true
+    },
+    {
+      "id": "spigot2612",
+      "label": "Spigot 26.1.2",
+      "expectedPlatform": "paper-1.16-1.20",
+      "checks": {
+        "pluginEnabled": true,
+        "platformSelected": true,
+        "helpHasNoAudit": true,
+        "clearAccepted": true,
+        "serverStayedAlive": true,
+        "noAuditDirectory": true,
+        "noAuditRuntime": true,
+        "noDatabaseDriversInPluginJar": true,
+        "noPluginError": true
+      },
+      "passed": true
+    },
+    {
+      "id": "folia1218",
+      "label": "Folia 1.21.8",
+      "expectedPlatform": "folia-1.20",
+      "checks": {
+        "pluginEnabled": true,
+        "platformSelected": true,
+        "helpHasNoAudit": true,
+        "clearAccepted": true,
+        "serverStayedAlive": true,
+        "noAuditDirectory": true,
+        "noAuditRuntime": true,
+        "noDatabaseDriversInPluginJar": true,
+        "noPluginError": true
+      },
+      "passed": true
+    }
+  ]
+}

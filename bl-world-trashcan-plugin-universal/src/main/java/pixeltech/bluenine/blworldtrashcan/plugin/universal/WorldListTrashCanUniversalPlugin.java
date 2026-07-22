@@ -17,6 +17,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.Metrics;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.api.WorldListTrashCanApiHost;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
@@ -58,6 +59,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
     private static final String FOLIA_ENTITY_LIMIT = "pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaEntityLimitFeature";
 
     private FeatureRegistry featureRegistry;
+    private WorldListTrashCanApiHost apiHost;
     private ServerPlatform platform;
     private RuntimeKind runtimeKind;
     private ConfigBundle configBundle;
@@ -88,6 +90,9 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
     /** 禁用插件并按顺序释放功能模块。 */
     @Override
     public void onDisable() {
+        if (apiHost != null) {
+            apiHost.disable();
+        }
         if (featureRegistry != null) {
             featureRegistry.disableAll();
         }
@@ -403,6 +408,8 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         this.messageService.reload(configBundle.getLanguageFile());
         this.runtimeKind = detectRuntimeKind();
         this.platform = createPlatform(runtimeKind);
+        this.apiHost = new WorldListTrashCanApiHost(this, platform);
+        this.apiHost.enable();
         this.metrics = BStatsMetricsService.start(this, "universal-" + platform.id());
         this.featureRegistry = new FeatureRegistry();
         final Supplier<ConfigBundle> configSupplier = new Supplier<ConfigBundle>() {
@@ -464,7 +471,8 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
                     WorldTrashRouter.class,
                     GlobalTrashService.class,
                     PersonalTrashService.class,
-                    DropOwnerTracker.class
+                    DropOwnerTracker.class,
+                    pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge.class
             }, new Object[]{
                     this,
                     platform,
@@ -472,10 +480,12 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
                     trashRouter,
                     globalTrashService,
                     personalTrashService,
-                    dropOwnerTracker
+                    dropOwnerTracker,
+                    apiHost.auditBridge()
             });
         }
-        return new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, dropOwnerTracker);
+        return new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService,
+                personalTrashService, dropOwnerTracker, apiHost.auditBridge());
     }
 
     /** 创建当前运行环境的实体限制功能。 */
@@ -644,7 +654,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
 
     /** 注册主命令和旧命令别名。 */
     private void registerCommands() {
-        UniversalCommand executor = new UniversalCommand(this);
+        UniversalCommand executor = new UniversalCommand(this, apiHost.commandRegistry());
         registerCommand("worldlisttrashcan", executor);
     }
 

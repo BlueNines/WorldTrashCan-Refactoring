@@ -12,6 +12,7 @@ COMMAND_SOURCES = {
     "folia": "bl-world-trashcan-plugin-folia-1_20/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/folia/WorldListTrashCanFoliaCommand.java",
     "universal": "bl-world-trashcan-plugin-universal/src/main/java/pixeltech/bluenine/blworldtrashcan/plugin/universal/UniversalCommand.java",
 }
+COMMAND_NAMES_SOURCE = "bl-world-trashcan-shared-bukkit/src/main/java/pixeltech/bluenine/blworldtrashcan/bukkit/command/WorldListTrashCanCommandNames.java"
 EXPECTED_DEBUG_NOTIFY_VALUES = ["10", "5", "0", "-1", "-2", "-3", "-4", "-5"]
 EXPECTED_DEBUG_ROUTE_VALUES = ["world", "personal", "global"]
 FALLBACK_HANDLED_SUB_COMMANDS = {"help"}
@@ -25,6 +26,18 @@ def read_text(path: Path) -> str:
 def extract_static_list(text: str, name: str) -> list[str]:
     """提取 Java Arrays.asList 静态列表中的字符串值。"""
     match = re.search(r"\b" + re.escape(name) + r"\s*=\s*Arrays\.asList\((.*?)\);", text, re.DOTALL)
+    if not match:
+        return []
+    return re.findall(r'"([^"]+)"', match.group(1))
+
+
+def extract_shared_list(text: str, name: str) -> list[str]:
+    """提取共享命令名称类中的不可变 Arrays.asList。"""
+    match = re.search(
+        r"\b" + re.escape(name) + r"\s*=\s*Collections\.unmodifiableList\(Arrays\.asList\((.*?)\)\);",
+        text,
+        re.DOTALL,
+    )
     if not match:
         return []
     return re.findall(r'"([^"]+)"', match.group(1))
@@ -69,14 +82,16 @@ def extract_completion_values(tab_body: str, command: str, arg_index: int) -> li
     return re.findall(r'"([^"]+)"', match.group(1))
 
 
-def source_snapshot(label: str, path: Path) -> tuple[dict, list[str]]:
+def source_snapshot(label: str, path: Path, shared_regular: list[str], shared_all: list[str]) -> tuple[dict, list[str]]:
     """读取单个命令类快照并返回局部错误。"""
     errors = []
     if not path.is_file():
         return {}, [label + ": 命令源码不存在: " + path.relative_to(REPO).as_posix()]
     text = read_text(path)
-    regular = extract_static_list(text, "REGULAR_SUB_COMMANDS")
-    all_commands = extract_static_list(text, "SUB_COMMANDS")
+    uses_shared_regular = "WorldListTrashCanCommandNames.regular()" in text
+    uses_shared_all = "WorldListTrashCanCommandNames.all()" in text
+    regular = shared_regular if uses_shared_regular else extract_static_list(text, "REGULAR_SUB_COMMANDS")
+    all_commands = shared_all if uses_shared_all else extract_static_list(text, "SUB_COMMANDS")
     on_command_body = extract_method_body(text, "onCommand")
     tab_body = extract_method_body(text, "onTabComplete")
     if not regular:
@@ -95,6 +110,7 @@ def source_snapshot(label: str, path: Path) -> tuple[dict, list[str]]:
         "debugRoute": extract_completion_values(tab_body, "debugroute", 2),
         "hasClearBooleanCompletion": "ClearCommandOptions.booleanValues()" in tab_body,
         "hasRegularDebugSplit": 'prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS' in tab_body,
+        "usesSharedNames": uses_shared_regular and uses_shared_all,
     }, errors
 
 
@@ -141,6 +157,8 @@ def validate_snapshot(label: str, snapshot: dict) -> list[str]:
         errors.append(label + ": 缺少 clear true/false 补全")
     if not snapshot.get("hasRegularDebugSplit"):
         errors.append(label + ": 一参补全没有按 debug 前缀切换范围")
+    if not snapshot.get("usesSharedNames"):
+        errors.append(label + ": 没有使用共享命令名称源")
     return errors
 
 
@@ -148,8 +166,18 @@ def run_checks() -> dict:
     """执行五个平台命令类一致性审计。"""
     snapshots = {}
     errors = []
+    shared_source = REPO / COMMAND_NAMES_SOURCE
+    shared_text = read_text(shared_source) if shared_source.is_file() else ""
+    shared_regular = extract_shared_list(shared_text, "REGULAR")
+    shared_all = extract_shared_list(shared_text, "ALL")
+    if not shared_regular:
+        errors.append("共享命令名称源缺少 REGULAR")
+    if not shared_all:
+        errors.append("共享命令名称源缺少 ALL")
     for label, relative_path in sorted(COMMAND_SOURCES.items()):
-        snapshot, source_errors = source_snapshot(label, REPO / relative_path)
+        snapshot, source_errors = source_snapshot(
+            label, REPO / relative_path, shared_regular, shared_all
+        )
         snapshots[label] = snapshot
         errors.extend(source_errors)
         errors.extend(validate_snapshot(label, snapshot))

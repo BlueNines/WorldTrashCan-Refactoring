@@ -18,6 +18,7 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.CapabilityReport;
 
 import java.util.EnumSet;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /** Folia 1.20 平台实现。 */
 public final class FoliaPlatform implements ServerPlatform {
@@ -114,5 +115,30 @@ public final class FoliaPlatform implements ServerPlatform {
             public void run() {
             }
         }, 1L);
+    }
+
+    /** 通过玩家实体调度器执行附属插件回调。 */
+    @Override
+    public boolean executeForPlayer(UUID playerUuid, final Consumer<Player> action) {
+        if (playerUuid == null || action == null) {
+            return false;
+        }
+        final Player player = Bukkit.getPlayer(playerUuid);
+        if (player == null) {
+            return false;
+        }
+        player.getScheduler().execute(plugin, new Runnable() {
+            /** 在玩家实体上下文执行回调。 */
+            @Override
+            public void run() {
+                action.accept(player);
+            }
+        }, new Runnable() {
+            /** 玩家实体不可用时静默跳过。 */
+            @Override
+            public void run() {
+            }
+        }, 1L);
+        return true;
     }
 }

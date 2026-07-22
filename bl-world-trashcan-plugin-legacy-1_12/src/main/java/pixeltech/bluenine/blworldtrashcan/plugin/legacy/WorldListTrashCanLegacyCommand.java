@@ -9,7 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
+import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanCommandRegistry;
+import pixeltech.bluenine.blworldtrashcan.bukkit.command.AddonCommandDispatcher;
 import pixeltech.bluenine.blworldtrashcan.bukkit.command.ClearCommandOptions;
+import pixeltech.bluenine.blworldtrashcan.bukkit.command.WorldListTrashCanCommandNames;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -22,15 +25,16 @@ import java.util.Locale;
 
 /** Legacy 1.12 主命令。 */
 public final class WorldListTrashCanLegacyCommand implements CommandExecutor, TabCompleter {
-    private static final List<String> REGULAR_SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban");
-    private static final List<String> SUB_COMMANDS = Arrays.asList("help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute", "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify", "debugplayer", "debugrgb", "debugrgbchannels");
+    private static final List<String> REGULAR_SUB_COMMANDS = WorldListTrashCanCommandNames.regular();
+    private static final List<String> SUB_COMMANDS = WorldListTrashCanCommandNames.all();
     private final WorldListTrashCanLegacyPlugin plugin;
+    private final AddonCommandDispatcher addonCommands;
 
     /** 创建命令执行器。 */
-    public WorldListTrashCanLegacyCommand(WorldListTrashCanLegacyPlugin plugin) {
+    public WorldListTrashCanLegacyCommand(WorldListTrashCanLegacyPlugin plugin,
+                                          DefaultWorldListTrashCanCommandRegistry commandRegistry) {
         this.plugin = plugin;
+        this.addonCommands = new AddonCommandDispatcher(commandRegistry, plugin.messages());
     }
 
     /** 返回格式化命令消息。 */
@@ -173,6 +177,9 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
             handleDebugRgbChannels(sender, args);
             return true;
         }
+        if (addonCommands.dispatch(sender, sub, args)) {
+            return true;
+        }
         sendHelp(sender);
         return true;
     }
@@ -182,7 +189,8 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             String prefix = args[0].toLowerCase(Locale.ROOT);
-            return filter(prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS, args[0]);
+            return addonCommands.completeFirstLevel(sender,
+                    prefix.startsWith("debug") ? SUB_COMMANDS : REGULAR_SUB_COMMANDS, args[0]);
         }
         if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
             return filter(ClearCommandOptions.booleanValues(), args[1]);
@@ -193,7 +201,7 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
         if (args.length == 3 && "debugroute".equalsIgnoreCase(args[0])) {
             return filter(Arrays.asList("world", "personal", "global"), args[2]);
         }
-        return Collections.emptyList();
+        return addonCommands.tabComplete(sender, args);
     }
 
     /** 发送 clear guards 参数用法。 */
@@ -257,6 +265,7 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
                 "&b/wtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
                 "&b/wtc debughelp &7- 查看后台调试命令",
                 "&b/wtc reload &7- 重载插件"));
+        addonCommands.sendHelp(sender);
     }
 
     /** 发送调试命令帮助。 */

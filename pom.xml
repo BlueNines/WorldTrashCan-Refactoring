@@ -12,6 +12,7 @@
     <name>WorldListTrashCan Parent</name>
 
     <modules>
+        <module>world-list-trashcan-api</module>
         <module>bl-world-trashcan-core</module>
         <module>bl-world-trashcan-config</module>
         <module>bl-world-trashcan-storage</module>
@@ -63,6 +64,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>pixeltech.bluenine</groupId>
+                <artifactId>world-list-trashcan-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>pixeltech.bluenine</groupId>
                 <artifactId>bl-world-trashcan-core</artifactId>

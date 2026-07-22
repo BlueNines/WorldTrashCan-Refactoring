@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
@@ -40,6 +41,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
+import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSession;
+import pixeltech.worldlisttrashcan.api.audit.CleanupRunCompletion;
+import pixeltech.worldlisttrashcan.api.audit.CleanupRunContext;
+import pixeltech.worldlisttrashcan.api.audit.CleanupTrigger;
 
 /** 后台清理功能模块，清理决策交给 core，Bukkit 层只执行结果。 */
 public final class CleanupFeature implements Feature {
@@ -54,6 +59,7 @@ public final class CleanupFeature implements Feature {
     private final GlobalTrashService globalTrashService;
     private final PersonalTrashService personalTrashService;
     private final DropOwnerTracker dropOwnerTracker;
+    private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
     private BossBar bossBar;
@@ -65,7 +71,8 @@ public final class CleanupFeature implements Feature {
     /** 创建后台清理功能。 */
     public CleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
                           TrashRouter trashRouter, GlobalTrashService globalTrashService,
-                          PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker) {
+                          PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker,
+                          DefaultWorldListTrashCanAuditBridge auditBridge) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
@@ -73,6 +80,7 @@ public final class CleanupFeature implements Feature {
         this.globalTrashService = globalTrashService;
         this.personalTrashService = personalTrashService;
         this.dropOwnerTracker = dropOwnerTracker;
+        this.auditBridge = auditBridge;
     }
 
     /** 返回功能 ID。 */
@@ -108,11 +116,16 @@ public final class CleanupFeature implements Feature {
 
     /** 立即执行一次清理，默认遵守定时扫地门禁。 */
     public CleanupStats runNow() {
-        return runNow(false);
+        return runNow(false, CleanupTrigger.SCHEDULED);
     }
 
     /** 立即执行一次清理，可由命令入口决定是否忽略 guards。 */
     public CleanupStats runNow(boolean ignoreGuards) {
+        return runNow(ignoreGuards, CleanupTrigger.MANUAL);
+    }
+
+    /** 执行一次带明确触发来源的清理。 */
+    private CleanupStats runNow(boolean ignoreGuards, CleanupTrigger trigger) {
         ConfigBundle bundle = configSupplier.get();
         if (!isWorldScanSupported()) {
             CleanupStats stats = new CleanupStats();
@@ -133,11 +146,17 @@ public final class CleanupFeature implements Feature {
             logCleanupGuardSkipped(stats);
             return stats;
         }
+        CleanupAuditSession auditSession = auditBridge.beginRun(new CleanupRunContext(
+                UUID.randomUUID(), System.currentTimeMillis(), trigger, ignoreGuards));
+        boolean auditFinalized = false;
+        try {
         if (!ignoreGuards && guardConfig.getMinTotalEntities() > 0) {
-            cleanWithEntityGuard(bundle, cleanupConfig, policy, stats);
+            cleanWithEntityGuard(bundle, cleanupConfig, policy, stats, auditSession);
             if (stats.isGuardSkipped()) {
                 lastStats = stats;
                 logCleanupGuardSkipped(stats);
+                auditSession.discard();
+                auditFinalized = true;
                 return stats;
             }
         } else {
@@ -147,7 +166,7 @@ public final class CleanupFeature implements Feature {
                 if (cleanupConfig.isIgnoredWorld(world.getName())) {
                     continue;
                 }
-                cleanWorld(world, policy, stats);
+                cleanWorld(world, policy, stats, auditSession);
             }
         }
         sendPersonalTrashBatchNotify(stats);
@@ -167,7 +186,14 @@ public final class CleanupFeature implements Feature {
                 + ", worldTrashSkippedUnloadedChunks=" + trashRouter.getSkippedUnloadedChunkAccesses()
                 + ", globalTrashRefreshed=" + stats.globalTrashRefreshed);
         logConsoleCleanupDetails(stats, false);
+        finishAudit(auditSession, stats, false);
+        auditFinalized = true;
         return stats;
+        } finally {
+            if (!auditFinalized) {
+                auditSession.discard();
+            }
+        }
     }
 
     /** 返回最近一次清理统计。 */
@@ -255,14 +281,15 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 清理单个世界。 */
-    private void cleanWorld(World world, CleanupPolicy policy, CleanupStats stats) {
+    private void cleanWorld(World world, CleanupPolicy policy, CleanupStats stats,
+                            CleanupAuditSession auditSession) {
         stats.worlds++;
         for (Entity entity : world.getEntities()) {
             if (entity instanceof Player) {
                 continue;
             }
             if (entity instanceof Item) {
-                cleanItem((Item) entity, policy, stats);
+                cleanItem((Item) entity, policy, stats, auditSession);
                 continue;
             }
             cleanEntity(entity, policy, stats);
@@ -270,7 +297,8 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 按扫地门禁统计目标实体，达到阈值后再实际清理。 */
-    private void cleanWithEntityGuard(ConfigBundle bundle, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats) {
+    private void cleanWithEntityGuard(ConfigBundle bundle, CleanupConfig cleanupConfig, CleanupPolicy policy,
+                                      CleanupStats stats, CleanupAuditSession auditSession) {
         int minTotalEntities = cleanupConfig.getGuardConfig().getMinTotalEntities();
         if (minTotalEntities > MAX_DEFERRED_GUARD_TARGETS) {
             CountResult result = countCleanableTargets(cleanupConfig, policy);
@@ -285,7 +313,7 @@ public final class CleanupFeature implements Feature {
                 if (cleanupConfig.isIgnoredWorld(world.getName())) {
                     continue;
                 }
-                cleanWorld(world, policy, stats);
+                cleanWorld(world, policy, stats, auditSession);
             }
             return;
         }
@@ -308,13 +336,13 @@ public final class CleanupFeature implements Feature {
                         if (stats.getGuardTargetEntities() >= minTotalEntities) {
                             thresholdReached = true;
                             handleGlobalTrashRefresh(bundle, stats);
-                            cleanDeferredTargets(deferredTargets, policy, stats);
+                            cleanDeferredTargets(deferredTargets, policy, stats, auditSession);
                             deferredTargets.clear();
                         }
                     }
                     continue;
                 }
-                cleanNonPlayerEntity(entity, policy, stats);
+                cleanNonPlayerEntity(entity, policy, stats, auditSession);
             }
         }
         if (!thresholdReached) {
@@ -340,19 +368,21 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 清理门禁通过前暂存的候选实体。 */
-    private void cleanDeferredTargets(List<Entity> deferredTargets, CleanupPolicy policy, CleanupStats stats) {
+    private void cleanDeferredTargets(List<Entity> deferredTargets, CleanupPolicy policy, CleanupStats stats,
+                                      CleanupAuditSession auditSession) {
         for (Entity entity : deferredTargets) {
             if (entity == null || entity.isDead()) {
                 continue;
             }
-            cleanNonPlayerEntity(entity, policy, stats);
+            cleanNonPlayerEntity(entity, policy, stats, auditSession);
         }
     }
 
     /** 清理一个非玩家实体。 */
-    private void cleanNonPlayerEntity(Entity entity, CleanupPolicy policy, CleanupStats stats) {
+    private void cleanNonPlayerEntity(Entity entity, CleanupPolicy policy, CleanupStats stats,
+                                      CleanupAuditSession auditSession) {
         if (entity instanceof Item) {
-            cleanItem((Item) entity, policy, stats);
+            cleanItem((Item) entity, policy, stats, auditSession);
             return;
         }
         cleanEntity(entity, policy, stats);
@@ -395,7 +425,8 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 清理单个掉落物实体。 */
-    private void cleanItem(Item item, CleanupPolicy policy, CleanupStats stats) {
+    private void cleanItem(Item item, CleanupPolicy policy, CleanupStats stats,
+                           CleanupAuditSession auditSession) {
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         if (snapshot == null) {
             stats.itemsSkipped++;
@@ -409,8 +440,9 @@ public final class CleanupFeature implements Feature {
             stats.itemsSkipped++;
             return;
         }
-        TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats);
+        TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats, auditSession);
         if (finalDecision.getRoute() == TrashRoute.REMOVE) {
+            auditSession.recordItem(item.getItemStack());
             forgetTrackedOwner(item);
             item.remove();
             stats.itemsRemoved += Math.max(1, snapshot.getAmount());
@@ -419,7 +451,8 @@ public final class CleanupFeature implements Feature {
 
     /** 按核心决策尝试路由，失败后逐级降级到删除。 */
     private TrashRoutingDecision routeWithFallback(Item item, ItemSnapshot snapshot, CleanupPolicy policy,
-                                                   TrashRoutingDecision firstDecision, CleanupStats stats) {
+                                                   TrashRoutingDecision firstDecision, CleanupStats stats,
+                                                   CleanupAuditSession auditSession) {
         TrashRoutingDecision decision = firstDecision;
         boolean worldAvailable = trashRouter.hasWorldTrash(item.getWorld(), item.getItemStack());
         boolean personalAvailable = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
@@ -427,6 +460,7 @@ public final class CleanupFeature implements Feature {
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
             ItemStack routedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
             if (trashRouter.route(item.getWorld(), snapshot.getOwnerUuid(), item.getItemStack(), decision.getRoute())) {
+                auditSession.recordItem(routedItemStack);
                 forgetTrackedOwner(item);
                 item.remove();
                 stats.itemsRouted += Math.max(1, snapshot.getAmount());
@@ -449,6 +483,15 @@ public final class CleanupFeature implements Feature {
             stats.itemsSkipped++;
         }
         return decision;
+    }
+
+    /** 完成有内容的审计批次；空批次直接丢弃。 */
+    private void finishAudit(CleanupAuditSession auditSession, CleanupStats stats, boolean partial) {
+        if (stats.getItemsHandled() <= 0) {
+            auditSession.discard();
+            return;
+        }
+        auditSession.complete(new CleanupRunCompletion(System.currentTimeMillis(), partial));
     }
 
     /** 使用短期 owner 记录补齐不支持 PDC 平台上的物品归属。 */

@@ -67,9 +67,10 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <artifactSet>
-                                <includes>
-                                    <include>pixeltech.bluenine:bl-world-trashcan-core</include>
+                        <artifactSet>
+                            <includes>
+                                <include>pixeltech.bluenine:world-list-trashcan-api</include>
+                                <include>pixeltech.bluenine:bl-world-trashcan-core</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-config</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-storage</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-shared-bukkit</include>

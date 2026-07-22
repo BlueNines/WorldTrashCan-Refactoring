@@ -15,6 +15,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.Metrics;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.api.WorldListTrashCanApiHost;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.EntityLimitFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.FeatureRegistry;
@@ -43,6 +44,7 @@ import java.util.function.Supplier;
 /** Legacy 1.12 产物入口。 */
 public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
     private FeatureRegistry featureRegistry;
+    private WorldListTrashCanApiHost apiHost;
     private ServerPlatform platform;
     private ConfigBundle configBundle;
     private CleanupFeature cleanupFeature;
@@ -67,6 +69,8 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
         this.messageService = new BukkitMessageService(this);
         this.messageService.reload(configBundle.getLanguageFile());
         this.platform = new LegacyPlatform(this);
+        this.apiHost = new WorldListTrashCanApiHost(this, platform);
+        this.apiHost.enable();
         this.metrics = BStatsMetricsService.start(this, platform.id());
         this.featureRegistry = new FeatureRegistry();
         Supplier<ConfigBundle> configSupplier = new Supplier<ConfigBundle>() {
@@ -88,7 +92,8 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
                 platform.itemSnapshotMapper()
         );
         this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService, dropOwnerTracker);
-        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, dropOwnerTracker);
+        this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService,
+                personalTrashService, dropOwnerTracker, apiHost.auditBridge());
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
             /** 刷新公共黑名单等运行期配置。 */
@@ -112,6 +117,9 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
     /** 禁用插件。 */
     @Override
     public void onDisable() {
+        if (apiHost != null) {
+            apiHost.disable();
+        }
         if (featureRegistry != null) {
             featureRegistry.disableAll();
         }
@@ -387,7 +395,7 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
 
     /** 注册命令。 */
     private void registerCommands() {
-        WorldListTrashCanLegacyCommand executor = new WorldListTrashCanLegacyCommand(this);
+        WorldListTrashCanLegacyCommand executor = new WorldListTrashCanLegacyCommand(this, apiHost.commandRegistry());
         registerCommand("worldlisttrashcan", executor);
     }
 

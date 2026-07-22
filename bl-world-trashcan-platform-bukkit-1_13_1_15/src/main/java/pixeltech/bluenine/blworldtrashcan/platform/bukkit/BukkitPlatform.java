@@ -19,9 +19,11 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.CapabilityReport;
 
 import java.util.EnumSet;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /** Bukkit/Spigot 1.13-1.15 平台实现。 */
 public final class BukkitPlatform implements ServerPlatform {
+    private final Plugin plugin;
     private final SchedulerAdapter scheduler;
     private final ItemSnapshotMapper itemSnapshotMapper;
     private final EntitySnapshotMapper entitySnapshotMapper;
@@ -29,6 +31,7 @@ public final class BukkitPlatform implements ServerPlatform {
 
     /** 创建 Bukkit 平台实现。 */
     public BukkitPlatform(Plugin plugin) {
+        this.plugin = plugin;
         this.scheduler = new BukkitSchedulerAdapter(plugin);
         this.itemSnapshotMapper = new BukkitItemSnapshotMapper();
         this.entitySnapshotMapper = new BukkitEntitySnapshotMapper();
@@ -97,5 +100,24 @@ public final class BukkitPlatform implements ServerPlatform {
         if (player != null) {
             player.sendMessage(RichTextRenderer.color(player, message));
         }
+    }
+
+    /** 在 Bukkit 主线程执行玩家回调。 */
+    @Override
+    public boolean executeForPlayer(final UUID playerUuid, final Consumer<Player> action) {
+        if (playerUuid == null || action == null || Bukkit.getPlayer(playerUuid) == null) {
+            return false;
+        }
+        Bukkit.getScheduler().runTask(plugin, new Runnable() {
+            /** 重新确认玩家在线后执行回调。 */
+            @Override
+            public void run() {
+                Player player = Bukkit.getPlayer(playerUuid);
+                if (player != null) {
+                    action.accept(player);
+                }
+            }
+        });
+        return true;
     }
 }

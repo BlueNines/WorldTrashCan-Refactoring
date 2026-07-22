@@ -116,6 +116,7 @@ world-trash:
 command:
   # 通用無權限提示。
   no-permission: "{prefix}&#FFD166你沒有權限執行該指令。"
+  addon-failed: "{prefix}&#FF6B6B附屬插件指令執行失敗 &#64748B| &#C9D4E2請查看後台日誌。"
   # 重載成功提示。
   reload-success: "{prefix}&#5AC8FAWorldListTrashCan 已重載。"
   # 手動清理完成提示，{worlds} 世界數，{routed} 回收物品數，{items} 移除物品數，{entities} 移除實體數。

@@ -1,9 +1,11 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.platform;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import pixeltech.bluenine.blworldtrashcan.core.capability.CapabilityReport;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /** Bukkit 侧平台入口，每个版本产物提供自己的实现。 */
 public interface ServerPlatform {
@@ -27,4 +29,7 @@ public interface ServerPlatform {
 
     /** 向指定在线玩家发送消息；玩家不在线时静默跳过。 */
     void sendMessage(UUID playerUuid, String message);
+
+    /** 在玩家所属合法线程执行回调；无法调度时返回 false。 */
+    boolean executeForPlayer(UUID playerUuid, Consumer<Player> action);
 }

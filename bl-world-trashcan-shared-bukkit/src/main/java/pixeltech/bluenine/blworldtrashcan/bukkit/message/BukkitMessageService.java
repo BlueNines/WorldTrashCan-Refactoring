@@ -59,6 +59,16 @@ public final class BukkitMessageService {
         return color(player, applyPlaceholders(raw, replacements));
     }
 
+    /** 直接渲染调用方提供的原始消息。 */
+    public String render(String raw) {
+        return color(applyPlaceholders(raw));
+    }
+
+    /** 按玩家版本直接渲染调用方提供的原始消息。 */
+    public String render(Player player, String raw) {
+        return color(player, applyPlaceholders(raw));
+    }
+
     /** 返回格式化后的多行消息。 */
     public List<String> list(String key, List<String> fallback, String... replacements) {
         return list(null, key, fallback, replacements);
