@@ -19,6 +19,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRouter;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRoutingResult;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
 import pixeltech.bluenine.blworldtrashcan.config.NotifyConfig;
@@ -42,6 +43,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSession;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunCompletion;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunContext;
 import pixeltech.worldlisttrashcan.api.audit.CleanupTrigger;
@@ -442,9 +444,10 @@ public final class CleanupFeature implements Feature {
         }
         TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats, auditSession);
         if (finalDecision.getRoute() == TrashRoute.REMOVE) {
-            auditSession.recordItem(item.getItemStack());
+            ItemStack removedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
             forgetTrackedOwner(item);
             item.remove();
+            auditSession.recordItem(removedItemStack, CleanupItemDestination.directRemove());
             stats.itemsRemoved += Math.max(1, snapshot.getAmount());
         }
     }
@@ -459,10 +462,12 @@ public final class CleanupFeature implements Feature {
         boolean globalAvailable = trashRouter.hasGlobalTrash(item.getItemStack());
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
             ItemStack routedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
-            if (trashRouter.route(item.getWorld(), snapshot.getOwnerUuid(), item.getItemStack(), decision.getRoute())) {
-                auditSession.recordItem(routedItemStack);
+            TrashRoutingResult routed = trashRouter.routeDetailed(item.getWorld(), snapshot.getOwnerUuid(),
+                    item.getItemStack(), decision.getRoute(), true);
+            if (routed.isSuccess()) {
                 forgetTrackedOwner(item);
                 item.remove();
+                auditSession.recordItem(routedItemStack, routed.getDestination());
                 stats.itemsRouted += Math.max(1, snapshot.getAmount());
                 countRoute(stats, decision.getRoute());
                 if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {

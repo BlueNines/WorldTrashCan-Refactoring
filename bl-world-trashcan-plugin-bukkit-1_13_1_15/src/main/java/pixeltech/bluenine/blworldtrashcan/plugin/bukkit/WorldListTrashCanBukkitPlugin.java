@@ -83,8 +83,10 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
             }
         };
         PaymentService paymentService = BukkitVaultPaymentService.create(this);
-        this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService, platform.itemSnapshotMapper());
-        this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), paymentService, messageService, platform.itemSnapshotMapper(), platform);
+        this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
+                messageService, platform.itemSnapshotMapper(), apiHost.auditBridge());
+        this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
+                paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,

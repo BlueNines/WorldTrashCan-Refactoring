@@ -294,7 +294,9 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
                 if (block.getType() != Material.CHEST) {
                     block.setType(Material.CHEST);
                 }
-                boolean saved = trashRouter.addWorldTrash(block, configBundle.getTrashConfig().getWorldTrash().getDefaultMaxCount());
+                boolean saved = trashRouter.addWorldTrash(block,
+                        configBundle.getTrashConfig().getWorldTrash().getDefaultMaxCount(),
+                        true, player.getUniqueId(), player.getName());
                 getLogger().info("[Debug] debugWorldTrash player=" + player.getName()
                         + ", world=" + block.getWorld().getName()
                         + ", x=" + block.getX()
@@ -420,8 +422,10 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
             }
         };
         PaymentService paymentService = createPaymentService(runtimeKind);
-        this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService, platform.itemSnapshotMapper());
-        this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), paymentService, messageService, platform.itemSnapshotMapper(), platform);
+        this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
+                messageService, platform.itemSnapshotMapper(), apiHost.auditBridge());
+        this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
+                paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,

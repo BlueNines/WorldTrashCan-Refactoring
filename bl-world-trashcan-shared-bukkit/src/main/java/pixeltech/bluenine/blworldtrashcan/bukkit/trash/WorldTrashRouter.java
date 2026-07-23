@@ -1,6 +1,7 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.trash;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -14,6 +15,7 @@ import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.storage.TrashLocation;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashData;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashStorage;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,30 +84,45 @@ public final class WorldTrashRouter implements TrashRouter {
         return globalTrashService != null && globalTrashService.hasSpace(itemStack);
     }
 
-    /** 尝试按路由存放物品。 */
+    /** 尝试按路由存放物品并返回实际成功目标。 */
     @Override
-    public boolean route(World world, UUID ownerUuid, ItemStack itemStack, TrashRoute route) {
+    public TrashRoutingResult routeDetailed(World world, UUID ownerUuid, ItemStack itemStack,
+                                            TrashRoute route, boolean cleanupSource) {
         if (route == TrashRoute.PERSONAL_TRASH) {
-            return personalTrashService != null && personalTrashService.addItem(ownerUuid, itemStack);
+            if (personalTrashService == null || ownerUuid == null) {
+                return TrashRoutingResult.failure();
+            }
+            boolean added = cleanupSource
+                    ? personalTrashService.addCleanupItem(ownerUuid, itemStack)
+                    : personalTrashService.addItem(ownerUuid, itemStack);
+            return added ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
+                    ownerUuid, playerName(ownerUuid))) : TrashRoutingResult.failure();
         }
         if (route == TrashRoute.GLOBAL_TRASH) {
-            return globalTrashService != null && globalTrashService.addItem(itemStack);
+            if (globalTrashService == null) {
+                return TrashRoutingResult.failure();
+            }
+            boolean added = cleanupSource
+                    ? globalTrashService.addCleanupItem(itemStack)
+                    : globalTrashService.addItem(itemStack);
+            return added ? TrashRoutingResult.success(CleanupItemDestination.globalTrash())
+                    : TrashRoutingResult.failure();
         }
         if (route != TrashRoute.WORLD_TRASH) {
-            return false;
+            return TrashRoutingResult.failure();
         }
         WorldTrashData data = getData(world);
         if (data == null) {
-            return false;
+            return TrashRoutingResult.failure();
         }
         ItemStack cleanItemStack = sanitize(itemStack);
         for (TrashLocation location : data.getLocations()) {
             Inventory inventory = getInventory(location);
             if (inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize())) {
-                return true;
+                return TrashRoutingResult.success(destination(location));
             }
         }
-        return false;
+        return TrashRoutingResult.failure();
     }
 
     /** 返回指定世界可尝试的世界垃圾桶位置快照。 */
@@ -162,6 +179,12 @@ public final class WorldTrashRouter implements TrashRouter {
 
     /** 添加世界垃圾桶位置，可由 OP 创建路径绕过数量上限。 */
     public boolean addWorldTrash(Block block, int defaultMaxCount, boolean bypassMaxCount) {
+        return addWorldTrash(block, defaultMaxCount, bypassMaxCount, null, "");
+    }
+
+    /** 添加带创建者信息的世界垃圾桶位置。 */
+    public boolean addWorldTrash(Block block, int defaultMaxCount, boolean bypassMaxCount,
+                                 UUID ownerUuid, String ownerName) {
         if (block == null || block.getWorld() == null) {
             return false;
         }
@@ -171,7 +194,7 @@ public final class WorldTrashRouter implements TrashRouter {
             return false;
         }
         Set<TrashLocation> locations = new HashSet<>(data.getLocations());
-        locations.add(toLocation(block));
+        locations.add(toLocation(block, ownerUuid, ownerName));
         return save(new WorldTrashData(data.getWorldName(), locations, data.getBannedMaterials(), data.getMaxTrashCanCount()));
     }
 
@@ -323,7 +346,13 @@ public final class WorldTrashRouter implements TrashRouter {
 
     /** 转成存储位置。 */
     private TrashLocation toLocation(Block block) {
-        return new TrashLocation(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+        return toLocation(block, null, "");
+    }
+
+    /** 转成带创建者的存储位置。 */
+    private TrashLocation toLocation(Block block, UUID ownerUuid, String ownerName) {
+        return new TrashLocation(block.getWorld().getName(), block.getX(), block.getY(), block.getZ(),
+                ownerUuid, ownerName);
     }
 
     /** 获取容器背包。 */
@@ -379,6 +408,18 @@ public final class WorldTrashRouter implements TrashRouter {
     /** 清理插件内部物品标记后用于写入世界垃圾桶。 */
     private ItemStack sanitize(ItemStack itemStack) {
         return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
+    }
+
+    /** 把世界垃圾桶存储位置转成公开审计去向。 */
+    public CleanupItemDestination destination(TrashLocation location) {
+        return CleanupItemDestination.worldTrash(location.getWorldName(), location.getX(),
+                location.getY(), location.getZ(), location.getOwnerUuid(), location.getOwnerName());
+    }
+
+    /** 返回个人垃圾桶 owner 当前可用名字。 */
+    private String playerName(UUID ownerUuid) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(ownerUuid);
+        return player.getName() == null ? "" : player.getName();
     }
 
     /** 标准化世界名。 */

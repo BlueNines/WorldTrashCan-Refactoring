@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 /** 主插件向清理审计附属插件提供的稳定服务门面。 */
 public interface WorldListTrashCanAuditBridge {
-    int API_VERSION = 1;
+    int API_VERSION = 2;
 
     /** 返回当前清理审计 API 版本。 */
     int getApiVersion();

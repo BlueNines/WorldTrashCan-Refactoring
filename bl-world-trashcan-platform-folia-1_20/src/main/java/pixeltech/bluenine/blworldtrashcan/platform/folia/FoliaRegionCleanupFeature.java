@@ -27,6 +27,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRoutingResult;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
 import pixeltech.bluenine.blworldtrashcan.config.NotifyConfig;
@@ -50,6 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSession;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunCompletion;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunContext;
 import pixeltech.worldlisttrashcan.api.audit.CleanupTrigger;
@@ -570,9 +572,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 return;
             }
             if (route == TrashRoute.REMOVE) {
-                tracker.recordItem(itemStack);
                 forgetTrackedOwner(item);
                 item.remove();
+                tracker.recordItem(itemStack, CleanupItemDestination.directRemove());
                 stats.addItemsRemoved(itemStack.getAmount());
                 return;
             }
@@ -586,10 +588,11 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, 0);
                 return;
             }
-            if (routeVirtual(item, itemStack, snapshot.getOwnerUuid(), route)) {
-                tracker.recordItem(itemStack);
+            TrashRoutingResult virtualResult = routeVirtual(item, itemStack, snapshot.getOwnerUuid(), route);
+            if (virtualResult.isSuccess()) {
                 forgetTrackedOwner(item);
                 item.remove();
+                tracker.recordItem(itemStack, virtualResult.getDestination());
                 stats.addItemsRouted(itemStack.getAmount(), route);
                 if (route == TrashRoute.PERSONAL_TRASH) {
                     stats.addPersonalTrashItem(snapshot.getOwnerUuid(), itemStack);
@@ -640,7 +643,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
                         if (trashRouter.routeWorldTrashAt(location, itemStack.clone())) {
                             forgetTrackedOwner(item);
                             stats.addItemsRouted(itemStack.getAmount(), TrashRoute.WORLD_TRASH);
-                            scheduleRemoveRoutedItem(item, itemStack, tracker);
+                            scheduleRemoveRoutedItem(item, itemStack, tracker,
+                                    trashRouter.destination(location));
                         } else {
                             tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, index + 1);
                         }
@@ -706,7 +710,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
 
     /** 删除已经成功路由的物品实体。 */
     private void scheduleRemoveRoutedItem(final Item item, final ItemStack itemStack,
-                                          final CompletionTracker tracker) {
+                                          final CompletionTracker tracker,
+                                          final CleanupItemDestination destination) {
         if (!tracker.isOpen()) {
             return;
         }
@@ -729,8 +734,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 public void run() {
                     try {
                         if (tracker.isOpen()) {
-                            tracker.recordItem(itemStack);
                             item.remove();
+                            tracker.recordItem(itemStack, destination);
                         }
                     } finally {
                         if (finished.compareAndSet(false, true)) {
@@ -749,9 +754,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
     }
 
     /** 路由到个人或公共虚拟垃圾桶。 */
-    private boolean routeVirtual(Item item, ItemStack itemStack, UUID ownerUuid, TrashRoute route) {
+    private TrashRoutingResult routeVirtual(Item item, ItemStack itemStack, UUID ownerUuid, TrashRoute route) {
         synchronized (trashRouter) {
-            return trashRouter.route(item.getWorld(), ownerUuid, itemStack.clone(), route);
+            return trashRouter.routeDetailed(item.getWorld(), ownerUuid, itemStack.clone(), route, true);
         }
     }
 
@@ -1525,6 +1530,13 @@ public final class FoliaRegionCleanupFeature implements Feature {
         private void recordItem(ItemStack itemStack) {
             if (isOpen()) {
                 auditSession.recordItem(itemStack);
+            }
+        }
+
+        /** 在线程合法的物品处理位置记录审计物品和最终去向。 */
+        private void recordItem(ItemStack itemStack, CleanupItemDestination destination) {
+            if (isOpen()) {
+                auditSession.recordItem(itemStack, destination);
             }
         }
 

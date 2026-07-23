@@ -80,8 +80,12 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
                 return configBundle;
             }
         };
-        GlobalTrashService globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(), messageService, platform.itemSnapshotMapper());
-        PersonalTrashService personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService, platform.itemSnapshotMapper(), platform);
+        GlobalTrashService globalTrashService = new GlobalTrashService(this,
+                configBundle.getTrashConfig().getGlobalTrash(), messageService,
+                platform.itemSnapshotMapper(), apiHost.auditBridge());
+        PersonalTrashService personalTrashService = new PersonalTrashService(this,
+                configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService,
+                platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,

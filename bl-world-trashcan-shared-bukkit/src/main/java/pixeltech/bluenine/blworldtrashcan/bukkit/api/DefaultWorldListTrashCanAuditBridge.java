@@ -6,8 +6,10 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.worldlisttrashcan.api.audit.AuditRegistration;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSession;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSink;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunCompletion;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunContext;
+import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
 import pixeltech.worldlisttrashcan.api.audit.WorldListTrashCanAuditBridge;
 
 import java.util.Set;
@@ -102,6 +104,21 @@ public final class DefaultWorldListTrashCanAuditBridge implements WorldListTrash
             return NoopCleanupAuditSession.INSTANCE;
         }
         return session;
+    }
+
+    /** 把已经成功发生的垃圾桶变更安全转发给当前附属插件。 */
+    public void recordTrashMutation(TrashMutation mutation) {
+        RegistrationState state = registration.get();
+        if (mutation == null || !isActive(state)) {
+            return;
+        }
+        try {
+            state.sink.onTrashMutation(mutation);
+        } catch (VirtualMachineError error) {
+            throw error;
+        } catch (Throwable throwable) {
+            logFailure(state.owner, "记录垃圾桶变更失败", throwable);
+        }
     }
 
     /** 移除指定附属插件拥有的注册。 */
@@ -223,7 +240,28 @@ public final class DefaultWorldListTrashCanAuditBridge implements WorldListTrash
                 throw error;
             } catch (Throwable throwable) {
                 bridge.logFailure(state.owner, "记录审计物品失败", throwable);
-                invalidate(false);
+                invalidate(true);
+            }
+        }
+
+        /** 安全记录物品和精确最终去向。 */
+        @Override
+        public void recordItem(org.bukkit.inventory.ItemStack itemStack,
+                               CleanupItemDestination destination) {
+            if (terminal.get() || !bridge.isActive(state)) {
+                return;
+            }
+            CleanupAuditSession value = delegate.get();
+            if (value == null) {
+                return;
+            }
+            try {
+                value.recordItem(itemStack, destination);
+            } catch (VirtualMachineError error) {
+                throw error;
+            } catch (Throwable throwable) {
+                bridge.logFailure(state.owner, "记录审计物品去向失败", throwable);
+                invalidate(true);
             }
         }
 

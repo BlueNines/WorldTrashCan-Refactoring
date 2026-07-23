@@ -11,10 +11,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
+import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
+import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
+import pixeltech.worldlisttrashcan.api.audit.TrashMutationReason;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -38,6 +42,7 @@ public final class GlobalTrashService {
     private final Plugin plugin;
     private final BukkitMessageService messages;
     private final ItemSnapshotMapper itemSnapshotMapper;
+    private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final List<Inventory> pages = new ArrayList<>();
     private final Map<UUID, Long> lastTakeMillis = new HashMap<>();
     private final Map<Character, Material> layoutMaterials = new HashMap<>();
@@ -47,15 +52,23 @@ public final class GlobalTrashService {
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages) {
-        this(plugin, config, messages, null);
+        this(plugin, config, messages, null, null);
     }
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
                               ItemSnapshotMapper itemSnapshotMapper) {
+        this(plugin, config, messages, itemSnapshotMapper, null);
+    }
+
+    /** 创建带审计变更分发器的公共垃圾桶服务。 */
+    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
+                              ItemSnapshotMapper itemSnapshotMapper,
+                              DefaultWorldListTrashCanAuditBridge auditBridge) {
         this.plugin = plugin;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
+        this.auditBridge = auditBridge;
         reload(config);
     }
 
@@ -107,12 +120,26 @@ public final class GlobalTrashService {
 
     /** 向公共垃圾桶放入物品。 */
     public boolean addItem(ItemStack itemStack) {
+        return addItem(itemStack, false, TrashMutationReason.NON_CLEANUP_DEPOSIT);
+    }
+
+    /** 放入正式扫地物品，不把它重复登记为非审计存量。 */
+    public boolean addCleanupItem(ItemStack itemStack) {
+        return addItem(itemStack, true, TrashMutationReason.NON_CLEANUP_DEPOSIT);
+    }
+
+    /** 按来源放入物品并维护非审计数量账本。 */
+    private boolean addItem(ItemStack itemStack, boolean cleanupSource, TrashMutationReason reason) {
         ItemStack cleanItemStack = sanitize(itemStack);
         if (!hasSpace(cleanItemStack)) {
             return false;
         }
         for (int index = 0; index < Math.min(writablePageCount, pages.size()); index++) {
             if (InventorySlotUtil.add(pages.get(index), cleanItemStack, layout.getContentSlots())) {
+                if (!cleanupSource) {
+                    recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
+                            cleanItemStack, cleanItemStack.getAmount(), reason, System.currentTimeMillis()));
+                }
                 return true;
             }
         }
@@ -175,6 +202,8 @@ public final class GlobalTrashService {
     public void clearContent() {
         closeCurrentViewers();
         rebuildPages(Collections.<ItemStack>emptyList());
+        recordMutation(TrashMutation.clear(CleanupItemDestination.globalTrash(),
+                TrashMutationReason.GLOBAL_REFRESH, System.currentTimeMillis()));
     }
 
     /** 返回公共垃圾桶页数。 */
@@ -228,6 +257,7 @@ public final class GlobalTrashService {
         lastTakeMillis.put(player.getUniqueId(), System.currentTimeMillis());
         if (leftovers.isEmpty()) {
             logGlobalTrash(player, "-global", itemStack, itemStack.getAmount());
+            recordTake(player, itemStack, itemStack.getAmount());
             inventory.clear(slot);
             return;
         }
@@ -235,6 +265,7 @@ public final class GlobalTrashService {
         int moved = itemStack.getAmount() - remaining.getAmount();
         if (moved > 0) {
             logGlobalTrash(player, "-global", itemStack, moved);
+            recordTake(player, itemStack, moved);
         }
         itemStack.setAmount(remaining.getAmount());
         inventory.setItem(slot, itemStack);
@@ -250,7 +281,7 @@ public final class GlobalTrashService {
             return;
         }
         int amount = itemStack.getAmount();
-        if (addItem(itemStack)) {
+        if (addItem(itemStack, false, TrashMutationReason.MANUAL_DEPOSIT)) {
             logGlobalTrash(player, "+global", itemStack, amount);
             itemStack.setAmount(0);
         }
@@ -280,6 +311,19 @@ public final class GlobalTrashService {
     /** 清理插件内部物品标记后用于入库。 */
     private ItemStack sanitize(ItemStack itemStack) {
         return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
+    }
+
+    /** 记录玩家从公共垃圾桶实际取出的数量。 */
+    private void recordTake(Player player, ItemStack itemStack, int amount) {
+        recordMutation(TrashMutation.take(CleanupItemDestination.globalTrash(), itemStack, amount,
+                player.getUniqueId(), player.getName(), System.currentTimeMillis()));
+    }
+
+    /** 在附属存在时转发变更；没有附属时保持空操作。 */
+    private void recordMutation(TrashMutation mutation) {
+        if (auditBridge != null) {
+            auditBridge.recordTrashMutation(mutation);
+        }
     }
 
     /** 创建单页 GUI 并绘制展示物。 */

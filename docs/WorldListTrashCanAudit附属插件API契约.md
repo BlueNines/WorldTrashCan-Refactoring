@@ -2,7 +2,7 @@
 
 ## 文档状态
 
-- 状态：API v1 实现前契约。
+- 状态：API v2 已实现契约；API v1 基础方法保留兼容。
 - 主插件：`WorldListTrashCan`。
 - 附属插件：`WorldListTrashCanAudit`。
 - 当前阶段：只冻结边界，不代表代码已经实现。
@@ -13,7 +13,7 @@
 ```text
 WorldListTrashCan
   清理开始
-    -> 创建 API v1 审计会话
+    -> 创建 API v2 审计会话
     -> 成功处理物品后调用 recordItem
     -> 清理完成、超时或取消后关闭会话
 
@@ -139,7 +139,7 @@ API 模块禁止包含：
 
 ## 五、服务发现
 
-主插件使用 Bukkit `ServicesManager` 注册 API v1 服务：
+主插件使用 Bukkit `ServicesManager` 注册 API v2 服务：
 
 - `WorldListTrashCanAuditBridge`：清理审计和玩家线程调度。
 - `WorldListTrashCanCommandRegistry`：一级 `/wtc` 副指令注册。
@@ -158,7 +158,7 @@ API 模块禁止包含：
 
 如果 API 缺失或版本不兼容，只禁用附属插件并输出明确错误，不能禁用主插件。
 
-## 六、API v1 草案
+## 六、API v2 契约
 
 以下代码只定义形状，正式实现时所有公开方法都必须保留基本中文或英文 Javadoc。
 
@@ -243,7 +243,7 @@ boolean partial
 
 ### 6.7 CleanupTrigger
 
-API v1 只定义：
+API v1 原始基线只定义：
 
 ```text
 SCHEDULED
@@ -432,10 +432,10 @@ VirtualMachineError
 - 审计结果不能反向决定正式清理结果。
 - 主插件不能在路由失败时发送 `recordItem`。
 - 附属插件不能修改传入物品。
-- API v1 不暴露世界垃圾桶 Inventory、个人垃圾桶 Inventory 或公共垃圾桶 Inventory。
-- API v1 不允许附属插件拦截、取消或替换清理策略。
+- API v2 不暴露世界垃圾桶 Inventory、个人垃圾桶 Inventory 或公共垃圾桶 Inventory，只传递不可变去向和变更 DTO。
+- API v2 不允许附属插件拦截、取消或替换清理策略。
 
-如果未来需要保存路由目标、世界名或玩家来源，应通过新增不可变字段并升级 API 版本处理，不能让附属插件读取主插件私有对象。
+API v2 已通过 `CleanupItemDestination` 传递 `WORLD_TRASH`、`PERSONAL_TRASH`、`GLOBAL_TRASH`、`DIRECT_REMOVE` 和 `LEGACY_UNKNOWN`，并通过 `TrashMutation` 传递非审计存量存入、玩家实际取出和系统清空。世界桶只传创建者、世界与坐标；虚拟桶变更只传克隆物品、实际数量、actor 和时间，附属插件仍不得读取主插件私有对象。
 
 ## 十一、命令与 GUI 边界
 
@@ -446,24 +446,24 @@ VirtualMachineError
 - 主插件负责帮助面板布局、权限过滤和颜色渲染，附属插件只提供用法和描述。
 - 清理记录和详情 GUI 默认只读。
 - 数据库异步查询完成后，通过 `executeForPlayer` 回到合法玩家线程。
-- 内容槽、按钮槽、拖拽、双击、数字键和 Shift 点击都必须防止复制或放入。
-- 首版不支持从历史记录取回物品。
+- 内容槽和按钮槽都禁止移动或放入；Shift、数字键、丢弃、双击和拖拽不得触发复制。
+- 详情内容普通左键只复制 1 个数据库原始样品；不按历史总数恢复，不减少菜单或数据库内容，背包满时不掉落到世界。
 - 附属插件关闭存储但自身仍加载时，`/wtc audit` 保留并提示功能关闭；卸载附属插件后命令和帮助条目全部注销。
 
 ## 十二、版本兼容
 
-- API v1 的整数版本固定为 `1`。
-- 审计服务和副指令注册服务都使用 API v1，并分别检查兼容性。
+- 审计 API 当前整数版本固定为 `2`；副指令注册 API 保持版本 `1`。
+- `CleanupAuditSession.recordItem(ItemStack, CleanupItemDestination)` 和 `CleanupAuditSink.onTrashMutation(TrashMutation)` 使用 Java 8 `default` 方法，旧实现分别退化为只记录物品和忽略变更，避免链接错误。
 - 增加新的必要方法或改变线程语义必须升级 API 大版本。
 - 新增不影响旧实现的上下文字段也必须提供兼容读取方式，不能让旧附属插件出现链接错误。
 - 附属插件启动时必须明确记录主插件版本、API 版本和当前平台。
 - API 不兼容时直接禁用附属插件，并告知需要的主插件版本范围。
-- 首版附属插件主类按 Java 8 编译，不直接引用 Folia 类；Folia 调度通过主插件 API 完成。
+- 附属插件主类按 Java 8 编译，不直接引用 Folia 类；Folia 调度通过主插件 API 完成。
 
 ## 十三、构建契约
 
 - 主插件构建先生成 API Jar 和五个运行 Jar。
-- 五个运行 Jar 都必须包含同一份 API v1 class。
+- 五个运行 Jar 都必须包含同一份 API v2 class。
 - 附属插件以 `provided` 依赖 API Jar。
 - 附属插件成品不得包含 `pixeltech/worldlisttrashcan/api/audit/` 下的 class。
 - 附属插件成品不得包含 `pixeltech/worldlisttrashcan/api/command/` 下的 class。
@@ -493,6 +493,7 @@ VirtualMachineError
 - SQLite 和 MySQL 分别完成写入、查询、分页和过期级联删除。
 - `/wtc help`、权限过滤、第一参数补全、`/wtc audit` 执行和附属插件卸载后动态移除均验证通过。
 - 真实客户端截图覆盖记录菜单、加载状态、详情菜单、翻页、返回和无权限分支。
+- 真实客户端截图覆盖四种最终去向、旧数据未知去向、原 Lore 后移、单件复制和全部禁止交互；世界桶坐标还必须与数据库、`worlds.yml` 和实际容器交叉核对。
 - 截图生成后必须逐张重新读取，确认确实能证明验收项。
 
 ### 14.4 生命周期和故障
@@ -513,7 +514,7 @@ VirtualMachineError
 - 禁止附属插件数据库成功成为正式清理成功的前提。
 - 禁止跨 Folia 区域线程读取实体或物品。
 - 禁止无界队列、无界重试和无界批次缓存。
-- 禁止开放历史物品拿取造成复制。
+- 禁止把单件历史样品复制扩展成按历史总数恢复；禁止复制菜单临时 Lore、减少数据库记录或在背包满时向世界掉落。
 - 禁止副指令接口发展成可覆盖内置命令、带优先级、任意层级命令树或通用命令框架。
 - 禁止附属插件直接修改主插件帮助列表、命令映射或五个平台命令类。
 

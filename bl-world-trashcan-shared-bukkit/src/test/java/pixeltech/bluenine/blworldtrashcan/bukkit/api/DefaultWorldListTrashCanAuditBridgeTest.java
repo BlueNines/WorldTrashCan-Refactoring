@@ -14,9 +14,12 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.CapabilityReport;
 import pixeltech.worldlisttrashcan.api.audit.AuditRegistration;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSession;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSink;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunCompletion;
 import pixeltech.worldlisttrashcan.api.audit.CleanupRunContext;
 import pixeltech.worldlisttrashcan.api.audit.CleanupTrigger;
+import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
+import pixeltech.worldlisttrashcan.api.audit.TrashMutationReason;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -73,6 +76,51 @@ public final class DefaultWorldListTrashCanAuditBridgeTest {
         Assert.assertEquals(0, recorded.get());
     }
 
+    /** 验证旧会话未覆写新方法时仍通过 default 方法收到物品。 */
+    @Test
+    public void keepsLegacySessionCompatibleWithDestinationCalls() {
+        AtomicBoolean ownerEnabled = new AtomicBoolean(true);
+        AtomicInteger recorded = new AtomicInteger();
+        DefaultWorldListTrashCanAuditBridge bridge = bridge();
+        bridge.register(plugin("LegacyAuditAddon", ownerEnabled), sink(recorded, new AtomicInteger()));
+
+        bridge.beginRun(context()).recordItem(null, CleanupItemDestination.globalTrash());
+
+        Assert.assertEquals(1, recorded.get());
+    }
+
+    /** 验证主插件只向活动消费者转发一次垃圾桶变更。 */
+    @Test
+    public void forwardsTrashMutationToActiveSink() {
+        AtomicBoolean ownerEnabled = new AtomicBoolean(true);
+        AtomicInteger mutations = new AtomicInteger();
+        DefaultWorldListTrashCanAuditBridge bridge = bridge();
+        bridge.register(plugin("AuditAddon", ownerEnabled), mutationSink(mutations));
+
+        bridge.recordTrashMutation(TrashMutation.clear(CleanupItemDestination.globalTrash(),
+                TrashMutationReason.GLOBAL_REFRESH, 1L));
+        ownerEnabled.set(false);
+        bridge.recordTrashMutation(TrashMutation.clear(CleanupItemDestination.globalTrash(),
+                TrashMutationReason.GLOBAL_REFRESH, 2L));
+
+        Assert.assertEquals(1, mutations.get());
+    }
+
+    /** 附属记录异常必须放弃会话并阻止后续调用，避免有界槽位泄漏。 */
+    @Test
+    public void discardsSessionAfterRecordFailure() {
+        AtomicBoolean ownerEnabled = new AtomicBoolean(true);
+        AtomicInteger discarded = new AtomicInteger();
+        DefaultWorldListTrashCanAuditBridge bridge = bridge();
+        bridge.register(plugin("FailingAuditAddon", ownerEnabled), failingSink(discarded));
+
+        CleanupAuditSession session = bridge.beginRun(context());
+        session.recordItem(null, CleanupItemDestination.globalTrash());
+        session.recordItem(null, CleanupItemDestination.globalTrash());
+
+        Assert.assertEquals(1, discarded.get());
+    }
+
     /** 创建记录调用次数的测试消费者。 */
     private CleanupAuditSink sink(final AtomicInteger recorded, final AtomicInteger discarded) {
         return new CleanupAuditSink() {
@@ -92,6 +140,51 @@ public final class DefaultWorldListTrashCanAuditBridgeTest {
                     }
 
                     /** 记录放弃。 */
+                    @Override
+                    public void discard() {
+                        discarded.incrementAndGet();
+                    }
+                };
+            }
+        };
+    }
+
+    /** 创建只统计垃圾桶变更的消费者。 */
+    private CleanupAuditSink mutationSink(final AtomicInteger mutations) {
+        return new CleanupAuditSink() {
+            /** 返回空测试会话。 */
+            @Override
+            public CleanupAuditSession beginRun(CleanupRunContext context) {
+                return sink(new AtomicInteger(), new AtomicInteger()).beginRun(context);
+            }
+
+            /** 统计垃圾桶变更。 */
+            @Override
+            public void onTrashMutation(TrashMutation mutation) {
+                mutations.incrementAndGet();
+            }
+        };
+    }
+
+    /** 创建记录时抛错但可正常放弃的测试消费者。 */
+    private CleanupAuditSink failingSink(final AtomicInteger discarded) {
+        return new CleanupAuditSink() {
+            /** 创建故意在记录阶段失败的会话。 */
+            @Override
+            public CleanupAuditSession beginRun(CleanupRunContext context) {
+                return new CleanupAuditSession() {
+                    /** 模拟附属插件记录异常。 */
+                    @Override
+                    public void recordItem(ItemStack itemStack) {
+                        throw new IllegalStateException("expected test failure");
+                    }
+
+                    /** 测试不应完成失败会话。 */
+                    @Override
+                    public void complete(CleanupRunCompletion completion) {
+                    }
+
+                    /** 统计异常后的资源释放。 */
                     @Override
                     public void discard() {
                         discarded.incrementAndGet();

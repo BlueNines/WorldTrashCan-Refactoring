@@ -1,6 +1,7 @@
 package pixeltech.bluenine.blworldtrashcan.storage;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /** 世界垃圾桶箱子位置，存储层不依赖 Bukkit Location。 */
 public final class TrashLocation {
@@ -8,13 +9,22 @@ public final class TrashLocation {
     private final int x;
     private final int y;
     private final int z;
+    private final UUID ownerUuid;
+    private final String ownerName;
 
     /** 创建垃圾桶位置。 */
     public TrashLocation(String worldName, int x, int y, int z) {
+        this(worldName, x, y, z, null, "");
+    }
+
+    /** 创建带创建者信息的垃圾桶位置。 */
+    public TrashLocation(String worldName, int x, int y, int z, UUID ownerUuid, String ownerName) {
         this.worldName = worldName == null ? "" : worldName;
         this.x = x;
         this.y = y;
         this.z = z;
+        this.ownerUuid = ownerUuid;
+        this.ownerName = ownerName == null ? "" : ownerName;
     }
 
     /** 返回世界名。 */
@@ -35,6 +45,16 @@ public final class TrashLocation {
     /** 返回方块 Z 坐标。 */
     public int getZ() {
         return z;
+    }
+
+    /** 返回创建世界垃圾桶的玩家 UUID；旧数据为 null。 */
+    public UUID getOwnerUuid() {
+        return ownerUuid;
+    }
+
+    /** 返回创建时玩家名；旧数据为空。 */
+    public String getOwnerName() {
+        return ownerName;
     }
 
     /** 判断两个位置是否相同。 */

@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /** 基于 Bukkit YAML 的世界垃圾桶数据存储。 */
 public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
@@ -37,7 +38,7 @@ public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
             String path = "worlds." + worldName + ".";
             result.add(new WorldTrashData(
                     worldName,
-                    parseLocations(worldName, yaml.getStringList(path + "locations")),
+                    parseLocations(worldName, yaml, path),
                     new HashSet<>(yaml.getStringList(path + "banned-materials")),
                     yaml.getInt(path + "max-count", 0)
             ));
@@ -53,6 +54,8 @@ public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
         String path = "worlds." + data.getWorldName() + ".";
         yaml.set(path + "max-count", data.getMaxTrashCanCount());
         yaml.set(path + "locations", formatLocations(data.getLocations()));
+        yaml.set(path + "location-owners", null);
+        writeLocationOwners(yaml, path, data.getLocations());
         yaml.set(path + "banned-materials", new ArrayList<>(data.getBannedMaterials()));
         yaml.save(file);
     }
@@ -69,10 +72,11 @@ public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
     }
 
     /** 解析位置列表。 */
-    private Set<TrashLocation> parseLocations(String worldName, List<String> lines) {
+    private Set<TrashLocation> parseLocations(String worldName, YamlConfiguration yaml, String path) {
         Set<TrashLocation> locations = new HashSet<>();
-        for (String line : lines) {
-            TrashLocation location = parseLocation(worldName, line);
+        for (String line : yaml.getStringList(path + "locations")) {
+            TrashLocation location = parseLocation(worldName, line,
+                    yaml.getConfigurationSection(path + "location-owners." + locationKey(line)));
             if (location != null) {
                 locations.add(location);
             }
@@ -81,7 +85,7 @@ public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
     }
 
     /** 解析单个位置。 */
-    private TrashLocation parseLocation(String worldName, String line) {
+    private TrashLocation parseLocation(String worldName, String line, ConfigurationSection ownerSection) {
         if (line == null || line.trim().isEmpty()) {
             return null;
         }
@@ -93,7 +97,9 @@ public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
             return new TrashLocation(worldName,
                     Integer.parseInt(parts[0].trim()),
                     Integer.parseInt(parts[1].trim()),
-                    Integer.parseInt(parts[2].trim()));
+                    Integer.parseInt(parts[2].trim()),
+                    parseUuid(ownerSection == null ? "" : ownerSection.getString("uuid", "")),
+                    ownerSection == null ? "" : ownerSection.getString("name", ""));
         } catch (NumberFormatException ignored) {
             return null;
         }
@@ -106,5 +112,48 @@ public final class BukkitYamlWorldTrashStorage implements WorldTrashStorage {
             result.add(location.getX() + "," + location.getY() + "," + location.getZ());
         }
         return result;
+    }
+
+    /** 写出每个新格式位置的创建者信息；旧未知位置不伪造 owner。 */
+    private void writeLocationOwners(YamlConfiguration yaml, String path,
+                                     Collection<TrashLocation> locations) {
+        for (TrashLocation location : locations) {
+            if (location.getOwnerUuid() == null && location.getOwnerName().isEmpty()) {
+                continue;
+            }
+            String ownerPath = path + "location-owners." + locationKey(location) + ".";
+            yaml.set(ownerPath + "uuid", location.getOwnerUuid() == null
+                    ? "" : location.getOwnerUuid().toString());
+            yaml.set(ownerPath + "name", location.getOwnerName());
+        }
+    }
+
+    /** 返回不含点号的稳定坐标键。 */
+    private String locationKey(TrashLocation location) {
+        return location.getX() + "," + location.getY() + "," + location.getZ();
+    }
+
+    /** 规范旧位置字符串后作为 owner 映射键。 */
+    private String locationKey(String line) {
+        if (line == null) {
+            return "";
+        }
+        String[] parts = line.split(",");
+        if (parts.length != 3) {
+            return line.trim();
+        }
+        return parts[0].trim() + "," + parts[1].trim() + "," + parts[2].trim();
+    }
+
+    /** 安全解析可选 UUID。 */
+    private UUID parseUuid(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return UUID.fromString(value.trim());
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 }

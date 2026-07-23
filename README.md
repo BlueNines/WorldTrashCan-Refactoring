@@ -2,7 +2,7 @@
 
 这是 `WorldListTrashCan` 的重构实现工作区。原项目只作为行为基准保留，新实现按“共同核心 + 多版本轻量产物 + 通用总包”拆分，避免把 Legacy、Paper、Folia 差异硬堆进同一个主类。
 
-面向服主的简短数据对比见 [docs/新旧版本功能与性能数据对比.md](docs/新旧版本功能与性能数据对比.md)，完整新增功能说明见 [docs/重构版新增功能说明.md](docs/重构版新增功能说明.md)。尚未实施的 `WorldListTrashCanAudit` 附属插件可行性、成本与风险见 [docs/实验性清理审计功能评估.md](docs/实验性清理审计功能评估.md)，主插件与附属插件的稳定边界见 [docs/WorldListTrashCanAudit附属插件API契约.md](docs/WorldListTrashCanAudit附属插件API契约.md)。
+面向服主的简短数据对比见 [docs/新旧版本功能与性能数据对比.md](docs/新旧版本功能与性能数据对比.md)，完整新增功能说明见 [docs/重构版新增功能说明.md](docs/重构版新增功能说明.md)。`WorldListTrashCanAudit` 附属插件的设计评估见 [docs/实验性清理审计功能评估.md](docs/实验性清理审计功能评估.md)，主插件与附属插件的 API v2 稳定边界见 [docs/WorldListTrashCanAudit附属插件API契约.md](docs/WorldListTrashCanAudit附属插件API契约.md)；附属插件源码和最终客户端证据位于独立仓库 `待开发插件/WorldListTrashCanAudit`。
 
 ## 产物
 
@@ -31,16 +31,18 @@
 - `bl-world-trashcan-plugin-universal`：通用总包入口，主类按 Java 8 编译，只在运行时延迟加载对应 platform/plugin 功能。
 - `world-list-trashcan-api`：Java 8 公开 API，仅包含清理审计、玩家线程调度和一级 `/wtc` 副指令契约，不是可放入 `plugins` 的 Bukkit 插件。
 
-## 附属插件 API v1
+## 附属插件 API v2
 
 五个主插件交付 Jar 都提供同一套 `pixeltech.worldlisttrashcan.api` API。附属插件通过 Bukkit `ServicesManager` 获取：
 
-- `WorldListTrashCanAuditBridge`：注册唯一清理审计消费者，并把 GUI 回调切回普通 Bukkit 主线程或 Folia 玩家 EntityScheduler。
+- `WorldListTrashCanAuditBridge`：注册唯一清理审计消费者，并把 GUI 回调切回普通 Bukkit 主线程或 Folia 玩家 EntityScheduler。API v2 额外传递不可变的精确去向和垃圾桶变更 DTO。
 - `WorldListTrashCanCommandRegistry`：注册一级 `/wtc <副指令>`，自动接入权限过滤、常规帮助面板和 Tab 补全。
 
-主插件内置命令和别名不可覆盖；附属插件禁用时，主插件会移除审计会话、命令、帮助、补全和处理器引用。未安装附属插件时使用空审计会话，不复制或序列化物品，也不会创建数据库线程。完整线程、生命周期和 ClassLoader 契约见 [docs/WorldListTrashCanAudit附属插件API契约.md](docs/WorldListTrashCanAudit附属插件API契约.md)。
+主插件内置命令和别名不可覆盖；附属插件禁用时，主插件会移除审计会话、命令、帮助、补全和处理器引用。未安装附属插件时使用空审计会话，不复制或序列化物品，也不会创建数据库线程。API v2 为旧 `recordItem(ItemStack)` 保留 Java 8 `default` 退化实现，避免旧附属出现 `AbstractMethodError`。完整线程、生命周期和 ClassLoader 契约见 [docs/WorldListTrashCanAudit附属插件API契约.md](docs/WorldListTrashCanAudit附属插件API契约.md)。
 
 2026-07-22 使用同一个 `dist/WorldListTrashCan-universal.jar` 在 Paper 1.12.2、Spigot 26.1.2 和 Folia 1.21.8 隔离真实服务端完成“未安装附属插件”退化回归：三端均正常启动，`/wtc help` 不显示 `audit`，`/wtc clear true` 可执行，不生成 `WorldListTrashCanAudit` 目录，主插件 Jar 不含 SQLite/MySQL/MariaDB/Hikari 驱动。脚本为 `tools/rgb-visual-matrix/run_addon_api_no_addon_smoke.py`，通过证据为 `docs/test-evidence/addon-api-no-addon-smoke-20260722-183820/`。
+
+2026-07-23 最终 API v2 与附属插件在 Folia 1.21.8 + 真实 1.21.8 客户端和 Paper 1.12.2 + 真实 Forge 1.12.2 客户端完成去向与旧库迁移验收。四种去向、世界桶创建者/坐标、个人/公共 FIFO 账本、系统清空、富元数据 Lore、复制和禁止交互均由客户端原图、SQLite、服务端日志及实际区块 NBT 交叉验证；最终 universal Jar SHA-256 为 `78f1139a72e04e65b8a9290251e6c0dd2cbda5f3b06876f0f1e74fa7e9ce17c8`。
 
 ## 通用总包运行策略
 
@@ -70,7 +72,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/WorldListTrashCan-universal.jar` SHA256 为 `9442f3808f9ce8e4a376c220bcc4d4db7882f4cbf4c88475318123acdab1bac2`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/WorldListTrashCan-universal.jar` SHA256 为 `78f1139a72e04e65b8a9290251e6c0dd2cbda5f3b06876f0f1e74fa7e9ce17c8`。
 
 公开品牌有独立审计脚本，检查源码文件名和内容、默认资源、文档、dist 文件名以及 jar 内 `plugin.yml`，防止重新出现旧品牌：
 

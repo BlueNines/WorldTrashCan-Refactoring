@@ -17,8 +17,14 @@ public interface TrashRouter {
     /** 判断公共垃圾桶是否可用。 */
     boolean hasGlobalTrash(ItemStack itemStack);
 
-    /** 尝试按核心路由决策存放物品。 */
-    boolean route(World world, UUID ownerUuid, ItemStack itemStack, TrashRoute route);
+    /** 按核心决策存放物品并返回实际成功目标。 */
+    TrashRoutingResult routeDetailed(World world, UUID ownerUuid, ItemStack itemStack,
+                                     TrashRoute route, boolean cleanupSource);
+
+    /** 按非扫地来源路由物品并返回是否成功。 */
+    default boolean route(World world, UUID ownerUuid, ItemStack itemStack, TrashRoute route) {
+        return routeDetailed(world, ownerUuid, itemStack, route, false).isSuccess();
+    }
 
     /** 重载路由数据。 */
     void reload();
