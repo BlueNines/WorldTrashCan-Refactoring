@@ -1,0 +1,14 @@
+status=PASS
+expectedMinCount=5
+actualCount=5
+count=PASS
+validPngCount=5
+validPngCountPass=PASS
+visualInformativeMin=5
+visualInformativeCount=5
+visualInformativeCountPass=PASS
+screenshot=PASS path=screenshots/runner_sequence_1.png bytes=229640 validPng=true width=854 height=480 bitDepth=8 colorType=2 visual=PASS fullBrightness=73.83 fullColors=50 centerBrightness=41.02 titleBrightness=38.58 slot13Brightness=56.14 slot13Colors=7 slot13AvgRgb=#493423 error=
+screenshot=PASS path=screenshots/runner_sequence_2.png bytes=209288 validPng=true width=854 height=480 bitDepth=8 colorType=2 visual=PASS fullBrightness=76.66 fullColors=47 centerBrightness=39.88 titleBrightness=46.51 slot13Brightness=56.14 slot13Colors=7 slot13AvgRgb=#493423 error=
+screenshot=PASS path=screenshots/runner_sequence_3.png bytes=209294 validPng=true width=854 height=480 bitDepth=8 colorType=2 visual=PASS fullBrightness=90.72 fullColors=48 centerBrightness=55.32 titleBrightness=39.49 slot13Brightness=56.14 slot13Colors=7 slot13AvgRgb=#493423 error=
+screenshot=PASS path=screenshots/runner_sequence_connected.png bytes=270361 validPng=true width=854 height=480 bitDepth=8 colorType=2 visual=PASS fullBrightness=64.79 fullColors=62 centerBrightness=55.32 titleBrightness=55.43 slot13Brightness=56.14 slot13Colors=7 slot13AvgRgb=#493423 error=
+screenshot=PASS path=screenshots/runner_sequence_final.png bytes=210128 validPng=true width=854 height=480 bitDepth=8 colorType=2 visual=PASS fullBrightness=91.16 fullColors=50 centerBrightness=54.97 titleBrightness=42.69 slot13Brightness=58.64 slot13Colors=6 slot13AvgRgb=#4c3625 error=

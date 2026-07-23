@@ -2,13 +2,16 @@ package pixeltech.bluenine.blworldtrashcan.config;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /** 旧配置迁移计划摘要，正式迁移器会把它写入迁移报告。 */
 public final class LegacyMigrationPlan {
     private final List<String> migratedKeys = new ArrayList<>();
     private final List<String> deprecatedKeys = new ArrayList<>();
     private final List<String> manualKeys = new ArrayList<>();
+    private final Set<String> handledSourceKeys = new LinkedHashSet<>();
 
     /** 记录已自动迁移的旧字段。 */
     public void addMigratedKey(String key) {
@@ -23,6 +26,18 @@ public final class LegacyMigrationPlan {
     /** 记录需要人工确认的旧字段。 */
     public void addManualKey(String key) {
         addIfPresent(manualKeys, key);
+    }
+
+    /** 记录已经自动处理的旧配置源路径。 */
+    public void addHandledSourceKey(String key) {
+        if (key != null && !key.trim().isEmpty()) {
+            handledSourceKeys.add(key);
+        }
+    }
+
+    /** 判断旧配置源路径是否已经自动处理。 */
+    public boolean isHandledSourceKey(String key) {
+        return key != null && handledSourceKeys.contains(key);
     }
 
     /** 返回自动迁移字段。 */

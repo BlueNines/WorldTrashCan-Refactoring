@@ -1,0 +1,751 @@
+[00:32:16] [Server thread/INFO]: Starting minecraft server version 1.12.2
+[00:32:16] [Server thread/INFO]: Loading properties
+[00:32:16] [Server thread/INFO]: Default game type: SURVIVAL
+[00:32:16] [Server thread/INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[00:32:16] [Server thread/INFO]: Debug logging is disabled
+[00:32:16] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[00:32:16] [Server thread/INFO]: Using 4 threads for Netty based IO
+[00:32:16] [Server thread/INFO]: Generating keypair
+[00:32:16] [Server thread/INFO]: Starting Minecraft server on *:25565
+[00:32:16] [Server thread/INFO]: Using default channel type
+[00:32:19] [Server thread/INFO]: Set PluginClassLoader as parallel capable
+[00:32:19] [Server thread/INFO]: Loading library org.jetbrains.kotlin:kotlin-stdlib-common:1.5.20
+[00:32:19] [Server thread/INFO]: Loading library org.jetbrains.kotlin:kotlin-stdlib:1.5.20
+[00:32:19] [Server thread/INFO]: Loading library org.jetbrains:annotations:13.0
+[00:32:19] [Server thread/INFO]: Loading library org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.20
+[00:32:19] [Server thread/INFO]: Loading library org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.20
+[00:32:20] [ForkJoinPool.commonPool-worker-3/INFO]: Loading library org.slf4j:slf4j-api:2.0.8
+[00:32:20] [ForkJoinPool.commonPool-worker-14/INFO]: Loading library org.apache.commons:commons-jexl3:3.2.1
+[00:32:20] [ForkJoinPool.commonPool-worker-3/INFO]: Loading library com.zaxxer:HikariCP:4.0.3
+[00:32:20] [ForkJoinPool.commonPool-worker-4/INFO]: Loading library com.google.code.gson:gson:2.8.7
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library org.yaml:snakeyaml:2.2
+[00:32:20] [ForkJoinPool.commonPool-worker-14/INFO]: Loading library com.mojang:datafixerupper:4.0.26
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library com.typesafe:config:1.4.3
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library com.electronwill.night-config:core:3.6.7
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library com.electronwill.night-config:toml:3.6.7
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library com.electronwill.night-config:json:3.6.7
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library com.typesafe:config:1.4.2
+[00:32:20] [ForkJoinPool.commonPool-worker-10/INFO]: Loading library com.electronwill.night-config:hocon:3.6.7
+[00:32:20] [Server thread/INFO]: [DungeonPlus-1.4.6] ¼ÓÔØÒÀÀµ org.jetbrains.kotlin:kotlin-stdlib:1.8.0
+[00:32:20] [Server thread/INFO]: [DungeonPlus-1.4.6] ¼ÓÔØÒÀÀµ org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0
+[00:32:20] [Server thread/INFO]: [DungeonPlus-1.4.6] ¼ÓÔØÒÀÀµ org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3
+[00:32:21] [Server thread/INFO]: [DungeonPlus-1.4.6] ¼ÓÔØÒÀÀµ com.google.code.gson:gson:2.8.7
+[00:32:23] [Server thread/INFO]: [NeigeItems] install callsite-nbt in pers.neige.neigeitems.libs.bot.inker.bukkit.nbt.
+[00:32:23] [Server thread/INFO]: Downloading library org.jetbrains.kotlin:kotlin-stdlib:@kotlin_version@ (transitive)
+[00:32:26] [Server thread/INFO]: Downloading library org.jetbrains.kotlin:kotlin-stdlib-jdk7:@kotlin_version@ (transitive)
+[00:32:27] [Server thread/INFO]: Downloading library org.jetbrains.kotlin:kotlin-stdlib-jdk8:@kotlin_version@ (transitive)
+[00:32:33] [ForkJoinPool.commonPool-worker-5/INFO]: Loading library org.yaml:snakeyaml:2.0
+[00:32:33] [ForkJoinPool.commonPool-worker-5/INFO]: Loading library com.electronwill.night-config:core:3.6.6
+[00:32:33] [ForkJoinPool.commonPool-worker-5/INFO]: Loading library com.electronwill.night-config:toml:3.6.6
+[00:32:33] [ForkJoinPool.commonPool-worker-5/INFO]: Loading library com.electronwill.night-config:json:3.6.6
+[00:32:34] [ForkJoinPool.commonPool-worker-5/INFO]: Loading library com.typesafe:config:1.4.2
+[00:32:34] [ForkJoinPool.commonPool-worker-5/INFO]: Loading library com.electronwill.night-config:hocon:3.6.6
+[00:32:35] [Server thread/INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.10.4
+[00:32:35] [Server thread/INFO]: [AIAdvancedClientTest] Loading AIAdvancedClientTest v1.0
+[00:32:35] [Server thread/INFO]: [WcpeLibrary] Loading WcpeLibrary v1.0.0-SNAPSHOT
+[00:32:35] [Server thread/INFO]: [EasyLib] Loading EasyLib v1.7.5
+[00:32:35] [Server thread/INFO]: [WcpeLib] Loading WcpeLib v1.10.7-SNAPSHOT
+[00:32:35] [Server thread/INFO]: [WcpeLib] ¿ªÊ¼³õÊ¼»¯ WcpeLibCommon...
+[00:32:36] [Server thread/INFO]: [WcpeLib] MySQL Á´½Ó³É¹¦!
+[00:32:36] [Server thread/INFO]: [WcpeLib] Mybatis ¿ªÆô! ¿ªÊ¼Á¬½ÓÊı¾İ¿â!
+[00:32:36] [Server thread/INFO]: [WcpeLib] Mybatis ¿Í»§¶Ë´´½¨³É¹¦! ¹²ºÄÊ±:553Ms
+[00:32:36] [Server thread/INFO]: [WcpeLib] Redis ÎŞ·¨Á¬½Ó, Redisson ¿Í»§¶Ë´´½¨Ê§°Ü!
+[00:32:36] [Server thread/INFO]: [WcpeLib] Mail ¿ªÆô! ¿ªÊ¼´´½¨ÓÊ¼şÅäÖÃÎÄ¼ş!
+[00:32:36] [Server thread/INFO]: [WcpeLib] ´´½¨ÓÊ¼şÅäÖÃÎÄ¼ş³É¹¦!
+[00:32:37] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: wcpelib ³É¹¦!
+[00:32:37] [Server thread/INFO]: [WcpeLib] ³õÊ¼»¯ WcpeLibCommon Íê³É...
+[00:32:37] [Server thread/INFO]: [WorldListTrashCan] Loading WorldListTrashCan v7.0.0
+[00:32:37] [Server thread/INFO]: [MythicMobs] Loading MythicMobs v4.9.0-3256
+[00:32:37] [Server thread/INFO]: [SpigotMaster] Loading SpigotMaster v0.0.1-test
+[00:32:37] [Server thread/INFO]: [SX-Item] Loading SX-Item v4.5.10
+[00:32:37] [Server thread/INFO]: [SX-Item] Localization: zh
+[00:32:37] [Server thread/INFO]: [SX-Item] ItemGenerator >> Type Register: Default
+[00:32:37] [Server thread/INFO]: [SX-Item] ItemGenerator >> Type Register: Import
+[00:32:37] [Server thread/INFO]: [SX-NMS] Version: v1_12_R1
+[00:32:37] [Server thread/INFO]: [SX-NMS] ComponentUtil: v1_8_R3
+[00:32:37] [Server thread/INFO]: [SX-NMS] NbtUtil: v1_12_R1
+[00:32:37] [Server thread/INFO]: [SX-NMS] ItemUtil: v1_12_R1
+[00:32:37] [Server thread/INFO]: [SX-NMS] MessageUtil: v1_12_R1
+[00:32:37] [Server thread/INFO]: [ViaVersion] Loading ViaVersion v4.10.2
+[00:32:37] [Server thread/INFO]: [ViaVersion] ViaVersion 4.10.2 is now loaded. Registering protocol transformers and injecting...
+[00:32:38] [Via-Mappingloader-0/INFO]: [ViaVersion] Loading block connection mappings ...
+[00:32:39] [Via-Mappingloader-0/INFO]: [ViaVersion] Using FastUtil Long2ObjectOpenHashMap for block connections
+[00:32:39] [Server thread/INFO]: [CoreBridge] Loading CoreBridge v1.0.1
+[00:32:39] [Server thread/INFO]: [VariableManager] Loading VariableManager v3.0.0.bl-reset
+[00:32:39] [Server thread/INFO]: [AttributePlus] Loading AttributePlus v3.3.3.0
+[00:32:39] [Server thread/INFO]: [DungeonPlus] Loading DungeonPlus v1.4.6
+[00:32:41] [Server thread/INFO]: [BlLevelManager] Loading BlLevelManager v1.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [BLMonsterCodex] Loading BLMonsterCodex v1.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [WC-NetEaseModRpc] Loading WC-NetEaseModRpc v1.2.0
+[00:32:41] [Server thread/INFO]: [AttributePlusViewer] Loading AttributePlusViewer v1.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Loading SX-Attribute v1.6.1-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Find Config.yml
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Find DamageTrigger.yml
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Find DamageTriggerPlayers.yml
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Find Message.yml
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register AttackSpeed To Priority 380 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Blindness To Priority 120 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Crit To Priority 30 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Damage To Priority 20 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register HitRate To Priority 230 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Ignition To Priority 90 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register LifeSteal To Priority 80 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Lightning To Priority 140 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Poison To Priority 110 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Real To Priority 40 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Slowness To Priority 130 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Tearing To Priority 150 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Wither To Priority 100 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Block To Priority 70 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Defense To Priority 50 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Dodge To Priority 10 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Reflection To Priority 60 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Toughness To Priority 200 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register CritDefense To Priority 26 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register CritRateDefense To Priority 280 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register TearingRateDefense To Priority 290 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register LightningRateDefense To Priority 300 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register LifeStealRateDefense To Priority 310 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register RealRateDefense To Priority 370 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register MaxCritDefense To Priority 320 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register MaxCritRateDefense To Priority 330 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register MaxLightningDefense To Priority 340 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register MaxRealDefense To Priority 350 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register MaxTearingRateDefense To Priority 360 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> EventMessage Disable!
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register ExpAddition To Priority 240 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register MythicmobsDrop To Priority 260 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register HealthRegen To Priority 220 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Health To Priority 210 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Attribute >> Register Speed To Priority 250 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Find BonusAttribute.yml
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register MainHand To Priority 20 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register OffHand To Priority 30 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register Hand To Priority 10 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register LimitLevel To Priority 40 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register Role To Priority 50 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register ExpiryTime To Priority 60 !
+[00:32:41] [Server thread/INFO]: [SX-Attribute] Condition >> Register Durability To Priority 80 !
+[00:32:41] [Server thread/INFO]: [DragonCore] Loading DragonCore v2.6.2.9
+[00:32:41] [Server thread/INFO]: [ItemBind] Loading ItemBind v1.3.2-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [NeigeItems] Loading NeigeItems v1.15.113-wcpeDev_20240119
+[00:32:41] [Server thread/INFO]: [BLPrizeDraw] Loading BLPrizeDraw v0.1.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [BLDungeonPlusReward] Loading BLDungeonPlusReward v1.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [DungeonPlusCore] Loading DungeonPlusCore v0.1.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [EasyCore] Loading EasyCore v1.5.2
+[00:32:41] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[00:32:41] [Server thread/INFO]: [WcpeLibrary] Enabling WcpeLibrary v1.0.0-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [WcpeLibrary] WcpeLibrary ³É¹¦¼ÓÔØ!
+[00:32:41] [Server thread/INFO]: [WcpeLib] Enabling WcpeLib v1.10.7-SNAPSHOT
+[00:32:41] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] ¿ªÊ¼³õÊ¼»¯Ä¬ÈÏ Mapper
+[00:32:42] [Server thread/INFO]: [com.alibaba.druid.pool.DruidDataSource] {dataSource-1} inited
+[00:32:43] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] ³õÊ¼»¯Ä¬ÈÏ Mapper Íê³É ºÄÊ±:1243 Ms
+[00:32:43] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] load time: 1281 ms
+[00:32:43] [Server thread/INFO]:   _       __                          __     _     __  
+[00:32:43] [Server thread/INFO]:  | |     / /  _____    ____   ___    / /    (_)   / /_ 
+[00:32:43] [Server thread/INFO]:  | | /| / /  / ___/   / __ \\ / _ \\  / /    / /   / __ \\
+[00:32:43] [Server thread/INFO]:  | |/ |/ /  / /__    / /_/ //  __/ / /___ / /   / /_/ /
+[00:32:43] [Server thread/INFO]:  |__/|__/   \___/   / .___/ \___/ /_____//_/   /_.___/ 
+[00:32:43] [Server thread/INFO]:                    /_/                                 
+[00:32:43] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] load version: git-Paper-1620 (MC: 1.12.2)
+[00:32:43] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] nms version: net.minecraft.server.v1_12_R1
+[00:32:43] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] obc version: org.bukkit.craftbukkit.v1_12_R1
+[00:32:43] [Server thread/INFO]: [top.wcpe.wcpelib.bukkit.WcpeLib] Hook PlaceholderAPI: PlaceholderAPI v2.10.4
+[00:32:43] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[00:32:43] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[00:32:43] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[00:32:43] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[00:32:43] [Server thread/INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[00:32:43] [Server thread/INFO]: Preparing level "world"
+[00:32:43] [Server thread/INFO]: -------- World Settings For [world] --------
+[00:32:43] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[00:32:43] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[00:32:43] [Server thread/INFO]: Item Merge Radius: 2.5
+[00:32:43] [Server thread/INFO]: Item Despawn Rate: 6000
+[00:32:43] [Server thread/INFO]: View Distance: 10
+[00:32:43] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[00:32:43] [Server thread/INFO]: Mob Spawn Range: 4
+[00:32:43] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[00:32:43] [Server thread/INFO]: Random Lighting Updates: false
+[00:32:43] [Server thread/INFO]: Structure Info Saving: true
+[00:32:43] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[00:32:43] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Cane Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Melon Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Vine Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[00:32:43] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[00:32:43] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[00:32:43] [Server thread/INFO]: Max TNT Explosions: 100
+[00:32:43] [Server thread/INFO]: Experience Merge Radius: 3.0
+[00:32:43] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[00:32:43] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[00:32:44] [Server thread/INFO]: Preparing start region for level 0 (Seed: -3309497713955340849)
+[00:32:45] [Server thread/INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.10.4
+[00:32:45] [Server thread/INFO]: [PlaceholderAPI] Fetching available expansion information...
+[00:32:45] [Server thread/INFO]: [AIAdvancedClientTest] Enabling AIAdvancedClientTest v1.0
+[00:32:45] [Server thread/INFO]: [AIAdvancedClientTest] [AI-ADV-SERVER] helper enabled
+[00:32:45] [Server thread/INFO]: [EasyLib] Enabling EasyLib v1.7.5
+[00:32:45] [Server thread/INFO]:   _____                             __           __        
+[00:32:45] [Server thread/INFO]:  /`  __\                           /` \       __/` \       
+[00:32:45] [Server thread/INFO]:  \ \ \ __      __      ____  __  __\ \ \     /\_\ \ \____  
+[00:32:45] [Server thread/INFO]:   \ \  __\   /'__`\   /',__\/\ \/` \\ \ \    \?\ \ \ '__`\ 
+[00:32:45] [Server thread/INFO]:    \ \ \ __ /`\  \.\_/\__, `\ \ \_\ \\ \ \___ \ \ \ \ \-\ \
+[00:32:45] [Server thread/INFO]:     \ \____\\ \__/.\_\/\____/\/`____ \\ \____\ \ \_\ \_,__/
+[00:32:45] [Server thread/INFO]:      \/___/  \/__/\/_/\/___/  `/___/> \\/____/  \/_/\/___/ 
+[00:32:45] [Server thread/INFO]:                                  /\___/                    
+[00:32:45] [Server thread/INFO]:                                  \/__/                     
+[00:32:45] [Server thread/INFO]: [cc.carm.lib.easysql.hikari.HikariDataSource] HikariPool-1 - Starting...
+[00:32:45] [Server thread/INFO]: [cc.carm.lib.easysql.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[00:32:45] [Server thread/INFO]: [EasyLib] Êı¾İ¿âÁ¬½Ó³É¹¦!
+[00:32:45] [Server thread/INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+[00:32:46] [Server thread/INFO]: [WorldListTrashCan] [Migration] ÒÑÍê³É¾É WorldListTrashCan ÅäÖÃÇ¨ÒÆ£¬¾ÉÎÄ¼ş: old-version-config£¬±¨¸æ: old-version-config/migration-report.md
+[00:32:46] [Server thread/INFO]: [WorldListTrashCan] [Message] ÒÑ¼ÓÔØÓïÑÔÎÄ¼ş: messages/message_zh.yml
+[00:32:46] [Server thread/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=7, visiblePages=7
+[00:32:46] [Server thread/INFO]: [WorldListTrashCan] [TrashRouter] ÒÑ¼ÓÔØ 1 ¸öÊÀ½çÀ¬»øÍ°Êı¾İ¡£
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] [PlaceholderAPI] ÒÑ×¢²á±äÁ¿: %Wtc_ClearTime%
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Universal runtime: legacy
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Platform: legacy-1.12
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability scheduler-global: enabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability scheduler-region: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability inventory-basic: enabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability item-pdc-tag: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability item-legacy-tag: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability rgb-message: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability clickable-message: enabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability boss-bar: enabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability sign-legacy: enabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability sign-modern: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability entity-move-event: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] Capability folia-region-safe: disabled
+[00:32:47] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] ¶¨Ê±ÇåÀíÒÑÆô¶¯£¬¼ä¸ô 360 Ãë¡£
+[00:32:47] [Server thread/INFO]: [MythicMobs] Enabling MythicMobs v4.9.0-3256
+[00:32:47] [Server thread/INFO]: [MythicMobs] Loading MythicMobs for Paper (MC: 1.12.2)...[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] The server is running PaperSpigot; enabled PaperSpigot exclusive functionality[0m
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 46 ms to scan 1 urls, producing 3 keys and 21 values 
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 8 ms to scan 1 urls, producing 3 keys and 18 values 
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 53 ms to scan 14 urls, producing 0 keys and 0 values 
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 10 ms to scan 1 urls, producing 3 keys and 9 values 
+[00:32:47] [Server thread/INFO]: [MythicMobs] MythicMobs PlaceholderAPI Support has been enabled![0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] Loading Mob Registry...[0m
+[00:32:47] [Server thread/INFO]: [LumineUtils] (io.lumine.xikage.mythicmobs.utils.) is bound to plugin MythicMobs - io.lumine.xikage.mythicmobs.MythicMobs
+[00:32:47] [Server thread/INFO]: [MythicMobs] Loading Mob Registry...[0m
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 23 ms to scan 1 urls, producing 10 keys and 280 values 
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 25 ms to scan 1 urls, producing 24 keys and 552 values 
+[00:32:47] [Server thread/INFO]: [io.lumine.xikage.mythicmobs.util.reflections.Reflections] Reflections took 8 ms to scan 1 urls, producing 6 keys and 71 values 
+[00:32:47] [Server thread/INFO]: [MythicMobs] [36mLOADED[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [36mLOADED[0m
+[00:32:47] [Server thread/WARN]: [MythicMobs] ?[33m Config Error for Item '[4mKingsCrown[0m[33m' in 'ExampleItems.yml': [37mMaterial type 'GOLDEN_HELMET' not found[0m[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 6 mobs.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 3 vanilla mob overrides.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 0 mob stacks.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 3 skills.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 2 random spawns.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 3 mythic items.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 2 drop tables.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m?[37m Loaded 0 mob spawners.[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] MythicMobs configuration file loaded successfully.[0m
+[00:32:47] [Server thread/ERROR]: [MythicMobs] Plugin MythicMobs v4.9.0-3256 has failed to register events for class io.lumine.xikage.mythicmobs.adapters.bukkit.listeners.MobListeners because org/bukkit/event/entity/EntityTransformEvent does not exist.
+[00:32:47] [Server thread/INFO]: [MythicMobs] Started up bStats Metrics[0m
+[00:32:47] [Server thread/INFO]: [MythicMobs] [32m? MythicMobs v4.9.0 (build 3256) has been successfully loaded![0m[0m
+[00:32:47] [Server thread/INFO]: [SpigotMaster] Enabling SpigotMaster v0.0.1-test
+[00:32:47] [Server thread/INFO]: [SpigotMaster] SpigotMaster test stub enabled.
+[00:32:47] [Server thread/INFO]: [SX-Item] Enabling SX-Item v4.5.10
+[00:32:48] [Server thread/INFO]: [SX-Item] Loaded 2 Scripts
+[00:32:48] [Server thread/INFO]: [SX-Item] Loaded 40 RandomString
+[00:32:48] [Server thread/INFO]: [SX-Item] Loaded 2 ItemGenerators
+[00:32:48] [Server thread/INFO]: [SX-Item] Loaded 12 Items
+[00:32:48] [Server thread/INFO]: [SX-Item] PlaceholderHelper Enabled
+[00:32:48] [Server thread/INFO]: [SX-Item] MythicMobsV4Helper Enabled
+[00:32:48] [Server thread/INFO]: [SX-Item] Load 8 Commands
+[00:32:48] [Server thread/INFO]: [SX-Item] Loading Time: 513 ms
+[00:32:48] [Server thread/INFO]: [SX-Item] Author: [Saukiya, Ray_Hughes, Lounode]
+[00:32:48] [Server thread/INFO]: [ViaVersion] Enabling ViaVersion v4.10.2
+[00:32:48] [Server thread/INFO]: [CoreBridge] Enabling CoreBridge v1.0.1
+[00:32:48] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: CoreBridge ³É¹¦!
+[00:32:48] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: CoreBridgeGui ³É¹¦!
+[00:32:48] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: CoreBridgePlaceholder ³É¹¦!
+[00:32:48] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: CoreBridgePacket ³É¹¦!
+[00:32:48] [Server thread/INFO]: [VariableManager] Enabling VariableManager v3.0.0.bl-reset
+[00:32:48] [Server thread/INFO]: [VariableManager] ÒÑ¼ÓÔØ 1 ¸ö PredefineVariableConfig
+[00:32:48] [Server thread/INFO]: [VariableManager] ÒÑ¼ÓÔØ 2 ¸ö VariableConfig
+[00:32:48] [Server thread/INFO]: [VariableManager] ÒÑ¼ÓÔØ 2 ¸öËæ»ú±äÁ¿×é
+[00:32:50] [Server thread/ERROR]: [VariableManager] ´æ´¢ÅäÖÃÎŞĞ§£¬²å¼ş½«½ûÓÃ
+java.lang.IllegalStateException: VariableManager ´æ´¢Á÷Ë®Ïß³õÊ¼»¯Ê§°Ü
+	at top.wcpe.variablemanager.storage.StorageCoordinator.start(StorageCoordinator.java:96) ~[?:?]
+	at top.wcpe.variablemanager.VariableManager.onEnable(VariableManager.java:181) ~[?:?]
+	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:264) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:316) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:405) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugin(CraftServer.java:395) ~[patched_1.12.2.jar:git-Paper-1620]
+	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugins(CraftServer.java:344) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.t(MinecraftServer.java:442) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.l(MinecraftServer.java:403) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.a(MinecraftServer.java:341) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.DedicatedServer.init(DedicatedServer.java:289) ~[patched_1.12.2.jar:git-Paper-1620]
+	at net.minecraft.server.v1_12_R1.MinecraftServer.run(MinecraftServer.java:616) ~[patched_1.12.2.jar:git-Paper-1620]
+	at java.lang.Thread.run(Thread.java:750) [?:1.8.0_451]
+Caused by: top.wcpe.variablemanager.libs.jedis.exceptions.JedisConnectionException: Failed to connect to any host resolved for DNS name.
+	at top.wcpe.variablemanager.libs.jedis.DefaultJedisSocketFactory.connectToFirstSuccessfulHost(DefaultJedisSocketFactory.java:63) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.DefaultJedisSocketFactory.createSocket(DefaultJedisSocketFactory.java:89) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.Connection.connect(Connection.java:194) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.Connection.initializeFromClientConfig(Connection.java:392) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.Connection.<init>(Connection.java:67) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.Jedis.<init>(Jedis.java:220) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.JedisFactory.makeObject(JedisFactory.java:170) ~[?:?]
+	at top.wcpe.variablemanager.libs.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:566) ~[?:?]
+	at top.wcpe.variablemanager.libs.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:306) ~[?:?]
+	at top.wcpe.variablemanager.libs.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:233) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.util.Pool.getResource(Pool.java:38) ~[?:?]
+	at top.wcpe.variablemanager.libs.jedis.JedisPool.getResource(JedisPool.java:378) ~[?:?]
+	at top.wcpe.variablemanager.storage.RedisStreamConsumer.ensureGroup(RedisStreamConsumer.java:57) ~[?:?]
+	at top.wcpe.variablemanager.storage.StorageCoordinator.start(StorageCoordinator.java:80) ~[?:?]
+	... 12 more
+	Suppressed: java.net.SocketTimeoutException: connect timed out
+		at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method) ~[?:1.8.0_451]
+		at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:81) ~[?:1.8.0_451]
+		at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:476) ~[?:1.8.0_451]
+		at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:218) ~[?:1.8.0_451]
+		at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:200) ~[?:1.8.0_451]
+		at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:162) ~[?:1.8.0_451]
+		at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:394) ~[?:1.8.0_451]
+		at java.net.Socket.connect(Socket.java:606) ~[?:1.8.0_451]
+		at top.wcpe.variablemanager.libs.jedis.DefaultJedisSocketFactory.connectToFirstSuccessfulHost(DefaultJedisSocketFactory.java:75) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.DefaultJedisSocketFactory.createSocket(DefaultJedisSocketFactory.java:89) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.Connection.connect(Connection.java:194) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.Connection.initializeFromClientConfig(Connection.java:392) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.Connection.<init>(Connection.java:67) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.Jedis.<init>(Jedis.java:220) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.JedisFactory.makeObject(JedisFactory.java:170) ~[?:?]
+		at top.wcpe.variablemanager.libs.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:566) ~[?:?]
+		at top.wcpe.variablemanager.libs.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:306) ~[?:?]
+		at top.wcpe.variablemanager.libs.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:233) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.util.Pool.getResource(Pool.java:38) ~[?:?]
+		at top.wcpe.variablemanager.libs.jedis.JedisPool.getResource(JedisPool.java:378) ~[?:?]
+		at top.wcpe.variablemanager.storage.RedisStreamConsumer.ensureGroup(RedisStreamConsumer.java:57) ~[?:?]
+		at top.wcpe.variablemanager.storage.StorageCoordinator.start(StorageCoordinator.java:80) ~[?:?]
+		at top.wcpe.variablemanager.VariableManager.onEnable(VariableManager.java:181) ~[?:?]
+		at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:264) ~[patched_1.12.2.jar:git-Paper-1620]
+		at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:316) ~[patched_1.12.2.jar:git-Paper-1620]
+		at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:405) ~[patched_1.12.2.jar:git-Paper-1620]
+		at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugin(CraftServer.java:395) ~[patched_1.12.2.jar:git-Paper-1620]
+		at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugins(CraftServer.java:344) ~[patched_1.12.2.jar:git-Paper-1620]
+		at net.minecraft.server.v1_12_R1.MinecraftServer.t(MinecraftServer.java:442) ~[patched_1.12.2.jar:git-Paper-1620]
+		at net.minecraft.server.v1_12_R1.MinecraftServer.l(MinecraftServer.java:403) ~[patched_1.12.2.jar:git-Paper-1620]
+		at net.minecraft.server.v1_12_R1.MinecraftServer.a(MinecraftServer.java:341) ~[patched_1.12.2.jar:git-Paper-1620]
+		at net.minecraft.server.v1_12_R1.DedicatedServer.init(DedicatedServer.java:289) ~[patched_1.12.2.jar:git-Paper-1620]
+		at net.minecraft.server.v1_12_R1.MinecraftServer.run(MinecraftServer.java:616) ~[patched_1.12.2.jar:git-Paper-1620]
+		at java.lang.Thread.run(Thread.java:750) [?:1.8.0_451]
+[00:32:50] [Server thread/INFO]: [VariableManager] Disabling VariableManager v3.0.0.bl-reset
+[00:32:50] [Server thread/INFO]: [VariableManager] Éó¼Æ¶ÓÁĞ¹Ø±Õ: fileDropped=0 mysqlDropped=0 fileRemaining=0 mysqlRemaining=0
+[00:32:50] [Server thread/INFO]: [AttributePlus] Enabling AttributePlus v3.3.3.0
+[00:32:50] [Server thread/WARN]: SLF4J: No SLF4J providers were found.
+[00:32:50] [Server thread/WARN]: SLF4J: Defaulting to no-operation (NOP) logger implementation
+[00:32:50] [Server thread/WARN]: SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [AdvancedAttributeValueRead] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÕıÔÚ×¢²á AttributePlus-3.3.3.0 ²å¼şÄÚµÄÊôĞÔµÈ×é¼ş,×÷Õß: [iNanmu]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [PVEÉËº¦] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [PVPÉËº¦] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÕæÊµÉËº¦]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [7]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÎïÀíÉËº¦]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [1]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±©ÉËµÖ¿¹] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±©»÷ÉÁ±Ü] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±©ÉË±¶ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±©»÷µÖ¿¹] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±©»÷¼¸ÂÊ]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [8]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [È¼ÉÕÉËº¦] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [È¼ÉÕ¼¸ÂÊ]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [10]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±ù¶³Ç¿¶È] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [±ù¶³¼¸ÂÊ]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [11]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [À×»÷ÉËº¦] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [À×»÷¼¸ÂÊ]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [3]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÎüÑªÉÁ±Ü] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÎüÑª±¶ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÎüÑªµÖ¿¹] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÎüÑª¼¸ÂÊ]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [4]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [»¤¼×´©Í¸] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÆÆ¼×¼¸ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [»¤¼×Öµ]-[DEFENSE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [6]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [PVE·ÀÓù] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [PVP·ÀÓù] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÎïÀí·ÀÓù]-[DEFENSE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [5]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÃüÖĞ¼¸ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÉÁ±Ü¼¸ÂÊ]-[DEFENSE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [0]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [·´µ¯±¶ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [·´µ¯¼¸ÂÊ]-[DEFENSE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [9]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [¼ıÉËÃâÒßÂÊ]-[DEFENSE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [2]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ĞîÁ¦¼Ó³É] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ĞîÁ¦¸ÉÈÅ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [¾­Ñé¼Ó³É] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÉúÃüÁ¦]-[UPDATE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [100]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÒÆËÙ¼Ó³É]-[UPDATE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [101]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [°Ù·Ö±È»Ö¸´]-[UPDATE] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [53]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÉúÃü»Ö¸´] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [¶ÜÅÆ¸ñµ²ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÆÆ¶Ü¼¸ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [¼ıÊ¸ËÙ¶È] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [¼ıÊõ¾«×¼] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [¼ıÊ¸´©Í¸ÂÊ] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [ÕÙ»½Ç¿¶È] ×¢²áÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [AttributePercentageRead] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [CustomConditionComponent] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [LevelConditionComponent] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [ProfessionalConditionComponent] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [SlotTypeConditionComponent] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ĞÂµÄ¶ÁÈ¡¸ñÊ½×é¼ş [AttributeReadLineCondition] ¼ÓÔØÍê±Ï
+[00:32:51] [Server thread/INFO]: [AttributePlus] ¿ªÊ¼¼ÓÔØ²å¼ş JavaScript ÊôĞÔ½Å±¾
+[00:32:51] [Server thread/INFO]: [AttributePlus] ÊôĞÔ [²âÊÔ½Å±¾ÊôĞÔ]-[ATTACK] ×¢²áÍê±Ï,ÓÅÏÈ¼¶Îª [103]
+[00:32:51] [Server thread/INFO]: [AttributePlus] ¹²¼ÓÔØÁË 1 ¸öÊôĞÔ½Å±¾
+[00:32:51] [Server thread/INFO]: [DungeonPlus] Enabling DungeonPlus v1.4.6
+[00:32:51] [Server thread/WARN]: [DungeonPlus] ÊÂ¼ş ink.ptms.adyeshach.api.event.AdyeshachEntityInteractEvent Î´ÄÜÕÒµ½£¬¿ÉÊ¹ÓÃ @Ghost ¹Ø±Õ´Ë¾¯¸æ¡£
+[00:32:51] [Server thread/INFO]: JexlHandler: true
+[00:32:52] [Server thread/INFO]: [DungeonPlus] [default] µØÀÎÄÚÈİµ¼ÈëÍê±Ï
+[00:32:52] [Server thread/INFO]: [DungeonPlus] [default] µØÀÎµØÍ¼µ¼Èë³É¹¦
+[00:32:53] [Server thread/INFO]: [DungeonPlus] Dungeon WorldCreatorAPI 4(2)
+[00:32:53] [Server thread/INFO]: DungeonPlus: ¼ì²âµ½Îª¸ß°æ±¾ÓÃ»§,½¨Òé½« dungeon-pre-folder.instance-keep ¹¦ÄÜ¿ªÆô
+[00:32:53] [Server thread/INFO]: DungeonPlus: µØÀÎÊÀ½çÔ¤»º´æÍê³É,¹²ºÄÊ± 0.002ms
+[00:32:53] [Server thread/INFO]: DungeonPlus: MinecraftServer net.minecraft.server.v1_12_R1.DedicatedServer@26586839
+[00:32:53] [Server thread/INFO]: DungeonPlus: Close def auto-save (0)
+[00:32:53] [Server thread/INFO]: DungeonPlus: µØÀÎÊÀ½çÔ¤»º´æ¹¦ÄÜÒÑÆôÓÃ
+[00:32:53] [Server thread/INFO]: [BlLevelManager] Enabling BlLevelManager v1.0-SNAPSHOT
+[00:32:53] [Server thread/INFO]: [BlLevelManager] [BlLevel] ²å¼şÒÑÆôÓÃ¡£
+[00:32:53] [Server thread/INFO]: [BLMonsterCodex] Enabling BLMonsterCodex v1.0-SNAPSHOT
+[00:32:53] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: BLMonsterCodex ³É¹¦!
+[00:32:53] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: monstercodex ³É¹¦!
+[00:32:53] [Server thread/INFO]: [BLMonsterCodex] ÒÑ×¢²á CoreBridge ·¢°ü±äÁ¿: BLMonsterCodex Óë monstercodex / init,summary,group,entry
+[00:32:53] [Server thread/INFO]: [¹ÖÎïÍ¼¼ø] ²å¼şÒÑÆôÓÃ¡£
+[00:32:53] [Server thread/INFO]: [WC-NetEaseModRpc] Enabling WC-NetEaseModRpc v1.2.0
+[00:32:53] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: WC-NeteaseModRpc ³É¹¦!
+[00:32:53] [Server thread/INFO]: [AttributePlusViewer] Enabling AttributePlusViewer v1.0-SNAPSHOT
+[00:32:53] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: AttributePlusViewer ³É¹¦!
+[00:32:53] [Server thread/INFO]: [AttributePlusViewer] ÒÑ×¢²á CoreBridge ·¢°ü±äÁ¿: AttributePlusViewer/init
+[00:32:53] [Server thread/INFO]: [APÊôĞÔ] ²å¼şÒÑÆôÓÃ¡£
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Enabling SX-Attribute v1.6.1-SNAPSHOT
+[00:32:53] [Server thread/INFO]: [SX-Attribute] ServerVersion: 1.12.2
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load ItemUtil! 
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load 58 RandomString
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load 3 Items
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Find Placeholders
+[00:32:53] [Server thread/INFO]: [SX-Attribute] No Find Vault!
+[00:32:53] [Server thread/INFO]: [SX-Attribute] No Find HolographicDisplays!
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Find MythicMobs
+[00:32:53] [Server thread/INFO]: [SX-Attribute] No Find SX-Level!
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load 82 Attributes
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load 7 Condition
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Disable RegisterSlot
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load 12 Commands
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Load Time: 63 ms
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Author: Saukiya QQ: 1940208750
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Reload Author: WCPE QQ: 1837019522
+[00:32:53] [Server thread/INFO]: [SX-Attribute] This plugin was first launched on www.mcbbs.net!
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Reprint is prohibited without permission!
+[00:32:53] [Server thread/INFO]: 
+[00:32:53] [Server thread/INFO]:    ______  __             ___   __  __       _ __          __
+[00:32:53] [Server thread/INFO]:   / ___/ |/ /            /   | / /_/ /______(_) /_  __  __/ /____
+[00:32:53] [Server thread/INFO]:   \__ \|   /   ______   / /| |/ __/ __/ ___/ / __ \/ / / / __/ _ \
+[00:32:53] [Server thread/INFO]:  ___/ /   |   /_____/  / ___ / /_/ /_/ /  / / /_/ / /_/ / /_/  __/
+[00:32:53] [Server thread/INFO]: /____/_/|_|           /_/  |_\__/\__/_/  /_/_.___/\__,_/\__/\___/
+[00:32:53] [Server thread/INFO]: 
+[00:32:53] [Server thread/INFO]: [SX-Attribute] Main World spawnLocation canPvp is [true]
+[00:32:53] [Server thread/INFO]: [DragonCore] Enabling DragonCore v2.6.2.9
+[00:32:53] [Server thread/INFO]: ************************************************************
+[00:32:53] [Server thread/INFO]: [DragonCore] »¶Ó­Ê¹ÓÃ¡¾ÁúÖ®ºËĞÄ¡¿£¬²å¼ş×÷ÕßÎªQQ448780139
+[00:32:53] [Server thread/INFO]: [DragonCore] »¶Ó­¼ÓÈëQQ½»Á÷Èº: 901704037
+[00:32:53] [Server thread/INFO]: [DragonCore] »¶Ó­×¢²áÉçÇøÍøÕ¾: https://dragoncore.top/
+[00:32:53] [Server thread/INFO]: ************************************************************
+[00:32:53] [Server thread/INFO]: NMS°æ±¾:net.minecraft.server.v1_12_R1
+[00:32:53] [Server thread/INFO]: ¼ÓÔØNBT¹¦ÄÜ
+[00:32:53] [Server thread/INFO]: DragonCore - ¿ªÊ¼ÔØÈëÎÄ¼ş
+[00:32:53] [Server thread/INFO]: ©³©¥©¥©¥©¥©¥©¥©¥©¥©¥ ¿ªÊ¼ÔØÈëYmlÎÄ¼ş ©¥©¥©¥©¥©¥©¥©¥©¥©¥
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: ArmorLayer.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Blood.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: config.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: EntityModel.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: FontConfig.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/BLPrizeDrawRewardCarousel.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/BLPrizeDrawSlotMachine.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/BLPrizeDrawStarWheel.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/DungeonPlusCoreDebug.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/DungeonPlusCoreItemsDebug.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/huds.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/±³°ü.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: Gui/×Ô¶¯¹ö¶¯¹«¸æ.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: ItemIcon.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: ItemModel.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: ItemTip/Êé±¾.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: ItemTip/ÓÃÓÚÏÔÊ¾Gui½çÃæµÄTip.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: ItemTip/Í¨ÓÃ.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: KeyConfig.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: SlotConfig.yml
+[00:32:53] [Server thread/INFO]: ©§ ÔØÈë: WorldTexture.yml
+[00:32:53] [Server thread/INFO]: ©º©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥ ÎÄ¼şÔØÈëÍê³É ©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
+[00:32:53] [Server thread/INFO]: ÒÑÆôÓÃYML¸ñÊ½´æ´¢Íæ¼ÒÊı¾İ
+[00:32:53] [Server thread/INFO]:  - ÒÑ¼æÈİAPÊôĞÔ²å¼ş
+[00:32:53] [Server thread/INFO]:  - ÒÑ¼æÈİSXÊôĞÔ²å¼ş
+[00:32:53] [Server thread/INFO]: DragonCore - ¼ÓÔØÍê³É
+[00:32:53] [Server thread/INFO]: [ItemBind] Enabling ItemBind v1.3.2-SNAPSHOT
+[00:32:53] [Server thread/ERROR]: [ItemBind] Plugin ItemBind v1.3.2-SNAPSHOT has failed to register events for class top.wcpe.itembind.listener.GermSlotListener because com/germ/germplugin/api/event/gui/GermGuiSlotSaveEvent does not exist.
+[00:32:53] [Server thread/INFO]: [WcpeLib] ×¢²áÖ¸Áî: ItemBind ³É¹¦!
+[00:32:53] [Server thread/INFO]: [NeigeItems] Enabling NeigeItems v1.15.113-wcpeDev_20240119
+[00:32:53] [Server thread/INFO]: NeigeItems > Î´·¢ÏÖÇ°ÖÃ²å¼ş: Vault
+[00:32:53] [Server thread/INFO]: NeigeItems > Î´·¢ÏÖÇ°ÖÃ²å¼ş: ProtocolLib
+[00:32:55] [Server thread/WARN]: [NeigeItems] error occurred while get Class pers.neige.neigeitems.item.color.impl.ItemColorProtocol$2
+[00:32:55] [Server thread/WARN]: java.lang.NoClassDefFoundError: com/comphenix/protocol/reflect/FieldAccessException
+[00:32:55] [Server thread/WARN]: 	at java.lang.Class.forName0(Native Method)
+[00:32:55] [Server thread/WARN]: 	at java.lang.Class.forName(Class.java:264)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.scanner.ClassScanner.loadClasses(ClassScanner.kt:185)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.scanner.ClassScanner.onEnable(ClassScanner.kt:54)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.NeigeItems.onEnable(NeigeItems.kt:48)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.taboolib.platform.BukkitPlugin.onEnable(BukkitPlugin.java:124)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:264)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:316)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:405)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugin(CraftServer.java:395)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugins(CraftServer.java:344)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.t(MinecraftServer.java:442)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.l(MinecraftServer.java:403)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.a(MinecraftServer.java:341)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.DedicatedServer.init(DedicatedServer.java:289)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.run(MinecraftServer.java:616)
+[00:32:55] [Server thread/WARN]: 	at java.lang.Thread.run(Thread.java:750)
+[00:32:55] [Server thread/WARN]: Caused by: java.lang.ClassNotFoundException: com.comphenix.protocol.reflect.FieldAccessException
+[00:32:55] [Server thread/WARN]: 	at java.net.URLClassLoader.findClass(URLClassLoader.java:387)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.findClass(PluginClassLoader.java:156)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.findClass(PluginClassLoader.java:104)
+[00:32:55] [Server thread/WARN]: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+[00:32:55] [Server thread/WARN]: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+[00:32:55] [Server thread/WARN]: 	... 17 more
+[00:32:55] [Server thread/WARN]: [NeigeItems] error occurred while get Class pers.neige.neigeitems.item.ItemHider$1
+[00:32:55] [Server thread/WARN]: java.lang.NoClassDefFoundError: com/comphenix/protocol/reflect/FieldAccessException
+[00:32:55] [Server thread/WARN]: 	at java.lang.Class.forName0(Native Method)
+[00:32:55] [Server thread/WARN]: 	at java.lang.Class.forName(Class.java:264)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.scanner.ClassScanner.loadClasses(ClassScanner.kt:185)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.scanner.ClassScanner.onEnable(ClassScanner.kt:54)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.NeigeItems.onEnable(NeigeItems.kt:48)
+[00:32:55] [Server thread/WARN]: 	at pers.neige.neigeitems.taboolib.platform.BukkitPlugin.onEnable(BukkitPlugin.java:124)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:264)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.JavaPluginLoader.enablePlugin(JavaPluginLoader.java:316)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:405)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugin(CraftServer.java:395)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.craftbukkit.v1_12_R1.CraftServer.enablePlugins(CraftServer.java:344)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.t(MinecraftServer.java:442)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.l(MinecraftServer.java:403)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.a(MinecraftServer.java:341)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.DedicatedServer.init(DedicatedServer.java:289)
+[00:32:55] [Server thread/WARN]: 	at net.minecraft.server.v1_12_R1.MinecraftServer.run(MinecraftServer.java:616)
+[00:32:55] [Server thread/WARN]: 	at java.lang.Thread.run(Thread.java:750)
+[00:32:55] [Server thread/WARN]: Caused by: java.lang.ClassNotFoundException: com.comphenix.protocol.reflect.FieldAccessException
+[00:32:55] [Server thread/WARN]: 	at java.net.URLClassLoader.findClass(URLClassLoader.java:387)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.findClass(PluginClassLoader.java:156)
+[00:32:55] [Server thread/WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.findClass(PluginClassLoader.java:104)
+[00:32:55] [Server thread/WARN]: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+[00:32:55] [Server thread/WARN]: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+[00:32:55] [Server thread/WARN]: 	... 17 more
+[00:32:55] [Server thread/INFO]: NeigeItems > Î´·¢ÏÖÇ°ÖÃ²å¼ş: EasyItem
+[00:32:55] [Server thread/INFO]: [BLPrizeDraw] Enabling BLPrizeDraw v0.1.0-SNAPSHOT
+[00:32:55] [Server thread/INFO]: [BLPrizeDraw] BetterAppearanceÎ´ÆôÓÃ£¬Ìø¹ıÊÀ½ç×ø±ê¿ªÏä¶¯»­×¢²á¡£
+[00:32:55] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: BLPrizeDraw ³É¹¦!
+[00:32:55] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: blprizedraw ³É¹¦!
+[00:32:55] [Server thread/INFO]: [BLPrizeDraw] AI_BLPD_COREBRIDGE_STATUS PASS parents=BLPrizeDraw,blprizedraw child=result
+[00:32:55] [Server thread/INFO]: [BLDungeonPlusReward] Enabling BLDungeonPlusReward v1.0-SNAPSHOT
+[00:32:55] [Server thread/INFO]: [BLDungeonPlusReward] ÒÑ×¢²á PlaceholderAPI ±äÁ¿: bldungeonplusreward
+[00:32:55] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: BLDungeonPlusReward ³É¹¦!
+[00:32:55] [Server thread/INFO]: [BLDungeonPlusReward] ÒÑ×¢²á CoreBridge ·¢°ü±äÁ¿: BLDungeonPlusReward
+[00:32:55] [Server thread/INFO]: [BLDungeonPlusReward] BLDungeonPlusReward ÒÑÆôÓÃ¡£
+[00:32:55] [Server thread/INFO]: [DungeonPlusCore] Enabling DungeonPlusCore v0.1.0-SNAPSHOT
+[00:32:55] [Server thread/INFO]: [DungeonPlusCore] ÒÑ¼ÓÔØÅäÖÃ: dungeons=2, difficulties=12
+[00:32:55] [Server thread/INFO]: [EasyCore] Enabling EasyCore v1.5.2
+[00:32:55] [DPC-Worker-1/INFO]: [pixeltech.bluenine.dungeonpluscore.lib.hikari.HikariDataSource] DungeonPlusCore-MySQL - Starting...
+[00:32:55] [Server thread/INFO]: ©³©¥©¥©¥©¥©¥©¥ EasyCore¿ªÊ¼¼ÓÔØ½çÃæÎÄ¼ş©¥©¥©¥©¥©¥©¥
+[00:32:55] [Server thread/INFO]: ©§ ¼ÓÔØ: DungeonPlusCoreReviveDebug
+[00:32:55] [Server thread/INFO]: ©§ ¼ÓÔØ: EasyCoreSmoke
+[00:32:55] [Server thread/INFO]: ©§ Î´¼ÓÔØ: GuiExample Ô­Òò: Ê¾ÀıÎÄ¼ş»òÒş²ØÎÄ¼ş
+[00:32:55] [Server thread/INFO]: ©º©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥ ÎÄ¼ş¼ÓÔØÍê³É ©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
+[00:32:55] [Server thread/INFO]: Loaded random command: [[CMD]say hello1] with weight 21.0
+[00:32:55] [Server thread/INFO]: Loaded random command: [[CMD]say hello2] with weight 23.0
+[00:32:55] [Server thread/INFO]: Loaded random command: [[CMD]say hello3] with weight 43.0
+[00:32:55] [Server thread/INFO]: Loaded random command: [[CMD]say hello4] with weight 55.0
+[00:32:55] [DPC-Worker-1/INFO]: [pixeltech.bluenine.dungeonpluscore.lib.hikari.HikariDataSource] DungeonPlusCore-MySQL - Start completed.
+[00:32:55] [Server thread/WARN]: [EasyCore] hook plugin Multiverse-Core failed!
+[00:32:55] [Server thread/INFO]: [EasyCore] [EasyCore] UiMessage rules loaded: 6
+[00:32:55] [Server thread/INFO]: [EasyCore] [UiTips] ÒÑ×¢²á NeigeItems ItemGiveEvent toast ÌáÊ¾¼àÌı
+[00:32:55] [Server thread/INFO]: ========EasyCoreÒÑÆôÓÃ========
+[00:32:55] [Server thread/INFO]: [SpigotMaster] listenForEvent channel=easyCore, system=EasyCoreClientSystem, event=UIEditEvent
+[00:32:55] [Server thread/INFO]: [SpigotMaster] listenForEvent channel=easyCore, system=EasyCoreClientSystem, event=UIPacketEvent
+[00:32:55] [Server thread/INFO]: [SpigotMaster] listenForEvent channel=easyCore, system=EasyCoreClientSystem, event=UIClickEvent
+[00:32:55] [Server thread/INFO]: [SpigotMaster] listenForEvent channel=easyCore, system=EasyCoreClientSystem, event=UiInitFinished
+[00:32:55] [Server thread/INFO]: [SpigotMaster] listenForEvent channel=easyCore, system=EasyCoreClientSystem, event=ModelEvent
+[00:32:55] [Server thread/INFO]: [SpigotMaster] listenForEvent channel=easyCore, system=EasyCoreClientSystem, event=EasyCoreEvent
+[00:32:55] [Server thread/INFO]: [cc.carm.lib.easysql.hikari.HikariDataSource] HikariPool-2 - Starting...
+[00:32:55] [Server thread/INFO]: [cc.carm.lib.easysql.hikari.HikariDataSource] HikariPool-2 - Start completed.
+[00:32:55] [SQLManager/INFO]: [EasyCore] ÍØÕ¹²ÛÎ»±í¼ÓÔØ³É¹¦!
+[00:32:55] [DPC-Worker-1/INFO]: [DungeonPlusCore] ºËĞÄ´æ´¢ÒÑ¾ÍĞ÷: database=test, tablePrefix=dpc_dev_
+[00:32:55] [Server thread/INFO]: [EasyCore] ÒÑµ¼Èë com.yuankong.easycore.core.script.EasyJS
+[00:32:55] [Server thread/INFO]: [EasyCore] Plugin Message Channel ÒÑ×¢²á: wcpe:wcpelib
+[00:32:55] [Server thread/INFO]: Done (12.658s)! For help, type "help" or "?"
+[00:32:55] [Server thread/INFO]: Starting remote control listener
+[00:32:55] [RCON Listener #1/INFO]: RCON running on 0.0.0.0:25575
+[00:32:55] [Server thread/INFO]: Timings Reset
+[00:32:55] [Server thread/INFO]: [EasyLib] ³õÊ¼»¯Íê³É£¡
+[00:32:55] [Server thread/INFO]: [EasyLib] ³É¹¦Ìí¼ÓDragonCore²å¼şÖ§³Ö
+[00:32:55] [Server thread/INFO]: [ViaVersion] ViaVersion detected server version: 1.12.2 (340)
+[00:32:55] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] start load Textures...
+[00:32:56] [Server thread/WARN]: [ViaVersion] This version of Minecraft is extremely outdated and support for it has reached its end of life. You will still be able to run Via on this Minecraft version, but we are unlikely to provide any further fixes or help with problems specific to legacy Minecraft versions. Please consider updating to give your players a better experience and to avoid issues that have long been fixed.
+[00:32:56] [Server thread/WARN]: [ViaVersion] You are running an outdated Java version, please update it to at least Java 17 (your version is 1.8.0_451).
+[00:32:56] [Server thread/WARN]: [ViaVersion] Starting with Minecraft 1.21, ViaVersion will no longer officially be compatible with this version of Java, only offering unsupported compatibility builds.
+[00:32:56] [Server thread/INFO]: [AttributePlus] ¿ªÊ¼×Ô¶¯¼ÓÔØ¸½ÊôÊôĞÔµÈ×é¼ş...
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] start load ExampleTexture load!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] ExampleTexture load success!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] 1340 Textures are loaded successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] start load Textures...
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] start load ExampleTexture load!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] ExampleTexture load success!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] 1340 Textures are loaded successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] start load TextureMatchs...
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] load Æ»¹ûÆ¥Åä²âÊÔ ...
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey:Æ»¹ûÆ¥Åä²âÊÔ condition: id priority: 0 put priorityConfigurationMap successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey:Æ»¹ûÆ¥Åä²âÊÔ condition: lore priority: 1 put priorityConfigurationMap successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey:Æ»¹ûÆ¥Åä²âÊÔ condition: name-binary-tag priority: 2 put priorityConfigurationMap successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey: Æ»¹ûÆ¥Åä²âÊÔ load success!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] 1 TextureMatch are loaded successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] start load TextureMatchs...
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] load Æ»¹ûÆ¥Åä²âÊÔ ...
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey:Æ»¹ûÆ¥Åä²âÊÔ condition: id priority: 0 put priorityConfigurationMap successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey:Æ»¹ûÆ¥Åä²âÊÔ condition: lore priority: 1 put priorityConfigurationMap successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey:Æ»¹ûÆ¥Åä²âÊÔ condition: name-binary-tag priority: 2 put priorityConfigurationMap successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] TextureMatchKey: Æ»¹ûÆ¥Åä²âÊÔ load success!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] 1 TextureMatch are loaded successfully!
+[00:32:56] [Craft Scheduler Thread - 13/INFO]: [WC-NetEaseModRpc] ¼ÓÔØÌùÍ¼Íê³É ºÄÊ±: 2738 Ms
+[00:32:56] [Server thread/INFO]: [AttributePlus] ¹²¼ÓÔØÁË 5 ¸ö¸½Êô²å¼ş
+[00:32:56] [Server thread/INFO]: DungeonPlus: ÒÑ½«»º´æÖĞÒÑ¼ÓÔØµÄ¿ÕÏĞÊÀ½çÕ¼ÓÃµ÷ÖÁ×îµÍ
+[00:32:56] [Server thread/INFO]: [DungeonPlus] ¿ªÊ¼×Ô¶¯¼ÓÔØ¸½Êô²å¼şÄÚÈİ
+[00:32:56] [Server thread/INFO]: [DungeonPlus] ¿ªÊ¼¼ÓÔØ DungeonPlus ¸½Êô²å¼ş×é¼şÄÚÈİ
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonAreaTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonBreakTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonPlayerDeathTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonEntityDeathTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonKillTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonCommandTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonPlayerDropTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonPlaceTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonEntityAreaTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonPlayerWalkTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonBlockInteractTypeScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [TeamKickOfflinePlayerCondition] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonKetherConditionScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonKetherScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonMapScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonMessageScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonDataScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonReviveSettingScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] ×¢²á [DungeonHologramScript] ×é¼şÊ§°Ü,È±ÉÙ [HolographicDisplays] ÆäÖĞÒ»ÏîÒÀÀµ²å¼ş
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonReviveScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonDefaultSpawnScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonReviveNumberScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonInteractScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonEndScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonTeleportScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonSoundScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonCommandScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonObstacleScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonMoveStatusScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] ×¢²á [DungeonNpcScript] ×é¼şÊ§°Ü,Î´°²×° [Adyeshach, Citizens] ÆäÖĞÈÎÒâÒ»ÏîÈíÒÀÀµ²å¼ş
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonRemoveMonsterGroupScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonActionScriptGroupScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonSettingScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonConditionScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonTaskContainScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonBlockScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonKillAnyConditionScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonKillConditionScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonDataConditionScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonOperationBlockScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonTeamConditionScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonTaskScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonMonsterGroupScript] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Server thread/INFO]: [DungeonPlus] [DungeonMob4Script] ×é¼ş×¢²á¼ÓÔØÍê±Ï
+[00:32:56] [Craft Scheduler Thread - 5/INFO]: [PlaceholderAPI] 153 placeholder expansions are available on the cloud.
+[00:32:56] [Server thread/INFO]: [DungeonPlus] ¹²¼ÓÔØÁË 3 ¸ö¸½Êô²å¼ş
+[00:32:56] [Server thread/INFO]: [DragonCore] µ±Ç°ÒÑ¹Ø±Õ×ÊÔ´ÎÄ¼şÍ¬²½
+[00:32:56] [Server thread/INFO]: [BLPrizeDraw] AI_BLPD_READY mysql=READY redis=READY
+[00:32:57] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: DungeonPlusCore ³É¹¦!
+[00:32:57] [Server thread/INFO]: [CoreBridge] ×¢²á°ü: dungeonpluscore ³É¹¦!
+[00:32:57] [Server thread/INFO]: [DungeonPlusCore] ÒÑ×¢²á CoreBridge ·¢°ü: DungeonPlusCore Óë dungeonpluscore ¶ÓÎéĞ­Òé
+[00:32:57] [Server thread/INFO]: [DungeonPlusCore] DungeonPlusCore ºËĞÄ´æ´¢ºÍÒµÎñ·şÎñ³õÊ¼»¯Íê³É£¬²å¼ş½øÈë READY
+[00:32:57] [Server thread/INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[00:32:57] [DPC-Worker-3/INFO]: [DungeonPlusCore] ¾ÉÔËĞĞÖÜÆÚ»î¶¯¼ÇÂ¼É¨ÃèÍê³É: count=0
+[00:32:57] [Server thread/INFO]: [BLMonsterCodex] AI_BLMONSTERCODEX_DATA_READY storage=yaml
+[00:32:57] [Server thread/INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:
+[00:32:57] [Server thread/INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[00:32:57] [Craft Scheduler Thread - 4/INFO]: [ViaVersion] Finished mapping loading, shutting down loader executor!
+[00:32:58] [Server thread/INFO]: [DungeonPlus] [default] µØÀÎÄÚÈİ³õÊ¼»¯Íê±Ï
+[00:32:58] [Server thread/ERROR]: [PlaceholderAPI] SX-Attribute is currently using a deprecated method to hook into PlaceholderAPI. Placeholders for that plugin no longer work. Please consult [Saukiya and WCPE] and urge them to update it ASAP.
+[00:32:58] [Server thread/WARN]: [ViaVersion] There is a newer plugin version available: 5.11.0, you're on: 4.10.2
+[00:33:26] [User Authenticator #1/INFO]: UUID of player AIClientAlpha is ffd014c5-29b0-3675-a63b-4ba32b91028e
+[00:33:28] [Server thread/INFO]: AIClientAlpha[/127.0.0.1:65393] logged in with entity id 62 at ([world]65.48916018614545, 64.0, 255.30495840994166)
+[00:33:28] [Server thread/WARN]: [BLPrizeDraw] [2026-07-24 00:33:28.269] SESSION_RELEASED message="DrawSessionÒÑÊÍ·Å" playerUuid="ffd014c5-29b0-3675-a63b-4ba32b91028e" requestId="recovery-62bdd89a-1f46-4119-aefd-1503c4f43783" drawCount="0" state="RECOVERING_CHECK" prizeId="recovery"
+[00:33:28] [DefaultDispatcher-worker-1/INFO]: [WcpeLib] Íæ¼Ò: [AIClientAlpha] ÉÏÒ»´Î½øÈëµÄ·şÎñÆ÷ [xxx]
+[00:33:34] [Server thread/INFO]: AIClientAlpha issued server command: /wtc stats
+[00:33:37] [Server thread/INFO]: AIClientAlpha issued server command: /wtc debugnotify 0
+[00:33:37] [Server thread/INFO]: LEGACY_MIGRATION_CHAT_OK pages=7
+[00:33:37] [Server thread/INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=0, groups=0, shown=0, partial=false
+[00:33:37] [Server thread/INFO]: [WorldListTrashCan] [CleanupDetail] items: 0
+[00:33:37] [Server thread/INFO]: [WorldListTrashCan] [Debug] debugNotify count=0
+[00:33:41] [Server thread/INFO]: AIClientAlpha issued server command: /wtc globaltrash
+[00:33:41] [Server thread/INFO]: [WC-NetEaseModRpc] Start register TextureMatchConditions...
+[00:33:41] [Server thread/INFO]: [WC-NetEaseModRpc] Register [id] -> [top.wcpe.wcneteasemodrpc.item.texture.match.condition.IDMatchCondition@2c891006] successfully!
+[00:33:41] [Server thread/INFO]: [WC-NetEaseModRpc] Register [lore] -> [top.wcpe.wcneteasemodrpc.item.texture.match.condition.LoreMatchCondition@304058db] successfully!
+[00:33:41] [Server thread/INFO]: [WC-NetEaseModRpc] Register [name-binary-tag] -> [top.wcpe.wcneteasemodrpc.item.texture.match.condition.NameBinaryTagMatchCondition@7261836b] successfully!
+[00:33:41] [Server thread/INFO]: [WC-NetEaseModRpc] Register All TextureMatchConditions finish...
+[00:33:41] [Server thread/INFO]: [SpigotMaster] notifyToClient player=AIClientAlpha, channel=easyCore, system=EasyCoreClientSystem, event=UIPacketEvent, data={cacheItem={container_19=null, container_18=null, container_17=null, container_16=null, container_15=null, container_14=null, container_13=null, container_23=null, container_22=null, container_21=null, container_20=null, leggings=null, container_92=null, container_91=null, container_90=null, container_12=null, container_11=null, container_99=null, container_10=null, container_98=null, container_97=null, container_96=null, container_95=null, container_94=null, container_93=null, container_39=null, container_38=null, container_37=null, container_36=null, container_35=null, helmet=null, container_45={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, boots=null, container_44=null, container_43=null, container_42=null, container_41=null, container_40=null, container_29=null, container_28=null, container_27=null, container_26=null, container_25=null, container_24=null, chestplate=null, container_34=null, container_33=null, container_32=null, container_31=null, container_30=null, container_59=null, container_58=null, container_57=null, container_0=null, container_1=null, container_2=null, container_3=null, container_4=null, container_5=null, container_6=null, container_67=null, container_7=null, container_66=null, container_8=null, container_65=null, container_9=null, container_64=null, container_63=null, container_62=null, container_61=null, container_60=null, container_49={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_48={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_47={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_46={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_56=null, container_55=null, container_54=null, container_53={nbt={display={Name="ÏÂÒ»Ò³"}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name=ÏÂÒ»Ò³, info=ÏÂÒ»Ò³
+}, container_52={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_51={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_50={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_79=null, container_81={nbt={}, amount=1, hoverTexture=textures/items/apple, pressedTexture=textures/items/apple, lore=[], defaultTexture=textures/items/apple, name=STONE, info=STONE
+}, container_80=null, container_89=null, container_88=null, container_87=null, container_86=null, container_85=null, container_84=null, container_83=null, container_82={nbt={ench=[{lvl=3s, id=34s}], display={Lore=["±£ÁôÏÔÊ¾ÃûÓë Lore", "ÍêÕûĞòÁĞ»¯²âÊÔ"], Name="Éó¼ÆÊ¯Í·"}}, amount=2, hoverTexture=textures/items/apple, pressedTexture=textures/items/apple, lore=[±£ÁôÏÔÊ¾ÃûÓë Lore, ÍêÕûĞòÁĞ»¯²âÊÔ], defaultTexture=textures/items/apple, name=Éó¼ÆÊ¯Í·, info=Éó¼ÆÊ¯Í·
+±£ÁôÏÔÊ¾ÃûÓë Lore
+ÍêÕûĞòÁĞ»¯²âÊÔ
+}, container_69=null, container_68=null, offhand=null, container_70=null, container_78=null, container_77=null, container_76=null, container_75=null, container_74=null, container_73=null, container_72=null, container_71=null}}
+[00:33:41] [Craft Scheduler Thread - 14/INFO]: [SpigotMaster] notifyToClient player=AIClientAlpha, channel=easyCore, system=EasyCoreClientSystem, event=UIEditEvent, data={other={openGui=null, SyncChestItems={¹«¹²À¬»øÍ° 1/7={45={display_name= }, 46={display_name= }, 47={display_name= }, 48={display_name= }, 49={display_name= }, 50={display_name= }, 51={display_name= }, 52={display_name= }, 53={display_name=ÏÂÒ»Ò³}}}}}
+[00:33:52] [Server thread/INFO]: [SpigotMaster] notifyToClient player=AIClientAlpha, channel=easyCore, system=EasyCoreClientSystem, event=UIPacketEvent, data={cacheItem={container_19=null, container_18=null, container_17=null, container_16=null, container_15=null, container_14=null, container_13=null, container_23=null, container_22=null, container_21=null, container_20=null, leggings=null, container_92=null, container_91=null, container_90=null, container_12=null, container_11=null, container_99=null, container_10=null, container_98=null, container_97=null, container_96=null, container_95=null, container_94=null, container_93=null, container_39=null, container_38=null, container_37=null, container_36=null, container_35=null, helmet=null, container_45={nbt={display={Name="ÉÏÒ»Ò³"}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name=ÉÏÒ»Ò³, info=ÉÏÒ»Ò³
+}, boots=null, container_44=null, container_43=null, container_42=null, container_41=null, container_40=null, container_29=null, container_28=null, container_27=null, container_26=null, container_25=null, container_24=null, chestplate=null, container_34=null, container_33=null, container_32=null, container_31=null, container_30=null, container_59=null, container_58=null, container_57=null, container_0=null, container_1=null, container_2=null, container_3=null, container_4=null, container_5=null, container_6=null, container_67=null, container_7=null, container_66=null, container_8=null, container_65=null, container_9=null, container_64=null, container_63=null, container_62=null, container_61=null, container_60=null, container_49={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_48={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_47={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_46={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_56=null, container_55=null, container_54=null, container_53={nbt={display={Name="ÏÂÒ»Ò³"}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name=ÏÂÒ»Ò³, info=ÏÂÒ»Ò³
+}, container_52={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_51={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_50={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_79=null, container_81={nbt={}, amount=1, hoverTexture=textures/items/apple, pressedTexture=textures/items/apple, lore=[], defaultTexture=textures/items/apple, name=STONE, info=STONE
+}, container_80=null, container_89=null, container_88=null, container_87=null, container_86=null, container_85=null, container_84=null, container_83=null, container_82={nbt={ench=[{lvl=3s, id=34s}], display={Lore=["±£ÁôÏÔÊ¾ÃûÓë Lore", "ÍêÕûĞòÁĞ»¯²âÊÔ"], Name="Éó¼ÆÊ¯Í·"}}, amount=2, hoverTexture=textures/items/apple, pressedTexture=textures/items/apple, lore=[±£ÁôÏÔÊ¾ÃûÓë Lore, ÍêÕûĞòÁĞ»¯²âÊÔ], defaultTexture=textures/items/apple, name=Éó¼ÆÊ¯Í·, info=Éó¼ÆÊ¯Í·
+±£ÁôÏÔÊ¾ÃûÓë Lore
+ÍêÕûĞòÁĞ»¯²âÊÔ
+}, container_69=null, container_68=null, offhand=null, container_70=null, container_78=null, container_77=null, container_76=null, container_75=null, container_74=null, container_73=null, container_72=null, container_71=null}}
+[00:33:52] [Craft Scheduler Thread - 12/INFO]: [SpigotMaster] notifyToClient player=AIClientAlpha, channel=easyCore, system=EasyCoreClientSystem, event=UIEditEvent, data={other={openGui=null, SyncChestItems={¹«¹²À¬»øÍ° 2/7={45={display_name=ÉÏÒ»Ò³}, 46={display_name= }, 47={display_name= }, 48={display_name= }, 49={display_name= }, 50={display_name= }, 51={display_name= }, 52={display_name= }, 53={display_name=ÏÂÒ»Ò³}}}}}
+[00:33:53] [Server thread/INFO]: [SpigotMaster] notifyToClient player=AIClientAlpha, channel=easyCore, system=EasyCoreClientSystem, event=UIPacketEvent, data={cacheItem={container_19=null, container_18=null, container_17=null, container_16=null, container_15=null, container_14=null, container_13=null, container_23=null, container_22=null, container_21=null, container_20=null, leggings=null, container_92=null, container_91=null, container_90=null, container_12=null, container_11=null, container_99=null, container_10=null, container_98=null, container_97=null, container_96=null, container_95=null, container_94=null, container_93=null, container_39=null, container_38=null, container_37=null, container_36=null, container_35=null, helmet=null, container_45={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, boots=null, container_44=null, container_43=null, container_42=null, container_41=null, container_40=null, container_29=null, container_28=null, container_27=null, container_26=null, container_25=null, container_24=null, chestplate=null, container_34=null, container_33=null, container_32=null, container_31=null, container_30=null, container_59=null, container_58=null, container_57=null, container_0=null, container_1=null, container_2=null, container_3=null, container_4=null, container_5=null, container_6=null, container_67=null, container_7=null, container_66=null, container_8=null, container_65=null, container_9=null, container_64=null, container_63=null, container_62=null, container_61=null, container_60=null, container_49={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_48={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_47={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_46={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_56=null, container_55=null, container_54=null, container_53={nbt={display={Name="ÏÂÒ»Ò³"}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name=ÏÂÒ»Ò³, info=ÏÂÒ»Ò³
+}, container_52={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_51={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_50={nbt={display={Name=" "}}, amount=1, hoverTexture=textures/ui/transparent, pressedTexture=textures/ui/transparent, lore=[], defaultTexture=textures/ui/transparent, name= , info= 
+}, container_79=null, container_81={nbt={}, amount=1, hoverTexture=textures/items/apple, pressedTexture=textures/items/apple, lore=[], defaultTexture=textures/items/apple, name=STONE, info=STONE
+}, container_80=null, container_89=null, container_88=null, container_87=null, container_86=null, container_85=null, container_84=null, container_83=null, container_82={nbt={ench=[{lvl=3s, id=34s}], display={Lore=["±£ÁôÏÔÊ¾ÃûÓë Lore", "ÍêÕûĞòÁĞ»¯²âÊÔ"], Name="Éó¼ÆÊ¯Í·"}}, amount=2, hoverTexture=textures/items/apple, pressedTexture=textures/items/apple, lore=[±£ÁôÏÔÊ¾ÃûÓë Lore, ÍêÕûĞòÁĞ»¯²âÊÔ], defaultTexture=textures/items/apple, name=Éó¼ÆÊ¯Í·, info=Éó¼ÆÊ¯Í·
+±£ÁôÏÔÊ¾ÃûÓë Lore
+ÍêÕûĞòÁĞ»¯²âÊÔ
+}, container_69=null, container_68=null, offhand=null, container_70=null, container_78=null, container_77=null, container_76=null, container_75=null, container_74=null, container_73=null, container_72=null, container_71=null}}
+[00:33:54] [Craft Scheduler Thread - 5/INFO]: [SpigotMaster] notifyToClient player=AIClientAlpha, channel=easyCore, system=EasyCoreClientSystem, event=UIEditEvent, data={other={openGui=null, SyncChestItems={¹«¹²À¬»øÍ° 1/7={45={display_name= }, 46={display_name= }, 47={display_name= }, 48={display_name= }, 49={display_name= }, 50={display_name= }, 51={display_name= }, 52={display_name= }, 53={display_name=ÏÂÒ»Ò³}}}}}
+[00:33:58] [Server thread/INFO]: AIClientAlpha lost connection: Internal Exception: java.io.IOException: è¿œç¨‹ä¸»æœºå¼ºè¿«å…³é—­äº†ä¸€ä¸ªç°æœ‰çš„è¿æ¥ã€?
+[00:33:58] [Server thread/INFO]: AIClientAlpha left the game

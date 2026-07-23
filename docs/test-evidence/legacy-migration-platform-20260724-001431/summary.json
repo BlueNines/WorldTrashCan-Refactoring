@@ -1,0 +1,52 @@
+{
+  "timestamp": "20260724-001431",
+  "allPassed": true,
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+  "jarSha256": "a42e1c4077f9f4250f89cb88ffbe22d2fe7be88e07efa31226e02786e1649a72",
+  "results": [
+    {
+      "id": "spigot2612",
+      "label": "Spigot 26.1.2",
+      "passed": true,
+      "platform": "paper-1.16-1.20",
+      "messageFiles": 8,
+      "markerUnchanged": true,
+      "commands": {
+        "first": {
+          "plugins": "Plugins (1): §aWorldListTrashCan\n",
+          "wtc platform": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6paper-1.16-1.20 (universal)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n",
+          "wtc stats": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:\n§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 未统计/0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6358\n",
+          "wtc debugnotify 0": "§a已触发清理通知: §f0\n"
+        },
+        "restart": {
+          "plugins": "Plugins (1): §aWorldListTrashCan\n",
+          "wtc platform": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6paper-1.16-1.20 (universal)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n",
+          "wtc stats": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:\n§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 未统计/0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6358\n",
+          "wtc debugnotify 0": "§a已触发清理通知: §f0\n"
+        }
+      }
+    },
+    {
+      "id": "folia1218",
+      "label": "Folia 1.21.8",
+      "passed": true,
+      "platform": "folia-1.20",
+      "messageFiles": 8,
+      "markerUnchanged": true,
+      "commands": {
+        "first": {
+          "plugins": "§x§3§4§9§f§d§aℹ §fServer Plugins (1):\n§x§e§d§8§1§0§6Bukkit Plugins:\n §8- §aWorldListTrashCan\n",
+          "wtc platform": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6folia-1.20 (universal)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n",
+          "wtc stats": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:\n§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 未统计/0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6358\n",
+          "wtc debugnotify 0": "§a已触发清理通知: §f0\n"
+        },
+        "restart": {
+          "plugins": "§x§3§4§9§f§d§aℹ §fServer Plugins (1):\n§x§e§d§8§1§0§6Bukkit Plugins:\n §8- §aWorldListTrashCan\n",
+          "wtc platform": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a当前平台 §x§6§4§7§4§8§b| §x§f§f§d§1§6§6folia-1.20 (universal)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-global§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2scheduler-region§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2inventory-basic§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-pdc-tag§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2item-legacy-tag§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2rgb-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2clickable-message§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2boss-bar§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-legacy§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2sign-modern§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2entity-move-event§x§6§4§7§4§8§b: §x§5§a§c§8§f§a启用\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2folia-region-safe§x§6§4§7§4§8§b: §x§6§4§7§4§8§b禁用\n",
+          "wtc stats": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:\n§7- §f扫地门禁: §a已通过 §7(在线 0/0, 目标实体 未统计/0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6358\n",
+          "wtc debugnotify 0": "§a已触发清理通知: §f0\n"
+        }
+      }
+    }
+  ]
+}

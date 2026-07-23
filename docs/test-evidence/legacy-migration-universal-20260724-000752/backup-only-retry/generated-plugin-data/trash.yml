@@ -1,0 +1,61 @@
+# 世界垃圾桶设置。
+world-trash:
+  enabled: true
+  sign-create-text: '[trash]'
+  sign-created-text: '[created]'
+  default-max-count: 11
+  allow-load-unloaded-chunks: false
+  banned-worlds:
+  - banned_world
+global-trash:
+  enabled: true
+  max-pages: 9
+  take-delay-millis: 203
+  allow-player-put: true
+  clear-every-cleanups: 3
+  log-enabled: true
+  gui:
+    layout:
+      position:
+      - xxxxxxxxx
+      - xxxxxxxxx
+      - xxxxxxxxx
+      - xxxxxxxxx
+      - xxxxxxxxx
+      - abbbbbbbc
+      items:
+        x:
+          type: content
+        a:
+          type: previous-page
+          model-id: 101
+          material:
+          - FEATHER
+          unavailable-item: b
+        b:
+          type: background
+          model-id: 103
+          material:
+          - STAINED_GLASS_PANE
+          name: ' '
+          lore: []
+        c:
+          type: next-page
+          model-id: 102
+          material:
+          - STICK
+          unavailable-item: b
+  banned-materials:
+  - DIRT
+  - COBBLESTONE
+personal-trash:
+  enabled: true
+  track-player-dropped-items: true
+  auto-clear-when-full: true
+  take-cost: 6.5
+  notify:
+    enabled: true
+    max-display-items: 3
+  damage-recovery:
+    mode: personal-trash
+    delay-seconds: 7

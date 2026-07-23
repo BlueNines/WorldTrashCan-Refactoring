@@ -1,0 +1,20 @@
+# 聊天防刷屏。
+chat-rate-limit:
+  enabled: true
+  interval-seconds: 0.7
+  message: '&c请不要刷屏'
+  command: ''
+command-rate-limit:
+  enabled: true
+  interval-seconds: 0.7
+  message: '&c请不要频繁使用指令'
+  whitelist:
+  - /tpa
+  - /spawn
+  - /suicide
+  command: ''
+drop-protection:
+  enabled: true
+simple-optimize:
+  remove-unpickable-arrow: true
+  prevent-farmland-trampling: true

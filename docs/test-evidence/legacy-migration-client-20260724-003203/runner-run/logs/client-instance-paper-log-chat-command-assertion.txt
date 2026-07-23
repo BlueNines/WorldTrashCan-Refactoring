@@ -1,0 +1,5 @@
+status=PASS
+source=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\logs\paper-latest-before-client-instance-server-stop.log
+mustContain=PASS pattern=[Migration]
+mustContain=PASS pattern=old-version-config/migration-report.md
+mustNotContain=PASS pattern=raw=???

@@ -1,0 +1,36 @@
+# 每个世界的实体数量限制。
+world-limits:
+  enabled: false
+  ignored-worlds:
+  - testWorld
+  defaults:
+  - max-count: 10
+    entity: VILLAGER
+  - max-count: 20
+    entity: CHICKEN
+scanner:
+  target-full-cycle-seconds: 300
+  scan-interval-ticks: 20
+  min-chunks-per-scan: 4
+  max-chunks-per-scan: 64
+  max-scan-millis-per-run: 4
+  remove-interval-ticks: 2
+  max-removes-per-run: 20
+  max-pending-removals: 2000
+  candidate-ttl-seconds: 120
+  max-candidate-retries: 3
+  max-dirty-chunks: 4096
+  stale-chunk-seconds: 600
+  max-index-entities: 50000
+  max-index-entities-per-chunk: 512
+  log-summary-seconds: 60
+gather-limits:
+  enabled: false
+  drop-items: true
+  ignored-worlds:
+  - testWorld
+  defaults:
+  - max-count: 10
+    radius: 8
+    entity: VILLAGER
+    remove-count: 5

@@ -1,0 +1,742 @@
+[00:33:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[00:33:02] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[00:33:02] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[00:33:02] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2864 for Minecraft 1.12.2 loading
+[00:33:02] [main/INFO] [FML]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_451, running on Windows 10:amd64:10.0, installed at C:\Program Files\Java\jre1.8.0_451
+[00:33:02] [main/WARN] [FML]: The coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin) is not signed!
+[00:33:02] [main/WARN] [FML]: The coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin) is not signed!
+[00:33:02] [main/INFO] [FML]: Searching C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\mods for mods
+[00:33:02] [main/INFO] [FML]: Loading tweaker org.spongepowered.asm.launch.MixinTweaker from [Mod]DragonCore-2.6.2.9.jar
+[00:33:02] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[00:33:02] [main/INFO] [LaunchWrapper]: Loading tweak class name org.spongepowered.asm.launch.MixinTweaker
+[00:33:02] [main/INFO] [mixin]: SpongePowered MIXIN Subsystem Version=0.8 Source=file:/C:/Users/pc/Desktop/ai开发插件/客户端自动化测试工作区/client-instances/legacy-migration-visual-a/.minecraft/versions/1.12.2-Forge_14.23.5.2864/mods/%5BMod%5DDragonCore-2.6.2.9.jar Service=LaunchWrapper Env=CLIENT
+[00:33:02] [main/WARN] [FML]: The coremod eos.moe.dragoncore.tweaker.ForgePlugin does not have a MCVersion annotation, it may cause issues with this version of Minecraft
+[00:33:02] [main/WARN] [FML]: The coremod ForgePlugin (eos.moe.dragoncore.tweaker.ForgePlugin) is not signed!
+[00:33:02] [main/INFO] [STDOUT]: [eos.moe.dragoncore.tweaker.ForgePlugin:<init>:21]: [DragonCore] LoadingPlugin
+[00:33:02] [main/INFO] [mixin]: Compatibility level set to JAVA_8
+[00:33:05] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[00:33:05] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[00:33:05] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[00:33:05] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[00:33:07] [main/INFO] [FML]: Found valid fingerprint for Minecraft. Certificate fingerprint cd99959656f753dc28d863b46769f7f8fbaefcfc
+[00:33:07] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[00:33:07] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[00:33:07] [main/INFO] [LaunchWrapper]: Calling tweak class org.spongepowered.asm.launch.MixinTweaker
+[00:33:07] [main/INFO] [mixin]: Initialised Mixin FML Remapper Adapter with net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper@5c723f2d
+[00:33:07] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[00:33:07] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[00:33:07] [main/INFO] [LaunchWrapper]: Loading tweak class name org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[00:33:07] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[00:33:07] [main/INFO] [LaunchWrapper]: Calling tweak class org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[00:33:07] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[00:33:08] [Client thread/INFO] [net.minecraft.client.Minecraft]: Setting user: AIClientAlpha
+[00:33:10] [Client thread/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
+[00:33:10] [Client thread/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4
+[00:33:13] [Client thread/INFO] [FML]: -- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_451, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 305974024 bytes (291 MB) / 536870912 bytes (512 MB) up to 6241124352 bytes (5952 MB)
+	JVM Flags: 11 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -XX:-OmitStackTraceInFastThrow -Xmx5939m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:G1HeapRegionSize=32M -XX:MaxGCPauseMillis=50 -XX:+PerfDisableSharedMem -XX:+ParallelRefProcEnabled
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+ForgePlugin ([Mod]DragonCore-2.6.2.9.jar)
+  eos.moe.dragoncore.tweaker.TransformerManager
+	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 610.62' Renderer: 'NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2'
+[00:33:13] [Client thread/INFO] [FML]: MinecraftForge v14.23.5.2864 Initialized
+[00:33:13] [Client thread/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[00:33:13] [Client thread/INFO] [FML]: Invalid recipe found with multiple oredict ingredients in the same ingredient...
+[00:33:13] [Client thread/INFO] [FML]: Replaced 1227 ore ingredients
+[00:33:13] [Client thread/INFO] [FML]: Searching C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\mods for mods
+[00:33:14] [Client thread/INFO] [FML]: Forge Mod Loader has identified 9 mods to load
+[00:33:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, dragoncore, nbtedit, dynamiclights_dragoncore, dynamiclights_onglowname_dragoncore, aiclientautomation] at CLIENT
+[00:33:14] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, dragoncore, nbtedit, dynamiclights_dragoncore, dynamiclights_onglowname_dragoncore, aiclientautomation] at SERVER
+[00:33:14] [Client thread/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Dragon Core, FMLFileResourcePack:In-game NBTEdit, FMLFileResourcePack:Dynamic Lights DragonCore, FMLFileResourcePack:Dynamic Lights on glow name, FMLFileResourcePack:AI Client Automation
+[00:33:15] [Client thread/INFO] [FML]: Processing ObjectHolder annotations
+[00:33:15] [Client thread/INFO] [FML]: Found 1168 ObjectHolder annotations
+[00:33:15] [Client thread/INFO] [FML]: Identifying ItemStackHolder annotations
+[00:33:15] [Client thread/INFO] [FML]: Found 0 ItemStackHolder annotations
+[00:33:15] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+[00:33:15] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[00:33:15] [Thread-3/INFO] [FML]: Using sync timing. 200 frames of Display.update took 130787587 nanos
+[00:33:15] [Client thread/INFO] [FML]: Applying holder lookups
+[00:33:15] [Client thread/INFO] [FML]: Holder lookups applied
+[00:33:15] [Client thread/INFO] [FML]: Applying holder lookups
+[00:33:15] [Client thread/INFO] [FML]: Holder lookups applied
+[00:33:15] [Client thread/INFO] [FML]: Applying holder lookups
+[00:33:15] [Client thread/INFO] [FML]: Holder lookups applied
+[00:33:15] [Client thread/INFO] [FML]: Applying holder lookups
+[00:33:15] [Client thread/INFO] [FML]: Holder lookups applied
+[00:33:15] [Client thread/INFO] [FML]: Injecting itemstacks
+[00:33:15] [Client thread/INFO] [FML]: Itemstack injection complete
+[00:33:16] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...
+[00:33:16] [Thread-6/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenAL
+[00:33:16] [Thread-6/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[00:33:16] [Thread-6/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.
+[00:33:17] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine started
+[00:33:19] [Client thread/INFO] [FML]: Max texture size: 16384
+[00:33:19] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: AHEAD Target: null
+[00:33:22] [Client thread/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlas
+[00:33:23] [Client thread/INFO] [FML]: Applying holder lookups
+[00:33:23] [Client thread/INFO] [FML]: Holder lookups applied
+[00:33:24] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] AI client automation loaded, scenario=runner-file, runId=20260724-003314, userOverride=, taskFile=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\control\client-task.properties
+[00:33:24] [Client thread/INFO] [FML]: Injecting itemstacks
+[00:33:24] [Client thread/INFO] [FML]: Itemstack injection complete
+[00:33:24] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 9 mods
+[00:33:24] [Client thread/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
+[00:33:24] [Client thread/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loaded
+[00:33:24] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file loaded runId=20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat, jobId=3441, plugin=ClientInstanceServerChatCanary, action=chat-sequence
+[00:33:24] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file connecting to server 127.0.0.1:25565 as AIClientAlpha
+[00:33:25] [Client thread/INFO] [net.minecraft.client.multiplayer.GuiConnecting]: Connecting to 127.0.0.1, 25565
+[00:33:25] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient]: Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: 00000FFFFFFFFFFFFFFFFFFFFFFDD643
+[00:33:28] [Netty Client IO #0/INFO] [FML]: Aborting client handshake "VANILLA"
+[00:33:28] [Netty Client IO #0/INFO] [FML]: [Netty Client IO #0] Client side vanilla connection established
+[00:33:29] [Client thread/INFO] [STDOUT]: [eos.moe.dragoncore.xg:ALLATORIxDEMO:307]: DragonCore GuiOpen->GuiDownloadTerrain
+[00:33:30] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.3)
+[00:33:30] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[00:33:30] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] AIClientAlpha joined the game
+[00:33:31] [Client thread/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 12 advancements
+[00:33:31] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] [ViaVersion] There is a newer plugin version available: 5.11.0, you're on: 4.10.2
+[00:33:31] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] [AI-AUTO] RECOVER: position jump detected, retrying active goal, count=1, stage=0
+[00:33:31] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] RECOVER: position jump detected, retrying active goal, count=1, stage=0
+[00:33:31] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file recovery event incident=teleported, phase=detected, position jump detected, count=1, stage=0, movementSq=64161.45187445518, dy=-1.0
+[00:33:31] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\ai-client-automation\runner-file-default-20260724-003314\raw\screenshots\00_position_recovery_1_stage_0.png
+[00:33:31] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_position_recovery_1_stage_0.png
+[00:33:31] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file recovery event incident=teleported, phase=recovered, position watcher reset and scenario stage prepared, stage=0
+[00:33:31] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:hud/hud背景.png
+java.io.FileNotFoundException: dragoncore:hud/hud背景.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.gd.render(ImageComponent.java:123) [gd.class:?]
+	at eos.moe.dragoncore.jn.draw(BasicComponent.java:177) [jn.class:?]
+	at eos.moe.dragoncore.sl.func_73863_a(GuiManager.java:342) [sl.class:?]
+	at eos.moe.dragoncore.xg.ALLATORIxDEMO(GuiEventHandler.java:195) [xg.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_10_xg_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.client.GuiIngameForge.pre(GuiIngameForge.java:907) [GuiIngameForge.class:?]
+	at net.minecraftforge.client.GuiIngameForge.func_175180_a(GuiIngameForge.java:119) [GuiIngameForge.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1098) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:31] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:hud/血条.png
+java.io.FileNotFoundException: dragoncore:hud/血条.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.gd.render(ImageComponent.java:123) [gd.class:?]
+	at eos.moe.dragoncore.jn.draw(BasicComponent.java:177) [jn.class:?]
+	at eos.moe.dragoncore.sl.func_73863_a(GuiManager.java:342) [sl.class:?]
+	at eos.moe.dragoncore.xg.ALLATORIxDEMO(GuiEventHandler.java:195) [xg.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_10_xg_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.client.GuiIngameForge.pre(GuiIngameForge.java:907) [GuiIngameForge.class:?]
+	at net.minecraftforge.client.GuiIngameForge.func_175180_a(GuiIngameForge.java:119) [GuiIngameForge.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1098) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:34] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:hud/饥饿条.png
+java.io.FileNotFoundException: dragoncore:hud/饥饿条.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.gd.render(ImageComponent.java:123) [gd.class:?]
+	at eos.moe.dragoncore.jn.draw(BasicComponent.java:177) [jn.class:?]
+	at eos.moe.dragoncore.sl.func_73863_a(GuiManager.java:342) [sl.class:?]
+	at eos.moe.dragoncore.xg.ALLATORIxDEMO(GuiEventHandler.java:195) [xg.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_10_xg_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.client.GuiIngameForge.pre(GuiIngameForge.java:907) [GuiIngameForge.class:?]
+	at net.minecraftforge.client.GuiIngameForge.func_175180_a(GuiIngameForge.java:119) [GuiIngameForge.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1098) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:34] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:hud/经验条.png
+java.io.FileNotFoundException: dragoncore:hud/经验条.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.gd.render(ImageComponent.java:123) [gd.class:?]
+	at eos.moe.dragoncore.jn.draw(BasicComponent.java:177) [jn.class:?]
+	at eos.moe.dragoncore.sl.func_73863_a(GuiManager.java:342) [sl.class:?]
+	at eos.moe.dragoncore.xg.ALLATORIxDEMO(GuiEventHandler.java:195) [xg.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_10_xg_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.client.GuiIngameForge.pre(GuiIngameForge.java:907) [GuiIngameForge.class:?]
+	at net.minecraftforge.client.GuiIngameForge.func_175180_a(GuiIngameForge.java:119) [GuiIngameForge.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1098) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:34] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:hud/槽位.png
+java.io.FileNotFoundException: dragoncore:hud/槽位.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.gd.render(ImageComponent.java:123) [gd.class:?]
+	at eos.moe.dragoncore.jn.draw(BasicComponent.java:177) [jn.class:?]
+	at eos.moe.dragoncore.sl.func_73863_a(GuiManager.java:342) [sl.class:?]
+	at eos.moe.dragoncore.xg.ALLATORIxDEMO(GuiEventHandler.java:195) [xg.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_10_xg_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.client.GuiIngameForge.pre(GuiIngameForge.java:907) [GuiIngameForge.class:?]
+	at net.minecraftforge.client.GuiIngameForge.func_175180_a(GuiIngameForge.java:119) [GuiIngameForge.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1098) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:34] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:hud/槽位1.png
+java.io.FileNotFoundException: dragoncore:hud/槽位1.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.gd.render(ImageComponent.java:123) [gd.class:?]
+	at eos.moe.dragoncore.jn.draw(BasicComponent.java:177) [jn.class:?]
+	at eos.moe.dragoncore.sl.func_73863_a(GuiManager.java:342) [sl.class:?]
+	at eos.moe.dragoncore.xg.ALLATORIxDEMO(GuiEventHandler.java:195) [xg.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_10_xg_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.client.GuiIngameForge.pre(GuiIngameForge.java:907) [GuiIngameForge.class:?]
+	at net.minecraftforge.client.GuiIngameForge.func_175180_a(GuiIngameForge.java:119) [GuiIngameForge.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1098) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:34] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_sequence_connected.png
+[00:33:34] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file sent sequence command /wtc stats
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] [WorldListTrashCan] 清理统计:
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 世界数: 0
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 删除物品: 0
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 删除实体: 0
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 公共垃圾桶页数: 7
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 已加载个人垃圾桶: 0
+[00:33:34] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] - 下次清理剩余秒数: 321
+[00:33:37] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_sequence_1.png
+[00:33:37] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file sent sequence command /wtc debugnotify 0
+[00:33:37] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] LEGACY_MIGRATION_CHAT_OK pages=7
+[00:33:37] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] 已触发清理通知: 0
+[00:33:40] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_sequence_2.png
+[00:33:43] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file sent sequence command /wtc globaltrash
+[00:33:43] [Client thread/ERROR] [dragoncore]: 无法加载的鼠标图片:Mouse.png
+java.io.FileNotFoundException: dragoncore:mouse.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.wa.ALLATORIxDEMO(MouseReplacer.java:94) [wa.class:?]
+	at eos.moe.dragoncore.wa.m(MouseReplacer.java:55) [wa.class:?]
+	at eos.moe.dragoncore.wa.ALLATORIxDEMO(MouseReplacer.java:37) [wa.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_8_wa_ALLATORIxDEMO_GuiOpenEvent.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraft.client.Minecraft.func_147108_a(Minecraft.java:984) [bib.class:?]
+	at net.minecraft.client.entity.EntityPlayerSP.func_71007_a(EntityPlayerSP.java:721) [bud.class:?]
+	at net.minecraft.client.network.NetHandlerPlayClient.func_147265_a(NetHandlerPlayClient.java:1081) [brz.class:?]
+	at net.minecraft.network.play.server.SPacketOpenWindow.func_148833_a(SourceFile:43) [ir.class:?]
+	at net.minecraft.network.play.server.SPacketOpenWindow.func_148833_a(SourceFile:9) [ir.class:?]
+	at net.minecraft.network.PacketThreadUtil$1.run(SourceFile:13) [hv$1.class:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source) [?:1.8.0_451]
+	at java.util.concurrent.FutureTask.run(Unknown Source) [?:1.8.0_451]
+	at net.minecraft.util.Util.func_181617_a(SourceFile:46) [h.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1088) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/INFO] [STDOUT]: [eos.moe.dragoncore.xg:ALLATORIxDEMO:307]: DragonCore GuiOpen->§0公共垃圾桶 §b1§8/§e7
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/背景.png
+java.io.FileNotFoundException: dragoncore:tips/背景.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/左上角.png
+java.io.FileNotFoundException: dragoncore:tips/左上角.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/右上角.png
+java.io.FileNotFoundException: dragoncore:tips/右上角.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/左下角.png
+java.io.FileNotFoundException: dragoncore:tips/左下角.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/右下角.png
+java.io.FileNotFoundException: dragoncore:tips/右下角.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/左边.png
+java.io.FileNotFoundException: dragoncore:tips/左边.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/右边.png
+java.io.FileNotFoundException: dragoncore:tips/右边.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/上边.png
+java.io.FileNotFoundException: dragoncore:tips/上边.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/下边.png
+java.io.FileNotFoundException: dragoncore:tips/下边.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/WARN] [net.minecraft.client.renderer.texture.TextureManager]: Failed to load texture: dragoncore:tips/tip-边框.png
+java.io.FileNotFoundException: dragoncore:tips/tip-边框.png
+	at net.minecraft.client.resources.FallbackResourceManager.func_110536_a(FallbackResourceManager.java:69) ~[cei.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.func_110536_a(SimpleReloadableResourceManager.java:65) ~[cev.class:?]
+	at eos.moe.dragoncore.st.func_110551_a(CustomTexture.java:97) ~[st.class:?]
+	at net.minecraft.client.renderer.texture.TextureManager.func_110579_a(TextureManager.java:69) [cdr.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:341) [st.class:?]
+	at eos.moe.dragoncore.st.ALLATORIxDEMO(CustomTexture.java:316) [st.class:?]
+	at eos.moe.dragoncore.cda.ALLATORIxDEMO(TextureUI.java:35) [cda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:132) [qda.class:?]
+	at eos.moe.dragoncore.qda.ALLATORIxDEMO(TipHandler.java:59) [qda.class:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_68_qda_ALLATORIxDEMO_Pre.invoke(.dynamic) [?:?]
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90) [ASMEventHandler.class:?]
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182) [EventBus.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:265) [GuiUtils.class:?]
+	at net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(GuiUtils.java:252) [GuiUtils.class:?]
+	at net.minecraft.client.gui.GuiScreen.drawHoveringText(GuiScreen.java:182) [blk.class:?]
+	at net.minecraft.client.gui.GuiScreen.func_146285_a(GuiScreen.java:137) [blk.class:?]
+	at net.minecraft.client.gui.inventory.GuiContainer.func_191948_b(GuiContainer.java:175) [bmg.class:?]
+	at net.minecraft.client.gui.inventory.GuiChest.func_73863_a(SourceFile:33) [bmm.class:?]
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:396) [ForgeHooksClient.class:?]
+	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1124) [buq.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1119) [bib.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:398) [bib.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_451]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:1.8.0_451]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:1.8.0_451]
+	at oolloo.jlw.Wrapper.invokeMain(Wrapper.java:112) [JavaWrapper.jar:?]
+	at oolloo.jlw.Wrapper.main(Wrapper.java:105) [JavaWrapper.jar:?]
+[00:33:43] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\ai-client-automation\runner-file-default-20260724-003314\raw\screenshots\00_expected_screen_GuiChest_step_3_tick_20.png
+[00:33:43] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_expected_screen_GuiChest_step_3_tick_20.png
+[00:33:45] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\ai-client-automation\runner-file-default-20260724-003314\raw\screenshots\00_expected_screen_GuiChest_step_3_tick_60.png
+[00:33:46] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_expected_screen_GuiChest_step_3_tick_60.png
+[00:33:49] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\ai-client-automation\runner-file-default-20260724-003314\raw\screenshots\00_expected_screen_GuiChest_step_3_tick_120.png
+[00:33:49] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_expected_screen_GuiChest_step_3_tick_120.png
+[00:33:52] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a\.minecraft\versions\1.12.2-Forge_14.23.5.2864\ai-client-automation\runner-file-default-20260724-003314\raw\screenshots\00_expected_screen_GuiChest_step_3_tick_160.png
+[00:33:52] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_expected_screen_GuiChest_step_3_tick_160.png
+[00:33:52] [Client thread/INFO] [STDOUT]: [eos.moe.dragoncore.xg:ALLATORIxDEMO:307]: DragonCore GuiOpen->§0公共垃圾桶 §b2§8/§e7
+[00:33:53] [Client thread/INFO] [STDOUT]: [eos.moe.dragoncore.xg:ALLATORIxDEMO:307]: DragonCore GuiOpen->§0公共垃圾桶 §b1§8/§e7
+[00:33:55] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_sequence_3.png
+[00:33:58] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner screenshot C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\screenshots\runner_sequence_final.png
+[00:33:58] [Client thread/INFO] [aiclientautomation]: [AI-AUTO] runner-file finished status=PASS, message=chat sequence sent: 3 commands, chatLines=17

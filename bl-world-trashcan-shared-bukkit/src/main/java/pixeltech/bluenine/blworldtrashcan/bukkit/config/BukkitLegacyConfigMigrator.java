@@ -23,6 +23,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,15 +73,16 @@ public final class BukkitLegacyConfigMigrator {
         File dataFolder = plugin.getDataFolder();
         File backupFolder = new File(dataFolder, BACKUP_FOLDER);
         File completeFile = new File(backupFolder, COMPLETE_FILE);
-        if (completeFile.isFile()) {
-            rejectLegacyFilesAfterCompletedMigration(dataFolder);
-            return false;
-        }
-        LegacySource source = findLegacySource(dataFolder, backupFolder);
-        if (source == null) {
-            return false;
-        }
         try {
+            if (completeFile.isFile()) {
+                validateCompleteMarker(completeFile);
+                rejectLegacyFilesAfterCompletedMigration(dataFolder);
+                return false;
+            }
+            LegacySource source = findLegacySource(dataFolder, backupFolder);
+            if (source == null) {
+                return false;
+            }
             ensureDirectory(dataFolder);
             if (source.currentDataFolder) {
                 archiveCurrentDataFolder(dataFolder, backupFolder);
@@ -97,7 +99,7 @@ public final class BukkitLegacyConfigMigrator {
                     + BACKUP_FOLDER + "，报告: " + BACKUP_FOLDER + "/" + REPORT_FILE);
             return true;
         } catch (IOException exception) {
-            plugin.getLogger().severe("[Migration] 旧配置迁移失败: " + exception.getMessage());
+            plugin.getLogger().severe("[MigrationError] " + exception.getMessage());
             throw new IllegalStateException("旧配置迁移失败，已阻止插件继续加载", exception);
         }
     }
@@ -307,7 +309,7 @@ public final class BukkitLegacyConfigMigrator {
     }
 
     /** 查找当前目录或未完成备份中的旧配置来源。 */
-    private LegacySource findLegacySource(File dataFolder, File backupFolder) {
+    private LegacySource findLegacySource(File dataFolder, File backupFolder) throws IOException {
         LegacySource current = legacySourceFromFolder(dataFolder, true);
         if (current != null) {
             return current;
@@ -316,7 +318,7 @@ public final class BukkitLegacyConfigMigrator {
     }
 
     /** 从指定目录创建旧配置来源。 */
-    private LegacySource legacySourceFromFolder(File folder, boolean currentDataFolder) {
+    private LegacySource legacySourceFromFolder(File folder, boolean currentDataFolder) throws IOException {
         File configFile = new File(folder, "config.yml");
         File dataFile = new File(folder, "data/data.yml");
         if (!isLegacySource(configFile, dataFile)) {
@@ -326,18 +328,35 @@ public final class BukkitLegacyConfigMigrator {
     }
 
     /** 判断给定文件是否包含旧配置结构。 */
-    private boolean isLegacySource(File configFile, File dataFile) {
-        if (configFile.exists()) {
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-            if (config.isConfigurationSection("Set") || config.contains("GlobalBanItem")) {
-                return true;
-            }
+    private boolean isLegacySource(File configFile, File dataFile) throws IOException {
+        boolean legacyConfig = false;
+        boolean currentConfig = false;
+        if (configFile.isFile()) {
+            YamlConfiguration config = loadYamlStrict(configFile, "旧 config.yml", "legacy-config-invalid");
+            legacyConfig = config.isConfigurationSection("Set") || config.contains("GlobalBanItem");
+            currentConfig = config.getInt(CONFIG_SCHEMA_KEY, -1) == CONFIG_SCHEMA_VERSION;
         }
-        if (dataFile.exists()) {
-            YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
-            return data.isConfigurationSection("WorldData");
+        boolean legacyData = false;
+        if (dataFile.isFile()) {
+            YamlConfiguration data = loadYamlStrict(dataFile, "旧 data/data.yml", "legacy-data-invalid");
+            legacyData = data.isConfigurationSection("WorldData");
         }
-        return false;
+        if (currentConfig && (legacyConfig || legacyData)) {
+            throw new IOException("mixed-current-legacy | 检测到新版 config.yml 与旧版配置结构混放，已拒绝自动覆盖新版配置");
+        }
+        return legacyConfig || legacyData;
+    }
+
+    /** 严格读取 YAML，解析失败时禁止继续生成迁移成功标记。 */
+    private YamlConfiguration loadYamlStrict(File file, String label, String errorCode) throws IOException {
+        YamlConfiguration yaml = new YamlConfiguration();
+        try {
+            yaml.load(file);
+            return yaml;
+        } catch (Exception exception) {
+            throw new IOException(errorCode + " | " + label + " 无法解析: " + file.getAbsolutePath() + ": "
+                    + exception.getMessage(), exception);
+        }
     }
 
     /** 执行旧配置到新配置的迁移。 */
@@ -346,11 +365,11 @@ public final class BukkitLegacyConfigMigrator {
         saveDefaultResources(stagingFolder);
         targetRoot = stagingFolder;
         LegacyMigrationPlan plan = new LegacyMigrationPlan();
-        YamlConfiguration oldConfig = source.configFile.exists()
-                ? YamlConfiguration.loadConfiguration(source.configFile)
+        YamlConfiguration oldConfig = source.configFile.isFile()
+                ? loadYamlStrict(source.configFile, "旧 config.yml", "legacy-config-invalid")
                 : new YamlConfiguration();
-        YamlConfiguration oldData = source.dataFile.exists()
-                ? YamlConfiguration.loadConfiguration(source.dataFile)
+        YamlConfiguration oldData = source.dataFile.isFile()
+                ? loadYamlStrict(source.dataFile, "旧 data/data.yml", "legacy-data-invalid")
                 : new YamlConfiguration();
         migrateMainConfig(oldConfig, plan);
         migrateCleanupConfig(oldConfig, plan);
@@ -360,6 +379,8 @@ public final class BukkitLegacyConfigMigrator {
         migrateEntityLimitConfig(oldConfig, plan);
         migrateWorldTrashData(oldData, plan);
         recordUnsupportedKeys(oldConfig, plan);
+        recordUnsupportedDataKeys(oldData, plan);
+        recordLegacyMessageFiles(source, plan);
         validateNewConfigTree(stagingFolder);
         writeReport(reportFile, source, plan);
         publishStaging(stagingFolder, plugin.getDataFolder());
@@ -404,7 +425,8 @@ public final class BukkitLegacyConfigMigrator {
             Files.deleteIfExists(source.toPath());
             return;
         }
-        throw new IOException("旧配置备份目标存在不同内容，拒绝覆盖: " + target.getAbsolutePath());
+        throw new IOException("backup-content-conflict | 旧配置备份目标存在不同内容，拒绝覆盖: "
+                + target.getAbsolutePath());
     }
 
     /** 流式比较两个文件，避免为日志等大文件一次性分配内存。 */
@@ -435,11 +457,23 @@ public final class BukkitLegacyConfigMigrator {
     }
 
     /** 在成功标记存在时拒绝重新放回根目录的旧配置。 */
-    private void rejectLegacyFilesAfterCompletedMigration(File dataFolder) {
+    private void rejectLegacyFilesAfterCompletedMigration(File dataFolder) throws IOException {
         LegacySource source = legacySourceFromFolder(dataFolder, true);
         if (source != null) {
             plugin.getLogger().severe("[MigrationGuard] legacy-root-after-complete");
             throw new IllegalStateException("检测到迁移完成后重新放回的旧版配置，请移除根目录旧文件后重启");
+        }
+    }
+
+    /** 校验迁移完成标记，避免空文件或损坏标记错误跳过迁移。 */
+    private void validateCompleteMarker(File completeFile) throws IOException {
+        YamlConfiguration marker = loadYamlStrict(completeFile, "迁移完成标记", "complete-marker-yaml-invalid");
+        String fingerprint = marker.getString("source-sha256", "");
+        if (!"complete".equals(marker.getString("status"))
+                || marker.getInt("target-config-schema-version", -1) != CONFIG_SCHEMA_VERSION
+                || !fingerprint.matches("[0-9a-fA-F]{64}")) {
+            throw new IOException("complete-marker-invalid | 迁移完成标记内容不完整或已损坏: "
+                    + completeFile.getAbsolutePath());
         }
     }
 
@@ -585,6 +619,12 @@ public final class BukkitLegacyConfigMigrator {
                 "global-trash.gui.layout.items.c.model-id", plan);
         copyInt(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackgroundItem.ModelId",
                 "global-trash.gui.layout.items.b.model-id", plan);
+        copyStringAsList(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackItem.Material",
+                "global-trash.gui.layout.items.a.material", plan);
+        copyStringAsList(oldConfig, target, "Set.GlobalTrash.GlobalItems.NextItem.Material",
+                "global-trash.gui.layout.items.c.material", plan);
+        copyStringAsList(oldConfig, target, "Set.GlobalTrash.GlobalItems.BackgroundItem.Material",
+                "global-trash.gui.layout.items.b.material", plan);
         copyStringList(oldConfig, target, "GlobalBanItem", "global-trash.banned-materials", plan);
         copyString(oldConfig, target, "Set.SighCheckName", "world-trash.sign-create-text", plan);
         copyString(oldConfig, target, "Set.SighCheckedName", "world-trash.sign-created-text", plan);
@@ -677,7 +717,42 @@ public final class BukkitLegacyConfigMigrator {
 
     /** 记录当前新实现尚不能自动承接的旧字段。 */
     private void recordUnsupportedKeys(YamlConfiguration oldConfig, LegacyMigrationPlan plan) {
-        // 当前已确认的旧配置残留会在这里集中记录，避免报告漏掉人工处理项。
+        for (String path : oldConfig.getKeys(true)) {
+            if (!oldConfig.isConfigurationSection(path) && !plan.isHandledSourceKey(path)) {
+                plan.addManualKey(path + " | 新版没有自动映射，原值仍保留在 old-version-config/config.yml");
+            }
+        }
+    }
+
+    /** 记录旧世界数据中无法自动识别的字段。 */
+    private void recordUnsupportedDataKeys(YamlConfiguration oldData, LegacyMigrationPlan plan) {
+        for (String path : oldData.getKeys(true)) {
+            if (oldData.isConfigurationSection(path) || isKnownWorldDataLeaf(path)) {
+                continue;
+            }
+            plan.addManualKey(path + " | 未识别的旧运行数据，原值仍保留在 old-version-config/data/data.yml");
+        }
+    }
+
+    /** 判断旧世界数据叶子路径是否属于已迁移字段。 */
+    private boolean isKnownWorldDataLeaf(String path) {
+        return path.startsWith("WorldData.") && (path.endsWith(".SignLocation")
+                || path.endsWith(".RashMaxCount") || path.endsWith(".BanItem"));
+    }
+
+    /** 把旧语言文件记录为人工合并项，防止服主误以为自定义文案已自动转换。 */
+    private void recordLegacyMessageFiles(LegacySource source, LegacyMigrationPlan plan) {
+        File messageFolder = new File(source.folder, "message");
+        File[] files = messageFolder.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            if (file.isFile() && (file.getName().endsWith(".yml") || file.getName().endsWith(".yaml"))) {
+                plan.addManualKey("message/" + file.getName()
+                        + " | 新版语言键结构已变化，文件已完整备份，请按需人工合并到 messages/");
+            }
+        }
     }
 
     /** 迁移旧仙人掌、岩浆损坏回收模式。 */
@@ -695,6 +770,7 @@ public final class BukkitLegacyConfigMigrator {
         }
         target.set("personal-trash.damage-recovery.mode", value);
         plan.addMigratedKey(oldPath + " -> personal-trash.damage-recovery.mode");
+        plan.addHandledSourceKey(oldPath);
     }
 
     /** 如果旧字段存在则写入人工确认列表。 */
@@ -710,6 +786,7 @@ public final class BukkitLegacyConfigMigrator {
         if (oldConfig.contains(oldPath)) {
             target.set(newPath, oldConfig.getString(oldPath));
             plan.addMigratedKey(oldPath + " -> " + newPath);
+            plan.addHandledSourceKey(oldPath);
         }
     }
 
@@ -719,6 +796,7 @@ public final class BukkitLegacyConfigMigrator {
         if (oldConfig.contains(oldPath)) {
             target.set(newPath, oldConfig.getBoolean(oldPath));
             plan.addMigratedKey(oldPath + " -> " + newPath);
+            plan.addHandledSourceKey(oldPath);
         }
     }
 
@@ -728,6 +806,7 @@ public final class BukkitLegacyConfigMigrator {
         if (oldConfig.contains(oldPath)) {
             target.set(newPath, oldConfig.getInt(oldPath));
             plan.addMigratedKey(oldPath + " -> " + newPath);
+            plan.addHandledSourceKey(oldPath);
         }
     }
 
@@ -737,6 +816,7 @@ public final class BukkitLegacyConfigMigrator {
         if (oldConfig.contains(oldPath)) {
             target.set(newPath, oldConfig.getDouble(oldPath));
             plan.addMigratedKey(oldPath + " -> " + newPath);
+            plan.addHandledSourceKey(oldPath);
         }
     }
 
@@ -746,7 +826,20 @@ public final class BukkitLegacyConfigMigrator {
         if (oldConfig.contains(oldPath)) {
             target.set(newPath, oldConfig.getStringList(oldPath));
             plan.addMigratedKey(oldPath + " -> " + newPath);
+            plan.addHandledSourceKey(oldPath);
         }
+    }
+
+    /** 把旧版单个材质字符串迁移为新版材质候选列表。 */
+    private void copyStringAsList(YamlConfiguration oldConfig, YamlConfiguration target, String oldPath,
+                                  String newPath, LegacyMigrationPlan plan) {
+        if (!oldConfig.contains(oldPath)) {
+            return;
+        }
+        String value = oldConfig.getString(oldPath, "").trim();
+        target.set(newPath, value.isEmpty() ? Collections.emptyList() : Collections.singletonList(value));
+        plan.addMigratedKey(oldPath + " -> " + newPath);
+        plan.addHandledSourceKey(oldPath);
     }
 
     /** 迁移世界实体数量限制列表。 */
@@ -767,6 +860,7 @@ public final class BukkitLegacyConfigMigrator {
         }
         target.set(newPath, rules);
         plan.addMigratedKey(oldPath + " -> " + newPath);
+        plan.addHandledSourceKey(oldPath);
     }
 
     /** 迁移密集实体限制列表。 */
@@ -789,6 +883,7 @@ public final class BukkitLegacyConfigMigrator {
         }
         target.set(newPath, rules);
         plan.addMigratedKey(oldPath + " -> " + newPath);
+        plan.addHandledSourceKey(oldPath);
     }
 
     /** 解析旧分号规则。 */

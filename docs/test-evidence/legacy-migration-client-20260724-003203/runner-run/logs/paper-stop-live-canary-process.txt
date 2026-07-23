@@ -1,0 +1,8 @@
+command=["powershell", "-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\pc\\Desktop\\ai开发插件\\客户端自动化测试工作区\\scripts\\stop_paper_test_server.ps1", "-TimeoutSeconds", "120"]
+exitCode=0
+stdout:
+>>> stop
+Stopping the server
+paper server stopped
+stderr:
+

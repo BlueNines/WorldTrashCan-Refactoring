@@ -452,11 +452,17 @@ personal-trash:
 - 完成标记存在后不再重复对照。如果根目录再次出现旧结构，插件会明确拒绝启动，避免旧配置覆盖新版配置。
 - 该迁移没有关闭开关，也不读取相邻插件目录或绝对路径。
 - 当前会自动迁移主配置、清理配置、通知配置、保护配置、实体限制配置、公共/个人/世界垃圾桶配置，以及旧 `data/data.yml` 中的世界垃圾桶运行数据。
-- 公共垃圾桶 GUI 的旧 `ModelId` 会迁移到 `global-trash.gui.layout.items.a/c/b.model-id`；低版本没有 `CustomModelData` API 时会自动忽略外观字段，不影响 GUI 打开。
+- 公共垃圾桶 GUI 的旧 `ModelId` 和 `Material` 会迁移到 `global-trash.gui.layout.items.a/c/b`；材质保存为有序候选列表，低版本没有 `CustomModelData` API 时只忽略 model-id，不影响 GUI 打开。
 - 旧 `BossBarFlag` 和 `BossBarMessageForCount` 会迁移到 `bossbar.enabled` 与 `bossbar.messages`，格式仍为 `剩余秒数;内容;样式;颜色`。
-- 当前不能自动承接的旧字段会写入报告的“需要人工确认字段”。
+- 当前不能自动承接的旧字段会自动写入报告的“需要人工确认字段”，不再依赖开发者手工维护字段清单。
+- 旧 `message/` 下 8 份语言文件会逐文件原样备份并列入人工合并清单；新版不会把不同键结构的旧语言文件静默当成当前语言文件加载。
+- 旧 `config.yml`、`data/data.yml`、完成标记或备份内容损坏时会以稳定错误码拒绝迁移；新版与旧版结构混放、备份同名文件内容冲突时也会拒绝启动，不生成完成标记且不覆盖输入。
 
-专项脚本 `tools/rgb-visual-matrix/run_legacy_migration_matrix.py` 使用 universal 整包和独立 Paper 1.12.2 服务端验证首次迁移、完整目录隔离、日志保留、备份移动中断重入、无标记备份重试、二次启动跳过和完成后旧结构回放拒绝。最终证据目录：`docs/test-evidence/legacy-migration-universal-20260721-021850/`。
+2026-07-24 使用 SHA-256 为 `a42e1c4077f9f4250f89cb88ffbe22d2fe7be88e07efa31226e02786e1649a72` 的同一个 universal 整包完成三层验收：
+
+- Paper 1.12.2 完整矩阵覆盖旧版 6.9.8 原始资源、当前根目录、中断归档恢复、仅备份目录重试，以及损坏主配置、损坏世界数据、损坏完成标记、新旧混放、备份冲突 5 个安全拒绝场景；证据为 `docs/test-evidence/legacy-migration-universal-20260724-000752/`。
+- Spigot 26.1.2 与 Folia 1.21.8 使用同一整包和同一旧版原始配置验证首次迁移、运行时读取、8/8 语言文件备份及二次启动幂等；证据为 `docs/test-evidence/legacy-migration-platform-20260724-001431/`。
+- 真实 Forge 1.12.2 客户端执行 `/wtc stats`、`/wtc debugnotify 0`、`/wtc globaltrash`，截图明确显示迁移后的页数 7、旧聊天文案、`1/7` GUI 标题、玻璃背景和 `STICK` 下一页按钮；15 张原始 PNG 中 10 个非重复帧已逐张复核。证据为 `docs/test-evidence/legacy-migration-client-20260724-003203/`。
 
 ## 世界垃圾桶边界
 

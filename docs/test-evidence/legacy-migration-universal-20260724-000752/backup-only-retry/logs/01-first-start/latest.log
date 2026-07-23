@@ -1,0 +1,149 @@
+[00:09:57] [Server thread/INFO]: Starting minecraft server version 1.12.2
+[00:09:57] [Server thread/INFO]: Loading properties
+[00:09:57] [Server thread/INFO]: Default game type: SURVIVAL
+[00:09:57] [Server thread/INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[00:09:57] [Server thread/INFO]: Debug logging is disabled
+[00:09:57] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[00:09:57] [Server thread/INFO]: Using 4 threads for Netty based IO
+[00:09:57] [Server thread/INFO]: Generating keypair
+[00:09:57] [Server thread/INFO]: Starting Minecraft server on *:59802
+[00:09:57] [Server thread/INFO]: Using default channel type
+[00:09:57] [Server thread/INFO]: Set PluginClassLoader as parallel capable
+[00:09:57] [Server thread/INFO]: [WorldListTrashCan] Loading WorldListTrashCan v7.0.0
+[00:09:57] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[00:09:57] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[00:09:57] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[00:09:57] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[00:09:57] [Server thread/INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[00:09:57] [Server thread/INFO]: Preparing level "world"
+[00:09:57] [Server thread/INFO]: -------- World Settings For [world] --------
+[00:09:57] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[00:09:57] [Server thread/INFO]: Item Despawn Rate: 6000
+[00:09:57] [Server thread/INFO]: Item Merge Radius: 2.5
+[00:09:57] [Server thread/INFO]: View Distance: 4
+[00:09:57] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[00:09:57] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[00:09:57] [Server thread/INFO]: Experience Merge Radius: 3.0
+[00:09:57] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[00:09:57] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[00:09:57] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Cane Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Melon Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Vine Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Mob Spawn Range: 4
+[00:09:57] [Server thread/INFO]: Max TNT Explosions: 100
+[00:09:57] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[00:09:57] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[00:09:57] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[00:09:57] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[00:09:57] [Server thread/INFO]: Structure Info Saving: true
+[00:09:57] [Server thread/INFO]: Random Lighting Updates: false
+[00:09:57] [Server thread/INFO]: -------- World Settings For [world_nether] --------
+[00:09:57] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[00:09:57] [Server thread/INFO]: Item Despawn Rate: 6000
+[00:09:57] [Server thread/INFO]: Item Merge Radius: 2.5
+[00:09:57] [Server thread/INFO]: View Distance: 4
+[00:09:57] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[00:09:57] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[00:09:57] [Server thread/INFO]: Experience Merge Radius: 3.0
+[00:09:57] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[00:09:57] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[00:09:57] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Cane Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Melon Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Vine Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Mob Spawn Range: 4
+[00:09:57] [Server thread/INFO]: Max TNT Explosions: 100
+[00:09:57] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[00:09:57] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[00:09:57] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[00:09:57] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[00:09:57] [Server thread/INFO]: Structure Info Saving: true
+[00:09:57] [Server thread/INFO]: Random Lighting Updates: false
+[00:09:57] [Server thread/INFO]: -------- World Settings For [world_the_end] --------
+[00:09:57] [Server thread/INFO]: Zombie Aggressive Towards Villager: true
+[00:09:57] [Server thread/INFO]: Item Despawn Rate: 6000
+[00:09:57] [Server thread/INFO]: Item Merge Radius: 2.5
+[00:09:57] [Server thread/INFO]: View Distance: 4
+[00:09:57] [Server thread/INFO]: Arrow Despawn Rate: 1200
+[00:09:57] [Server thread/INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[00:09:57] [Server thread/INFO]: Experience Merge Radius: 3.0
+[00:09:57] [Server thread/INFO]: Nerfing mobs spawned from spawners: false
+[00:09:57] [Server thread/INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[00:09:57] [Server thread/INFO]: Cactus Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Cane Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Melon Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Mushroom Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Pumpkin Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Sapling Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Wheat Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: NetherWart Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Vine Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Cocoa Growth Modifier: 100%
+[00:09:57] [Server thread/INFO]: Mob Spawn Range: 4
+[00:09:57] [Server thread/INFO]: Max TNT Explosions: 100
+[00:09:57] [Server thread/INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[00:09:57] [Server thread/INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[00:09:57] [Server thread/INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[00:09:57] [Server thread/INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[00:09:57] [Server thread/INFO]: Structure Info Saving: true
+[00:09:57] [Server thread/INFO]: Random Lighting Updates: false
+[00:09:58] [Server thread/INFO]: Preparing start region for level 0 (Seed: 7867544659325256585)
+[00:09:58] [Server thread/INFO]: Preparing start region for level 1 (Seed: 7867544659325256585)
+[00:09:59] [Server thread/INFO]: Preparing spawn area: 0%
+[00:10:00] [Server thread/INFO]: Preparing start region for level 2 (Seed: 7867544659325256585)
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [Migration] 已完成旧 WorldListTrashCan 配置迁移，旧文件: old-version-config，报告: old-version-config/migration-report.md
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/legacy_case_3.yml
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=9, visiblePages=9
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [PlaceholderAPI] 未检测到 PlaceholderAPI，跳过变量注册。
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Universal runtime: legacy
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Platform: legacy-1.12
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability scheduler-global: enabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability scheduler-region: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability inventory-basic: enabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability item-pdc-tag: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability item-legacy-tag: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability rgb-message: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability clickable-message: enabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability boss-bar: enabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability sign-legacy: enabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability sign-modern: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability entity-move-event: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] Capability folia-region-safe: disabled
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 73 秒。
+[00:10:00] [Server thread/INFO]: [WorldListTrashCan] [EntityLimit] 已启动低占用实体扫描: scanInterval=20, minChunks=4, maxChunks=64, maxRemoves=20
+[00:10:00] [Server thread/INFO]: Done (2.910s)! For help, type "help" or "?"
+[00:10:00] [Server thread/INFO]: Starting remote control listener
+[00:10:00] [RCON Listener #1/INFO]: RCON running on 0.0.0.0:59803
+[00:10:00] [Server thread/INFO]: Timings Reset
+[00:10:00] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[00:10:00] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[00:10:00] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[00:10:01] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[00:10:01] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[00:10:01] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=0, minOnlinePlayers=1, targetEntities=0, minTotalEntities=150, itemsRouted=2, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=25, worldTrashSkippedUnloadedChunks=2, globalTrashRefreshed=false
+[00:10:01] [Server thread/INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=2, groups=0, shown=0, partial=false
+[00:10:01] [Server thread/INFO]: [WorldListTrashCan] [CleanupDetail] items: 2
+[00:10:02] [RCON Listener #1/INFO]: Rcon connection from: /127.0.0.1
+[00:10:02] [Server thread/INFO]: [Rcon: Stopping the server]
+[00:10:02] [Server thread/INFO]: Stopping server
+[00:10:02] [Server thread/INFO]: [WorldListTrashCan] Disabling WorldListTrashCan v7.0.0
+[00:10:02] [Server thread/INFO]: Saving players
+[00:10:02] [Server thread/INFO]: Saving worlds
+[00:10:02] [Server thread/INFO]: Saving chunks for level 'world'/overworld
+[00:10:04] [Server thread/INFO]: Saving chunks for level 'world_nether'/the_nether
+[00:10:06] [Server thread/INFO]: Saving chunks for level 'world_the_end'/the_end

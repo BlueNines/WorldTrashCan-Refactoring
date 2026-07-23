@@ -1,0 +1,4 @@
+status=PASS
+source=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\logs\client-chat.log
+mustContain=PASS pattern=公共垃圾桶页数: 7
+mustContain=PASS pattern=LEGACY_MIGRATION_CHAT_OK

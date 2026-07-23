@@ -1,0 +1,14 @@
+client response found: C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\control\client-response.properties
+#AI Client Lab response
+#Fri Jul 24 00:33:58 CST 2026
+jobId=3441
+status=PASS
+runId=20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat
+scenario=client_instance_server_chat
+message=chat sequence sent\: 3 commands, chatLines\=17
+plugin=ClientInstanceServerChatCanary
+time=2026-07-24T00\:33\:58+0800
+protocolVersion=1
+client instance server chat canary PASS job=3441
+clientRoot=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\client-instances\legacy-migration-visual-a
+report=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\reports\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat-report.md

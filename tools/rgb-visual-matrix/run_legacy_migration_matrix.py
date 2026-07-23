@@ -40,6 +40,7 @@ BUILD_ROOT = REPO / "build" / "legacy-migration-matrix"
 JAVA8 = Path(r"C:\Program Files\Java\jre1.8.0_451\bin\java.exe")
 PAPER1122_JAR = WORKSPACE / "paper-1.12.2-test-server" / "paper-1.12.2-1620.jar"
 UNIVERSAL_JAR = REPO / "dist" / "WorldListTrashCan-universal.jar"
+LEGACY_RESOURCES = REPO.parent / "WorldListTrashCan旧版本" / "WorldListTrashCan" / "src" / "main" / "resources"
 
 
 def write_json(path: Path, data) -> None:
@@ -77,7 +78,9 @@ def find_free_port() -> int:
 
 def ensure_inputs() -> None:
     """确认迁移矩阵需要的 Jar 和 Java 可用。"""
-    missing = [str(path) for path in (JAVA8, PAPER1122_JAR, UNIVERSAL_JAR) if not path.is_file()]
+    required = (JAVA8, PAPER1122_JAR, UNIVERSAL_JAR,
+                LEGACY_RESOURCES / "config.yml", LEGACY_RESOURCES / "data" / "data.yml")
+    missing = [str(path) for path in required if not path.is_file()]
     if missing:
         raise RuntimeError("缺少 F-005 迁移验证输入: " + "; ".join(missing))
 
@@ -162,6 +165,12 @@ def legacy_config(case: dict) -> str:
   SecondCount: {case['interval']}
   WorldClearWhiteList:
   - legacy_ignore
+  NoClearContainerType:
+  - DIAMOND_BLOCK
+  NoClearContainerName:
+  - legacy_name_guard
+  NoClearContainerLore:
+  - legacy_lore_guard
   ClearEntity:
     Flag: false
     ClearExpBottle: true
@@ -170,6 +179,11 @@ def legacy_config(case: dict) -> str:
     ClearProjectile: true
     ClearReNameEntity: false
     IgnoreEntitiesInBoat: true
+    WhiteNameList:
+    - VILLAGER
+    - '*GOLEM*'
+    BlackNameList:
+    - LEGACY_CUSTOM_ENTITY
   GlobalTrash:
     Flag: true
     MaxPage: {case['maxPages']}
@@ -179,10 +193,13 @@ def legacy_config(case: dict) -> str:
       Enable: true
     GlobalItems:
       BackItem:
+        Material: FEATHER
         ModelId: 101
       NextItem:
+        Material: STICK
         ModelId: 102
       BackgroundItem:
+        Material: STAINED_GLASS_PANE
         ModelId: 103
   SighCheckName: '[trash]'
   SighCheckedName: '[created]'
@@ -239,6 +256,8 @@ DropItemCheck:
 SimpleOptimize:
   NotPickArrow: true
   NotTreadingFarmLand: true
+LegacyFutureOption:
+  Flag: true
 WorldEntityLimitCount:
   Flag: true
   BanWorldNameList:
@@ -301,11 +320,20 @@ def write_legacy_source(server_dir: Path, case: dict) -> None:
     backup_dir = data_dir / "old-version-config"
     source_dir = backup_dir if case["source"] == "backup-only" else data_dir
     (source_dir / "data").mkdir(parents=True, exist_ok=True)
-    (source_dir / "config.yml").write_text(legacy_config(case), encoding="utf-8")
-    (source_dir / "data" / "data.yml").write_text(legacy_data(case), encoding="utf-8")
+    if case.get("exactOldResources"):
+        shutil.copy2(LEGACY_RESOURCES / "config.yml", source_dir / "config.yml")
+        shutil.copy2(LEGACY_RESOURCES / "data" / "data.yml", source_dir / "data" / "data.yml")
+        shutil.copytree(LEGACY_RESOURCES / "message", source_dir / "message", dirs_exist_ok=True)
+    else:
+        (source_dir / "config.yml").write_text(legacy_config(case), encoding="utf-8")
+        (source_dir / "data" / "data.yml").write_text(legacy_data(case), encoding="utf-8")
     (source_dir / "logs").mkdir(parents=True, exist_ok=True)
     (source_dir / "logs" / "legacy.log").write_text("legacy-log-must-be-kept\n", encoding="utf-8")
     (source_dir / "custom.yml").write_text("custom: keep\n", encoding="utf-8")
+    if not case.get("exactOldResources"):
+        (source_dir / "message").mkdir(parents=True, exist_ok=True)
+        (source_dir / "message" / "custom_legacy.yml").write_text(
+            "PluginTitle: '&aLegacy custom message'\n", encoding="utf-8")
     if case["source"] == "partial-archive":
         backup_dir.mkdir(parents=True, exist_ok=True)
         (backup_dir / "config.yml").write_text(legacy_config(case), encoding="utf-8")
@@ -403,6 +431,8 @@ def run_case(case: dict, run_root: Path, evidence_dir: Path) -> dict:
 
 def assert_migrated(case: dict, server_dir: Path, responses: dict[str, str]) -> list[dict]:
     """断言旧结构已隔离、配置已迁移并且插件可正常运行。"""
+    if case.get("exactOldResources"):
+        return assert_exact_old_resources_migrated(case, server_dir, responses)
     data_dir = server_dir / "plugins" / "WorldListTrashCan"
     backup = data_dir / "old-version-config"
     generated = {
@@ -418,6 +448,7 @@ def assert_migrated(case: dict, server_dir: Path, responses: dict[str, str]) -> 
         "oldData": backup / "data" / "data.yml",
         "oldLog": backup / "logs" / "legacy.log",
         "oldCustom": backup / "custom.yml",
+        "oldMessage": backup / "message" / "custom_legacy.yml",
     }
     for name, path in generated.items():
         if not path.is_file():
@@ -426,13 +457,18 @@ def assert_migrated(case: dict, server_dir: Path, responses: dict[str, str]) -> 
     checks.extend(assert_text(generated["config"], [
         "config-schema-version: 2", "language: " + case["language"], "debug: true"]))
     checks.extend(assert_text(generated["cleanup"], [
-        "interval-seconds: " + str(case["interval"]), "- legacy_ignore", "旧ActionBar", "旧BossBar"]))
+        "interval-seconds: " + str(case["interval"]), "- legacy_ignore", "- DIAMOND_BLOCK",
+        "- legacy_name_guard", "- legacy_lore_guard", "- VILLAGER", "- '*GOLEM*'",
+        "- LEGACY_CUSTOM_ENTITY", "旧ActionBar", "旧BossBar"]))
     checks.extend(assert_text(generated["trash"], [
         "max-pages: " + str(case["maxPages"]),
         "take-delay-millis: " + str(case["takeDelay"]),
         "default-max-count: " + str(case["worldMax"]),
         "mode: " + case["recoveryMode"],
         "model-id: 103",
+        "- FEATHER",
+        "- STICK",
+        "- STAINED_GLASS_PANE",
     ]))
     checks.extend(assert_text(generated["protections"], [
         "interval-seconds: 1.5", "interval-seconds: 2.5", "remove-unpickable-arrow: true"]))
@@ -441,17 +477,84 @@ def assert_migrated(case: dict, server_dir: Path, responses: dict[str, str]) -> 
     checks.extend(assert_text(generated["worlds"], [
         "1,64,1", "2,65,3", "max-count: " + str(case["worldMax"]), case["firstMaterial"]]))
     checks.extend(assert_text(generated["report"], [
-        "old-version-config 隔离备份", "Set.SecondCount -> interval-seconds"]))
+        "old-version-config 隔离备份", "Set.SecondCount -> interval-seconds",
+        "LegacyFutureOption.Flag | 新版没有自动映射",
+        "message/custom_legacy.yml | 新版语言键结构已变化"]))
     checks.extend(assert_text(generated["marker"], [
         "status: complete", "target-config-schema-version: 2", "target-plugin-version: \"7.0.0\""]))
     checks.extend(assert_text(generated["oldLog"], ["legacy-log-must-be-kept"]))
     checks.extend(assert_text(generated["oldCustom"], ["custom: keep"]))
+    checks.extend(assert_text(generated["oldMessage"], ["Legacy custom message"]))
     marker_text = generated["marker"].read_text(encoding="utf-8")
     if not re.search(r'source-sha256: "[0-9a-f]{64}"', marker_text):
         raise AssertionError(case["id"] + " 完成标记缺少 64 位 source-sha256")
     root_config = generated["config"].read_text(encoding="utf-8", errors="replace")
     if "Set:" in root_config or "GlobalBanItem:" in root_config:
         raise AssertionError(case["id"] + " 根目录仍在直接使用旧配置结构")
+    assert_runtime_commands(case, responses)
+    return checks
+
+
+def assert_exact_old_resources_migrated(case: dict, server_dir: Path,
+                                        responses: dict[str, str]) -> list[dict]:
+    """断言旧版 6.9.8 原始资源中的全部功能组均已迁移。"""
+    data_dir = server_dir / "plugins" / "WorldListTrashCan"
+    backup = data_dir / "old-version-config"
+    files = {
+        "config": data_dir / "config.yml",
+        "cleanup": data_dir / "cleanup.yml",
+        "trash": data_dir / "trash.yml",
+        "protections": data_dir / "protections.yml",
+        "entityLimits": data_dir / "entity-limits.yml",
+        "worlds": data_dir / "data" / "worlds.yml",
+        "report": backup / "migration-report.md",
+        "marker": backup / "migration-complete.yml",
+    }
+    for name, path in files.items():
+        if not path.is_file():
+            raise AssertionError(case["id"] + " 缺少旧版原始资源迁移文件 " + name + ": " + str(path))
+    checks = []
+    checks.extend(assert_text(files["config"], [
+        "config-schema-version: 2", "language: message_zh.yml", "debug: false"]))
+    checks.extend(assert_text(files["cleanup"], [
+        "interval-seconds: 360", "- testWorld", "- DIAMOND", "- shopLocation", "- ALTAR",
+        "clear-experience-orbs: true", "clear-monsters: true", "clear-animals: false",
+        "clear-projectiles: true", "clear-named-entities: false", "ignore-entities-in-boat: false",
+        "- VILLAGER", "- '*golem*'", "- FLAMMPFEIL.SLASHBLADE_BLADESTAND",
+        "notify:", "click-command: /worldlisttrashcan globaltrash", "console:", "enabled: true",
+        "mm mobs killall", "entity.experience_orb.pickup", "SEGMENTED_20;GREEN"]))
+    checks.extend(assert_text(files["trash"], [
+        "max-pages: 5", "take-delay-millis: 500", "clear-every-cleanups: 3", "log-enabled: true",
+        "model-id: -1", "- EGG", "- DIRT", "sign-create-text: '[世界垃圾桶]'",
+        "sign-created-text: '&b[&c世界垃圾桶&b]'", "default-max-count: 3", "track-player-dropped-items: false",
+        "auto-clear-when-full: true", "take-cost: -1.0", "mode: disabled", "delay-seconds: 6"]))
+    checks.extend(assert_text(files["protections"], [
+        "interval-seconds: 0.7", "message: '&c请不要刷屏'", "message: '&c请不要频繁使用指令'",
+        "- /tpa", "- /spawn", "- /suicide", "drop-protection:", "enabled: true",
+        "remove-unpickable-arrow: true", "prevent-farmland-trampling: true"]))
+    checks.extend(assert_text(files["entityLimits"], [
+        "world-limits:", "enabled: false", "entity: VILLAGER", "max-count: 10",
+        "entity: CHICKEN", "max-count: 20", "gather-limits:", "drop-items: true",
+        "radius: 8", "remove-count: 5"]))
+    checks.extend(assert_text(files["worlds"], [
+        "worlds:", "world:", "max-count: 3", "- STONE", "- GRASS"]))
+    for old_file in [LEGACY_RESOURCES / "config.yml", LEGACY_RESOURCES / "data" / "data.yml"]:
+        relative = old_file.relative_to(LEGACY_RESOURCES)
+        archived = backup / relative
+        if sha256_file(old_file) != sha256_file(archived):
+            raise AssertionError(case["id"] + " 旧文件备份字节不一致: " + str(relative))
+        checks.append({"file": str(archived), "needle": "sha256-byte-identical", "ok": True})
+    old_messages = sorted((LEGACY_RESOURCES / "message").glob("*.yml"))
+    for old_message in old_messages:
+        archived = backup / "message" / old_message.name
+        if not archived.is_file() or sha256_file(old_message) != sha256_file(archived):
+            raise AssertionError(case["id"] + " 旧语言文件未完整备份: " + old_message.name)
+    report_text = files["report"].read_text(encoding="utf-8")
+    if report_text.count("新版语言键结构已变化") != len(old_messages):
+        raise AssertionError(case["id"] + " 旧语言文件人工确认数量不正确")
+    checks.append({"file": str(files["report"]), "needle": "legacy-message-count=" + str(len(old_messages)), "ok": True})
+    checks.extend(assert_text(files["marker"], [
+        "status: complete", "target-config-schema-version: 2", "target-plugin-version: \"7.0.0\""]))
     assert_runtime_commands(case, responses)
     return checks
 
@@ -497,6 +600,68 @@ def run_reintroduced_legacy_rejection(case: dict, server_dir: Path, evidence_dir
     return [{"file": str(stdout), "needle": "[MigrationGuard] legacy-root-after-complete", "ok": True}]
 
 
+def run_negative_case(case: dict, run_root: Path, evidence_dir: Path) -> dict:
+    """执行损坏、冲突或混合结构用例并断言安全拒绝。"""
+    log("准备负向迁移用例 " + case["id"])
+    server_dir = prepare_server(case, run_root)
+    data_dir = server_dir / "plugins" / "WorldListTrashCan"
+    backup = data_dir / "old-version-config"
+    marker = backup / "migration-complete.yml"
+    kind = case["negativeKind"]
+    protected = []
+    if kind == "invalid-config":
+        path = data_dir / "config.yml"
+        path.write_text("Set:\n  Debug: [broken\n", encoding="utf-8")
+        protected.append(path)
+    elif kind == "invalid-data":
+        path = data_dir / "data" / "data.yml"
+        path.write_text("WorldData:\n  world: [broken\n", encoding="utf-8")
+        protected.append(path)
+    elif kind == "corrupt-marker":
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text("status: incomplete\nsource-sha256: bad\n", encoding="utf-8")
+        protected.append(marker)
+    elif kind == "mixed-new-old":
+        path = data_dir / "config.yml"
+        shutil.copy2(REPO / "bl-world-trashcan-plugin-legacy-1_12" / "src" / "main"
+                     / "resources" / "config.yml", path)
+        protected.extend([path, data_dir / "data" / "data.yml"])
+    elif kind == "backup-conflict":
+        path = backup / "config.yml"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("Set:\n  Debug: false\n  Conflict: keep-this-file\n", encoding="utf-8")
+        protected.append(path)
+    else:
+        raise AssertionError("未知负向迁移类型: " + kind)
+    hashes_before = {str(path): sha256_file(path) for path in protected}
+    responses = run_server_phase(case, server_dir, evidence_dir, "01-safe-rejection", [
+        "plugins", "wtc platform"])
+    stdout = evidence_dir / case["id"] / "logs" / "01-safe-rejection" / "server-stdout.log"
+    text = stdout.read_text(encoding="utf-8", errors="replace")
+    for needle in case["expectedErrors"]:
+        if needle not in text:
+            raise AssertionError(case["id"] + " 缺少安全拒绝日志: " + needle)
+    if "universal" in responses.get("wtc platform", ""):
+        raise AssertionError(case["id"] + " 迁移失败后插件仍在处理命令")
+    for path_text, expected_hash in hashes_before.items():
+        path = Path(path_text)
+        if not path.is_file() or sha256_file(path) != expected_hash:
+            raise AssertionError(case["id"] + " 安全拒绝后改写了输入文件: " + path_text)
+    if kind != "corrupt-marker" and marker.exists():
+        raise AssertionError(case["id"] + " 失败迁移错误生成了完成标记")
+    if kind == "corrupt-marker" and "status: complete" in marker.read_text(encoding="utf-8"):
+        raise AssertionError(case["id"] + " 损坏标记被错误改写为完成")
+    return {
+        "id": case["id"],
+        "source": "negative-" + kind,
+        "negative": True,
+        "passed": True,
+        "checks": [{"file": str(stdout), "needle": needle, "ok": True}
+                   for needle in case["expectedErrors"]],
+        "commands": {"rejection": responses},
+    }
+
+
 def assert_text(path: Path, needles: list[str]) -> list[dict]:
     """断言 UTF-8 文本中包含全部关键内容。"""
     text = path.read_text(encoding="utf-8", errors="replace")
@@ -540,6 +705,16 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
         "",
     ]
     for result in summary["results"]:
+        if result.get("negative"):
+            lines.extend([
+                "### " + result["id"],
+                "",
+                "- 类型: `" + result["source"] + "`",
+                "- 结论: 已安全拒绝，插件未生成迁移完成标记且输入文件未被覆盖。",
+                "- 日志: `" + result["id"] + "/logs/01-safe-rejection/`",
+                "",
+            ])
+            continue
         lines.extend([
             "### " + result["id"],
             "",
@@ -574,6 +749,36 @@ def case_data(identifier: str, source: str, index: int, check_reject: bool = Fal
     }
 
 
+def exact_old_case_data() -> dict:
+    """创建直接使用旧版 6.9.8 原始资源的迁移用例。"""
+    return {
+        "id": "exact-old-6.9.8-resources",
+        "source": "current",
+        "port": find_free_port(),
+        "rcon": find_free_port(),
+        "language": "message_zh.yml",
+        "interval": 360,
+        "maxPages": 5,
+        "takeDelay": 500,
+        "worldMax": 3,
+        "takeCost": -1.0,
+        "recoveryDelay": 6,
+        "recoveryMode": "disabled",
+        "firstMaterial": "STONE",
+        "secondMaterial": "GRASS",
+        "checkReject": False,
+        "exactOldResources": True,
+    }
+
+
+def negative_case_data(identifier: str, kind: str, index: int, errors: list[str]) -> dict:
+    """创建一组期望插件安全拒绝的迁移用例。"""
+    case = case_data(identifier, "current", 20 + index)
+    case["negativeKind"] = kind
+    case["expectedErrors"] = errors
+    return case
+
+
 def main() -> int:
     """执行 F-005 同名旧配置隔离与迁移矩阵。"""
     ensure_inputs()
@@ -583,11 +788,25 @@ def main() -> int:
     run_root.mkdir(parents=True, exist_ok=True)
     evidence_dir.mkdir(parents=True, exist_ok=True)
     cases = [
+        exact_old_case_data(),
         case_data("current-root", "current", 1, True),
         case_data("partial-archive-resume", "partial-archive", 2),
         case_data("backup-only-retry", "backup-only", 3),
     ]
     results = [run_case(case, run_root, evidence_dir) for case in cases]
+    negative_cases = [
+        negative_case_data("invalid-config-yaml", "invalid-config", 1,
+                           ["[MigrationError] legacy-config-invalid"]),
+        negative_case_data("invalid-world-data-yaml", "invalid-data", 2,
+                           ["[MigrationError] legacy-data-invalid"]),
+        negative_case_data("corrupt-complete-marker", "corrupt-marker", 3,
+                           ["[MigrationError] complete-marker-invalid"]),
+        negative_case_data("mixed-new-and-old-structure", "mixed-new-old", 4,
+                           ["[MigrationError] mixed-current-legacy"]),
+        negative_case_data("backup-content-conflict", "backup-conflict", 5,
+                           ["[MigrationError] backup-content-conflict"]),
+    ]
+    results.extend(run_negative_case(case, run_root, evidence_dir) for case in negative_cases)
     summary = {
         "timestamp": timestamp,
         "allPassed": all(item["passed"] for item in results),

@@ -1,0 +1,6 @@
+command=["powershell", "-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\pc\\Desktop\\ai开发插件\\客户端自动化测试工作区\\scripts\\start_paper_test_server.ps1", "-TimeoutSeconds", "300"]
+exitCode=0
+stdout:
+paper server ready
+stderr:
+

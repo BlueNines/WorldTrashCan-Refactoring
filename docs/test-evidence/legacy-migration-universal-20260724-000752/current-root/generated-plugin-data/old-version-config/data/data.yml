@@ -1,0 +1,9 @@
+WorldData:
+  world:
+    SignLocation:
+    - '1,64,1'
+    - '2.8,65.2,3.9'
+    RashMaxCount: 9
+    BanItem:
+    - COBBLESTONE
+    - STONE

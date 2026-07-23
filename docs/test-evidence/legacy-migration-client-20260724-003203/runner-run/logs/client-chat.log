@@ -1,0 +1,17 @@
+2026-07-24T00:33:30+0800 type=SYSTEM plain=An update for PlaceholderAPI (PlaceholderAPI v2.12.3) formatted=§bAn update for §r§fPlaceholder§r§7API §r§e(§r§fPlaceholder§r§7API §r§fv2.12.3§r§e)§r
+2026-07-24T00:33:30+0800 type=SYSTEM plain=is available at https://www.spigotmc.org/resources/placeholderapi.6245/ formatted=§bis available at §r§ehttps://www.spigotmc.org/resources/placeholderapi.6245/§r
+2026-07-24T00:33:30+0800 type=SYSTEM plain=AIClientAlpha joined the game formatted=§eAIClientAlpha joined the game§r
+2026-07-24T00:33:31+0800 type=SYSTEM plain=[ViaVersion] There is a newer plugin version available: 5.11.0, you're on: 4.10.2 formatted=§a§l[ViaVersion] §r§aThere is a newer plugin version available: 5.11.0, you're on: 4.10.2§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=[WorldListTrashCan] 清理统计: formatted=§0[§r§bWorld§r§eList§r§fTrash§r§bCan§r§0] §r§b清理统计:§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0) formatted=§7- §r§f扫地门禁: §r§a已通过 §r§7(在线 0/0, 目标实体 未统计/0)§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 世界数: 0 formatted=§8- §r§f世界数: §r§e0§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 回收物品: 0 (世界 0, 个人 0, 公共 0) formatted=§8- §r§f回收物品: §r§e0 §r§8(世界 0, 个人 0, 公共 0)§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 删除物品: 0 formatted=§8- §r§f删除物品: §r§e0§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 删除实体: 0 formatted=§8- §r§f删除实体: §r§e0§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 公共垃圾桶页数: 7 formatted=§8- §r§f公共垃圾桶页数: §r§e7§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 公共垃圾桶当前物品: 0 (堆叠 0) formatted=§8- §r§f公共垃圾桶当前物品: §r§e0 §r§8(堆叠 0)§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 已加载个人垃圾桶: 0 formatted=§8- §r§f已加载个人垃圾桶: §r§e0§r
+2026-07-24T00:33:34+0800 type=SYSTEM plain=- 下次清理剩余秒数: 321 formatted=§8- §r§f下次清理剩余秒数: §r§e321§r
+2026-07-24T00:33:37+0800 type=CHAT plain=LEGACY_MIGRATION_CHAT_OK pages=7 formatted=§aLEGACY_MIGRATION_CHAT_OK pages=7§r
+2026-07-24T00:33:37+0800 type=GAME_INFO plain=§f§a清理成功，有0个物品加入了公共垃圾桶，有0个生物被清理 formatted=§f§a清理成功，有0个物品加入了公共垃圾桶，有0个生物被清理§r
+2026-07-24T00:33:37+0800 type=SYSTEM plain=已触发清理通知: 0 formatted=§a已触发清理通知: §r§f0§r

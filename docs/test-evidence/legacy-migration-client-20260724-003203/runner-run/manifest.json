@@ -1,0 +1,35 @@
+{
+  "runId": "20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat",
+  "jobId": 3441,
+  "plugin": "ClientInstanceServerChatCanary",
+  "scenario": "client_instance_server_chat",
+  "createdAt": "2026-07-24T00:32:09+0800",
+  "payload": {
+    "resources": [
+      "server:paper-1.12.2-test-server",
+      "client:legacy-migration-visual-a"
+    ],
+    "clientAction": "chat-sequence",
+    "serverAddress": "127.0.0.1:25565",
+    "chatCommand": "/wtc stats||/wtc debugnotify 0||/wtc globaltrash",
+    "expectedScreenSimpleName": "GuiChest",
+    "clientId": "legacy-migration-visual-a",
+    "clientRoot": "C:\\Users\\pc\\Desktop\\ai开发插件\\客户端自动化测试工作区\\client-instances\\legacy-migration-visual-a",
+    "clientVersionDir": "1.12.2-Forge_14.23.5.2864",
+    "playerName": "AIClientAlpha",
+    "playerUuid": "11111111-1111-4111-8111-111111111111",
+    "expected": [
+      "真实 Paper 测试服启动并被当前任务持有",
+      "实例 Forge 客户端从 client-instances 下的 gameDir 启动",
+      "客户端连接测试服并通过玩家聊天路径发送中文命令",
+      "服务端日志出现 issued server command 和 UTF-8 hex 断言",
+      "客户端截图、响应、Forge 日志、Paper 日志和停服证据都归档到同一个 run"
+    ],
+    "forbidden": [
+      "不能用 RCON 或服务端命令代替客户端聊天命令",
+      "不能使用原始 forge-1.12.2-test-client 作为可变 gameDir",
+      "服务端日志不能出现 raw=???",
+      "结束后不能留下 Paper、Forge 或启动器进程"
+    ]
+  }
+}

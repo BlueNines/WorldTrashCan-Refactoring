@@ -20,7 +20,7 @@
 | GUI 真实点击 | `trash-gui-click-visual-20260721-023817/` | 当前 universal 整包；Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端；公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
 | 公共垃圾桶字符布局 | `global-trash-layout-visual-20260721-024653/` | 当前 universal 整包；Paper 1.12.2 与 Folia 1.21.8 真实客户端；2 行布局、RGB/传统色 Tooltip、翻页、缩容零丢失、只读溢出页、取出后恢复写入、非法布局回退 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-231000/` | Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 三端，玩家已能打开 GUI 时显式 deny 公共/个人 take/put 后真实点击不产生取放 |
-| 旧配置迁移 | `legacy-migration-universal-20260721-021850/` | 同名目录旧结构隔离、完整备份、日志保留、中断重入、无标记重试、标记跳过和旧结构回放拒绝 |
+| 旧配置迁移 | `legacy-migration-universal-20260724-000752/`、`legacy-migration-platform-20260724-001431/`、`legacy-migration-client-20260724-003203/` | 当前 universal 整包；旧版 6.9.8 原始配置、4 个成功迁移场景、5 个安全拒绝场景、Spigot 26.1.2/Folia 1.21.8 跨端幂等，以及真实 Forge 1.12.2 客户端页数、旧消息和 GUI 材质可见验收 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
 | 船内实体保护 | `boat-entity-protection-20260701-171046/` | 船内实体保留、普通实体清理 |
 | 世界垃圾桶边界 | `world-trash-boundary-20260701-172919/` | 创建上限、破坏移除、禁用世界、黑名单降级、未加载区块降级 |

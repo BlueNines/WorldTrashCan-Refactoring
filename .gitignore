@@ -15,3 +15,4 @@ dist/*
 docs/test-evidence/**/backup/*.jar
 docs/test-evidence/**/server-backup/plugins/*.jar
 docs/test-evidence/**/plugin-backup/*.jar
+docs/test-evidence/**/deployed-artifact*/*.jar

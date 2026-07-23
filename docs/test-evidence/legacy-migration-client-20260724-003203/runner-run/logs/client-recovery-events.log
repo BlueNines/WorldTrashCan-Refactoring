@@ -1,0 +1,2 @@
+2026-07-24T00:33:31+0800 incident=teleported, phase=detected, position jump detected, count=1, stage=0, movementSq=64161.45187445518, dy=-1.0
+2026-07-24T00:33:31+0800 incident=teleported, phase=recovered, position watcher reset and scenario stage prepared, stage=0

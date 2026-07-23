@@ -1,0 +1,5 @@
+# 新版配置结构版本。
+# 插件通过该值区分旧版单文件配置与当前拆分配置；请勿手动删除或降低。
+config-schema-version: 2
+language: legacy_case_2.yml
+debug: true

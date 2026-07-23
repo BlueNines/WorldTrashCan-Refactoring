@@ -1,0 +1,9 @@
+status=PASS
+sourceLogExists=PASS detail=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\logs\paper-latest-before-client-instance-server-stop.log
+commandsNonEmpty=PASS detail=["/wtc stats", "/wtc debugnotify 0", "/wtc globaltrash"]
+uuidLine=PASS detail=[00:33:26] [User Authenticator #1/INFO]: UUID of player AIClientAlpha is ffd014c5-29b0-3675-a63b-4ba32b91028e
+loginLine=PASS detail=[00:33:28] [Server thread/INFO]: AIClientAlpha[/127.0.0.1:65393] logged in with entity id 62 at ([world]65.48916018614545, 64.0, 255.30495840994166)
+forbiddenRawQuestionMarks=PASS detail=raw=???
+issuedCommand1=PASS detail=/wtc stats
+issuedCommand2=PASS detail=/wtc debugnotify 0
+issuedCommand3=PASS detail=/wtc globaltrash

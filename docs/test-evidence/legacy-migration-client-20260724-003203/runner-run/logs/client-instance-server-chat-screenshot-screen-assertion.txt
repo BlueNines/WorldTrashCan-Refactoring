@@ -1,0 +1,8 @@
+status=PASS
+source=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\logs\client-screenshot-screen.log
+expectedCount=5
+gameplayFrame=PASS markers=['name=runner_sequence_connected.png, screen=none', 'name=runner_sequence_connected.png, screen=GuiChest'] matched=name=runner_sequence_connected.png, screen=none
+gameplayFrame=PASS markers=['name=runner_sequence_1.png, screen=none', 'name=runner_sequence_1.png, screen=GuiChest'] matched=name=runner_sequence_1.png, screen=none
+gameplayFrame=PASS markers=['name=runner_sequence_2.png, screen=none', 'name=runner_sequence_2.png, screen=GuiChest'] matched=name=runner_sequence_2.png, screen=none
+gameplayFrame=PASS markers=['name=runner_sequence_3.png, screen=none', 'name=runner_sequence_3.png, screen=GuiChest'] matched=name=runner_sequence_3.png, screen=none
+gameplayFrame=PASS markers=['name=runner_sequence_final.png, screen=none', 'name=runner_sequence_final.png, screen=GuiChest'] matched=name=runner_sequence_final.png, screen=none
