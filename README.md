@@ -40,6 +40,8 @@
 
 主插件内置命令和别名不可覆盖；附属插件禁用时，主插件会移除审计会话、命令、帮助、补全和处理器引用。未安装附属插件时使用空审计会话，不复制或序列化物品，也不会创建数据库线程。API v2 为旧 `recordItem(ItemStack)` 保留 Java 8 `default` 退化实现，避免旧附属出现 `AbstractMethodError`。完整线程、生命周期和 ClassLoader 契约见 [docs/WorldListTrashCanAudit附属插件API契约.md](docs/WorldListTrashCanAudit附属插件API契约.md)。
 
+`WorldListTrashCanAudit` 采用“安装 Jar 即启用、移除 Jar 即停用”的生命周期语义，不提供无法由 `/wtc reload` 安全重建数据库线程和连接的 `enabled` 总开关；旧配置中残留的该键会被忽略。
+
 2026-07-22 使用同一个 `dist/WorldListTrashCan-universal.jar` 在 Paper 1.12.2、Spigot 26.1.2 和 Folia 1.21.8 隔离真实服务端完成“未安装附属插件”退化回归：三端均正常启动，`/wtc help` 不显示 `audit`，`/wtc clear true` 可执行，不生成 `WorldListTrashCanAudit` 目录，主插件 Jar 不含 SQLite/MySQL/MariaDB/Hikari 驱动。脚本为 `tools/rgb-visual-matrix/run_addon_api_no_addon_smoke.py`，通过证据为 `docs/test-evidence/addon-api-no-addon-smoke-20260722-183820/`。
 
 2026-07-23 最终 API v2 与附属插件在 Folia 1.21.8 + 真实 1.21.8 客户端和 Paper 1.12.2 + 真实 Forge 1.12.2 客户端完成去向与旧库迁移验收。四种去向、世界桶创建者/坐标、个人/公共 FIFO 账本、系统清空、富元数据 Lore、复制和禁止交互均由客户端原图、SQLite、服务端日志及实际区块 NBT 交叉验证；最终 universal Jar SHA-256 为 `78f1139a72e04e65b8a9290251e6c0dd2cbda5f3b06876f0f1e74fa7e9ce17c8`。

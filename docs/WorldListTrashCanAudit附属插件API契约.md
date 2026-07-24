@@ -149,10 +149,10 @@ API 模块禁止包含：
 附属插件启动流程：
 
 1. 从 `ServicesManager` 获取 `WorldListTrashCanAuditBridge` 和 `WorldListTrashCanCommandRegistry`。
-2. 检查两个服务的 `getApiVersion()` 是否都等于 `1`。
-3. 注册 `audit` 副指令，取得 `SubcommandRegistration`；即使存储关闭，也允许命令提示当前状态。
+2. 检查审计 API 是否等于 `2`、命令 API 是否等于 `1`。
+3. 注册 `audit` 副指令，取得 `SubcommandRegistration`。
 4. 构建尚未连接数据库的审计收口。
-5. 顶层 `enabled: true` 且配置校验通过后初始化数据库资源。
+5. 配置校验通过后直接初始化所选的唯一数据库资源。
 6. 调用审计 `register`，取得唯一的 `AuditRegistration`。
 7. 审计注册成功后才允许记录清理数据。
 
@@ -448,7 +448,7 @@ API v2 已通过 `CleanupItemDestination` 传递 `WORLD_TRASH`、`PERSONAL_TRASH
 - 数据库异步查询完成后，通过 `executeForPlayer` 回到合法玩家线程。
 - 内容槽和按钮槽都禁止移动或放入；Shift、数字键、丢弃、双击和拖拽不得触发复制。
 - 详情内容普通左键只复制 1 个数据库原始样品；不按历史总数恢复，不减少菜单或数据库内容，背包满时不掉落到世界。
-- 附属插件关闭存储但自身仍加载时，`/wtc audit` 保留并提示功能关闭；卸载附属插件后命令和帮助条目全部注销。
+- 数据库初始化期间或失败时，`/wtc audit` 显示明确状态；卸载附属插件后命令和帮助条目全部注销。
 
 ## 十二、版本兼容
 
@@ -481,10 +481,11 @@ API v2 已通过 `CleanupItemDestination` 传递 `WORLD_TRASH`、`PERSONAL_TRASH
 - `/wtc help` 和第一参数补全中不存在 `audit`。
 - 主插件 universal 包体不能混入 SQLite/MySQL 驱动。
 
-### 14.2 安装但关闭附属插件
+### 14.2 安装即启用
 
-- `enabled: false` 时不注册消费者、不加载驱动、不创建连接和线程。
-- `/wtc help` 显示 `/wtc audit`，执行后明确提示功能关闭。
+- 默认配置不提供无法热重载的 `enabled` 总开关；安装 Jar 即初始化所选的唯一存储并注册消费者。
+- `/wtc help` 显示 `/wtc audit`；停用功能需要移除附属 Jar 并完整重启服务端。
+- 旧配置中残留的 `enabled` 键被忽略，不得再改变附属插件生命周期。
 - 主插件所有现有功能保持正常。
 
 ### 14.3 正常启用

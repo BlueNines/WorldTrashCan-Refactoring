@@ -117,12 +117,15 @@ def patch_actions_layout(case: dict) -> Path:
     return target
 
 
-def prepare_audit_disabled_message(case: dict, backup_dir: Path) -> list[dict]:
-    """准备关闭态附属消息，用独立 /wtc audit 验证玩家 PAPI。"""
+def prepare_audit_runtime_message(case: dict, backup_dir: Path) -> list[dict]:
+    """准备 SQLite 运行态和空记录消息，用独立 /wtc audit 验证玩家 PAPI。"""
     data_dir = Path(case["serverDir"]) / "plugins" / "WorldListTrashCanAudit"
     config = data_dir / "config.yml"
     message = data_dir / "messages" / "message_zh.yml"
+    database = data_dir / "data" / "global-actions-audit.db"
+    database_files = [database, Path(str(database) + "-wal"), Path(str(database) + "-shm")]
     backups = [gui.backup_file(config, backup_dir), gui.backup_file(message, backup_dir)]
+    backups.extend(gui.backup_file(path, backup_dir) for path in database_files)
     config.parent.mkdir(parents=True, exist_ok=True)
     message.parent.mkdir(parents=True, exist_ok=True)
     if not config.is_file():
@@ -130,14 +133,22 @@ def prepare_audit_disabled_message(case: dict, backup_dir: Path) -> list[dict]:
     if not message.is_file():
         shutil.copy2(AUDIT_REPO / "src" / "main" / "resources"
                      / "messages" / "message_zh.yml", message)
-    config_text = external.update_yaml_scalars(
-        config.read_text(encoding="utf-8", errors="replace"),
-        {"enabled": "false", "language": "message_zh.yml"})
+    config_text = re.sub(
+        r"(?m)^enabled:\s*(?:true|false)\s*(?:#.*)?(?:\r?\n|$)", "",
+        config.read_text(encoding="utf-8", errors="replace"))
+    config_text = external.update_yaml_scalars(config_text, {
+        "language": "message_zh.yml",
+        "storage.type": "sqlite",
+        "storage.sqlite.file": "data/global-actions-audit.db",
+    })
     config.write_text(config_text, encoding="utf-8")
     message_text = external.update_yaml_scalars(
         message.read_text(encoding="utf-8", errors="replace"),
-        {"disabled": '"{prefix}&cAUDIT_PAPI clear=%Wtc_ClearTime%"'})
+        {"no-records": '"{prefix}&cAUDIT_PAPI clear=%Wtc_ClearTime%"'})
     message.write_text(message_text, encoding="utf-8")
+    for path in database_files:
+        if path.is_file():
+            path.unlink()
     return backups
 
 
@@ -328,7 +339,7 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
     try:
         moved_papi = suspend_papi(case, run_dir / "logs" / "papi-backup")
         moved_audit_jars = backup_audit_jars(case, run_dir / "logs" / "audit-jar-backup")
-        backups.extend(prepare_audit_disabled_message(
+        backups.extend(prepare_audit_runtime_message(
             case, run_dir / "logs" / "audit-config-backup"))
         process = external.launch_server(case, run_dir)
         trash_file = Path(case["serverDir"]) / "plugins" / "WorldListTrashCan" / "trash.yml"
@@ -449,9 +460,9 @@ def run_case(case: dict, prepared_clients: dict, evidence_root: Path) -> dict:
             external.stop_process(client)
         base.ACTIVE_CLIENT_PID = None
         if process is not None:
-            gui.restore_backups(backups)
             gui.copy_runtime_evidence(case, run_dir)
             external.stop_process(process, "stop")
+            gui.restore_backups(backups)
         else:
             gui.restore_backups(backups)
         restore_audit_jars(case, moved_audit_jars)
