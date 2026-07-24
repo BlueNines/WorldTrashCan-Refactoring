@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -91,6 +92,7 @@ public final class TrashFeature implements Feature, Listener {
         if (dropOwnerTracker != null) {
             dropOwnerTracker.clear();
         }
+        globalTrashService.close();
         registered = false;
     }
 
@@ -158,6 +160,12 @@ public final class TrashFeature implements Feature, Listener {
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         globalTrashService.handleDrag(event);
+    }
+
+    /** 公共垃圾桶关闭时释放按玩家生成的展示视图。 */
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        globalTrashService.handleClose(event);
     }
 
     /** 给玩家主动丢弃的物品写入所属玩家标记。 */

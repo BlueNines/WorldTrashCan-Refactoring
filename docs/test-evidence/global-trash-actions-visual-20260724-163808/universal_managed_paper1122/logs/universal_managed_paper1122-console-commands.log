@@ -1,0 +1,18 @@
+[16:38:11] wtc reload
+[16:38:18] op RGBaper1122
+[16:38:19] minecraft:gamerule sendCommandFeedback false
+[16:38:19] minecraft:gamerule commandBlockOutput false
+[16:38:19] minecraft:gamerule doMobSpawning false
+[16:38:19] minecraft:gamerule keepInventory true
+[16:38:20] minecraft:gamerule fallDamage false
+[16:38:20] minecraft:time set day
+[16:38:20] minecraft:weather clear
+[16:38:20] minecraft:fill -3 90 -11 3 90 -5 stone
+[16:38:21] minecraft:gamemode 0 RGBaper1122
+[16:38:21] minecraft:tp RGBaper1122 0 91 -8 0 15
+[16:38:21] minecraft:effect RGBaper1122 minecraft:resistance 1000000 255 true
+[16:38:21] minecraft:effect RGBaper1122 minecraft:saturation 1000000 1 true
+[16:38:22] minecraft:clear RGBaper1122
+[16:38:23] wtc debugopen RGBaper1122 global
+[16:38:40] wtc debugopen RGBaper1122 global
+[16:38:45] wtc debugopen RGBaper1122 global

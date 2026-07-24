@@ -34,7 +34,7 @@ public final class GlobalTrashLayoutParserSelfTest {
     private static void verifyCustomLayout() {
         MapConfigurationSource source = new MapConfigurationSource();
         source.put("global-trash.gui.layout.position", Arrays.asList(
-                "xxxxxxxxx", "xxxxxxxxx", "abbbbbbbc"));
+                "xxxxxxxxx", "xxxxxxxxx", "abbbdbbbc"));
         source.put("global-trash.gui.layout.items.x.type", "content");
         source.put("global-trash.gui.layout.items.a.type", "previous-page");
         source.put("global-trash.gui.layout.items.a.model-id", Integer.valueOf(77));
@@ -48,6 +48,11 @@ public final class GlobalTrashLayoutParserSelfTest {
         source.put("global-trash.gui.layout.items.c.type", "next-page");
         source.put("global-trash.gui.layout.items.c.material", Collections.singletonList("ARROW"));
         source.put("global-trash.gui.layout.items.c.unavailable-item", "b");
+        source.put("global-trash.gui.layout.items.d.type", "actions");
+        source.put("global-trash.gui.layout.items.d.material", Collections.singletonList("BOOK"));
+        source.put("global-trash.gui.layout.items.d.name", "&e统计 {player}");
+        source.put("global-trash.gui.layout.items.d.actions", Arrays.asList(
+                "[message] &a第 {page} 页", "[command] wtc stats"));
 
         TrashConfig.GlobalTrashLayoutConfig layout = new GlobalTrashLayoutParser().parse(source, -1, -1, -1);
         assertEquals("custom size", 27, layout.getInventorySize());
@@ -60,6 +65,9 @@ public final class GlobalTrashLayoutParserSelfTest {
         assertEquals("custom model", 77, layout.getItem('a').getModelId());
         assertEquals("custom material candidates", 2, layout.getItem('a').getMaterials().size());
         assertEquals("custom lore", 2, layout.getItem('a').getLore().size());
+        assertEquals("custom actions type", "actions",
+                layout.getItem('d').getType().name().toLowerCase());
+        assertEquals("custom actions", 2, layout.getItem('d').getActions().size());
         assertEquals("empty name override", "", layout.getItem('b').getName());
         assertNull("custom validation", layout.getValidationError());
     }

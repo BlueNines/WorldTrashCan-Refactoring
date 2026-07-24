@@ -423,7 +423,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         };
         PaymentService paymentService = createPaymentService(runtimeKind);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
-                messageService, platform.itemSnapshotMapper(), apiHost.auditBridge());
+                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
         this.dropOwnerTracker = new DropOwnerTracker(platform);

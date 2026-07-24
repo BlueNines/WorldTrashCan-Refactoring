@@ -1,0 +1,65 @@
+# WorldListTrashCanAudit 实验性功能总开关。
+# false：只注册 /wtc audit 状态提示，不加载数据库驱动、不创建线程、不连接数据库、不注册审计消费者和 GUI 监听器。
+# true：配置校验通过后异步初始化所选数据库，并开始记录 WorldListTrashCan 的正式扫地结果。
+enabled: true
+
+# 使用的语言文件名；内置可选 message_zh.yml 和 message_en.yml。
+# 文件位于 plugins/WorldListTrashCanAudit/messages/，缺失时启动会自动补回默认文件。
+language: message_zh.yml
+
+# 清理审计数据保留天数，单位为自然天。
+# 允许范围 1-3650；默认 7 天。过期父记录删除后，所属物品依靠数据库外键级联删除。
+retention-days: 7
+
+# 过期数据检查的最小间隔，单位小时。
+# 启动初始化后会检查一次；之后在写入或查询发生时低频顺带检查，不创建额外定时线程。
+retention-check-hours: 6
+
+# 单次过期清理最多删除多少条清理批次，避免一次事务长期锁表。
+# 如果仍有更多过期数据，会在后续低频检查中继续删除。
+purge-batch-size: 500
+
+storage:
+  # 唯一存储类型，只能填写 sqlite 或 mysql。
+  # 插件同一时间只会连接这里选择的一个数据库，严禁同时连接两种存储或跨数据库保存日志表。
+  type: sqlite
+
+  sqlite:
+    # SQLite 文件相对于 plugins/WorldListTrashCanAudit/ 的路径。
+    # 必须是插件目录内部的相对路径，不能使用绝对路径或 .. 跳出插件目录。
+    file: data/destination-acceptance-folia1218-clean-20260723-0915.db
+
+  mysql:
+    # MySQL 服务地址。
+    host: 127.0.0.1
+    # MySQL 服务端口，允许范围 1-65535。
+    port: 3306
+    # 唯一使用的数据库名；清理批次表和物品表都会写入这个数据库，不会另开日志库。
+    database: test
+    # MySQL 登录用户名。
+    username: root
+    # MySQL 登录密码；插件不会把密码输出到日志、状态提示或异常摘要。
+    password: change-me
+    # 数据表名前缀，只允许英文字母、数字和下划线，长度 1-24。
+    # 默认生成 wtc_cleanup_run 和 wtc_cleanup_item 两张表。
+    table-prefix: wtc_
+
+limits:
+  # 等待异步写库的最大清理批次数。
+  # 队列满时新的清理批次直接放弃审计，不阻塞、不重试，也不影响正式扫地。
+  queue-capacity: 128
+  # 等待异步菜单查询的最大任务数。
+  # 队列满时管理员会收到“系统繁忙”，不会挤占扫地写入预留容量。
+  query-queue-capacity: 16
+  # 单次清理最多记录多少种完整序列化内容不同的物品。
+  # 超出后当前记录标记为 partial，正式扫地继续执行。
+  max-distinct-items: 256
+  # 单个标准化物品允许生成的最大未压缩 UTF-8 字节数。
+  # 超大 NBT/PDC 物品超过限制后只跳过该审计样品，不影响物品清理。
+  max-bytes-per-item: 262144
+  # 单次清理允许保留的全部不同物品序列化数据最大未压缩 UTF-8 字节数。
+  # 达到限制后停止接收新种类，已聚合的物品仍会异步写入。
+  max-bytes-per-cleanup: 4194304
+  # 插件关闭时等待数据库任务自然结束的最长毫秒数。
+  # 超时后丢弃剩余非关键审计任务，不能拖慢服务器关闭。
+  shutdown-timeout-millis: 2000

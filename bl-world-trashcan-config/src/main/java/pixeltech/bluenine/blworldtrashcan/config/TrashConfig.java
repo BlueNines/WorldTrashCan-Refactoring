@@ -300,12 +300,20 @@ public final class TrashConfig {
         private final List<String> materials;
         private final String name;
         private final List<String> lore;
+        private final List<String> actions;
         private final Character unavailableItem;
 
         /** 创建单个布局物品配置。 */
         public GlobalTrashItemConfig(char symbol, GlobalTrashItemType type, int modelId,
                                      List<String> materials, String name, List<String> lore,
                                      Character unavailableItem) {
+            this(symbol, type, modelId, materials, name, lore, Collections.<String>emptyList(), unavailableItem);
+        }
+
+        /** 创建带点击动作的单个布局物品配置。 */
+        public GlobalTrashItemConfig(char symbol, GlobalTrashItemType type, int modelId,
+                                     List<String> materials, String name, List<String> lore,
+                                     List<String> actions, Character unavailableItem) {
             this.symbol = symbol;
             this.type = type;
             this.modelId = modelId;
@@ -316,6 +324,9 @@ public final class TrashConfig {
             this.lore = lore == null
                     ? Collections.<String>emptyList()
                     : Collections.unmodifiableList(new ArrayList<>(lore));
+            this.actions = actions == null
+                    ? Collections.<String>emptyList()
+                    : Collections.unmodifiableList(new ArrayList<>(actions));
             this.unavailableItem = unavailableItem;
         }
 
@@ -349,6 +360,11 @@ public final class TrashConfig {
             return lore;
         }
 
+        /** 返回玩家点击时按顺序执行的动作。 */
+        public List<String> getActions() {
+            return actions;
+        }
+
         /** 返回按钮不可用时显示的布局字符。 */
         public Character getUnavailableItem() {
             return unavailableItem;
@@ -360,7 +376,8 @@ public final class TrashConfig {
         CONTENT,
         PREVIOUS_PAGE,
         NEXT_PAGE,
-        BACKGROUND
+        BACKGROUND,
+        ACTIONS
     }
 
     /** 个人垃圾桶配置。 */

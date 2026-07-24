@@ -72,7 +72,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/WorldListTrashCan-universal.jar` SHA256 为 `78f1139a72e04e65b8a9290251e6c0dd2cbda5f3b06876f0f1e74fa7e9ce17c8`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/WorldListTrashCan-universal.jar` SHA256 为 `ee58dd0e1d4834087916b0920bf23e237a9bc5cfad6a74129ad8b1e658481635`。
 
 公开品牌有独立审计脚本，检查源码文件名和内容、默认资源、文档、dist 文件名以及 jar 内 `plugin.yml`，防止重新出现旧品牌：
 
@@ -98,13 +98,13 @@ py -3 tools\rgb-visual-matrix\check_current_dist_hash_docs.py
 
 当前审计覆盖 5 个 dist jar，结果为 `errors: 0`。
 
-完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-091、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
+完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-092、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
 
 ```powershell
 py -3 tools\rgb-visual-matrix\check_function_matrix_doc.py
 ```
 
-当前矩阵为 F-001 到 F-091 共 91 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
+当前矩阵为 F-001 到 F-092 共 92 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
 
 常规帮助、普通补全和 debug 帮助分离也有独立审计脚本，检查 Java fallback、一参 tab 补全、源码语言文件和 dist jar 内语言文件：`/wtc help` 只允许保留 `/wtc debughelp` 入口，空前缀 tab 补全只显示正式命令与 `debughelp`，具体 `debug*` 命令必须只出现在 `/wtc debughelp` 面板或输入 `debug` 前缀后的补全中：
 
@@ -221,7 +221,7 @@ py -3 tools\rgb-visual-matrix\check_default_language_rgb_messages.py
 
 ## 公共垃圾桶 GUI 布局
 
-`trash.yml` 的 `global-trash.gui.layout` 可以用单字符定义公共垃圾桶每页的行数、内容槽和翻页按钮。布局支持 1-6 行，每行必须正好包含 9 个英文字母、数字或下划线；单页不会超过原版箱子 GUI 的 54 格限制，总容量仍由每页 `content` 槽数量和 `global-trash.max-pages` 共同决定。
+`trash.yml` 的 `global-trash.gui.layout` 可以用单字符定义公共垃圾桶每页的行数、内容槽、翻页按钮和自定义动作按钮。布局支持 1-6 行，每行必须正好包含 9 个英文字母、数字或下划线；单页不会超过原版箱子 GUI 的 54 格限制，总容量仍由每页 `content` 槽数量和 `global-trash.max-pages` 共同决定。
 
 ```yaml
 global-trash:
@@ -233,7 +233,7 @@ global-trash:
         - "xxxxxxxxx"
         - "xxxxxxxxx"
         - "xxxxxxxxx"
-        - "abbbbbbbc"
+        - "abbbdbbbc"
       items:
         x:
           type: "content"
@@ -261,17 +261,39 @@ global-trash:
           material:
             - "ARROW"
           unavailable-item: "b"
+        d:
+          type: "actions"
+          model-id: -1
+          material:
+            - "BOOK"
+          name: "&#FFD166垃圾桶统计"
+          lore:
+            - "&#C9D4E2玩家: &f{player}"
+            - "&#C9D4E2等级: &f%player_level%"
+            - "&#79879C当前第 {page}/{max-page} 页"
+          actions:
+            - "[message] &#5AC8FA正在查看公共垃圾桶第 &#FFD166{page}/{max-page} &#5AC8FA页"
+            - "[command] wtc stats"
 ```
 
 - `content` 是真正存放公共垃圾桶物品的槽位，不生成展示物。
-- `previous-page`、`next-page` 和 `background` 支持材质候选、`model-id`、`name` 和 `lore`。
-- `name`、`lore` 支持 RGB、传统颜色以及 `{page}`、`{max-page}`、`{previous-page}`、`{next-page}`。
+- `previous-page`、`next-page`、`background` 和 `actions` 支持材质候选、`model-id`、`name` 和 `lore`。
+- `actions` 按配置顺序分派三种动作：`[console]` 以控制台执行命令、`[command]` 以点击玩家执行命令、`[message]` 向点击玩家发送消息；命令开头的 `/` 可以省略。
+- `name`、`lore` 和 `actions` 支持 `{player}`、`{uuid}`、`{world}`、`{page}`、`{max-page}`、`{previous-page}`、`{next-page}`。
+- 安装 PlaceholderAPI 后，`name`、`lore` 和 `actions` 会按点击玩家实时解析 `%...%`；未安装时保留 PAPI 原文，内置变量和按钮动作继续可用。
+- 玩家展示页与唯一公共库存分离，玩家专属 PAPI 文本不会串给其他玩家；取放始终回写唯一公共库存，不会因视图复制物品。
+- 只有普通左键或右键会触发 `actions`；Shift、数字键、双击和拖拽不会触发，按钮展示物也不能拿取。
+- `actions` 可以被玩家重复点击。`[console]` 拥有完整控制台权限，不要直接配置没有权限、次数或冷却限制的奖励命令。
+- 未知动作前缀会被跳过，并在 reload 或首次触发时限频输出警告，不会默认升级为控制台命令。
+- 查水表附属插件继续使用自己的固定菜单；主插件不会把审计布局配置化，也不会在默认公共垃圾桶中预置或引导 `/wtc audit` 跳转。
 - 翻页按钮没有目标页时使用 `unavailable-item` 指向的展示物；留空则显示为空槽。
 - 布局错误时会输出具体中文原因并回退六行默认布局，不会创建超过 54 格的无效 GUI。
 - reload 后布局容量允许缩小；旧存量放不下时会追加可访问的临时溢出页。溢出页只允许取出，不接收新物品，避免缩容时静默删除垃圾桶内容。
 - 旧版 `global-trash.gui.back-model-id`、`next-model-id`、`background-model-id` 仍可在缺少新布局时生成兼容默认布局。
 
 2026-07-21 已使用同一个 `dist/WorldListTrashCan-universal.jar` 在 Paper 1.12.2 与 Folia 1.21.8 上完成真实客户端专项。两端均先写入 12 个满堆叠，再 reload 缩成 2 行、9 个内容槽、1 个正常页；日志和库存证明 12 堆全部保留为 1 个正常页加 1 个临时溢出页，新路由在正常页已满时返回 `routed=false`，玩家真实点击取出一堆后新路由恢复为 `routed=true`。真实 F2 截图同时证明翻页、材质候选降级、RGB/传统色名称与 Lore、页码占位符和 7 行非法布局回退 6 行。最终双端统一证据：`docs/test-evidence/global-trash-layout-visual-20260721-024653/`。
+
+2026-07-24 使用当前 universal 整包和附属 Jar 完成 F-092 真实客户端专项。Paper 1.12.2 临时移除 PAPI 后，按钮名称、Lore、message 与 console 动作及独立 `/wtc audit` 消息均保留 `%Wtc_ClearTime%` 原文，其它内置变量和三种动作仍正常；Folia 1.21.8 使用真实 PAPI 后，同一变量在 Tooltip、message、console 和附属消息中均解析为数字。普通左键、右键、Shift、数字键和物理双击事件语义均有计数证据，真正的 Bukkit `DOUBLE_CLICK` 由单元测试覆盖。查水表保持固定布局，公共垃圾桶没有审计跳转。最终统一证据：`docs/test-evidence/global-trash-actions-visual-20260724-163808/`。
 
 ## 清理控制台明细
 
@@ -551,6 +573,7 @@ personal-trash:
 PAPI 变量：
 
 - Legacy 1.12、Bukkit 1.13-1.15、Paper 1.16-1.20、Folia 1.20 四个产物的代码都提供 `%Wtc_ClearTime%`，返回下次自动清理剩余秒数。
+- 公共垃圾桶 `actions` 按钮的 `name`、`lore`、`actions` 可以消费任意已安装扩展提供的 PAPI 变量；解析发生在玩家打开或点击按钮时，不会把某个玩家的结果写入共享库存。
 - Legacy 1.12、Bukkit 1.13.2、Paper 1.20.4 已使用 PlaceholderAPI 2.11.6 实服验证；Folia 1.21.8 已使用支持 Folia 的 `[PAPI]PlaceholderAPI-2.11.7-DEV-null (1).jar` 实服验证。旧 PlaceholderAPI 2.11.6 仍会被 Folia 拒绝加载，不能作为 Folia PAPI 验收前置。
 
 提交前可运行以下脚本检查五个平台 PAPI expansion、注册入口和当前 `dist` jar 内 class 常量是否保持 `%Wtc_ClearTime%` 一致：
@@ -636,7 +659,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
 - 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `WorldListTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 - 2026-06-07 已补做高辨识度 RGB 二次复测：上一轮颜色被指出接近传统 `&a`、`&6` 后，调试 Title 改为多段 RGB 的 `RGB TITLE FF1493`，Subtitle 改为 `SUBTITLE FF4F00`。同一批 6 个外部端全部使用 `WorldListTrashCan-universal.jar` 重跑，RGB 截图仍限定聊天框、ActionBar、Title/Subtitle，每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
-- `docs/重构版完整功能与测试矩阵.md` 当前覆盖 F-001 至 F-091；正式命令入口为 `worldlisttrashcan/wtc`，公开权限为 `WorldListTrashCan.*`。历史 universal 整包矩阵及后续 GUI、世界垃圾桶、保护、实体限制、通知和 Vault 专项共同构成当前回归基线。
+- `docs/重构版完整功能与测试矩阵.md` 当前覆盖 F-001 至 F-092；正式命令入口为 `worldlisttrashcan/wtc`，公开权限为 `WorldListTrashCan.*`。历史 universal 整包矩阵及后续 GUI、世界垃圾桶、保护、实体限制、通知、Vault 和公共动作按钮专项共同构成当前回归基线。
 - 2026-06-26 已补验扫地门禁 `-5` 正式通知：修复旧 `cleanup.yml` 不自动补齐新增 `-5` 文案、普通 Bukkit/Paper/Legacy 跳过路径不发送正式通知的问题。`dist/WorldListTrashCan-universal.jar` SHA256 `5D0BB85487F632DD3BC221D5BC749C5DEB3AF2FF92748E14A0C71A00CB134A0D`，Spigot 26.1.2、Folia 1.21.8、Paper 1.12.2 均用真实客户端和服务端截图复测 PASS；1.12.2 控制台中文乱码，因此以服务端截图中的 `cleanup.yml` `-5` 配置行、`skippedByGuard=true` 汇总和客户端可见中文截图共同验收。证据目录：`docs/test-evidence/cleanup-guard-visual-20260626-214947/`、`docs/test-evidence/cleanup-guard-visual-20260626-215753/`。
 - 2026-06-27 已修复公共垃圾桶按次数刷新时序：`global-trash.clear-every-cleanups: 3` 触发时先清空旧公共垃圾桶，再把本轮清理物品写入公共垃圾桶，避免第 3 次清理把本轮新物品一起清空。`dist/WorldListTrashCan-universal.jar` SHA256 `52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466`，Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 均用真实客户端连续三轮 `/wtc clear` + `/wtc debugstock` 截图复测 PASS；第 3 轮服务端日志为 `globalTrashRefreshed=true`，客户端库存仍为公共垃圾桶物品 `1`。证据目录：`docs/test-evidence/global-refresh-visual-20260627-013926/`、`docs/test-evidence/global-refresh-visual-20260627-014123/`、`docs/test-evidence/global-refresh-visual-20260627-014340/`。
 - 2026-06-30 已补做清理通知专项真实客户端矩阵：同一个 `dist/WorldListTrashCan-universal.jar`，SHA256 `9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时开启 `notify.chat/actionbar/bossbar/title/sound/command`，分别触发 `/wtc debugnotify 0` 和 `/wtc debugnotify -5`；真实客户端截图可见 Chat、ActionBar、BossBar、Title，客户端字幕 `Experience gained` 作为 Sound 辅助证据，服务端日志 `AI_WTC_NOTIFY_COMMAND_*` 作为 Command 执行证据。证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。

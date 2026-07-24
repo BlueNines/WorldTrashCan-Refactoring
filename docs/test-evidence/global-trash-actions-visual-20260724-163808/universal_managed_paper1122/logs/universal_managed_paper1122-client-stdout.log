@@ -1,0 +1,71 @@
+Completely ignored arguments: [legacy]
+[16:38:12] [Client thread/INFO]: Setting user: RGBaper1122
+[16:38:13] [Client thread/INFO]: LWJGL Version: 2.9.4
+[16:38:13] [Client thread/INFO]: Reloading ResourceManager: Default
+[16:38:13] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[16:38:13] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[16:38:13] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[16:38:13] [Thread-3/INFO]: OpenAL initialized.
+[16:38:14] [Sound Library Loader/INFO]: Sound engine started
+[16:38:15] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[16:38:15] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[16:38:15] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[16:38:17] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[16:38:18] [Client thread/INFO]: [CHAT] [Server: Opped RGBaper1122]
+[16:38:25] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.25.png
+[16:38:25] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.25_2.png
+[16:38:29] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.29.png
+[16:38:30] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.30.png
+[16:38:31] [Client thread/INFO]: [CHAT] ACTION_MESSAGE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:31] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[16:38:31] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[16:38:31] [Client thread/INFO]: [CHAT] - 世界数: 0
+[16:38:31] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[16:38:31] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[16:38:31] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[16:38:31] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 2
+[16:38:31] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[16:38:31] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[16:38:31] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 339
+[16:38:31] [Client thread/INFO]: [CHAT] [Server] ACTION_CONSOLE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:33] [Client thread/INFO]: [CHAT] ACTION_MESSAGE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:33] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[16:38:33] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[16:38:33] [Client thread/INFO]: [CHAT] - 世界数: 0
+[16:38:33] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[16:38:33] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[16:38:33] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[16:38:33] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 2
+[16:38:33] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[16:38:33] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[16:38:33] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 337
+[16:38:33] [Client thread/INFO]: [CHAT] [Server] ACTION_CONSOLE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:39] [Client thread/INFO]: [CHAT] ACTION_MESSAGE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:39] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[16:38:39] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[16:38:39] [Client thread/INFO]: [CHAT] - 世界数: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[16:38:39] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 2
+[16:38:39] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[16:38:39] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 332
+[16:38:39] [Client thread/INFO]: [CHAT] [Server] ACTION_CONSOLE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:39] [Client thread/INFO]: [CHAT] ACTION_MESSAGE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:39] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[16:38:39] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)
+[16:38:39] [Client thread/INFO]: [CHAT] - 世界数: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[16:38:39] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 2
+[16:38:39] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[16:38:39] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[16:38:39] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 331
+[16:38:39] [Client thread/INFO]: [CHAT] [Server] ACTION_CONSOLE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2
+[16:38:44] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.44.png
+[16:38:45] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.45.png
+[16:38:51] [Client thread/INFO]: [CHAT] [WorldListTrashCanAudit] AUDIT_PAPI clear=%Wtc_ClearTime%
+[16:38:54] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.54.png
+[16:38:54] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.54_2.png

@@ -1,0 +1,11 @@
+# 新版配置结构版本。
+# 插件通过该值区分旧版单文件配置与当前拆分配置；请勿手动删除或降低。
+config-schema-version: 2
+
+# 语言文件名。
+# 默认使用 messages/message_zh.yml；后续可切换到其他语言文件。
+language: "message_zh.yml"
+
+# 是否开启调试日志。
+# 默认 false；开启后会输出配置加载、功能启停、清理决策等额外信息。
+debug: false

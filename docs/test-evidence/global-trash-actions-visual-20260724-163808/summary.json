@@ -1,0 +1,192 @@
+{
+  "runId": "global-trash-actions-visual-20260724-163808",
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+  "jarSha256": "ee58dd0e1d4834087916b0920bf23e237a9bc5cfad6a74129ad8b1e658481635",
+  "auditJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待开发插件\\WorldListTrashCanAudit\\dist\\WorldListTrashCanAudit.jar",
+  "auditJarSha256": "3867a27edafca1269366779cae0792bc6fa61b56ec6c9057cfb54c1ad62e4e1b",
+  "allPassed": true,
+  "results": [
+    {
+      "id": "universal_managed_paper1122",
+      "label": "paper-1.12.2-managed-universal",
+      "clientVersion": "1.12.2",
+      "expectPapiActions": false,
+      "status": "PASS",
+      "checks": {
+        "reload": "[16:38:11 INFO]: [WorldListTrashCan] [Message] �Ѽ��������ļ�: messages/message_zh.yml\n[16:38:11 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=2, visiblePages=2\n[16:38:11 INFO]: [WorldListTrashCan] [TrashRouter] �Ѽ��� 0 ����������Ͱ���ݡ�\n[16:38:11 INFO]: [WorldListTrashCan] [Cleanup] ��ʱ��������������� 360 �롣\n[16:38:11 INFO]: [WorldListTrashCan] WorldListTrashCan �����ء�\n",
+        "clientActions": "[16:38:31] [Client thread/INFO]: [CHAT] ACTION_MESSAGE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2\n[16:38:31] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:\n[16:38:31] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 0/0, 目标实体 未统计/0)\n[16:38:31] [Client thread/INFO]: [CHAT] - 世界数: 0\n[16:38:31] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[16:38:31] [Client thread/INFO]: [CHAT] - 删除物品: 0\n[16:38:31] [Client thread/INFO]: [CHAT] - 删除实体: 0\n[16:38:31] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 2\n[16:38:31] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[16:38:31] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[16:38:31] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 339\n[16:38:31] [Client thread/INFO]: [CHAT] [Server] ACTION_CONSOLE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2\n",
+        "consoleAction": "[16:38:31 INFO]: [Server] ACTION_CONSOLE built=RGBaper1122 papi=%Wtc_ClearTime% page=1/2\n",
+        "prohibitedInputs": {
+          "before": 2,
+          "after": 2,
+          "eventTypes": [
+            "SHIFT_LEFT",
+            "NUMBER_KEY"
+          ]
+        },
+        "physicalDoubleClick": {
+          "before": 2,
+          "after": 4,
+          "clientEventSemantic": "two normal LEFT clicks",
+          "bukkitDoubleClickCoveredByUnitTest": true
+        },
+        "auditCommand": {
+          "name": "audit-independent-command",
+          "command": "/wtc audit",
+          "status": "PASS",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-audit-independent-command.png",
+          "brightness": 176.19921875
+        },
+        "auditMessagePapi": "[16:38:51] [Client thread/INFO]: [CHAT] [WorldListTrashCanAudit] AUDIT_PAPI clear=%Wtc_ClearTime%\n[16:38:54] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.54.png\n[16:38:54] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-24_16.38.54_2.png\n",
+        "papiRuntime": "PAPI absent and original placeholder preserved"
+      },
+      "screenshots": {
+        "opened": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-actions-opened.png",
+          "size": 33919,
+          "sha256": "76cde2086d5aac6df9f8b1ffc3e498ece16258322912ea89631e8eb56fd9928c",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 53.277018229166664
+        },
+        "tooltip": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-actions-tooltip-papi.png",
+          "size": 35022,
+          "sha256": "22da3ea12344f404e86724c8858036e7acc13b6bbc8e93409a1a5be2286c6e10",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 52.073893229166664
+        },
+        "chatResult": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-actions-chat-result.png",
+          "size": 55906,
+          "sha256": "9b749303f0a04f1aec6b3aeed98be042c17164a3ef973e17454f52d82e306e2b",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 164.36686197916666
+        },
+        "auditIndependentCommand": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-audit-independent-command.png",
+          "size": 27101,
+          "sha256": "3e84f1a20168edf9400ebb36915aac5c4172a41a9c9251cd5108474650418ba6",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 176.19921875
+        }
+      },
+      "username": "RGBaper1122",
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-actions-assertions.png",
+        "size": 210914,
+        "sha256": "bbe72315c34cd15dd408d08e51d7d5d2f79c6d572c5740b78f85fe8c8a39777a",
+        "dimensions": [
+          1600,
+          1040
+        ],
+        "brightness": 35.854817708333336
+      }
+    },
+    {
+      "id": "universal_folia1218",
+      "label": "folia1.21.8",
+      "clientVersion": "1.21.8",
+      "expectPapiActions": true,
+      "status": "PASS",
+      "checks": {
+        "reload": "[16:39:39 INFO]: Initialising world 'world_nether' before it can be ticked...\n[16:39:39 INFO]: Initialised world 'world_nether'\n[16:39:39 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[16:39:39 INFO]: Initialising world 'world_the_end' before it can be ticked...\n[16:39:39 INFO]: Initialised world 'world_the_end'\n[16:39:39 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=2, visiblePages=2\n[16:39:39 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。\n[16:39:39 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。\n[16:39:39 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n[16:39:39 INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。\n[16:39:39 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:\n[16:39:39 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/\n",
+        "clientActions": "[16:40:01] [Render thread/INFO]: [System] [CHAT] 2秒\n[16:40:02] [Render thread/INFO]: [System] [CHAT] ACTION_MESSAGE built=RGBolia1218 papi=0 page=1/2\n[16:40:02] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已跳过: 目标实体数量不足 (在线 1/1, 目标实体 4/150)\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 2\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] [Server] ACTION_CONSOLE built=RGBolia1218 papi=0 page=1/2\n[16:40:02] [Render thread/INFO]: [System] [CHAT] 1秒\n",
+        "consoleAction": "[16:40:01 INFO]: 2秒\n[16:40:02 INFO]: [Not Secure] [Server] ACTION_CONSOLE built=RGBolia1218 papi=0 page=1/2\n[16:40:02 INFO]: 1秒\n",
+        "papiResolvedValues": {
+          "message": "0",
+          "console": "0",
+          "audit": "4"
+        },
+        "prohibitedInputs": {
+          "before": 2,
+          "after": 2,
+          "eventTypes": [
+            "SHIFT_LEFT",
+            "NUMBER_KEY"
+          ]
+        },
+        "physicalDoubleClick": {
+          "before": 2,
+          "after": 4,
+          "clientEventSemantic": "two normal LEFT clicks",
+          "bukkitDoubleClickCoveredByUnitTest": true
+        },
+        "auditCommand": {
+          "name": "audit-independent-command",
+          "command": "/wtc audit",
+          "status": "PASS",
+          "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-audit-independent-command.png",
+          "brightness": 96.8623046875
+        },
+        "auditMessagePapi": "[16:40:16] [Render thread/INFO]: [System] [CHAT] 3秒\n[16:40:17] [Render thread/INFO]: [System] [CHAT] 2秒\n[16:40:18] [Render thread/INFO]: [System] [CHAT] 1秒\n[16:40:21] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCanAudit] AUDIT_PAPI clear=4\n[16:40:22] [Render thread/INFO]: [System] [CHAT] 5秒\n[16:40:24] [Render thread/INFO]: [System] [CHAT] 3秒\n[16:40:24] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-24_16.40.24.png\n[16:40:25] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-24_16.40.24_2.png\n",
+        "papiRuntime": "PAPI resolved Wtc_ClearTime to numeric values"
+      },
+      "screenshots": {
+        "opened": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-actions-opened.png",
+          "size": 187090,
+          "sha256": "d8a365cc2f765a7c1df8c01a902b1f337bb428b3faee0e5a9b17754f0b370a70",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 66.5908203125
+        },
+        "tooltip": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-actions-tooltip-papi.png",
+          "size": 205979,
+          "sha256": "fcea729b515dc115866051d1a6ce7742c3c282edd4f434bbd2350c3d6bd695a1",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 62.740885416666664
+        },
+        "chatResult": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-actions-chat-result.png",
+          "size": 382074,
+          "sha256": "4d7f0e535453bca6c313daffcda39826a61cd63f96b95e30dd2d06d034e58af1",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 94.18684895833333
+        },
+        "auditIndependentCommand": {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-audit-independent-command.png",
+          "size": 377768,
+          "sha256": "968e3cd6614b0c487ffd44110099e5d24c79a75b19024bb0d08c22198dbde668",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 96.8623046875
+        }
+      },
+      "username": "RGBolia1218",
+      "serverScreenshot": {
+        "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\server-screenshots\\universal_folia1218-actions-assertions.png",
+        "size": 229900,
+        "sha256": "b33511031a1810557e6e58573dce06d3c71d5f4d7d926af659ff14ae304e6761",
+        "dimensions": [
+          1600,
+          1092
+        ],
+        "brightness": 35.214192708333336
+      }
+    }
+  ],
+  "contactSheet": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\trash-gui-click-contact-sheet.png"
+}

@@ -3,10 +3,12 @@ package pixeltech.bluenine.blworldtrashcan.bukkit.trash;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -15,6 +17,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAud
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
@@ -36,39 +39,57 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 /** 公共垃圾桶 GUI 和路由服务。 */
 public final class GlobalTrashService {
     private final Plugin plugin;
     private final BukkitMessageService messages;
     private final ItemSnapshotMapper itemSnapshotMapper;
+    private final ServerPlatform platform;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
+    private final GlobalTrashTextResolver textResolver;
+    private final GlobalTrashActionExecutor actionExecutor;
     private final List<Inventory> pages = new ArrayList<>();
     private final Map<UUID, Long> lastTakeMillis = new HashMap<>();
     private final Map<Character, Material> layoutMaterials = new HashMap<>();
+    private final Map<UUID, GlobalTrashViewHolder> activeViews = new ConcurrentHashMap<>();
+    private final AtomicBoolean viewRefreshScheduled = new AtomicBoolean();
     private TrashConfig.GlobalTrashConfig config;
     private TrashConfig.GlobalTrashLayoutConfig layout;
     private int writablePageCount;
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages) {
-        this(plugin, config, messages, null, null);
+        this(plugin, config, messages, null, null, null);
     }
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
                               ItemSnapshotMapper itemSnapshotMapper) {
-        this(plugin, config, messages, itemSnapshotMapper, null);
+        this(plugin, config, messages, itemSnapshotMapper, null, null);
     }
 
     /** 创建带审计变更分发器的公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
                               ItemSnapshotMapper itemSnapshotMapper,
                               DefaultWorldListTrashCanAuditBridge auditBridge) {
+        this(plugin, config, messages, itemSnapshotMapper, null, auditBridge);
+    }
+
+    /** 创建带平台调度和审计分发能力的公共垃圾桶服务。 */
+    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
+                              ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
+                              DefaultWorldListTrashCanAuditBridge auditBridge) {
         this.plugin = plugin;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
+        this.platform = platform;
         this.auditBridge = auditBridge;
+        this.textResolver = new GlobalTrashTextResolver(plugin);
+        this.actionExecutor = new GlobalTrashActionExecutor(plugin, platform, textResolver);
         reload(config);
     }
 
@@ -87,6 +108,7 @@ public final class GlobalTrashService {
                     + layout.getValidationError());
         }
         resolveLayoutMaterials();
+        validateLayoutActions();
         rebuildPages(oldItems);
         plugin.getLogger().info("[GlobalTrash] GUI layout rows=" + layout.getRows().size()
                 + ", slots=" + layout.getInventorySize()
@@ -140,6 +162,7 @@ public final class GlobalTrashService {
                     recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
                             cleanItemStack, cleanItemStack.getAmount(), reason, System.currentTimeMillis()));
                 }
+                scheduleOpenViewRefresh();
                 return true;
             }
         }
@@ -152,13 +175,13 @@ public final class GlobalTrashService {
             player.sendMessage(message("global-trash.disabled", "&c公共垃圾桶未启用。"));
             return;
         }
-        player.openInventory(pages.get(0));
+        openPage(player, 0);
     }
 
     /** 处理公共垃圾桶点击。 */
     public boolean handleClick(InventoryClickEvent event) {
-        int pageIndex = pages.indexOf(event.getInventory());
-        if (pageIndex < 0) {
+        GlobalTrashViewHolder holder = viewHolder(event.getInventory());
+        if (holder == null) {
             return false;
         }
         event.setCancelled(true);
@@ -166,36 +189,203 @@ public final class GlobalTrashService {
             return true;
         }
         Player player = (Player) event.getWhoClicked();
+        int pageIndex = holder.getPageIndex();
+        if (pageIndex < 0 || pageIndex >= pages.size()) {
+            player.closeInventory();
+            return true;
+        }
+        syncViewContent(holder);
         int rawSlot = event.getRawSlot();
         if (rawSlot >= 0 && rawSlot < layout.getInventorySize()) {
             TrashConfig.GlobalTrashItemConfig item = layout.getItemAt(rawSlot);
             if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.PREVIOUS_PAGE && pageIndex > 0) {
-                player.openInventory(pages.get(pageIndex - 1));
+                openPage(player, pageIndex - 1);
                 return true;
             }
             if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.NEXT_PAGE
                     && pageIndex < pages.size() - 1) {
-                player.openInventory(pages.get(pageIndex + 1));
+                openPage(player, pageIndex + 1);
+                return true;
+            }
+            if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.ACTIONS
+                    && isNormalActionClick(event.getClick())) {
+                actionExecutor.execute(player, item.getActions(), pageIndex, pages.size());
                 return true;
             }
             if (layout.isContentSlot(rawSlot)) {
-                takeItem(player, event.getInventory(), rawSlot);
+                takeItem(player, pages.get(pageIndex), rawSlot);
+                syncViewContent(holder);
+                scheduleOpenViewRefresh();
             }
             return true;
         }
         if (rawSlot >= layout.getInventorySize() && config.isAllowPlayerPut()) {
             putFromPlayer(player, event);
+            syncViewContent(holder);
         }
         return true;
     }
 
+    /** 为玩家创建当前公共库存的独立展示视图。 */
+    private void openPage(Player player, int requestedPage) {
+        int pageIndex = Math.max(0, Math.min(requestedPage, pages.size() - 1));
+        GlobalTrashViewHolder holder = new GlobalTrashViewHolder(this, player.getUniqueId(), pageIndex);
+        Inventory inventory = createViewPage(player, holder, pageIndex);
+        holder.bind(inventory);
+        activeViews.put(player.getUniqueId(), holder);
+        player.openInventory(inventory);
+    }
+
+    /** 创建带玩家 PAPI 展示文本、但不复制业务状态的单页视图。 */
+    private Inventory createViewPage(Player player, GlobalTrashViewHolder holder, int pageIndex) {
+        int maxPages = pages.size();
+        Inventory inventory = Bukkit.createInventory(holder, layout.getInventorySize(),
+                message("global-trash.gui.title", "&8公共垃圾桶 {page}/{max}",
+                        "{page}", String.valueOf(pageIndex + 1), "{max}", String.valueOf(maxPages)));
+        Inventory source = pages.get(pageIndex);
+        for (int slot = 0; slot < layout.getInventorySize(); slot++) {
+            TrashConfig.GlobalTrashItemConfig item = layout.getItemAt(slot);
+            if (item == null) {
+                continue;
+            }
+            if (item.getType() == TrashConfig.GlobalTrashItemType.CONTENT) {
+                ItemStack content = source.getItem(slot);
+                inventory.setItem(slot, InventorySlotUtil.isEmpty(content) ? null : content.clone());
+                continue;
+            }
+            TrashConfig.GlobalTrashItemConfig displayItem = visibleItem(item, pageIndex, maxPages);
+            if (displayItem != null) {
+                inventory.setItem(slot, createLayoutItem(displayItem, pageIndex, maxPages, player));
+            }
+        }
+        return inventory;
+    }
+
+    /** 从 Bukkit 库存识别属于本服务的玩家视图。 */
+    private GlobalTrashViewHolder viewHolder(Inventory inventory) {
+        if (inventory == null) {
+            return null;
+        }
+        InventoryHolder holder = inventory.getHolder();
+        if (!(holder instanceof GlobalTrashViewHolder)) {
+            return null;
+        }
+        GlobalTrashViewHolder view = (GlobalTrashViewHolder) holder;
+        return view.belongsTo(this) ? view : null;
+    }
+
+    /** 把唯一公共库存中的内容槽同步到一个玩家视图。 */
+    private void syncViewContent(GlobalTrashViewHolder holder) {
+        if (holder == null || holder.getInventory() == null) {
+            return;
+        }
+        int pageIndex = holder.getPageIndex();
+        if (pageIndex < 0 || pageIndex >= pages.size()) {
+            return;
+        }
+        Inventory source = pages.get(pageIndex);
+        Inventory target = holder.getInventory();
+        for (Integer slotValue : layout.getContentSlots()) {
+            int slot = slotValue.intValue();
+            ItemStack itemStack = source.getItem(slot);
+            target.setItem(slot, InventorySlotUtil.isEmpty(itemStack) ? null : itemStack.clone());
+        }
+    }
+
+    /** 把大量连续入库合并为下一 Tick 的一次玩家视图刷新。 */
+    private void scheduleOpenViewRefresh() {
+        if (activeViews.isEmpty() || !viewRefreshScheduled.compareAndSet(false, true)) {
+            return;
+        }
+        Runnable refresh = new Runnable() {
+            /** 分派一次有界的在线玩家视图刷新。 */
+            @Override
+            public void run() {
+                viewRefreshScheduled.set(false);
+                for (UUID playerId : new ArrayList<>(activeViews.keySet())) {
+                    refreshViewForPlayer(playerId);
+                }
+            }
+        };
+        try {
+            if (platform != null) {
+                platform.scheduler().runLater(refresh, 1L);
+            } else {
+                Bukkit.getScheduler().runTask(plugin, refresh);
+            }
+        } catch (RuntimeException exception) {
+            viewRefreshScheduled.set(false);
+            plugin.getLogger().warning("[GlobalTrash] 调度公共垃圾桶视图刷新失败: " + exception.getMessage());
+        }
+    }
+
+    /** 在玩家所属合法线程刷新其当前公共垃圾桶视图。 */
+    private void refreshViewForPlayer(final UUID playerId) {
+        if (platform == null) {
+            Player player = Bukkit.getPlayer(playerId);
+            if (player == null) {
+                activeViews.remove(playerId);
+                return;
+            }
+            refreshCurrentView(player);
+            return;
+        }
+        boolean scheduled = platform.executeForPlayer(playerId, new Consumer<Player>() {
+            /** 刷新仍然处于打开状态的当前视图。 */
+            @Override
+            public void accept(Player player) {
+                refreshCurrentView(player);
+            }
+        });
+        if (!scheduled) {
+            activeViews.remove(playerId);
+        }
+    }
+
+    /** 确认玩家仍在查看登记页面后同步内容槽。 */
+    private void refreshCurrentView(Player player) {
+        GlobalTrashViewHolder holder = activeViews.get(player.getUniqueId());
+        if (holder == null) {
+            return;
+        }
+        if (player.getOpenInventory() == null
+                || player.getOpenInventory().getTopInventory() != holder.getInventory()) {
+            activeViews.remove(player.getUniqueId(), holder);
+            return;
+        }
+        syncViewContent(holder);
+    }
+
+    /** 只允许普通左键或右键触发动作按钮。 */
+    static boolean isNormalActionClick(ClickType clickType) {
+        return clickType == ClickType.LEFT || clickType == ClickType.RIGHT;
+    }
+
     /** 阻止拖拽修改公共垃圾桶的内容槽或展示物。 */
     public boolean handleDrag(InventoryDragEvent event) {
-        if (pages.indexOf(event.getInventory()) < 0) {
+        if (viewHolder(event.getInventory()) == null) {
             return false;
         }
         event.setCancelled(true);
         return true;
+    }
+
+    /** 菜单关闭时释放玩家视图引用。 */
+    public boolean handleClose(InventoryCloseEvent event) {
+        GlobalTrashViewHolder holder = viewHolder(event.getInventory());
+        if (holder == null) {
+            return false;
+        }
+        activeViews.remove(holder.getPlayerId(), holder);
+        return true;
+    }
+
+    /** 插件关闭时释放公共垃圾桶视图和冷却记录。 */
+    public void close() {
+        closeCurrentViewers();
+        activeViews.clear();
+        lastTakeMillis.clear();
+        viewRefreshScheduled.set(false);
     }
 
     /** 清空所有内容槽位。 */
@@ -338,7 +528,7 @@ public final class GlobalTrashService {
             }
             TrashConfig.GlobalTrashItemConfig displayItem = visibleItem(item, pageIndex, maxPages);
             if (displayItem != null) {
-                inventory.setItem(slot, createLayoutItem(displayItem, pageIndex, maxPages));
+                inventory.setItem(slot, createLayoutItem(displayItem, pageIndex, maxPages, null));
             }
         }
         return inventory;
@@ -469,6 +659,19 @@ public final class GlobalTrashService {
         }
     }
 
+    /** 校验 actions 按钮，避免未知前缀只能等到玩家点击时才暴露。 */
+    private void validateLayoutActions() {
+        Set<Character> validated = new HashSet<>();
+        for (int slot = 0; slot < layout.getInventorySize(); slot++) {
+            TrashConfig.GlobalTrashItemConfig item = layout.getItemAt(slot);
+            if (item == null || item.getType() != TrashConfig.GlobalTrashItemType.ACTIONS
+                    || !validated.add(Character.valueOf(item.getSymbol()))) {
+                continue;
+            }
+            actionExecutor.validate(item.getSymbol(), item.getActions());
+        }
+    }
+
     /** 返回展示物名称，未覆盖时读取对应类型的语言节点。 */
     private String itemName(TrashConfig.GlobalTrashItemConfig item) {
         if (item.getName() != null) {
@@ -483,45 +686,49 @@ public final class GlobalTrashService {
         return " ";
     }
 
-    /** 替换展示物名称和 Lore 中的页码占位符。 */
-    private String replacePagePlaceholders(String text, int pageIndex, int maxPages) {
-        if (text == null) {
-            return "";
-        }
-        int page = pageIndex + 1;
-        int previousPage = Math.max(1, page - 1);
-        int nextPage = Math.min(maxPages, page + 1);
-        return text.replace("{page}", String.valueOf(page))
-                .replace("{max-page}", String.valueOf(maxPages))
-                .replace("{previous-page}", String.valueOf(previousPage))
-                .replace("{next-page}", String.valueOf(nextPage));
-    }
-
     /** 关闭仍在查看旧分页的玩家，避免 reload 后操作失效页面。 */
     private void closeCurrentViewers() {
-        Set<HumanEntity> viewers = new HashSet<>();
-        for (Inventory page : pages) {
-            viewers.addAll(new ArrayList<>(page.getViewers()));
-        }
-        for (HumanEntity viewer : viewers) {
-            viewer.closeInventory();
+        List<UUID> viewerIds = new ArrayList<>(activeViews.keySet());
+        activeViews.clear();
+        for (UUID playerId : viewerIds) {
+            if (platform == null) {
+                Player player = Bukkit.getPlayer(playerId);
+                if (player != null) {
+                    player.closeInventory();
+                }
+                continue;
+            }
+            platform.executeForPlayer(playerId, new Consumer<Player>() {
+                /** 在玩家合法线程关闭已经失效的旧页面。 */
+                @Override
+                public void accept(Player player) {
+                    InventoryHolder holder = player.getOpenInventory().getTopInventory().getHolder();
+                    if (holder instanceof GlobalTrashViewHolder
+                            && ((GlobalTrashViewHolder) holder).belongsTo(GlobalTrashService.this)) {
+                        player.closeInventory();
+                    }
+                }
+            });
         }
     }
 
     /** 创建布局展示物。 */
-    private ItemStack createLayoutItem(TrashConfig.GlobalTrashItemConfig item, int pageIndex, int maxPages) {
+    private ItemStack createLayoutItem(TrashConfig.GlobalTrashItemConfig item, int pageIndex,
+                                       int maxPages, Player player) {
         Material material = layoutMaterials.get(Character.valueOf(item.getSymbol()));
         ItemStack itemStack = new ItemStack(material == null ? Material.STONE : material);
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             String name = itemName(item);
             if (name != null && !name.isEmpty()) {
-                meta.setDisplayName(color(replacePagePlaceholders(name, pageIndex, maxPages)));
+                meta.setDisplayName(renderColor(player,
+                        textResolver.resolve(player, name, pageIndex, maxPages)));
             }
             if (!item.getLore().isEmpty()) {
                 List<String> lore = new ArrayList<>();
                 for (String line : item.getLore()) {
-                    lore.add(color(replacePagePlaceholders(line, pageIndex, maxPages)));
+                    lore.add(renderColor(player,
+                            textResolver.resolve(player, line, pageIndex, maxPages)));
                 }
                 meta.setLore(lore);
             }
@@ -529,6 +736,11 @@ public final class GlobalTrashService {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    /** 按玩家版本渲染颜色，内部存储页没有玩家时使用服务端版本渲染。 */
+    private String renderColor(Player player, String text) {
+        return player == null ? RichTextRenderer.color(text) : RichTextRenderer.color(player, text);
     }
 
     /** 尝试设置 CustomModelData，旧版本没有该 API 时自动忽略。 */

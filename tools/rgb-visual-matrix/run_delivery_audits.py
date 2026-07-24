@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -39,19 +40,53 @@ MAVEN_TEST = (
 
 def run_command(name: str, command: list[str]) -> dict:
     """运行单个审计命令并返回摘要。"""
-    result = subprocess.run(
-        command,
-        cwd=str(REPO),
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=False,
-    )
+    cwd = REPO
+    mapped_drive = None
+    actual_command = list(command)
+    if name == "maven-test" and os.name == "nt" and not str(REPO).isascii():
+        mapping = subprocess.run(
+            ["cmd", "/c", "subst"], text=True, encoding="utf-8", errors="replace",
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+        used = {line[:2].upper() for line in mapping.stdout.splitlines() if len(line) >= 2}
+        for candidate in ("W:", "V:", "U:", "T:", "S:"):
+            if candidate.upper() in used:
+                continue
+            created = subprocess.run(
+                ["cmd", "/c", "subst", candidate, str(REPO)],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+            if created.returncode == 0:
+                mapped_drive = candidate
+                cwd = Path(candidate + "\\")
+                actual_command[0] = str(cwd / "build" / "tools"
+                                        / "apache-maven-3.9.9" / "bin" / "mvn.cmd")
+                break
+        if mapped_drive is None:
+            return {
+                "name": name,
+                "command": actual_command,
+                "returnCode": 1,
+                "stdout": "",
+                "stderr": "没有可用 ASCII subst 盘符，无法在中文路径下运行 Maven 测试。",
+            }
+    try:
+        result = subprocess.run(
+            actual_command,
+            cwd=str(cwd),
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    finally:
+        if mapped_drive is not None:
+            subprocess.run(
+                ["cmd", "/c", "subst", mapped_drive, "/d"],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
     return {
         "name": name,
-        "command": command,
+        "command": actual_command,
         "returnCode": result.returncode,
         "stdout": result.stdout,
         "stderr": result.stderr,

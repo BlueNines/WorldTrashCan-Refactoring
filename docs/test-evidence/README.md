@@ -19,6 +19,7 @@
 | Folia 清理通知视觉 | `cleanup-notify-visual-20260630-092840/` | Chat、ActionBar、BossBar、Title、Sound、Command 通知专项 |
 | GUI 真实点击 | `trash-gui-click-visual-20260721-023817/` | 当前 universal 整包；Spigot 26.1.2、Paper 1.12.2、Folia 1.21.8 三端真实客户端；公共/个人垃圾桶取放、分页、冷却、黑名单 GUI、个人满桶自动清空 |
 | 公共垃圾桶字符布局 | `global-trash-layout-visual-20260721-024653/` | 当前 universal 整包；Paper 1.12.2 与 Folia 1.21.8 真实客户端；2 行布局、RGB/传统色 Tooltip、翻页、缩容零丢失、只读溢出页、取出后恢复写入、非法布局回退 |
+| 公共垃圾桶动作按钮与附属消息 PAPI | `global-trash-actions-visual-20260724-163808/` | 当前 universal 整包和附属 Jar；Paper 1.12.2 无 PAPI 原文降级、Folia 1.21.8 真实 PAPI 数字解析、三种动作、左右键、禁止交互及独立 `/wtc audit`；查水表固定布局且公共垃圾桶无预置跳转 |
 | GUI 取放权限 | `gui-operation-permission-visual-20260702-231000/` | Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 三端，玩家已能打开 GUI 时显式 deny 公共/个人 take/put 后真实点击不产生取放 |
 | 旧配置迁移 | `legacy-migration-universal-20260724-000752/`、`legacy-migration-platform-20260724-001431/`、`legacy-migration-client-20260724-003203/` | 当前 universal 整包；旧版 6.9.8 原始配置、4 个成功迁移场景、5 个安全拒绝场景、Spigot 26.1.2/Folia 1.21.8 跨端幂等，以及真实 Forge 1.12.2 客户端页数、旧消息和 GUI 材质可见验收 |
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |

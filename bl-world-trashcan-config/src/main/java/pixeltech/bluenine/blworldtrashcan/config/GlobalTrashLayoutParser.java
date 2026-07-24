@@ -79,7 +79,7 @@ public final class GlobalTrashLayoutParser {
             String path = LAYOUT_PATH + ".items." + symbol;
             TrashConfig.GlobalTrashItemType type = parseType(source.getString(path + ".type", ""));
             if (type == null) {
-                errors.add(path + ".type 无效，可用值为 content、previous-page、next-page、background");
+                errors.add(path + ".type 无效，可用值为 content、previous-page、next-page、background、actions");
                 continue;
             }
             List<String> materials = source.getStringList(path + ".material");
@@ -88,11 +88,12 @@ public final class GlobalTrashLayoutParser {
             }
             String name = source.contains(path + ".name") ? source.getString(path + ".name", "") : null;
             List<String> lore = source.getStringList(path + ".lore");
+            List<String> actions = source.getStringList(path + ".actions");
             Character unavailableItem = parseUnavailableItem(
                     source.getString(path + ".unavailable-item", ""), path, errors);
             items.put(symbolValue, new TrashConfig.GlobalTrashItemConfig(
                     symbol, type, source.getInt(path + ".model-id", -1), materials,
-                    name, lore, unavailableItem));
+                    name, lore, actions, unavailableItem));
         }
         return items;
     }
@@ -162,6 +163,9 @@ public final class GlobalTrashLayoutParser {
         if ("background".equals(normalized)) {
             return TrashConfig.GlobalTrashItemType.BACKGROUND;
         }
+        if ("actions".equals(normalized)) {
+            return TrashConfig.GlobalTrashItemType.ACTIONS;
+        }
         return null;
     }
 
@@ -193,6 +197,9 @@ public final class GlobalTrashLayoutParser {
             result.add("GLASS_PANE");
             result.add("THIN_GLASS");
             return result;
+        }
+        if (type == TrashConfig.GlobalTrashItemType.ACTIONS) {
+            return Collections.singletonList("BOOK");
         }
         return Collections.emptyList();
     }

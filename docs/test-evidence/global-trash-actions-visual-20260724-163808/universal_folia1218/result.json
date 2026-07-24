@@ -1,0 +1,93 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "clientVersion": "1.21.8",
+  "expectPapiActions": true,
+  "status": "PASS",
+  "checks": {
+    "reload": "[16:39:39 INFO]: Initialising world 'world_nether' before it can be ticked...\n[16:39:39 INFO]: Initialised world 'world_nether'\n[16:39:39 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml\n[16:39:39 INFO]: Initialising world 'world_the_end' before it can be ticked...\n[16:39:39 INFO]: Initialised world 'world_the_end'\n[16:39:39 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=2, slots=18, contentSlots=9, writablePages=2, visiblePages=2\n[16:39:39 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。\n[16:39:39 INFO]: [WorldListTrashCan] [FoliaCleanup] region-safe 定时清理已启动，间隔 7 秒。\n[16:39:39 INFO]: [WorldListTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。\n[16:39:39 INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。\n[16:39:39 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:\n[16:39:39 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/\n",
+    "clientActions": "[16:40:01] [Render thread/INFO]: [System] [CHAT] 2秒\n[16:40:02] [Render thread/INFO]: [System] [CHAT] ACTION_MESSAGE built=RGBolia1218 papi=0 page=1/2\n[16:40:02] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已跳过: 目标实体数量不足 (在线 1/1, 目标实体 4/150)\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 2\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[16:40:02] [Render thread/INFO]: [System] [CHAT] [Server] ACTION_CONSOLE built=RGBolia1218 papi=0 page=1/2\n[16:40:02] [Render thread/INFO]: [System] [CHAT] 1秒\n",
+    "consoleAction": "[16:40:01 INFO]: 2秒\n[16:40:02 INFO]: [Not Secure] [Server] ACTION_CONSOLE built=RGBolia1218 papi=0 page=1/2\n[16:40:02 INFO]: 1秒\n",
+    "papiResolvedValues": {
+      "message": "0",
+      "console": "0",
+      "audit": "4"
+    },
+    "prohibitedInputs": {
+      "before": 2,
+      "after": 2,
+      "eventTypes": [
+        "SHIFT_LEFT",
+        "NUMBER_KEY"
+      ]
+    },
+    "physicalDoubleClick": {
+      "before": 2,
+      "after": 4,
+      "clientEventSemantic": "two normal LEFT clicks",
+      "bukkitDoubleClickCoveredByUnitTest": true
+    },
+    "auditCommand": {
+      "name": "audit-independent-command",
+      "command": "/wtc audit",
+      "status": "PASS",
+      "screenshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-audit-independent-command.png",
+      "brightness": 96.8623046875
+    },
+    "auditMessagePapi": "[16:40:16] [Render thread/INFO]: [System] [CHAT] 3秒\n[16:40:17] [Render thread/INFO]: [System] [CHAT] 2秒\n[16:40:18] [Render thread/INFO]: [System] [CHAT] 1秒\n[16:40:21] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCanAudit] AUDIT_PAPI clear=4\n[16:40:22] [Render thread/INFO]: [System] [CHAT] 5秒\n[16:40:24] [Render thread/INFO]: [System] [CHAT] 3秒\n[16:40:24] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-24_16.40.24.png\n[16:40:25] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-07-24_16.40.24_2.png\n",
+    "papiRuntime": "PAPI resolved Wtc_ClearTime to numeric values"
+  },
+  "screenshots": {
+    "opened": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-actions-opened.png",
+      "size": 187090,
+      "sha256": "d8a365cc2f765a7c1df8c01a902b1f337bb428b3faee0e5a9b17754f0b370a70",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 66.5908203125
+    },
+    "tooltip": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-actions-tooltip-papi.png",
+      "size": 205979,
+      "sha256": "fcea729b515dc115866051d1a6ce7742c3c282edd4f434bbd2350c3d6bd695a1",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 62.740885416666664
+    },
+    "chatResult": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-actions-chat-result.png",
+      "size": 382074,
+      "sha256": "4d7f0e535453bca6c313daffcda39826a61cd63f96b95e30dd2d06d034e58af1",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 94.18684895833333
+    },
+    "auditIndependentCommand": {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\screenshots\\universal_folia1218-audit-independent-command.png",
+      "size": 377768,
+      "sha256": "968e3cd6614b0c487ffd44110099e5d24c79a75b19024bb0d08c22198dbde668",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 96.8623046875
+    }
+  },
+  "username": "RGBolia1218",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\global-trash-actions-visual-20260724-163808\\universal_folia1218\\server-screenshots\\universal_folia1218-actions-assertions.png",
+    "size": 229900,
+    "sha256": "b33511031a1810557e6e58573dce06d3c71d5f4d7d926af659ff14ae304e6761",
+    "dimensions": [
+      1600,
+      1092
+    ],
+    "brightness": 35.214192708333336
+  }
+}
