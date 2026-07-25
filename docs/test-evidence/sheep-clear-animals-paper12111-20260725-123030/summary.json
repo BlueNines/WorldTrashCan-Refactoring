@@ -1,0 +1,32 @@
+{
+  "timestamp": "20260725-123030",
+  "allPassed": true,
+  "serverLabel": "Paper 1.21.11",
+  "paperJar": "C:\\Users\\pc\\Desktop\\ai开发插件\\paper-1.21.11-test-server\\paper-1.21.11.jar",
+  "jar": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+  "jarSha256": "ee58dd0e1d4834087916b0920bf23e237a9bc5cfad6a74129ad8b1e658481635",
+  "result": {
+    "passed": true,
+    "checks": {
+      "pluginsLoaded": true,
+      "paperUniversalPlatform": true,
+      "entityCleanupEnabled": true,
+      "beforeSheepAlive": true,
+      "falseKeepsSheep": true,
+      "trueRemovesSheep": true,
+      "trueCleanupRemovedEntity": true
+    },
+    "counts": {
+      "before": 1,
+      "afterFalse": 1,
+      "afterTrue": 0
+    },
+    "clearFalseResponse": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理完成 §x§6§4§7§4§8§b| §x§c§9§d§4§e§2世界 §x§f§f§d§1§6§63§x§6§4§7§4§8§b, §x§c§9§d§4§e§2回收 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除物品 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除实体 §x§f§f§d§1§6§60§x§c§9§d§4§e§2。\n",
+    "clearTrueResponse": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理完成 §x§6§4§7§4§8§b| §x§c§9§d§4§e§2世界 §x§f§f§d§1§6§63§x§6§4§7§4§8§b, §x§c§9§d§4§e§2回收 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除物品 §x§f§f§d§1§6§60§x§6§4§7§4§8§b, §x§c§9§d§4§e§2移除实体 §x§f§f§d§1§6§61§x§c§9§d§4§e§2。\n",
+    "falseCleanupLine": "[12:30:45] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=0, minOnlinePlayers=1, targetEntities=0, minTotalEntities=150, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=1, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false",
+    "trueCleanupLine": "[12:30:45] [Server thread/INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=0, minOnlinePlayers=1, targetEntities=0, minTotalEntities=150, itemsRouted=0, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=1, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false",
+    "trueEntitiesRemoved": 1,
+    "stats": "§x§1§b§2§4§3§0[§x§5§a§c§8§f§aWorld§x§f§f§d§1§6§6List§x§c§9§d§4§e§2Trash§x§5§a§c§8§f§aCan§x§1§b§2§4§3§0] §x§5§a§c§8§f§a清理统计:\n§7- §f扫地门禁: §a已通过 §7(在线 0/1, 目标实体 0/150)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2世界数: §x§f§f§d§1§6§63\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2回收物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(世界 0, 个人 0, 公共 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除物品: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2删除实体: §x§f§f§d§1§6§61\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶页数: §x§f§f§d§1§6§65\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2公共垃圾桶当前物品: §x§f§f§d§1§6§60 §x§6§4§7§4§8§b(堆叠 0)\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2已加载个人垃圾桶: §x§f§f§d§1§6§60\n§x§6§4§7§4§8§b- §x§c§9§d§4§e§2下次清理剩余秒数: §x§f§f§d§1§6§6359\n"
+  },
+  "evidenceDir": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\sheep-clear-animals-paper12111-20260725-123030"
+}

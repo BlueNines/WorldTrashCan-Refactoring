@@ -1,3 +1,4 @@
+import argparse
 import hashlib
 import json
 import re
@@ -13,6 +14,8 @@ REPO = Path(__file__).resolve().parents[2]
 WORKSPACE = REPO.parents[2]
 SOURCE_SERVER = WORKSPACE / "paper-1.21.4-test-server"
 PAPER_JAR = SOURCE_SERVER / "paper-1.21.4-232.jar"
+SERVER_LABEL = "Paper 1.21.4 build 232"
+EVIDENCE_ID = "paper1214"
 JAVA21 = Path(r"C:\Program Files\Java\jdk-21\bin\java.exe")
 UNIVERSAL_JAR = REPO / "dist" / "WorldListTrashCan-universal.jar"
 BUILD_ROOT = REPO / "build" / "sheep-clear-animals-paper1214"
@@ -41,18 +44,40 @@ def write_json(path: Path, value) -> None:
 
 
 def ensure_inputs() -> None:
-    """确认 Paper、Java 和最终 universal Jar 均存在。"""
+    """确认目标 Paper、Java 和最终 universal Jar 均存在。"""
     required = (PAPER_JAR, JAVA21, UNIVERSAL_JAR)
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
-        raise RuntimeError("缺少 Paper 1.21.4 羊清理专项输入: " + "; ".join(missing))
+        raise RuntimeError("缺少 Paper 羊清理专项输入: " + "; ".join(missing))
+
+
+def configure_target(args: argparse.Namespace) -> None:
+    """按命令行参数选择目标 Paper 服务端和证据标识。"""
+    global SOURCE_SERVER, PAPER_JAR, SERVER_LABEL, EVIDENCE_ID
+    SOURCE_SERVER = args.source_server.resolve()
+    PAPER_JAR = args.paper_jar
+    if not PAPER_JAR.is_absolute():
+        PAPER_JAR = SOURCE_SERVER / PAPER_JAR
+    PAPER_JAR = PAPER_JAR.resolve()
+    SERVER_LABEL = args.server_label
+    EVIDENCE_ID = args.evidence_id
+
+
+def parse_args() -> argparse.Namespace:
+    """读取目标 Paper 版本参数，同时保留 1.21.4 默认行为。"""
+    parser = argparse.ArgumentParser(description="验证 Paper 上 clear-animals 对普通羊的行为")
+    parser.add_argument("--source-server", type=Path, default=SOURCE_SERVER)
+    parser.add_argument("--paper-jar", type=Path, default=Path(PAPER_JAR.name))
+    parser.add_argument("--server-label", default=SERVER_LABEL)
+    parser.add_argument("--evidence-id", default=EVIDENCE_ID)
+    return parser.parse_args()
 
 
 def map_repository() -> None:
-    """把中文仓库路径映射到 ASCII 盘符供 Paperclip 使用。"""
+    """把中文仓库路径映射到 ASCII 盘符供目标 Paperclip 使用。"""
     mapping = subprocess.run(["subst"], check=True, capture_output=True, text=True)
     if "Q:\\" in mapping.stdout.upper():
-        raise RuntimeError("Q: 已被占用，无法创建 Paper 1.21.4 专项路径映射")
+        raise RuntimeError("Q: 已被占用，无法创建 Paper 羊清理专项路径映射")
     subprocess.run(["subst", "Q:", str(REPO)], check=True)
 
 
@@ -228,7 +253,7 @@ def run_acceptance(run_root: Path, evidence_dir: Path, port: int, rcon_port: int
             }
             failed = [name for name, passed in checks.items() if not passed]
             if failed:
-                raise AssertionError("Paper 1.21.4 羊清理断言失败: " + ", ".join(failed))
+                raise AssertionError(SERVER_LABEL + " 羊清理断言失败: " + ", ".join(failed))
             result = {
                 "passed": True,
                 "checks": checks,
@@ -252,11 +277,11 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
     """写入面向人工复核的专项证据索引。"""
     counts = summary["result"]["counts"]
     lines = [
-        "# Paper 1.21.4 羊清理专项",
+        "# " + summary["serverLabel"] + " 羊清理专项",
         "",
         "- 被测产物: `WorldListTrashCan-universal.jar`",
         "- SHA-256: `" + summary["jarSha256"] + "`",
-        "- 服务端: `Paper 1.21.4 build 232`",
+        "- 服务端: `" + summary["serverLabel"] + "`",
         "- 验收方式: 同一只无自定义名 Sheep，依次执行 `clear-animals: false` 和 `true` 的正式 `/wtc clear true` 对照。",
         "- 存活计数: 生成后 `" + str(counts["before"]) + "`，false 清理后 `"
         + str(counts["afterFalse"]) + "`，true 清理后 `" + str(counts["afterTrue"]) + "`。",
@@ -274,13 +299,14 @@ def write_readme(evidence_dir: Path, summary: dict) -> None:
 
 
 def main() -> int:
-    """执行 Paper 1.21.4 clear-animals 羊清理专项。"""
+    """执行目标 Paper 的 clear-animals 羊清理专项。"""
+    configure_target(parse_args())
     ensure_inputs()
     map_repository()
     try:
         stamp = time.strftime("%Y%m%d-%H%M%S")
         run_root = BUILD_ROOT / stamp
-        evidence_dir = EVIDENCE_ROOT / ("sheep-clear-animals-paper1214-" + stamp)
+        evidence_dir = EVIDENCE_ROOT / ("sheep-clear-animals-" + EVIDENCE_ID + "-" + stamp)
         run_root.mkdir(parents=True, exist_ok=True)
         evidence_dir.mkdir(parents=True, exist_ok=True)
         result = run_acceptance(
@@ -288,6 +314,7 @@ def main() -> int:
         summary = {
             "timestamp": stamp,
             "allPassed": result["passed"],
+            "serverLabel": SERVER_LABEL,
             "paperJar": str(PAPER_JAR),
             "jar": str(UNIVERSAL_JAR),
             "jarSha256": sha256_file(UNIVERSAL_JAR),
@@ -296,7 +323,7 @@ def main() -> int:
         }
         write_json(evidence_dir / "summary.json", summary)
         write_readme(evidence_dir, summary)
-        log("Paper 1.21.4 羊清理专项 PASS: " + str(evidence_dir))
+        log(SERVER_LABEL + " 羊清理专项 PASS: " + str(evidence_dir))
     finally:
         unmap_repository()
     return 0
