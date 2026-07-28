@@ -1,6 +1,6 @@
 # 清理周期，单位秒。
 # 默认 360 秒；设为 0 时只允许管理员手动触发清理。
-interval-seconds: 360
+interval-seconds: 0
 
 # 跳过清理的世界名。
 # 默认示例为 testWorld；留空请写 []。
@@ -12,10 +12,10 @@ ignored-worlds:
 guards:
   # 在线玩家低于该值时跳过本轮扫地。
   # 默认 1，表示无人在线时不扫地；设为 0 可允许无人在线时继续自动扫地。
-  min-online-players: 1
+  min-online-players: 0
   # 会被本轮扫地处理的目标实体数量低于该值时跳过本轮扫地。
   # 默认 150，避免实体很少时仍频繁扫描和清理；设为 0 可关闭实体数量门禁。
-  min-total-entities: 150
+  min-total-entities: 0
 
 # Folia 专用清理保护。
 # 普通 Bukkit、Paper、Legacy 运行时会读取但不会使用这些设置。
@@ -55,11 +55,11 @@ entities:
   # 是否清理怪物。
   clear-monsters: true
   # 是否清理动物或普通生物。
-  clear-animals: false
+  clear-animals: true
   # 是否清理投射物。
   clear-projectiles: true
   # 是否清理带自定义名的实体。
-  clear-named-entities: false
+  clear-named-entities: true
   # 是否跳过船内实体。
   ignore-entities-in-boat: false
   # 是否跳过实际装备了鞍的实体。
@@ -80,6 +80,16 @@ entities:
 
 # 清理通知配置。
 # 这些通知都属于扫地功能的一部分，因此统一放在 cleanup.yml 中维护。
+    - "PIG"
+    - "HORSE"
+    - "WOLF"
+    - "OCELOT"
+    - "CAT"
+    - "STRIDER"
+    - "CAMEL"
+    - "PRIMED_TNT"
+    - "TNT"
+    - "ARMOR_STAND"
 notify:
   # 聊天栏提醒。
   chat:

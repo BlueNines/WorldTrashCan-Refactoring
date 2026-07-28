@@ -1,0 +1,60 @@
+{
+  "id": "universal_managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 636614,
+    "sha256": "f907073ca8580e8faddfc3a1a012040e37e9ef741813de0dedc3959cd5ed44bf",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "screenshots": [
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\entity-saddle-owner-visual-20260728-162714\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-01-before-clear.png",
+      "size": 81384,
+      "sha256": "848895d8bdeaa61b288ce099509427865a46835de778a9ab54c0a34e1ed0e011",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 153.390625
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\entity-saddle-owner-visual-20260728-162714\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-02-after-clear.png",
+      "size": 87297,
+      "sha256": "b66a063fa3fc240efad33b99a5a0cc7861084862ff53e73ee397735e1ff8d6ad",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 141.28385416666666
+    },
+    {
+      "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\entity-saddle-owner-visual-20260728-162714\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-03-client-assertion.png",
+      "size": 34590,
+      "sha256": "00730719b0e8fd5b64afeaff859557e30b9393cc713979bdad291a68cbc4b57c",
+      "dimensions": [
+        882,
+        513
+      ],
+      "brightness": 157.91569010416666
+    }
+  ],
+  "username": "RGBaper1122",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\entity-saddle-owner-visual-20260728-162714\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-server-assertion.png",
+    "size": 100813,
+    "sha256": "5638fdfe17d67e6bf8ac1a9a5836c89a981b62d9cc9e5912de71358ddaa117bf",
+    "dimensions": [
+      1680,
+      390
+    ],
+    "brightness": 41.952473958333336
+  },
+  "prepareExcerpt": "[16:27:33 INFO]: RGBaper1122 issued server command: /entityguardfixture prepare\n[16:27:33 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_PREPARED success=true protected=5 removable=8 striderSupported=false camelSupported=false catSupported=true itemOwnerSupported=false pdcOwnerSupported=false tntSourceSupported=false\n",
+  "assertExcerpt": "[16:27:54 INFO]: RGBaper1122 issued server command: /entityguardfixture assert\n[16:27:54 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_PROTECTED saddled_pig=true saddled_horse=true owned_wolf=true owned_horse=true owned_cat=true\n[16:27:54 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_NEGATIVE unsaddled_pig=true unowned_horse=true unowned_wolf=true arrow_with_shooter=true tnt_with_source=true item_with_owner=true mythic_metadata_owner=true nbt_pdc_owner=true\n[16:27:54 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_RESULT allPassed=true protectedAlive=5/5 removableGone=8/8\n",
+  "configSnapshot": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\entity-saddle-owner-visual-20260728-162714\\universal_managed_paper1122\\logs\\cleanup-under-test.yml"
+}

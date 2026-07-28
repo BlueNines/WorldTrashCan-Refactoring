@@ -30,6 +30,8 @@ public final class ConfigBundleLoader {
                 cleanup.getBoolean("entities.clear-projectiles", true),
                 cleanup.getBoolean("entities.clear-named-entities", false),
                 cleanup.getBoolean("entities.ignore-entities-in-boat", false),
+                cleanup.getBoolean("entities.ignore-entities-with-saddle", true),
+                cleanup.getBoolean("entities.ignore-entities-with-owner", true),
                 toSet(cleanup.getStringList("entities.whitelist")),
                 toSet(cleanup.getStringList("entities.blacklist"))
         );

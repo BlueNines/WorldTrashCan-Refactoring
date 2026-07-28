@@ -54,6 +54,12 @@ public final class DefaultCleanupPolicy implements CleanupPolicy {
         if (settings.isIgnoreEntitiesInBoat() && entity.isInsideBoat()) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "inside-boat");
         }
+        if (settings.isIgnoreEntitiesWithSaddle() && entity.hasSaddle()) {
+            return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-with-saddle");
+        }
+        if (settings.isIgnoreEntitiesWithOwner() && entity.hasOwner()) {
+            return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-with-owner");
+        }
         if (settings.matchesEntityWhitelist(entity.getTypeKey(), entity.getName())) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-whitelist");
         }

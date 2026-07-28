@@ -8,6 +8,7 @@ import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoutingDecision;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.UUID;
 
 /** 不依赖 JUnit 的核心策略自测，方便在没有 Maven 的环境中直接运行。 */
 public final class CorePolicySelfTest {
@@ -24,8 +25,12 @@ public final class CorePolicySelfTest {
                 true,
                 false,
                 true,
+                true,
+                true,
                 new HashSet<>(Collections.singletonList("VILLAGER")),
-                new HashSet<>(Collections.singletonList("FLAMMPFEIL*"))
+                new HashSet<>(Arrays.asList(
+                        "FLAMMPFEIL*", "SADDLED_BLACKLIST", "OWNED_BLACKLIST",
+                        "PRIMED_TNT", "ARMOR_STAND"))
         );
         DefaultCleanupPolicy policy = new DefaultCleanupPolicy(settings);
         assertRoute("ignored material", policy.decideItem(
@@ -46,6 +51,14 @@ public final class CorePolicySelfTest {
         assertEntity("boat skip", policy.decideEntity(
                 new EntitySnapshot("ZOMBIE", "Zombie", "", true, true, false, true)),
                 EntityCleanupAction.SKIP);
+        assertEntity("saddled blacklist skip", policy.decideEntity(
+                new EntitySnapshot("SADDLED_BLACKLIST", "Saddled", "", true, false, false,
+                        false, true, false)),
+                EntityCleanupAction.SKIP);
+        assertEntity("owned blacklist skip", policy.decideEntity(
+                new EntitySnapshot("OWNED_BLACKLIST", "Owned", "", true, false, false,
+                        false, false, true)),
+                EntityCleanupAction.SKIP);
         assertEntity("whitelist skip", policy.decideEntity(
                 new EntitySnapshot("VILLAGER", "Villager", "", true, false, false, false)),
                 EntityCleanupAction.SKIP);
@@ -55,6 +68,22 @@ public final class CorePolicySelfTest {
         assertEntity("experience orb remove", policy.decideEntity(
                 new EntitySnapshot("EXPERIENCE_ORB", "Experience Orb", "", false, false, false, false)),
                 EntityCleanupAction.REMOVE);
+        assertEntity("projectile shooter is not tameable owner", policy.decideEntity(
+                new EntitySnapshot("ARROW", "Arrow", "", false, false, true,
+                        false, false, false)),
+                EntityCleanupAction.REMOVE);
+        assertEntity("tnt source is not tameable owner", policy.decideEntity(
+                new EntitySnapshot("PRIMED_TNT", "Primed TNT", "", false, false, false,
+                        false, false, false)),
+                EntityCleanupAction.REMOVE);
+        assertEntity("owner metadata is not tameable owner", policy.decideEntity(
+                new EntitySnapshot("ARMOR_STAND", "Metadata Pet", "", true, false, false,
+                        false, false, false)),
+                EntityCleanupAction.REMOVE);
+        assertRoute("dropped item owner still routes", policy.decideItem(
+                new ItemSnapshot("COBBLESTONE", 8, "", Collections.<String>emptyList(),
+                        UUID.fromString("00000000-0000-0000-0000-000000000001")),
+                false, false, true), TrashRoute.GLOBAL_TRASH);
         CleanupSettings disabledEntitySettings = new CleanupSettings(
                 Collections.<String>emptySet(),
                 Collections.<String>emptySet(),
@@ -66,6 +95,8 @@ public final class CorePolicySelfTest {
                 true,
                 true,
                 false,
+                true,
+                true,
                 Collections.<String>emptySet(),
                 new HashSet<>(Collections.singletonList("ZOMBIE"))
         );

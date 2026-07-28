@@ -1,0 +1,10 @@
+[16:27:18] wtc reload
+[16:27:25] op RGBaper1122
+[16:27:25] minecraft:gamerule doMobSpawning false
+[16:27:26] minecraft:gamerule doDaylightCycle false
+[16:27:26] minecraft:time set day
+[16:27:26] minecraft:weather clear
+[16:27:26] minecraft:gamemode 1 RGBaper1122
+[16:27:26] minecraft:tp RGBaper1122 0 91 -8 0 12
+[16:27:33] entityguardfixture focus
+[16:27:46] entityguardfixture focus

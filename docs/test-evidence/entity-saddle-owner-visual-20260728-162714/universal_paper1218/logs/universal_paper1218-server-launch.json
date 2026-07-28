@@ -1,0 +1,17 @@
+{
+  "cwd": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\build\\entity-saddle-owner-visual-matrix\\20260728-162714\\isolated-server-universal_paper1218",
+  "command": [
+    "C:\\Program Files\\Java\\jdk-21\\bin\\java.exe",
+    "-Xms1024M",
+    "-Xmx4096M",
+    "--add-opens",
+    "java.base/java.net=ALL-UNNAMED",
+    "-XX:+UnlockDiagnosticVMOptions",
+    "-XX:-UseAESCTRIntrinsics",
+    "-jar",
+    "paper-1.21.8-60.jar",
+    "nogui"
+  ],
+  "plugin": "WorldListTrashCan-universal.jar",
+  "port": 30001
+}

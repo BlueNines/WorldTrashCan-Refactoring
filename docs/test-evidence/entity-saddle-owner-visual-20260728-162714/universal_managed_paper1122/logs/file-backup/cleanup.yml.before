@@ -62,12 +62,6 @@ entities:
   clear-named-entities: false
   # 是否跳过船内实体。
   ignore-entities-in-boat: false
-  # 是否跳过实际装备了鞍的实体。
-  # 默认 true；支持当前平台 Bukkit API 可识别的马、驴、骡、猪、炽足兽、骆驼等坐骑。
-  ignore-entities-with-saddle: true
-  # 是否跳过拥有 Bukkit Tameable 主人的实体。
-  # 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
-  ignore-entities-with-owner: true
   # 实体白名单；命中后不清理，支持 * 通配。
   whitelist:
     - "VILLAGER"

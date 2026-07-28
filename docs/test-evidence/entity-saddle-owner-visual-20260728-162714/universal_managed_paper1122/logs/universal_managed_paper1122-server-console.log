@@ -1,0 +1,193 @@
+Loading libraries, please wait...
+2026-07-28 16:27:16,398 main WARN Disabling terminal, you're running in an unsupported environment.
+[16:27:17 INFO]: Starting minecraft server version 1.12.2
+[16:27:17 INFO]: Loading properties
+[16:27:17 INFO]: Default game type: SURVIVAL
+[16:27:17 INFO]: This server is running Paper version git-Paper-1620 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT)
+[16:27:17 INFO]: Debug logging is disabled
+[16:27:17 INFO]: Server Ping Player Sample Count: 12
+[16:27:17 INFO]: Using 4 threads for Netty based IO
+[16:27:17 INFO]: Generating keypair
+[16:27:17 INFO]: Starting Minecraft server on *:30012
+[16:27:17 INFO]: Using default channel type
+[16:27:17 INFO]: Set PluginClassLoader as parallel capable
+[16:27:17 INFO]: [WtcEntitySaddleOwnerFixture] Loading WtcEntitySaddleOwnerFixture v1.0.0
+[16:27:17 INFO]: [PermissionDenyFixture] Loading PermissionDenyFixture v1.0.0
+[16:27:17 INFO]: [PlaceholderAPI] Loading PlaceholderAPI v2.11.6
+[16:27:17 INFO]: [WorldListTrashCan] Loading WorldListTrashCan v7.0.0
+[16:27:17 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[16:27:17 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[16:27:17 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[16:27:17 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[16:27:17 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[16:27:17 INFO]: **** Beginning UUID conversion, this may take A LONG time ****
+[16:27:17 INFO]: Preparing level "rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714"
+[16:27:17 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714] --------
+[16:27:17 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[16:27:17 INFO]: Arrow Despawn Rate: 1200
+[16:27:17 INFO]: Item Despawn Rate: 6000
+[16:27:17 INFO]: Item Merge Radius: 2.5
+[16:27:17 INFO]: View Distance: 2
+[16:27:17 INFO]: Zombie Aggressive Towards Villager: true
+[16:27:17 INFO]: Nerfing mobs spawned from spawners: false
+[16:27:17 INFO]: Experience Merge Radius: 3.0
+[16:27:17 INFO]: Cactus Growth Modifier: 100%
+[16:27:17 INFO]: Cane Growth Modifier: 100%
+[16:27:17 INFO]: Melon Growth Modifier: 100%
+[16:27:17 INFO]: Mushroom Growth Modifier: 100%
+[16:27:17 INFO]: Pumpkin Growth Modifier: 100%
+[16:27:17 INFO]: Sapling Growth Modifier: 100%
+[16:27:17 INFO]: Wheat Growth Modifier: 100%
+[16:27:17 INFO]: NetherWart Growth Modifier: 100%
+[16:27:17 INFO]: Vine Growth Modifier: 100%
+[16:27:17 INFO]: Cocoa Growth Modifier: 100%
+[16:27:17 INFO]: Mob Spawn Range: 4
+[16:27:17 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[16:27:17 INFO]: Random Lighting Updates: false
+[16:27:17 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[16:27:17 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[16:27:17 INFO]: Max TNT Explosions: 100
+[16:27:17 INFO]: Structure Info Saving: true
+[16:27:17 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[16:27:17 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[16:27:17 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714_nether] --------
+[16:27:17 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[16:27:17 INFO]: Arrow Despawn Rate: 1200
+[16:27:17 INFO]: Item Despawn Rate: 6000
+[16:27:17 INFO]: Item Merge Radius: 2.5
+[16:27:17 INFO]: View Distance: 2
+[16:27:17 INFO]: Zombie Aggressive Towards Villager: true
+[16:27:17 INFO]: Nerfing mobs spawned from spawners: false
+[16:27:17 INFO]: Experience Merge Radius: 3.0
+[16:27:17 INFO]: Cactus Growth Modifier: 100%
+[16:27:17 INFO]: Cane Growth Modifier: 100%
+[16:27:17 INFO]: Melon Growth Modifier: 100%
+[16:27:17 INFO]: Mushroom Growth Modifier: 100%
+[16:27:17 INFO]: Pumpkin Growth Modifier: 100%
+[16:27:17 INFO]: Sapling Growth Modifier: 100%
+[16:27:17 INFO]: Wheat Growth Modifier: 100%
+[16:27:17 INFO]: NetherWart Growth Modifier: 100%
+[16:27:17 INFO]: Vine Growth Modifier: 100%
+[16:27:17 INFO]: Cocoa Growth Modifier: 100%
+[16:27:17 INFO]: Mob Spawn Range: 4
+[16:27:17 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[16:27:17 INFO]: Random Lighting Updates: false
+[16:27:17 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[16:27:17 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[16:27:17 INFO]: Max TNT Explosions: 100
+[16:27:17 INFO]: Structure Info Saving: true
+[16:27:17 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[16:27:17 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[16:27:17 INFO]: -------- World Settings For [rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714_the_end] --------
+[16:27:17 INFO]: Allow Zombie Pigmen to spawn from portal blocks: true
+[16:27:17 INFO]: Arrow Despawn Rate: 1200
+[16:27:17 INFO]: Item Despawn Rate: 6000
+[16:27:17 INFO]: Item Merge Radius: 2.5
+[16:27:17 INFO]: View Distance: 2
+[16:27:17 INFO]: Zombie Aggressive Towards Villager: true
+[16:27:17 INFO]: Nerfing mobs spawned from spawners: false
+[16:27:17 INFO]: Experience Merge Radius: 3.0
+[16:27:17 INFO]: Cactus Growth Modifier: 100%
+[16:27:17 INFO]: Cane Growth Modifier: 100%
+[16:27:17 INFO]: Melon Growth Modifier: 100%
+[16:27:17 INFO]: Mushroom Growth Modifier: 100%
+[16:27:17 INFO]: Pumpkin Growth Modifier: 100%
+[16:27:17 INFO]: Sapling Growth Modifier: 100%
+[16:27:17 INFO]: Wheat Growth Modifier: 100%
+[16:27:17 INFO]: NetherWart Growth Modifier: 100%
+[16:27:17 INFO]: Vine Growth Modifier: 100%
+[16:27:17 INFO]: Cocoa Growth Modifier: 100%
+[16:27:17 INFO]: Mob Spawn Range: 4
+[16:27:17 INFO]: Entity Tracking Range: Pl 48 / An 48 / Mo 48 / Mi 32 / Other 64
+[16:27:17 INFO]: Random Lighting Updates: false
+[16:27:17 INFO]: Entity Activation Range: An 32 / Mo 32 / Mi 16 / Tiv true
+[16:27:17 INFO]: Hopper Transfer: 8 Hopper Check: 1 Hopper Amount: 1
+[16:27:17 INFO]: Max TNT Explosions: 100
+[16:27:17 INFO]: Structure Info Saving: true
+[16:27:17 INFO]: Tile Max Tick Time: 50ms Entity max Tick Time: 50ms
+[16:27:17 INFO]: Custom Map Seeds:  Village: 10387312 Feature: 14357617 Monument: 10387313 Slime: 987234911
+[16:27:17 INFO]: Preparing start region for level 0 (Seed: -8095797131839518530)
+[16:27:17 INFO]: Preparing start region for level 1 (Seed: -8095797131839518530)
+[16:27:18 INFO]: Preparing start region for level 2 (Seed: -8095797131839518530)
+[16:27:18 INFO]: [WtcEntitySaddleOwnerFixture] Enabling WtcEntitySaddleOwnerFixture v1.0.0
+[16:27:18 INFO]: [PermissionDenyFixture] Enabling PermissionDenyFixture v1.0.0
+[16:27:18 INFO]: [PermissionDenyFixture] AI_PERMFIXTURE_READY
+[16:27:18 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.6
+[16:27:18 INFO]: [PlaceholderAPI] Fetching available expansion information...
+[16:27:18 INFO]: [WorldListTrashCan] Enabling WorldListTrashCan v7.0.0
+[16:27:18 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[16:27:18 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[16:27:18 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[16:27:18 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
+[16:27:18 INFO]: [WorldListTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
+[16:27:18 INFO]: [WorldListTrashCan] Universal runtime: legacy
+[16:27:18 INFO]: [WorldListTrashCan] Platform: legacy-1.12
+[16:27:18 INFO]: [WorldListTrashCan] Capability scheduler-global: enabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability scheduler-region: disabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability inventory-basic: enabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability item-pdc-tag: disabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability item-legacy-tag: disabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability rgb-message: disabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability clickable-message: enabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability boss-bar: enabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability sign-legacy: enabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability sign-modern: disabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability entity-move-event: disabled
+[16:27:18 INFO]: [WorldListTrashCan] Capability folia-region-safe: disabled
+[16:27:18 INFO]: [WorldListTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
+[16:27:18 INFO]: Done (0.867s)! For help, type "help" or "?"
+[16:27:18 INFO]: Timings Reset
+[16:27:18 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
+[16:27:18 INFO]: 0 placeholder hook(s) registered!
+[16:27:18 INFO]: [WorldListTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
+[16:27:18 INFO]: [WorldListTrashCan] [GlobalTrash] GUI layout rows=6, slots=54, contentSlots=45, writablePages=5, visiblePages=5
+[16:27:18 INFO]: [WorldListTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
+[16:27:18 INFO]: [WorldListTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
+[16:27:18 INFO]: [WorldListTrashCan] WorldListTrashCan 已重载。
+[16:27:19 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.3) is available at:
+[16:27:19 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
+[16:27:24 INFO]: UUID of player RGBaper1122 is 492a4a1c-1269-347c-a86f-e86c5e9d0cca
+[16:27:24 INFO]: RGBaper1122[/127.0.0.1:52576] logged in with entity id 3 at ([rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714]285.5, 4.0, -88.5)
+[16:27:25 INFO]: Opped RGBaper1122
+[16:27:25 INFO]: Game rule doMobSpawning has been updated to false
+[16:27:26 INFO]: Game rule doDaylightCycle has been updated to false
+[16:27:26 INFO]: Set the time to 1000
+[16:27:26 INFO]: Changing to clear weather
+[16:27:26 INFO]: Set RGBaper1122's game mode to Creative Mode
+[16:27:26 INFO]: Teleported RGBaper1122 to 0.5, 91.0, -7.5
+[16:27:26 WARN]: RGBaper1122 moved too quickly! -285.0,87.0,81.0
+[16:27:33 INFO]: RGBaper1122 issued server command: /entityguardfixture prepare
+[16:27:33 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_PREPARED success=true protected=5 removable=8 striderSupported=false camelSupported=false catSupported=true itemOwnerSupported=false pdcOwnerSupported=false tntSourceSupported=false
+[16:27:33 INFO]: AI_ENTITY_GUARD_FOCUS success=true
+[16:27:33 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_FOCUS success=true
+[16:27:43 INFO]: RGBaper1122 issued server command: /wtc clear true
+[16:27:43 INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=0, targetEntities=0, minTotalEntities=0, itemsRouted=7, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=6, entitiesSkipped=5, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] entities=6, items=7, groups=6, shown=6, partial=false
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] AI_GUARD_REMOVE_MYTHIC_METADATA_OWNER_armor_stand: 1
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] AI_GUARD_REMOVE_NBT_PDC_OWNER_armor_stand: 1
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] AI_GUARD_REMOVE_TNT_WITH_SOURCE_primed_tnt: 1
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] AI_GUARD_REMOVE_UNOWNED_HORSE_horse: 1
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] AI_GUARD_REMOVE_UNOWNED_WOLF_wolf: 1
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] AI_GUARD_REMOVE_UNSADDLED_PIG_pig: 1
+[16:27:43 INFO]: [WorldListTrashCan] [CleanupDetail] items: 7
+[16:27:46 INFO]: AI_ENTITY_GUARD_FOCUS success=true
+[16:27:46 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_FOCUS success=true
+[16:27:54 INFO]: RGBaper1122 issued server command: /entityguardfixture assert
+[16:27:54 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_PROTECTED saddled_pig=true saddled_horse=true owned_wolf=true owned_horse=true owned_cat=true
+[16:27:54 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_NEGATIVE unsaddled_pig=true unowned_horse=true unowned_wolf=true arrow_with_shooter=true tnt_with_source=true item_with_owner=true mythic_metadata_owner=true nbt_pdc_owner=true
+[16:27:54 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_RESULT allPassed=true protectedAlive=5/5 removableGone=8/8
+[16:28:03 INFO]: RGBaper1122 issued server command: /entityguardfixture cleanup
+[16:28:03 INFO]: [WtcEntitySaddleOwnerFixture] AI_ENTITY_GUARD_CLEANUP done=true
+[16:28:28 INFO]: RGBaper1122 lost connection: Internal Exception: java.io.IOException: 杩滅▼涓绘満寮鸿揩鍏抽棴浜嗕竴涓幇鏈夌殑杩炴帴銆?
+[16:28:28 INFO]: RGBaper1122 left the game
+[16:28:28 INFO]: Stopping the server
+[16:28:28 INFO]: Stopping server
+[16:28:28 INFO]: [WorldListTrashCan] Disabling WorldListTrashCan v7.0.0
+[16:28:28 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.6
+[16:28:28 INFO]: [PermissionDenyFixture] Disabling PermissionDenyFixture v1.0.0
+[16:28:28 INFO]: [WtcEntitySaddleOwnerFixture] Disabling WtcEntitySaddleOwnerFixture v1.0.0
+[16:28:28 INFO]: Saving players
+[16:28:28 INFO]: Saving worlds
+[16:28:28 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714'/overworld
+[16:28:28 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714_nether'/the_nether
+[16:28:28 INFO]: Saving chunks for level 'rgb_visual_universal_managed_paper1122_entity_saddle_owner_visual_20260728_162714_the_end'/the_end

@@ -17,6 +17,8 @@ public final class CleanupSettings {
     private final boolean clearProjectile;
     private final boolean clearNamedEntity;
     private final boolean ignoreEntitiesInBoat;
+    private final boolean ignoreEntitiesWithSaddle;
+    private final boolean ignoreEntitiesWithOwner;
     private final Set<String> entityWhitePatterns;
     private final Set<String> entityBlackPatterns;
 
@@ -25,6 +27,7 @@ public final class CleanupSettings {
                            Set<String> ignoredLoreFragments, boolean entityCleanupEnabled, boolean clearExperienceOrb,
                            boolean clearMonster, boolean clearAnimals, boolean clearProjectile,
                            boolean clearNamedEntity, boolean ignoreEntitiesInBoat,
+                           boolean ignoreEntitiesWithSaddle, boolean ignoreEntitiesWithOwner,
                            Set<String> entityWhitePatterns, Set<String> entityBlackPatterns) {
         this.ignoredMaterialKeys = normalizeSet(ignoredMaterialKeys);
         this.ignoredNameFragments = normalizeSet(ignoredNameFragments);
@@ -36,6 +39,8 @@ public final class CleanupSettings {
         this.clearProjectile = clearProjectile;
         this.clearNamedEntity = clearNamedEntity;
         this.ignoreEntitiesInBoat = ignoreEntitiesInBoat;
+        this.ignoreEntitiesWithSaddle = ignoreEntitiesWithSaddle;
+        this.ignoreEntitiesWithOwner = ignoreEntitiesWithOwner;
         this.entityWhitePatterns = normalizeSet(entityWhitePatterns);
         this.entityBlackPatterns = normalizeSet(entityBlackPatterns);
     }
@@ -96,6 +101,16 @@ public final class CleanupSettings {
     /** 判断是否跳过船内实体。 */
     public boolean isIgnoreEntitiesInBoat() {
         return ignoreEntitiesInBoat;
+    }
+
+    /** 判断是否跳过实际装备鞍的实体。 */
+    public boolean isIgnoreEntitiesWithSaddle() {
+        return ignoreEntitiesWithSaddle;
+    }
+
+    /** 判断是否跳过拥有 Bukkit Tameable 主人的实体。 */
+    public boolean isIgnoreEntitiesWithOwner() {
+        return ignoreEntitiesWithOwner;
     }
 
     /** 判断实体是否命中白名单规则。 */
