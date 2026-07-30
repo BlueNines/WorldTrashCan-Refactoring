@@ -74,7 +74,7 @@ py -3 tools\rgb-visual-matrix\sync_dist_jars.py
 py -3 tools\rgb-visual-matrix\check_dist_package_integrity.py
 ```
 
-当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/WorldListTrashCan-universal.jar` SHA256 为 `f907073ca8580e8faddfc3a1a012040e37e9ef741813de0dedc3959cd5ed44bf`。
+当前审计结果为 `version: 7.0.0`、`artifacts: 5`、`errors: 0`，当前 `dist/WorldListTrashCan-universal.jar` SHA256 为 `28df61b1e608b06648284fbb7e8152e5249413e6824dbad08108e947321ced24`。
 
 公开品牌有独立审计脚本，检查源码文件名和内容、默认资源、文档、dist 文件名以及 jar 内 `plugin.yml`，防止重新出现旧品牌：
 
@@ -100,13 +100,13 @@ py -3 tools\rgb-visual-matrix\check_current_dist_hash_docs.py
 
 当前审计覆盖 5 个 dist jar，结果为 `errors: 0`。
 
-完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-094、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
+完整功能矩阵文档也有独立审计脚本，检查 `docs/重构版完整功能与测试矩阵.md` 中的功能 ID 是否从 F-001 起连续、当前是否至少覆盖到 F-095、历史 `SKIP` 项是否全部写明后续收敛，以及“当前仍未收敛的通用专项项”是否保持为“无”：
 
 ```powershell
 py -3 tools\rgb-visual-matrix\check_function_matrix_doc.py
 ```
 
-当前矩阵为 F-001 到 F-094 共 94 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
+当前矩阵为 F-001 到 F-095 共 95 个功能项，2026-06-08 历史 25 个 `SKIP` 通用专项项均已在后续专项中写明收敛，结果为 `errors: 0`。
 
 常规帮助、普通补全和 debug 帮助分离也有独立审计脚本，检查 Java fallback、一参 tab 补全、源码语言文件和 dist jar 内语言文件：`/wtc help` 只允许保留 `/wtc debughelp` 入口，空前缀 tab 补全只显示正式命令与 `debughelp`，具体 `debug*` 命令必须只出现在 `/wtc debughelp` 面板或输入 `debug` 前缀后的补全中：
 
@@ -146,7 +146,7 @@ py -3 tools\rgb-visual-matrix\check_message_key_parity.py
 py -3 tools\rgb-visual-matrix\check_chunk_load_guards.py
 ```
 
-当前审计覆盖 96 个正式 Java 源码文件，结果为 `errors: 0`。
+当前审计覆盖 132 个正式 Java 源码文件，结果为 `errors: 0`。
 
 涉及真实客户端、外部测试服或证据目录的测试脚本时，还需要运行破坏性操作防护审计，确认脚本不会删除测试服 `logs`、`world*`、`cache`、`assets`，也不会对 `E:\server_work` 等真实服务端目录执行递归删除：
 
@@ -154,7 +154,7 @@ py -3 tools\rgb-visual-matrix\check_chunk_load_guards.py
 py -3 tools\rgb-visual-matrix\check_test_script_destructive_guards.py
 ```
 
-当前审计覆盖 `tools/rgb-visual-matrix` 下 42 个 Python 脚本、21 个 `shutil.rmtree` 调用和 23 个 `unlink` 调用，结果为 `errors: 0`。
+当前审计覆盖 `tools/rgb-visual-matrix` 下 50 个 Python 脚本、23 个 `shutil.rmtree` 调用和 26 个 `unlink` 调用，结果为 `errors: 0`。
 
 统一预检本身的数量和文档口径也有独立审计，防止新增审计后 README、长期清单或执行记录仍保留旧数字：
 
@@ -189,13 +189,29 @@ py -3 tools\rgb-visual-matrix\run_delivery_audits.py --with-maven-test
 - `messages/message_es.yml`：西班牙语消息。
 - `data/worlds.yml`：世界垃圾桶运行数据。
 
+### 强制直删世界
+
+`cleanup.yml` 可以配置只在扫地时生效的强制直删世界列表：
+
+```yaml
+direct-remove-worlds:
+  - "resource_world"
+  - "world_nether"
+```
+
+- 世界名忽略大小写和首尾空格，默认 `[]` 表示关闭。
+- 命中后不会查询或写入世界、个人、公共垃圾桶；物品会计入“删除物品”，审计去向为 `DIRECT_REMOVE`。
+- `ignored-materials`、`ignored-name-fragments`、`ignored-lore-fragments` 仍先执行，受保护物品不会因为世界命中而删除。
+- 只影响定时扫地和 `/wtc clear`，不改变仙人掌、岩浆、虚空等独立回收监听。
+- 修改后执行 `/wtc reload` 即可生效。
+
 提交前可运行以下脚本检查四个平台默认配置资源和现有 `dist` 交付 jar 内资源是否保留中文注释：
 
 ```powershell
 py -3 tools\rgb-visual-matrix\check_resource_yaml_comments.py
 ```
 
-当前审计覆盖 28 个源码默认配置资源、5 个 dist jar、35 个包内配置资源和 1197 个 YAML 键，结果为 `errors: 0`。
+当前审计覆盖 28 个源码默认配置资源、5 个 dist jar、35 个包内配置资源和 1377 个 YAML 键，结果为 `errors: 0`。
 
 默认配置资源还需要保持四个平台与 `dist` 交付包的键结构一致，避免某个平台漏配置项但中文注释审计仍然通过：
 
@@ -203,7 +219,7 @@ py -3 tools\rgb-visual-matrix\check_resource_yaml_comments.py
 py -3 tools\rgb-visual-matrix\check_default_resource_key_parity.py
 ```
 
-当前审计覆盖 28 个源码默认配置资源、35 个 dist 包内默认配置资源和 134 个基准键，结果为 `errors: 0`。
+当前审计覆盖 28 个源码默认配置资源、35 个 dist 包内默认配置资源和 154 个基准键，结果为 `errors: 0`。
 
 多语言消息文件不要求逐项中文注释，但要求键路径和节点类型一致；新增或调整任何 `messages/message_*.yml` 后必须运行：
 
@@ -512,6 +528,10 @@ entities:
 
 2026-07-28 使用同一个 `dist/WorldListTrashCan-universal.jar` 在 Paper 1.12.2 与隔离 Paper 1.21.8 上完成真实客户端专项。1.12.2 断言有鞍猪/马和有主狼/马/猫 `5/5` 存活，8 个无鞍、无主或伪 owner 目标 `8/8` 被清理；1.21.8 追加有鞍炽足兽/骆驼后为 `7/7` 存活，同时带真实 shooter、source、Item owner、Metadata 和 NBT 背书 PDC owner 的负向目标仍为 `8/8` 被清理。客户端清理前、清理后、断言原图已逐张复核。脚本：`tools/rgb-visual-matrix/run_entity_saddle_owner_visual_matrix.py`；证据：`docs/test-evidence/entity-saddle-owner-visual-20260728-162714/`；被测 universal SHA256：`f907073ca8580e8faddfc3a1a012040e37e9ef741813de0dedc3959cd5ed44bf`。
 
+## 强制直删世界
+
+2026-07-30 使用同一个 universal 整包在 Paper 1.12.2 与 Folia 1.21.8 完成真实客户端对照。三类垃圾桶全部启用且当前世界存在可用世界垃圾桶时，列表命中轮均显示 `回收物品 0（世界 0、个人 0、公共 0）`、`删除物品 7`；通过 `/wtc reload` 移出列表后，同位置 5 个物品均显示 `世界 5`、`删除物品 0`。本轮同时修正普通端路由分项过去按堆数统计的问题，现在普通端和 Folia 都按物品实际数量统计。脚本：`tools/rgb-visual-matrix/run_direct_remove_world_visual_matrix.py`；证据：`docs/test-evidence/direct-remove-world-visual-20260730-211433/`；被测 universal SHA256：`28df61b1e608b06648284fbb7e8152e5249413e6824dbad08108e947321ced24`。
+
 ## 保护功能专项
 
 `protections.yml` 的 `simple-optimize.remove-unpickable-arrow` 会清理不可拾取箭矢，`simple-optimize.prevent-farmland-trampling` 会阻止玩家和实体踩踏农田。现代 Spigot/Paper 中箭矢拾取状态从旧 `Arrow.PickupStatus` 迁移到 `AbstractArrow.PickupStatus`，正式插件已改为反射读取 `getPickupStatus`，避免高版本 API 变动导致不可拾取箭矢不被清理。
@@ -675,7 +695,7 @@ bStats 使用官方全局配置 `plugins/bStats/config.yml`，本插件不提供
 - 2026-06-07 已补做真实客户端工作流回归，服务端日志只作为辅助排障，不作为最终通过依据。真实 Forge 1.12.2 客户端 `AIClientAlpha` 执行 30 条玩家侧聊天命令并写回 `status=PASS`，客户端断言覆盖 `platform/stats/reload`、旧别名、公共/个人/世界/黑名单 GUI、防丢弃模式、look、个人垃圾桶批量与单条提示、世界垃圾桶、三类路由和 `debugsummary`；`client-screen.log` 记录多个 `GuiChest, slots=90`，截图目录保留 32 张 PNG。
 - 2026-06-07 已补做 universal 整包外部端三通道 RGB 复测：`E:\server_work` 下 6 个外部服务端全部部署同一个 `WorldListTrashCan-universal.jar`，RGB 证据限定聊天框、ActionBar、Title/Subtitle 的真实客户端 F2 截图，不使用箱子 GUI 或物品 Lore；每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-channels-proof-20260607-175511/`。
 - 2026-06-07 已补做高辨识度 RGB 二次复测：上一轮颜色被指出接近传统 `&a`、`&6` 后，调试 Title 改为多段 RGB 的 `RGB TITLE FF1493`，Subtitle 改为 `SUBTITLE FF4F00`。同一批 6 个外部端全部使用 `WorldListTrashCan-universal.jar` 重跑，RGB 截图仍限定聊天框、ActionBar、Title/Subtitle，每端 11 项基础功能检查全部 PASS。截图总览和日志证据目录：`docs/test-evidence/rgb-universal-highcontrast-channels-proof-20260607-202234/`。
-- `docs/重构版完整功能与测试矩阵.md` 当前覆盖 F-001 至 F-094；正式命令入口为 `worldlisttrashcan/wtc`，公开权限为 `WorldListTrashCan.*`。历史 universal 整包矩阵及后续 GUI、世界垃圾桶、保护、实体限制、通知、Vault、公共动作按钮和鞍/主人保护专项共同构成当前回归基线。
+- `docs/重构版完整功能与测试矩阵.md` 当前覆盖 F-001 至 F-095；正式命令入口为 `worldlisttrashcan/wtc`，公开权限为 `WorldListTrashCan.*`。历史 universal 整包矩阵及后续 GUI、世界垃圾桶、保护、实体限制、通知、Vault、公共动作按钮、鞍/主人保护和强制直删世界专项共同构成当前回归基线。
 - 2026-06-26 已补验扫地门禁 `-5` 正式通知：修复旧 `cleanup.yml` 不自动补齐新增 `-5` 文案、普通 Bukkit/Paper/Legacy 跳过路径不发送正式通知的问题。`dist/WorldListTrashCan-universal.jar` SHA256 `5D0BB85487F632DD3BC221D5BC749C5DEB3AF2FF92748E14A0C71A00CB134A0D`，Spigot 26.1.2、Folia 1.21.8、Paper 1.12.2 均用真实客户端和服务端截图复测 PASS；1.12.2 控制台中文乱码，因此以服务端截图中的 `cleanup.yml` `-5` 配置行、`skippedByGuard=true` 汇总和客户端可见中文截图共同验收。证据目录：`docs/test-evidence/cleanup-guard-visual-20260626-214947/`、`docs/test-evidence/cleanup-guard-visual-20260626-215753/`。
 - 2026-06-27 已修复公共垃圾桶按次数刷新时序：`global-trash.clear-every-cleanups: 3` 触发时先清空旧公共垃圾桶，再把本轮清理物品写入公共垃圾桶，避免第 3 次清理把本轮新物品一起清空。`dist/WorldListTrashCan-universal.jar` SHA256 `52da08cc546e767d9a9a6b0bc983b8847c39e7ee787ec930b2c5a8aa3b756466`，Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8 均用真实客户端连续三轮 `/wtc clear` + `/wtc debugstock` 截图复测 PASS；第 3 轮服务端日志为 `globalTrashRefreshed=true`，客户端库存仍为公共垃圾桶物品 `1`。证据目录：`docs/test-evidence/global-refresh-visual-20260627-013926/`、`docs/test-evidence/global-refresh-visual-20260627-014123/`、`docs/test-evidence/global-refresh-visual-20260627-014340/`。
 - 2026-06-30 已补做清理通知专项真实客户端矩阵：同一个 `dist/WorldListTrashCan-universal.jar`，SHA256 `9691aff181a60413cdb2ebfdcade97e68fbb74b3a862757de5f7c5d46aabd5fd`，覆盖 Paper 1.12.2、Spigot 26.1.2、Folia 1.21.8。每端临时开启 `notify.chat/actionbar/bossbar/title/sound/command`，分别触发 `/wtc debugnotify 0` 和 `/wtc debugnotify -5`；真实客户端截图可见 Chat、ActionBar、BossBar、Title，客户端字幕 `Experience gained` 作为 Sound 辅助证据，服务端日志 `AI_WTC_NOTIFY_COMMAND_*` 作为 Command 执行证据。证据目录：`docs/test-evidence/cleanup-notify-visual-20260630-092840/`。

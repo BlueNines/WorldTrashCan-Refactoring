@@ -15,6 +15,12 @@
             <groupId>pixeltech.bluenine</groupId>
             <artifactId>bl-world-trashcan-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

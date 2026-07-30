@@ -25,6 +25,7 @@
 | 实体清理总开关 | `entity-cleanup-toggle-20260702-212255/` | `entities.enabled=false` 保留牛、僵尸、箭、经验球和黑名单命名实体，切回 true 后同批实体清理 |
 | 船内实体保护 | `boat-entity-protection-20260701-171046/` | 船内实体保留、普通实体清理 |
 | 鞍与 Bukkit Tameable 主人保护 | `entity-saddle-owner-visual-20260728-162714/` | 同一个 universal 整包；Paper 1.12.2 与隔离 Paper 1.21.8 真实客户端；有鞍/标准有主实体保留，shooter/source/掉落者/Metadata/PDC owner 不误保护；逐 UUID `5/5`、`7/7`、`8/8` |
+| 强制直删世界 | `direct-remove-world-visual-20260730-211433/` | 同一个 universal 整包；Paper 1.12.2 与 Folia 1.21.8 真实客户端；列表命中时三类回收均为 0、删除 7，reload 移出列表后世界回收 5、删除 0 |
 | 世界垃圾桶边界 | `world-trash-boundary-20260701-172919/` | 创建上限、破坏移除、禁用世界、黑名单降级、未加载区块降级 |
 | 保护边界 | `protection-boundary-20260701-174709/` | 不可拾取箭矢、防踩踏农田 |
 | 世界实体上限 | `world-entity-limit-20260701-180527/` | 世界实体上限和忽略世界 |

@@ -1,0 +1,115 @@
+{
+  "id": "universal_managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 637225,
+    "sha256": "28df61b1e608b06648284fbb7e8152e5249413e6824dbad08108e947321ced24",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "phases": [
+    {
+      "phase": "direct-remove-enabled",
+      "material": "STONE",
+      "amount": 7,
+      "status": "PASS",
+      "expected": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 7
+      },
+      "actual": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 7
+      },
+      "serverExcerpt": "[21:14:57 INFO]: RGBaper1122 issued server command: /wtc clear true\n[21:14:57 INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=0, itemsRemoved=7, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[21:14:57 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=7, groups=0, shown=0, partial=false\n[21:14:57 INFO]: [WorldListTrashCan] [CleanupDetail] items: 7\n",
+      "clientExcerpt": "[21:15:08] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:\n[21:15:08] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[21:15:08] [Client thread/INFO]: [CHAT] - 世界数: 3\n[21:15:08] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[21:15:08] [Client thread/INFO]: [CHAT] - 删除物品: 7\n[21:15:08] [Client thread/INFO]: [CHAT] - 删除实体: 0\n[21:15:08] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[21:15:08] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[21:15:08] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[21:15:08] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 327\n[21:15:11] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.11.png\n[21:15:11] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.11_2.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\direct-remove-world-visual-20260730-211433\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-direct-remove-enabled-clear.png",
+          "size": 27725,
+          "sha256": "beff981d7be5a21a68fedab42c7885cb5944b129a7603f4c37011019965d3d7f",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 172.35188802083334
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\direct-remove-world-visual-20260730-211433\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-direct-remove-enabled-stats.png",
+          "size": 31378,
+          "sha256": "375cb361572148560761e1cce593e472350311a1226b526efe19e703f05e012e",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 154.34765625
+        }
+      ]
+    },
+    {
+      "phase": "direct-remove-disabled-control",
+      "material": "GOLD_INGOT",
+      "amount": 5,
+      "status": "PASS",
+      "expected": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "serverExcerpt": "[21:15:20 INFO]: RGBaper1122 issued server command: /wtc clear true\n[21:15:20 INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=5, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[21:15:20 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=5, groups=0, shown=0, partial=false\n[21:15:20 INFO]: [WorldListTrashCan] [CleanupDetail] items: 5\n",
+      "clientExcerpt": "[21:15:30] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:\n[21:15:30] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[21:15:30] [Client thread/INFO]: [CHAT] - 世界数: 3\n[21:15:30] [Client thread/INFO]: [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)\n[21:15:30] [Client thread/INFO]: [CHAT] - 删除物品: 0\n[21:15:30] [Client thread/INFO]: [CHAT] - 删除实体: 0\n[21:15:30] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[21:15:30] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[21:15:30] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 1\n[21:15:30] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 304\n[21:15:33] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.33.png\n[21:15:34] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.34.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\direct-remove-world-visual-20260730-211433\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-direct-remove-disabled-control-clear.png",
+          "size": 34274,
+          "sha256": "585422241cbb42a06eca50dae2c8523bacdc1c2fd0f3b89bcf4b3b6f14d3ea5d",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 173.7841796875
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\direct-remove-world-visual-20260730-211433\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-direct-remove-disabled-control-stats.png",
+          "size": 33908,
+          "sha256": "f8b082181f5f2f7663fa85c0f8e4d7d8e7d61979a3a0b97315f2bae3c7e84afe",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 156.13704427083334
+        }
+      ]
+    }
+  ],
+  "username": "RGBaper1122",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\direct-remove-world-visual-20260730-211433\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-direct-remove-server.png",
+    "size": 136235,
+    "sha256": "6c9be2772f187b218b5f2e9480d2dd96f1f40f2f15de4d05930a6c59f68eeb6c",
+    "dimensions": [
+      1560,
+      600
+    ],
+    "brightness": 38.786783854166664
+  }
+}

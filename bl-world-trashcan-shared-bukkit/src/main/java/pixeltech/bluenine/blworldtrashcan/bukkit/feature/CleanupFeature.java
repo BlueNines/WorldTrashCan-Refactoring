@@ -168,7 +168,7 @@ public final class CleanupFeature implements Feature {
                 if (cleanupConfig.isIgnoredWorld(world.getName())) {
                     continue;
                 }
-                cleanWorld(world, policy, stats, auditSession);
+                cleanWorld(world, cleanupConfig, policy, stats, auditSession);
             }
         }
         sendPersonalTrashBatchNotify(stats);
@@ -283,7 +283,7 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 清理单个世界。 */
-    private void cleanWorld(World world, CleanupPolicy policy, CleanupStats stats,
+    private void cleanWorld(World world, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats,
                             CleanupAuditSession auditSession) {
         stats.worlds++;
         for (Entity entity : world.getEntities()) {
@@ -291,7 +291,7 @@ public final class CleanupFeature implements Feature {
                 continue;
             }
             if (entity instanceof Item) {
-                cleanItem((Item) entity, policy, stats, auditSession);
+                cleanItem((Item) entity, cleanupConfig, policy, stats, auditSession);
                 continue;
             }
             cleanEntity(entity, policy, stats);
@@ -315,7 +315,7 @@ public final class CleanupFeature implements Feature {
                 if (cleanupConfig.isIgnoredWorld(world.getName())) {
                     continue;
                 }
-                cleanWorld(world, policy, stats, auditSession);
+                cleanWorld(world, cleanupConfig, policy, stats, auditSession);
             }
             return;
         }
@@ -332,19 +332,19 @@ public final class CleanupFeature implements Feature {
                     continue;
                 }
                 if (!thresholdReached) {
-                    if (isCleanableTarget(entity, policy)) {
+                    if (isCleanableTarget(entity, cleanupConfig, policy)) {
                         deferredTargets.add(entity);
                         stats.setGuardTargetEntities(stats.getGuardTargetEntities() + 1);
                         if (stats.getGuardTargetEntities() >= minTotalEntities) {
                             thresholdReached = true;
                             handleGlobalTrashRefresh(bundle, stats);
-                            cleanDeferredTargets(deferredTargets, policy, stats, auditSession);
+                            cleanDeferredTargets(deferredTargets, cleanupConfig, policy, stats, auditSession);
                             deferredTargets.clear();
                         }
                     }
                     continue;
                 }
-                cleanNonPlayerEntity(entity, policy, stats, auditSession);
+                cleanNonPlayerEntity(entity, cleanupConfig, policy, stats, auditSession);
             }
         }
         if (!thresholdReached) {
@@ -361,7 +361,7 @@ public final class CleanupFeature implements Feature {
             }
             result.worlds++;
             for (Entity entity : world.getEntities()) {
-                if (!(entity instanceof Player) && isCleanableTarget(entity, policy)) {
+                if (!(entity instanceof Player) && isCleanableTarget(entity, cleanupConfig, policy)) {
                     result.targetEntities++;
                 }
             }
@@ -370,47 +370,45 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 清理门禁通过前暂存的候选实体。 */
-    private void cleanDeferredTargets(List<Entity> deferredTargets, CleanupPolicy policy, CleanupStats stats,
+    private void cleanDeferredTargets(List<Entity> deferredTargets, CleanupConfig cleanupConfig,
+                                      CleanupPolicy policy, CleanupStats stats,
                                       CleanupAuditSession auditSession) {
         for (Entity entity : deferredTargets) {
             if (entity == null || entity.isDead()) {
                 continue;
             }
-            cleanNonPlayerEntity(entity, policy, stats, auditSession);
+            cleanNonPlayerEntity(entity, cleanupConfig, policy, stats, auditSession);
         }
     }
 
     /** 清理一个非玩家实体。 */
-    private void cleanNonPlayerEntity(Entity entity, CleanupPolicy policy, CleanupStats stats,
+    private void cleanNonPlayerEntity(Entity entity, CleanupConfig cleanupConfig, CleanupPolicy policy,
+                                      CleanupStats stats,
                                       CleanupAuditSession auditSession) {
         if (entity instanceof Item) {
-            cleanItem((Item) entity, policy, stats, auditSession);
+            cleanItem((Item) entity, cleanupConfig, policy, stats, auditSession);
             return;
         }
         cleanEntity(entity, policy, stats);
     }
 
     /** 判断实体是否会被本轮扫地处理。 */
-    private boolean isCleanableTarget(Entity entity, CleanupPolicy policy) {
+    private boolean isCleanableTarget(Entity entity, CleanupConfig cleanupConfig, CleanupPolicy policy) {
         if (entity instanceof Item) {
-            return isCleanableItemTarget((Item) entity, policy);
+            return isCleanableItemTarget((Item) entity, cleanupConfig, policy);
         }
         EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
         return decision.getAction() == EntityCleanupAction.REMOVE;
     }
 
     /** 判断掉落物是否会被本轮扫地路由或删除。 */
-    private boolean isCleanableItemTarget(Item item, CleanupPolicy policy) {
+    private boolean isCleanableItemTarget(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy) {
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
             return false;
         }
-        boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), itemStack);
-        UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
-        boolean personalTrash = trashRouter.hasPersonalTrash(ownerUuid, itemStack);
-        boolean globalTrash = trashRouter.hasGlobalTrash(itemStack);
-        TrashRoutingDecision decision = policy.decideItem(snapshot, worldTrash, personalTrash, globalTrash);
+        TrashRoutingDecision decision = decideItemRoute(item, snapshot, itemStack, cleanupConfig, policy);
         return decision.getRoute() != TrashRoute.SKIP;
     }
 
@@ -427,17 +425,15 @@ public final class CleanupFeature implements Feature {
     }
 
     /** 清理单个掉落物实体。 */
-    private void cleanItem(Item item, CleanupPolicy policy, CleanupStats stats,
+    private void cleanItem(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats,
                            CleanupAuditSession auditSession) {
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         if (snapshot == null) {
             stats.itemsSkipped++;
             return;
         }
-        boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), item.getItemStack());
-        boolean personalTrash = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
-        boolean globalTrash = trashRouter.hasGlobalTrash(item.getItemStack());
-        TrashRoutingDecision decision = policy.decideItem(snapshot, worldTrash, personalTrash, globalTrash);
+        TrashRoutingDecision decision = decideItemRoute(
+                item, snapshot, item.getItemStack(), cleanupConfig, policy);
         if (decision.getRoute() == TrashRoute.SKIP) {
             stats.itemsSkipped++;
             return;
@@ -452,11 +448,31 @@ public final class CleanupFeature implements Feature {
         }
     }
 
+    /** 生成扫地物品的首个路由决策，强制直删世界不会查询任何垃圾桶。 */
+    private TrashRoutingDecision decideItemRoute(Item item, ItemSnapshot snapshot, ItemStack itemStack,
+                                                 CleanupConfig cleanupConfig, CleanupPolicy policy) {
+        if (cleanupConfig.isDirectRemoveWorld(item.getWorld().getName())) {
+            TrashRoutingDecision decision = policy.decideItem(snapshot, false, false, false);
+            if (decision.getRoute() == TrashRoute.REMOVE) {
+                return new TrashRoutingDecision(TrashRoute.REMOVE, "direct-remove-world");
+            }
+            return decision;
+        }
+        boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), itemStack);
+        UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
+        boolean personalTrash = trashRouter.hasPersonalTrash(ownerUuid, itemStack);
+        boolean globalTrash = trashRouter.hasGlobalTrash(itemStack);
+        return policy.decideItem(snapshot, worldTrash, personalTrash, globalTrash);
+    }
+
     /** 按核心决策尝试路由，失败后逐级降级到删除。 */
     private TrashRoutingDecision routeWithFallback(Item item, ItemSnapshot snapshot, CleanupPolicy policy,
                                                    TrashRoutingDecision firstDecision, CleanupStats stats,
                                                    CleanupAuditSession auditSession) {
         TrashRoutingDecision decision = firstDecision;
+        if (decision.getRoute() == TrashRoute.REMOVE || decision.getRoute() == TrashRoute.SKIP) {
+            return decision;
+        }
         boolean worldAvailable = trashRouter.hasWorldTrash(item.getWorld(), item.getItemStack());
         boolean personalAvailable = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
         boolean globalAvailable = trashRouter.hasGlobalTrash(item.getItemStack());
@@ -468,8 +484,7 @@ public final class CleanupFeature implements Feature {
                 forgetTrackedOwner(item);
                 item.remove();
                 auditSession.recordItem(routedItemStack, routed.getDestination());
-                stats.itemsRouted += Math.max(1, snapshot.getAmount());
-                countRoute(stats, decision.getRoute());
+                stats.addItemsRouted(snapshot.getAmount(), decision.getRoute());
                 if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {
                     stats.addPersonalTrashItem(snapshot.getOwnerUuid(), routedItemStack);
                 }
@@ -511,17 +526,6 @@ public final class CleanupFeature implements Feature {
     private void forgetTrackedOwner(Item item) {
         if (dropOwnerTracker != null) {
             dropOwnerTracker.removeOwner(item);
-        }
-    }
-
-    /** 统计物品进入的垃圾桶类型。 */
-    private void countRoute(CleanupStats stats, TrashRoute route) {
-        if (route == TrashRoute.WORLD_TRASH) {
-            stats.itemsToWorldTrash++;
-        } else if (route == TrashRoute.PERSONAL_TRASH) {
-            stats.itemsToPersonalTrash++;
-        } else if (route == TrashRoute.GLOBAL_TRASH) {
-            stats.itemsToGlobalTrash++;
         }
     }
 

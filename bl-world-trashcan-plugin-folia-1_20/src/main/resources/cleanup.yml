@@ -7,6 +7,11 @@ interval-seconds: 360
 ignored-worlds:
   - "testWorld"
 
+# 强制直接删除扫地物品的世界名列表。
+# 命中后，物品仍会先经过 ignored-materials、名字和 lore 保护；确认需要清理后不会进入世界、个人或公共垃圾桶，而是直接删除。
+# 仅影响定时扫地和 /wtc clear，不影响仙人掌、岩浆、虚空等独立回收功能；默认 [] 表示关闭。
+direct-remove-worlds: []
+
 # 扫地启动门禁。
 # 这些配置只决定“本轮扫地是否启动”，不会改变具体哪些物品或实体会被清理。
 guards:

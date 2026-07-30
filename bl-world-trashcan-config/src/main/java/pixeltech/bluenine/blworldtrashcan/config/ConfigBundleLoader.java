@@ -38,6 +38,7 @@ public final class ConfigBundleLoader {
         CleanupConfig cleanupConfig = new CleanupConfig(
                 cleanup.getInt("interval-seconds", 360),
                 toSet(cleanup.getStringList("ignored-worlds")),
+                toSet(cleanup.getStringList("direct-remove-worlds")),
                 cleanupSettings,
                 new CleanupConfig.CleanupGuardConfig(
                         cleanup.getInt("guards.min-online-players", 1),

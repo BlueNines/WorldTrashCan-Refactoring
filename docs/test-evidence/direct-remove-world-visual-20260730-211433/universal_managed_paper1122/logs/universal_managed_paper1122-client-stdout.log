@@ -1,0 +1,46 @@
+Completely ignored arguments: [legacy]
+[21:14:36] [Client thread/INFO]: Setting user: RGBaper1122
+[21:14:37] [Client thread/INFO]: LWJGL Version: 2.9.4
+[21:14:37] [Client thread/INFO]: Reloading ResourceManager: Default
+[21:14:38] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[21:14:38] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[21:14:38] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[21:14:38] [Thread-3/INFO]: OpenAL initialized.
+[21:14:38] [Sound Library Loader/INFO]: Sound engine started
+[21:14:39] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[21:14:39] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[21:14:39] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[21:14:41] [Client thread/INFO]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.3)
+[21:14:41] [Client thread/INFO]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[21:14:41] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[21:14:42] [Client thread/INFO]: [CHAT] [Server: Opped RGBaper1122]
+[21:14:57] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理完成 | 世界 3, 回收 0, 移除物品 7, 移除实体 0。
+[21:15:01] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.01.png
+[21:15:01] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.01_2.png
+[21:15:08] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[21:15:08] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)
+[21:15:08] [Client thread/INFO]: [CHAT] - 世界数: 3
+[21:15:08] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[21:15:08] [Client thread/INFO]: [CHAT] - 删除物品: 7
+[21:15:08] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[21:15:08] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[21:15:08] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[21:15:08] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[21:15:08] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 327
+[21:15:11] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.11.png
+[21:15:11] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.11_2.png
+[21:15:20] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理完成 | 世界 3, 回收 5, 移除物品 0, 移除实体 0。
+[21:15:23] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.23.png
+[21:15:24] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.24.png
+[21:15:30] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[21:15:30] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)
+[21:15:30] [Client thread/INFO]: [CHAT] - 世界数: 3
+[21:15:30] [Client thread/INFO]: [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)
+[21:15:30] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[21:15:30] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[21:15:30] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[21:15:30] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[21:15:30] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 1
+[21:15:30] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 304
+[21:15:33] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.33.png
+[21:15:34] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-07-30_21.15.34.png

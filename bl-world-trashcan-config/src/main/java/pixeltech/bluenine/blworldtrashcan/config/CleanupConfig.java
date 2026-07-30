@@ -11,26 +11,37 @@ import java.util.Set;
 public final class CleanupConfig {
     private final int intervalSeconds;
     private final Set<String> ignoredWorlds;
+    private final Set<String> directRemoveWorlds;
     private final CleanupSettings settings;
     private final CleanupGuardConfig guardConfig;
     private final FoliaCleanupConfig foliaCleanup;
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings) {
-        this(intervalSeconds, ignoredWorlds, settings, CleanupGuardConfig.defaults(), FoliaCleanupConfig.defaults());
+        this(intervalSeconds, ignoredWorlds, Collections.<String>emptySet(), settings,
+                CleanupGuardConfig.defaults(), FoliaCleanupConfig.defaults());
     }
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings,
                          FoliaCleanupConfig foliaCleanup) {
-        this(intervalSeconds, ignoredWorlds, settings, CleanupGuardConfig.defaults(), foliaCleanup);
+        this(intervalSeconds, ignoredWorlds, Collections.<String>emptySet(), settings,
+                CleanupGuardConfig.defaults(), foliaCleanup);
     }
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings,
                          CleanupGuardConfig guardConfig, FoliaCleanupConfig foliaCleanup) {
+        this(intervalSeconds, ignoredWorlds, Collections.<String>emptySet(), settings, guardConfig, foliaCleanup);
+    }
+
+    /** 创建包含强制直接删除世界列表的清理配置。 */
+    public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, Set<String> directRemoveWorlds,
+                         CleanupSettings settings, CleanupGuardConfig guardConfig,
+                         FoliaCleanupConfig foliaCleanup) {
         this.intervalSeconds = Math.max(0, intervalSeconds);
         this.ignoredWorlds = normalizeWorlds(ignoredWorlds);
+        this.directRemoveWorlds = normalizeWorlds(directRemoveWorlds);
         this.settings = settings;
         this.guardConfig = guardConfig == null ? CleanupGuardConfig.defaults() : guardConfig;
         this.foliaCleanup = foliaCleanup == null ? FoliaCleanupConfig.defaults() : foliaCleanup;
@@ -43,10 +54,12 @@ public final class CleanupConfig {
 
     /** 判断世界是否跳过清理。 */
     public boolean isIgnoredWorld(String worldName) {
-        if (worldName == null) {
-            return false;
-        }
-        return ignoredWorlds.contains(worldName.trim().toLowerCase(Locale.ROOT));
+        return containsWorld(ignoredWorlds, worldName);
+    }
+
+    /** 判断该世界里的扫地物品是否必须绕过所有垃圾桶并直接删除。 */
+    public boolean isDirectRemoveWorld(String worldName) {
+        return containsWorld(directRemoveWorlds, worldName);
     }
 
     /** 返回核心清理策略配置。 */
@@ -76,6 +89,14 @@ public final class CleanupConfig {
             }
         }
         return Collections.unmodifiableSet(result);
+    }
+
+    /** 判断标准化世界集合是否包含指定世界名。 */
+    private static boolean containsWorld(Set<String> worlds, String worldName) {
+        if (worldName == null) {
+            return false;
+        }
+        return worlds.contains(worldName.trim().toLowerCase(Locale.ROOT));
     }
 
     /** 扫地启动前置门禁配置。 */

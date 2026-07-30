@@ -7,11 +7,6 @@ interval-seconds: 360
 ignored-worlds:
   - "testWorld"
 
-# 强制直接删除扫地物品的世界名列表。
-# 命中后，物品仍会先经过 ignored-materials、名字和 lore 保护；确认需要清理后不会进入世界、个人或公共垃圾桶，而是直接删除。
-# 仅影响定时扫地和 /wtc clear，不影响仙人掌、岩浆、虚空等独立回收功能；默认 [] 表示关闭。
-direct-remove-worlds: []
-
 # 扫地启动门禁。
 # 这些配置只决定“本轮扫地是否启动”，不会改变具体哪些物品或实体会被清理。
 guards:
@@ -67,12 +62,6 @@ entities:
   clear-named-entities: false
   # 是否跳过船内实体。
   ignore-entities-in-boat: false
-  # 是否跳过实际装备了鞍的实体。
-  # 默认 true；支持当前平台 Bukkit API 可识别的马、驴、骡、猪、炽足兽、骆驼等坐骑。
-  ignore-entities-with-saddle: true
-  # 是否跳过拥有 Bukkit Tameable 主人的实体。
-  # 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
-  ignore-entities-with-owner: true
   # 实体白名单；命中后不清理，支持 * 通配。
   whitelist:
     - "VILLAGER"

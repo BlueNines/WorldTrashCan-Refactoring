@@ -293,7 +293,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
         if (!ignoreGuards && guardConfig.getMinTotalEntities() > 0) {
             final GuardCountTracker guardTracker = new GuardCountTracker(
-                    stats, foliaConfig, chunksToScan, policy, trigger, ignoreGuards);
+                    stats, cleanupConfig, foliaConfig, chunksToScan, policy, trigger, ignoreGuards);
             guardTracker.startTimeout();
             scheduleGuardCountBatch(chunksToScan, 0, policy, guardTracker, foliaConfig);
             return;
@@ -301,7 +301,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         stats.setGuardTargetEntities(0);
         handleGlobalTrashRefresh(stats);
         final CompletionTracker tracker = new CompletionTracker(
-                stats, foliaConfig, beginAudit(trigger, ignoreGuards));
+                stats, cleanupConfig, foliaConfig, beginAudit(trigger, ignoreGuards));
         tracker.recordCollectedChunks(chunksSeen, chunksSkippedByLimit);
         tracker.startTimeout();
         scheduleChunkBatch(chunksToScan, 0, policy, stats, tracker, foliaConfig);
@@ -381,7 +381,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             if (!tracker.isOpen()) {
                 return;
             }
-            if (!(entity instanceof Player) && isCleanableTarget(entity, policy)) {
+            if (!(entity instanceof Player) && isCleanableTarget(entity, tracker.cleanupConfig, policy)) {
                 tracker.targetFound();
             }
         }
@@ -414,7 +414,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
         handleGlobalTrashRefresh(stats);
         CompletionTracker cleanupTracker = new CompletionTracker(
-                stats, tracker.foliaConfig, beginAudit(tracker.trigger, tracker.guardsIgnored));
+                stats, tracker.cleanupConfig, tracker.foliaConfig,
+                beginAudit(tracker.trigger, tracker.guardsIgnored));
         cleanupTracker.recordCollectedChunks(tracker.chunks.size(), 0);
         cleanupTracker.startTimeout();
         scheduleChunkBatch(tracker.chunks, 0, tracker.policy, stats, cleanupTracker, tracker.foliaConfig);
@@ -510,22 +511,22 @@ public final class FoliaRegionCleanupFeature implements Feature {
     }
 
     /** 判断实体是否会被本轮扫地处理。 */
-    private boolean isCleanableTarget(Entity entity, CleanupPolicy policy) {
+    private boolean isCleanableTarget(Entity entity, CleanupConfig cleanupConfig, CleanupPolicy policy) {
         if (entity instanceof Item) {
-            return isCleanableItemTarget((Item) entity, policy);
+            return isCleanableItemTarget((Item) entity, cleanupConfig, policy);
         }
         EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
         return decision.getAction() == EntityCleanupAction.REMOVE;
     }
 
     /** 判断掉落物是否会被本轮扫地路由或删除。 */
-    private boolean isCleanableItemTarget(Item item, CleanupPolicy policy) {
+    private boolean isCleanableItemTarget(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy) {
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
             return false;
         }
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
-        RouteState state = initialRouteState(item.getWorld(), snapshot, itemStack);
+        RouteState state = initialRouteState(item.getWorld(), snapshot, itemStack, cleanupConfig);
         TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable, state.personalAvailable, state.globalAvailable);
         return decision.getRoute() != TrashRoute.SKIP;
     }
@@ -542,12 +543,16 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
         ItemStack routedStack = itemStack.clone();
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
-        RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack);
+        RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack, tracker.cleanupConfig);
         routeWithFallback(item, routedStack, snapshot, policy, state, stats, tracker);
     }
 
     /** 生成初始路由可用性。 */
-    private RouteState initialRouteState(World world, ItemSnapshot snapshot, ItemStack itemStack) {
+    private RouteState initialRouteState(World world, ItemSnapshot snapshot, ItemStack itemStack,
+                                         CleanupConfig cleanupConfig) {
+        if (cleanupConfig.isDirectRemoveWorld(world.getName())) {
+            return new RouteState(false, false, false);
+        }
         UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
         synchronized (trashRouter) {
             return new RouteState(
@@ -1339,6 +1344,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** Folia 门禁目标实体计数跟踪器。 */
     private final class GuardCountTracker {
         private final CleanupFeature.CleanupStats stats;
+        private final CleanupConfig cleanupConfig;
         private final CleanupConfig.FoliaCleanupConfig foliaConfig;
         private final List<Chunk> chunks;
         private final CleanupPolicy policy;
@@ -1350,10 +1356,11 @@ public final class FoliaRegionCleanupFeature implements Feature {
         private TaskHandle timeoutTask;
 
         /** 创建 Folia 门禁目标实体计数跟踪器。 */
-        private GuardCountTracker(CleanupFeature.CleanupStats stats, CleanupConfig.FoliaCleanupConfig foliaConfig,
-                                  List<Chunk> chunks, CleanupPolicy policy, CleanupTrigger trigger,
-                                  boolean guardsIgnored) {
+        private GuardCountTracker(CleanupFeature.CleanupStats stats, CleanupConfig cleanupConfig,
+                                  CleanupConfig.FoliaCleanupConfig foliaConfig, List<Chunk> chunks,
+                                  CleanupPolicy policy, CleanupTrigger trigger, boolean guardsIgnored) {
             this.stats = stats;
+            this.cleanupConfig = cleanupConfig;
             this.foliaConfig = foliaConfig;
             this.chunks = chunks;
             this.policy = policy;
@@ -1422,6 +1429,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** 异步清理完成跟踪器。 */
     private final class CompletionTracker {
         private final CleanupFeature.CleanupStats stats;
+        private final CleanupConfig cleanupConfig;
         private final CleanupConfig.FoliaCleanupConfig foliaConfig;
         private final CleanupAuditSession auditSession;
         private final long startedAtMillis = System.currentTimeMillis();
@@ -1435,9 +1443,10 @@ public final class FoliaRegionCleanupFeature implements Feature {
         private TaskHandle timeoutTask;
 
         /** 创建完成跟踪器。 */
-        private CompletionTracker(CleanupFeature.CleanupStats stats, CleanupConfig.FoliaCleanupConfig foliaConfig,
-                                  CleanupAuditSession auditSession) {
+        private CompletionTracker(CleanupFeature.CleanupStats stats, CleanupConfig cleanupConfig,
+                                  CleanupConfig.FoliaCleanupConfig foliaConfig, CleanupAuditSession auditSession) {
             this.stats = stats;
+            this.cleanupConfig = cleanupConfig;
             this.foliaConfig = foliaConfig;
             this.auditSession = auditSession;
         }
