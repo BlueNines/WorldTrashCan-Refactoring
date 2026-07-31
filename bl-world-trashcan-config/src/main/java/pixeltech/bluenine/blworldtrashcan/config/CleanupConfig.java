@@ -15,6 +15,7 @@ public final class CleanupConfig {
     private final CleanupSettings settings;
     private final CleanupGuardConfig guardConfig;
     private final FoliaCleanupConfig foliaCleanup;
+    private final MovingItemConfig movingItems;
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings) {
@@ -39,12 +40,21 @@ public final class CleanupConfig {
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, Set<String> directRemoveWorlds,
                          CleanupSettings settings, CleanupGuardConfig guardConfig,
                          FoliaCleanupConfig foliaCleanup) {
+        this(intervalSeconds, ignoredWorlds, directRemoveWorlds, settings, guardConfig, foliaCleanup,
+                MovingItemConfig.defaults());
+    }
+
+    /** 创建包含全部扫地保护项的清理配置。 */
+    public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, Set<String> directRemoveWorlds,
+                         CleanupSettings settings, CleanupGuardConfig guardConfig,
+                         FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems) {
         this.intervalSeconds = Math.max(0, intervalSeconds);
         this.ignoredWorlds = normalizeWorlds(ignoredWorlds);
         this.directRemoveWorlds = normalizeWorlds(directRemoveWorlds);
         this.settings = settings;
         this.guardConfig = guardConfig == null ? CleanupGuardConfig.defaults() : guardConfig;
         this.foliaCleanup = foliaCleanup == null ? FoliaCleanupConfig.defaults() : foliaCleanup;
+        this.movingItems = movingItems == null ? MovingItemConfig.defaults() : movingItems;
     }
 
     /** 返回清理间隔秒数，0 表示只允许手动清理。 */
@@ -75,6 +85,11 @@ public final class CleanupConfig {
     /** 返回 Folia 专用清理保护配置。 */
     public FoliaCleanupConfig getFoliaCleanup() {
         return foliaCleanup;
+    }
+
+    /** 返回扫地时的移动物品保护配置。 */
+    public MovingItemConfig getMovingItems() {
+        return movingItems;
     }
 
     /** 标准化世界名集合。 */
@@ -180,6 +195,50 @@ public final class CleanupConfig {
         /** 返回每批 chunk 扫描任务之间的延迟 tick，最小为 1。 */
         public int getChunkBatchDelayTicks() {
             return chunkBatchDelayTicks;
+        }
+    }
+
+    /** 扫地时的移动物品保护配置。 */
+    public static final class MovingItemConfig {
+        private static final double DEFAULT_MINIMUM_SPEED = 0.01D;
+
+        private final boolean enabled;
+        private final double minimumSpeed;
+        private final double minimumSpeedSquared;
+
+        /** 创建移动物品保护配置。 */
+        public MovingItemConfig(boolean enabled, double minimumSpeed) {
+            this.enabled = enabled;
+            this.minimumSpeed = normalizeMinimumSpeed(minimumSpeed);
+            this.minimumSpeedSquared = this.minimumSpeed * this.minimumSpeed;
+        }
+
+        /** 返回默认关闭的移动物品保护配置。 */
+        public static MovingItemConfig defaults() {
+            return new MovingItemConfig(false, DEFAULT_MINIMUM_SPEED);
+        }
+
+        /** 判断扫地时是否检查并跳过移动物品。 */
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /** 返回最低移动速度，单位为方块/tick。 */
+        public double getMinimumSpeed() {
+            return minimumSpeed;
+        }
+
+        /** 判断速度平方是否达到移动阈值。 */
+        public boolean isMoving(double velocitySquared) {
+            return enabled && velocitySquared >= minimumSpeedSquared;
+        }
+
+        /** 规范化最低移动速度，非法值回退到安全默认值。 */
+        private static double normalizeMinimumSpeed(double minimumSpeed) {
+            if (minimumSpeed <= 0D || Double.isNaN(minimumSpeed) || Double.isInfinite(minimumSpeed)) {
+                return DEFAULT_MINIMUM_SPEED;
+            }
+            return minimumSpeed;
         }
     }
 }

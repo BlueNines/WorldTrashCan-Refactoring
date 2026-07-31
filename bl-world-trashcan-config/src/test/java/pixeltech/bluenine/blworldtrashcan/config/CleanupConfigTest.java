@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -37,6 +38,43 @@ public final class CleanupConfigTest {
         assertFalse(config.isDirectRemoveWorld("ignored_world"));
         assertTrue(config.isIgnoredWorld("IGNORED_WORLD"));
         assertFalse(config.isIgnoredWorld("world_nether"));
+    }
+
+    /** 验证旧配置缺少移动物品保护项时默认关闭。 */
+    @Test
+    public void missingMovingItemsConfigDefaultsToDisabled() {
+        CleanupConfig.MovingItemConfig movingItems = load(new MapConfigurationSource())
+                .getCleanupConfig().getMovingItems();
+
+        assertFalse(movingItems.isEnabled());
+        assertEquals(0.01D, movingItems.getMinimumSpeed(), 0D);
+        assertFalse(movingItems.isMoving(100D));
+    }
+
+    /** 验证开启后按速度平方边界判断移动。 */
+    @Test
+    public void movingItemsUseConfiguredSpeedThreshold() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("moving-items.enabled", true);
+        cleanup.put("moving-items.minimum-speed", 0.05D);
+
+        CleanupConfig.MovingItemConfig movingItems = load(cleanup).getCleanupConfig().getMovingItems();
+
+        assertTrue(movingItems.isEnabled());
+        assertFalse(movingItems.isMoving(0.00249D));
+        assertTrue(movingItems.isMoving(0.00251D));
+    }
+
+    /** 验证非正数和非有限阈值不会让浮点抖动全部命中。 */
+    @Test
+    public void invalidMovingSpeedFallsBackToSafeDefault() {
+        CleanupConfig.MovingItemConfig zero = new CleanupConfig.MovingItemConfig(true, 0D);
+        CleanupConfig.MovingItemConfig nan = new CleanupConfig.MovingItemConfig(true, Double.NaN);
+
+        assertEquals(0.01D, zero.getMinimumSpeed(), 0D);
+        assertEquals(0.01D, nan.getMinimumSpeed(), 0D);
+        assertFalse(zero.isMoving(0.000099D));
+        assertTrue(zero.isMoving(0.0001D));
     }
 
     /** 使用空配置补齐其他配置源并加载完整配置。 */

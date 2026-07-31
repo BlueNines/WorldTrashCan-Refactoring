@@ -49,6 +49,10 @@ public final class ConfigBundleLoader {
                         cleanup.getInt("folia.max-chunks-per-cleanup", 4096),
                         cleanup.getInt("folia.chunk-batch-size", 64),
                         cleanup.getInt("folia.chunk-batch-delay-ticks", 1)
+                ),
+                new CleanupConfig.MovingItemConfig(
+                        cleanup.getBoolean("moving-items.enabled", false),
+                        cleanup.getDouble("moving-items.minimum-speed", 0.01D)
                 )
         );
         TrashConfig trashConfig = new TrashConfig(

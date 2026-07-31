@@ -1,0 +1,162 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 639449,
+    "sha256": "d8acc3e9906fa9a1173181a3a9c1ba843deef91fa07eb709957d4e4ece56ee0b",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "phases": [
+    {
+      "phase": "moving-items-disabled-moving",
+      "enabled": false,
+      "moving": true,
+      "expected": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": false,
+      "status": "PASS",
+      "serverExcerpt": "[04:47:41 INFO]: AI_MOVING_FIXTURE_RESULT success=true moving=true\n[04:47:48 INFO]: RGBolia1218 issued server command: /wtc clear true\n[04:47:49 INFO]: [WorldListTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=5, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=27, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=589, clearEvery=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[04:47:49 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=5, groups=0, shown=0, partial=false\n[04:47:49 INFO]: [WorldListTrashCan] [CleanupDetail] items: 5\n[04:47:49 INFO]: 清理成功，有5个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)\n[04:47:49 INFO]: 公共垃圾桶的物品已刷新\n\n",
+      "clientExcerpt": "[04:48:04] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[04:48:04] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[04:48:07] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-01_04.48.07.png\n[04:48:08] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-01_04.48.08.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\screenshots\\universal_folia1218-moving-items-disabled-moving-clear.png",
+          "size": 381567,
+          "sha256": "6829b7a657d4e4e0c5e798212ad5fd5c75de6959b9640b0be8dc7e70eb7f44f4",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 101.6650390625
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\screenshots\\universal_folia1218-moving-items-disabled-moving-stats.png",
+          "size": 380659,
+          "sha256": "caf3918f63ce467287adfa3a8400bd0caafd73e6fc10665227f8164e018b5335",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 96.51399739583333
+        }
+      ]
+    },
+    {
+      "phase": "moving-items-enabled-moving",
+      "enabled": true,
+      "moving": true,
+      "expected": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": true,
+      "status": "PASS",
+      "serverExcerpt": "[04:48:10 INFO]: AI_MOVING_FIXTURE_RESULT success=true moving=true\n[04:48:17 INFO]: RGBolia1218 issued server command: /wtc clear true\n[04:48:17 INFO]: [WorldListTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=0, itemsRemoved=0, itemsSkipped=5, entitiesRemoved=0, entitiesSkipped=27, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=601, clearEvery=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[04:48:17 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=0, groups=0, shown=0, partial=false\n[04:48:17 INFO]: [WorldListTrashCan] [CleanupDetail] items: 0\n[04:48:17 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)\n[04:48:17 INFO]: 公共垃圾桶的物品已刷新\n\n[04:48:37 INFO]: [Not Secure] [Server] AI_WTC_MOVING_ITEM_REMAINS\n",
+      "clientExcerpt": "[04:48:33] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[04:48:33] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[04:48:36] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-01_04.48.36.png\n[04:48:37] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-01_04.48.37.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\screenshots\\universal_folia1218-moving-items-enabled-moving-clear.png",
+          "size": 380379,
+          "sha256": "095153a8911ab1b4c096aef6dca68392c2271fd8c2cbec0f3c2ce82a77988468",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 101.75520833333333
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\screenshots\\universal_folia1218-moving-items-enabled-moving-stats.png",
+          "size": 380610,
+          "sha256": "3ea7af2c8574a8bfd22fb1681ffc68b23d56f5cdf6dbbdc9d115a785f2a67cc1",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 96.5185546875
+        }
+      ]
+    },
+    {
+      "phase": "moving-items-enabled-stationary",
+      "enabled": true,
+      "moving": false,
+      "expected": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": false,
+      "status": "PASS",
+      "serverExcerpt": "[04:48:38 INFO]: AI_MOVING_FIXTURE_RESULT success=true moving=false\n[04:48:45 INFO]: RGBolia1218 issued server command: /wtc clear true\n[04:48:46 INFO]: [WorldListTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=5, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=27, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=580, clearEvery=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[04:48:46 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=5, groups=0, shown=0, partial=false\n[04:48:46 INFO]: [WorldListTrashCan] [CleanupDetail] items: 5\n[04:48:46 INFO]: 清理成功，有5个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)\n[04:48:46 INFO]: 公共垃圾桶的物品已刷新\n\n",
+      "clientExcerpt": "[04:49:02] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[04:49:02] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[04:49:05] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-01_04.49.05.png\n[04:49:05] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-01_04.49.05_2.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\screenshots\\universal_folia1218-moving-items-enabled-stationary-clear.png",
+          "size": 377853,
+          "sha256": "a94c4e3a177883bbb6004063dc6e7321c8870f766c96707d669af5894e9db0ef",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 102.05078125
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\screenshots\\universal_folia1218-moving-items-enabled-stationary-stats.png",
+          "size": 380768,
+          "sha256": "5c778f9270a7d46713b840b0d4d57871723b6f8fa08e7e5bba276b7f9d52f40d",
+          "dimensions": [
+            882,
+            513
+          ],
+          "brightness": 96.54427083333333
+        }
+      ]
+    }
+  ],
+  "username": "RGBolia1218",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_folia1218\\server-screenshots\\universal_folia1218-moving-items-server.png",
+    "size": 334291,
+    "sha256": "16e84f6fb2ed02837ad90bdbb1188761c0c6d222e27da9800181f3a877764965",
+    "dimensions": [
+      1560,
+      1575
+    ],
+    "brightness": 37.922526041666664
+  }
+}

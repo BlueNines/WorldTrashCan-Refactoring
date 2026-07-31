@@ -16,6 +16,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupConsoleDetailFormatter;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
@@ -521,6 +522,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
 
     /** 判断掉落物是否会被本轮扫地路由或删除。 */
     private boolean isCleanableItemTarget(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy) {
+        if (isMovingItemProtected(item, cleanupConfig)) {
+            return false;
+        }
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
             return false;
@@ -541,10 +545,24 @@ public final class FoliaRegionCleanupFeature implements Feature {
             stats.addItemsSkipped(1);
             return;
         }
+        if (isMovingItemProtected(item, tracker.cleanupConfig)) {
+            stats.addItemsSkipped(itemStack.getAmount());
+            return;
+        }
         ItemStack routedStack = itemStack.clone();
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack, tracker.cleanupConfig);
         routeWithFallback(item, routedStack, snapshot, policy, state, stats, tracker);
+    }
+
+    /** 判断掉落物是否因当前速度达到阈值而在本轮扫地中受保护。 */
+    private boolean isMovingItemProtected(Item item, CleanupConfig cleanupConfig) {
+        CleanupConfig.MovingItemConfig movingItems = cleanupConfig.getMovingItems();
+        if (!movingItems.isEnabled()) {
+            return false;
+        }
+        Vector velocity = item.getVelocity();
+        return movingItems.isMoving(velocity.lengthSquared());
     }
 
     /** 生成初始路由可用性。 */

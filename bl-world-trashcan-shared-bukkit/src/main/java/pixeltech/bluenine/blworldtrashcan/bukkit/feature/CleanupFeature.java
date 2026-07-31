@@ -11,6 +11,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
@@ -403,6 +404,9 @@ public final class CleanupFeature implements Feature {
 
     /** 判断掉落物是否会被本轮扫地路由或删除。 */
     private boolean isCleanableItemTarget(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy) {
+        if (isMovingItemProtected(item, cleanupConfig)) {
+            return false;
+        }
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
@@ -427,6 +431,10 @@ public final class CleanupFeature implements Feature {
     /** 清理单个掉落物实体。 */
     private void cleanItem(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats,
                            CleanupAuditSession auditSession) {
+        if (isMovingItemProtected(item, cleanupConfig)) {
+            stats.itemsSkipped++;
+            return;
+        }
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         if (snapshot == null) {
             stats.itemsSkipped++;
@@ -446,6 +454,16 @@ public final class CleanupFeature implements Feature {
             auditSession.recordItem(removedItemStack, CleanupItemDestination.directRemove());
             stats.itemsRemoved += Math.max(1, snapshot.getAmount());
         }
+    }
+
+    /** 判断掉落物是否因当前速度达到阈值而在本轮扫地中受保护。 */
+    private boolean isMovingItemProtected(Item item, CleanupConfig cleanupConfig) {
+        CleanupConfig.MovingItemConfig movingItems = cleanupConfig.getMovingItems();
+        if (!movingItems.isEnabled()) {
+            return false;
+        }
+        Vector velocity = item.getVelocity();
+        return movingItems.isMoving(velocity.lengthSquared());
     }
 
     /** 生成扫地物品的首个路由决策，强制直删世界不会查询任何垃圾桶。 */

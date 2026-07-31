@@ -1,0 +1,162 @@
+{
+  "id": "universal_managed_paper1122",
+  "label": "paper-1.12.2-managed-universal",
+  "version": "1.12.2",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 639449,
+    "sha256": "d8acc3e9906fa9a1173181a3a9c1ba843deef91fa07eb709957d4e4ece56ee0b",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "phases": [
+    {
+      "phase": "moving-items-disabled-moving",
+      "enabled": false,
+      "moving": true,
+      "expected": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": false,
+      "status": "PASS",
+      "serverExcerpt": "[04:45:35 INFO]: AI_MOVING_FIXTURE_RESULT success=true moving=true\n[04:45:42 INFO]: RGBaper1122 issued server command: /wtc clear true\n[04:45:42 INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=5, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[04:45:42 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=5, groups=0, shown=0, partial=false\n[04:45:42 INFO]: [WorldListTrashCan] [CleanupDetail] items: 5\n\n",
+      "clientExcerpt": "[04:45:52] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:\n[04:45:52] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[04:45:52] [Client thread/INFO]: [CHAT] - 世界数: 3\n[04:45:52] [Client thread/INFO]: [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)\n[04:45:52] [Client thread/INFO]: [CHAT] - 删除物品: 0\n[04:45:52] [Client thread/INFO]: [CHAT] - 删除实体: 0\n[04:45:52] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[04:45:52] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[04:45:52] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[04:45:52] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 330\n[04:45:55] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.45.55.png\n[04:45:56] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.45.56.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-moving-items-disabled-moving-clear.png",
+          "size": 23018,
+          "sha256": "092e68eb0c1d52416c56f0a4b583220ba81a1bab6a24a795bfd749b61cf8a0d9",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 178.24381510416666
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-moving-items-disabled-moving-stats.png",
+          "size": 23976,
+          "sha256": "2db5100386e1c2426ab7d742e21e7456e3b4d3685737616dd27de239113af98b",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 169.888671875
+        }
+      ]
+    },
+    {
+      "phase": "moving-items-enabled-moving",
+      "enabled": true,
+      "moving": true,
+      "expected": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": true,
+      "status": "PASS",
+      "serverExcerpt": "[04:45:58 INFO]: AI_MOVING_FIXTURE_RESULT success=true moving=true\n[04:46:04 INFO]: RGBaper1122 issued server command: /wtc clear true\n[04:46:04 INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=0, itemsRemoved=0, itemsSkipped=1, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[04:46:04 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=0, groups=0, shown=0, partial=false\n[04:46:04 INFO]: [WorldListTrashCan] [CleanupDetail] items: 0\n\n[04:46:18 INFO]: [item.tile.stone.stone] AI_WTC_MOVING_ITEM_REMAINS\n",
+      "clientExcerpt": "[04:46:14] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:\n[04:46:14] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[04:46:14] [Client thread/INFO]: [CHAT] - 世界数: 3\n[04:46:14] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[04:46:14] [Client thread/INFO]: [CHAT] - 删除物品: 0\n[04:46:14] [Client thread/INFO]: [CHAT] - 删除实体: 0\n[04:46:14] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[04:46:14] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[04:46:14] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[04:46:14] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 308\n[04:46:17] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.17.png\n[04:46:18] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.18.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-moving-items-enabled-moving-clear.png",
+          "size": 23163,
+          "sha256": "2663a191c09f05739bc7352c1d5c1609e7c352b6302a6865897b8b13298c9089",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 177.70930989583334
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-moving-items-enabled-moving-stats.png",
+          "size": 27930,
+          "sha256": "be1034da03ac43683ff0994db354133c5b8f14e14425592188416952c3c9e908",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 170.4140625
+        }
+      ]
+    },
+    {
+      "phase": "moving-items-enabled-stationary",
+      "enabled": true,
+      "moving": false,
+      "expected": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "actual": {
+        "routed": 5,
+        "world": 5,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": false,
+      "status": "PASS",
+      "serverExcerpt": "[04:46:20 INFO]: AI_MOVING_FIXTURE_RESULT success=true moving=false\n[04:46:26 INFO]: RGBaper1122 issued server command: /wtc clear true\n[04:46:26 INFO]: [WorldListTrashCan] [Cleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=5, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[04:46:26 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=5, groups=0, shown=0, partial=false\n[04:46:26 INFO]: [WorldListTrashCan] [CleanupDetail] items: 5\n\n",
+      "clientExcerpt": "[04:46:36] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:\n[04:46:36] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[04:46:36] [Client thread/INFO]: [CHAT] - 世界数: 3\n[04:46:36] [Client thread/INFO]: [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)\n[04:46:36] [Client thread/INFO]: [CHAT] - 删除物品: 0\n[04:46:36] [Client thread/INFO]: [CHAT] - 删除实体: 0\n[04:46:36] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5\n[04:46:36] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[04:46:36] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0\n[04:46:36] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 286\n[04:46:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.39.png\n[04:46:40] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.40.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-moving-items-enabled-stationary-clear.png",
+          "size": 24705,
+          "sha256": "7a5942c37b770c9ab242d38063f38f7eea14f5ad9dfd11a10f226a0f021594bc",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 178.046875
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\screenshots\\universal_managed_paper1122-moving-items-enabled-stationary-stats.png",
+          "size": 30030,
+          "sha256": "c398a322e80bfc104dc668c851d9ca329b8b89c4930d5fb3f08c2d61933a0687",
+          "dimensions": [
+            704,
+            409
+          ],
+          "brightness": 171.46061197916666
+        }
+      ]
+    }
+  ],
+  "username": "RGBaper1122",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\moving-items-visual-20260801-044520\\universal_managed_paper1122\\server-screenshots\\universal_managed_paper1122-moving-items-server.png",
+    "size": 233362,
+    "sha256": "24218e90602c7d3ff273f60548bb498cd92698d73bbdd509e3cb0d9f03ae34a6",
+    "dimensions": [
+      1560,
+      1275
+    ],
+    "brightness": 36.654947916666664
+  }
+}

@@ -1,0 +1,61 @@
+Completely ignored arguments: [legacy]
+[04:45:24] [Client thread/INFO]: Setting user: RGBaper1122
+[04:45:25] [Client thread/INFO]: LWJGL Version: 2.9.4
+[04:45:25] [Client thread/INFO]: Reloading ResourceManager: Default
+[04:45:26] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[04:45:26] [Thread-3/INFO]: Initializing LWJGL OpenAL
+[04:45:26] [Thread-3/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[04:45:26] [Thread-3/INFO]: OpenAL initialized.
+[04:45:26] [Sound Library Loader/INFO]: Sound engine started
+[04:45:27] [Client thread/INFO]: Created: 1024x512 textures-atlas
+[04:45:27] [Client thread/INFO]: Narrator library for x64 successfully loaded
+[04:45:27] [Client thread/INFO]: Connecting to 127.0.0.1, 30012
+[04:45:29] [Client thread/INFO]: [CHAT] An update for PlaceholderAPI (PlaceholderAPI v2.12.3)
+[04:45:29] [Client thread/INFO]: [CHAT] is available at https://www.spigotmc.org/resources/placeholderapi.6245/
+[04:45:29] [Client thread/INFO]: [CHAT] RGBaper1122 joined the game
+[04:45:42] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理完成 | 世界 3, 回收 5, 移除物品 0, 移除实体 0。
+[04:45:45] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.45.45.png
+[04:45:46] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.45.46.png
+[04:45:52] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[04:45:52] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)
+[04:45:52] [Client thread/INFO]: [CHAT] - 世界数: 3
+[04:45:52] [Client thread/INFO]: [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)
+[04:45:52] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[04:45:52] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[04:45:52] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[04:45:52] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[04:45:52] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[04:45:52] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 330
+[04:45:55] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.45.55.png
+[04:45:56] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.45.56.png
+[04:46:04] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理完成 | 世界 3, 回收 0, 移除物品 0, 移除实体 0。
+[04:46:07] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.07.png
+[04:46:08] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.08.png
+[04:46:14] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[04:46:14] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)
+[04:46:14] [Client thread/INFO]: [CHAT] - 世界数: 3
+[04:46:14] [Client thread/INFO]: [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)
+[04:46:14] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[04:46:14] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[04:46:14] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[04:46:14] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[04:46:14] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[04:46:14] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 308
+[04:46:17] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.17.png
+[04:46:18] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.18.png
+[04:46:18] [Client thread/INFO]: [CHAT] [item.tile.stone.stone] AI_WTC_MOVING_ITEM_REMAINS
+[04:46:26] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理完成 | 世界 3, 回收 5, 移除物品 0, 移除实体 0。
+[04:46:29] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.29.png
+[04:46:30] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.30.png
+[04:46:36] [Client thread/INFO]: [CHAT] [WorldListTrashCan] 清理统计:
+[04:46:36] [Client thread/INFO]: [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)
+[04:46:36] [Client thread/INFO]: [CHAT] - 世界数: 3
+[04:46:36] [Client thread/INFO]: [CHAT] - 回收物品: 5 (世界 5, 个人 0, 公共 0)
+[04:46:36] [Client thread/INFO]: [CHAT] - 删除物品: 0
+[04:46:36] [Client thread/INFO]: [CHAT] - 删除实体: 0
+[04:46:36] [Client thread/INFO]: [CHAT] - 公共垃圾桶页数: 5
+[04:46:36] [Client thread/INFO]: [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)
+[04:46:36] [Client thread/INFO]: [CHAT] - 已加载个人垃圾桶: 0
+[04:46:36] [Client thread/INFO]: [CHAT] - 下次清理剩余秒数: 286
+[04:46:39] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.39.png
+[04:46:40] [Client thread/INFO]: [CHAT] Saved screenshot as 2026-08-01_04.46.40.png
