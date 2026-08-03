@@ -1,212 +1,0 @@
-Starting org.bukkit.craftbukkit.Main
-*** Warning, you've not updated in a while! ***
-*** Please download a new build from https://papermc.io/downloads/paper ***
-[03:03:04 INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
-[03:03:04 INFO]: [bootstrap] Loading Folia 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) for Minecraft 1.21.8
-[03:03:05 INFO]: [PluginInitializerManager] Initializing plugins...
-[03:03:05 INFO]: [PluginRemapper] Remapping plugin 'plugins\BLWorldTrashCan-universal.jar'...
-[03:03:05 INFO]: [PluginRemapper] Done remapping plugin 'plugins\BLWorldTrashCan-universal.jar' in 412ms.
-[03:03:05 INFO]: [PluginInitializerManager] Initialized 2 plugins
-[03:03:05 INFO]: [PluginInitializerManager] Bukkit plugins (2):
- - BLWorldTrashCan (7.0.0), PlaceholderAPI (2.11.7-DEV-null)
-[03:03:09 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[03:03:10 INFO]: Loaded 1407 recipes
-[03:03:10 INFO]: Loaded 1520 advancements
-[03:03:10 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
-[03:03:10 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 297.4ms
-[03:03:10 INFO]: Starting minecraft server version 1.21.8
-[03:03:10 INFO]: Loading properties
-[03:03:10 INFO]: This server is running Folia version 1.21.8-6-ver/1.21.8@612d9bd (2025-09-30T14:11:15Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
-[03:03:10 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
-[03:03:10 INFO]: Server Ping Player Sample Count: 12
-[03:03:10 INFO]: Using 4 threads for Netty based IO
-[03:03:11 INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
-[03:03:11 INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
-[03:03:11 INFO]: [io.papermc.paper.threadedregions.TickRegions] Regionised ticking is enabled with 2 tick threads
->   [03:03:11 INFO]: Default game type: SURVIVAL
->   [03:03:11 INFO]: Generating keypair
->   [03:03:11 INFO]: Starting Minecraft server on *:30004
->   [03:03:11 INFO]: Using default channel type
->   [03:03:11 INFO]: Paper: Using Java compression from Velocity.
->   [03:03:11 INFO]: Paper: Using Java cipher from Velocity.
->   [03:03:11 INFO]: [PlaceholderAPI] Loading server plugin PlaceholderAPI v2.11.7-DEV-null
->   [03:03:11 INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v7.0.0
->   [03:03:11 INFO]: Server permissions file permissions.yml is empty, ignoring it
->   [33;1m[03:03:11 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
-[m>   [33;1m[03:03:11 WARN]: The server will make no attempt to authenticate usernames. Beware.
-[m>   [33;1m[03:03:11 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
-[m>   [33;1m[03:03:11 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
-[m>   [03:03:11 INFO]: Preparing level "world"
->   [03:03:12 INFO]: Preparing start region for dimension minecraft:overworld
->   [03:03:12 INFO]: Time elapsed: 3 ms
->   [03:03:12 INFO]: Preparing start region for dimension minecraft:the_nether
->   [03:03:12 INFO]: Time elapsed: 0 ms
->   [03:03:12 INFO]: Preparing start region for dimension minecraft:the_end
->   [03:03:12 INFO]: Time elapsed: 0 ms
->   [03:03:12 INFO]: [PlaceholderAPI] Enabling PlaceholderAPI v2.11.7-DEV-null
->   [03:03:12 INFO]: [PlaceholderAPI] Fetching available expansion information...
->   [03:03:12 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
->   [03:03:12 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
->   [03:03:12 INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
->   [03:03:12 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
->   [03:03:12 INFO]: [PlaceholderAPI] Successfully registered internal expansion: Wtc [7.0.0]
->   [03:03:12 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 已注册变量: %Wtc_ClearTime%
->   [03:03:12 INFO]: [BLWorldTrashCan] Universal runtime: folia
->   [03:03:12 INFO]: [BLWorldTrashCan] Platform: folia-1.20
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability scheduler-region: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
->   [03:03:12 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
->   [03:03:12 INFO]: [BLWorldTrashCan] [FoliaCleanup] 定时清理已关闭，仅允许手动触发。
->   [03:03:12 INFO]: [BLWorldTrashCan] [FoliaEntityLimit] 实体限制未启用，跳过低占用扫描任务。
->   [03:03:12 INFO]: [spark] The spark plugin has been preferred but was not loaded. The bundled spark profiler will enabled instead.
->   [03:03:12 INFO]: [spark] The spark profiler will not be enabled because it is currently disabled in the configuration.
->   [03:03:12 INFO]: [PlaceholderAPI] Placeholder expansion registration initializing...
->   [03:03:12 INFO]: Done preparing level "world" (0.913s)
->   [03:03:12 INFO]: Done (8.657s)! For help, type "help"
->   [03:03:12 INFO]: [33m0 placeholder hook(s) registered![0m
->   [03:03:12 INFO]: Initialising world 'world' before it can be ticked...
->   [03:03:12 INFO]: Initialised world 'world'
->   [03:03:12 INFO]: Initialising world 'world_nether' before it can be ticked...
->   [03:03:12 INFO]: Initialised world 'world_nether'
->   [03:03:13 INFO]: Initialising world 'world_the_end' before it can be ticked...
->   [03:03:13 INFO]: Initialised world 'world_the_end'
->   [03:03:13 INFO]: [PlaceholderAPI] An update for PlaceholderAPI (v2.12.2) is available at:
->   [03:03:13 INFO]: [PlaceholderAPI] https://www.spigotmc.org/resources/placeholderapi.6245/
->   [03:03:22 INFO]: UUID of player RGBolia1218 is eea599c9-a6e7-3374-be36-45fda92be0e8
->   [03:03:22 INFO]: [93mRGBolia1218 joined the game[0m
->   [03:03:22 INFO]: RGBolia1218[/127.0.0.1:54602] logged in with entity id 12 at ([world]0.5, 90.0, -7.5)
-> >   [03:03:23 INFO]: [37m[[96mBLWorldTrashCan[37m] [92m当前平台: [97mfolia-1.20 (universal)[0m
->   [03:03:23 INFO]: [37m- [97mscheduler-global[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mscheduler-region[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97minventory-basic[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mitem-pdc-tag[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mitem-legacy-tag[37m: 禁用[0m
->   [03:03:23 INFO]: [37m- [97mrgb-message[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mclickable-message[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mboss-bar[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97msign-legacy[37m: 禁用[0m
->   [03:03:23 INFO]: [37m- [97msign-modern[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mentity-move-event[37m: [92m启用[0m
->   [03:03:23 INFO]: [37m- [97mfolia-region-safe[37m: 禁用[0m
-> >   [03:03:23 INFO]: Made RGBolia1218 no longer a server operator
-> >   [03:03:24 INFO]: Gamerule sendCommandFeedback is now set to: false
-> >   [03:03:24 INFO]: Gamerule commandBlockOutput is now set to: false
-> >   [03:03:24 INFO]: Gamerule doMobSpawning is now set to: false
-> >   [03:03:24 INFO]: Gamerule maxEntityCramming is now set to: 0
-> >   [03:03:24 INFO]: Set the time to 1000
-> >   [03:03:24 INFO]: Set the weather to clear
-> > >   [03:03:24 INFO]: Teleported RGBolia1218 to 0.500000, 91.000000, -7.500000
-> >   [03:03:25 INFO]: [91mNo blocks were filled[0m
-> >   [03:03:25 INFO]: [91mNo blocks were filled[0m
-> >   [03:03:25 INFO]: Teleported RGBolia1218 to 0.500000, 91.000000, -7.500000
-> minecraft:summon minecraft:cow -4 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:26 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -3 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:26 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -2 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:26 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -1 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:26 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 0 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:26 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 1 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:26 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 2 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 3 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 4 90 -4 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -4 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -3 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -2 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -1 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 0 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:27 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 1 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:28 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 2 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:28 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 3 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:28 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow 4 90 -3 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:28 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -4 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:28 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> minecraft:summon minecraft:cow -3 90 -2 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:28 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> >   [03:03:34 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
->   [03:03:34 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 1 个世界垃圾桶数据。
->   [03:03:34 INFO]: [BLWorldTrashCan] [FoliaCleanup] 定时清理已关闭，仅允许手动触发。
->   [03:03:34 INFO]: [BLWorldTrashCan] [FoliaEntityLimit] 已启动低占用实体扫描: scanInterval=5, minChunks=8, maxChunks=128, maxRemoves=40
->   [03:03:34 INFO]: [37m[[96mBLWorldTrashCan[37m] [92mBLWorldTrashCan 已重载。[0m
-> minecraft:summon minecraft:cow 0 90 0 {NoAI:1b,PersistenceRequired:1b,CustomName:'{"text":"AI_BLWTC_DENSITY"}'}>   [03:03:34 INFO]: Summoned new {"text":"AI_BLWTC_DENSITY"}
-> >   [03:03:34 INFO]: [92m实体密度扫描统计:[0m
->   [03:03:34 INFO]: [37m- [97m已加载/本轮选择 chunk: [92m723[37m/[92m8[0m
->   [03:03:34 INFO]: [37m- [97m索引 chunk/实体: [92m8[37m/[92m11[0m
->   [03:03:34 INFO]: [37m- [97m脏 chunk 队列: [92m3 [37m(标记 5, 丢弃 0)[0m
->   [03:03:34 INFO]: [37m- [97m候选队列/去重: [92m0[37m/[92m0[0m
->   [03:03:34 INFO]: [37m- [97m快照/扫描 chunk: [92m8[37m/[92m8 [37m(未加载 0)[0m
->   [03:03:34 INFO]: [37m- [97m候选创建/取出/完成: [92m10[37m/[92m10[37m/[92m10[0m
->   [03:03:34 INFO]: [37m- [97m候选过期/重试/丢弃: [92m0[37m/[92m0[37m/[92m0[0m
->   [03:03:34 INFO]: [37m- [97m删除成功/跳过: [92m10[37m/[92m0[0m
->   [03:03:34 INFO]: [37m- [97m索引修剪 stale/cap: [92m0[37m/[92m0[0m
->   [03:03:34 INFO]: [37m- [97m累计索引实体写入: [92m21[0m
-> >   [03:03:41 INFO]: Made RGBolia1218 a server operator
->   [03:03:47 INFO]: RGBolia1218 issued server command: /blwtc debugdensity
->   [03:04:17 INFO]: RGBolia1218 lost connection: Disconnected
->   [03:04:17 INFO]: [93mRGBolia1218 left the game[0m
-> >   [03:04:17 INFO]: Stopping the server
->   [03:04:17 INFO]: [RegionShutdownThread] Awaiting scheduler termination for 60s...
->   [03:04:17 INFO]: [RegionShutdownThread] Scheduler halted
->   [03:04:17 INFO]: Stopping server
->   [03:04:17 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
->   [03:04:17 INFO]: [PlaceholderAPI] Disabling PlaceholderAPI v2.11.7-DEV-null
->   [03:04:17 INFO]: [RegionShutdownThread] Halting chunk systems...
->   [03:04:17 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
->   [03:04:17 INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
->   [03:04:17 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
->   [03:04:17 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
->   [03:04:17 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
->   [03:04:17 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
->   [03:04:17 INFO]: [RegionShutdownThread] Halted chunk systems
->   [03:04:17 INFO]: [RegionShutdownThread] Finishing pending teleports...
->   [03:04:17 INFO]: [RegionShutdownThread] Finished pending teleports
->   [03:04:17 INFO]: [RegionShutdownThread] Saving all worlds
->   [03:04:17 INFO]: [RegionShutdownThread] Saving world data for world 'world'
->   [03:04:17 INFO]: [RegionShutdownThread] Closing player inventories...
->   [03:04:17 INFO]: [RegionShutdownThread] Closed player inventories
->   [03:04:17 INFO]: [RegionShutdownThread] Saving chunks...
->   [03:04:17 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, -1] in world 'world'
->   [03:04:17 INFO]: [ChunkHolderManager] Saved 625 block chunks, 625 entity chunks, 0 poi chunks in world 'world' in 0.40s
->   [03:04:17 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
->   [03:04:17 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
->   [03:04:17 INFO]: [RegionShutdownThread] Saved chunks
->   [03:04:17 INFO]: [RegionShutdownThread] Saving level data...
->   [03:04:17 INFO]: [RegionShutdownThread] Saved level data
->   [03:04:17 INFO]: [RegionShutdownThread] Saved world data for world 'world'
->   [03:04:17 INFO]: [RegionShutdownThread] Saving world data for world 'world_nether'
->   [03:04:17 INFO]: [RegionShutdownThread] Closing player inventories...
->   [03:04:17 INFO]: [RegionShutdownThread] Closed player inventories
->   [03:04:17 INFO]: [RegionShutdownThread] Saving chunks...
->   [03:04:17 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [-1, 0] in world 'world_nether'
->   [03:04:17 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_nether' in 0.03s
->   [03:04:17 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
->   [03:04:17 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
->   [03:04:17 INFO]: [RegionShutdownThread] Saved chunks
->   [03:04:17 INFO]: [RegionShutdownThread] Saving level data...
->   [03:04:17 INFO]: [RegionShutdownThread] Saved level data
->   [03:04:17 INFO]: [RegionShutdownThread] Saved world data for world 'world_nether'
->   [03:04:17 INFO]: [RegionShutdownThread] Saving world data for world 'world_the_end'
->   [03:04:17 INFO]: [RegionShutdownThread] Closing player inventories...
->   [03:04:17 INFO]: [RegionShutdownThread] Closed player inventories
->   [03:04:17 INFO]: [RegionShutdownThread] Saving chunks...
->   [03:04:17 INFO]: [RegionShutdownThread] Saving chunks around region around chunk [0, 0] in world 'world_the_end'
->   [03:04:18 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_the_end' in 0.02s
->   [03:04:18 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
->   [03:04:18 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
->   [03:04:18 INFO]: [RegionShutdownThread] Saved chunks
->   [03:04:18 INFO]: [RegionShutdownThread] Saving level data...
->   [03:04:18 INFO]: [RegionShutdownThread] Saved level data
->   [03:04:18 INFO]: [RegionShutdownThread] Saved world data for world 'world_the_end'
->   [03:04:18 INFO]: [RegionShutdownThread] Saved all worlds
->   [03:04:18 INFO]: [RegionShutdownThread] Saving all player data...
->   [03:04:18 INFO]: [RegionShutdownThread] Saved all player data
->   [03:04:18 INFO]: Waiting for all RegionFile I/O tasks to complete...
->   [03:04:18 INFO]: All RegionFile I/O tasks to complete
->   [03:04:18 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
->   [03:04:18 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...
-> 

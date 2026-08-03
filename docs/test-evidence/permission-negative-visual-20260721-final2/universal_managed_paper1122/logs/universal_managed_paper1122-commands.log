@@ -1,9 +1,0 @@
-[02:33:15] deop RGBaper1122
-[02:33:21] permfixture deny RGBaper1122 WorldListTrashCan.GlobalTrashOpen
-[02:33:27] permfixture clear RGBaper1122
-[02:33:28] permfixture deny RGBaper1122 WorldListTrashCan.PlayerTrash
-[02:33:34] permfixture clear RGBaper1122
-[02:33:34] op RGBaper1122
-[02:33:41] wtc platform
-[02:33:42] permfixture clear RGBaper1122
-[02:33:42] op RGBaper1122

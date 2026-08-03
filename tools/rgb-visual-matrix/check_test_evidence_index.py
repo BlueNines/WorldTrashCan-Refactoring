@@ -8,6 +8,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 EVIDENCE_ROOT = REPO / "docs" / "test-evidence"
 INDEX_FILE = EVIDENCE_ROOT / "README.md"
+GITIGNORE_FILE = REPO / ".gitignore"
 UPPER_DOCS = [
     REPO / "README.md",
     REPO / "docs" / "重构版新增功能说明.md",
@@ -24,6 +25,19 @@ EVIDENCE_REFERENCE_PATTERN = re.compile(r"docs[\\/]+test-evidence[\\/]+([^`)\]\s
 def read_text(path: Path) -> str:
     """按 UTF-8 读取文本文件。"""
     return path.read_text(encoding="utf-8", errors="replace")
+
+
+def docs_are_local_only() -> bool:
+    """判断当前插件是否明确把 docs 目录设置为本地资料。"""
+    if not GITIGNORE_FILE.is_file():
+        return False
+    lines = read_text(GITIGNORE_FILE).splitlines()
+    return any(line.strip() in ("docs/", "/docs/") for line in lines)
+
+
+def local_files(path: Path) -> list[Path]:
+    """返回证据目录内的本地文件。"""
+    return [item for item in path.rglob("*") if item.is_file()]
 
 
 def markdown_section(text: str, heading: str) -> str:
@@ -170,11 +184,15 @@ def final_evidence_checks(name: str, evidence_dir: str, description: str) -> lis
     """检查最终 PASS 证据目录的最低要求。"""
     errors = []
     path = EVIDENCE_ROOT / evidence_dir
+    local_only = docs_are_local_only()
     if not path.is_dir():
         return [name + ": 最终证据目录不存在: " + evidence_dir]
     tracked = git_tracked_files(path)
-    if not tracked:
+    files = local_files(path)
+    if not tracked and not local_only:
         errors.append(name + ": 最终证据目录没有 Git 跟踪内容: " + evidence_dir)
+    if local_only and not files:
+        errors.append(name + ": 本地最终证据目录为空: " + evidence_dir)
     if any(item.lower().endswith(".jar") for item in tracked):
         errors.append(name + ": 最终证据目录包含已跟踪 jar: " + evidence_dir)
     if not (path / "README.md").exists():
@@ -198,11 +216,14 @@ def failure_evidence_checks(name: str, evidence_dir: str, purpose: str) -> list[
     """检查失败对照证据目录的最低要求。"""
     errors = []
     path = EVIDENCE_ROOT / evidence_dir
+    local_only = docs_are_local_only()
     if not path.is_dir():
         return [name + ": 失败对照目录不存在: " + evidence_dir]
     tracked = git_tracked_files(path)
-    if not tracked:
+    if not tracked and not local_only:
         errors.append(name + ": 失败对照目录没有 Git 跟踪内容: " + evidence_dir)
+    if local_only and not local_files(path):
+        errors.append(name + ": 本地失败对照目录为空: " + evidence_dir)
     if any(item.lower().endswith(".jar") for item in tracked):
         errors.append(name + ": 失败对照目录包含已跟踪 jar: " + evidence_dir)
     if not (path / "README.md").exists():
@@ -236,7 +257,7 @@ def doc_reference_checks() -> tuple[list[str], int]:
             if not path.is_dir():
                 errors.append(doc + ": 引用的证据目录不存在: " + name)
                 continue
-            if not git_tracked_files(path):
+            if not docs_are_local_only() and not git_tracked_files(path):
                 errors.append(doc + ": 引用的证据目录没有 Git 跟踪内容，疑似本地缓存: " + name)
     return errors, len(unique_refs)
 

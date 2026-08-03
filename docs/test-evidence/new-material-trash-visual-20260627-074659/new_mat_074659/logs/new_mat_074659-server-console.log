@@ -1,458 +1,0 @@
-Starting org.bukkit.craftbukkit.Main
-*** Warning, you've not updated in a while! ***
-*** Please download a new build from https://papermc.io/downloads/paper ***
-[07:47:00 INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.8+12-LTS-250; Oracle Corporation null) on Windows 10 10.0 (amd64)
-[07:47:00 INFO]: [bootstrap] Loading Paper 1.21.4-232-ver/1.21.4@12d8fe0 (2025-06-09T10:15:42Z) for Minecraft 1.21.4
-[07:47:00 INFO]: [PluginInitializerManager] Initializing plugins...
-[07:47:01 INFO]: [PluginInitializerManager] Initialized 8 plugins
-[07:47:01 INFO]: [PluginInitializerManager] Bukkit plugins (8):
- - BLRoomDungeon (0.1.0-SNAPSHOT), BLWorldTrashCan (7.0.0), BlLevelManager (1.0-SNAPSHOT), FastAsyncWorldEdit (2.15.2+e9ed0d1), MythicMobs (5.8.2-6a2683d7), ResLink (0.1.0-SNAPSHOT), ViaBackwards (5.10.0), ViaVersion (5.10.1-SNAPSHOT)
-[07:47:04 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[07:47:05 INFO]: Loaded 1370 recipes
-[07:47:05 INFO]: Loaded 1481 advancements
-[07:47:05 INFO]: [MCTypeRegistry] Initialising converters for DataConverter...
-[07:47:05 INFO]: [MCTypeRegistry] Finished initialising converters for DataConverter in 140.3ms
-[07:47:05 INFO]: Starting minecraft server version 1.21.4
-[07:47:05 INFO]: Loading properties
-[07:47:05 INFO]: This server is running Paper version 1.21.4-232-ver/1.21.4@12d8fe0 (2025-06-09T10:15:42Z) (Implementing API version 1.21.4-R0.1-SNAPSHOT)
-[07:47:06 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
-[07:47:06 INFO]: Server Ping Player Sample Count: 12
-[07:47:06 INFO]: Using 4 threads for Netty based IO
-[07:47:06 INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
-[07:47:06 INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
->   [07:47:06 INFO]: Default game type: SURVIVAL
->   [07:47:06 INFO]: Generating keypair
->   [07:47:06 INFO]: Starting Minecraft server on *:25576
->   [07:47:06 INFO]: Using default channel type
->   [07:47:06 INFO]: Paper: Using Java compression from Velocity.
->   [07:47:06 INFO]: Paper: Using Java cipher from Velocity.
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loading 4 libraries... please wait
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-api\4.16.0\adventure-api-4.16.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-key\4.16.0\adventure-key-4.16.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\examination-api\1.3.0\examination-api-1.3.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\examination-string\1.3.0\examination-string-1.3.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\org\jetbrains\annotations\24.1.0\annotations-24.1.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-platform-bukkit\4.3.2\adventure-platform-bukkit-4.3.2.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-platform-api\4.3.2\adventure-platform-api-4.3.2.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-text-serializer-bungeecord\4.3.2\adventure-text-serializer-bungeecord-4.3.2.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-text-serializer-legacy\4.13.1\adventure-text-serializer-legacy-4.13.1.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-nbt\4.13.1\adventure-nbt-4.13.1.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-text-serializer-gson-legacy-impl\4.13.1\adventure-text-serializer-gson-legacy-impl-4.13.1.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-platform-facet\4.3.2\adventure-platform-facet-4.3.2.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-platform-viaversion\4.3.2\adventure-platform-viaversion-4.3.2.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-text-minimessage\4.16.0\adventure-text-minimessage-4.16.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-text-serializer-gson\4.16.0\adventure-text-serializer-gson-4.16.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\adventure-text-serializer-json\4.16.0\adventure-text-serializer-json-4.16.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\net\kyori\option\1.0.0\option-1.0.0.jar
->   [07:47:07 INFO]: [SpigotLibraryLoader] [MythicMobs] Loaded library C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\libraries\com\google\code\gson\gson\2.8.0\gson-2.8.0.jar
->   [33;1m[07:47:07 WARN]: [org.bukkit.craftbukkit.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
-[m>   [33;1m[07:47:12 WARN]: Legacy plugin BlLevelManager v1.0-SNAPSHOT does not specify an api-version.
-[m>   [07:47:12 INFO]: [ViaVersion] Loading server plugin ViaVersion v5.10.1-SNAPSHOT
->   [07:47:12 INFO]: [ViaVersion] ViaVersion 5.10.1-SNAPSHOT is now loaded. Registering protocol transformers and injecting...
->   [07:47:12 INFO]: [ViaVersion] Loading block connection mappings ...
->   [07:47:13 INFO]: [ViaBackwards] Loading translations...
->   [07:47:13 INFO]: [ViaBackwards] Registering protocols...
->   [07:47:13 INFO]: [FastAsyncWorldEdit] Loading server plugin FastAsyncWorldEdit v2.15.2+e9ed0d1
->   [07:47:14 INFO]: Got request to register class com.sk89q.worldedit.bukkit.BukkitServerInterface with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@6b2b108e]
->   [07:47:14 INFO]: [MythicMobs] Loading server plugin MythicMobs v5.8.2-6a2683d7
->   [07:47:14 INFO]: [LumineUtils] (io.lumine.mythic.bukkit.utils.) is bound to plugin MythicMobs - io.lumine.mythic.bukkit.MythicBukkit
->   [07:47:14 INFO]: [MythicMobs] §x§f§f§0§0§0§0M§x§f§f§6§6§0§0y§x§f§f§c§c§0§0t§x§c§b§f§f§0§0h§x§6§5§f§f§0§0i§x§0§0§f§f§0§0c§x§0§0§f§f§6§6 §x§0§0§f§f§c§bE§x§0§0§c§b§f§fn§x§0§0§6§5§f§fa§x§0§0§0§0§f§fb§x§6§6§0§0§f§fl§x§c§c§0§0§f§fe§x§f§f§0§0§c§cd§x§f§f§0§0§6§6![0m
->   [07:47:14 INFO]: [ViaBackwards] Loading server plugin ViaBackwards v5.10.0
->   [07:47:14 INFO]: [ResLink] Loading server plugin ResLink v0.1.0-SNAPSHOT
->   [07:47:14 INFO]: [BLWorldTrashCan] Loading server plugin BLWorldTrashCan v7.0.0
->   [07:47:14 INFO]: [BLRoomDungeon] Loading server plugin BLRoomDungeon v0.1.0-SNAPSHOT
->   [07:47:14 INFO]: [BlLevelManager] Loading server plugin BlLevelManager v1.0-SNAPSHOT
->   [07:47:14 INFO]: Server permissions file permissions.yml is empty, ignoring it
->   [07:47:14 INFO]: [FastAsyncWorldEdit] Enabling FastAsyncWorldEdit v2.15.2+e9ed0d1
->   [07:47:14 INFO]: [com.fastasyncworldedit.core.Fawe] LZ4 Compression Binding loaded successfully
->   [07:47:14 INFO]: [com.fastasyncworldedit.core.Fawe] ZSTD Compression Binding loaded successfully
->   [07:47:14 INFO]: Registering commands with com.sk89q.worldedit.bukkit.BukkitServerInterface
->   [07:47:14 INFO]: WEPIF: Using the Bukkit Permissions API.
->   [07:47:14 INFO]: Using com.sk89q.worldedit.bukkit.adapter.impl.fawe.v1_21_4.PaperweightFaweAdapter as the Bukkit adapter
->   [33;1m[07:47:14 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
-[m>   [33;1m[07:47:14 WARN]: The server will make no attempt to authenticate usernames. Beware.
-[m>   [33;1m[07:47:14 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
-[m>   [33;1m[07:47:14 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
-[m>   [07:47:14 INFO]: Preparing level "rgb_visual_paper1214"
->   [07:47:15 INFO]: Preparing start region for dimension minecraft:overworld
->   [07:47:15 INFO]: Preparing spawn area: 0%
->   [07:47:15 INFO]: Time elapsed: 460 ms
->   [07:47:15 INFO]: Preparing start region for dimension minecraft:the_nether
->   [07:47:15 INFO]: Preparing spawn area: 0%
->   [07:47:15 INFO]: Time elapsed: 97 ms
->   [07:47:15 INFO]: Preparing start region for dimension minecraft:the_end
->   [07:47:15 INFO]: Preparing spawn area: 0%
->   [07:47:15 INFO]: Time elapsed: 48 ms
->   [07:47:15 INFO]: [ViaVersion] Enabling ViaVersion v5.10.1-SNAPSHOT
->   [07:47:15 INFO]: [ViaVersion] ViaVersion detected server version: 1.21.4 (769)
->   [07:47:15 INFO]: [MythicMobs] Enabling MythicMobs v5.8.2-6a2683d7
->   [07:47:15 INFO]: [MythicMobs] Loading MythicMobs for Paper (MC: 1.21.4)...[0m
->   [07:47:15 INFO]: [MythicMobs] The server is running Paper; enabled Paper exclusive functionality[0m
->   [07:47:17 INFO]: [MythicMobs] Base directory C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\plugins\MythicMobs\data
->   [07:47:17 INFO]: [MythicMobs] Module directory C:\Users\pc\Desktop\ai开发插件\paper-1.21.4-test-server\plugins\MythicMobs\data\worlds
->   [07:47:18 INFO]: [MythicMobs] Loading Packs...[0m
->   [07:47:18 INFO]: [MythicMobs] Loading Items...[0m
->   [07:47:18 INFO]: [MythicMobs] Loading Item Groups...[0m
->   [07:47:18 INFO]: [MythicMobs] Loading Skills...[0m
->   [07:47:19 INFO]: [MythicMobs] Loading Drop Tables...[0m
->   [07:47:19 INFO]: [MythicMobs] Loading Random Spawns...[0m
->   [07:47:19 INFO]: [MythicMobs] Loading Spawn Blocks...[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 8 mobs.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 3 vanilla mob overrides.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 0 mob stacks.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 3 skills.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 0 random spawns.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 3 mythic items.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 2 drop tables.[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓[37m Loaded 0 mob spawners.[0m
->   [07:47:19 INFO]: [MythicMobs] MythicMobs configuration file loaded successfully.[0m
->   [07:47:19 INFO]: [MythicMobs] Started up bStats Metrics[0m
->   [07:47:19 INFO]: [MythicMobs] [32m✓ MythicMobs v5.8.2 ( build 6a2683d7 ) has been successfully loaded![0m[0m
->   [07:47:19 INFO]: [ViaBackwards] Enabling ViaBackwards v5.10.0
->   [07:47:19 INFO]: [ResLink] Enabling ResLink v0.1.0-SNAPSHOT
->   [07:47:19 INFO]: [ResLink] Residence not found, skip Residence integration
->   [07:47:19 INFO]: [ResLink] PlaceholderAPI not found, skip ResLink placeholders
->   [07:47:19 INFO]: [ResLink] ResLink modern platform enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Enabling BLWorldTrashCan v7.0.0
->   [07:47:19 INFO]: [com.zaxxer.hikari.HikariDataSource] ResLink-MySQL - Starting...
->   [07:47:19 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
->   [07:47:19 INFO]: [BLWorldTrashCan] [Vault] 未检测到 Vault，个人垃圾桶扣费自动关闭。
->   [07:47:19 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
->   [07:47:19 INFO]: [BLWorldTrashCan] [PlaceholderAPI] 未检测到 PlaceholderAPI，跳过变量注册。
->   [07:47:19 INFO]: [BLWorldTrashCan] Universal runtime: paper
->   [07:47:19 INFO]: [BLWorldTrashCan] Platform: paper-1.16-1.20
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability scheduler-global: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability scheduler-region: disabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability inventory-basic: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability item-pdc-tag: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability item-legacy-tag: disabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability rgb-message: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability clickable-message: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability boss-bar: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability sign-legacy: disabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability sign-modern: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability entity-move-event: enabled
->   [07:47:19 INFO]: [BLWorldTrashCan] Capability folia-region-safe: disabled
->   [07:47:19 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已启动，间隔 360 秒。
->   [07:47:19 INFO]: [BLRoomDungeon] Enabling BLRoomDungeon v0.1.0-SNAPSHOT
->   [33;1m[07:47:19 WARN]: [BLRoomDungeon] MySQL 初始化失败，第一版验收需要 MySQL: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-[m>   [07:47:19 INFO]: [BLRoomDungeon] 已恢复地牢实例元数据: mquw8ai5 world=blrd_spark_50_rooms_mquw8ai5 mode=weak
->   [07:47:19 INFO]: [BLRoomDungeon] 已恢复地牢实例元数据: mquw9ukh world=blrd_spark_50_rooms_mquw9ukh mode=weak
->   [07:47:19 INFO]: [BLRoomDungeon] 已恢复地牢实例元数据: mquwdslq world=blrd_pool_mquw6rrl_0 mode=weak
->   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_ai_rotation_mqli59i8。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_ai_rotation_mqli59i8 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_branch_depth_test_mqm9bqe6。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_branch_depth_test_mqm9bqe6 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_editor_example。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_editor_example 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlbs7bs。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlbs7bs 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlbxvgu。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlbxvgu 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlca4o4。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlca4o4 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlcfx99。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlcfx99 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlchim1。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlchim1 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlclmwm。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlclmwm 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlcsugy。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlcsugy 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqld8vy3。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqld8vy3 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqldbndn。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqldbndn 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqldkvkn。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqldkvkn 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqle1u7k。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqle1u7k 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlfk3hf。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlfk3hf 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlg5e2l。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlg5e2l 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlg73mt。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlg73mt 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlgaqez。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlgaqez 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlh71lw。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlh71lw 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlh8nqw。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlh8nqw 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlhbpq9。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlhbpq9 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlhlsle。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlhlsle 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlhnrh0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlhnrh0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqln0yaf。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqln0yaf 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqlnlsvm。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqlnlsvm 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqloo0wk。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqloo0wk 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqpkbou4。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqpkbou4 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqpklxth。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqpklxth 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqq7vn4v。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqq7vn4v 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqqgr3sn。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqqgr3sn 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqqhen1d。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqqhen1d 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqqqxqta。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqqqxqta 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqqxb822。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqqxb822 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_example_mqr1dnr4。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_example_mqr1dnr4 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_passable_solid_test_mqq8c0l5。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_passable_solid_test_mqq8c0l5 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_passable_solid_test_mqq8ewyi。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_passable_solid_test_mqq8ewyi 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_passable_solid_test_mqqhqd6u。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_passable_solid_test_mqqhqd6u 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_passable_solid_test_mqqr2r2s。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_passable_solid_test_mqqr2r2s 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqscyi2d_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqscyi2d_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqsdfo0w_1。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqsdfo0w_1 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqshrael_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqshrael_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqsi818n_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqsi818n_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtwu70c_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtwu70c_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtxw1yt_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtxw1yt_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtxy6qo_1。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtxy6qo_1 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtyjz7k_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtyjz7k_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtz9mun_0。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtz9mun_0 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtzh26m_1。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtzh26m_1 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_pool_mqtzmumd_2。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_pool_mqtzmumd_2 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_rotation_regions_test_mqmhzpgc。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_rotation_regions_test_mqmhzpgc 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_rotation_regions_test_mqmi8u9i。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_rotation_regions_test_mqmi8u9i 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_turn_branch_test_mqmdglp6。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_turn_branch_test_mqmdglp6 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_turn_branch_test_mqml3z1w。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_turn_branch_test_mqml3z1w 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_v2_generation_test_mqmq7xfe。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_v2_generation_test_mqmq7xfe 手动确认清理。
-[m>   [33;1m[07:47:19 WARN]: [BLRoomDungeon] 发现孤儿地牢世界，未找到对应运行态记录: blrd_v2_generation_test_mqmrbq0s。不会自动删除，请用 /blrd admin deleteOrphanWorld blrd_v2_generation_test_mqmrbq0s 手动确认清理。
-[m>   [07:47:19 INFO]: [BLRoomDungeon] BLRoomDungeon enabled
->   [07:47:19 INFO]: [BlLevelManager] Enabling BlLevelManager v1.0-SNAPSHOT*
->   [33;1m[07:47:19 WARN]: [BlLevelManager] §8[§bBlLevel§8] §e主存储初始化失败，已切换为本地 YAML。原因: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-[m>   [07:47:19 INFO]: [BlLevelManager] §8[§bBlLevel§8] §a插件已启用。
->   [07:47:19 INFO]: [spark] Starting background profiler...
->   [07:47:19 INFO]: [spark] The async-profiler engine is not supported for your os/arch (windows10/amd64), so the built-in Java engine will be used instead.
->   [07:47:19 INFO]: Done preparing level "rgb_visual_paper1214" (4.637s)
->   [07:47:19 INFO]: Starting remote control listener
->   [07:47:19 INFO]: Thread RCON Listener started
->   [07:47:19 INFO]: RCON running on 0.0.0.0:25586
->   [07:47:19 INFO]: Running delayed init tasks
->   [07:47:19 INFO]: [ViaVersion] Finished mapping loading, shutting down loader executor.
->   [31;1m[07:47:20 ERROR]: [com.zaxxer.hikari.pool.HikariPool] ResLink-MySQL - Exception during pool initialization.
-com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:165) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:55) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:837) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/bluenine.reslink.storage.mysql.MysqlDataSourceFactory.create(MysqlDataSourceFactory.java:25) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/bluenine.reslink.modern.ResLinkModernPlugin.initializeStorage(ResLinkModernPlugin.java:212) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/bluenine.reslink.modern.ResLinkModernPlugin.lambda$reloadRuntimeAsync$0(ResLinkModernPlugin.java:200) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at io.papermc.paper.threadedregions.scheduler.FoliaAsyncScheduler$AsyncScheduledTask.run(FoliaAsyncScheduler.java:217) ~[paper-1.21.4.jar:?]
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
-	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
-Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62) ~[?:?]
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502) ~[?:?]
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486) ~[?:?]
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:52) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:95) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:140) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:156) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:79) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.NativeSession.connect(NativeSession.java:142) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	... 17 more
-Caused by: java.net.ConnectException: Connection refused: getsockopt
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[?:?]
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682) ~[?:?]
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542) ~[?:?]
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[?:?]
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
-	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?]
-	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:144) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:53) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.NativeSession.connect(NativeSession.java:142) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	... 17 more
-[m>   [31;1m[07:47:20 ERROR]: [ResLink] MySQL initialization failed by enable
-com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/bluenine.reslink.storage.mysql.MysqlDataSourceFactory.create(MysqlDataSourceFactory.java:25) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/bluenine.reslink.modern.ResLinkModernPlugin.initializeStorage(ResLinkModernPlugin.java:212) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/bluenine.reslink.modern.ResLinkModernPlugin.lambda$reloadRuntimeAsync$0(ResLinkModernPlugin.java:200) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at io.papermc.paper.threadedregions.scheduler.FoliaAsyncScheduler$AsyncScheduledTask.run(FoliaAsyncScheduler.java:217) ~[paper-1.21.4.jar:?]
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
-	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
-Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:165) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:55) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:837) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	... 9 more
-Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62) ~[?:?]
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502) ~[?:?]
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486) ~[?:?]
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:52) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:95) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:140) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:156) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:79) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.NativeSession.connect(NativeSession.java:142) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	... 9 more
-Caused by: java.net.ConnectException: Connection refused: getsockopt
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[?:?]
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682) ~[?:?]
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542) ~[?:?]
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[?:?]
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
-	at java.base/java.net.Socket.connect(Socket.java:751) ~[?:?]
-	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:144) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:53) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.NativeSession.connect(NativeSession.java:142) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180) ~[mysql-connector-j-9.1.0.jar:9.1.0]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	at reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar/com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[reslink-platform-modern-0.1.0-SNAPSHOT-shaded.jar:?]
-	... 9 more
-[m>   [07:47:22 INFO]: Preparing start region for dimension minecraft:blrd_pool_mqvkz9ax_0
->   [07:47:22 INFO]: Preparing spawn area: 100%
->   [07:47:22 INFO]: Time elapsed: 5 ms
->   [07:47:22 INFO]: [BLRoomDungeon] 地牢生成耗时: stage=pool-create-world target=blrd_pool_mqvkz9ax_0 cost=2667.98ms
->   [07:47:22 INFO]: [ViaVersion] You are running a development version of the plugin, please report any bugs to GitHub.
->   [07:47:22 INFO]: Done (22.568s)! For help, type "help"
-> >   [07:47:22 INFO]: [BLWorldTrashCan] [Message] 已加载语言文件: messages/message_zh.yml
->   [07:47:22 INFO]: [BLWorldTrashCan] [TrashRouter] 已加载 0 个世界垃圾桶数据。
->   [07:47:22 INFO]: [BLWorldTrashCan] [Cleanup] 定时清理已关闭，仅允许手动触发。
->   [07:47:22 INFO]: [37m[[96mBLWorldTrashCan[37m] [92mBLWorldTrashCan 已重载。[0m
->   [07:47:31 INFO]: UUID of player RGBt_074659 is 6d229c4c-0e0c-3836-bfca-2dc5541b5a08
->   [07:47:31 INFO]: [93mRGBt_074659 joined the game[0m
->   [07:47:31 INFO]: RGBt_074659[/127.0.0.1:65388] logged in with entity id 12 at ([rgb_visual_paper1214]-1.5, -60.0, -8.5)
-> >   [07:47:33 INFO]: Made RGBt_074659 a server operator
-> >   [07:47:33 INFO]: Gamerule sendCommandFeedback is now set to: false
-> >   [07:47:34 INFO]: Gamerule commandBlockOutput is now set to: false
-> >   [07:47:34 INFO]: Gamerule doMobSpawning is now set to: false
-> >   [07:47:34 INFO]: Gamerule fallDamage is now set to: false
-> >   [07:47:34 INFO]: Set the time to 1000
-> >   [07:47:34 INFO]: Set the weather to clear
-> >   [07:47:34 INFO]: Set RGBt_074659's game mode to Creative Mode
-> >   [07:47:34 INFO]: Teleported RGBt_074659 to 0.500000, 91.000000, -7.500000
-> >   [07:47:35 INFO]: [91mNo items were found on player RGBt_074659[0m
-> minecraft:kill @e[type=minecraft:item]>   [07:47:35 INFO]: [91mNo entity was found[0m
-> >   [07:47:36 INFO]: Gave 24 [97m[Resin Clump][0m to RGBt_074659
-> >   [07:47:36 INFO]: Gave 2 [97m[Creaking Heart][0m to RGBt_074659
-> >   [07:47:36 INFO]: Gave 64 [97m[Resin Bricks][0m to RGBt_074659
-> >   [07:47:37 INFO]: Gave 24 [97m[Chiseled Resin Bricks][0m to RGBt_074659
-> >   [07:47:37 INFO]: Gave 24 [97m[Copper Grate][0m to RGBt_074659
-> >   [07:47:37 INFO]: Gave 17 [97m[Copper Bulb][0m to RGBt_074659
-> >   [07:47:37 INFO]: Gave 64 [97m[Crafter][0m to RGBt_074659
-> >   [07:47:37 INFO]: RGBt_074659 has made the advancement [92m[Stone Age][0m
->   [07:47:37 INFO]: Gave 64 [97m[Blackstone][0m to RGBt_074659
-> >   [07:47:38 INFO]: Gave 1 [95m[Heavy Core][0m to RGBt_074659
->   [07:47:45 INFO]: RGBt_074659 issued server command: /blwtc global
-> >   [07:48:02 INFO]: [92m垃圾桶库存:[0m
->   [07:48:02 INFO]: [37m- [97m公共垃圾桶物品: [92m284 [37m(堆叠 9)[0m
->   [07:48:02 INFO]: [37m- [97m公共垃圾桶页数: [92m5[0m
->   [07:48:02 INFO]: [37m- [97m已加载个人垃圾桶: [92m0[0m
-> >   [07:48:39 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBt_074659, material=POLISHED_BLACKSTONE, amount=5, markOwner=false
->   [07:48:39 INFO]: [92m已生成测试掉落物。[0m
-> >   [07:48:39 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBt_074659, material=GILDED_BLACKSTONE, amount=4, markOwner=false
->   [07:48:39 INFO]: [92m已生成测试掉落物。[0m
-> >   [07:48:40 INFO]: [BLWorldTrashCan] [Debug] debugDrop player=RGBt_074659, material=CRYING_OBSIDIAN, amount=3, markOwner=false
->   [07:48:40 INFO]: [92m已生成测试掉落物。[0m
->   [07:48:47 INFO]: RGBt_074659 issued server command: /blwtc clear
->   [07:48:47 INFO]: [BLWorldTrashCan] [Cleanup] worlds=4, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=12, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=18, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=false
->   [07:48:57 INFO]: RGBt_074659 issued server command: /blwtc global
-> >   [07:49:12 INFO]: [92m垃圾桶库存:[0m
->   [07:49:12 INFO]: [37m- [97m公共垃圾桶物品: [92m296 [37m(堆叠 12)[0m
->   [07:49:12 INFO]: [37m- [97m公共垃圾桶页数: [92m5[0m
->   [07:49:12 INFO]: [37m- [97m已加载个人垃圾桶: [92m0[0m
->   [07:49:38 INFO]: RGBt_074659 lost connection: Disconnected
->   [07:49:38 INFO]: [93mRGBt_074659 left the game[0m
-> >   [07:49:38 INFO]: Stopping the server
->   [07:49:38 INFO]: Stopping server
->   [07:49:38 INFO]: [BlLevelManager] Disabling BlLevelManager v1.0-SNAPSHOT
->   [07:49:38 INFO]: [BlLevelManager] §8[§bBlLevel§8] §e插件已关闭。
->   [07:49:38 INFO]: [BLRoomDungeon] Disabling BLRoomDungeon v0.1.0-SNAPSHOT
->   [07:49:38 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'blrd_pool_mqvkz9ax_0'
->   [07:49:38 INFO]: [ChunkHolderManager] Halted chunk system for world 'blrd_pool_mqvkz9ax_0'
->   [07:49:38 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'blrd_pool_mqvkz9ax_0'
->   [07:49:38 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'blrd_pool_mqvkz9ax_0'
->   [07:49:38 INFO]: [BLRoomDungeon] BLRoomDungeon disabled
->   [07:49:38 INFO]: [BLWorldTrashCan] Disabling BLWorldTrashCan v7.0.0
->   [07:49:38 INFO]: [ResLink] Disabling ResLink v0.1.0-SNAPSHOT
->   [07:49:38 INFO]: [ResLink] ResLink modern platform disabled
->   [07:49:38 INFO]: [ViaBackwards] Disabling ViaBackwards v5.10.0
->   [07:49:38 INFO]: [MythicMobs] Disabling MythicMobs v5.8.2-6a2683d7
->   [07:49:38 INFO]: [MythicMobs] [35m[1m------------------------------------------------------------[0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [33mUnloading Mythic...[0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m------------------------------------------------------------[0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0mSpawners saved and unloaded...[0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0mMobs saved and unloaded...[0m[0m
->   [07:49:38 INFO]: [MythicMobs] Saving plugin data...[0m
->   [07:49:38 INFO]: [MythicMobs] [32m✓[37mSaving Finished[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0mVariables saved...[0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0mAll active settings have been saved![0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m- [0mMythic has been unloaded![0m[0m
->   [07:49:38 INFO]: [MythicMobs] [35m[1m------------------------------------------------------------[0m[0m
->   [07:49:38 INFO]: [MythicMobs] Saving plugin data...[0m
->   [07:49:38 INFO]: [MythicMobs] [32m✓[37mSaving Finished[0m
->   [07:49:38 INFO]: [FastAsyncWorldEdit] Disabling FastAsyncWorldEdit v2.15.2+e9ed0d1
->   [07:49:38 INFO]: Unregistering com.sk89q.worldedit.bukkit.BukkitServerInterface from WorldEdit
->   [07:49:38 INFO]: [ViaVersion] Disabling ViaVersion v5.10.1-SNAPSHOT
->   [07:49:38 INFO]: [ViaVersion] ViaVersion has been disabled; uninjected the platform and shut down the scheduler.
->   [07:49:38 INFO]: Saving players
->   [07:49:38 INFO]: Saving worlds
->   [07:49:38 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1214]'/minecraft:overworld
->   [07:49:38 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1214'
->   [07:49:38 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1214'
->   [07:49:38 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1214'
->   [07:49:38 INFO]: [ChunkHolderManager] Saved 132 block chunks, 132 entity chunks, 0 poi chunks in world 'rgb_visual_paper1214' in 0.09s
->   [07:49:38 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'rgb_visual_paper1214'
->   [07:49:38 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'rgb_visual_paper1214'
->   [07:49:39 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1214_nether]'/minecraft:the_nether
->   [07:49:39 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1214_nether'
->   [07:49:39 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1214_nether'
->   [07:49:39 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1214_nether'
->   [07:49:39 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'rgb_visual_paper1214_nether' in 0.06s
->   [07:49:39 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'rgb_visual_paper1214_nether'
->   [07:49:39 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'rgb_visual_paper1214_nether'
->   [07:49:39 INFO]: Saving chunks for level 'ServerLevel[rgb_visual_paper1214_the_end]'/minecraft:the_end
->   [07:49:39 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'rgb_visual_paper1214_the_end'
->   [07:49:39 INFO]: [ChunkHolderManager] Halted chunk system for world 'rgb_visual_paper1214_the_end'
->   [07:49:39 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'rgb_visual_paper1214_the_end'
->   [07:49:39 INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'rgb_visual_paper1214_the_end' in 0.03s
->   [07:49:39 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'rgb_visual_paper1214_the_end'
->   [07:49:39 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'rgb_visual_paper1214_the_end'
->   [07:49:39 INFO]: ThreadedAnvilChunkStorage (rgb_visual_paper1214): All chunks are saved
->   [07:49:39 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
->   [07:49:39 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
->   [07:49:39 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
->   [07:49:39 INFO]: Waiting for I/O tasks to complete...
->   [07:49:39 INFO]: All I/O tasks to complete
->   [07:49:39 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
->   [07:49:39 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...
-> 

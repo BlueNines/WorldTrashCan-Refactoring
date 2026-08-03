@@ -11,8 +11,6 @@ __pycache__/
 dist/*
 !dist/.gitkeep
 
-# Local restore caches in evidence folders. Keep logs, summaries and config snapshots trackable.
-docs/test-evidence/**/backup/*.jar
-docs/test-evidence/**/server-backup/plugins/*.jar
-docs/test-evidence/**/plugin-backup/*.jar
-docs/test-evidence/**/deployed-artifact*/*.jar
+# Detailed design documents, test screenshots, logs and handoff records are local-only.
+# Keep them on disk for maintenance, but do not publish the docs tree to GitHub.
+docs/

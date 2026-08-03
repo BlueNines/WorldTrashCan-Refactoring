@@ -1,9 +1,0 @@
-[21:03:12] deop RGBaper1122
-[21:03:18] permfixture deny RGBaper1122 blworldtrashcan.global.open WorldListTrashCan.GlobalTrashOpen
-[21:03:24] permfixture clear RGBaper1122
-[21:03:25] permfixture deny RGBaper1122 blworldtrashcan.personal.open WorldListTrashCan.PlayerTrash
-[21:03:31] permfixture clear RGBaper1122
-[21:03:31] op RGBaper1122
-[21:03:38] blwtc platform
-[21:03:39] permfixture clear RGBaper1122
-[21:03:40] op RGBaper1122

@@ -1,6 +1,0 @@
-status=200
-bytes=769026
-url=https://bstats.org/plugin/bukkit/WorldTrashCan/24350
-has700=True
-
-eric",1],["6.8.0-63-generic",1],["6.8.0-78-generic",1],["6.8.0-88-generic",1],["7.0.0-15-generic",1],["7.0.6-2-pve",1],["5.15.0-139-generic",2],["5.4.0-216-generic",

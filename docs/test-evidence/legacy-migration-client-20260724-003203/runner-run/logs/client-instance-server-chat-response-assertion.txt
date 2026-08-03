@@ -1,6 +1,0 @@
-status=PASS
-responseStatus=PASS
-responseMessage=chat sequence sent: 3 commands, chatLines=17
-responseFile=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\control\client-response.properties
-responseRunId=20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat
-responseJobId=3441

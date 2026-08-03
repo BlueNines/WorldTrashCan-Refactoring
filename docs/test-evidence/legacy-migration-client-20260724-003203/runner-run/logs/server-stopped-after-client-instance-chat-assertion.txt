@@ -1,8 +1,0 @@
-status=PASS
-expectedRunning=false
-stage=after-client-instance-server-stop
-port25565Listening=PASS actual=false
-paperProcessCount=PASS actual=0
-clientProcessCount=0
-testProcessCount=0
-snapshotFile=C:\Users\pc\Desktop\ai开发插件\客户端自动化测试工作区\runs\20260724-003209-job3441-ClientInstanceServerChatCanary-client_instance_server_chat\logs\environment-after-client-instance-server-stop.json

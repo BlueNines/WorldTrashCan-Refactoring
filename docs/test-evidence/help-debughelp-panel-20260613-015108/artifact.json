@@ -1,8 +1,0 @@
-{
-  "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\BLWorldTrashCan-universal.jar",
-  "name": "BLWorldTrashCan-universal.jar",
-  "size": 433767,
-  "sha256": "670c4aac4e78e463641b78b4c3f5299eb26db6d7ef2fd532d49c04f8885a0361",
-  "pluginYmlVersion": "7.0.0",
-  "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.BLWorldTrashCanUniversalPlugin"
-}

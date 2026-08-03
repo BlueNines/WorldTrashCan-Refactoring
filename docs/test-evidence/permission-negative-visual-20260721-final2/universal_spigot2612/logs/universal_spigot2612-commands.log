@@ -1,9 +1,0 @@
-[02:34:53] deop RGBigot2612
-[02:34:59] permfixture deny RGBigot2612 WorldListTrashCan.GlobalTrashOpen
-[02:35:05] permfixture clear RGBigot2612
-[02:35:05] permfixture deny RGBigot2612 WorldListTrashCan.PlayerTrash
-[02:35:11] permfixture clear RGBigot2612
-[02:35:11] op RGBigot2612
-[02:35:18] wtc platform
-[02:35:19] permfixture clear RGBigot2612
-[02:35:19] op RGBigot2612

@@ -1,9 +1,0 @@
-[02:36:19] deop RGBolia1218
-[02:36:25] permfixture deny RGBolia1218 WorldListTrashCan.GlobalTrashOpen
-[02:36:31] permfixture clear RGBolia1218
-[02:36:31] permfixture deny RGBolia1218 WorldListTrashCan.PlayerTrash
-[02:36:37] permfixture clear RGBolia1218
-[02:36:38] op RGBolia1218
-[02:36:44] wtc platform
-[02:36:46] permfixture clear RGBolia1218
-[02:36:46] op RGBolia1218

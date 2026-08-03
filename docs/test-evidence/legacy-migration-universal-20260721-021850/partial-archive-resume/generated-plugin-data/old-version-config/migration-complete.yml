@@ -1,6 +1,0 @@
-status: complete
-source-format: legacy-single-config
-target-config-schema-version: 2
-target-plugin-version: "7.0.0"
-migrated-at: "2026-07-21 02:19:14"
-source-sha256: "fd993b4c78022fe6aaf653fc8cb3cd7b9d99e913ba1ad6f93fc74d3e393e8e01"
