@@ -5,7 +5,6 @@ target/
 .idea/
 *.iml
 *.log
-!docs/test-evidence/**/*.log
 __pycache__/
 *.pyc
 dist/*
@@ -14,3 +13,7 @@ dist/*
 # Detailed design documents, test screenshots, logs and handoff records are local-only.
 # Keep them on disk for maintenance, but do not publish the docs tree to GitHub.
 docs/
+
+# Internal test runners and test specifications are local development assets.
+tools/
+test-specs/

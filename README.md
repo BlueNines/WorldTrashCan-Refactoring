@@ -24,7 +24,7 @@ WorldListTrashCan 是一个面向 Bukkit、Spigot、Paper 和 Folia/Luminol 的�
 | 移动物品保护 | 没有 | 可选择扫地时跳过仍在移动的掉落物，默认关闭 |
 | 潜影盒物品保护 | 没有 | 可选择跳过掉落物携带的装满潜影盒物品，默认关闭 |
 
-重构版目前按功能矩阵记录了 `F-001` 至 `F-097`。上表只列服主能直接感知的业务变化，不把内部重构、调度拆分和测试工具重复算成新功能。
+上表只列服主能直接感知的业务变化，没有把内部实现细节重复算成新功能。
 
 ### 兼容性和稳定性增强
 
@@ -107,9 +107,3 @@ filled-shulker-boxes:
 版本: 7.0.0
 SHA-256: 0424efb4752abd4f1c9792b9dd81b5ec3999e735c9a0221e78e3bc1dddea8527
 ```
-
-## 本地资料
-
-详细架构文档、完整功能矩阵、测试截图、服务端日志和交接记录保存在插件目录本地的 `docs/` 中。按照当前发布规则，`docs/` 已加入 `.gitignore`，不会进入 Git 索引，也不会被推送到 GitHub；它们只用于本地维护、排查和验收。
-
-本地维护者可以使用 `tools/rgb-visual-matrix/check_function_matrix_doc.py` 检查当前 `F-001` 至 `F-097` 功能矩阵，使用 `tools/rgb-visual-matrix/run_delivery_audits.py` 执行完整交付预检。当前默认预检为 21 项，包含 Maven 测试的完整预检为 22 项。当前默认 21 项审计和完整 22 项审计均为 `failed: 0`。
