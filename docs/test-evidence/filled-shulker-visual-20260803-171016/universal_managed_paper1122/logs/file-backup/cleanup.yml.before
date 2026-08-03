@@ -7,28 +7,6 @@ interval-seconds: 360
 ignored-worlds:
   - "testWorld"
 
-# 强制直接删除扫地物品的世界名列表。
-# 命中后，物品仍会先经过 ignored-materials、名字和 lore 保护；确认需要清理后不会进入世界、个人或公共垃圾桶，而是直接删除。
-# 仅影响定时扫地和 /wtc clear，不影响仙人掌、岩浆、虚空等独立回收功能；默认 [] 表示关闭。
-direct-remove-worlds: []
-
-# 扫地时是否跳过当前仍在移动的掉落物。
-# enabled 默认 false；关闭时不会读取物品速度，保持旧版本行为和原有扫地开销。
-# 开启后只在每轮扫地遍历掉落物时读取一次当前速度，达到阈值的物品本轮不清理，不会启动常驻监听或额外定时任务。
-moving-items:
-  # 是否启用移动物品保护；默认关闭。
-  enabled: false
-  # 判定为移动的最低速度，单位为方块/tick，必须大于 0。
-  # 默认 0.01；配置为非正数或非法数值时回退到 0.01，避免落地后的浮点抖动让物品长期无法清理。
-  minimum-speed: 0.01
-
-# 扫地时是否保护装有物品的潜影盒。
-# 默认关闭；关闭时保持原有扫地行为，不读取潜影盒物品内容。
-# 开启后，装有物品的潜影盒本轮跳过，空潜影盒仍会按正常规则清理。
-filled-shulker-boxes:
-  # 是否启用装有物品潜影盒保护；默认关闭。
-  enabled: false
-
 # 扫地启动门禁。
 # 这些配置只决定“本轮扫地是否启动”，不会改变具体哪些物品或实体会被清理。
 guards:
@@ -84,12 +62,6 @@ entities:
   clear-named-entities: false
   # 是否跳过船内实体。
   ignore-entities-in-boat: false
-  # 是否跳过实际装备了鞍的实体。
-  # 默认 true；支持当前平台 Bukkit API 可识别的马、驴、骡、猪、炽足兽、骆驼等坐骑。
-  ignore-entities-with-saddle: true
-  # 是否跳过拥有 Bukkit Tameable 主人的实体。
-  # 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
-  ignore-entities-with-owner: true
   # 实体白名单；命中后不清理，支持 * 通配。
   whitelist:
     - "VILLAGER"

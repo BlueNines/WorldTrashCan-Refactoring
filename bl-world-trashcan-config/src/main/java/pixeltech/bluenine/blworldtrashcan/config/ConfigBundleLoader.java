@@ -53,6 +53,9 @@ public final class ConfigBundleLoader {
                 new CleanupConfig.MovingItemConfig(
                         cleanup.getBoolean("moving-items.enabled", false),
                         cleanup.getDouble("moving-items.minimum-speed", 0.01D)
+                ),
+                new CleanupConfig.FilledShulkerBoxConfig(
+                        cleanup.getBoolean("filled-shulker-boxes.enabled", false)
                 )
         );
         TrashConfig trashConfig = new TrashConfig(

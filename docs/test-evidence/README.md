@@ -27,6 +27,7 @@
 | 鞍与 Bukkit Tameable 主人保护 | `entity-saddle-owner-visual-20260728-162714/` | 同一个 universal 整包；Paper 1.12.2 与隔离 Paper 1.21.8 真实客户端；有鞍/标准有主实体保留，shooter/source/掉落者/Metadata/PDC owner 不误保护；逐 UUID `5/5`、`7/7`、`8/8` |
 | 强制直删世界 | `direct-remove-world-visual-20260730-211433/` | 同一个 universal 整包；Paper 1.12.2 与 Folia 1.21.8 真实客户端；列表命中时三类回收均为 0、删除 7，reload 移出列表后世界回收 5、删除 0 |
 | 扫地跳过移动物品 | `moving-items-visual-20260801-044520/` | 同一个 universal 整包，SHA256 `d8acc3e9906fa9a1173181a3a9c1ba843deef91fa07eb709957d4e4ece56ee0b`；Paper 1.12.2 与 Folia 1.21.8 真实客户端各完成默认关闭移动、开启移动保护、开启静止回收三轮，全部 PASS |
+| 扫地保护装有物品的潜影盒物品 | `filled-shulker-visual-20260803-171016/` | 同一个 universal 整包，SHA256 `0424efb4752abd4f1c9792b9dd81b5ec3999e735c9a0221e78e3bc1dddea8527`；Paper 1.12.2 与 Folia 1.21.8 真实客户端各完成默认关闭装满盒、开启保护装满盒、开启保护空盒三轮，全部 PASS。只验证掉落物 ItemStack，不验证世界方块 |
 | 世界垃圾桶边界 | `world-trash-boundary-20260701-172919/` | 创建上限、破坏移除、禁用世界、黑名单降级、未加载区块降级 |
 | 保护边界 | `protection-boundary-20260701-174709/` | 不可拾取箭矢、防踩踏农田 |
 | 世界实体上限 | `world-entity-limit-20260701-180527/` | 世界实体上限和忽略世界 |

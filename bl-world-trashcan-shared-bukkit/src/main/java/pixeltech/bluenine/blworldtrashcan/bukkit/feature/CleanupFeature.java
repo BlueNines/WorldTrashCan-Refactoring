@@ -407,6 +407,9 @@ public final class CleanupFeature implements Feature {
         if (isMovingItemProtected(item, cleanupConfig)) {
             return false;
         }
+        if (CleanupItemProtection.isFilledShulkerItem(item.getItemStack(), cleanupConfig)) {
+            return false;
+        }
         ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
@@ -432,6 +435,10 @@ public final class CleanupFeature implements Feature {
     private void cleanItem(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats,
                            CleanupAuditSession auditSession) {
         if (isMovingItemProtected(item, cleanupConfig)) {
+            stats.itemsSkipped++;
+            return;
+        }
+        if (CleanupItemProtection.isFilledShulkerItem(item.getItemStack(), cleanupConfig)) {
             stats.itemsSkipped++;
             return;
         }

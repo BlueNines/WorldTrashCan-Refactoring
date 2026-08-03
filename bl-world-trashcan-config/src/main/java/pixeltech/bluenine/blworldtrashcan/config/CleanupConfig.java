@@ -16,6 +16,7 @@ public final class CleanupConfig {
     private final CleanupGuardConfig guardConfig;
     private final FoliaCleanupConfig foliaCleanup;
     private final MovingItemConfig movingItems;
+    private final FilledShulkerBoxConfig filledShulkerBoxes;
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings) {
@@ -41,13 +42,22 @@ public final class CleanupConfig {
                          CleanupSettings settings, CleanupGuardConfig guardConfig,
                          FoliaCleanupConfig foliaCleanup) {
         this(intervalSeconds, ignoredWorlds, directRemoveWorlds, settings, guardConfig, foliaCleanup,
-                MovingItemConfig.defaults());
+                MovingItemConfig.defaults(), FilledShulkerBoxConfig.defaults());
     }
 
     /** 创建包含全部扫地保护项的清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, Set<String> directRemoveWorlds,
                          CleanupSettings settings, CleanupGuardConfig guardConfig,
                          FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems) {
+        this(intervalSeconds, ignoredWorlds, directRemoveWorlds, settings, guardConfig, foliaCleanup,
+                movingItems, FilledShulkerBoxConfig.defaults());
+    }
+
+    /** 创建包含全部扫地物品保护项的清理配置。 */
+    public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, Set<String> directRemoveWorlds,
+                         CleanupSettings settings, CleanupGuardConfig guardConfig,
+                         FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems,
+                         FilledShulkerBoxConfig filledShulkerBoxes) {
         this.intervalSeconds = Math.max(0, intervalSeconds);
         this.ignoredWorlds = normalizeWorlds(ignoredWorlds);
         this.directRemoveWorlds = normalizeWorlds(directRemoveWorlds);
@@ -55,6 +65,9 @@ public final class CleanupConfig {
         this.guardConfig = guardConfig == null ? CleanupGuardConfig.defaults() : guardConfig;
         this.foliaCleanup = foliaCleanup == null ? FoliaCleanupConfig.defaults() : foliaCleanup;
         this.movingItems = movingItems == null ? MovingItemConfig.defaults() : movingItems;
+        this.filledShulkerBoxes = filledShulkerBoxes == null
+                ? FilledShulkerBoxConfig.defaults()
+                : filledShulkerBoxes;
     }
 
     /** 返回清理间隔秒数，0 表示只允许手动清理。 */
@@ -90,6 +103,11 @@ public final class CleanupConfig {
     /** 返回扫地时的移动物品保护配置。 */
     public MovingItemConfig getMovingItems() {
         return movingItems;
+    }
+
+    /** 返回装有物品的潜影盒保护配置。 */
+    public FilledShulkerBoxConfig getFilledShulkerBoxes() {
+        return filledShulkerBoxes;
     }
 
     /** 标准化世界名集合。 */
@@ -239,6 +257,26 @@ public final class CleanupConfig {
                 return DEFAULT_MINIMUM_SPEED;
             }
             return minimumSpeed;
+        }
+    }
+
+    /** 扫地时保护装有物品的潜影盒配置。 */
+    public static final class FilledShulkerBoxConfig {
+        private final boolean enabled;
+
+        /** 创建装有物品的潜影盒保护配置。 */
+        public FilledShulkerBoxConfig(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        /** 返回默认关闭的潜影盒保护配置。 */
+        public static FilledShulkerBoxConfig defaults() {
+            return new FilledShulkerBoxConfig(false);
+        }
+
+        /** 判断是否启用装有物品的潜影盒保护。 */
+        public boolean isEnabled() {
+            return enabled;
         }
     }
 }

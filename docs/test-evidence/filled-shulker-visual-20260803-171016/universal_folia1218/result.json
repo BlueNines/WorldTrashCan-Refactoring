@@ -1,0 +1,159 @@
+{
+  "id": "universal_folia1218",
+  "label": "folia1.21.8",
+  "version": "1.21.8",
+  "status": "PASS",
+  "artifact": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\dist\\WorldListTrashCan-universal.jar",
+    "name": "WorldListTrashCan-universal.jar",
+    "size": 642256,
+    "sha256": "0424efb4752abd4f1c9792b9dd81b5ec3999e735c9a0221e78e3bc1dddea8527",
+    "pluginYmlVersion": "7.0.0",
+    "main": "pixeltech.bluenine.blworldtrashcan.plugin.universal.WorldListTrashCanUniversalPlugin"
+  },
+  "phases": [
+    {
+      "phase": "filled-shulker-disabled-filled",
+      "enabled": false,
+      "state": "filled",
+      "expected": {
+        "routed": 1,
+        "world": 1,
+        "personal": 0,
+        "global": 0,
+        "removed": 0,
+        "skipped": 0
+      },
+      "actual": {
+        "routed": 1,
+        "world": 1,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": false,
+      "status": "PASS",
+      "serverExcerpt": "[17:12:49 INFO]: AI_SHULKER_FIXTURE_RESULT success=true filled=true amount=1\n[17:12:56 INFO]: RGBolia1218 issued server command: /wtc clear true\n[17:12:57 INFO]: [WorldListTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=27, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=594, clearEvery=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[17:12:57 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=1, groups=0, shown=0, partial=false\n[17:12:57 INFO]: [WorldListTrashCan] [CleanupDetail] items: 1\n[17:12:57 INFO]: 清理成功，有1个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)\n[17:12:57 INFO]: 公共垃圾桶的物品已刷新\n\n",
+      "clientExcerpt": "[17:13:12] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 回收物品: 1 (世界 1, 个人 0, 公共 0)\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[17:13:12] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[17:13:15] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-03_17.13.15.png\n[17:13:16] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-03_17.13.16.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\screenshots\\universal_folia1218_client_universal_folia1218-filled-shulker-disabled-filled-clear.png",
+          "size": 383400,
+          "sha256": "d8939053bc6258571ef77526d2399d7f35cbbcae71dfba03109d058bc9a66da3",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 102.75325520833333
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\screenshots\\universal_folia1218_client_universal_folia1218-filled-shulker-disabled-filled-stats.png",
+          "size": 383560,
+          "sha256": "9cfb76bc65c2180a7c3390b92fde9f488f061b1683339407682fd7b9a5a8f720",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 96.66569010416667
+        }
+      ]
+    },
+    {
+      "phase": "filled-shulker-enabled-filled",
+      "enabled": true,
+      "state": "filled",
+      "expected": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 0,
+        "skipped": 1
+      },
+      "actual": {
+        "routed": 0,
+        "world": 0,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": true,
+      "status": "PASS",
+      "serverExcerpt": "[17:13:18 INFO]: AI_SHULKER_FIXTURE_RESULT success=true filled=true amount=1\n[17:13:26 INFO]: RGBolia1218 issued server command: /wtc clear true\n[17:13:26 INFO]: [WorldListTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=0, itemsRemoved=0, itemsSkipped=1, entitiesRemoved=0, entitiesSkipped=27, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=598, clearEvery=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[17:13:26 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=0, groups=0, shown=0, partial=false\n[17:13:26 INFO]: [WorldListTrashCan] [CleanupDetail] items: 0\n[17:13:26 INFO]: 清理成功，有0个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)\n[17:13:26 INFO]: 公共垃圾桶的物品已刷新\n\n[17:13:46 INFO]: [Not Secure] [Server] AI_WTC_FILLED_SHULKER_REMAINS\n",
+      "clientExcerpt": "[17:13:42] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 回收物品: 0 (世界 0, 个人 0, 公共 0)\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[17:13:42] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[17:13:45] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-03_17.13.45.png\n[17:13:46] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-03_17.13.46.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\screenshots\\universal_folia1218_client_universal_folia1218-filled-shulker-enabled-filled-clear.png",
+          "size": 381323,
+          "sha256": "4f09574275b5aaacf4d6b1014e4b6ba1ad9c98c319d90a5f01c33fa67bde8541",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 103.341796875
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\screenshots\\universal_folia1218_client_universal_folia1218-filled-shulker-enabled-filled-stats.png",
+          "size": 384041,
+          "sha256": "8a2b53344630d3c848067ebae365e62e390d1855924978c04d6b05fe7773a7c3",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 97.32975260416667
+        }
+      ]
+    },
+    {
+      "phase": "filled-shulker-enabled-empty",
+      "enabled": true,
+      "state": "empty",
+      "expected": {
+        "routed": 1,
+        "world": 1,
+        "personal": 0,
+        "global": 0,
+        "removed": 0,
+        "skipped": 0
+      },
+      "actual": {
+        "routed": 1,
+        "world": 1,
+        "personal": 0,
+        "global": 0,
+        "removed": 0
+      },
+      "remainingAfterClear": false,
+      "status": "PASS",
+      "serverExcerpt": "[17:13:47 INFO]: AI_SHULKER_FIXTURE_RESULT success=true filled=false amount=1\n[17:13:54 INFO]: RGBolia1218 issued server command: /wtc clear true\n[17:13:55 INFO]: [WorldListTrashCan] [FoliaCleanup] worlds=3, skippedByGuard=false, guardReason=, onlinePlayers=1, minOnlinePlayers=1, targetEntities=0, minTotalEntities=0, itemsRouted=1, itemsRemoved=0, itemsSkipped=0, entitiesRemoved=0, entitiesSkipped=27, chunksSeen=723, chunksScheduled=723, chunksDone=723, chunksSkippedByLimit=0, chunksDispatchFailed=0, pendingTasks=0, timeoutSeconds=30, timedOut=false, elapsedMs=599, clearEvery=0, worldTrashSkippedUnloadedChunks=0, globalTrashRefreshed=true\n[17:13:55 INFO]: [WorldListTrashCan] [CleanupDetail] entities=0, items=1, groups=0, shown=0, partial=false\n[17:13:55 INFO]: [WorldListTrashCan] [CleanupDetail] items: 1\n[17:13:55 INFO]: 清理成功，有1个物品被回收，有0个物品加入了公共垃圾桶，有0个生物被清理 (点我打开垃圾桶)\n[17:13:55 INFO]: 公共垃圾桶的物品已刷新\n\n",
+      "clientExcerpt": "[17:14:11] [Render thread/INFO]: [System] [CHAT] [WorldListTrashCan] 清理统计:\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 扫地门禁: 已通过 (在线 1/1, 目标实体 0/0)\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 世界数: 3\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 回收物品: 1 (世界 1, 个人 0, 公共 0)\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 删除物品: 0\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 删除实体: 0\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶页数: 5\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 公共垃圾桶当前物品: 0 (堆叠 0)\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 已加载个人垃圾桶: 0\n[17:14:11] [Render thread/INFO]: [System] [CHAT] - 下次清理剩余秒数: 0\n[17:14:14] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-03_17.14.14.png\n[17:14:14] [Render thread/INFO]: [System] [CHAT] Saved screenshot as 2026-08-03_17.14.14_2.png\n",
+      "clientScreenshots": [
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\screenshots\\universal_folia1218_client_universal_folia1218-filled-shulker-enabled-empty-clear.png",
+          "size": 381164,
+          "sha256": "f243cf42c29c92211ec6e87dc6e5b8cff0198025e1e01efc3cf55286bb61ec0e",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 102.94466145833333
+        },
+        {
+          "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\screenshots\\universal_folia1218_client_universal_folia1218-filled-shulker-enabled-empty-stats.png",
+          "size": 384148,
+          "sha256": "d151b16cec56237460948b634d8881de075526392ed584d1152bb28b6df5163b",
+          "dimensions": [
+            884,
+            521
+          ],
+          "brightness": 97.31803385416667
+        }
+      ]
+    }
+  ],
+  "username": "RGBolia1218",
+  "serverScreenshot": {
+    "path": "C:\\Users\\pc\\Desktop\\ai开发插件\\待重构插件\\WorldListTrashCan重构\\refactor-workspace\\docs\\test-evidence\\filled-shulker-visual-20260803-171016\\universal_folia1218\\server-screenshots\\universal_folia1218-filled-shulker-server.png",
+    "sha256": "8c1234e578fc3841ba90ee9cb37f625f014a281bddbe82b1af607bc66a9817c2"
+  }
+}

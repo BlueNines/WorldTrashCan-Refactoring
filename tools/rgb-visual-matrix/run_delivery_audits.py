@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -32,10 +33,30 @@ GIT_AUDITS = [
     ("git-diff-check", ["git", "diff", "--check", "--", "."]),
     ("git-diff-cached-check", ["git", "diff", "--cached", "--check", "--", "."]),
 ]
-MAVEN_TEST = (
-    "maven-test",
-    [str(REPO / "build" / "tools" / "apache-maven-3.9.9" / "bin" / "mvn.cmd"), "-q", "test"],
-)
+
+
+def locate_maven_executable() -> Path:
+    """按仓库、环境变量、PATH 和本地工具缓存查找 Maven。"""
+    candidates = []
+    for variable in ("MAVEN_HOME", "M2_HOME"):
+        value = os.environ.get(variable, "").strip()
+        if value:
+            candidates.append(Path(value) / "bin" / ("mvn.cmd" if os.name == "nt" else "mvn"))
+    candidates.extend([
+        REPO / "build" / "tools" / "apache-maven-3.9.9" / "bin" / "mvn.cmd",
+        Path.home() / ".codex" / "tools" / "apache-maven-3.9.9" / "bin" / "mvn.cmd",
+    ])
+    path_value = shutil.which("mvn.cmd" if os.name == "nt" else "mvn")
+    if path_value:
+        candidates.append(Path(path_value))
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate.resolve()
+    return Path("mvn.cmd" if os.name == "nt" else "mvn")
+
+
+MAVEN_EXECUTABLE = locate_maven_executable()
+MAVEN_TEST = ("maven-test", [str(MAVEN_EXECUTABLE), "-q", "test"])
 
 
 def run_command(name: str, command: list[str]) -> dict:
@@ -44,6 +65,13 @@ def run_command(name: str, command: list[str]) -> dict:
     mapped_drive = None
     actual_command = list(command)
     if name == "maven-test" and os.name == "nt" and not str(REPO).isascii():
+        maven_path = Path(actual_command[0])
+        try:
+            maven_relative = maven_path.resolve().relative_to(REPO.resolve())
+        except ValueError:
+            maven_relative = None
+        if maven_relative is None:
+            maven_relative = Path()
         mapping = subprocess.run(
             ["cmd", "/c", "subst"], text=True, encoding="utf-8", errors="replace",
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
@@ -57,8 +85,8 @@ def run_command(name: str, command: list[str]) -> dict:
             if created.returncode == 0:
                 mapped_drive = candidate
                 cwd = Path(candidate + "\\")
-                actual_command[0] = str(cwd / "build" / "tools"
-                                        / "apache-maven-3.9.9" / "bin" / "mvn.cmd")
+                if maven_relative != Path():
+                    actual_command[0] = str(cwd / maven_relative)
                 break
         if mapped_drive is None:
             return {
@@ -68,6 +96,8 @@ def run_command(name: str, command: list[str]) -> dict:
                 "stdout": "",
                 "stderr": "没有可用 ASCII subst 盘符，无法在中文路径下运行 Maven 测试。",
             }
+    result = None
+    launch_error = ""
     try:
         result = subprocess.run(
             actual_command,
@@ -79,11 +109,21 @@ def run_command(name: str, command: list[str]) -> dict:
             stderr=subprocess.PIPE,
             check=False,
         )
+    except OSError as exc:
+        launch_error = "无法启动审计命令: " + str(exc)
     finally:
         if mapped_drive is not None:
             subprocess.run(
                 ["cmd", "/c", "subst", mapped_drive, "/d"],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result is None:
+        return {
+            "name": name,
+            "command": actual_command,
+            "returnCode": 1,
+            "stdout": "",
+            "stderr": launch_error,
+        }
     return {
         "name": name,
         "command": actual_command,

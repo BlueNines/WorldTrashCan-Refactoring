@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupConsoleDetailFormatter;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupItemProtection;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
@@ -525,6 +526,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
         if (isMovingItemProtected(item, cleanupConfig)) {
             return false;
         }
+        if (CleanupItemProtection.isFilledShulkerItem(item.getItemStack(), cleanupConfig)) {
+            return false;
+        }
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
             return false;
@@ -546,6 +550,10 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return;
         }
         if (isMovingItemProtected(item, tracker.cleanupConfig)) {
+            stats.addItemsSkipped(itemStack.getAmount());
+            return;
+        }
+        if (CleanupItemProtection.isFilledShulkerItem(itemStack, tracker.cleanupConfig)) {
             stats.addItemsSkipped(itemStack.getAmount());
             return;
         }

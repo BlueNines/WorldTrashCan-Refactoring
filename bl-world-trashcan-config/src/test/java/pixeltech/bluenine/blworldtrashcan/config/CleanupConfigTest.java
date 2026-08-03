@@ -77,6 +77,24 @@ public final class CleanupConfigTest {
         assertTrue(zero.isMoving(0.0001D));
     }
 
+    /** 验证旧配置缺少潜影盒保护项时默认关闭。 */
+    @Test
+    public void missingFilledShulkerBoxesConfigDefaultsToDisabled() {
+        CleanupConfig.FilledShulkerBoxConfig filledShulkerBoxes = load(new MapConfigurationSource())
+                .getCleanupConfig().getFilledShulkerBoxes();
+
+        assertFalse(filledShulkerBoxes.isEnabled());
+    }
+
+    /** 验证潜影盒保护配置可以在 reload 后开启。 */
+    @Test
+    public void filledShulkerBoxesUseConfiguredToggle() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("filled-shulker-boxes.enabled", true);
+
+        assertTrue(load(cleanup).getCleanupConfig().getFilledShulkerBoxes().isEnabled());
+    }
+
     /** 使用空配置补齐其他配置源并加载完整配置。 */
     private ConfigBundle load(ConfigurationSource cleanup) {
         ConfigurationSource empty = new MapConfigurationSource();
