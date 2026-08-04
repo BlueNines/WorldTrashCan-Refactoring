@@ -105,12 +105,6 @@ filled-shulker-boxes:
 - 想减少包体和运行时分支：按服务端版本使用对应的轻量分版本 Jar。
 - 同一个服务端的 `plugins` 目录只放一个 WorldListTrashCan Jar，不能同时放 universal 和轻量版本。
 
-最终 universal 产物信息：
-
-```text
-版本: 7.0.0
-SHA-256: 0424efb4752abd4f1c9792b9dd81b5ec3999e735c9a0221e78e3bc1dddea8527
-```
 
 ## English
 
@@ -218,7 +212,3 @@ The formal long command is `/worldlisttrashcan`, with `/wtc` as its short alias.
 
 Final universal artifact information:
 
-```text
-Version: 7.0.0
-SHA-256: 0424efb4752abd4f1c9792b9dd81b5ec3999e735c9a0221e78e3bc1dddea8527
-```
