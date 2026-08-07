@@ -22,8 +22,40 @@ world-trash:
 global-trash:
   # 是否启用公共垃圾桶。
   enabled: true
-  # 最大页数。
-  max-pages: 5
+  # 公共垃圾桶显示模式；compact 为紧凑模式，stacked 保留旧版按 64/16/1 堆叠显示。
+  mode: "compact"
+  # 紧凑模式配置；每个逻辑物品只显示一个展示物，真实数量写入 Lore。
+  compact:
+    # 紧凑模式最多显示多少页；实际可存储的物品种类由页数和 content 槽位数量共同决定。
+    max-pages: 5
+    # 单个逻辑物品最多累计多少个；-1 表示无限。超过上限时会尽量接受到上限，不会拆成多次循环。
+    max-amount-per-entry: 9999
+    # 普通左键从紧凑条目取出多少个。
+    left-click-amount: 1
+    # Shift + 左键从紧凑条目取出多少个。
+    shift-left-click-amount: 64
+    # 是否启用右键取出；默认关闭，避免改变旧版右键交互习惯。
+    right-click-enabled: false
+    # 右键从紧凑条目取出多少个。
+    right-click-amount: 1
+    # Shift + 右键从紧凑条目取出多少个。
+    shift-right-click-amount: 64
+    # 是否在展示物 Lore 第一行显示当前累计数量。
+    show-amount-lore: true
+    # 最多保留多少行原始物品 Lore；-1 表示全部保留。
+    max-original-lore-lines: 5
+    # 数量 Lore 模板；支持 {amount}、{page}、{max-page} 和 PlaceholderAPI 变量。
+    amount-lore: "&#38BDF8数量：&#F5B82E{amount}"
+    # 原始 Lore 超过上限时追加的省略模板；{count} 为被隐藏的行数。
+    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
+    # 紧凑模式最底部的操作提示；支持 {take-amount}、{shift-take-amount}、{right-take-amount}、{shift-right-take-amount}。
+    action-lore:
+      - "&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个"
+      - "&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个"
+  # 旧版堆叠显示模式配置；每个展示物按物品原本最大堆叠数显示，不使用紧凑模式 Lore。
+  stacked:
+    # 旧版模式最多显示多少页。
+    max-pages: 5
   # 拿取冷却，单位毫秒。
   take-delay-millis: 500
   # 是否允许玩家把背包物品手动放入公共垃圾桶。

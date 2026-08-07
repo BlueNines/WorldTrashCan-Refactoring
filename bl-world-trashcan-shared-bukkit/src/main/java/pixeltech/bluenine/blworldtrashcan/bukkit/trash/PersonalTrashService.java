@@ -259,12 +259,16 @@ public final class PersonalTrashService {
         if (!hasTrashPermission(player, "WorldListTrashCan.PersonalTrashPutItem")) {
             return;
         }
-        ItemStack itemStack = event.getCurrentItem();
+        Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory == null || event.getSlot() < 0 || event.getSlot() >= clickedInventory.getSize()) {
+            return;
+        }
+        ItemStack itemStack = clickedInventory.getItem(event.getSlot());
         if (InventorySlotUtil.isEmpty(itemStack)) {
             return;
         }
         if (addItem(ownerUuid, itemStack, false, TrashMutationReason.MANUAL_DEPOSIT)) {
-            itemStack.setAmount(0);
+            clickedInventory.setItem(event.getSlot(), null);
         }
     }
 

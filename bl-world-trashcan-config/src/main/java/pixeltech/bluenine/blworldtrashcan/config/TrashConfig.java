@@ -91,27 +91,42 @@ public final class TrashConfig {
     /** 公共垃圾桶配置。 */
     public static final class GlobalTrashConfig {
         private final boolean enabled;
-        private final int maxPages;
         private final int takeDelayMillis;
         private final int clearEveryCleanups;
         private final boolean allowPlayerPut;
         private final boolean logEnabled;
         private final GlobalTrashLayoutConfig layout;
         private final Set<String> bannedMaterials;
+        private final GlobalTrashMode mode;
+        private final CompactGlobalTrashConfig compact;
+        private final StackedGlobalTrashConfig stacked;
 
-        /** 创建公共垃圾桶配置。 */
+        /** 创建兼容旧调用方的公共垃圾桶配置，旧构造器默认使用堆叠显示模式。 */
         public GlobalTrashConfig(boolean enabled, int maxPages, int takeDelayMillis,
                                  int clearEveryCleanups, boolean allowPlayerPut,
                                  boolean logEnabled, GlobalTrashLayoutConfig layout,
                                  Set<String> bannedMaterials) {
+            this(enabled, takeDelayMillis, clearEveryCleanups, allowPlayerPut, logEnabled, layout,
+                    bannedMaterials, GlobalTrashMode.STACKED,
+                    CompactGlobalTrashConfig.defaults(), new StackedGlobalTrashConfig(maxPages));
+        }
+
+        /** 创建包含紧凑模式和旧堆叠模式独立配置的公共垃圾桶配置。 */
+        public GlobalTrashConfig(boolean enabled, int takeDelayMillis, int clearEveryCleanups,
+                                 boolean allowPlayerPut, boolean logEnabled,
+                                 GlobalTrashLayoutConfig layout, Set<String> bannedMaterials,
+                                 GlobalTrashMode mode, CompactGlobalTrashConfig compact,
+                                 StackedGlobalTrashConfig stacked) {
             this.enabled = enabled;
-            this.maxPages = Math.max(1, maxPages);
             this.takeDelayMillis = Math.max(0, takeDelayMillis);
             this.clearEveryCleanups = clearEveryCleanups;
             this.allowPlayerPut = allowPlayerPut;
             this.logEnabled = logEnabled;
             this.layout = layout == null ? GlobalTrashLayoutConfig.defaultLayout(-1, -1, -1, null) : layout;
             this.bannedMaterials = normalizeMaterialSet(bannedMaterials);
+            this.mode = mode == null ? GlobalTrashMode.COMPACT : mode;
+            this.compact = compact == null ? CompactGlobalTrashConfig.defaults() : compact;
+            this.stacked = stacked == null ? new StackedGlobalTrashConfig(5) : stacked;
         }
 
         /** 判断公共垃圾桶是否启用。 */
@@ -119,9 +134,24 @@ public final class TrashConfig {
             return enabled;
         }
 
-        /** 返回最大页数。 */
+        /** 返回当前显示模式。 */
+        public GlobalTrashMode getMode() {
+            return mode;
+        }
+
+        /** 返回紧凑模式配置。 */
+        public CompactGlobalTrashConfig getCompact() {
+            return compact;
+        }
+
+        /** 返回旧堆叠模式配置。 */
+        public StackedGlobalTrashConfig getStacked() {
+            return stacked;
+        }
+
+        /** 返回当前显示模式的最大页数。 */
         public int getMaxPages() {
-            return maxPages;
+            return mode == GlobalTrashMode.COMPACT ? compact.getMaxPages() : stacked.getMaxPages();
         }
 
         /** 返回拿取冷却毫秒。 */
@@ -157,6 +187,145 @@ public final class TrashConfig {
         /** 返回公共垃圾桶物品黑名单。 */
         public Set<String> getBannedMaterials() {
             return bannedMaterials;
+        }
+    }
+
+    /** 公共垃圾桶展示模式。 */
+    public enum GlobalTrashMode {
+        COMPACT,
+        STACKED;
+
+        /** 从配置文本解析展示模式，未知值回退紧凑模式。 */
+        public static GlobalTrashMode parse(String value) {
+            if (value == null) {
+                return COMPACT;
+            }
+            return "stacked".equalsIgnoreCase(value.trim()) ? STACKED : COMPACT;
+        }
+    }
+
+    /** 公共垃圾桶紧凑显示模式配置。 */
+    public static final class CompactGlobalTrashConfig {
+        private final int maxPages;
+        private final long maxAmountPerEntry;
+        private final int leftClickAmount;
+        private final int shiftLeftClickAmount;
+        private final boolean rightClickEnabled;
+        private final int rightClickAmount;
+        private final int shiftRightClickAmount;
+        private final boolean showAmountLore;
+        private final int maxOriginalLoreLines;
+        private final String amountLore;
+        private final String omittedLore;
+        private final List<String> actionLore;
+
+        /** 创建紧凑模式配置。 */
+        public CompactGlobalTrashConfig(int maxPages, long maxAmountPerEntry,
+                                        int leftClickAmount, int shiftLeftClickAmount,
+                                        boolean rightClickEnabled, int rightClickAmount,
+                                        int shiftRightClickAmount, boolean showAmountLore,
+                                        int maxOriginalLoreLines, String amountLore,
+                                        String omittedLore, List<String> actionLore) {
+            this.maxPages = Math.max(1, maxPages);
+            this.maxAmountPerEntry = maxAmountPerEntry == -1L
+                    ? -1L : Math.max(1L, maxAmountPerEntry);
+            this.leftClickAmount = Math.max(1, leftClickAmount);
+            this.shiftLeftClickAmount = Math.max(1, shiftLeftClickAmount);
+            this.rightClickEnabled = rightClickEnabled;
+            this.rightClickAmount = Math.max(1, rightClickAmount);
+            this.shiftRightClickAmount = Math.max(1, shiftRightClickAmount);
+            this.showAmountLore = showAmountLore;
+            this.maxOriginalLoreLines = maxOriginalLoreLines;
+            this.amountLore = defaultString(amountLore, "&#38BDF8数量：&#F5B82E{amount}");
+            this.omittedLore = defaultString(omittedLore, "&#64748B...省略 &#AAB6C5{count} &#64748B行...");
+            this.actionLore = actionLore == null
+                    ? Collections.<String>emptyList()
+                    : Collections.unmodifiableList(new ArrayList<>(actionLore));
+        }
+
+        /** 返回开箱默认紧凑模式配置。 */
+        public static CompactGlobalTrashConfig defaults() {
+            List<String> actions = new ArrayList<>();
+            actions.add("&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个");
+            actions.add("&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个");
+            return new CompactGlobalTrashConfig(5, 9999L, 1, 64, false,
+                    1, 64, true, 5, "&#38BDF8数量：&#F5B82E{amount}",
+                    "&#64748B...省略 &#AAB6C5{count} &#64748B行...", actions);
+        }
+
+        /** 返回紧凑模式最大页数。 */
+        public int getMaxPages() {
+            return maxPages;
+        }
+
+        /** 返回单个逻辑物品最大累计数量；-1 表示无限。 */
+        public long getMaxAmountPerEntry() {
+            return maxAmountPerEntry;
+        }
+
+        /** 返回普通左键取出数量。 */
+        public int getLeftClickAmount() {
+            return leftClickAmount;
+        }
+
+        /** 返回 Shift 左键取出数量。 */
+        public int getShiftLeftClickAmount() {
+            return shiftLeftClickAmount;
+        }
+
+        /** 判断是否启用右键取出。 */
+        public boolean isRightClickEnabled() {
+            return rightClickEnabled;
+        }
+
+        /** 返回普通右键取出数量。 */
+        public int getRightClickAmount() {
+            return rightClickAmount;
+        }
+
+        /** 返回 Shift 右键取出数量。 */
+        public int getShiftRightClickAmount() {
+            return shiftRightClickAmount;
+        }
+
+        /** 判断是否显示紧凑模式数量 Lore。 */
+        public boolean isShowAmountLore() {
+            return showAmountLore;
+        }
+
+        /** 返回最多显示的原始物品 Lore 行数；负数表示不截断。 */
+        public int getMaxOriginalLoreLines() {
+            return maxOriginalLoreLines;
+        }
+
+        /** 返回数量 Lore 模板。 */
+        public String getAmountLore() {
+            return amountLore;
+        }
+
+        /** 返回 Lore 省略模板。 */
+        public String getOmittedLore() {
+            return omittedLore;
+        }
+
+        /** 返回紧凑模式操作 Lore。 */
+        public List<String> getActionLore() {
+            return actionLore;
+        }
+    }
+
+    /** 公共垃圾桶旧堆叠显示模式配置。 */
+    public static final class StackedGlobalTrashConfig {
+        private final int maxPages;
+
+        /** 创建旧堆叠模式配置。 */
+        public StackedGlobalTrashConfig(int maxPages) {
+            this.maxPages = Math.max(1, maxPages);
+        }
+
+        /** 返回旧堆叠模式最大页数。 */
+        public int getMaxPages() {
+            return maxPages;
         }
     }
 

@@ -35,7 +35,7 @@ public final class BukkitPlatform implements ServerPlatform {
         this.scheduler = new BukkitSchedulerAdapter(plugin);
         this.itemSnapshotMapper = new BukkitItemSnapshotMapper();
         this.entitySnapshotMapper = new BukkitEntitySnapshotMapper();
-        this.capabilityReport = new CapabilityReport("bukkit-1.13-1.15", EnumSet.of(
+        this.capabilityReport = new CapabilityReport("bukkit-api-1.13-1.15", EnumSet.of(
                 Capability.SCHEDULER_GLOBAL,
                 Capability.INVENTORY_BASIC,
                 Capability.CLICKABLE_MESSAGE,

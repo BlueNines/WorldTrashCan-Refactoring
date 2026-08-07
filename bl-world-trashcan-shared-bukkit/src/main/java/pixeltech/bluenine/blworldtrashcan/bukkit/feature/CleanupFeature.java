@@ -506,13 +506,29 @@ public final class CleanupFeature implements Feature {
             TrashRoutingResult routed = trashRouter.routeDetailed(item.getWorld(), snapshot.getOwnerUuid(),
                     item.getItemStack(), decision.getRoute(), true);
             if (routed.isSuccess()) {
-                forgetTrackedOwner(item);
-                item.remove();
+                int currentAmount = item.getItemStack() == null ? snapshot.getAmount() : item.getItemStack().getAmount();
+                int acceptedAmount = Math.min(currentAmount, routed.getAcceptedAmount());
+                if (acceptedAmount <= 0) {
+                    return new TrashRoutingDecision(TrashRoute.SKIP, "route-accepted-zero");
+                }
+                routedItemStack.setAmount(acceptedAmount);
                 auditSession.recordItem(routedItemStack, routed.getDestination());
-                stats.addItemsRouted(snapshot.getAmount(), decision.getRoute());
+                stats.addItemsRouted(acceptedAmount, decision.getRoute());
                 if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {
                     stats.addPersonalTrashItem(snapshot.getOwnerUuid(), routedItemStack);
                 }
+                if (acceptedAmount < currentAmount) {
+                    ItemStack remaining = item.getItemStack();
+                    if (remaining != null) {
+                        remaining.setAmount(currentAmount - acceptedAmount);
+                        item.setItemStack(remaining);
+                    }
+                    plugin.getLogger().info("[Cleanup] 公共垃圾桶达到紧凑模式单条目上限，保留掉落物剩余数量: accepted="
+                            + acceptedAmount + ", remaining=" + (currentAmount - acceptedAmount));
+                    return decision;
+                }
+                forgetTrackedOwner(item);
+                item.remove();
                 return decision;
             }
             if (decision.getRoute() == TrashRoute.WORLD_TRASH) {

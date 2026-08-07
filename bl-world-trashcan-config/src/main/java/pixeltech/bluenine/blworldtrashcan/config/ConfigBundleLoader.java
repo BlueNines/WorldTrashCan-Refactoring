@@ -19,6 +19,27 @@ public final class ConfigBundleLoader {
         int legacyBackgroundModelId = trash.getInt("global-trash.gui.background-model-id", -1);
         TrashConfig.GlobalTrashLayoutConfig globalTrashLayout = new GlobalTrashLayoutParser().parse(
                 trash, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId);
+        int legacyGlobalMaxPages = trash.getInt("global-trash.max-pages", 5);
+        List<String> compactActionLore = trash.contains("global-trash.compact.action-lore")
+                ? trash.getStringList("global-trash.compact.action-lore")
+                : TrashConfig.CompactGlobalTrashConfig.defaults().getActionLore();
+        TrashConfig.CompactGlobalTrashConfig compactGlobalTrash = new TrashConfig.CompactGlobalTrashConfig(
+                trash.getInt("global-trash.compact.max-pages", legacyGlobalMaxPages),
+                trash.getInt("global-trash.compact.max-amount-per-entry", 9999),
+                trash.getInt("global-trash.compact.left-click-amount", 1),
+                trash.getInt("global-trash.compact.shift-left-click-amount", 64),
+                trash.getBoolean("global-trash.compact.right-click-enabled", false),
+                trash.getInt("global-trash.compact.right-click-amount", 1),
+                trash.getInt("global-trash.compact.shift-right-click-amount", 64),
+                trash.getBoolean("global-trash.compact.show-amount-lore", true),
+                trash.getInt("global-trash.compact.max-original-lore-lines", 5),
+                trash.getString("global-trash.compact.amount-lore", "&#38BDF8数量：&#F5B82E{amount}"),
+                trash.getString("global-trash.compact.omitted-lore",
+                "&#64748B...省略 &#AAB6C5{count} &#64748B行..."),
+                compactActionLore
+        );
+        TrashConfig.StackedGlobalTrashConfig stackedGlobalTrash = new TrashConfig.StackedGlobalTrashConfig(
+                trash.getInt("global-trash.stacked.max-pages", legacyGlobalMaxPages));
         CleanupSettings cleanupSettings = new CleanupSettings(
                 toSet(cleanup.getStringList("ignored-materials")),
                 toSet(cleanup.getStringList("ignored-name-fragments")),
@@ -69,13 +90,15 @@ public final class ConfigBundleLoader {
                 ),
                 new TrashConfig.GlobalTrashConfig(
                         trash.getBoolean("global-trash.enabled", true),
-                        trash.getInt("global-trash.max-pages", 5),
                         trash.getInt("global-trash.take-delay-millis", 500),
                         trash.getInt("global-trash.clear-every-cleanups", 3),
                         trash.getBoolean("global-trash.allow-player-put", true),
                         trash.getBoolean("global-trash.log-enabled", true),
                         globalTrashLayout,
-                        toSet(trash.getStringList("global-trash.banned-materials"))
+                        toSet(trash.getStringList("global-trash.banned-materials")),
+                        TrashConfig.GlobalTrashMode.parse(trash.getString("global-trash.mode", "compact")),
+                        compactGlobalTrash,
+                        stackedGlobalTrash
                 ),
                 new TrashConfig.PersonalTrashConfig(
                         trash.getBoolean("personal-trash.enabled", true),

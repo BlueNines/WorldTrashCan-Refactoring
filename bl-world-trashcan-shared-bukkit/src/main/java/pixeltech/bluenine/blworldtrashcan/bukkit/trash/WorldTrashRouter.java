@@ -81,7 +81,7 @@ public final class WorldTrashRouter implements TrashRouter {
     /** 判断公共垃圾桶是否有容量。 */
     @Override
     public boolean hasGlobalTrash(ItemStack itemStack) {
-        return globalTrashService != null && globalTrashService.hasSpace(itemStack);
+        return globalTrashService != null && globalTrashService.hasAnySpace(itemStack);
     }
 
     /** 尝试按路由存放物品并返回实际成功目标。 */
@@ -96,16 +96,19 @@ public final class WorldTrashRouter implements TrashRouter {
                     ? personalTrashService.addCleanupItem(ownerUuid, itemStack)
                     : personalTrashService.addItem(ownerUuid, itemStack);
             return added ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
-                    ownerUuid, playerName(ownerUuid))) : TrashRoutingResult.failure();
+                    ownerUuid, playerName(ownerUuid)), itemStack.getAmount()) : TrashRoutingResult.failure();
         }
         if (route == TrashRoute.GLOBAL_TRASH) {
             if (globalTrashService == null) {
                 return TrashRoutingResult.failure();
             }
-            boolean added = cleanupSource
-                    ? globalTrashService.addCleanupItem(itemStack)
-                    : globalTrashService.addItem(itemStack);
-            return added ? TrashRoutingResult.success(CleanupItemDestination.globalTrash())
+            if (cleanupSource) {
+                int accepted = globalTrashService.addCleanupItemAmount(itemStack);
+                return accepted > 0 ? TrashRoutingResult.success(
+                        CleanupItemDestination.globalTrash(), accepted) : TrashRoutingResult.failure();
+            }
+            boolean added = globalTrashService.addItem(itemStack);
+            return added ? TrashRoutingResult.success(CleanupItemDestination.globalTrash(), itemStack.getAmount())
                     : TrashRoutingResult.failure();
         }
         if (route != TrashRoute.WORLD_TRASH) {
@@ -119,7 +122,7 @@ public final class WorldTrashRouter implements TrashRouter {
         for (TrashLocation location : data.getLocations()) {
             Inventory inventory = getInventory(location);
             if (inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize())) {
-                return TrashRoutingResult.success(destination(location));
+                return TrashRoutingResult.success(destination(location), itemStack.getAmount());
             }
         }
         return TrashRoutingResult.failure();

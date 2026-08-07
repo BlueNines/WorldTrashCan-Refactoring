@@ -35,7 +35,7 @@ public final class PaperPlatform implements ServerPlatform {
         this.scheduler = new BukkitSchedulerAdapter(plugin);
         this.itemSnapshotMapper = new PaperItemSnapshotMapper(plugin);
         this.entitySnapshotMapper = new PaperEntitySnapshotMapper();
-        this.capabilityReport = new CapabilityReport("paper-1.16-1.20", EnumSet.of(
+        this.capabilityReport = new CapabilityReport("bukkit-api-1.16+", EnumSet.of(
                 Capability.SCHEDULER_GLOBAL,
                 Capability.INVENTORY_BASIC,
                 Capability.ITEM_PDC_TAG,

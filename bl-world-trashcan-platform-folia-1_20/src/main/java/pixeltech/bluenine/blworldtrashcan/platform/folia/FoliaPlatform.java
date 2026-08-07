@@ -34,7 +34,7 @@ public final class FoliaPlatform implements ServerPlatform {
         this.scheduler = new FoliaSchedulerAdapter(plugin);
         this.itemSnapshotMapper = new FoliaItemSnapshotMapper(plugin);
         this.entitySnapshotMapper = new FoliaEntitySnapshotMapper();
-        this.capabilityReport = new CapabilityReport("folia-1.20", EnumSet.of(
+        this.capabilityReport = new CapabilityReport("regionized-api-1.20+", EnumSet.of(
                 Capability.SCHEDULER_GLOBAL,
                 Capability.SCHEDULER_REGION,
                 Capability.INVENTORY_BASIC,

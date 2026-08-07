@@ -528,9 +528,9 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
             return RuntimeKind.LEGACY;
         }
         if (minor <= 15) {
-            return RuntimeKind.BUKKIT;
+            return RuntimeKind.BUKKIT_API;
         }
-        return RuntimeKind.PAPER;
+        return RuntimeKind.MODERN_API;
     }
 
     /** 创建当前运行环境的平台实现。 */
@@ -538,10 +538,10 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         if (kind == RuntimeKind.FOLIA) {
             return instantiatePlatform(FOLIA_PLATFORM);
         }
-        if (kind == RuntimeKind.PAPER) {
+        if (kind == RuntimeKind.MODERN_API) {
             return instantiatePlatform(PAPER_PLATFORM);
         }
-        if (kind == RuntimeKind.BUKKIT) {
+        if (kind == RuntimeKind.BUKKIT_API) {
             return instantiatePlatform(BUKKIT_PLATFORM);
         }
         return instantiatePlatform(LEGACY_PLATFORM);
@@ -559,10 +559,8 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
 
     /** 判断当前服务端是否需要使用 region-threaded 分支。 */
     private boolean isFoliaServer() {
-        return hasRuntimeClass("io.papermc.paper.threadedregions.scheduler.FoliaRegionScheduler")
-                || hasRuntimeClass("io.papermc.paper.threadedregions.RegionizedServer")
-                || containsRegionThreadedMarker(Bukkit.getName())
-                || containsRegionThreadedMarker(Bukkit.getVersion());
+        return hasRuntimeClass("io.papermc.paper.threadedregions.RegionizedServer")
+                || hasRuntimeClass("io.papermc.paper.threadedregions.scheduler.FoliaRegionScheduler");
     }
 
     /** 解析当前 Minecraft 小版本号。 */
@@ -596,15 +594,6 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         } catch (NumberFormatException ignored) {
             return fallback;
         }
-    }
-
-    /** 判断文本里是否明确标识 Folia/Luminol 这类 region-threaded 服务端。 */
-    private boolean containsRegionThreadedMarker(String value) {
-        if (value == null) {
-            return false;
-        }
-        String normalized = value.toLowerCase(Locale.ROOT);
-        return normalized.contains("folia") || normalized.contains("luminol");
     }
 
     /** 判断当前运行时是否存在指定类，不触发类初始化。 */
@@ -829,8 +818,8 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
     /** universal 运行时分支。 */
     private enum RuntimeKind {
         LEGACY,
-        BUKKIT,
-        PAPER,
+        BUKKIT_API,
+        MODERN_API,
         FOLIA
     }
 }

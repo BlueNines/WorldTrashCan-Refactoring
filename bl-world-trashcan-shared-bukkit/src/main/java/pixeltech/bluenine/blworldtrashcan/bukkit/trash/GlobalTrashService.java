@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -16,6 +17,8 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.SafeMaterialMatcher;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProviderSelector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
@@ -24,7 +27,6 @@ import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
 import pixeltech.worldlisttrashcan.api.audit.TrashMutationReason;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-/** 公共垃圾桶 GUI 和路由服务。 */
+/** 公共垃圾桶 GUI 和路由服务，内部存储与 Bukkit Inventory 完全分离。 */
 public final class GlobalTrashService {
     private final Plugin plugin;
     private final BukkitMessageService messages;
@@ -52,14 +54,13 @@ public final class GlobalTrashService {
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final GlobalTrashTextResolver textResolver;
     private final GlobalTrashActionExecutor actionExecutor;
-    private final List<Inventory> pages = new ArrayList<>();
+    private final GlobalTrashStore store;
     private final Map<UUID, Long> lastTakeMillis = new HashMap<>();
     private final Map<Character, Material> layoutMaterials = new HashMap<>();
     private final Map<UUID, GlobalTrashViewHolder> activeViews = new ConcurrentHashMap<>();
     private final AtomicBoolean viewRefreshScheduled = new AtomicBoolean();
     private TrashConfig.GlobalTrashConfig config;
     private TrashConfig.GlobalTrashLayoutConfig layout;
-    private int writablePageCount;
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages) {
@@ -90,39 +91,41 @@ public final class GlobalTrashService {
         this.auditBridge = auditBridge;
         this.textResolver = new GlobalTrashTextResolver(plugin);
         this.actionExecutor = new GlobalTrashActionExecutor(plugin, platform, textResolver);
+        ItemIdentityProvider identityProvider = new ItemIdentityProviderSelector().select(plugin);
+        this.store = new GlobalTrashStore(identityProvider);
         reload(config);
     }
 
-    /** 重载配置并重建分页。 */
+    /** 重载显示配置和布局，但保留模型存量。 */
     public void reload(TrashConfig.GlobalTrashConfig nextConfig) {
-        List<ItemStack> oldItems = snapshotContent();
         closeCurrentViewers();
         this.config = nextConfig;
         this.layout = nextConfig == null
                 ? TrashConfig.GlobalTrashLayoutConfig.defaultLayout(-1, -1, -1, null)
                 : nextConfig.getLayout();
-        this.writablePageCount = nextConfig == null ? 1 : nextConfig.getMaxPages();
-        this.layoutMaterials.clear();
+        layoutMaterials.clear();
         if (layout.getValidationError() != null) {
             plugin.getLogger().warning("[GlobalTrash] 公共垃圾桶布局无效，已回退默认布局: "
                     + layout.getValidationError());
         }
+        store.configure(nextConfig, layout.getContentSlots().size());
         resolveLayoutMaterials();
         validateLayoutActions();
-        rebuildPages(oldItems);
-        plugin.getLogger().info("[GlobalTrash] GUI layout rows=" + layout.getRows().size()
+        plugin.getLogger().info("[GlobalTrash] mode=" + modeName()
+                + ", identity=" + store.getIdentityProviderId()
+                + ", rows=" + layout.getRows().size()
                 + ", slots=" + layout.getInventorySize()
                 + ", contentSlots=" + layout.getContentSlots().size()
-                + ", writablePages=" + writablePageCount
-                + ", visiblePages=" + pages.size());
+                + ", writablePages=" + configuredMaxPages()
+                + ", visiblePages=" + store.getPageCount());
     }
 
     /** 判断公共垃圾桶是否可用。 */
     public boolean isEnabled() {
-        return config != null && config.isEnabled() && !pages.isEmpty();
+        return config != null && config.isEnabled() && !layout.getContentSlots().isEmpty();
     }
 
-    /** 判断是否有容量放入指定物品。 */
+    /** 判断是否有容量完整放入指定物品。 */
     public boolean hasSpace(ItemStack itemStack) {
         if (!isEnabled()) {
             return false;
@@ -132,41 +135,66 @@ public final class GlobalTrashService {
                 || config.isBannedMaterial(cleanItemStack.getType().name())) {
             return false;
         }
-        for (int index = 0; index < Math.min(writablePageCount, pages.size()); index++) {
-            if (InventorySlotUtil.hasSpace(pages.get(index), cleanItemStack, layout.getContentSlots())) {
-                return true;
-            }
-        }
-        return false;
+        return store.hasSpace(cleanItemStack);
     }
 
-    /** 向公共垃圾桶放入物品。 */
+    /** 判断指定物品至少有一个数量可以进入公共垃圾桶。 */
+    public boolean hasAnySpace(ItemStack itemStack) {
+        if (!isEnabled()) {
+            return false;
+        }
+        ItemStack cleanItemStack = sanitize(itemStack);
+        if (InventorySlotUtil.isEmpty(cleanItemStack)
+                || config.isBannedMaterial(cleanItemStack.getType().name())) {
+            return false;
+        }
+        return store.hasAnySpace(cleanItemStack);
+    }
+
+    /** 向公共垃圾桶完整放入物品。 */
     public boolean addItem(ItemStack itemStack) {
         return addItem(itemStack, false, TrashMutationReason.NON_CLEANUP_DEPOSIT);
     }
 
-    /** 放入正式扫地物品，不把它重复登记为非审计存量。 */
+    /** 放入正式扫地物品；扫地路由只接受完整写入，避免掉落物剩余数量丢失。 */
     public boolean addCleanupItem(ItemStack itemStack) {
-        return addItem(itemStack, true, TrashMutationReason.NON_CLEANUP_DEPOSIT);
-    }
-
-    /** 按来源放入物品并维护非审计数量账本。 */
-    private boolean addItem(ItemStack itemStack, boolean cleanupSource, TrashMutationReason reason) {
-        ItemStack cleanItemStack = sanitize(itemStack);
-        if (!hasSpace(cleanItemStack)) {
+        if (InventorySlotUtil.isEmpty(itemStack)) {
             return false;
         }
-        for (int index = 0; index < Math.min(writablePageCount, pages.size()); index++) {
-            if (InventorySlotUtil.add(pages.get(index), cleanItemStack, layout.getContentSlots())) {
-                if (!cleanupSource) {
-                    recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
-                            cleanItemStack, cleanItemStack.getAmount(), reason, System.currentTimeMillis()));
-                }
-                scheduleOpenViewRefresh();
-                return true;
-            }
+        return addCleanupItemAmount(itemStack) == itemStack.getAmount();
+    }
+
+    /** 放入扫地物品并返回实际接收数量；紧凑模式允许只接收到单条目上限。 */
+    public int addCleanupItemAmount(ItemStack itemStack) {
+        ItemStack cleanItemStack = sanitize(itemStack);
+        if (InventorySlotUtil.isEmpty(cleanItemStack) || config == null
+                || config.isBannedMaterial(cleanItemStack.getType().name())) {
+            return 0;
         }
-        return false;
+        int accepted = store.add(cleanItemStack, config.getMode() == TrashConfig.GlobalTrashMode.COMPACT);
+        if (accepted > 0) {
+            scheduleOpenViewRefresh();
+        }
+        return accepted;
+    }
+
+    /** 按来源完整放入模型，并维护非审计来源的变更账本。 */
+    private boolean addItem(ItemStack itemStack, boolean cleanupSource, TrashMutationReason reason) {
+        ItemStack cleanItemStack = sanitize(itemStack);
+        if (InventorySlotUtil.isEmpty(cleanItemStack) || config == null
+                || config.isBannedMaterial(cleanItemStack.getType().name())) {
+            return false;
+        }
+        int accepted = store.add(cleanItemStack, false);
+        if (accepted != cleanItemStack.getAmount()) {
+            return false;
+        }
+        if (!cleanupSource) {
+            recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
+                    cleanItemStack, accepted, reason, System.currentTimeMillis()));
+        }
+        scheduleOpenViewRefresh();
+        return true;
     }
 
     /** 打开公共垃圾桶首页。 */
@@ -190,11 +218,10 @@ public final class GlobalTrashService {
         }
         Player player = (Player) event.getWhoClicked();
         int pageIndex = holder.getPageIndex();
-        if (pageIndex < 0 || pageIndex >= pages.size()) {
+        if (pageIndex < 0 || pageIndex >= store.getPageCount()) {
             player.closeInventory();
             return true;
         }
-        syncViewContent(holder);
         int rawSlot = event.getRawSlot();
         if (rawSlot >= 0 && rawSlot < layout.getInventorySize()) {
             TrashConfig.GlobalTrashItemConfig item = layout.getItemAt(rawSlot);
@@ -203,19 +230,22 @@ public final class GlobalTrashService {
                 return true;
             }
             if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.NEXT_PAGE
-                    && pageIndex < pages.size() - 1) {
+                    && pageIndex < store.getPageCount() - 1) {
                 openPage(player, pageIndex + 1);
                 return true;
             }
             if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.ACTIONS
                     && isNormalActionClick(event.getClick())) {
-                actionExecutor.execute(player, item.getActions(), pageIndex, pages.size());
+                actionExecutor.execute(player, item.getActions(), pageIndex, store.getPageCount());
                 return true;
             }
             if (layout.isContentSlot(rawSlot)) {
-                takeItem(player, pages.get(pageIndex), rawSlot);
-                syncViewContent(holder);
-                scheduleOpenViewRefresh();
+                int contentIndex = contentIndex(rawSlot);
+                if (contentIndex >= 0) {
+                    takeItem(player, pageIndex, contentIndex, event.getClick());
+                    syncViewContent(holder);
+                    scheduleOpenViewRefresh();
+                }
             }
             return true;
         }
@@ -226,9 +256,10 @@ public final class GlobalTrashService {
         return true;
     }
 
-    /** 为玩家创建当前公共库存的独立展示视图。 */
+    /** 为玩家创建当前模型内容的独立展示视图。 */
     private void openPage(Player player, int requestedPage) {
-        int pageIndex = Math.max(0, Math.min(requestedPage, pages.size() - 1));
+        int pageCount = store.getPageCount();
+        int pageIndex = Math.max(0, Math.min(requestedPage, pageCount - 1));
         GlobalTrashViewHolder holder = new GlobalTrashViewHolder(this, player.getUniqueId(), pageIndex);
         Inventory inventory = createViewPage(player, holder, pageIndex);
         holder.bind(inventory);
@@ -236,21 +267,23 @@ public final class GlobalTrashService {
         player.openInventory(inventory);
     }
 
-    /** 创建带玩家 PAPI 展示文本、但不复制业务状态的单页视图。 */
+    /** 创建带玩家变量渲染的单页视图，不复制公共模型。 */
     private Inventory createViewPage(Player player, GlobalTrashViewHolder holder, int pageIndex) {
-        int maxPages = pages.size();
+        int maxPages = store.getPageCount();
         Inventory inventory = Bukkit.createInventory(holder, layout.getInventorySize(),
                 message("global-trash.gui.title", "&8公共垃圾桶 {page}/{max}",
                         "{page}", String.valueOf(pageIndex + 1), "{max}", String.valueOf(maxPages)));
-        Inventory source = pages.get(pageIndex);
         for (int slot = 0; slot < layout.getInventorySize(); slot++) {
             TrashConfig.GlobalTrashItemConfig item = layout.getItemAt(slot);
             if (item == null) {
                 continue;
             }
             if (item.getType() == TrashConfig.GlobalTrashItemType.CONTENT) {
-                ItemStack content = source.getItem(slot);
-                inventory.setItem(slot, InventorySlotUtil.isEmpty(content) ? null : content.clone());
+                int contentIndex = contentIndex(slot);
+                GlobalTrashStore.DisplayItem display = store.getDisplayItem(pageIndex, contentIndex);
+                if (display != null) {
+                    inventory.setItem(slot, createContentItem(display, player, pageIndex, maxPages));
+                }
                 continue;
             }
             TrashConfig.GlobalTrashItemConfig displayItem = visibleItem(item, pageIndex, maxPages);
@@ -274,21 +307,26 @@ public final class GlobalTrashService {
         return view.belongsTo(this) ? view : null;
     }
 
-    /** 把唯一公共库存中的内容槽同步到一个玩家视图。 */
+    /** 将模型当前内容同步到一个玩家展示视图。 */
     private void syncViewContent(GlobalTrashViewHolder holder) {
         if (holder == null || holder.getInventory() == null) {
             return;
         }
         int pageIndex = holder.getPageIndex();
-        if (pageIndex < 0 || pageIndex >= pages.size()) {
+        if (pageIndex < 0 || pageIndex >= store.getPageCount()) {
             return;
         }
-        Inventory source = pages.get(pageIndex);
+        Player player = Bukkit.getPlayer(holder.getPlayerId());
+        if (player == null) {
+            return;
+        }
         Inventory target = holder.getInventory();
+        int maxPages = store.getPageCount();
         for (Integer slotValue : layout.getContentSlots()) {
             int slot = slotValue.intValue();
-            ItemStack itemStack = source.getItem(slot);
-            target.setItem(slot, InventorySlotUtil.isEmpty(itemStack) ? null : itemStack.clone());
+            int contentIndex = contentIndex(slot);
+            GlobalTrashStore.DisplayItem display = store.getDisplayItem(pageIndex, contentIndex);
+            target.setItem(slot, display == null ? null : createContentItem(display, player, pageIndex, maxPages));
         }
     }
 
@@ -361,7 +399,7 @@ public final class GlobalTrashService {
         return clickType == ClickType.LEFT || clickType == ClickType.RIGHT;
     }
 
-    /** 阻止拖拽修改公共垃圾桶的内容槽或展示物。 */
+    /** 阻止拖拽修改公共垃圾桶 GUI 的内容槽或展示物。 */
     public boolean handleDrag(InventoryDragEvent event) {
         if (viewHolder(event.getInventory()) == null) {
             return false;
@@ -388,50 +426,31 @@ public final class GlobalTrashService {
         viewRefreshScheduled.set(false);
     }
 
-    /** 清空所有内容槽位。 */
+    /** 清空所有公共垃圾桶模型存量。 */
     public void clearContent() {
         closeCurrentViewers();
-        rebuildPages(Collections.<ItemStack>emptyList());
+        store.clear();
         recordMutation(TrashMutation.clear(CleanupItemDestination.globalTrash(),
                 TrashMutationReason.GLOBAL_REFRESH, System.currentTimeMillis()));
     }
 
     /** 返回公共垃圾桶页数。 */
     public int getPageCount() {
-        return pages.size();
+        return store.getPageCount();
     }
 
     /** 返回公共垃圾桶内容物品总数量。 */
     public int getStoredItemAmount() {
-        int amount = 0;
-        for (Inventory page : pages) {
-            for (Integer slotValue : layout.getContentSlots()) {
-                int slot = slotValue.intValue();
-                ItemStack itemStack = page.getItem(slot);
-                if (!InventorySlotUtil.isEmpty(itemStack)) {
-                    amount += itemStack.getAmount();
-                }
-            }
-        }
-        return amount;
+        return store.getStoredItemAmount();
     }
 
     /** 返回公共垃圾桶内容堆叠数量。 */
     public int getStoredStackCount() {
-        int count = 0;
-        for (Inventory page : pages) {
-            for (Integer slotValue : layout.getContentSlots()) {
-                int slot = slotValue.intValue();
-                if (!InventorySlotUtil.isEmpty(page.getItem(slot))) {
-                    count++;
-                }
-            }
-        }
-        return count;
+        return store.getStoredStackCount();
     }
 
-    /** 玩家从公共垃圾桶取出物品。 */
-    private void takeItem(Player player, Inventory inventory, int slot) {
+    /** 玩家从模型公共垃圾桶取出指定展示条目。 */
+    private void takeItem(Player player, int pageIndex, int contentIndex, ClickType clickType) {
         if (!hasTrashPermission(player, "WorldListTrashCan.GlobalTrashTakeItem")) {
             player.sendMessage(message("global-trash.no-take-permission", "&c你没有权限从公共垃圾桶取出物品。"));
             return;
@@ -439,42 +458,90 @@ public final class GlobalTrashService {
         if (isCoolingDown(player)) {
             return;
         }
-        ItemStack itemStack = inventory.getItem(slot);
-        if (InventorySlotUtil.isEmpty(itemStack)) {
-            return;
+        synchronized (store) {
+            GlobalTrashStore.DisplayItem display = store.getDisplayItem(pageIndex, contentIndex);
+            if (display == null) {
+                return;
+            }
+            int requested = takeAmount(clickType, display);
+            if (requested <= 0) {
+                return;
+            }
+            int actualRequested = (int) Math.min((long) requested, display.getLogicalAmount());
+            ItemStack itemStack = display.getSample();
+            itemStack.setAmount(actualRequested);
+            Map<Integer, ItemStack> leftovers = player.getInventory().addItem(itemStack.clone());
+            int moved = actualRequested - leftoverAmount(leftovers);
+            if (moved <= 0) {
+                return;
+            }
+            int removed = store.remove(display.getKey(), moved);
+            if (removed <= 0) {
+                return;
+            }
+            lastTakeMillis.put(player.getUniqueId(), System.currentTimeMillis());
+            itemStack.setAmount(removed);
+            logGlobalTrash(player, "-global", itemStack, removed);
+            recordTake(player, itemStack, removed);
         }
-        Map<Integer, ItemStack> leftovers = player.getInventory().addItem(itemStack.clone());
-        lastTakeMillis.put(player.getUniqueId(), System.currentTimeMillis());
-        if (leftovers.isEmpty()) {
-            logGlobalTrash(player, "-global", itemStack, itemStack.getAmount());
-            recordTake(player, itemStack, itemStack.getAmount());
-            inventory.clear(slot);
-            return;
-        }
-        ItemStack remaining = leftovers.values().iterator().next();
-        int moved = itemStack.getAmount() - remaining.getAmount();
-        if (moved > 0) {
-            logGlobalTrash(player, "-global", itemStack, moved);
-            recordTake(player, itemStack, moved);
-        }
-        itemStack.setAmount(remaining.getAmount());
-        inventory.setItem(slot, itemStack);
     }
 
-    /** 玩家手动把背包物品放入公共垃圾桶。 */
+    /** 根据当前显示模式和鼠标操作计算取出数量。 */
+    private int takeAmount(ClickType clickType, GlobalTrashStore.DisplayItem display) {
+        if (config.getMode() == TrashConfig.GlobalTrashMode.STACKED) {
+            return display.getDisplayAmount();
+        }
+        TrashConfig.CompactGlobalTrashConfig compact = config.getCompact();
+        if (clickType == ClickType.LEFT) {
+            return compact.getLeftClickAmount();
+        }
+        if (clickType == ClickType.SHIFT_LEFT) {
+            return compact.getShiftLeftClickAmount();
+        }
+        if (!compact.isRightClickEnabled()) {
+            return 0;
+        }
+        if (clickType == ClickType.RIGHT) {
+            return compact.getRightClickAmount();
+        }
+        if (clickType == ClickType.SHIFT_RIGHT) {
+            return compact.getShiftRightClickAmount();
+        }
+        return 0;
+    }
+
+    /** 玩家手动把背包物品尽可能放入公共垃圾桶。 */
     private void putFromPlayer(Player player, InventoryClickEvent event) {
         if (!hasTrashPermission(player, "WorldListTrashCan.GlobalTrashPutItem")) {
             return;
         }
-        ItemStack itemStack = event.getCurrentItem();
-        if (InventorySlotUtil.isEmpty(itemStack)) {
+        Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory == null || event.getSlot() < 0 || event.getSlot() >= clickedInventory.getSize()) {
             return;
         }
-        int amount = itemStack.getAmount();
-        if (addItem(itemStack, false, TrashMutationReason.MANUAL_DEPOSIT)) {
-            logGlobalTrash(player, "+global", itemStack, amount);
-            itemStack.setAmount(0);
+        ItemStack itemStack = clickedInventory.getItem(event.getSlot());
+        if (InventorySlotUtil.isEmpty(itemStack) || config == null
+                || config.isBannedMaterial(itemStack.getType().name())) {
+            return;
         }
+        ItemStack cleanItemStack = sanitize(itemStack);
+        int accepted = store.add(cleanItemStack, true);
+        if (accepted <= 0) {
+            return;
+        }
+        int remaining = itemStack.getAmount() - accepted;
+        if (remaining <= 0) {
+            clickedInventory.setItem(event.getSlot(), null);
+        } else {
+            ItemStack remainder = itemStack.clone();
+            remainder.setAmount(remaining);
+            clickedInventory.setItem(event.getSlot(), remainder);
+        }
+        cleanItemStack.setAmount(accepted);
+        logGlobalTrash(player, "+global", cleanItemStack, accepted);
+        recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
+                cleanItemStack, accepted, TrashMutationReason.MANUAL_DEPOSIT, System.currentTimeMillis()));
+        scheduleOpenViewRefresh();
     }
 
     /** 判断玩家是否拥有公共垃圾桶操作权限，并保留 OP 旁路。 */
@@ -503,6 +570,20 @@ public final class GlobalTrashService {
         return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
     }
 
+    /** 返回遗留物品总数量。 */
+    private int leftoverAmount(Map<Integer, ItemStack> leftovers) {
+        int amount = 0;
+        if (leftovers == null) {
+            return 0;
+        }
+        for (ItemStack leftover : leftovers.values()) {
+            if (!InventorySlotUtil.isEmpty(leftover)) {
+                amount += leftover.getAmount();
+            }
+        }
+        return amount;
+    }
+
     /** 记录玩家从公共垃圾桶实际取出的数量。 */
     private void recordTake(Player player, ItemStack itemStack, int amount) {
         recordMutation(TrashMutation.take(CleanupItemDestination.globalTrash(), itemStack, amount,
@@ -516,121 +597,9 @@ public final class GlobalTrashService {
         }
     }
 
-    /** 创建单页 GUI 并绘制展示物。 */
-    private Inventory createPage(int pageIndex, int maxPages) {
-        Inventory inventory = Bukkit.createInventory(null, layout.getInventorySize(),
-                message("global-trash.gui.title", "&8公共垃圾桶 {page}/{max}",
-                        "{page}", String.valueOf(pageIndex + 1), "{max}", String.valueOf(maxPages)));
-        for (int slot = 0; slot < layout.getInventorySize(); slot++) {
-            TrashConfig.GlobalTrashItemConfig item = layout.getItemAt(slot);
-            if (item == null || item.getType() == TrashConfig.GlobalTrashItemType.CONTENT) {
-                continue;
-            }
-            TrashConfig.GlobalTrashItemConfig displayItem = visibleItem(item, pageIndex, maxPages);
-            if (displayItem != null) {
-                inventory.setItem(slot, createLayoutItem(displayItem, pageIndex, maxPages, null));
-            }
-        }
-        return inventory;
-    }
-
-    /** 快照旧分页中的物品。 */
-    private List<ItemStack> snapshotContent() {
-        List<ItemStack> result = new ArrayList<>();
-        if (layout == null) {
-            return result;
-        }
-        for (Inventory page : pages) {
-            for (Integer slotValue : layout.getContentSlots()) {
-                int slot = slotValue.intValue();
-                ItemStack itemStack = page.getItem(slot);
-                if (!InventorySlotUtil.isEmpty(itemStack)) {
-                    result.add(itemStack.clone());
-                }
-            }
-        }
-        return result;
-    }
-
-    /** 按当前布局重建正常页和仅承载旧存量的临时溢出页。 */
-    private void rebuildPages(List<ItemStack> items) {
-        List<Inventory> packedPages = packItems(items);
-        int totalPages = packedPages.size();
-        List<Inventory> rebuilt = new ArrayList<>();
-        for (int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
-            Inventory page = createPage(pageIndex, totalPages);
-            copyContent(packedPages.get(pageIndex), page);
-            rebuilt.add(page);
-        }
-        pages.clear();
-        pages.addAll(rebuilt);
-        int overflowPages = Math.max(0, totalPages - writablePageCount);
-        if (overflowPages > 0) {
-            plugin.getLogger().warning("[GlobalTrash] 新布局正常容量不足以容纳旧物品，已创建 "
-                    + overflowPages + " 个临时溢出页；这些页面可取出但不接收新物品。");
-        }
-    }
-
-    /** 把旧物品打包进正常页，必要时追加临时溢出页。 */
-    private List<Inventory> packItems(List<ItemStack> items) {
-        List<Inventory> packedPages = new ArrayList<>();
-        for (int index = 0; index < Math.max(1, writablePageCount); index++) {
-            packedPages.add(createScratchPage());
-        }
-        if (items == null || items.isEmpty()) {
-            return packedPages;
-        }
-        for (ItemStack itemStack : items) {
-            if (InventorySlotUtil.isEmpty(itemStack)) {
-                continue;
-            }
-            int remaining = itemStack.getAmount();
-            int maxStack = Math.max(1, itemStack.getMaxStackSize());
-            while (remaining > 0) {
-                ItemStack chunk = itemStack.clone();
-                chunk.setAmount(Math.min(remaining, maxStack));
-                if (!addToPackedPages(packedPages, chunk)) {
-                    Inventory overflowPage = createScratchPage();
-                    packedPages.add(overflowPage);
-                    if (!InventorySlotUtil.add(overflowPage, chunk, layout.getContentSlots())) {
-                        throw new IllegalStateException("公共垃圾桶布局无法容纳单个物品堆叠");
-                    }
-                }
-                remaining -= chunk.getAmount();
-            }
-        }
-        return packedPages;
-    }
-
-    /** 尝试把一个物品堆叠放入已有打包页。 */
-    private boolean addToPackedPages(List<Inventory> packedPages, ItemStack itemStack) {
-        for (Inventory page : packedPages) {
-            if (InventorySlotUtil.add(page, itemStack, layout.getContentSlots())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** 创建仅用于重排旧内容的临时背包。 */
-    private Inventory createScratchPage() {
-        return Bukkit.createInventory(null, layout.getInventorySize(), "WorldListTrashCan packing");
-    }
-
-    /** 把临时背包的内容槽复制到最终 GUI。 */
-    private void copyContent(Inventory source, Inventory target) {
-        for (Integer slotValue : layout.getContentSlots()) {
-            int slot = slotValue.intValue();
-            ItemStack itemStack = source.getItem(slot);
-            if (!InventorySlotUtil.isEmpty(itemStack)) {
-                target.setItem(slot, itemStack.clone());
-            }
-        }
-    }
-
-    /** 返回当前页实际应显示的按钮或不可用替代物。 */
+    /** 返回当前页面应显示的按钮或不可用替代物。 */
     private TrashConfig.GlobalTrashItemConfig visibleItem(TrashConfig.GlobalTrashItemConfig item,
-                                                          int pageIndex, int maxPages) {
+                                                           int pageIndex, int maxPages) {
         boolean unavailable = item.getType() == TrashConfig.GlobalTrashItemType.PREVIOUS_PAGE && pageIndex <= 0
                 || item.getType() == TrashConfig.GlobalTrashItemType.NEXT_PAGE && pageIndex >= maxPages - 1;
         if (!unavailable) {
@@ -672,7 +641,7 @@ public final class GlobalTrashService {
         }
     }
 
-    /** 返回展示物名称，未覆盖时读取对应类型的语言节点。 */
+    /** 返回展示物名称，未覆盖时读取对应类型的语言名称。 */
     private String itemName(TrashConfig.GlobalTrashItemConfig item) {
         if (item.getName() != null) {
             return item.getName();
@@ -686,33 +655,66 @@ public final class GlobalTrashService {
         return " ";
     }
 
-    /** 关闭仍在查看旧分页的玩家，避免 reload 后操作失效页面。 */
-    private void closeCurrentViewers() {
-        List<UUID> viewerIds = new ArrayList<>(activeViews.keySet());
-        activeViews.clear();
-        for (UUID playerId : viewerIds) {
-            if (platform == null) {
-                Player player = Bukkit.getPlayer(playerId);
-                if (player != null) {
-                    player.closeInventory();
-                }
-                continue;
-            }
-            platform.executeForPlayer(playerId, new Consumer<Player>() {
-                /** 在玩家合法线程关闭已经失效的旧页面。 */
-                @Override
-                public void accept(Player player) {
-                    InventoryHolder holder = player.getOpenInventory().getTopInventory().getHolder();
-                    if (holder instanceof GlobalTrashViewHolder
-                            && ((GlobalTrashViewHolder) holder).belongsTo(GlobalTrashService.this)) {
-                        player.closeInventory();
-                    }
-                }
-            });
+    /** 创建紧凑或旧堆叠模式的物品展示。 */
+    private ItemStack createContentItem(GlobalTrashStore.DisplayItem display, Player player,
+                                        int pageIndex, int maxPages) {
+        ItemStack itemStack = display.getSample();
+        if (config.getMode() == TrashConfig.GlobalTrashMode.STACKED) {
+            itemStack.setAmount(display.getDisplayAmount());
+            return itemStack;
         }
+        itemStack.setAmount(1);
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) {
+            return itemStack;
+        }
+        TrashConfig.CompactGlobalTrashConfig compact = config.getCompact();
+        List<String> originalLore = meta.hasLore() && meta.getLore() != null
+                ? new ArrayList<>(meta.getLore()) : Collections.<String>emptyList();
+        List<String> lore = new ArrayList<>();
+        if (compact.isShowAmountLore()) {
+            lore.add(resolveContentText(player, compact.getAmountLore(), pageIndex, maxPages,
+                    display, 0));
+        }
+        int maxOriginal = compact.getMaxOriginalLoreLines();
+        int visibleOriginal = maxOriginal < 0 ? originalLore.size() : Math.min(maxOriginal, originalLore.size());
+        for (int index = 0; index < visibleOriginal; index++) {
+            lore.add(resolveContentText(player, originalLore.get(index), pageIndex, maxPages,
+                    display, 0));
+        }
+        if (maxOriginal >= 0 && originalLore.size() > visibleOriginal) {
+            lore.add(resolveContentText(player, compact.getOmittedLore(), pageIndex, maxPages,
+                    display, originalLore.size() - visibleOriginal));
+        }
+        for (String line : compact.getActionLore()) {
+            lore.add(resolveContentText(player, line, pageIndex, maxPages, display, 0));
+        }
+        if (!lore.isEmpty()) {
+            meta.setLore(lore);
+        }
+        if (meta.hasDisplayName()) {
+            meta.setDisplayName(resolveContentText(player, meta.getDisplayName(), pageIndex, maxPages,
+                    display, 0));
+        }
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
-    /** 创建布局展示物。 */
+    /** 替换紧凑模式展示物数量和操作占位符，再执行玩家变量解析。 */
+    private String resolveContentText(Player player, String text, int pageIndex, int maxPages,
+                                      GlobalTrashStore.DisplayItem display, int omittedCount) {
+        String resolved = text == null ? "" : text;
+        TrashConfig.CompactGlobalTrashConfig compact = config.getCompact();
+        resolved = resolved.replace("{amount}", String.valueOf(display.getLogicalAmount()))
+                .replace("{take-amount}", String.valueOf(compact.getLeftClickAmount()))
+                .replace("{shift-take-amount}", String.valueOf(compact.getShiftLeftClickAmount()))
+                .replace("{right-take-amount}", String.valueOf(compact.getRightClickAmount()))
+                .replace("{shift-right-take-amount}", String.valueOf(compact.getShiftRightClickAmount()))
+                .replace("{count}", String.valueOf(omittedCount));
+        return renderColor(player, textResolver.resolve(player, resolved, pageIndex, maxPages));
+    }
+
+    /** 创建布局按钮展示物。 */
     private ItemStack createLayoutItem(TrashConfig.GlobalTrashItemConfig item, int pageIndex,
                                        int maxPages, Player player) {
         Material material = layoutMaterials.get(Character.valueOf(item.getSymbol()));
@@ -738,7 +740,7 @@ public final class GlobalTrashService {
         return itemStack;
     }
 
-    /** 按玩家版本渲染颜色，内部存储页没有玩家时使用服务端版本渲染。 */
+    /** 按玩家版本渲染颜色。 */
     private String renderColor(Player player, String text) {
         return player == null ? RichTextRenderer.color(text) : RichTextRenderer.color(player, text);
     }
@@ -749,13 +751,65 @@ public final class GlobalTrashService {
             return;
         }
         try {
-            Method method = meta.getClass().getMethod("setCustomModelData", Integer.class);
+            java.lang.reflect.Method method = meta.getClass().getMethod("setCustomModelData", Integer.class);
             method.invoke(meta, Integer.valueOf(modelId));
         } catch (ReflectiveOperationException ignored) {
             // 1.12 没有 CustomModelData，保持旧版本可加载。
         } catch (RuntimeException ignored) {
             // 反射目标来自服务端实现，异常时只跳过外观字段，不影响 GUI 可用性。
         }
+    }
+
+    /** 关闭仍在查看旧分页的玩家，避免 reload 后操作失效页面。 */
+    private void closeCurrentViewers() {
+        List<UUID> viewerIds = new ArrayList<>(activeViews.keySet());
+        activeViews.clear();
+        for (UUID playerId : viewerIds) {
+            if (platform == null) {
+                Player player = Bukkit.getPlayer(playerId);
+                if (player != null) {
+                    player.closeInventory();
+                }
+                continue;
+            }
+            platform.executeForPlayer(playerId, new Consumer<Player>() {
+                /** 在玩家合法线程关闭已经失效的旧页面。 */
+                @Override
+                public void accept(Player player) {
+                    InventoryView open = player.getOpenInventory();
+                    if (open == null) {
+                        return;
+                    }
+                    InventoryHolder holder = open.getTopInventory().getHolder();
+                    if (holder instanceof GlobalTrashViewHolder
+                            && ((GlobalTrashViewHolder) holder).belongsTo(GlobalTrashService.this)) {
+                        player.closeInventory();
+                    }
+                }
+            });
+        }
+    }
+
+    /** 返回内容槽在模型页中的连续下标。 */
+    private int contentIndex(int rawSlot) {
+        List<Integer> slots = layout.getContentSlots();
+        for (int index = 0; index < slots.size(); index++) {
+            if (slots.get(index).intValue() == rawSlot) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    /** 返回当前公共垃圾桶模式名称。 */
+    private String modeName() {
+        return config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT
+                ? "compact" : "stacked";
+    }
+
+    /** 返回当前模式正常可写页数。 */
+    private int configuredMaxPages() {
+        return config == null ? 1 : config.getMaxPages();
     }
 
     /** 写入公共垃圾桶操作日志。 */
@@ -779,13 +833,8 @@ public final class GlobalTrashService {
         }
     }
 
-    /** 转换颜色代码。 */
-    private String color(String text) {
-        return RichTextRenderer.color(text);
-    }
-
     /** 返回格式化消息。 */
     private String message(String key, String fallback, String... replacements) {
-        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
+        return messages == null ? RichTextRenderer.color(fallback) : messages.text(key, fallback, replacements);
     }
 }

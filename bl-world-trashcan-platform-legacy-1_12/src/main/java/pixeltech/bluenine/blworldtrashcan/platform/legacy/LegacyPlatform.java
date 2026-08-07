@@ -32,7 +32,7 @@ public final class LegacyPlatform implements ServerPlatform {
         this.scheduler = new BukkitSchedulerAdapter(plugin);
         this.itemSnapshotMapper = new LegacyItemSnapshotMapper();
         this.entitySnapshotMapper = new LegacyEntitySnapshotMapper();
-        this.capabilityReport = new CapabilityReport("legacy-1.12", EnumSet.of(
+        this.capabilityReport = new CapabilityReport("bukkit-api-1.12", EnumSet.of(
                 Capability.SCHEDULER_GLOBAL,
                 Capability.INVENTORY_BASIC,
                 Capability.CLICKABLE_MESSAGE,

@@ -16,6 +16,8 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | --- | --- | --- |
 | 公共垃圾桶布局 | 固定布局 | 可配置 1-6 行内容区、翻页按钮、背景和展示物品 |
 | 公共垃圾桶按钮 | 材质和位置固定 | 支持材质候选、CustomModelData、名称、Lore 和替代物品 |
+| 公共垃圾桶显示模式 | 只有原版堆叠显示 | `compact` 紧凑模式默认每种物品只显示一个，数量写入 Lore；`stacked` 保留 64/16/1 的旧显示方式 |
+| 紧凑模式容量 | 无单物品逻辑上限 | 每种物品可配置累计上限，`-1` 为无限；达到上限时按剩余容量接收，不会把一批物品拆成大量条目 |
 | 公共垃圾桶缩容 | 缩小容量可能造成旧物品无处显示 | 自动进入只读溢出页，可查看和取出，不静默丢失 |
 | 公共垃圾桶动作 | 只能使用固定按钮 | 支持 `[console]`、`[command]`、`[message]` 和 PAPI 变量 |
 | 个人垃圾桶提示 | 单个或批量提示不完整 | 单个物品单独提示，扫地批量汇总提示，默认显示前 3 类 |
@@ -29,6 +31,30 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 潜影盒物品保护 | 没有 | 可选择跳过掉落物携带的装满潜影盒物品，默认关闭 |
 
 上表只列服主能直接感知的业务变化，没有把内部实现细节重复算成新功能。
+
+### 公共垃圾桶显示模式
+
+两种模式使用独立配置节点，服主只需要修改 `global-trash.mode`，不需要手动切换服务端类型：
+
+```yaml
+global-trash:
+  # compact 为紧凑模式；stacked 为旧版 64/16/1 堆叠显示。
+  mode: "compact"
+  compact:
+    # 紧凑模式最多显示多少页；每个内容槽代表一种物品。
+    max-pages: 5
+    # 单种物品最多累计数量；-1 表示无限。
+    max-amount-per-entry: 9999
+    # 数量、原始 Lore 截断和操作提示都写在展示物 Lore 中。
+    max-original-lore-lines: 5
+    left-click-amount: 1
+    shift-left-click-amount: 64
+  stacked:
+    # 旧模式自己的页数，不复用 compact.max-pages。
+    max-pages: 5
+```
+
+紧凑模式不会把每个数量拆成多个展示物。例如当前有 `9980` 个物品，再放入 `20` 个时会接收到剩余容量，显示为 `9999`，不会产生 20 个重复条目；超过容量的剩余部分按原有路由规则继续处理。公共垃圾桶存量是运行期数据，重启后按原版行为清空。
 
 #### 兼容性和稳定性增强
 
@@ -105,7 +131,6 @@ filled-shulker-boxes:
 - 想减少包体和运行时分支：按服务端版本使用对应的轻量分版本 Jar。
 - 同一个服务端的 `plugins` 目录只放一个 WorldListTrashCan Jar，不能同时放 universal 和轻量版本。
 
-
 ## English
 
 WorldListTrashCan is a cleanup and trash-can plugin for Bukkit, Spigot, Paper, and Folia/Luminol.
@@ -120,6 +145,8 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | --- | --- | --- |
 | Public trash-can layout | Fixed layout | Configurable 1-6 row content area, page buttons, background, and display items |
 | Public trash-can buttons | Fixed material and position | Material fallbacks, CustomModelData, name, Lore, and replacement items |
+| Public trash-can display mode | Only vanilla stack display | `compact` shows one display item per type and puts the amount in Lore; `stacked` preserves the legacy 64/16/1 display |
+| Compact per-item capacity | No logical per-item cap | Each type has a configurable accumulated cap; `-1` means unlimited, and incoming batches use remaining capacity instead of creating duplicate entries |
 | Smaller public trash-can capacity | Items could become inaccessible | A read-only overflow page keeps items visible and retrievable instead of silently losing them |
 | Public trash-can actions | Only fixed button behavior | Supports `[console]`, `[command]`, `[message]`, and PlaceholderAPI variables |
 | Personal trash-can notifications | Incomplete single-item and batch messages | Individual notifications for single items and grouped notifications for cleanup batches, showing up to 3 types by default |
@@ -134,6 +161,30 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 
 This table lists changes directly visible to server administrators and does not count internal implementation details as separate features.
 
+### Public trash-can display modes
+
+The two modes have independent configuration nodes. Administrators only change `global-trash.mode`; no server-type switch is required:
+
+```yaml
+global-trash:
+  # compact is the compact mode; stacked keeps the legacy 64/16/1 display.
+  mode: "compact"
+  compact:
+    # Maximum compact pages; each content slot represents one item type.
+    max-pages: 5
+    # Maximum accumulated amount for one type; -1 means unlimited.
+    max-amount-per-entry: 9999
+    # Amount, original Lore truncation, and operation hints are placed in Lore.
+    max-original-lore-lines: 5
+    left-click-amount: 1
+    shift-left-click-amount: 64
+  stacked:
+    # Independent page count for the legacy mode.
+    max-pages: 5
+```
+
+Compact mode does not split a batch into many duplicate display entries. For example, when `9980` items are stored and another `20` arrive, the remaining capacity is accepted and the entry becomes `9999`; any remainder follows the existing routing rules. Public trash contents are runtime data and are cleared on restart, matching the legacy behavior.
+
 #### Compatibility and stability improvements
 
 - `WorldListTrashCan-universal.jar` runs across supported server versions, including Folia/Luminol; lightweight version-specific JARs are also available.
@@ -142,7 +193,6 @@ This table lists changes directly visible to server administrators and does not 
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- Missing default configuration entries are restored, and default configuration files include Chinese comments.
 - bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.0.0`.
 
 ### Estimated performance improvements
