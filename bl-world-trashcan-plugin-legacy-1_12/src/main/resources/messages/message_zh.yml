@@ -92,6 +92,14 @@ protection:
   chunk-entity-line: "{prefix}&#C9D4E2{text}"
   # 手持物品查询结果，{material} 为物品类型。
   hand-item: "{prefix}&#5AC8FA手持物品 &#64748B| &#FFD166{material}"
+  # look 查询手持物品显示名，{name} 为自定义显示名。
+  hand-item-name: "{prefix}&#5AC8FA物品显示名 &#64748B| &#C9D4E2{name}"
+  # look 查询手持物品 Lore 标题。
+  hand-item-lore-title: "{prefix}&#5AC8FA物品 Lore:"
+  # look 查询手持物品 Lore 单行，{line} 为 Lore 内容。
+  hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
+  # look 查询 Lore 超过显示上限时的省略提示，{count} 为省略行数。
+  hand-item-lore-truncated: "{prefix}&#64748B...已省略 &#FFD166{count} &#64748B行 Lore..."
 
 # 实体限制相关消息。
 entity-limit:

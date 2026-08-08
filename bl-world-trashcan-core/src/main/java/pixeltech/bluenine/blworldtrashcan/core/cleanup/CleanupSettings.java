@@ -52,7 +52,7 @@ public final class CleanupSettings {
 
     /** 判断名字片段是否命中跳过规则。 */
     public boolean matchesIgnoredName(String displayName) {
-        return containsAny(displayName, ignoredNameFragments);
+        return matchesTextPattern(displayName, ignoredNameFragments);
     }
 
     /** 判断 lore 片段是否命中跳过规则。 */
@@ -61,7 +61,7 @@ public final class CleanupSettings {
             return false;
         }
         for (String line : lore) {
-            if (containsAny(line, ignoredLoreFragments)) {
+            if (matchesTextPattern(line, ignoredLoreFragments)) {
                 return true;
             }
         }
@@ -138,14 +138,18 @@ public final class CleanupSettings {
         return Collections.unmodifiableSet(result);
     }
 
-    /** 判断文本是否包含任一片段。 */
-    private static boolean containsAny(String text, Set<String> fragments) {
-        if (text == null || fragments.isEmpty()) {
+    /** 判断文本是否命中旧版片段规则或新的星号通配规则。 */
+    private static boolean matchesTextPattern(String text, Set<String> patterns) {
+        if (text == null || patterns.isEmpty()) {
             return false;
         }
         String normalized = normalize(text);
-        for (String fragment : fragments) {
-            if (normalized.contains(fragment)) {
+        for (String pattern : patterns) {
+            if (pattern.indexOf('*') >= 0) {
+                if (wildcardMatch(normalized, pattern)) {
+                    return true;
+                }
+            } else if (normalized.contains(pattern)) {
                 return true;
             }
         }

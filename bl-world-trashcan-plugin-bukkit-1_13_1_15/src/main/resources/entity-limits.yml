@@ -6,6 +6,8 @@ world-limits:
   ignored-worlds:
     - "testWorld"
   # 默认限制列表。
+  # 不确定实体类型时，请以玩家身份执行 /wtc look 并右键目标实体。
+  # entity 填写输出中的 EntityType 或当前平台标准化类型键；此处按类型精确匹配，不支持 * 通配。
   defaults:
     # 实体类型，使用 Bukkit EntityType 名称或插件标准化后的实体名。
     - entity: "VILLAGER"
@@ -61,6 +63,8 @@ gather-limits:
   ignored-worlds:
     - "testWorld"
   # 默认密集限制列表。
+  # 不确定实体类型时，请以玩家身份执行 /wtc look 并右键目标实体。
+  # entity 填写输出中的 EntityType 或当前平台标准化类型键；此处按类型精确匹配，不支持 * 通配。
   defaults:
     # 实体类型，使用 Bukkit EntityType 名称或插件标准化后的实体名。
     - entity: "VILLAGER"

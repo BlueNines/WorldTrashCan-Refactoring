@@ -92,6 +92,14 @@ protection:
   chunk-entity-line: "{prefix}&#5AC8FA{text}"
   # 手持物品查询结果，{material} 为物品类型。
   hand-item: "{prefix}&#5AC8FAObjeto en mano: &#C9D4E2{material}"
+  # look nombre visible del objeto, {name} es el nombre personalizado.
+  hand-item-name: "{prefix}&#5AC8FANombre visible: &#C9D4E2{name}"
+  # título del lore del objeto consultado con look.
+  hand-item-lore-title: "{prefix}&#5AC8FALore del objeto:"
+  # línea del lore, {line} es el contenido.
+  hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
+  # aviso de truncamiento del lore, {count} es el número de líneas omitidas.
+  hand-item-lore-truncated: "{prefix}&#64748B...se omitieron &#FFD166{count} &#64748Blíneas de lore..."
 
 # Mensajes de limite de entidades.
 entity-limit:

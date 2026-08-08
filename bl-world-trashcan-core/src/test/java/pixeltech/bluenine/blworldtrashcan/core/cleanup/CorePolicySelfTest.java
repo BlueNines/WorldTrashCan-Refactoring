@@ -42,6 +42,37 @@ public final class CorePolicySelfTest {
         assertRoute("ignored lore", policy.decideItem(
                 new ItemSnapshot("DIRT", 1, "", Arrays.asList("shopLocation: world,1,2,3"), null),
                 true, true, true), TrashRoute.SKIP);
+        assertRoute("legacy name fragment remains substring match", policy.decideItem(
+                new ItemSnapshot("DIRT", 1, "special altar item", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("legacy lore fragment remains substring match", policy.decideItem(
+                new ItemSnapshot("DIRT", 1, "", Arrays.asList("QuickShop shopLocation: world,1,2,3"), null),
+                false, false, true), TrashRoute.SKIP);
+        CleanupSettings wildcardSettings = new CleanupSettings(
+                Collections.<String>emptySet(),
+                new HashSet<>(Collections.singletonList("*altar*")),
+                new HashSet<>(Collections.singletonList("*shoplocation:*")),
+                true,
+                true,
+                true,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                Collections.<String>emptySet(),
+                Collections.<String>emptySet());
+        DefaultCleanupPolicy wildcardPolicy = new DefaultCleanupPolicy(wildcardSettings);
+        assertRoute("wildcard name", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "special ALTAR item", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard lore", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "", Arrays.asList("QuickShop shopLocation: world,1,2,3"), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard mismatch", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "ordinary item", Arrays.asList("ordinary lore"), null),
+                false, false, true), TrashRoute.GLOBAL_TRASH);
         assertEntity("monster remove", policy.decideEntity(
                 new EntitySnapshot("ZOMBIE", "Zombie", "", true, true, false, false)),
                 EntityCleanupAction.REMOVE);

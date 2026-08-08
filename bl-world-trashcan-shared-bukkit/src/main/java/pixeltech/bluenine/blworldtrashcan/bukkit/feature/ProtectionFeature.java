@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
@@ -31,6 +32,7 @@ import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ProtectionConfig;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -39,6 +41,8 @@ import java.util.function.Supplier;
 
 /** 防丢弃、查询、聊天限频和简单优化功能。 */
 public final class ProtectionFeature implements Feature, Listener {
+    /** 防止异常 Lore 让 look 一次性刷屏。 */
+    private static final int MAX_LOOK_LORE_LINES = 50;
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
@@ -267,11 +271,39 @@ public final class ProtectionFeature implements Feature, Listener {
         }
     }
 
-    /** 发送玩家手持物品类型。 */
+    /** 发送玩家手持物品的材质、显示名和 Lore。 */
     private void sendHandItem(Player player) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         String material = itemStack == null ? "AIR" : itemStack.getType().name();
         sendSuggest(player, message("protection.hand-item", "&a手持物品: &f{material}", "{material}", material), material);
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
+            return;
+        }
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) {
+            return;
+        }
+        if (meta.hasDisplayName() && meta.getDisplayName() != null
+                && !meta.getDisplayName().trim().isEmpty()) {
+            String displayName = meta.getDisplayName();
+            sendSuggest(player, message("protection.hand-item-name", "&a物品显示名: &f{name}",
+                    "{name}", displayName), displayName);
+        }
+        List<String> lore = meta.getLore();
+        if (lore == null || lore.isEmpty()) {
+            return;
+        }
+        player.sendMessage(message("protection.hand-item-lore-title", "&a物品 Lore:"));
+        int shown = Math.min(MAX_LOOK_LORE_LINES, lore.size());
+        for (int index = 0; index < shown; index++) {
+            String line = lore.get(index) == null ? "" : lore.get(index);
+            sendSuggest(player, message("protection.hand-item-lore-line", "&7- &f{line}",
+                    "{line}", line), line);
+        }
+        if (lore.size() > shown) {
+            player.sendMessage(message("protection.hand-item-lore-truncated",
+                    "&8...已省略 {count} 行 Lore...", "{count}", String.valueOf(lore.size() - shown)));
+        }
     }
 
     /** 发送点击后填入聊天框的文本。 */

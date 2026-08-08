@@ -51,21 +51,31 @@ folia:
   # 每批 chunk 扫描任务之间间隔多少 tick；最小 1，默认 1 用来削峰。
   chunk-batch-delay-ticks: 1
 
+# ==================== 名称查询提示 ====================
+# 重要：不确定物品或实体名称时，请先以玩家身份执行 /wtc look。
+# 手持目标物品执行后可查看 Material、显示名和 Lore；随后右键实体可查看实体名称和类型。
+# 为避免刷屏，Lore 最多显示 50 行。
+# 输出内容支持点击填入聊天框；该指令需要 WorldListTrashCan.Look 权限。
+
 # 不回收也不删除的物品类型。
-# 使用当前版本平台标准化后的 Material 名称。
+# 使用当前版本平台标准化后的 Material 名称，按完整名称精确匹配，不支持 * 通配。
 ignored-materials:
   - "DIAMOND"
 
-# 显示名包含以下片段时跳过清理。
+# 显示名命中以下规则时跳过清理。
+# 支持 * 通配，例如 "*shopLocation*" 表示前后可以有任意文本。
+# 为兼容旧配置，不含 * 的值仍按旧版“包含片段”处理；建议新配置明确写出 *。
 # 可用于保护特殊商店、祭坛、任务物品。
 ignored-name-fragments:
-  - "shopLocation"
-  - "ALTAR"
+  - "*shopLocation*"
+  - "*ALTAR*"
 
-# lore 包含以下片段时跳过清理。
-# 默认保护 QuickShop 一类带位置 lore 的物品。
+# Lore 任意一行命中以下规则时跳过清理。
+# 支持 * 通配；匹配范围是单行 Lore，不会跨越多行。
+# 为兼容旧配置，不含 * 的值仍按旧版“包含片段”处理。
+# 默认保护 QuickShop 一类带位置 Lore 的物品。
 ignored-lore-fragments:
-  - "shopLocation"
+  - "*shopLocation*"
 
 # 实体清理规则。
 entities:
@@ -87,16 +97,18 @@ entities:
   # 是否跳过实际装备了鞍的实体。
   # 默认 true；支持当前平台 Bukkit API 可识别的马、驴、骡、猪、炽足兽、骆驼等坐骑。
   ignore-entities-with-saddle: true
-  # 是否跳过拥有 Bukkit Tameable 主人的实体。
-  # 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
+# 是否跳过拥有 Bukkit Tameable 主人的实体。
+# 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
   ignore-entities-with-owner: true
-  # 实体白名单；命中后不清理，支持 * 通配。
+  # 不确定实体类型或名称时，请先执行 /wtc look，再右键目标实体。
+  # 这里填写 /wtc look 输出的实体类型或 Entity#getName()；匹配不区分大小写，支持 * 通配。
+  # 实体白名单命中后不清理，白名单优先于黑名单。
   whitelist:
     - "VILLAGER"
     - "*golem*"
     - "WITHER"
     - "Ender Dragon"
-  # 实体黑名单；命中后强制清理，支持 * 通配。白名单优先级更高。
+  # 实体黑名单命中后强制清理，支持 * 通配；白名单优先级更高。
   blacklist:
     - "FLAMMPFEIL.SLASHBLADE_BLADESTAND"
 
