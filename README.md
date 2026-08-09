@@ -17,6 +17,7 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 公共垃圾桶布局 | 固定布局 | 可配置 1-6 行内容区、翻页按钮、背景和展示物品 |
 | 公共垃圾桶按钮 | 材质和位置固定 | 支持材质候选、CustomModelData、名称、Lore 和替代物品 |
 | 公共垃圾桶显示模式 | 只有原版堆叠显示 | `compact` 紧凑模式默认每种物品只显示一个，数量写入 Lore；`stacked` 保留 64/16/1 的旧显示方式 |
+| 公共垃圾桶排序 | 所有玩家共用固定进入顺序 | 每名玩家可独立选择进入顺序、数量升降序、名称或材质排序；`compact` 与 `stacked` 偏好互不污染 |
 | 紧凑模式容量 | 无单物品逻辑上限 | 每种物品可配置累计上限，`-1` 为无限；达到上限时按剩余容量接收，不会把一批物品拆成大量条目 |
 | 公共垃圾桶缩容 | 缩小容量可能造成旧物品无处显示 | 自动进入只读溢出页，可查看和取出，不静默丢失 |
 | 公共垃圾桶动作 | 只能使用固定按钮 | 支持 `[console]`、`[command]`、`[message]` 和 PAPI 变量 |
@@ -137,6 +138,13 @@ filled-shulker-boxes:
 - 想减少包体和运行时分支：按服务端版本使用对应的轻量分版本 Jar。
 - 同一个服务端的 `plugins` 目录只放一个 WorldListTrashCan Jar，不能同时放 universal 和轻量版本。
 
+### 当前通用整包
+
+- 版本：`7.0.0`
+- 文件：`WorldListTrashCan-universal.jar`
+- SHA-256：`f52e2136036491abcb1e0f9be5e4092498a98c94dbfab96ee704d5877d227d1e`
+- 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
+
 ## English
 
 WorldListTrashCan is a cleanup and trash-can plugin for Bukkit, Spigot, Paper, and Folia/Luminol.
@@ -152,6 +160,7 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Public trash-can layout | Fixed layout | Configurable 1-6 row content area, page buttons, background, and display items |
 | Public trash-can buttons | Fixed material and position | Material fallbacks, CustomModelData, name, Lore, and replacement items |
 | Public trash-can display mode | Only vanilla stack display | `compact` shows one display item per type and puts the amount in Lore; `stacked` preserves the legacy 64/16/1 display |
+| Public trash-can sorting | One fixed insertion order shared by everyone | Each player can independently select insertion, amount, name, or material sorting; `compact` and `stacked` preferences remain separate |
 | Compact per-item capacity | No logical per-item cap | Each type has a configurable accumulated cap; `-1` means unlimited, and incoming batches use remaining capacity instead of creating duplicate entries |
 | Smaller public trash-can capacity | Items could become inaccessible | A read-only overflow page keeps items visible and retrievable instead of silently losing them |
 | Public trash-can actions | Only fixed button behavior | Supports `[console]`, `[command]`, `[message]`, and PlaceholderAPI variables |
@@ -274,3 +283,7 @@ The formal long command is `/worldlisttrashcan`, with `/wtc` as its short alias.
 
 Final universal artifact information:
 
+- Version: `7.0.0`
+- File: `WorldListTrashCan-universal.jar`
+- SHA-256: `f52e2136036491abcb1e0f9be5e4092498a98c94dbfab96ee704d5877d227d1e`
+- Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
