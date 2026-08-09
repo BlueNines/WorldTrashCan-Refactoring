@@ -23,6 +23,18 @@ global-trash:
     back: "&#5AC8FAPrevious Page"
     # 下一页按钮名称。
     next: "&#5AC8FANext Page"
+    # Per-player sorting button text.
+    sort:
+      name: "&#FFD166Sort Order"
+      current: "&#C9D4E2Current: &#FFD166{sort}"
+      next: "&#5AC8FALeft click &#C9D4E2to use &#FFD166{next-sort}"
+      previous: "&#5AC8FARight click &#C9D4E2to use &#FFD166{previous-sort}"
+      types:
+        insertion: "Insertion order"
+        amount-desc: "Amount high to low"
+        amount-asc: "Amount low to high"
+        name-asc: "Name A-Z"
+        material-asc: "Material A-Z"
 
 # 个人垃圾桶相关消息。
 personal-trash:

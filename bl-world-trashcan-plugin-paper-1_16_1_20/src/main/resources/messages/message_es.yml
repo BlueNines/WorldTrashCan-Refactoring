@@ -23,6 +23,18 @@ global-trash:
     back: "&#5AC8FAPagina anterior"
     # 下一页按钮名称。
     next: "&#5AC8FAPagina siguiente"
+    # Texto del boton de orden por jugador.
+    sort:
+      name: "&#FFD166Orden"
+      current: "&#C9D4E2Actual: &#FFD166{sort}"
+      next: "&#5AC8FAClic izquierdo &#C9D4E2para usar &#FFD166{next-sort}"
+      previous: "&#5AC8FAClic derecho &#C9D4E2para usar &#FFD166{previous-sort}"
+      types:
+        insertion: "Orden de entrada"
+        amount-desc: "Cantidad mayor a menor"
+        amount-asc: "Cantidad menor a mayor"
+        name-asc: "Nombre A-Z"
+        material-asc: "Material A-Z"
 
 # 个人垃圾桶相关消息。
 personal-trash:

@@ -1,21 +1,28 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.trash;
 
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.BukkitSimilarIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /** 公共垃圾桶的模型优先内存存储，不使用 Bukkit Inventory 保存业务状态。 */
 public final class GlobalTrashStore {
     private final ItemIdentityProvider identityProvider;
     private final Map<String, StoredEntry> entries = new LinkedHashMap<>();
+    private final Map<Long, StoredEntry> entriesById = new LinkedHashMap<>();
     private TrashConfig.GlobalTrashConfig config;
     private int contentSlotsPerPage = 1;
+    private long nextEntryId = 1L;
 
     /** 创建公共垃圾桶模型存储。 */
     public GlobalTrashStore(ItemIdentityProvider identityProvider) {
@@ -74,8 +81,10 @@ public final class GlobalTrashStore {
         if (entry == null) {
             ItemStack sample = itemStack.clone();
             sample.setAmount(1);
-            entry = new StoredEntry(key, sample, accepted);
+            entry = new StoredEntry(nextEntryId(), key, sample, accepted,
+                    sortName(sample), sample.getType().name().toLowerCase(Locale.ROOT));
             entries.put(key, entry);
+            entriesById.put(Long.valueOf(entry.entryId), entry);
         } else {
             entry.amount += accepted;
         }
@@ -84,40 +93,64 @@ public final class GlobalTrashStore {
 
     /** 按身份键移除已经成功交给玩家的数量。 */
     public synchronized int remove(String key, long requestedAmount) {
-        if (key == null || requestedAmount <= 0L) {
-            return 0;
-        }
-        StoredEntry entry = entries.get(key);
-        if (entry == null) {
-            return 0;
-        }
-        long removed = Math.min(requestedAmount, entry.amount);
-        entry.amount -= removed;
-        if (entry.amount <= 0L) {
-            entries.remove(key);
-        }
-        return (int) Math.min(Integer.MAX_VALUE, removed);
+        StoredEntry entry = key == null ? null : entries.get(key);
+        return removeEntry(entry, requestedAmount);
     }
 
-    /** 读取指定页内容槽位置的展示快照。 */
+    /** 按稳定条目 ID 移除数量，避免旧视图命中新建的同类物品。 */
+    public synchronized int remove(long entryId, long requestedAmount) {
+        return removeEntry(entriesById.get(Long.valueOf(entryId)), requestedAmount);
+    }
+
+    /** 创建一次打开会话使用的稳定排序和分页引用快照。 */
+    public synchronized ViewSnapshot createViewSnapshot(TrashConfig.GlobalTrashSortType sortType) {
+        TrashConfig.GlobalTrashSortType effectiveSort = sortType == null
+                ? TrashConfig.GlobalTrashSortType.INSERTION : sortType;
+        List<StoredEntry> ordered = new ArrayList<>(entries.values());
+        if (effectiveSort != TrashConfig.GlobalTrashSortType.INSERTION) {
+            Collections.sort(ordered, comparator(effectiveSort));
+        }
+        List<DisplayReference> references = new ArrayList<>();
+        for (StoredEntry entry : ordered) {
+            if (config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT) {
+                references.add(new DisplayReference(entry.entryId, 0L, 1));
+                continue;
+            }
+            int maxStack = maxStackSize(entry.sample);
+            long offset = 0L;
+            while (offset < entry.amount) {
+                references.add(new DisplayReference(entry.entryId, offset, maxStack));
+                offset += maxStack;
+            }
+        }
+        int requiredPages = (references.size() + contentSlotsPerPage - 1) / contentSlotsPerPage;
+        int pageCount = Math.max(configuredMaxPages(), Math.max(1, requiredPages));
+        return new ViewSnapshot(effectiveSort, contentSlotsPerPage, pageCount, references);
+    }
+
+    /** 解析打开会话中的稳定引用，条目失效时返回 null。 */
+    public synchronized DisplayItem getDisplayItem(DisplayReference reference) {
+        if (reference == null) {
+            return null;
+        }
+        StoredEntry entry = entriesById.get(Long.valueOf(reference.entryId));
+        if (entry == null || entry.amount <= reference.offset) {
+            return null;
+        }
+        int displayAmount = config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT
+                ? 1 : (int) Math.min((long) reference.maxDisplayAmount, entry.amount - reference.offset);
+        return new DisplayItem(entry.entryId, entry.key, entry.sample, entry.amount, displayAmount);
+    }
+
+    /** 读取指定页内容槽位置的插入顺序展示快照。 */
     public synchronized DisplayItem getDisplayItem(int pageIndex, int contentIndex) {
-        if (pageIndex < 0 || contentIndex < 0) {
-            return null;
-        }
-        List<DisplayItem> displayItems = buildDisplayItems();
-        long flatIndex = (long) pageIndex * contentSlotsPerPage + contentIndex;
-        if (flatIndex < 0L || flatIndex >= displayItems.size()) {
-            return null;
-        }
-        return displayItems.get((int) flatIndex);
+        ViewSnapshot snapshot = createViewSnapshot(TrashConfig.GlobalTrashSortType.INSERTION);
+        return getDisplayItem(snapshot.getReference(pageIndex, contentIndex));
     }
 
     /** 返回当前需要显示的页数，旧存量超出新容量时保留临时可取页面。 */
     public synchronized int getPageCount() {
-        int normalPages = configuredMaxPages();
-        List<DisplayItem> displayItems = buildDisplayItems();
-        int requiredPages = (displayItems.size() + contentSlotsPerPage - 1) / contentSlotsPerPage;
-        return Math.max(normalPages, Math.max(1, requiredPages));
+        return createViewSnapshot(TrashConfig.GlobalTrashSortType.INSERTION).getPageCount();
     }
 
     /** 返回公共垃圾桶内的物品总数量，溢出 int 时饱和到最大值。 */
@@ -134,12 +167,74 @@ public final class GlobalTrashStore {
 
     /** 返回当前模式实际显示的物品堆叠数量。 */
     public synchronized int getStoredStackCount() {
-        return buildDisplayItems().size();
+        return createViewSnapshot(TrashConfig.GlobalTrashSortType.INSERTION).getReferenceCount();
     }
 
-    /** 清空公共垃圾桶模型存量。 */
+    /** 清空公共垃圾桶模型存量，但不复用本生命周期已经发出的条目 ID。 */
     public synchronized void clear() {
         entries.clear();
+        entriesById.clear();
+    }
+
+    /** 移除指定存储条目的数量并同步两个索引。 */
+    private int removeEntry(StoredEntry entry, long requestedAmount) {
+        if (entry == null || requestedAmount <= 0L) {
+            return 0;
+        }
+        long removed = Math.min(requestedAmount, entry.amount);
+        entry.amount -= removed;
+        if (entry.amount <= 0L) {
+            entries.remove(entry.key);
+            entriesById.remove(Long.valueOf(entry.entryId));
+        }
+        return (int) Math.min(Integer.MAX_VALUE, removed);
+    }
+
+    /** 返回不会在当前插件生命周期内重复的条目 ID。 */
+    private long nextEntryId() {
+        long result = nextEntryId++;
+        if (nextEntryId <= 0L) {
+            nextEntryId = 1L;
+        }
+        while (entriesById.containsKey(Long.valueOf(result))) {
+            result = nextEntryId++;
+        }
+        return result;
+    }
+
+    /** 创建只读取缓存字段和当前数量的稳定比较器。 */
+    private Comparator<StoredEntry> comparator(final TrashConfig.GlobalTrashSortType sortType) {
+        return new Comparator<StoredEntry>() {
+            /** 比较两个存储条目，并始终用条目 ID 稳定兜底。 */
+            @Override
+            public int compare(StoredEntry left, StoredEntry right) {
+                int compared = 0;
+                if (sortType == TrashConfig.GlobalTrashSortType.AMOUNT_DESC) {
+                    compared = Long.compare(right.amount, left.amount);
+                } else if (sortType == TrashConfig.GlobalTrashSortType.AMOUNT_ASC) {
+                    compared = Long.compare(left.amount, right.amount);
+                } else if (sortType == TrashConfig.GlobalTrashSortType.NAME_ASC) {
+                    compared = left.sortName.compareTo(right.sortName);
+                } else if (sortType == TrashConfig.GlobalTrashSortType.MATERIAL_ASC) {
+                    compared = left.materialName.compareTo(right.materialName);
+                }
+                return compared != 0 ? compared : Long.compare(left.entryId, right.entryId);
+            }
+        };
+    }
+
+    /** 提取一次并缓存用于名称排序的稳定文本。 */
+    private String sortName(ItemStack itemStack) {
+        ItemMeta meta = null;
+        try {
+            meta = itemStack == null ? null : itemStack.getItemMeta();
+        } catch (RuntimeException ignored) {
+            // 纯模型单元测试没有 Bukkit ItemFactory，按材质名稳定降级。
+        }
+        String name = meta != null && meta.hasDisplayName() ? meta.getDisplayName()
+                : itemStack == null ? "" : itemStack.getType().name();
+        String stripped = ChatColor.stripColor(name);
+        return (stripped == null ? name : stripped).toLowerCase(Locale.ROOT);
     }
 
     /** 计算指定身份在当前正常页容量中的可用数量。 */
@@ -182,25 +277,6 @@ public final class GlobalTrashStore {
         return addSaturated(freeInMatching, emptyCapacity);
     }
 
-    /** 构造紧凑模式或旧堆叠模式的展示快照列表。 */
-    private List<DisplayItem> buildDisplayItems() {
-        List<DisplayItem> result = new ArrayList<>();
-        for (StoredEntry entry : entries.values()) {
-            if (config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT) {
-                result.add(new DisplayItem(entry.key, entry.sample, entry.amount, 1));
-                continue;
-            }
-            int maxStack = maxStackSize(entry.sample);
-            long remaining = entry.amount;
-            while (remaining > 0L) {
-                int amount = (int) Math.min((long) maxStack, remaining);
-                result.add(new DisplayItem(entry.key, entry.sample, entry.amount, amount));
-                remaining -= amount;
-            }
-        }
-        return result;
-    }
-
     /** 返回当前模式配置的正常页数。 */
     private int configuredMaxPages() {
         if (config == null) {
@@ -238,32 +314,108 @@ public final class GlobalTrashStore {
 
     /** 一个逻辑物品在模型中的存储条目。 */
     private static final class StoredEntry {
+        private final long entryId;
         private final String key;
         private final ItemStack sample;
+        private final String sortName;
+        private final String materialName;
         private long amount;
 
-        /** 创建存储条目。 */
-        private StoredEntry(String key, ItemStack sample, long amount) {
+        /** 创建带稳定 ID 和预计算排序字段的存储条目。 */
+        private StoredEntry(long entryId, String key, ItemStack sample, long amount,
+                            String sortName, String materialName) {
+            this.entryId = entryId;
             this.key = key;
             this.sample = sample;
             this.amount = amount;
+            this.sortName = sortName;
+            this.materialName = materialName;
+        }
+    }
+
+    /** 打开会话保存的轻量展示引用。 */
+    public static final class DisplayReference {
+        private final long entryId;
+        private final long offset;
+        private final int maxDisplayAmount;
+
+        /** 创建不持有 ItemStack 的稳定条目引用。 */
+        private DisplayReference(long entryId, long offset, int maxDisplayAmount) {
+            this.entryId = entryId;
+            this.offset = offset;
+            this.maxDisplayAmount = maxDisplayAmount;
+        }
+
+        /** 返回引用的稳定条目 ID。 */
+        public long getEntryId() {
+            return entryId;
+        }
+    }
+
+    /** 一次打开公共垃圾桶时冻结的排序和分页引用。 */
+    public static final class ViewSnapshot {
+        private final TrashConfig.GlobalTrashSortType sortType;
+        private final int contentSlotsPerPage;
+        private final int pageCount;
+        private final List<DisplayReference> references;
+
+        /** 创建不复制 ItemStack 的不可变视图快照。 */
+        private ViewSnapshot(TrashConfig.GlobalTrashSortType sortType, int contentSlotsPerPage,
+                             int pageCount, List<DisplayReference> references) {
+            this.sortType = sortType;
+            this.contentSlotsPerPage = contentSlotsPerPage;
+            this.pageCount = pageCount;
+            this.references = Collections.unmodifiableList(new ArrayList<>(references));
+        }
+
+        /** 返回指定页和内容下标的稳定引用。 */
+        public DisplayReference getReference(int pageIndex, int contentIndex) {
+            if (pageIndex < 0 || contentIndex < 0) {
+                return null;
+            }
+            long flatIndex = (long) pageIndex * contentSlotsPerPage + contentIndex;
+            return flatIndex >= 0L && flatIndex < references.size()
+                    ? references.get((int) flatIndex) : null;
+        }
+
+        /** 返回本次打开固定使用的排序方式。 */
+        public TrashConfig.GlobalTrashSortType getSortType() {
+            return sortType;
+        }
+
+        /** 返回本次打开固定使用的总页数。 */
+        public int getPageCount() {
+            return pageCount;
+        }
+
+        /** 返回轻量展示引用数量。 */
+        public int getReferenceCount() {
+            return references.size();
         }
     }
 
     /** 一个页面槽位对应的只读展示快照。 */
     public static final class DisplayItem {
+        private final long entryId;
         private final String key;
         private final ItemStack sample;
         private final long logicalAmount;
         private final int displayAmount;
 
         /** 创建展示快照。 */
-        private DisplayItem(String key, ItemStack sample, long logicalAmount, int displayAmount) {
+        private DisplayItem(long entryId, String key, ItemStack sample,
+                            long logicalAmount, int displayAmount) {
+            this.entryId = entryId;
             this.key = key;
             this.sample = sample.clone();
             this.sample.setAmount(1);
             this.logicalAmount = logicalAmount;
             this.displayAmount = displayAmount;
+        }
+
+        /** 返回稳定条目 ID。 */
+        public long getEntryId() {
+            return entryId;
         }
 
         /** 返回模型身份键。 */

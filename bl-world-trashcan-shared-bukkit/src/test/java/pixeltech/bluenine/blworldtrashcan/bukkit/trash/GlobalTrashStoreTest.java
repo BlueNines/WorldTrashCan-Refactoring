@@ -55,6 +55,48 @@ public final class GlobalTrashStoreTest {
         Assert.assertEquals(65, store.getStoredItemAmount());
     }
 
+    /** 验证数量和材质排序只改变视图引用，不改变真实插入顺序。 */
+    @Test
+    public void viewSnapshotSupportsStableSortModes() {
+        GlobalTrashStore store = new GlobalTrashStore(new TestIdentityProvider());
+        store.configure(config(TrashConfig.GlobalTrashMode.COMPACT, 9999L, 1), 45);
+        store.add(new ItemStack(Material.STONE, 5), false);
+        store.add(new ItemStack(Material.DIRT, 30), false);
+        store.add(new ItemStack(Material.COBBLESTONE, 10), false);
+
+        Assert.assertEquals(Material.STONE, firstMaterial(store, TrashConfig.GlobalTrashSortType.INSERTION));
+        Assert.assertEquals(Material.DIRT, firstMaterial(store, TrashConfig.GlobalTrashSortType.AMOUNT_DESC));
+        Assert.assertEquals(Material.STONE, firstMaterial(store, TrashConfig.GlobalTrashSortType.AMOUNT_ASC));
+        Assert.assertEquals(Material.COBBLESTONE, firstMaterial(store, TrashConfig.GlobalTrashSortType.MATERIAL_ASC));
+        Assert.assertEquals(Material.STONE, firstMaterial(store, TrashConfig.GlobalTrashSortType.INSERTION));
+    }
+
+    /** 验证旧视图条目 ID 不会命中删除后重新加入的同类物品。 */
+    @Test
+    public void removedEntryIdIsNeverReusedInCurrentLifecycle() {
+        GlobalTrashStore store = new GlobalTrashStore(new TestIdentityProvider());
+        store.configure(config(TrashConfig.GlobalTrashMode.COMPACT, 9999L, 1), 45);
+        store.add(new ItemStack(Material.STONE, 5), false);
+        GlobalTrashStore.ViewSnapshot oldSnapshot = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+        GlobalTrashStore.DisplayReference oldReference = oldSnapshot.getReference(0, 0);
+        long oldId = oldReference.getEntryId();
+
+        Assert.assertEquals(5, store.remove(oldId, 5));
+        store.add(new ItemStack(Material.STONE, 9), false);
+
+        Assert.assertNull(store.getDisplayItem(oldReference));
+        GlobalTrashStore.DisplayReference newReference = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION).getReference(0, 0);
+        Assert.assertNotEquals(oldId, newReference.getEntryId());
+    }
+
+    /** 返回指定排序方式下的第一个展示物材质。 */
+    private Material firstMaterial(GlobalTrashStore store, TrashConfig.GlobalTrashSortType sortType) {
+        GlobalTrashStore.ViewSnapshot snapshot = store.createViewSnapshot(sortType);
+        return store.getDisplayItem(snapshot.getReference(0, 0)).getSample().getType();
+    }
+
     /** 创建只用于模型测试的独立模式配置。 */
     private TrashConfig.GlobalTrashConfig config(TrashConfig.GlobalTrashMode mode,
                                                  long maxAmount, int maxPages) {

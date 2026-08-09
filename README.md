@@ -41,6 +41,8 @@ global-trash:
   # compact 为紧凑模式；stacked 为旧版 64/16/1 堆叠显示。
   mode: "compact"
   compact:
+    # 玩家首次打开时使用的排序；GUI 中的选择只在本次在线期间保留。
+    default-sort: "insertion"
     # 紧凑模式最多显示多少页；每个内容槽代表一种物品。
     max-pages: 5
     # 单种物品最多累计数量；-1 表示无限。
@@ -50,11 +52,15 @@ global-trash:
     left-click-amount: 1
     shift-left-click-amount: 64
   stacked:
+    # stacked 模式独立的默认排序。
+    default-sort: "insertion"
     # 旧模式自己的页数，不复用 compact.max-pages。
     max-pages: 5
 ```
 
 紧凑模式不会把每个数量拆成多个展示物。例如当前有 `9980` 个物品，再放入 `20` 个时会接收到剩余容量，显示为 `9999`，不会产生 20 个重复条目；超过容量的剩余部分按原有路由规则继续处理。公共垃圾桶存量是运行期数据，重启后按原版行为清空。
+
+公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
 #### 兼容性和稳定性增强
 
@@ -170,6 +176,8 @@ global-trash:
   # compact is the compact mode; stacked keeps the legacy 64/16/1 display.
   mode: "compact"
   compact:
+    # Default sort for the first open; GUI choices last only for the online session.
+    default-sort: "insertion"
     # Maximum compact pages; each content slot represents one item type.
     max-pages: 5
     # Maximum accumulated amount for one type; -1 means unlimited.
@@ -179,11 +187,15 @@ global-trash:
     left-click-amount: 1
     shift-left-click-amount: 64
   stacked:
+    # Independent default sort for stacked mode.
+    default-sort: "insertion"
     # Independent page count for the legacy mode.
     max-pages: 5
 ```
 
 Compact mode does not split a batch into many duplicate display entries. For example, when `9980` items are stored and another `20` arrive, the remaining capacity is accepted and the entry becomes `9999`; any remainder follows the existing routing rules. Public trash contents are runtime data and are cleared on restart, matching the legacy behavior.
+
+The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
 #### Compatibility and stability improvements
 

@@ -27,6 +27,9 @@ global-trash:
   mode: "compact"
   # 紧凑模式配置；每个逻辑物品只显示一个展示物，真实数量写入 Lore。
   compact:
+    # 玩家第一次打开紧凑模式时使用的排序；可选 insertion、amount-desc、amount-asc、name-asc、material-asc。
+    # 玩家可在 GUI 中单独切换，偏好仅保存在在线期间，重连或重启后恢复此默认值。
+    default-sort: "insertion"
     # 紧凑模式最多显示多少页；实际可存储的物品种类由页数和 content 槽位数量共同决定。
     max-pages: 5
     # 单个逻辑物品最多累计多少个；-1 表示无限。超过上限时会尽量接受到上限，不会拆成多次循环。
@@ -55,6 +58,8 @@ global-trash:
       - "&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个"
   # 旧版堆叠显示模式配置；每个展示物按物品原本最大堆叠数显示，不使用紧凑模式 Lore。
   stacked:
+    # 堆叠模式自己的默认排序，不读取 compact.default-sort。
+    default-sort: "insertion"
     # 旧版模式最多显示多少页。
     max-pages: 5
   # 拿取冷却，单位毫秒。
@@ -76,7 +81,7 @@ global-trash:
         - "xxxxxxxxx"
         - "xxxxxxxxx"
         - "xxxxxxxxx"
-        - "abbbbbbbc"
+        - "abbsbbbbc"
       # position 中每个字符对应的槽位定义。
       items:
         # x 是默认公共垃圾桶内容槽字符。
@@ -114,6 +119,20 @@ global-trash:
           name: " "
           # 背景板默认没有 Lore。
           lore: []
+        # s 是玩家自己的排序按钮；切换只影响该玩家当前模式，不改变公共垃圾桶真实存储顺序。
+        s:
+          # sort 表示内置排序按钮；左键下一种、右键上一种，并显式打开新的排序快照。
+          type: "sort"
+          # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
+          model-id: -1
+          # 高版本优先使用 COMPARATOR，旧版本自动尝试 REDSTONE_COMPARATOR。
+          material:
+            - "COMPARATOR"
+            - "REDSTONE_COMPARATOR"
+          # 名称和 Lore 默认读取语言文件；也可取消注释自行覆盖，支持 {sort}、{next-sort}、{previous-sort}。
+          # name: "&#FFD166排序方式"
+          # lore:
+          #   - "&#C9D4E2当前：&#FFD166{sort}"
         # c 是默认下一页按钮字符。
         c:
           # next-page 表示下一页按钮。

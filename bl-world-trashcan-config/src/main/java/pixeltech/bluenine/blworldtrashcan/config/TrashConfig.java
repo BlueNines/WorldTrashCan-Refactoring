@@ -204,6 +204,50 @@ public final class TrashConfig {
         }
     }
 
+    /** 公共垃圾桶玩家视图排序方式。 */
+    public enum GlobalTrashSortType {
+        INSERTION("insertion"),
+        AMOUNT_DESC("amount-desc"),
+        AMOUNT_ASC("amount-asc"),
+        NAME_ASC("name-asc"),
+        MATERIAL_ASC("material-asc");
+
+        private final String configValue;
+
+        /** 创建带稳定配置值的排序方式。 */
+        GlobalTrashSortType(String configValue) {
+            this.configValue = configValue;
+        }
+
+        /** 返回配置和界面占位符使用的稳定名称。 */
+        public String getConfigValue() {
+            return configValue;
+        }
+
+        /** 返回循环中的下一种排序方式。 */
+        public GlobalTrashSortType next() {
+            GlobalTrashSortType[] values = values();
+            return values[(ordinal() + 1) % values.length];
+        }
+
+        /** 返回循环中的上一种排序方式。 */
+        public GlobalTrashSortType previous() {
+            GlobalTrashSortType[] values = values();
+            return values[(ordinal() + values.length - 1) % values.length];
+        }
+
+        /** 从配置文本解析排序方式，未知值回退插入顺序。 */
+        public static GlobalTrashSortType parse(String value) {
+            String normalized = value == null ? "" : value.trim();
+            for (GlobalTrashSortType type : values()) {
+                if (type.configValue.equalsIgnoreCase(normalized)) {
+                    return type;
+                }
+            }
+            return INSERTION;
+        }
+    }
+
     /** 公共垃圾桶紧凑显示模式配置。 */
     public static final class CompactGlobalTrashConfig {
         private final int maxPages;
@@ -218,6 +262,7 @@ public final class TrashConfig {
         private final String amountLore;
         private final String omittedLore;
         private final List<String> actionLore;
+        private final GlobalTrashSortType defaultSort;
 
         /** 创建紧凑模式配置。 */
         public CompactGlobalTrashConfig(int maxPages, long maxAmountPerEntry,
@@ -226,6 +271,20 @@ public final class TrashConfig {
                                         int shiftRightClickAmount, boolean showAmountLore,
                                         int maxOriginalLoreLines, String amountLore,
                                         String omittedLore, List<String> actionLore) {
+            this(maxPages, maxAmountPerEntry, leftClickAmount, shiftLeftClickAmount,
+                    rightClickEnabled, rightClickAmount, shiftRightClickAmount, showAmountLore,
+                    maxOriginalLoreLines, amountLore, omittedLore, actionLore,
+                    GlobalTrashSortType.INSERTION);
+        }
+
+        /** 创建包含独立默认排序的紧凑模式配置。 */
+        public CompactGlobalTrashConfig(int maxPages, long maxAmountPerEntry,
+                                        int leftClickAmount, int shiftLeftClickAmount,
+                                        boolean rightClickEnabled, int rightClickAmount,
+                                        int shiftRightClickAmount, boolean showAmountLore,
+                                        int maxOriginalLoreLines, String amountLore,
+                                        String omittedLore, List<String> actionLore,
+                                        GlobalTrashSortType defaultSort) {
             this.maxPages = Math.max(1, maxPages);
             this.maxAmountPerEntry = maxAmountPerEntry == -1L
                     ? -1L : Math.max(1L, maxAmountPerEntry);
@@ -241,6 +300,7 @@ public final class TrashConfig {
             this.actionLore = actionLore == null
                     ? Collections.<String>emptyList()
                     : Collections.unmodifiableList(new ArrayList<>(actionLore));
+            this.defaultSort = defaultSort == null ? GlobalTrashSortType.INSERTION : defaultSort;
         }
 
         /** 返回开箱默认紧凑模式配置。 */
@@ -312,20 +372,37 @@ public final class TrashConfig {
         public List<String> getActionLore() {
             return actionLore;
         }
+
+        /** 返回紧凑模式没有玩家缓存时使用的排序方式。 */
+        public GlobalTrashSortType getDefaultSort() {
+            return defaultSort;
+        }
     }
 
     /** 公共垃圾桶旧堆叠显示模式配置。 */
     public static final class StackedGlobalTrashConfig {
         private final int maxPages;
+        private final GlobalTrashSortType defaultSort;
 
         /** 创建旧堆叠模式配置。 */
         public StackedGlobalTrashConfig(int maxPages) {
+            this(maxPages, GlobalTrashSortType.INSERTION);
+        }
+
+        /** 创建带独立默认排序的旧堆叠模式配置。 */
+        public StackedGlobalTrashConfig(int maxPages, GlobalTrashSortType defaultSort) {
             this.maxPages = Math.max(1, maxPages);
+            this.defaultSort = defaultSort == null ? GlobalTrashSortType.INSERTION : defaultSort;
         }
 
         /** 返回旧堆叠模式最大页数。 */
         public int getMaxPages() {
             return maxPages;
+        }
+
+        /** 返回旧堆叠模式没有玩家缓存时使用的排序方式。 */
+        public GlobalTrashSortType getDefaultSort() {
+            return defaultSort;
         }
     }
 
@@ -373,6 +450,12 @@ public final class TrashConfig {
             defaults.put(Character.valueOf('c'), new GlobalTrashItemConfig(
                     'c', GlobalTrashItemType.NEXT_PAGE, nextModelId,
                     Collections.singletonList("ARROW"), null, Collections.<String>emptyList(), Character.valueOf('b')));
+            List<String> sortMaterials = new ArrayList<>();
+            sortMaterials.add("COMPARATOR");
+            sortMaterials.add("REDSTONE_COMPARATOR");
+            defaults.put(Character.valueOf('s'), new GlobalTrashItemConfig(
+                    's', GlobalTrashItemType.SORT, -1, sortMaterials,
+                    null, Collections.<String>emptyList(), null));
             return new GlobalTrashLayoutConfig(DEFAULT_ROWS, defaults, validationError);
         }
 
@@ -456,7 +539,7 @@ public final class TrashConfig {
             rows.add("xxxxxxxxx");
             rows.add("xxxxxxxxx");
             rows.add("xxxxxxxxx");
-            rows.add("abbbbbbbc");
+            rows.add("abbsbbbbc");
             return Collections.unmodifiableList(rows);
         }
     }
@@ -546,7 +629,8 @@ public final class TrashConfig {
         PREVIOUS_PAGE,
         NEXT_PAGE,
         BACKGROUND,
-        ACTIONS
+        ACTIONS,
+        SORT
     }
 
     /** 个人垃圾桶配置。 */

@@ -23,6 +23,18 @@ global-trash:
     back: "&#5AC8FA上一页"
     # 下一页按钮名称。
     next: "&#FFD166下一页"
+    # 玩家独立排序按钮文案。
+    sort:
+      name: "&#FFD166排序方式"
+      current: "&#C9D4E2当前：&#FFD166{sort}"
+      next: "&#5AC8FA左键 &#C9D4E2切换为 &#FFD166{next-sort}"
+      previous: "&#5AC8FA右键 &#C9D4E2切换为 &#FFD166{previous-sort}"
+      types:
+        insertion: "进入顺序"
+        amount-desc: "数量从多到少"
+        amount-asc: "数量从少到多"
+        name-asc: "名称 A-Z"
+        material-asc: "材质 A-Z"
 
 # 个人垃圾桶相关消息。
 personal-trash:

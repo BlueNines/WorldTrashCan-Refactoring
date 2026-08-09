@@ -79,7 +79,7 @@ public final class GlobalTrashLayoutParser {
             String path = LAYOUT_PATH + ".items." + symbol;
             TrashConfig.GlobalTrashItemType type = parseType(source.getString(path + ".type", ""));
             if (type == null) {
-                errors.add(path + ".type 无效，可用值为 content、previous-page、next-page、background、actions");
+                errors.add(path + ".type 无效，可用值为 content、previous-page、next-page、background、actions、sort");
                 continue;
             }
             List<String> materials = source.getStringList(path + ".material");
@@ -166,6 +166,9 @@ public final class GlobalTrashLayoutParser {
         if ("actions".equals(normalized)) {
             return TrashConfig.GlobalTrashItemType.ACTIONS;
         }
+        if ("sort".equals(normalized)) {
+            return TrashConfig.GlobalTrashItemType.SORT;
+        }
         return null;
     }
 
@@ -200,6 +203,12 @@ public final class GlobalTrashLayoutParser {
         }
         if (type == TrashConfig.GlobalTrashItemType.ACTIONS) {
             return Collections.singletonList("BOOK");
+        }
+        if (type == TrashConfig.GlobalTrashItemType.SORT) {
+            List<String> result = new ArrayList<>();
+            result.add("COMPARATOR");
+            result.add("REDSTONE_COMPARATOR");
+            return result;
         }
         return Collections.emptyList();
     }

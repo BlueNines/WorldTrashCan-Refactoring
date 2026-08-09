@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -166,6 +167,12 @@ public final class TrashFeature implements Feature, Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         globalTrashService.handleClose(event);
+    }
+
+    /** 玩家退出时释放公共垃圾桶的轻量排序偏好和会话引用。 */
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        globalTrashService.handleQuit(event.getPlayer().getUniqueId());
     }
 
     /** 给玩家主动丢弃的物品写入所属玩家标记。 */

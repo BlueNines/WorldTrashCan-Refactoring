@@ -36,10 +36,14 @@ public final class ConfigBundleLoader {
                 trash.getString("global-trash.compact.amount-lore", "&#38BDF8数量：&#F5B82E{amount}"),
                 trash.getString("global-trash.compact.omitted-lore",
                 "&#64748B...省略 &#AAB6C5{count} &#64748B行..."),
-                compactActionLore
+                compactActionLore,
+                TrashConfig.GlobalTrashSortType.parse(
+                        trash.getString("global-trash.compact.default-sort", "insertion"))
         );
         TrashConfig.StackedGlobalTrashConfig stackedGlobalTrash = new TrashConfig.StackedGlobalTrashConfig(
-                trash.getInt("global-trash.stacked.max-pages", legacyGlobalMaxPages));
+                trash.getInt("global-trash.stacked.max-pages", legacyGlobalMaxPages),
+                TrashConfig.GlobalTrashSortType.parse(
+                        trash.getString("global-trash.stacked.default-sort", "insertion")));
         CleanupSettings cleanupSettings = new CleanupSettings(
                 toSet(cleanup.getStringList("ignored-materials")),
                 toSet(cleanup.getStringList("ignored-name-fragments")),
