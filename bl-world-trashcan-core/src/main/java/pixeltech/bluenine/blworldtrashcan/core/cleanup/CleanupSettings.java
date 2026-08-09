@@ -1,15 +1,17 @@
 package pixeltech.bluenine.blworldtrashcan.core.cleanup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 /** 清理策略所需的核心配置快照。 */
 public final class CleanupSettings {
     private final Set<String> ignoredMaterialKeys;
-    private final Set<String> ignoredNameFragments;
-    private final Set<String> ignoredLoreFragments;
+    private final List<CompiledPattern> ignoredNamePatterns;
+    private final List<CompiledPattern> ignoredLorePatterns;
     private final boolean entityCleanupEnabled;
     private final boolean clearExperienceOrb;
     private final boolean clearMonster;
@@ -19,8 +21,8 @@ public final class CleanupSettings {
     private final boolean ignoreEntitiesInBoat;
     private final boolean ignoreEntitiesWithSaddle;
     private final boolean ignoreEntitiesWithOwner;
-    private final Set<String> entityWhitePatterns;
-    private final Set<String> entityBlackPatterns;
+    private final List<CompiledPattern> entityWhitePatterns;
+    private final List<CompiledPattern> entityBlackPatterns;
 
     /** 创建清理配置快照。 */
     public CleanupSettings(Set<String> ignoredMaterialKeys, Set<String> ignoredNameFragments,
@@ -30,8 +32,8 @@ public final class CleanupSettings {
                            boolean ignoreEntitiesWithSaddle, boolean ignoreEntitiesWithOwner,
                            Set<String> entityWhitePatterns, Set<String> entityBlackPatterns) {
         this.ignoredMaterialKeys = normalizeSet(ignoredMaterialKeys);
-        this.ignoredNameFragments = normalizeSet(ignoredNameFragments);
-        this.ignoredLoreFragments = normalizeSet(ignoredLoreFragments);
+        this.ignoredNamePatterns = compilePatterns(ignoredNameFragments, true);
+        this.ignoredLorePatterns = compilePatterns(ignoredLoreFragments, true);
         this.entityCleanupEnabled = entityCleanupEnabled;
         this.clearExperienceOrb = clearExperienceOrb;
         this.clearMonster = clearMonster;
@@ -41,8 +43,8 @@ public final class CleanupSettings {
         this.ignoreEntitiesInBoat = ignoreEntitiesInBoat;
         this.ignoreEntitiesWithSaddle = ignoreEntitiesWithSaddle;
         this.ignoreEntitiesWithOwner = ignoreEntitiesWithOwner;
-        this.entityWhitePatterns = normalizeSet(entityWhitePatterns);
-        this.entityBlackPatterns = normalizeSet(entityBlackPatterns);
+        this.entityWhitePatterns = compilePatterns(entityWhitePatterns, false);
+        this.entityBlackPatterns = compilePatterns(entityBlackPatterns, false);
     }
 
     /** 判断物品类型是否跳过清理。 */
@@ -52,7 +54,7 @@ public final class CleanupSettings {
 
     /** 判断名字片段是否命中跳过规则。 */
     public boolean matchesIgnoredName(String displayName) {
-        return matchesTextPattern(displayName, ignoredNameFragments);
+        return matchesPatterns(displayName, ignoredNamePatterns);
     }
 
     /** 判断 lore 片段是否命中跳过规则。 */
@@ -61,7 +63,7 @@ public final class CleanupSettings {
             return false;
         }
         for (String line : lore) {
-            if (matchesTextPattern(line, ignoredLoreFragments)) {
+            if (matchesPatterns(line, ignoredLorePatterns)) {
                 return true;
             }
         }
@@ -115,12 +117,12 @@ public final class CleanupSettings {
 
     /** 判断实体是否命中白名单规则。 */
     public boolean matchesEntityWhitelist(String typeKey, String entityName) {
-        return matchesPattern(typeKey, entityWhitePatterns) || matchesPattern(entityName, entityWhitePatterns);
+        return matchesPatterns(typeKey, entityWhitePatterns) || matchesPatterns(entityName, entityWhitePatterns);
     }
 
     /** 判断实体是否命中黑名单规则。 */
     public boolean matchesEntityBlacklist(String typeKey, String entityName) {
-        return matchesPattern(typeKey, entityBlackPatterns) || matchesPattern(entityName, entityBlackPatterns);
+        return matchesPatterns(typeKey, entityBlackPatterns) || matchesPatterns(entityName, entityBlackPatterns);
     }
 
     /** 复制并标准化字符串集合。 */
@@ -138,65 +140,142 @@ public final class CleanupSettings {
         return Collections.unmodifiableSet(result);
     }
 
-    /** 判断文本是否命中旧版片段规则或新的星号通配规则。 */
-    private static boolean matchesTextPattern(String text, Set<String> patterns) {
+    /** 在配置快照创建时完成规则标准化和通配片段预处理。 */
+    private static List<CompiledPattern> compilePatterns(Set<String> values, boolean plainTextMeansContains) {
+        if (values == null || values.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Set<String> normalizedValues = new HashSet<>();
+        for (String value : values) {
+            String normalized = normalize(value);
+            if (!normalized.isEmpty()) {
+                normalizedValues.add(normalized);
+            }
+        }
+        if (normalizedValues.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<CompiledPattern> result = new ArrayList<>(normalizedValues.size());
+        for (String normalized : normalizedValues) {
+            result.add(CompiledPattern.compile(normalized, plainTextMeansContains));
+        }
+        return Collections.unmodifiableList(result);
+    }
+
+    /** 判断文本是否命中任一已经预处理的规则。 */
+    private static boolean matchesPatterns(String text, List<CompiledPattern> patterns) {
         if (text == null || patterns.isEmpty()) {
             return false;
         }
         String normalized = normalize(text);
-        for (String pattern : patterns) {
-            if (pattern.indexOf('*') >= 0) {
-                if (wildcardMatch(normalized, pattern)) {
-                    return true;
-                }
-            } else if (normalized.contains(pattern)) {
+        for (CompiledPattern pattern : patterns) {
+            if (pattern.matches(normalized)) {
                 return true;
             }
         }
         return false;
-    }
-
-    /** 判断文本是否命中通配规则。 */
-    private static boolean matchesPattern(String text, Set<String> patterns) {
-        if (text == null || patterns.isEmpty()) {
-            return false;
-        }
-        String normalized = normalize(text);
-        for (String pattern : patterns) {
-            if (wildcardMatch(normalized, pattern)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** 使用星号通配规则进行匹配。 */
-    private static boolean wildcardMatch(String value, String pattern) {
-        if (pattern.indexOf('*') < 0) {
-            return value.equals(pattern);
-        }
-        int valueIndex = 0;
-        String[] parts = pattern.split("\\*", -1);
-        for (int index = 0; index < parts.length; index++) {
-            String part = parts[index];
-            if (part.isEmpty()) {
-                continue;
-            }
-            int found = value.indexOf(part, valueIndex);
-            if (found < 0) {
-                return false;
-            }
-            if (index == 0 && !pattern.startsWith("*") && found != 0) {
-                return false;
-            }
-            valueIndex = found + part.length();
-        }
-        String last = parts.length == 0 ? "" : parts[parts.length - 1];
-        return pattern.endsWith("*") || last.isEmpty() || value.endsWith(last);
     }
 
     /** 标准化比较文本。 */
     private static String normalize(String value) {
         return value == null ? "" : value.trim().toLowerCase(Locale.ROOT);
+    }
+
+    /** 配置加载时生成的轻量通配规则，匹配热路径不再拆分字符串。 */
+    private static final class CompiledPattern {
+        private static final int EXACT = 0;
+        private static final int CONTAINS = 1;
+        private static final int STARTS_WITH = 2;
+        private static final int ENDS_WITH = 3;
+        private static final int SEGMENTS = 4;
+        private static final int MATCH_ALL = 5;
+        private static final String[] NO_SEGMENTS = new String[0];
+
+        private final int mode;
+        private final String literal;
+        private final String[] segments;
+        private final boolean anchoredStart;
+        private final boolean anchoredEnd;
+
+        /** 创建一条已经预处理的匹配规则。 */
+        private CompiledPattern(int mode, String literal, String[] segments,
+                                boolean anchoredStart, boolean anchoredEnd) {
+            this.mode = mode;
+            this.literal = literal;
+            this.segments = segments;
+            this.anchoredStart = anchoredStart;
+            this.anchoredEnd = anchoredEnd;
+        }
+
+        /** 将配置文本编译为无运行时拆分开销的匹配规则。 */
+        private static CompiledPattern compile(String pattern, boolean plainTextMeansContains) {
+            if (pattern.indexOf('*') < 0) {
+                int mode = plainTextMeansContains ? CONTAINS : EXACT;
+                return new CompiledPattern(mode, pattern, NO_SEGMENTS, false, false);
+            }
+            boolean anchoredStart = !pattern.startsWith("*");
+            boolean anchoredEnd = !pattern.endsWith("*");
+            String[] segments = splitSegments(pattern);
+            if (segments.length == 0) {
+                return new CompiledPattern(MATCH_ALL, "", NO_SEGMENTS, false, false);
+            }
+            if (segments.length == 1) {
+                int mode = CONTAINS;
+                if (anchoredStart) {
+                    mode = STARTS_WITH;
+                } else if (anchoredEnd) {
+                    mode = ENDS_WITH;
+                }
+                return new CompiledPattern(mode, segments[0], NO_SEGMENTS, false, false);
+            }
+            return new CompiledPattern(SEGMENTS, "", segments, anchoredStart, anchoredEnd);
+        }
+
+        /** 只在配置快照创建时拆分多段星号通配规则。 */
+        private static String[] splitSegments(String pattern) {
+            List<String> result = new ArrayList<>();
+            int start = 0;
+            while (start <= pattern.length()) {
+                int wildcard = pattern.indexOf('*', start);
+                int end = wildcard < 0 ? pattern.length() : wildcard;
+                if (end > start) {
+                    result.add(pattern.substring(start, end));
+                }
+                if (wildcard < 0) {
+                    break;
+                }
+                start = wildcard + 1;
+            }
+            return result.toArray(new String[result.size()]);
+        }
+
+        /** 在热路径中执行无临时数组分配的文本匹配。 */
+        private boolean matches(String value) {
+            if (mode == EXACT) {
+                return value.equals(literal);
+            }
+            if (mode == CONTAINS) {
+                return value.contains(literal);
+            }
+            if (mode == STARTS_WITH) {
+                return value.startsWith(literal);
+            }
+            if (mode == ENDS_WITH) {
+                return value.endsWith(literal);
+            }
+            if (mode == MATCH_ALL) {
+                return true;
+            }
+            int valueIndex = 0;
+            for (int index = 0; index < segments.length; index++) {
+                String segment = segments[index];
+                int found = value.indexOf(segment, valueIndex);
+                if (found < 0 || (index == 0 && anchoredStart && found != 0)) {
+                    return false;
+                }
+                valueIndex = found + segment.length();
+            }
+            return !anchoredEnd || value.endsWith(segments[segments.length - 1]);
+        }
     }
 }

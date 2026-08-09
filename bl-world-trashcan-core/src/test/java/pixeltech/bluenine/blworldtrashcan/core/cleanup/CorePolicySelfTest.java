@@ -30,7 +30,7 @@ public final class CorePolicySelfTest {
                 new HashSet<>(Collections.singletonList("VILLAGER")),
                 new HashSet<>(Arrays.asList(
                         "FLAMMPFEIL*", "SADDLED_BLACKLIST", "OWNED_BLACKLIST",
-                        "PRIMED_TNT", "ARMOR_STAND"))
+                        "PRIMED_TNT", "ARMOR_STAND", "*_PET", "MOD*BOSS*"))
         );
         DefaultCleanupPolicy policy = new DefaultCleanupPolicy(settings);
         assertRoute("ignored material", policy.decideItem(
@@ -50,8 +50,9 @@ public final class CorePolicySelfTest {
                 false, false, true), TrashRoute.SKIP);
         CleanupSettings wildcardSettings = new CleanupSettings(
                 Collections.<String>emptySet(),
-                new HashSet<>(Collections.singletonList("*altar*")),
-                new HashSet<>(Collections.singletonList("*shoplocation:*")),
+                new HashSet<>(Arrays.asList("*altar*", "prefix*", "*suffix", "multi**middle***tail")),
+                new HashSet<>(Arrays.asList(
+                        "*shoplocation:*", "lore-prefix*", "*lore-suffix", "lore*middle*tail")),
                 true,
                 true,
                 true,
@@ -67,12 +68,64 @@ public final class CorePolicySelfTest {
         assertRoute("wildcard name", wildcardPolicy.decideItem(
                 new ItemSnapshot("DIRT", 1, "special ALTAR item", Collections.<String>emptyList(), null),
                 false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard name prefix", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "PREFIX protected item", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard name suffix", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "protected suffix", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard name multiple segments", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "multi value middle value tail",
+                        Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard name prefix does not match middle", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "before prefix protected", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.GLOBAL_TRASH);
+        assertRoute("wildcard name suffix does not match middle", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "protected suffix after", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.GLOBAL_TRASH);
+        assertRoute("wildcard name multiple segments keep start anchor", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "before multi value middle value tail",
+                        Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.GLOBAL_TRASH);
+        assertRoute("wildcard name multiple segments keep end anchor", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "multi value middle value tail after",
+                        Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.GLOBAL_TRASH);
         assertRoute("wildcard lore", wildcardPolicy.decideItem(
                 new ItemSnapshot("DIRT", 1, "", Arrays.asList("QuickShop shopLocation: world,1,2,3"), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard lore prefix", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "", Arrays.asList("LORE-PREFIX protected"), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard lore suffix", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "", Arrays.asList("protected lore-suffix"), null),
+                false, false, true), TrashRoute.SKIP);
+        assertRoute("wildcard lore multiple segments", wildcardPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "", Arrays.asList("lore value middle value tail"), null),
                 false, false, true), TrashRoute.SKIP);
         assertRoute("wildcard mismatch", wildcardPolicy.decideItem(
                 new ItemSnapshot("DIRT", 1, "ordinary item", Arrays.asList("ordinary lore"), null),
                 false, false, true), TrashRoute.GLOBAL_TRASH);
+        CleanupSettings matchAllSettings = new CleanupSettings(
+                Collections.<String>emptySet(),
+                new HashSet<>(Collections.singletonList("*")),
+                Collections.<String>emptySet(),
+                true,
+                true,
+                true,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                Collections.<String>emptySet(),
+                Collections.<String>emptySet());
+        DefaultCleanupPolicy matchAllPolicy = new DefaultCleanupPolicy(matchAllSettings);
+        assertRoute("wildcard match all", matchAllPolicy.decideItem(
+                new ItemSnapshot("DIRT", 1, "any item", Collections.<String>emptyList(), null),
+                false, false, true), TrashRoute.SKIP);
         assertEntity("monster remove", policy.decideEntity(
                 new EntitySnapshot("ZOMBIE", "Zombie", "", true, true, false, false)),
                 EntityCleanupAction.REMOVE);
@@ -96,6 +149,15 @@ public final class CorePolicySelfTest {
         assertEntity("blacklist remove", policy.decideEntity(
                 new EntitySnapshot("FLAMMPFEIL.SLASHBLADE_BLADESTAND", "BladeStand", "", false, false, false, false)),
                 EntityCleanupAction.REMOVE);
+        assertEntity("blacklist suffix remove", policy.decideEntity(
+                new EntitySnapshot("CUSTOM_PET", "Custom Pet", "", false, false, false, false)),
+                EntityCleanupAction.REMOVE);
+        assertEntity("blacklist multiple segments remove", policy.decideEntity(
+                new EntitySnapshot("MODDED_BOSS_ALPHA", "Modded Boss", "", false, false, false, false)),
+                EntityCleanupAction.REMOVE);
+        assertEntity("blacklist plain text remains exact", policy.decideEntity(
+                new EntitySnapshot("CUSTOM_ARMOR_STAND_EXTRA", "Custom Stand", "", false, false, false, false)),
+                EntityCleanupAction.SKIP);
         assertEntity("experience orb remove", policy.decideEntity(
                 new EntitySnapshot("EXPERIENCE_ORB", "Experience Orb", "", false, false, false, false)),
                 EntityCleanupAction.REMOVE);
