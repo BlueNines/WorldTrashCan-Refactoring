@@ -14,10 +14,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 /** 公共垃圾桶的模型优先内存存储，不使用 Bukkit Inventory 保存业务状态。 */
 public final class GlobalTrashStore {
     private final ItemIdentityProvider identityProvider;
+    private final String lifecycleId = UUID.randomUUID().toString();
     private final Map<String, StoredEntry> entries = new LinkedHashMap<>();
     private final Map<Long, StoredEntry> entriesById = new LinkedHashMap<>();
     private TrashConfig.GlobalTrashConfig config;
@@ -41,6 +43,11 @@ public final class GlobalTrashStore {
         return identityProvider.id();
     }
 
+    /** 返回启动时固定的物品身份实现，供同一插件内其它虚拟存储复用。 */
+    ItemIdentityProvider getIdentityProvider() {
+        return identityProvider;
+    }
+
     /** 判断指定物品是否可以完整放入当前正常存储容量。 */
     public synchronized boolean hasSpace(ItemStack itemStack) {
         if (config == null || itemStack == null || itemStack.getAmount() <= 0) {
@@ -62,33 +69,34 @@ public final class GlobalTrashStore {
         return key != null && capacityFor(key, itemStack) > 0L;
     }
 
-    /** 添加物品；allowPartial 为 true 时返回尽可能接受的数量。 */
-    public synchronized int add(ItemStack itemStack, boolean allowPartial) {
+    /** 添加物品；allowPartial 为 true 时返回尽可能接受的数量和实际条目追踪键。 */
+    public synchronized TrashWriteResult add(ItemStack itemStack, boolean allowPartial) {
         if (config == null || itemStack == null || itemStack.getAmount() <= 0) {
-            return 0;
+            return TrashWriteResult.rejected();
         }
         String key = identityProvider.key(itemStack);
         if (key == null) {
-            return 0;
+            return TrashWriteResult.rejected();
         }
         long requested = itemStack.getAmount();
         long capacity = capacityFor(key, itemStack);
         long accepted = allowPartial ? Math.min(requested, capacity) : requested <= capacity ? requested : 0L;
         if (accepted <= 0L) {
-            return 0;
+            return TrashWriteResult.rejected();
         }
         StoredEntry entry = entries.get(key);
         if (entry == null) {
             ItemStack sample = itemStack.clone();
             sample.setAmount(1);
-            entry = new StoredEntry(nextEntryId(), key, sample, accepted,
+            long entryId = nextEntryId();
+            entry = new StoredEntry(entryId, key, trackingKey(entryId), sample, accepted,
                     sortName(sample), sample.getType().name().toLowerCase(Locale.ROOT));
             entries.put(key, entry);
             entriesById.put(Long.valueOf(entry.entryId), entry);
         } else {
             entry.amount += accepted;
         }
-        return (int) accepted;
+        return TrashWriteResult.accepted((int) accepted, entry.trackingKey);
     }
 
     /** 按身份键移除已经成功交给玩家的数量。 */
@@ -139,7 +147,8 @@ public final class GlobalTrashStore {
         }
         int displayAmount = config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT
                 ? 1 : (int) Math.min((long) reference.maxDisplayAmount, entry.amount - reference.offset);
-        return new DisplayItem(entry.entryId, entry.key, entry.sample, entry.amount, displayAmount);
+        return new DisplayItem(entry.entryId, entry.key, entry.trackingKey,
+                entry.sample, entry.amount, displayAmount);
     }
 
     /** 读取指定页内容槽位置的插入顺序展示快照。 */
@@ -200,6 +209,11 @@ public final class GlobalTrashStore {
             result = nextEntryId++;
         }
         return result;
+    }
+
+    /** 使用本存储生命周期和稳定条目 ID 生成不包含物品 NBT 的追踪键。 */
+    private String trackingKey(long entryId) {
+        return "global:" + lifecycleId + ':' + entryId;
     }
 
     /** 创建只读取缓存字段和当前数量的稳定比较器。 */
@@ -316,16 +330,18 @@ public final class GlobalTrashStore {
     private static final class StoredEntry {
         private final long entryId;
         private final String key;
+        private final String trackingKey;
         private final ItemStack sample;
         private final String sortName;
         private final String materialName;
         private long amount;
 
         /** 创建带稳定 ID 和预计算排序字段的存储条目。 */
-        private StoredEntry(long entryId, String key, ItemStack sample, long amount,
+        private StoredEntry(long entryId, String key, String trackingKey, ItemStack sample, long amount,
                             String sortName, String materialName) {
             this.entryId = entryId;
             this.key = key;
+            this.trackingKey = trackingKey;
             this.sample = sample;
             this.amount = amount;
             this.sortName = sortName;
@@ -398,15 +414,17 @@ public final class GlobalTrashStore {
     public static final class DisplayItem {
         private final long entryId;
         private final String key;
+        private final String trackingKey;
         private final ItemStack sample;
         private final long logicalAmount;
         private final int displayAmount;
 
         /** 创建展示快照。 */
-        private DisplayItem(long entryId, String key, ItemStack sample,
+        private DisplayItem(long entryId, String key, String trackingKey, ItemStack sample,
                             long logicalAmount, int displayAmount) {
             this.entryId = entryId;
             this.key = key;
+            this.trackingKey = trackingKey;
             this.sample = sample.clone();
             this.sample.setAmount(1);
             this.logicalAmount = logicalAmount;
@@ -421,6 +439,11 @@ public final class GlobalTrashStore {
         /** 返回模型身份键。 */
         public String getKey() {
             return key;
+        }
+
+        /** 返回主存储条目的不透明审计追踪键。 */
+        public String getTrackingKey() {
+            return trackingKey;
         }
 
         /** 返回不带显示数量修改的物品样本副本。 */

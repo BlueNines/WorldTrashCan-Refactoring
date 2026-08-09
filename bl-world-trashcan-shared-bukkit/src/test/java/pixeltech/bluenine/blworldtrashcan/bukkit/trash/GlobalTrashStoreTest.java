@@ -17,10 +17,10 @@ public final class GlobalTrashStoreTest {
         GlobalTrashStore store = new GlobalTrashStore(new TestIdentityProvider());
         store.configure(config(TrashConfig.GlobalTrashMode.COMPACT, 9999L, 1), 45);
 
-        Assert.assertEquals(9980, store.add(new ItemStack(Material.STONE, 9980), true));
+        Assert.assertEquals(9980, store.add(new ItemStack(Material.STONE, 9980), true).getAcceptedAmount());
         Assert.assertFalse(store.hasSpace(new ItemStack(Material.STONE, 20)));
         Assert.assertTrue(store.hasAnySpace(new ItemStack(Material.STONE, 20)));
-        Assert.assertEquals(19, store.add(new ItemStack(Material.STONE, 20), true));
+        Assert.assertEquals(19, store.add(new ItemStack(Material.STONE, 20), true).getAcceptedAmount());
         Assert.assertEquals(9999, store.getStoredItemAmount());
         Assert.assertEquals(1, store.getStoredStackCount());
         Assert.assertEquals(9999L, store.getDisplayItem(0, 0).getLogicalAmount());
@@ -36,8 +36,8 @@ public final class GlobalTrashStoreTest {
         ItemStack first = new ItemStack(Material.STONE, 2);
         ItemStack second = new ItemStack(Material.DIRT, 2);
 
-        Assert.assertEquals(2, store.add(first, false));
-        Assert.assertEquals(2, store.add(second, false));
+        Assert.assertEquals(2, store.add(first, false).getAcceptedAmount());
+        Assert.assertEquals(2, store.add(second, false).getAcceptedAmount());
         Assert.assertEquals(4, store.getStoredItemAmount());
         Assert.assertEquals(2, store.getStoredStackCount());
     }
@@ -48,7 +48,7 @@ public final class GlobalTrashStoreTest {
         GlobalTrashStore store = new GlobalTrashStore(new TestIdentityProvider());
         store.configure(config(TrashConfig.GlobalTrashMode.STACKED, 9999L, 1), 45);
 
-        Assert.assertEquals(65, store.add(new ItemStack(Material.STONE, 65), false));
+        Assert.assertEquals(65, store.add(new ItemStack(Material.STONE, 65), false).getAcceptedAmount());
         Assert.assertEquals(2, store.getStoredStackCount());
         Assert.assertEquals(64, store.getDisplayItem(0, 0).getDisplayAmount());
         Assert.assertEquals(1, store.getDisplayItem(0, 1).getDisplayAmount());
@@ -76,19 +76,25 @@ public final class GlobalTrashStoreTest {
     public void removedEntryIdIsNeverReusedInCurrentLifecycle() {
         GlobalTrashStore store = new GlobalTrashStore(new TestIdentityProvider());
         store.configure(config(TrashConfig.GlobalTrashMode.COMPACT, 9999L, 1), 45);
-        store.add(new ItemStack(Material.STONE, 5), false);
+        TrashWriteResult firstWrite = store.add(new ItemStack(Material.STONE, 5), false);
+        String firstTrackingKey = firstWrite.getTrackingKey();
+        Assert.assertEquals(firstTrackingKey,
+                store.add(new ItemStack(Material.STONE, 2), false).getTrackingKey());
         GlobalTrashStore.ViewSnapshot oldSnapshot = store.createViewSnapshot(
                 TrashConfig.GlobalTrashSortType.INSERTION);
         GlobalTrashStore.DisplayReference oldReference = oldSnapshot.getReference(0, 0);
         long oldId = oldReference.getEntryId();
 
-        Assert.assertEquals(5, store.remove(oldId, 5));
-        store.add(new ItemStack(Material.STONE, 9), false);
+        Assert.assertEquals(7, store.remove(oldId, 7));
+        TrashWriteResult secondWrite = store.add(new ItemStack(Material.STONE, 9), false);
 
         Assert.assertNull(store.getDisplayItem(oldReference));
         GlobalTrashStore.DisplayReference newReference = store.createViewSnapshot(
                 TrashConfig.GlobalTrashSortType.INSERTION).getReference(0, 0);
         Assert.assertNotEquals(oldId, newReference.getEntryId());
+        Assert.assertNotEquals(firstTrackingKey, secondWrite.getTrackingKey());
+        Assert.assertEquals(secondWrite.getTrackingKey(),
+                store.getDisplayItem(newReference).getTrackingKey());
     }
 
     /** 返回指定排序方式下的第一个展示物材质。 */

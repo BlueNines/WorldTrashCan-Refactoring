@@ -92,23 +92,30 @@ public final class WorldTrashRouter implements TrashRouter {
             if (personalTrashService == null || ownerUuid == null) {
                 return TrashRoutingResult.failure();
             }
-            boolean added = cleanupSource
-                    ? personalTrashService.addCleanupItem(ownerUuid, itemStack)
-                    : personalTrashService.addItem(ownerUuid, itemStack);
+            if (cleanupSource) {
+                TrashWriteResult result = personalTrashService.addCleanupItem(ownerUuid, itemStack);
+                return result.isAccepted() ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
+                        ownerUuid, playerName(ownerUuid)), result.getAcceptedAmount(), result.getTrackingKey())
+                        : TrashRoutingResult.failure();
+            }
+            boolean added = personalTrashService.addItem(ownerUuid, itemStack);
             return added ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
-                    ownerUuid, playerName(ownerUuid)), itemStack.getAmount()) : TrashRoutingResult.failure();
+                    ownerUuid, playerName(ownerUuid)), itemStack.getAmount(), "")
+                    : TrashRoutingResult.failure();
         }
         if (route == TrashRoute.GLOBAL_TRASH) {
             if (globalTrashService == null) {
                 return TrashRoutingResult.failure();
             }
             if (cleanupSource) {
-                int accepted = globalTrashService.addCleanupItemAmount(itemStack);
-                return accepted > 0 ? TrashRoutingResult.success(
-                        CleanupItemDestination.globalTrash(), accepted) : TrashRoutingResult.failure();
+                TrashWriteResult result = globalTrashService.addCleanupItem(itemStack);
+                return result.isAccepted() ? TrashRoutingResult.success(
+                        CleanupItemDestination.globalTrash(), result.getAcceptedAmount(), result.getTrackingKey())
+                        : TrashRoutingResult.failure();
             }
             boolean added = globalTrashService.addItem(itemStack);
-            return added ? TrashRoutingResult.success(CleanupItemDestination.globalTrash(), itemStack.getAmount())
+            return added ? TrashRoutingResult.success(
+                    CleanupItemDestination.globalTrash(), itemStack.getAmount(), "")
                     : TrashRoutingResult.failure();
         }
         if (route != TrashRoute.WORLD_TRASH) {
@@ -122,7 +129,7 @@ public final class WorldTrashRouter implements TrashRouter {
         for (TrashLocation location : data.getLocations()) {
             Inventory inventory = getInventory(location);
             if (inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize())) {
-                return TrashRoutingResult.success(destination(location), itemStack.getAmount());
+                return TrashRoutingResult.success(destination(location), itemStack.getAmount(), "");
             }
         }
         return TrashRoutingResult.failure();

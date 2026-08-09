@@ -458,7 +458,7 @@ public final class CleanupFeature implements Feature {
             ItemStack removedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
             forgetTrackedOwner(item);
             item.remove();
-            auditSession.recordItem(removedItemStack, CleanupItemDestination.directRemove());
+            auditSession.recordItem(removedItemStack, CleanupItemDestination.directRemove(), "");
             stats.itemsRemoved += Math.max(1, snapshot.getAmount());
         }
     }
@@ -512,7 +512,7 @@ public final class CleanupFeature implements Feature {
                     return new TrashRoutingDecision(TrashRoute.SKIP, "route-accepted-zero");
                 }
                 routedItemStack.setAmount(acceptedAmount);
-                auditSession.recordItem(routedItemStack, routed.getDestination());
+                auditSession.recordItem(routedItemStack, routed.getDestination(), routed.getTrackingKey());
                 stats.addItemsRouted(acceptedAmount, decision.getRoute());
                 if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {
                     stats.addPersonalTrashItem(snapshot.getOwnerUuid(), routedItemStack);

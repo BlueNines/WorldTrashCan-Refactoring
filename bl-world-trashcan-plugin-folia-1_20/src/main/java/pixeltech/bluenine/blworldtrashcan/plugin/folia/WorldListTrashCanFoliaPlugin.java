@@ -87,7 +87,8 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
                 messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
-                paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
+                paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
+                globalTrashService.getIdentityProvider());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,

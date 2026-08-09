@@ -121,6 +121,11 @@ public final class DefaultWorldListTrashCanAuditBridge implements WorldListTrash
         }
     }
 
+    /** 返回当前是否存在可接收审计数据的活动附属插件。 */
+    public boolean hasActiveConsumer() {
+        return isActive(registration.get());
+    }
+
     /** 移除指定附属插件拥有的注册。 */
     public void removeOwner(Plugin owner, boolean callDiscard) {
         RegistrationState state = registration.get();
@@ -224,30 +229,10 @@ public final class DefaultWorldListTrashCanAuditBridge implements WorldListTrash
             this.delegate = new AtomicReference<>(delegate);
         }
 
-        /** 安全记录物品。 */
-        @Override
-        public void recordItem(org.bukkit.inventory.ItemStack itemStack) {
-            if (terminal.get() || !bridge.isActive(state)) {
-                return;
-            }
-            CleanupAuditSession value = delegate.get();
-            if (value == null) {
-                return;
-            }
-            try {
-                value.recordItem(itemStack);
-            } catch (VirtualMachineError error) {
-                throw error;
-            } catch (Throwable throwable) {
-                bridge.logFailure(state.owner, "记录审计物品失败", throwable);
-                invalidate(true);
-            }
-        }
-
-        /** 安全记录物品和精确最终去向。 */
+        /** 安全记录物品、精确最终去向和存储追踪键。 */
         @Override
         public void recordItem(org.bukkit.inventory.ItemStack itemStack,
-                               CleanupItemDestination destination) {
+                               CleanupItemDestination destination, String trackingKey) {
             if (terminal.get() || !bridge.isActive(state)) {
                 return;
             }
@@ -256,7 +241,7 @@ public final class DefaultWorldListTrashCanAuditBridge implements WorldListTrash
                 return;
             }
             try {
-                value.recordItem(itemStack, destination);
+                value.recordItem(itemStack, destination, trackingKey);
             } catch (VirtualMachineError error) {
                 throw error;
             } catch (Throwable throwable) {

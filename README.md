@@ -132,6 +132,12 @@ filled-shulker-boxes:
 
 正式长命令为 `/worldlisttrashcan`，简写为 `/wtc`。权限统一使用 `WorldListTrashCan.*`。
 
+### 可选清理审计附属
+
+`WorldListTrashCanAudit` 通过公开 API v3 接收扫地记录。主插件会为公共垃圾桶的每个运行期条目和个人垃圾桶的同源物品生成不透明追踪键，因此玩家各自的排序、翻页和展示模式不会改变实际领取追踪。世界垃圾桶与直接删除没有后续领取，只记录最终世界/坐标或删除去向。
+
+API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 Audit 时必须使用与当前主插件 API v3 对应的版本；未安装附属插件时不会计算个人垃圾桶物品身份哈希，也不会创建数据库线程。
+
 ### 使用哪个 Jar
 
 - 想在不同服务端之间无缝切换：使用 `WorldListTrashCan-universal.jar`。
@@ -142,7 +148,7 @@ filled-shulker-boxes:
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`f52e2136036491abcb1e0f9be5e4092498a98c94dbfab96ee704d5877d227d1e`
+- SHA-256：`08d735e40c98c7415e5a678b8c6b2895c8d77c2dff2ad34158ef98e340bf9a70`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 
 ## English
@@ -275,6 +281,12 @@ filled-shulker-boxes:
 
 The formal long command is `/worldlisttrashcan`, with `/wtc` as its short alias. Permissions use the `WorldListTrashCan.*` namespace.
 
+### Optional cleanup audit add-on
+
+`WorldListTrashCanAudit` consumes cleanup records through public API v3. The main plugin assigns opaque tracking keys to runtime public-trash entries and same-source personal-trash items, so per-player sorting, pagination, and display modes do not change withdrawal tracking. World trash and direct removal have no later withdrawal event and therefore record only their final location or removal destination.
+
+API v3 is a breaking update and does not retain compatibility with the unpublished legacy Audit API/JAR. Install an Audit build that targets the current API v3. When the add-on is absent, the main plugin does not calculate personal-trash identity hashes or create database threads.
+
 ### Which JAR should I use?
 
 - For seamless switching between supported server types and versions, use `WorldListTrashCan-universal.jar`.
@@ -285,5 +297,5 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `f52e2136036491abcb1e0f9be5e4092498a98c94dbfab96ee704d5877d227d1e`
+- SHA-256: `08d735e40c98c7415e5a678b8c6b2895c8d77c2dff2ad34158ef98e340bf9a70`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.

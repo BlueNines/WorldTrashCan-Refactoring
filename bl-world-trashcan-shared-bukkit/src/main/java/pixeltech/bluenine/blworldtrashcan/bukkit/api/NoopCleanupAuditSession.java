@@ -8,9 +8,10 @@ import pixeltech.worldlisttrashcan.api.audit.CleanupRunCompletion;
 public enum NoopCleanupAuditSession implements CleanupAuditSession {
     INSTANCE;
 
-    /** 忽略物品记录。 */
+    /** 忽略物品、去向和追踪键记录。 */
     @Override
-    public void recordItem(ItemStack itemStack) {
+    public void recordItem(ItemStack itemStack, pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination destination,
+                           String trackingKey) {
     }
 
     /** 忽略完成通知。 */

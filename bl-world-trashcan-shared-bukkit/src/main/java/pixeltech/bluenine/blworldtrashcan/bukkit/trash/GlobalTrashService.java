@@ -155,23 +155,14 @@ public final class GlobalTrashService {
         return addItem(itemStack, false, TrashMutationReason.NON_CLEANUP_DEPOSIT);
     }
 
-    /** 放入正式扫地物品；扫地路由只接受完整写入，避免掉落物剩余数量丢失。 */
-    public boolean addCleanupItem(ItemStack itemStack) {
-        if (InventorySlotUtil.isEmpty(itemStack)) {
-            return false;
-        }
-        return addCleanupItemAmount(itemStack) == itemStack.getAmount();
-    }
-
-    /** 放入扫地物品并返回实际接收数量；紧凑模式允许只接收到单条目上限。 */
-    public int addCleanupItemAmount(ItemStack itemStack) {
+    /** 放入扫地物品并返回实际接收数量和主存储条目追踪键。 */
+    public TrashWriteResult addCleanupItem(ItemStack itemStack) {
         ItemStack cleanItemStack = sanitize(itemStack);
         if (InventorySlotUtil.isEmpty(cleanItemStack) || config == null
                 || config.isBannedMaterial(cleanItemStack.getType().name())) {
-            return 0;
+            return TrashWriteResult.rejected();
         }
-        int accepted = store.add(cleanItemStack, config.getMode() == TrashConfig.GlobalTrashMode.COMPACT);
-        return accepted;
+        return store.add(cleanItemStack, config.getMode() == TrashConfig.GlobalTrashMode.COMPACT);
     }
 
     /** 按来源完整放入模型，并维护非审计来源的变更账本。 */
@@ -181,13 +172,14 @@ public final class GlobalTrashService {
                 || config.isBannedMaterial(cleanItemStack.getType().name())) {
             return false;
         }
-        int accepted = store.add(cleanItemStack, false);
-        if (accepted != cleanItemStack.getAmount()) {
+        TrashWriteResult result = store.add(cleanItemStack, false);
+        if (result.getAcceptedAmount() != cleanItemStack.getAmount()) {
             return false;
         }
-        if (!cleanupSource) {
+        if (!cleanupSource && hasAuditConsumer()) {
             recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
-                    cleanItemStack, accepted, reason, System.currentTimeMillis()));
+                    cleanItemStack, result.getTrackingKey(), result.getAcceptedAmount(),
+                    reason, System.currentTimeMillis()));
         }
         return true;
     }
@@ -424,6 +416,11 @@ public final class GlobalTrashService {
         return store.getStoredStackCount();
     }
 
+    /** 返回启动时固定的物品身份实现，供个人虚拟垃圾桶生成同源追踪键。 */
+    public ItemIdentityProvider getIdentityProvider() {
+        return store.getIdentityProvider();
+    }
+
     /** 玩家从模型公共垃圾桶取出指定展示条目。 */
     private void takeItem(Player player, GlobalTrashViewHolder holder,
                           int contentIndex, ClickType clickType) {
@@ -461,7 +458,7 @@ public final class GlobalTrashService {
             lastTakeMillis.put(player.getUniqueId(), System.currentTimeMillis());
             itemStack.setAmount(removed);
             logGlobalTrash(player, "-global", itemStack, removed);
-            recordTake(player, itemStack, removed);
+            recordTake(player, itemStack, display.getTrackingKey(), removed);
         }
     }
 
@@ -504,8 +501,9 @@ public final class GlobalTrashService {
             return;
         }
         ItemStack cleanItemStack = sanitize(itemStack);
-        int accepted = store.add(cleanItemStack, true);
-        if (accepted <= 0) {
+        TrashWriteResult result = store.add(cleanItemStack, true);
+        int accepted = result.getAcceptedAmount();
+        if (!result.isAccepted()) {
             return;
         }
         int remaining = itemStack.getAmount() - accepted;
@@ -518,8 +516,11 @@ public final class GlobalTrashService {
         }
         cleanItemStack.setAmount(accepted);
         logGlobalTrash(player, "+global", cleanItemStack, accepted);
-        recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
-                cleanItemStack, accepted, TrashMutationReason.MANUAL_DEPOSIT, System.currentTimeMillis()));
+        if (hasAuditConsumer()) {
+            recordMutation(TrashMutation.untrackedDeposit(CleanupItemDestination.globalTrash(),
+                    cleanItemStack, result.getTrackingKey(), accepted,
+                    TrashMutationReason.MANUAL_DEPOSIT, System.currentTimeMillis()));
+        }
     }
 
     /** 判断玩家是否拥有公共垃圾桶操作权限，并保留 OP 旁路。 */
@@ -563,16 +564,24 @@ public final class GlobalTrashService {
     }
 
     /** 记录玩家从公共垃圾桶实际取出的数量。 */
-    private void recordTake(Player player, ItemStack itemStack, int amount) {
-        recordMutation(TrashMutation.take(CleanupItemDestination.globalTrash(), itemStack, amount,
-                player.getUniqueId(), player.getName(), System.currentTimeMillis()));
+    private void recordTake(Player player, ItemStack itemStack, String trackingKey, int amount) {
+        if (!hasAuditConsumer()) {
+            return;
+        }
+        recordMutation(TrashMutation.take(CleanupItemDestination.globalTrash(), itemStack,
+                trackingKey, amount, player.getUniqueId(), player.getName(), System.currentTimeMillis()));
     }
 
     /** 在附属存在时转发变更；没有附属时保持空操作。 */
     private void recordMutation(TrashMutation mutation) {
-        if (auditBridge != null) {
+        if (hasAuditConsumer()) {
             auditBridge.recordTrashMutation(mutation);
         }
+    }
+
+    /** 返回当前是否存在活动审计消费者。 */
+    private boolean hasAuditConsumer() {
+        return auditBridge != null && auditBridge.hasActiveConsumer();
     }
 
     /** 返回当前页面应显示的按钮或不可用替代物。 */

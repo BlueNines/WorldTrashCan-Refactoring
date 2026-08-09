@@ -605,7 +605,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
             if (route == TrashRoute.REMOVE) {
                 forgetTrackedOwner(item);
                 item.remove();
-                tracker.recordItem(itemStack, CleanupItemDestination.directRemove());
+                tracker.recordItem(itemStack, CleanupItemDestination.directRemove(), "");
                 stats.addItemsRemoved(itemStack.getAmount());
                 return;
             }
@@ -621,13 +621,28 @@ public final class FoliaRegionCleanupFeature implements Feature {
             }
             TrashRoutingResult virtualResult = routeVirtual(item, itemStack, snapshot.getOwnerUuid(), route);
             if (virtualResult.isSuccess()) {
+                int acceptedAmount = Math.min(itemStack.getAmount(), virtualResult.getAcceptedAmount());
+                if (acceptedAmount <= 0) {
+                    stats.addItemsSkipped(itemStack.getAmount());
+                    return;
+                }
+                ItemStack acceptedStack = itemStack.clone();
+                acceptedStack.setAmount(acceptedAmount);
+                tracker.recordItem(acceptedStack, virtualResult.getDestination(), virtualResult.getTrackingKey());
+                stats.addItemsRouted(acceptedAmount, route);
+                if (route == TrashRoute.PERSONAL_TRASH) {
+                    stats.addPersonalTrashItem(snapshot.getOwnerUuid(), acceptedStack);
+                }
+                if (acceptedAmount < itemStack.getAmount()) {
+                    ItemStack remainingStack = itemStack.clone();
+                    remainingStack.setAmount(itemStack.getAmount() - acceptedAmount);
+                    item.setItemStack(remainingStack);
+                    plugin.getLogger().info("[FoliaCleanup] 公共垃圾桶达到紧凑模式单条目上限，保留掉落物剩余数量: accepted="
+                            + acceptedAmount + ", remaining=" + remainingStack.getAmount());
+                    return;
+                }
                 forgetTrackedOwner(item);
                 item.remove();
-                tracker.recordItem(itemStack, virtualResult.getDestination());
-                stats.addItemsRouted(itemStack.getAmount(), route);
-                if (route == TrashRoute.PERSONAL_TRASH) {
-                    stats.addPersonalTrashItem(snapshot.getOwnerUuid(), itemStack);
-                }
                 return;
             }
             state.markUnavailable(route);
@@ -766,7 +781,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                     try {
                         if (tracker.isOpen()) {
                             item.remove();
-                            tracker.recordItem(itemStack, destination);
+                            tracker.recordItem(itemStack, destination, "");
                         }
                     } finally {
                         if (finished.compareAndSet(false, true)) {
@@ -1561,17 +1576,10 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return foliaConfig.getTimeoutSeconds();
         }
 
-        /** 在线程合法的物品处理位置记录审计物品。 */
-        private void recordItem(ItemStack itemStack) {
+        /** 在线程合法的物品处理位置记录审计物品、最终去向和存储条目。 */
+        private void recordItem(ItemStack itemStack, CleanupItemDestination destination, String trackingKey) {
             if (isOpen()) {
-                auditSession.recordItem(itemStack);
-            }
-        }
-
-        /** 在线程合法的物品处理位置记录审计物品和最终去向。 */
-        private void recordItem(ItemStack itemStack, CleanupItemDestination destination) {
-            if (isOpen()) {
-                auditSession.recordItem(itemStack, destination);
+                auditSession.recordItem(itemStack, destination, trackingKey);
             }
         }
 

@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
@@ -33,6 +34,7 @@ public final class PersonalTrashService {
     private final ItemSnapshotMapper itemSnapshotMapper;
     private final ServerPlatform platform;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
+    private final AuditTrackingKeyFactory trackingKeyFactory;
     private final Map<UUID, Inventory> inventories = new HashMap<>();
     private TrashConfig.PersonalTrashConfig config;
 
@@ -59,12 +61,21 @@ public final class PersonalTrashService {
     public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
                                 BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
                                 ServerPlatform platform, DefaultWorldListTrashCanAuditBridge auditBridge) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, auditBridge, null);
+    }
+
+    /** 创建带审计分发器和主插件物品身份实现的个人垃圾桶服务。 */
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
+                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
+                                ServerPlatform platform, DefaultWorldListTrashCanAuditBridge auditBridge,
+                                ItemIdentityProvider identityProvider) {
         this.plugin = plugin;
         this.paymentService = paymentService;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
         this.platform = platform;
         this.auditBridge = auditBridge;
+        this.trackingKeyFactory = new AuditTrackingKeyFactory(identityProvider);
         this.config = config;
     }
 
@@ -91,33 +102,40 @@ public final class PersonalTrashService {
 
     /** 向个人垃圾桶放入物品。 */
     public boolean addItem(UUID ownerUuid, ItemStack itemStack) {
-        return addItem(ownerUuid, itemStack, false, TrashMutationReason.NON_CLEANUP_DEPOSIT);
+        return addItem(ownerUuid, itemStack, false,
+                TrashMutationReason.NON_CLEANUP_DEPOSIT).isAccepted();
     }
 
-    /** 放入正式扫地物品，不把它重复登记为非审计存量。 */
-    public boolean addCleanupItem(UUID ownerUuid, ItemStack itemStack) {
+    /** 放入正式扫地物品并返回实际数量和同源物品追踪键。 */
+    public TrashWriteResult addCleanupItem(UUID ownerUuid, ItemStack itemStack) {
         return addItem(ownerUuid, itemStack, true, TrashMutationReason.NON_CLEANUP_DEPOSIT);
     }
 
     /** 按来源放入物品并维护非审计数量账本。 */
-    private boolean addItem(UUID ownerUuid, ItemStack itemStack, boolean cleanupSource,
-                            TrashMutationReason reason) {
+    private TrashWriteResult addItem(UUID ownerUuid, ItemStack itemStack, boolean cleanupSource,
+                                     TrashMutationReason reason) {
         if (!isEnabled() || ownerUuid == null) {
-            return false;
+            return TrashWriteResult.rejected();
         }
         ItemStack cleanItemStack = sanitize(itemStack);
         Inventory inventory = inventory(ownerUuid, "离线玩家");
         if (!InventorySlotUtil.hasSpace(inventory, cleanItemStack, 0, inventory.getSize()) && config.isAutoClearWhenFull()) {
             inventory.clear();
-            recordMutation(TrashMutation.clear(personalDestination(ownerUuid),
-                    TrashMutationReason.PERSONAL_AUTO_CLEAR, System.currentTimeMillis()));
+            if (hasAuditConsumer()) {
+                recordMutation(TrashMutation.clear(personalDestination(ownerUuid),
+                        TrashMutationReason.PERSONAL_AUTO_CLEAR, System.currentTimeMillis()));
+            }
         }
         boolean added = InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize());
-        if (added && !cleanupSource) {
-            recordMutation(TrashMutation.untrackedDeposit(personalDestination(ownerUuid), cleanItemStack,
-                    cleanItemStack.getAmount(), reason, System.currentTimeMillis()));
+        if (!added) {
+            return TrashWriteResult.rejected();
         }
-        return added;
+        String trackingKey = hasAuditConsumer() ? trackingKeyFactory.create(cleanItemStack) : "";
+        if (!cleanupSource && !trackingKey.isEmpty()) {
+            recordMutation(TrashMutation.untrackedDeposit(personalDestination(ownerUuid), cleanItemStack,
+                    trackingKey, cleanItemStack.getAmount(), reason, System.currentTimeMillis()));
+        }
+        return TrashWriteResult.accepted(cleanItemStack.getAmount(), trackingKey);
     }
 
     /** 发送单个来源进入个人垃圾桶的提示。 */
@@ -267,7 +285,7 @@ public final class PersonalTrashService {
         if (InventorySlotUtil.isEmpty(itemStack)) {
             return;
         }
-        if (addItem(ownerUuid, itemStack, false, TrashMutationReason.MANUAL_DEPOSIT)) {
+        if (addItem(ownerUuid, itemStack, false, TrashMutationReason.MANUAL_DEPOSIT).isAccepted()) {
             clickedInventory.setItem(event.getSlot(), null);
         }
     }
@@ -301,15 +319,26 @@ public final class PersonalTrashService {
 
     /** 记录玩家从个人垃圾桶实际取出的数量。 */
     private void recordTake(Player player, UUID ownerUuid, ItemStack itemStack, int amount) {
-        recordMutation(TrashMutation.take(personalDestination(ownerUuid), itemStack, amount,
-                player.getUniqueId(), player.getName(), System.currentTimeMillis()));
+        if (!hasAuditConsumer()) {
+            return;
+        }
+        String trackingKey = trackingKeyFactory.create(itemStack);
+        if (!trackingKey.isEmpty()) {
+            recordMutation(TrashMutation.take(personalDestination(ownerUuid), itemStack,
+                    trackingKey, amount, player.getUniqueId(), player.getName(), System.currentTimeMillis()));
+        }
     }
 
     /** 在附属存在时转发变更；没有附属时保持空操作。 */
     private void recordMutation(TrashMutation mutation) {
-        if (auditBridge != null) {
+        if (hasAuditConsumer()) {
             auditBridge.recordTrashMutation(mutation);
         }
+    }
+
+    /** 返回当前是否存在活动审计消费者。 */
+    private boolean hasAuditConsumer() {
+        return auditBridge != null && auditBridge.hasActiveConsumer();
     }
 
     /** 判断是否允许给指定玩家发送个人垃圾桶提示。 */
