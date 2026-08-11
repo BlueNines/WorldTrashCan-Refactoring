@@ -10,6 +10,13 @@ public interface CleanupPolicy {
     TrashRoutingDecision decideItem(ItemSnapshot item, boolean worldTrashAvailable,
                                     boolean personalTrashAvailable, boolean globalTrashAvailable);
 
+    /** 决定物品路由；forceDirectRemove 用于绝对清理世界且仍保留 ignored-* 保护。 */
+    default TrashRoutingDecision decideItem(ItemSnapshot item, boolean worldTrashAvailable,
+                                            boolean personalTrashAvailable, boolean globalTrashAvailable,
+                                            boolean forceDirectRemove) {
+        return decideItem(item, worldTrashAvailable, personalTrashAvailable, globalTrashAvailable);
+    }
+
     /** 决定实体是否应该被清理。 */
     EntityCleanupDecision decideEntity(EntitySnapshot entity);
 }

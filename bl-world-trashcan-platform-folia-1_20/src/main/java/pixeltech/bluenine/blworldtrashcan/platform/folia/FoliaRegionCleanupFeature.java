@@ -24,8 +24,10 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupItemProtection;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashCheck;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
@@ -34,6 +36,7 @@ import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
 import pixeltech.bluenine.blworldtrashcan.config.NotifyConfig;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupPolicy;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupDecision;
@@ -68,6 +71,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private final PersonalTrashService personalTrashService;
     private final DropOwnerTracker dropOwnerTracker;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
+    private final ItemRuleEvaluator itemRuleEvaluator;
     private final AtomicBoolean cleanupRunning = new AtomicBoolean(false);
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
@@ -90,6 +94,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         this.personalTrashService = personalTrashService;
         this.dropOwnerTracker = dropOwnerTracker;
         this.auditBridge = auditBridge;
+        this.itemRuleEvaluator = new ItemRuleEvaluator(platform.itemSnapshotMapper());
     }
 
     /** 返回功能 ID。 */
@@ -247,6 +252,21 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
         if (cleanupConfig.isLegacyIgnoredWorldsIgnored()) {
             plugin.getLogger().warning("[FoliaCleanup] 已使用 world-filter，旧 ignored-worlds 节点不会生效。");
+        }
+        if (cleanupConfig.isLegacyItemProtectionConfigured()) {
+            plugin.getLogger().warning("[FoliaCleanup] 已合并旧顶层 ignored-materials/name/lore；建议迁移到 custom-data-items 下。");
+        }
+        if (cleanupConfig.getSettings().getCustomItemRouting().isEnabled()
+                && cleanupConfig.getSettings().getCustomItemRouting().getRules().requiresPdcKeys()
+                && !itemRuleEvaluator.isPdcReady()) {
+            plugin.getLogger().warning("[FoliaCleanup] custom-data-items.routing 需要 PDC，但当前运行时不可用: "
+                    + itemRuleEvaluator.getPdcFailureReason());
+        }
+        if (cleanupConfig.getSettings().getCustomItemRouting().isEnabled()
+                && cleanupConfig.getSettings().getCustomItemRouting().getRules().requiresNbtKeys()
+                && !itemRuleEvaluator.isNbtReady()) {
+            plugin.getLogger().warning("[FoliaCleanup] custom-data-items.routing 需要 Raw NBT，但当前运行时不可用: "
+                    + itemRuleEvaluator.getNbtFailureReason());
         }
     }
 
@@ -545,9 +565,11 @@ public final class FoliaRegionCleanupFeature implements Feature {
         if (itemStack == null) {
             return false;
         }
-        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
+                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), cleanupConfig);
         RouteState state = initialRouteState(item.getWorld(), snapshot, itemStack, cleanupConfig);
-        TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable, state.personalAvailable, state.globalAvailable);
+        TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable,
+                state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
         return decision.getRoute() != TrashRoute.SKIP;
     }
 
@@ -570,7 +592,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return;
         }
         ItemStack routedStack = itemStack.clone();
-        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
+                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), tracker.cleanupConfig);
         RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack, tracker.cleanupConfig);
         routeWithFallback(item, routedStack, snapshot, policy, state, stats, tracker);
     }
@@ -589,14 +612,17 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private RouteState initialRouteState(World world, ItemSnapshot snapshot, ItemStack itemStack,
                                          CleanupConfig cleanupConfig) {
         if (cleanupConfig.isDirectRemoveWorld(world.getName())) {
-            return new RouteState(false, false, false);
+            return new RouteState(false, false, false, true);
         }
         UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
         synchronized (trashRouter) {
             return new RouteState(
                     trashRouter.hasWorldTrash(world, itemStack),
                     trashRouter.hasPersonalTrash(ownerUuid, itemStack),
-                    trashRouter.hasGlobalTrash(itemStack)
+                    snapshot != null && snapshot.isGlobalTrashAvailabilityEvaluated()
+                            ? snapshot.isGlobalTrashAvailable()
+                            : trashRouter.hasGlobalTrash(itemStack),
+                    false
             );
         }
     }
@@ -604,7 +630,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** 按核心策略逐级路由或删除物品。 */
     private void routeWithFallback(Item item, ItemStack itemStack, ItemSnapshot snapshot, CleanupPolicy policy,
                                    RouteState state, CleanupFeature.CleanupStats stats, CompletionTracker tracker) {
-        TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable, state.personalAvailable, state.globalAvailable);
+        TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable,
+                state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
         while (true) {
             if (!tracker.isOpen()) {
                 return;
@@ -625,7 +652,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 List<TrashLocation> locations = worldTrashLocations(item.getWorld(), itemStack);
                 if (locations.isEmpty()) {
                     state.worldAvailable = false;
-                    decision = policy.decideItem(snapshot, state.worldAvailable, state.personalAvailable, state.globalAvailable);
+                    decision = policy.decideItem(snapshot, state.worldAvailable,
+                            state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
                     continue;
                 }
                 tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, 0);
@@ -658,7 +686,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 return;
             }
             state.markUnavailable(route);
-            decision = policy.decideItem(snapshot, state.worldAvailable, state.personalAvailable, state.globalAvailable);
+            decision = policy.decideItem(snapshot, state.worldAvailable,
+                    state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
         }
     }
 
@@ -824,6 +853,38 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return snapshot;
         }
         return snapshot.withOwnerUuid(dropOwnerTracker.findOwner(item));
+    }
+
+    /** 为物品快照补充新自定义路由和公共桶白名单拒绝结果。 */
+    private ItemSnapshot snapshotWithRoutingMetadata(Item item, ItemSnapshot snapshot,
+                                                     CleanupConfig cleanupConfig) {
+        if (snapshot == null || item == null) {
+            return snapshot;
+        }
+        if (isIgnoredSnapshot(snapshot, cleanupConfig.getSettings())) {
+            return snapshot.withRoutingMetadata(false, true, false, null);
+        }
+        ItemStack itemStack = item.getItemStack();
+        boolean directRemoveWorld = cleanupConfig.isDirectRemoveWorld(item.getWorld().getName());
+        boolean customMatched = !directRemoveWorld
+                && cleanupConfig.getSettings().getCustomItemRouting().isEnabled()
+                && itemRuleEvaluator.matches(
+                cleanupConfig.getSettings().getCustomItemRouting().getRules(), snapshot, itemStack);
+        GlobalTrashCheck globalCheck;
+        synchronized (trashRouter) {
+            globalCheck = directRemoveWorld || customMatched
+                    ? new GlobalTrashCheck(false, null)
+                    : trashRouter.checkGlobalTrash(itemStack);
+        }
+        return snapshot.withRoutingMetadata(customMatched, true, globalCheck.isAvailable(),
+                globalCheck.getRejectedCleanupAction());
+    }
+
+    /** 判断轻量快照是否已命中最高优先级的绝对保护。 */
+    private boolean isIgnoredSnapshot(ItemSnapshot snapshot, CleanupSettings settings) {
+        return settings.isIgnoredMaterial(snapshot.getMaterialKey())
+                || settings.matchesIgnoredName(snapshot.getDisplayName())
+                || settings.matchesIgnoredLore(snapshot.getLore());
     }
 
     /** 清理已完成路由或删除的掉落物 owner 记录。 */
@@ -1325,12 +1386,15 @@ public final class FoliaRegionCleanupFeature implements Feature {
         private boolean worldAvailable;
         private boolean personalAvailable;
         private boolean globalAvailable;
+        private final boolean forceDirectRemove;
 
         /** 创建路由状态。 */
-        private RouteState(boolean worldAvailable, boolean personalAvailable, boolean globalAvailable) {
+        private RouteState(boolean worldAvailable, boolean personalAvailable, boolean globalAvailable,
+                           boolean forceDirectRemove) {
             this.worldAvailable = worldAvailable;
             this.personalAvailable = personalAvailable;
             this.globalAvailable = globalAvailable;
+            this.forceDirectRemove = forceDirectRemove;
         }
 
         /** 标记指定路由不可用。 */

@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
+import pixeltech.bluenine.blworldtrashcan.core.trash.RejectedCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.storage.TrashLocation;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashData;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashStorage;
@@ -82,6 +83,28 @@ public final class WorldTrashRouter implements TrashRouter {
     @Override
     public boolean hasGlobalTrash(ItemStack itemStack) {
         return globalTrashService != null && globalTrashService.hasAnySpace(itemStack);
+    }
+
+    /** 一次完成公共桶准入与容量检查，避免重复读取 PDC/NBT。 */
+    @Override
+    public GlobalTrashCheck checkGlobalTrash(ItemStack itemStack) {
+        return globalTrashService == null
+                ? new GlobalTrashCheck(false, null)
+                : globalTrashService.checkCleanupAvailability(itemStack);
+    }
+
+    /** 判断物品是否被已启用的公共桶准入白名单拒绝。 */
+    @Override
+    public boolean isGlobalTrashRejectedByWhitelist(ItemStack itemStack) {
+        return globalTrashService != null && globalTrashService.isRejectedByAdmissionWhitelist(itemStack);
+    }
+
+    /** 返回公共桶白名单拒绝扫地物品后的动作。 */
+    @Override
+    public RejectedCleanupAction getGlobalTrashRejectedCleanupAction() {
+        return globalTrashService == null
+                ? RejectedCleanupAction.KEEP_GROUND
+                : globalTrashService.getRejectedCleanupAction();
     }
 
     /** 尝试按路由存放物品并返回实际成功目标。 */

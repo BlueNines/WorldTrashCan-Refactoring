@@ -63,25 +63,42 @@ folia:
 # 为避免刷屏，Lore 最多显示 50 行。
 # 输出内容支持点击填入聊天框；该指令需要 WorldListTrashCan.Look 权限。
 
-# 不回收也不删除的物品类型。
-# 使用当前版本平台标准化后的 Material 名称，按完整名称精确匹配，不支持 * 通配。
-ignored-materials:
-  - "DIAMOND"
+# 扫地物品识别、绝对保护和自定义路由。
+custom-data-items:
+  # 以下三个 ignored-* 列表是绝对保护；命中后物品留在地上，不执行 routing。
+  # 使用当前版本平台标准化后的 Material 名称，按完整名称精确匹配。
+  ignored-materials:
+    - "DIAMOND"
+  # 显示名支持 * 通配；不含 * 时继续按旧版“包含片段”处理。
+  ignored-name-fragments:
+    - "*shopLocation*"
+    - "*ALTAR*"
+  # Lore 按单行匹配，支持 * 通配；默认保护 QuickShop 一类位置标记。
+  ignored-lore-fragments:
+    - "*shopLocation*"
 
-# 显示名命中以下规则时跳过清理。
-# 支持 * 通配，例如 "*shopLocation*" 表示前后可以有任意文本。
-# 为兼容旧配置，不含 * 的值仍按旧版“包含片段”处理；建议新配置明确写出 *。
-# 可用于保护特殊商店、祭坛、任务物品。
-ignored-name-fragments:
-  - "*shopLocation*"
-  - "*ALTAR*"
-
-# Lore 任意一行命中以下规则时跳过清理。
-# 支持 * 通配；匹配范围是单行 Lore，不会跨越多行。
-# 为兼容旧配置，不含 * 的值仍按旧版“包含片段”处理。
-# 默认保护 QuickShop 一类带位置 Lore 的物品。
-ignored-lore-fragments:
-  - "*shopLocation*"
+  # 命中 Material、名称、Lore、PDC key 或 Raw NBT key 后改变扫地去向。
+  routing:
+    # 默认关闭；关闭时不会读取 PDC 或 Raw NBT，不增加对应热路径开销。
+    enabled: false
+    # 五类识别规则；任意一类命中即执行 routing。
+    detection:
+      # 五类规则是 OR 关系；Material 不含 * 时完整匹配。
+      material-patterns: []
+      # 名称不含 * 时按包含匹配。
+      name-key-patterns: []
+      # Lore 每行独立匹配，不跨行。
+      lore-key-patterns: []
+      # Bukkit 1.14+ PDC NamespacedKey；低版本不支持时会输出明确告警。
+      pdc-key-patterns:
+        - "*"
+      # 原始 NBT/Data Components key 路径；建议先执行 /wtc look 查看实际路径。
+      # 不建议默认写 *，否则耐久、附魔、药水等原版数据也会命中。
+      nbt-key-patterns: []
+    # personal-only：只进已确认物主的个人桶；keep-ground：留地；direct-remove：直接删除。
+    mode: "personal-only"
+    # personal-only 无法确认物主或个人桶无法接收时，可选 keep-ground、direct-remove。
+    personal-unavailable: "keep-ground"
 
 # 实体清理规则。
 entities:

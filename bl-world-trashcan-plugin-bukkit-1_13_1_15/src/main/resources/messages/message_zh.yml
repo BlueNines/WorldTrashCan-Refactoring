@@ -15,6 +15,8 @@ global-trash:
   no-take-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能从公共垃圾桶取出物品。"
   # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
   take-cooldown: "{prefix}&#C9D4E2公共垃圾桶冷却剩余 &#FFD166{time} &#C9D4E2秒。"
+  # 玩家手动物品未命中公共垃圾桶准入白名单时提示。
+  admission-rejected: "{prefix}&#FFD166拒绝放入 &#64748B| &#C9D4E2该物品未命中公共垃圾桶准入白名单。"
   # 公共垃圾桶 GUI 文案。
   gui:
     # GUI 标题，{page} 当前页，{max} 总页数。
@@ -112,6 +114,18 @@ protection:
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # look 查询 Lore 超过显示上限时的省略提示，{count} 为省略行数。
   hand-item-lore-truncated: "{prefix}&#64748B...已省略 &#FFD166{count} &#64748B行 Lore..."
+  # 当前服务端不支持读取 PDC key 时提示。
+  hand-item-pdc-unavailable: "{prefix}&#64748BPDC key &#64748B| &#C9D4E2当前版本不支持。"
+  # 当前服务端无法读取 Raw NBT key 时提示。
+  hand-item-nbt-unavailable: "{prefix}&#FFD166Raw NBT key 不可用 &#64748B| &#C9D4E2请查看后台能力告警。"
+  # look 查询手持物品 PDC key 标题。
+  hand-item-pdc-title: "{prefix}&#5AC8FA物品 PDC Keys:"
+  # look 查询手持物品 Raw NBT key 标题。
+  hand-item-nbt-title: "{prefix}&#5AC8FA物品 Raw NBT Keys:"
+  # look 查询物品数据 key 单行，{key} 为 key 或路径。
+  hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
+  # look 查询数据 key 超过显示上限时的省略提示，{count} 为省略数量。
+  hand-item-data-key-truncated: "{prefix}&#64748B...已省略 &#FFD166{count} &#64748B个 key..."
 
 # 实体限制相关消息。
 entity-limit:

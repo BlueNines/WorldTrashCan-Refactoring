@@ -1,5 +1,8 @@
 package pixeltech.bluenine.blworldtrashcan.config;
 
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.ItemMatchRules;
+import pixeltech.bluenine.blworldtrashcan.core.trash.RejectedCleanupAction;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -100,6 +103,7 @@ public final class TrashConfig {
         private final GlobalTrashMode mode;
         private final CompactGlobalTrashConfig compact;
         private final StackedGlobalTrashConfig stacked;
+        private final GlobalTrashAdmissionWhitelistConfig admissionWhitelist;
 
         /** 创建兼容旧调用方的公共垃圾桶配置，旧构造器默认使用堆叠显示模式。 */
         public GlobalTrashConfig(boolean enabled, int maxPages, int takeDelayMillis,
@@ -108,7 +112,8 @@ public final class TrashConfig {
                                  Set<String> bannedMaterials) {
             this(enabled, takeDelayMillis, clearEveryCleanups, allowPlayerPut, logEnabled, layout,
                     bannedMaterials, GlobalTrashMode.STACKED,
-                    CompactGlobalTrashConfig.defaults(), new StackedGlobalTrashConfig(maxPages));
+                    CompactGlobalTrashConfig.defaults(), new StackedGlobalTrashConfig(maxPages),
+                    GlobalTrashAdmissionWhitelistConfig.defaults());
         }
 
         /** 创建包含紧凑模式和旧堆叠模式独立配置的公共垃圾桶配置。 */
@@ -117,6 +122,17 @@ public final class TrashConfig {
                                  GlobalTrashLayoutConfig layout, Set<String> bannedMaterials,
                                  GlobalTrashMode mode, CompactGlobalTrashConfig compact,
                                  StackedGlobalTrashConfig stacked) {
+            this(enabled, takeDelayMillis, clearEveryCleanups, allowPlayerPut, logEnabled, layout,
+                    bannedMaterials, mode, compact, stacked, GlobalTrashAdmissionWhitelistConfig.defaults());
+        }
+
+        /** 创建包含公共桶准入白名单的完整配置。 */
+        public GlobalTrashConfig(boolean enabled, int takeDelayMillis, int clearEveryCleanups,
+                                 boolean allowPlayerPut, boolean logEnabled,
+                                 GlobalTrashLayoutConfig layout, Set<String> bannedMaterials,
+                                 GlobalTrashMode mode, CompactGlobalTrashConfig compact,
+                                 StackedGlobalTrashConfig stacked,
+                                 GlobalTrashAdmissionWhitelistConfig admissionWhitelist) {
             this.enabled = enabled;
             this.takeDelayMillis = Math.max(0, takeDelayMillis);
             this.clearEveryCleanups = clearEveryCleanups;
@@ -127,6 +143,9 @@ public final class TrashConfig {
             this.mode = mode == null ? GlobalTrashMode.COMPACT : mode;
             this.compact = compact == null ? CompactGlobalTrashConfig.defaults() : compact;
             this.stacked = stacked == null ? new StackedGlobalTrashConfig(5) : stacked;
+            this.admissionWhitelist = admissionWhitelist == null
+                    ? GlobalTrashAdmissionWhitelistConfig.defaults()
+                    : admissionWhitelist;
         }
 
         /** 判断公共垃圾桶是否启用。 */
@@ -187,6 +206,49 @@ public final class TrashConfig {
         /** 返回公共垃圾桶物品黑名单。 */
         public Set<String> getBannedMaterials() {
             return bannedMaterials;
+        }
+
+        /** 返回公共垃圾桶准入白名单配置。 */
+        public GlobalTrashAdmissionWhitelistConfig getAdmissionWhitelist() {
+            return admissionWhitelist;
+        }
+    }
+
+    /** 公共垃圾桶的可选准入白名单。 */
+    public static final class GlobalTrashAdmissionWhitelistConfig {
+        private final boolean enabled;
+        private final ItemMatchRules rules;
+        private final RejectedCleanupAction rejectedCleanupAction;
+
+        /** 创建公共垃圾桶准入白名单。 */
+        public GlobalTrashAdmissionWhitelistConfig(boolean enabled, ItemMatchRules rules,
+                                                   RejectedCleanupAction rejectedCleanupAction) {
+            this.enabled = enabled;
+            this.rules = rules == null ? ItemMatchRules.empty() : rules;
+            this.rejectedCleanupAction = rejectedCleanupAction == null
+                    ? RejectedCleanupAction.KEEP_GROUND
+                    : rejectedCleanupAction;
+        }
+
+        /** 返回默认关闭的白名单。 */
+        public static GlobalTrashAdmissionWhitelistConfig defaults() {
+            return new GlobalTrashAdmissionWhitelistConfig(
+                    false, ItemMatchRules.empty(), RejectedCleanupAction.KEEP_GROUND);
+        }
+
+        /** 判断公共桶准入白名单是否启用。 */
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /** 返回五类准入规则。 */
+        public ItemMatchRules getRules() {
+            return rules;
+        }
+
+        /** 返回扫地物品被拒绝且无其它去向时的动作。 */
+        public RejectedCleanupAction getRejectedCleanupAction() {
+            return rejectedCleanupAction;
         }
     }
 

@@ -31,6 +31,8 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 按世界直接删除 | 没有独立配置 | 可指定世界，垃圾不进任何垃圾桶，直接删除 |
 | 移动物品保护 | 没有 | 可选择扫地时跳过仍在移动的掉落物，默认关闭 |
 | 潜影盒物品保护 | 没有 | 可选择跳过掉落物携带的装满潜影盒物品，默认关闭 |
+| 自定义数据物品路由 | 只能依赖材质、名称和 Lore 排除 | 可按 Material、名称、Lore、PDC key、Raw NBT/Data Components key 识别，并选择只进个人桶、留地或直接删除 |
+| 公共垃圾桶准入 | 只有材质黑名单 | 可选五类规则白名单；未命中物品不会进入公共桶，扫地拒绝动作可选留地或直接删除 |
 
 上表只列服主能直接感知的业务变化，没有把内部实现细节重复算成新功能。
 
@@ -131,6 +133,53 @@ filled-shulker-boxes:
 
 “潜影盒物品”指掉落物实体携带的 `ItemStack`，不是世界中已经放置的潜影盒方块。开启后，装有物品的潜影盒掉落物会保留在地面；空潜影盒仍会正常清理。
 
+### 自定义数据物品路由
+
+PDC 只是 Bukkit 1.14+ 的一种自定义数据来源。插件还可以在支持的运行时读取 Raw NBT/Data Components 的 key 路径，因此第三方插件或混合端写入、但没有固定名称和 Lore 的物品也可以被识别。插件只读取 key 和路径，不读取或输出对应值；`/wtc look` 会显示手持物品的 Material、名称、Lore、PDC key 和 Raw NBT 路径，便于填写配置。
+
+```yaml
+# cleanup.yml
+custom-data-items:
+  # 绝对保护，优先于直删世界和下面的 routing；旧顶层写法仍会合并读取。
+  ignored-materials: []
+  ignored-name-fragments: []
+  ignored-lore-fragments: []
+  routing:
+    # 默认关闭；关闭时扫地不会读取 PDC 或 Raw NBT。
+    enabled: false
+    detection:
+      # 五类规则是 OR，任意一类命中即可。
+      material-patterns: []
+      name-key-patterns: []
+      lore-key-patterns: []
+      pdc-key-patterns:
+        - "*"
+      nbt-key-patterns: []
+    # personal-only、keep-ground、direct-remove。
+    mode: "personal-only"
+    # personal-only 无法确认物主或个人桶不可用时的动作。
+    personal-unavailable: "keep-ground"
+```
+
+名称和 Lore 未写 `*` 时继续按“包含”匹配；Material、PDC key 和 NBT key 未写 `*` 时按完整值匹配。所有规则不区分大小写，`*` 是简单通配而不是正则表达式。`direct-remove-worlds` 高于 routing，但 `custom-data-items.ignored-*` 仍是最高优先级保护。
+
+公共桶可以独立开启准入白名单，且会同时限制扫地、其它插件调用和玩家从 GUI 手动放入：
+
+```yaml
+# trash.yml
+global-trash:
+  admission-whitelist:
+    enabled: false
+    material-patterns: []
+    name-key-patterns: []
+    lore-key-patterns: []
+    pdc-key-patterns: []
+    nbt-key-patterns: []
+    rejected-cleanup-action: "keep-ground"
+```
+
+白名单开启但五类规则全部为空时会拒绝全部物品。`global-trash.banned-materials` 的拒绝优先级仍高于白名单。Raw NBT 规则属于可选的较重检查，建议先用 `/wtc look` 找到尽可能具体的 key 路径，不要无目的填写 `*`。
+
 ### 常用命令
 
 ```text
@@ -139,6 +188,7 @@ filled-shulker-boxes:
 /wtc stats                查看最近一次清理状态
 /wtc clear true           手动清理并忽略扫地门禁
 /wtc clear false          手动清理但遵守扫地门禁
+/wtc look                 查看手持物品的匹配信息，或等待右键查询实体
 ```
 
 正式长命令为 `/worldlisttrashcan`，简写为 `/wtc`。权限统一使用 `WorldListTrashCan.*`。
@@ -159,8 +209,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`e0d676cd4d2162006f8afaccd16e4ecfcabe162cff9b351172405017c6bd6da6`
+- SHA-256：`65fcebfef71f96cd9c579ff34885da7ba96a99d626d28722e39490fa37bd95b4`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
+- 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 
 ## English
 
@@ -191,6 +242,8 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Direct deletion by world | No dedicated setting | Selected worlds can delete items directly without routing them to any trash can |
 | Moving-item protection | Not available | Cleanup can skip moving dropped items; disabled by default |
 | Filled shulker-box item protection | Not available | Cleanup can skip dropped item stacks containing filled shulker boxes; disabled by default |
+| Custom-data item routing | Exclusions relied on material, name, and Lore | Material, name, Lore, PDC keys, and Raw NBT/Data Components keys can route items to personal trash only, keep them on the ground, or remove them directly |
+| Public trash admission | Material blacklist only | An optional five-source allowlist controls every public-trash entry; rejected cleanup items can remain on the ground or be removed |
 
 This table lists changes directly visible to server administrators and does not count internal implementation details as separate features.
 
@@ -291,6 +344,52 @@ filled-shulker-boxes:
 
 “Shulker-box items” means an `ItemStack` carried by a dropped-item entity, not a shulker-box block placed in the world. When enabled, dropped filled shulker boxes remain on the ground; empty shulker boxes are still cleaned normally.
 
+### Custom-data item routing
+
+PDC is only one custom-data source available on Bukkit 1.14 and newer. When the runtime supports it, WorldListTrashCan can also inspect Raw NBT/Data Components key paths, allowing it to identify third-party or hybrid-server items that have no stable display name or Lore. Only keys and paths are read and shown; values are never exposed. `/wtc look` reports the held item's Material, name, Lore, PDC keys, and Raw NBT paths for configuration.
+
+```yaml
+# cleanup.yml
+custom-data-items:
+  # Absolute protection; legacy top-level lists are still merged.
+  ignored-materials: []
+  ignored-name-fragments: []
+  ignored-lore-fragments: []
+  routing:
+    # Disabled by default; PDC and Raw NBT are not read in cleanup while disabled.
+    enabled: false
+    detection:
+      # The five sources use OR semantics.
+      material-patterns: []
+      name-key-patterns: []
+      lore-key-patterns: []
+      pdc-key-patterns:
+        - "*"
+      nbt-key-patterns: []
+    # personal-only, keep-ground, or direct-remove.
+    mode: "personal-only"
+    personal-unavailable: "keep-ground"
+```
+
+Plain name and Lore rules keep substring semantics. Plain Material, PDC-key, and NBT-key rules require an exact match. Matching is case-insensitive, and `*` is a lightweight wildcard rather than a regular expression. `direct-remove-worlds` takes priority over routing, while `custom-data-items.ignored-*` remains the highest-priority item protection.
+
+The public trash can has a separate admission allowlist that applies to cleanup, API/service deposits, and manual GUI deposits:
+
+```yaml
+# trash.yml
+global-trash:
+  admission-whitelist:
+    enabled: false
+    material-patterns: []
+    name-key-patterns: []
+    lore-key-patterns: []
+    pdc-key-patterns: []
+    nbt-key-patterns: []
+    rejected-cleanup-action: "keep-ground"
+```
+
+Enabling the allowlist with all five rule lists empty rejects every item. `global-trash.banned-materials` still has higher rejection priority. Raw NBT matching is an optional, heavier path; use `/wtc look` and configure specific key paths instead of an unrestricted `*` whenever possible.
+
 ### Common commands
 
 ```text
@@ -299,6 +398,7 @@ filled-shulker-boxes:
 /wtc stats                Show the latest cleanup status
 /wtc clear true           Run manual cleanup and ignore cleanup guards
 /wtc clear false          Run manual cleanup while respecting cleanup guards
+/wtc look                 Inspect held-item match data or wait to inspect an entity
 ```
 
 The formal long command is `/worldlisttrashcan`, with `/wtc` as its short alias. Permissions use the `WorldListTrashCan.*` namespace.
@@ -319,5 +419,6 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `e0d676cd4d2162006f8afaccd16e4ecfcabe162cff9b351172405017c6bd6da6`
+- SHA-256: `65fcebfef71f96cd9c579ff34885da7ba96a99d626d28722e39490fa37bd95b4`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
+- Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.

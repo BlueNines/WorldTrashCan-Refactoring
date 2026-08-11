@@ -28,6 +28,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ProtectionConfig;
 
@@ -43,10 +44,12 @@ import java.util.function.Supplier;
 public final class ProtectionFeature implements Feature, Listener {
     /** 防止异常 Lore 让 look 一次性刷屏。 */
     private static final int MAX_LOOK_LORE_LINES = 50;
+    private static final int MAX_LOOK_DATA_KEYS = 50;
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
     private final BukkitMessageService messages;
+    private final ItemRuleEvaluator itemRuleEvaluator;
     private final Set<UUID> dropProtectedPlayers = ConcurrentHashMap.newKeySet();
     private final Set<UUID> lookPlayers = ConcurrentHashMap.newKeySet();
     private final Set<Integer> trackedArrowIds = ConcurrentHashMap.newKeySet();
@@ -61,6 +64,7 @@ public final class ProtectionFeature implements Feature, Listener {
         this.platform = platform;
         this.configSupplier = configSupplier;
         this.messages = messages;
+        this.itemRuleEvaluator = new ItemRuleEvaluator(platform.itemSnapshotMapper());
     }
 
     /** 返回功能 ID。 */
@@ -280,29 +284,63 @@ public final class ProtectionFeature implements Feature, Listener {
             return;
         }
         ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return;
-        }
-        if (meta.hasDisplayName() && meta.getDisplayName() != null
+        if (meta != null && meta.hasDisplayName() && meta.getDisplayName() != null
                 && !meta.getDisplayName().trim().isEmpty()) {
             String displayName = meta.getDisplayName();
             sendSuggest(player, message("protection.hand-item-name", "&a物品显示名: &f{name}",
                     "{name}", displayName), displayName);
         }
-        List<String> lore = meta.getLore();
-        if (lore == null || lore.isEmpty()) {
+        List<String> lore = meta == null ? null : meta.getLore();
+        if (lore != null && !lore.isEmpty()) {
+            player.sendMessage(message("protection.hand-item-lore-title", "&a物品 Lore:"));
+            int shown = Math.min(MAX_LOOK_LORE_LINES, lore.size());
+            for (int index = 0; index < shown; index++) {
+                String line = lore.get(index) == null ? "" : lore.get(index);
+                sendSuggest(player, message("protection.hand-item-lore-line", "&7- &f{line}",
+                        "{line}", line), line);
+            }
+            if (lore.size() > shown) {
+                player.sendMessage(message("protection.hand-item-lore-truncated",
+                        "&8...已省略 {count} 行 Lore...", "{count}", String.valueOf(lore.size() - shown)));
+            }
+        }
+        sendItemDataKeys(player, itemStack);
+    }
+
+    /** 向玩家展示 PDC key 和 Raw NBT 路径，不输出任何值。 */
+    private void sendItemDataKeys(Player player, ItemStack itemStack) {
+        if (!itemRuleEvaluator.isPdcReady()) {
+            player.sendMessage(message("protection.hand-item-pdc-unavailable", "&8PDC: 当前版本不支持"));
+        } else {
+            sendDataKeyList(player, "protection.hand-item-pdc-title", "&a物品 PDC Keys:",
+                    itemRuleEvaluator.pdcKeys(itemStack));
+        }
+        if (!itemRuleEvaluator.isNbtReady()) {
+            player.sendMessage(message("protection.hand-item-nbt-unavailable", "&cRaw NBT key 读取不可用"));
+        } else {
+            sendDataKeyList(player, "protection.hand-item-nbt-title", "&a物品 Raw NBT Keys:",
+                    itemRuleEvaluator.nbtKeyPaths(itemStack));
+        }
+    }
+
+    /** 限量输出一类数据 key，并允许点击填入聊天框。 */
+    private void sendDataKeyList(Player player, String titleKey, String titleFallback, Set<String> keys) {
+        if (keys == null || keys.isEmpty()) {
             return;
         }
-        player.sendMessage(message("protection.hand-item-lore-title", "&a物品 Lore:"));
-        int shown = Math.min(MAX_LOOK_LORE_LINES, lore.size());
-        for (int index = 0; index < shown; index++) {
-            String line = lore.get(index) == null ? "" : lore.get(index);
-            sendSuggest(player, message("protection.hand-item-lore-line", "&7- &f{line}",
-                    "{line}", line), line);
+        player.sendMessage(message(titleKey, titleFallback));
+        int shown = 0;
+        for (String key : keys) {
+            if (shown >= MAX_LOOK_DATA_KEYS) {
+                break;
+            }
+            sendSuggest(player, message("protection.hand-item-data-key-line", "&7- &f{key}",
+                    "{key}", key), key);
+            shown++;
         }
-        if (lore.size() > shown) {
-            player.sendMessage(message("protection.hand-item-lore-truncated",
-                    "&8...已省略 {count} 行 Lore...", "{count}", String.valueOf(lore.size() - shown)));
+        if (keys.size() > shown) {
+            player.sendMessage(message("protection.hand-item-data-key-truncated",
+                    "&8...已省略 {count} 个 key...", "{count}", String.valueOf(keys.size() - shown)));
         }
     }
 

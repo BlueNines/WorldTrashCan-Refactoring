@@ -17,6 +17,7 @@ public final class CleanupConfig {
     private final FoliaCleanupConfig foliaCleanup;
     private final MovingItemConfig movingItems;
     private final FilledShulkerBoxConfig filledShulkerBoxes;
+    private final boolean legacyItemProtectionConfigured;
 
     /** 创建清理配置。 */
     public CleanupConfig(int intervalSeconds, Set<String> ignoredWorlds, CleanupSettings settings) {
@@ -59,7 +60,7 @@ public final class CleanupConfig {
                          FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems,
                          FilledShulkerBoxConfig filledShulkerBoxes) {
         this(intervalSeconds, CleanupWorldFilter.fromLegacy(ignoredWorlds), directRemoveWorlds, settings,
-                guardConfig, foliaCleanup, movingItems, filledShulkerBoxes);
+                guardConfig, foliaCleanup, movingItems, filledShulkerBoxes, false);
     }
 
     /** 创建包含世界过滤器和全部扫地物品保护项的清理配置。 */
@@ -67,6 +68,16 @@ public final class CleanupConfig {
                          CleanupSettings settings, CleanupGuardConfig guardConfig,
                          FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems,
                          FilledShulkerBoxConfig filledShulkerBoxes) {
+        this(intervalSeconds, worldFilter, directRemoveWorlds, settings, guardConfig, foliaCleanup,
+                movingItems, filledShulkerBoxes, false);
+    }
+
+    /** 创建包含旧物品保护节点诊断状态的完整清理配置。 */
+    public CleanupConfig(int intervalSeconds, CleanupWorldFilter worldFilter, Set<String> directRemoveWorlds,
+                         CleanupSettings settings, CleanupGuardConfig guardConfig,
+                         FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems,
+                         FilledShulkerBoxConfig filledShulkerBoxes,
+                         boolean legacyItemProtectionConfigured) {
         this.intervalSeconds = Math.max(0, intervalSeconds);
         this.worldFilter = worldFilter == null ? CleanupWorldFilter.defaults() : worldFilter;
         this.directRemoveWorlds = normalizeWorlds(directRemoveWorlds);
@@ -77,6 +88,7 @@ public final class CleanupConfig {
         this.filledShulkerBoxes = filledShulkerBoxes == null
                 ? FilledShulkerBoxConfig.defaults()
                 : filledShulkerBoxes;
+        this.legacyItemProtectionConfigured = legacyItemProtectionConfigured;
     }
 
     /** 返回清理间隔秒数，0 表示只允许手动清理。 */
@@ -127,6 +139,11 @@ public final class CleanupConfig {
     /** 返回装有物品的潜影盒保护配置。 */
     public FilledShulkerBoxConfig getFilledShulkerBoxes() {
         return filledShulkerBoxes;
+    }
+
+    /** 判断是否读取并合并了旧顶层物品保护节点。 */
+    public boolean isLegacyItemProtectionConfigured() {
+        return legacyItemProtectionConfigured;
     }
 
     /** 标准化世界名集合。 */

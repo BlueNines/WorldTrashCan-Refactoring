@@ -19,9 +19,12 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProviderSelector;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
+import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
+import pixeltech.bluenine.blworldtrashcan.core.trash.RejectedCleanupAction;
 import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
 import pixeltech.worldlisttrashcan.api.audit.TrashMutationReason;
@@ -54,6 +57,7 @@ public final class GlobalTrashService {
     private final GlobalTrashTextResolver textResolver;
     private final GlobalTrashActionExecutor actionExecutor;
     private final GlobalTrashStore store;
+    private final ItemRuleEvaluator itemRuleEvaluator;
     private final Map<UUID, Long> lastTakeMillis = new ConcurrentHashMap<>();
     private final Map<Character, Material> layoutMaterials = new HashMap<>();
     private final Map<UUID, GlobalTrashViewHolder> activeViews = new ConcurrentHashMap<>();
@@ -92,6 +96,7 @@ public final class GlobalTrashService {
         this.actionExecutor = new GlobalTrashActionExecutor(plugin, platform, textResolver);
         ItemIdentityProvider identityProvider = new ItemIdentityProviderSelector().select(plugin);
         this.store = new GlobalTrashStore(identityProvider);
+        this.itemRuleEvaluator = new ItemRuleEvaluator(itemSnapshotMapper);
         reload(config);
     }
 
@@ -117,6 +122,7 @@ public final class GlobalTrashService {
                 + ", contentSlots=" + layout.getContentSlots().size()
                 + ", writablePages=" + configuredMaxPages()
                 + ", visiblePages=" + store.getPageCount());
+        logAdmissionCapabilities();
     }
 
     /** 判断公共垃圾桶是否可用。 */
@@ -131,7 +137,8 @@ public final class GlobalTrashService {
         }
         ItemStack cleanItemStack = sanitize(itemStack);
         if (InventorySlotUtil.isEmpty(cleanItemStack)
-                || config.isBannedMaterial(cleanItemStack.getType().name())) {
+                || config.isBannedMaterial(cleanItemStack.getType().name())
+                || !isAdmissionAllowed(cleanItemStack)) {
             return false;
         }
         return store.hasSpace(cleanItemStack);
@@ -139,15 +146,23 @@ public final class GlobalTrashService {
 
     /** 判断指定物品至少有一个数量可以进入公共垃圾桶。 */
     public boolean hasAnySpace(ItemStack itemStack) {
+        return checkCleanupAvailability(itemStack).isAvailable();
+    }
+
+    /** 一次完成扫地路由所需的公共桶准入和容量检查。 */
+    public GlobalTrashCheck checkCleanupAvailability(ItemStack itemStack) {
         if (!isEnabled()) {
-            return false;
+            return new GlobalTrashCheck(false, null);
         }
         ItemStack cleanItemStack = sanitize(itemStack);
         if (InventorySlotUtil.isEmpty(cleanItemStack)
                 || config.isBannedMaterial(cleanItemStack.getType().name())) {
-            return false;
+            return new GlobalTrashCheck(false, null);
         }
-        return store.hasAnySpace(cleanItemStack);
+        if (!isAdmissionAllowed(cleanItemStack)) {
+            return new GlobalTrashCheck(false, config.getAdmissionWhitelist().getRejectedCleanupAction());
+        }
+        return new GlobalTrashCheck(store.hasAnySpace(cleanItemStack), null);
     }
 
     /** 向公共垃圾桶完整放入物品。 */
@@ -159,7 +174,8 @@ public final class GlobalTrashService {
     public TrashWriteResult addCleanupItem(ItemStack itemStack) {
         ItemStack cleanItemStack = sanitize(itemStack);
         if (InventorySlotUtil.isEmpty(cleanItemStack) || config == null
-                || config.isBannedMaterial(cleanItemStack.getType().name())) {
+                || config.isBannedMaterial(cleanItemStack.getType().name())
+                || !isAdmissionAllowed(cleanItemStack)) {
             return TrashWriteResult.rejected();
         }
         return store.add(cleanItemStack, config.getMode() == TrashConfig.GlobalTrashMode.COMPACT);
@@ -169,7 +185,8 @@ public final class GlobalTrashService {
     private boolean addItem(ItemStack itemStack, boolean cleanupSource, TrashMutationReason reason) {
         ItemStack cleanItemStack = sanitize(itemStack);
         if (InventorySlotUtil.isEmpty(cleanItemStack) || config == null
-                || config.isBannedMaterial(cleanItemStack.getType().name())) {
+                || config.isBannedMaterial(cleanItemStack.getType().name())
+                || !isAdmissionAllowed(cleanItemStack)) {
             return false;
         }
         TrashWriteResult result = store.add(cleanItemStack, false);
@@ -375,6 +392,54 @@ public final class GlobalTrashService {
         return true;
     }
 
+    /** 判断物品是否被已启用的公共桶白名单拒绝。 */
+    public boolean isRejectedByAdmissionWhitelist(ItemStack itemStack) {
+        return checkCleanupAvailability(itemStack).getRejectedCleanupAction() != null;
+    }
+
+    /** 返回公共桶白名单拒绝扫地物品后的动作。 */
+    public RejectedCleanupAction getRejectedCleanupAction() {
+        return config == null
+                ? RejectedCleanupAction.KEEP_GROUND
+                : config.getAdmissionWhitelist().getRejectedCleanupAction();
+    }
+
+    /** 判断物品是否通过公共垃圾桶准入白名单。 */
+    private boolean isAdmissionAllowed(ItemStack itemStack) {
+        if (config == null || !config.getAdmissionWhitelist().isEnabled()) {
+            return true;
+        }
+        ItemSnapshot snapshot = itemSnapshot(itemStack);
+        return itemRuleEvaluator.matches(config.getAdmissionWhitelist().getRules(), snapshot, itemStack);
+    }
+
+    /** 生成公共桶准入匹配所需的轻量物品快照。 */
+    private ItemSnapshot itemSnapshot(ItemStack itemStack) {
+        if (itemSnapshotMapper != null) {
+            return itemSnapshotMapper.toSnapshot(itemStack);
+        }
+        ItemMeta meta = itemStack == null ? null : itemStack.getItemMeta();
+        String name = meta != null && meta.hasDisplayName() ? meta.getDisplayName() : "";
+        List<String> lore = meta != null && meta.hasLore() ? meta.getLore() : Collections.<String>emptyList();
+        return new ItemSnapshot(itemStack == null ? "" : itemStack.getType().name(),
+                itemStack == null ? 0 : itemStack.getAmount(), name, lore, null);
+    }
+
+    /** 输出公共桶白名单读取能力，配置需要但运行时不可用时给出明确警告。 */
+    private void logAdmissionCapabilities() {
+        if (config == null || !config.getAdmissionWhitelist().isEnabled()) {
+            return;
+        }
+        if (config.getAdmissionWhitelist().getRules().requiresPdcKeys() && !itemRuleEvaluator.isPdcReady()) {
+            plugin.getLogger().warning("[GlobalTrash] admission-whitelist 需要 PDC，但当前运行时不可用: "
+                    + itemRuleEvaluator.getPdcFailureReason());
+        }
+        if (config.getAdmissionWhitelist().getRules().requiresNbtKeys() && !itemRuleEvaluator.isNbtReady()) {
+            plugin.getLogger().warning("[GlobalTrash] admission-whitelist 需要 Raw NBT，但当前运行时不可用: "
+                    + itemRuleEvaluator.getNbtFailureReason());
+        }
+    }
+
     /** 玩家退出时释放排序偏好、打开视图和拿取冷却。 */
     public void handleQuit(UUID playerId) {
         if (playerId == null) {
@@ -501,6 +566,11 @@ public final class GlobalTrashService {
             return;
         }
         ItemStack cleanItemStack = sanitize(itemStack);
+        if (!isAdmissionAllowed(cleanItemStack)) {
+            player.sendMessage(message("global-trash.admission-rejected",
+                    "&c该物品不在公共垃圾桶准入白名单中。"));
+            return;
+        }
         TrashWriteResult result = store.add(cleanItemStack, true);
         int accepted = result.getAcceptedAmount();
         if (!result.isAccepted()) {

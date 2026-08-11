@@ -10,8 +10,9 @@ import java.util.Set;
 /** 清理策略所需的核心配置快照。 */
 public final class CleanupSettings {
     private final Set<String> ignoredMaterialKeys;
-    private final List<CompiledPattern> ignoredNamePatterns;
-    private final List<CompiledPattern> ignoredLorePatterns;
+    private final WildcardPatternSet ignoredNamePatterns;
+    private final WildcardPatternSet ignoredLorePatterns;
+    private final CustomItemRoutingSettings customItemRouting;
     private final boolean entityCleanupEnabled;
     private final boolean clearExperienceOrb;
     private final boolean clearMonster;
@@ -31,9 +32,28 @@ public final class CleanupSettings {
                            boolean clearNamedEntity, boolean ignoreEntitiesInBoat,
                            boolean ignoreEntitiesWithSaddle, boolean ignoreEntitiesWithOwner,
                            Set<String> entityWhitePatterns, Set<String> entityBlackPatterns) {
+        this(ignoredMaterialKeys, ignoredNameFragments, ignoredLoreFragments,
+                entityCleanupEnabled, clearExperienceOrb, clearMonster, clearAnimals,
+                clearProjectile, clearNamedEntity, ignoreEntitiesInBoat,
+                ignoreEntitiesWithSaddle, ignoreEntitiesWithOwner,
+                entityWhitePatterns, entityBlackPatterns, CustomItemRoutingSettings.defaults());
+    }
+
+    /** 创建包含自定义物品路由的核心配置快照。 */
+    public CleanupSettings(Set<String> ignoredMaterialKeys, Set<String> ignoredNameFragments,
+                           Set<String> ignoredLoreFragments, boolean entityCleanupEnabled,
+                           boolean clearExperienceOrb, boolean clearMonster, boolean clearAnimals,
+                           boolean clearProjectile, boolean clearNamedEntity,
+                           boolean ignoreEntitiesInBoat, boolean ignoreEntitiesWithSaddle,
+                           boolean ignoreEntitiesWithOwner, Set<String> entityWhitePatterns,
+                           Set<String> entityBlackPatterns,
+                           CustomItemRoutingSettings customItemRouting) {
         this.ignoredMaterialKeys = normalizeSet(ignoredMaterialKeys);
-        this.ignoredNamePatterns = compilePatterns(ignoredNameFragments, true);
-        this.ignoredLorePatterns = compilePatterns(ignoredLoreFragments, true);
+        this.ignoredNamePatterns = WildcardPatternSet.compile(ignoredNameFragments, true);
+        this.ignoredLorePatterns = WildcardPatternSet.compile(ignoredLoreFragments, true);
+        this.customItemRouting = customItemRouting == null
+                ? CustomItemRoutingSettings.defaults()
+                : customItemRouting;
         this.entityCleanupEnabled = entityCleanupEnabled;
         this.clearExperienceOrb = clearExperienceOrb;
         this.clearMonster = clearMonster;
@@ -54,7 +74,7 @@ public final class CleanupSettings {
 
     /** 判断名字片段是否命中跳过规则。 */
     public boolean matchesIgnoredName(String displayName) {
-        return matchesPatterns(displayName, ignoredNamePatterns);
+        return ignoredNamePatterns.matches(displayName);
     }
 
     /** 判断 lore 片段是否命中跳过规则。 */
@@ -63,7 +83,7 @@ public final class CleanupSettings {
             return false;
         }
         for (String line : lore) {
-            if (matchesPatterns(line, ignoredLorePatterns)) {
+            if (ignoredLorePatterns.matches(line)) {
                 return true;
             }
         }
@@ -113,6 +133,11 @@ public final class CleanupSettings {
     /** 判断是否跳过拥有 Bukkit Tameable 主人的实体。 */
     public boolean isIgnoreEntitiesWithOwner() {
         return ignoreEntitiesWithOwner;
+    }
+
+    /** 返回自定义物品扫地路由设置。 */
+    public CustomItemRoutingSettings getCustomItemRouting() {
+        return customItemRouting;
     }
 
     /** 判断实体是否命中白名单规则。 */

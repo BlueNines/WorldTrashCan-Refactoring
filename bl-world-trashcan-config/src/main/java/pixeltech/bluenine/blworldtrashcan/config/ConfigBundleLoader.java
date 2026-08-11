@@ -1,6 +1,9 @@
 package pixeltech.bluenine.blworldtrashcan.config;
 
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.CustomItemRoutingSettings;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.ItemMatchRules;
+import pixeltech.bluenine.blworldtrashcan.core.trash.RejectedCleanupAction;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -44,10 +47,13 @@ public final class ConfigBundleLoader {
                 trash.getInt("global-trash.stacked.max-pages", legacyGlobalMaxPages),
                 TrashConfig.GlobalTrashSortType.parse(
                         trash.getString("global-trash.stacked.default-sort", "insertion")));
+        boolean legacyItemProtectionConfigured = cleanup.contains("ignored-materials")
+                || cleanup.contains("ignored-name-fragments")
+                || cleanup.contains("ignored-lore-fragments");
         CleanupSettings cleanupSettings = new CleanupSettings(
-                toSet(cleanup.getStringList("ignored-materials")),
-                toSet(cleanup.getStringList("ignored-name-fragments")),
-                toSet(cleanup.getStringList("ignored-lore-fragments")),
+                mergedSet(cleanup, "custom-data-items.ignored-materials", "ignored-materials"),
+                mergedSet(cleanup, "custom-data-items.ignored-name-fragments", "ignored-name-fragments"),
+                mergedSet(cleanup, "custom-data-items.ignored-lore-fragments", "ignored-lore-fragments"),
                 cleanup.getBoolean("entities.enabled", true),
                 cleanup.getBoolean("entities.clear-experience-orbs", true),
                 cleanup.getBoolean("entities.clear-monsters", true),
@@ -58,7 +64,15 @@ public final class ConfigBundleLoader {
                 cleanup.getBoolean("entities.ignore-entities-with-saddle", true),
                 cleanup.getBoolean("entities.ignore-entities-with-owner", true),
                 toSet(cleanup.getStringList("entities.whitelist")),
-                toSet(cleanup.getStringList("entities.blacklist"))
+                toSet(cleanup.getStringList("entities.blacklist")),
+                new CustomItemRoutingSettings(
+                        cleanup.getBoolean("custom-data-items.routing.enabled", false),
+                        itemMatchRules(cleanup, "custom-data-items.routing.detection"),
+                        CustomItemRoutingSettings.Mode.parse(
+                                cleanup.getString("custom-data-items.routing.mode", "personal-only")),
+                        CustomItemRoutingSettings.UnavailableAction.parse(cleanup.getString(
+                                "custom-data-items.routing.personal-unavailable", "keep-ground"))
+                )
         );
         CleanupConfig cleanupConfig = new CleanupConfig(
                 cleanup.getInt("interval-seconds", 360),
@@ -81,7 +95,8 @@ public final class ConfigBundleLoader {
                 ),
                 new CleanupConfig.FilledShulkerBoxConfig(
                         cleanup.getBoolean("filled-shulker-boxes.enabled", false)
-                )
+                ),
+                legacyItemProtectionConfigured
         );
         TrashConfig trashConfig = new TrashConfig(
                 new TrashConfig.WorldTrashConfig(
@@ -102,7 +117,14 @@ public final class ConfigBundleLoader {
                         toSet(trash.getStringList("global-trash.banned-materials")),
                         TrashConfig.GlobalTrashMode.parse(trash.getString("global-trash.mode", "compact")),
                         compactGlobalTrash,
-                        stackedGlobalTrash
+                        stackedGlobalTrash,
+                        new TrashConfig.GlobalTrashAdmissionWhitelistConfig(
+                                trash.getBoolean("global-trash.admission-whitelist.enabled", false),
+                                itemMatchRules(trash, "global-trash.admission-whitelist"),
+                                RejectedCleanupAction.parse(trash.getString(
+                                        "global-trash.admission-whitelist.rejected-cleanup-action",
+                                        "keep-ground"))
+                        )
                 ),
                 new TrashConfig.PersonalTrashConfig(
                         trash.getBoolean("personal-trash.enabled", true),
@@ -192,6 +214,24 @@ public final class ConfigBundleLoader {
     /** 把列表转成集合。 */
     private Set<String> toSet(List<String> values) {
         return values == null ? new HashSet<String>() : new HashSet<>(values);
+    }
+
+    /** 合并新旧列表节点，保护类配置优先保证旧值不丢失。 */
+    private Set<String> mergedSet(ConfigurationSource source, String currentPath, String legacyPath) {
+        Set<String> result = toSet(source.getStringList(currentPath));
+        result.addAll(toSet(source.getStringList(legacyPath)));
+        return result;
+    }
+
+    /** 从统一五类路径读取物品匹配规则。 */
+    private ItemMatchRules itemMatchRules(ConfigurationSource source, String path) {
+        return new ItemMatchRules(
+                toSet(source.getStringList(path + ".material-patterns")),
+                mergedSet(source, path + ".name-key-patterns", path + ".name-patterns"),
+                mergedSet(source, path + ".lore-key-patterns", path + ".lore-patterns"),
+                toSet(source.getStringList(path + ".pdc-key-patterns")),
+                toSet(source.getStringList(path + ".nbt-key-patterns"))
+        );
     }
 
     /** 解析世界实体限制列表。 */

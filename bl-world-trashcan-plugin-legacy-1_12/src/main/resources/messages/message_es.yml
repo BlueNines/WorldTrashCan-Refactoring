@@ -15,6 +15,8 @@ global-trash:
   no-take-permission: "{prefix}&#FFD166No tienes permiso para sacar objetos de la papelera global."
   # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
   take-cooldown: "{prefix}&#FFD166Debes esperar {time} segundos antes de sacar otro objeto."
+  # Se muestra cuando un objeto depositado manualmente no coincide con la lista de admisión.
+  admission-rejected: "{prefix}&#FFD166Depósito rechazado &#64748B| &#C9D4E2Este objeto no coincide con la lista de admisión del basurero global."
   # 公共垃圾桶 GUI 文案。
   gui:
     # GUI 标题，{page} 当前页，{max} 总页数。
@@ -112,6 +114,18 @@ protection:
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # aviso de truncamiento del lore, {count} es el número de líneas omitidas.
   hand-item-lore-truncated: "{prefix}&#64748B...se omitieron &#FFD166{count} &#64748Blíneas de lore..."
+  # Se muestra cuando el servidor actual no admite la lectura de claves PDC.
+  hand-item-pdc-unavailable: "{prefix}&#64748BClaves PDC &#64748B| &#C9D4E2No compatibles con esta versión."
+  # Se muestra cuando no se pueden leer las claves Raw NBT.
+  hand-item-nbt-unavailable: "{prefix}&#FFD166Claves Raw NBT no disponibles &#64748B| &#C9D4E2Revisa la advertencia de capacidades del servidor."
+  # Encabezado de claves PDC mostrado por /wtc look.
+  hand-item-pdc-title: "{prefix}&#5AC8FAClaves PDC del objeto:"
+  # Encabezado de rutas Raw NBT mostrado por /wtc look.
+  hand-item-nbt-title: "{prefix}&#5AC8FAClaves Raw NBT del objeto:"
+  # Una clave o ruta de datos; {key} contiene el texto.
+  hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
+  # Se muestra cuando se supera el límite; {count} es la cantidad omitida.
+  hand-item-data-key-truncated: "{prefix}&#64748B...se omitieron &#FFD166{count} &#64748Bclaves..."
 
 # Mensajes de limite de entidades.
 entity-limit:

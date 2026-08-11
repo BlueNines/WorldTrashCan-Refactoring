@@ -15,8 +15,10 @@ import org.bukkit.util.Vector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashCheck;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRouter;
@@ -25,6 +27,7 @@ import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.CleanupConfig;
 import pixeltech.bluenine.blworldtrashcan.config.NotifyConfig;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupPolicy;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupDecision;
@@ -63,6 +66,7 @@ public final class CleanupFeature implements Feature {
     private final PersonalTrashService personalTrashService;
     private final DropOwnerTracker dropOwnerTracker;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
+    private final ItemRuleEvaluator itemRuleEvaluator;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
     private BossBar bossBar;
@@ -84,6 +88,7 @@ public final class CleanupFeature implements Feature {
         this.personalTrashService = personalTrashService;
         this.dropOwnerTracker = dropOwnerTracker;
         this.auditBridge = auditBridge;
+        this.itemRuleEvaluator = new ItemRuleEvaluator(platform.itemSnapshotMapper());
     }
 
     /** 返回功能 ID。 */
@@ -254,13 +259,28 @@ public final class CleanupFeature implements Feature {
         plugin.getLogger().info("[Cleanup] 定时清理已启动，间隔 " + interval + " 秒。");
     }
 
-    /** 输出会导致世界过滤语义不直观的配置告警。 */
+    /** 输出世界过滤、旧物品保护路径和数据读取能力告警。 */
     private void logWorldFilterWarnings(CleanupConfig cleanupConfig) {
         if (!cleanupConfig.hasWorldIncludeRules()) {
             plugin.getLogger().warning("[Cleanup] world-filter.include 没有有效规则，扫地不会扫描任何世界。");
         }
         if (cleanupConfig.isLegacyIgnoredWorldsIgnored()) {
             plugin.getLogger().warning("[Cleanup] 已使用 world-filter，旧 ignored-worlds 节点不会生效。");
+        }
+        if (cleanupConfig.isLegacyItemProtectionConfigured()) {
+            plugin.getLogger().warning("[Cleanup] 已合并旧顶层 ignored-materials/name/lore；建议迁移到 custom-data-items 下。");
+        }
+        if (cleanupConfig.getSettings().getCustomItemRouting().isEnabled()
+                && cleanupConfig.getSettings().getCustomItemRouting().getRules().requiresPdcKeys()
+                && !itemRuleEvaluator.isPdcReady()) {
+            plugin.getLogger().warning("[Cleanup] custom-data-items.routing 需要 PDC，但当前运行时不可用: "
+                    + itemRuleEvaluator.getPdcFailureReason());
+        }
+        if (cleanupConfig.getSettings().getCustomItemRouting().isEnabled()
+                && cleanupConfig.getSettings().getCustomItemRouting().getRules().requiresNbtKeys()
+                && !itemRuleEvaluator.isNbtReady()) {
+            plugin.getLogger().warning("[Cleanup] custom-data-items.routing 需要 Raw NBT，但当前运行时不可用: "
+                    + itemRuleEvaluator.getNbtFailureReason());
         }
     }
 
@@ -422,7 +442,8 @@ public final class CleanupFeature implements Feature {
         if (CleanupItemProtection.isFilledShulkerItem(item.getItemStack(), cleanupConfig)) {
             return false;
         }
-        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
+                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), cleanupConfig);
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
             return false;
@@ -454,7 +475,8 @@ public final class CleanupFeature implements Feature {
             stats.itemsSkipped++;
             return;
         }
-        ItemSnapshot snapshot = snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item));
+        ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
+                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), cleanupConfig);
         if (snapshot == null) {
             stats.itemsSkipped++;
             return;
@@ -489,16 +511,14 @@ public final class CleanupFeature implements Feature {
     private TrashRoutingDecision decideItemRoute(Item item, ItemSnapshot snapshot, ItemStack itemStack,
                                                  CleanupConfig cleanupConfig, CleanupPolicy policy) {
         if (cleanupConfig.isDirectRemoveWorld(item.getWorld().getName())) {
-            TrashRoutingDecision decision = policy.decideItem(snapshot, false, false, false);
-            if (decision.getRoute() == TrashRoute.REMOVE) {
-                return new TrashRoutingDecision(TrashRoute.REMOVE, "direct-remove-world");
-            }
-            return decision;
+            return policy.decideItem(snapshot, false, false, false, true);
         }
         boolean worldTrash = trashRouter.hasWorldTrash(item.getWorld(), itemStack);
         UUID ownerUuid = snapshot == null ? null : snapshot.getOwnerUuid();
         boolean personalTrash = trashRouter.hasPersonalTrash(ownerUuid, itemStack);
-        boolean globalTrash = trashRouter.hasGlobalTrash(itemStack);
+        boolean globalTrash = snapshot != null && snapshot.isGlobalTrashAvailabilityEvaluated()
+                ? snapshot.isGlobalTrashAvailable()
+                : trashRouter.hasGlobalTrash(itemStack);
         return policy.decideItem(snapshot, worldTrash, personalTrash, globalTrash);
     }
 
@@ -512,7 +532,9 @@ public final class CleanupFeature implements Feature {
         }
         boolean worldAvailable = trashRouter.hasWorldTrash(item.getWorld(), item.getItemStack());
         boolean personalAvailable = trashRouter.hasPersonalTrash(snapshot.getOwnerUuid(), item.getItemStack());
-        boolean globalAvailable = trashRouter.hasGlobalTrash(item.getItemStack());
+        boolean globalAvailable = snapshot.isGlobalTrashAvailabilityEvaluated()
+                ? snapshot.isGlobalTrashAvailable()
+                : trashRouter.hasGlobalTrash(item.getItemStack());
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
             ItemStack routedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
             TrashRoutingResult routed = trashRouter.routeDetailed(item.getWorld(), snapshot.getOwnerUuid(),
@@ -573,6 +595,35 @@ public final class CleanupFeature implements Feature {
             return snapshot;
         }
         return snapshot.withOwnerUuid(dropOwnerTracker.findOwner(item));
+    }
+
+    /** 为物品快照补充新自定义路由和公共桶白名单拒绝结果。 */
+    private ItemSnapshot snapshotWithRoutingMetadata(Item item, ItemSnapshot snapshot,
+                                                     CleanupConfig cleanupConfig) {
+        if (snapshot == null || item == null) {
+            return snapshot;
+        }
+        if (isIgnoredSnapshot(snapshot, cleanupConfig.getSettings())) {
+            return snapshot.withRoutingMetadata(false, true, false, null);
+        }
+        ItemStack itemStack = item.getItemStack();
+        boolean directRemoveWorld = cleanupConfig.isDirectRemoveWorld(item.getWorld().getName());
+        boolean customMatched = !directRemoveWorld
+                && cleanupConfig.getSettings().getCustomItemRouting().isEnabled()
+                && itemRuleEvaluator.matches(
+                cleanupConfig.getSettings().getCustomItemRouting().getRules(), snapshot, itemStack);
+        GlobalTrashCheck globalCheck = directRemoveWorld || customMatched
+                ? new GlobalTrashCheck(false, null)
+                : trashRouter.checkGlobalTrash(itemStack);
+        return snapshot.withRoutingMetadata(customMatched, true, globalCheck.isAvailable(),
+                globalCheck.getRejectedCleanupAction());
+    }
+
+    /** 判断轻量快照是否已命中最高优先级的绝对保护。 */
+    private boolean isIgnoredSnapshot(ItemSnapshot snapshot, CleanupSettings settings) {
+        return settings.isIgnoredMaterial(snapshot.getMaterialKey())
+                || settings.matchesIgnoredName(snapshot.getDisplayName())
+                || settings.matchesIgnoredLore(snapshot.getLore());
     }
 
     /** 清理已完成路由或删除的掉落物 owner 记录。 */

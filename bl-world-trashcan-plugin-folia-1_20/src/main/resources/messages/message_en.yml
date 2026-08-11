@@ -15,6 +15,8 @@ global-trash:
   no-take-permission: "{prefix}&#FFD166You do not have permission to take items from global trash."
   # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
   take-cooldown: "{prefix}&#FFD166You must wait {time} seconds before taking another item."
+  # Shown when a manually deposited item does not match the global trash admission whitelist.
+  admission-rejected: "{prefix}&#FFD166Deposit rejected &#64748B| &#C9D4E2This item does not match the global trash admission whitelist."
   # 公共垃圾桶 GUI 文案。
   gui:
     # GUI 标题，{page} 当前页，{max} 总页数。
@@ -112,6 +114,18 @@ protection:
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # look lore truncation notice, {count} is the omitted line count.
   hand-item-lore-truncated: "{prefix}&#64748B...omitted &#FFD166{count} &#64748Blore lines..."
+  # Shown when the current server does not support reading PDC keys.
+  hand-item-pdc-unavailable: "{prefix}&#64748BPDC keys &#64748B| &#C9D4E2Not supported by this version."
+  # Shown when Raw NBT keys cannot be read on the current server.
+  hand-item-nbt-unavailable: "{prefix}&#FFD166Raw NBT keys unavailable &#64748B| &#C9D4E2Check the server capability warning."
+  # Header for PDC keys reported by /wtc look.
+  hand-item-pdc-title: "{prefix}&#5AC8FAItem PDC Keys:"
+  # Header for Raw NBT key paths reported by /wtc look.
+  hand-item-nbt-title: "{prefix}&#5AC8FAItem Raw NBT Keys:"
+  # One data key line; {key} is a key or path.
+  hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
+  # Shown when data key output exceeds the limit; {count} is the omitted count.
+  hand-item-data-key-truncated: "{prefix}&#64748B...omitted &#FFD166{count} &#64748Bkeys..."
 
 # Entity limit messages.
 entity-limit:

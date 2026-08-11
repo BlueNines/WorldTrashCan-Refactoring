@@ -172,7 +172,24 @@ global-trash:
         #   actions:
         #     - "[message] &#5AC8FA当前位于公共垃圾桶第 &#FFD166{page}/{max-page} &#5AC8FA页"
         #     - "[command] wtc stats"
-  # 不允许进入公共垃圾桶的物品类型。
+  # 公共垃圾桶准入白名单；关闭时保持旧版“除黑名单外都可进入”的行为。
+  admission-whitelist:
+    # 默认关闭；开启后以下五类规则任意命中才允许进入公共垃圾桶。
+    enabled: false
+    # Material 不含 * 时完整匹配，支持例如 "*_LOG"。
+    material-patterns: []
+    # 名称不含 * 时按包含匹配。
+    name-key-patterns: []
+    # Lore 每行独立匹配，不跨行。
+    lore-key-patterns: []
+    # Bukkit 1.14+ 的 PDC 命名键；低版本不支持时会输出明确告警。
+    pdc-key-patterns: []
+    # 原始 NBT/Data Components key 路径；建议先执行 /wtc look。
+    nbt-key-patterns: []
+    # 扫地物品被白名单拒绝且没有世界桶或个人桶去向时，可选 keep-ground、direct-remove。
+    rejected-cleanup-action: "keep-ground"
+
+  # 不允许进入公共垃圾桶的物品类型；黑名单优先于上面的白名单。
   # 使用当前版本标准化后的 Material 名称，按完整名称精确匹配，不支持 * 通配。
   # 不确定名称时请执行 /wtc look；该指令需要 WorldListTrashCan.Look 权限。
   banned-materials:
