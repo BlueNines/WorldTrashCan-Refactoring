@@ -24,6 +24,7 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 个人垃圾桶提示 | 单个或批量提示不完整 | 单个物品单独提示，扫地批量汇总提示，默认显示前 3 类 |
 | 扫地启动条件 | 到时间就执行 | 可按在线人数和实体数量跳过低压力清理 |
 | 手动扫地 | 只有固定执行方式 | `/wtc clear true/false` 可选择是否忽略扫地门禁 |
+| 扫地世界过滤 | 只能逐个填写不清理的世界 | `include/exclude` 支持 `*` 通配；默认允许全部世界并保护名称包含 dungeon 的世界 |
 | 清理状态 | 主要依赖倒计时变量 | `/wtc stats` 直接查看回收、删除、实体、库存和剩余时间 |
 | 控制台明细 | 主要显示总数 | 显示前 10 类实体名称、类型、实际数量和其他数量 |
 | 实体保护 | 保护项有限 | 支持鞍保护和 Bukkit `Tameable` 主人保护，并排除误判的 shooter/source/掉落者 |
@@ -98,10 +99,18 @@ global-trash:
 
 ### 推荐配置
 
-重构版的新增保护默认不会改变旧用户行为：
+`cleanup.yml` 的普通扫地世界过滤与 `entity-limits.yml` 的实体限制过滤互相独立：
 
 ```yaml
 # cleanup.yml
+world-filter:
+  # 默认允许全部 Bukkit 世界名；支持 * 通配且不区分大小写。
+  include:
+    - "*"
+  # exclude 优先于 include；默认保护名称中包含 dungeon 的世界。
+  exclude:
+    - "*dungeon*"
+
 guards:
   # 在线玩家少于该值时跳过自动扫地。
   min-online-players: 1
@@ -117,6 +126,8 @@ moving-items:
 filled-shulker-boxes:
   enabled: false
 ```
+
+`world-filter` 同时作用于定时扫地和 `/wtc clear true/false`；`clear true` 只忽略 guards，不会绕过世界过滤。它不影响仙人掌、岩浆、虚空等独立回收，也不读取 `entity-limits.yml` 的 `world-limits.ignored-worlds` 或 `gather-limits.ignored-worlds`。
 
 “潜影盒物品”指掉落物实体携带的 `ItemStack`，不是世界中已经放置的潜影盒方块。开启后，装有物品的潜影盒掉落物会保留在地面；空潜影盒仍会正常清理。
 
@@ -148,7 +159,7 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`08d735e40c98c7415e5a678b8c6b2895c8d77c2dff2ad34158ef98e340bf9a70`
+- SHA-256：`e0d676cd4d2162006f8afaccd16e4ecfcabe162cff9b351172405017c6bd6da6`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 
 ## English
@@ -173,6 +184,7 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Personal trash-can notifications | Incomplete single-item and batch messages | Individual notifications for single items and grouped notifications for cleanup batches, showing up to 3 types by default |
 | Cleanup guards | Cleanup ran when its timer elapsed | Automatic cleanup can be skipped when online-player or entity-count thresholds are not met |
 | Manual cleanup | One fixed execution mode | `/wtc clear true/false` chooses whether cleanup guards are ignored |
+| Cleanup world filter | Only per-world exclusions | `include/exclude` supports `*` wildcards; all worlds are included by default while names containing dungeon are protected |
 | Cleanup status | Mainly exposed through countdown variables | `/wtc stats` shows the latest recovery, deletion, entity, inventory, and remaining-time status |
 | Console details | Mostly showed totals | Shows the top 10 entity categories with display name, type, actual count, and remainder count |
 | Entity protection | Limited protection rules | Protects saddled entities and Bukkit `Tameable` owners while avoiding shooter/source/drop-owner false positives |
@@ -246,10 +258,18 @@ These percentages describe estimated reduction for the specified scenario, not a
 
 ### Recommended configuration
 
-The new protections are disabled by default and do not change legacy behavior until enabled:
+The ordinary cleanup world filter in `cleanup.yml` remains independent from entity-limit filters in `entity-limits.yml`:
 
 ```yaml
 # cleanup.yml
+world-filter:
+  # Allow every Bukkit world name by default. Matching is case-insensitive and supports *.
+  include:
+    - "*"
+  # exclude wins over include; worlds whose names contain dungeon are protected by default.
+  exclude:
+    - "*dungeon*"
+
 guards:
   # Skip automatic cleanup when online players are below this value.
   min-online-players: 1
@@ -266,6 +286,8 @@ moving-items:
 filled-shulker-boxes:
   enabled: false
 ```
+
+`world-filter` applies to scheduled cleanup and `/wtc clear true/false`; `clear true` only bypasses guards and never bypasses the world filter. It does not affect cactus, lava, void, or other independent recovery listeners, and it does not read `world-limits.ignored-worlds` or `gather-limits.ignored-worlds` from `entity-limits.yml`.
 
 “Shulker-box items” means an `ItemStack` carried by a dropped-item entity, not a shulker-box block placed in the world. When enabled, dropped filled shulker boxes remain on the ground; empty shulker boxes are still cleaned normally.
 
@@ -297,5 +319,5 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `08d735e40c98c7415e5a678b8c6b2895c8d77c2dff2ad34158ef98e340bf9a70`
+- SHA-256: `e0d676cd4d2162006f8afaccd16e4ecfcabe162cff9b351172405017c6bd6da6`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.

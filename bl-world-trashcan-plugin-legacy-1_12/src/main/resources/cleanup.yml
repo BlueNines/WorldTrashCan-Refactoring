@@ -2,10 +2,16 @@
 # 默认 360 秒；设为 0 时只允许管理员手动触发清理。
 interval-seconds: 360
 
-# 跳过清理的世界名。
-# 默认示例为 testWorld；留空请写 []。
-ignored-worlds:
-  - "testWorld"
+# 扫地世界过滤器；只影响定时扫地和 /wtc clear，不影响仙人掌、岩浆、虚空回收或 entity-limits.yml。
+world-filter:
+  # 允许参与扫地的 Bukkit 世界名；匹配不区分大小写，支持 * 通配。
+  # 默认 ["*"] 表示允许所有世界；配置为 [] 表示不清理任何世界，并会让本轮扫地没有目标世界。
+  include:
+    - "*"
+  # 强制跳过的世界名；exclude 优先于 include，命中后不会扫描该世界的物品或实体。
+  # 默认跳过名称中包含 dungeon 的世界；配置为 [] 可取消默认 dungeon 保护。
+  exclude:
+    - "*dungeon*"
 
 # 强制直接删除扫地物品的世界名列表。
 # 命中后，物品仍会先经过 ignored-materials、名字和 lore 保护；确认需要清理后不会进入世界、个人或公共垃圾桶，而是直接删除。

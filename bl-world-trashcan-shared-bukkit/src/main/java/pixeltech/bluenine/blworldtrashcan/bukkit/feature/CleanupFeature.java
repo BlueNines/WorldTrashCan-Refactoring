@@ -229,7 +229,9 @@ public final class CleanupFeature implements Feature {
 
     /** 按配置启动定时任务。 */
     private void startTask() {
-        int interval = configSupplier.get().getCleanupConfig().getIntervalSeconds();
+        CleanupConfig cleanupConfig = configSupplier.get().getCleanupConfig();
+        logWorldFilterWarnings(cleanupConfig);
+        int interval = cleanupConfig.getIntervalSeconds();
         if (interval <= 0) {
             plugin.getLogger().info("[Cleanup] 定时清理已关闭，仅允许手动触发。");
             return;
@@ -250,6 +252,16 @@ public final class CleanupFeature implements Feature {
             }
         }, 20L, 20L);
         plugin.getLogger().info("[Cleanup] 定时清理已启动，间隔 " + interval + " 秒。");
+    }
+
+    /** 输出会导致世界过滤语义不直观的配置告警。 */
+    private void logWorldFilterWarnings(CleanupConfig cleanupConfig) {
+        if (!cleanupConfig.hasWorldIncludeRules()) {
+            plugin.getLogger().warning("[Cleanup] world-filter.include 没有有效规则，扫地不会扫描任何世界。");
+        }
+        if (cleanupConfig.isLegacyIgnoredWorldsIgnored()) {
+            plugin.getLogger().warning("[Cleanup] 已使用 world-filter，旧 ignored-worlds 节点不会生效。");
+        }
     }
 
     /** 判断是否是尚未声明 region-safe 的 Folia 产物。 */

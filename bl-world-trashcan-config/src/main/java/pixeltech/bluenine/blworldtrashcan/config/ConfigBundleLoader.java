@@ -62,7 +62,7 @@ public final class ConfigBundleLoader {
         );
         CleanupConfig cleanupConfig = new CleanupConfig(
                 cleanup.getInt("interval-seconds", 360),
-                toSet(cleanup.getStringList("ignored-worlds")),
+                parseCleanupWorldFilter(cleanup),
                 toSet(cleanup.getStringList("direct-remove-worlds")),
                 cleanupSettings,
                 new CleanupConfig.CleanupGuardConfig(
@@ -172,6 +172,21 @@ public final class ConfigBundleLoader {
                 main.getString("language", "message_zh.yml"),
                 main.getBoolean("debug", false)
         );
+    }
+
+    /** 读取新世界过滤器；新节点不存在时兼容旧 ignored-worlds。 */
+    private CleanupWorldFilter parseCleanupWorldFilter(ConfigurationSource cleanup) {
+        boolean hasInclude = cleanup.contains("world-filter.include");
+        boolean hasExclude = cleanup.contains("world-filter.exclude");
+        if (hasInclude || hasExclude) {
+            Set<String> include = hasInclude ? toSet(cleanup.getStringList("world-filter.include")) : null;
+            Set<String> exclude = hasExclude ? toSet(cleanup.getStringList("world-filter.exclude")) : null;
+            return CleanupWorldFilter.configured(include, exclude, cleanup.contains("ignored-worlds"));
+        }
+        if (cleanup.contains("ignored-worlds")) {
+            return CleanupWorldFilter.fromLegacy(toSet(cleanup.getStringList("ignored-worlds")));
+        }
+        return CleanupWorldFilter.defaults();
     }
 
     /** 把列表转成集合。 */

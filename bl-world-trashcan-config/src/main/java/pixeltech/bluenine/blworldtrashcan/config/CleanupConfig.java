@@ -10,7 +10,7 @@ import java.util.Set;
 /** 清理功能的类型化配置。 */
 public final class CleanupConfig {
     private final int intervalSeconds;
-    private final Set<String> ignoredWorlds;
+    private final CleanupWorldFilter worldFilter;
     private final Set<String> directRemoveWorlds;
     private final CleanupSettings settings;
     private final CleanupGuardConfig guardConfig;
@@ -58,8 +58,17 @@ public final class CleanupConfig {
                          CleanupSettings settings, CleanupGuardConfig guardConfig,
                          FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems,
                          FilledShulkerBoxConfig filledShulkerBoxes) {
+        this(intervalSeconds, CleanupWorldFilter.fromLegacy(ignoredWorlds), directRemoveWorlds, settings,
+                guardConfig, foliaCleanup, movingItems, filledShulkerBoxes);
+    }
+
+    /** 创建包含世界过滤器和全部扫地物品保护项的清理配置。 */
+    public CleanupConfig(int intervalSeconds, CleanupWorldFilter worldFilter, Set<String> directRemoveWorlds,
+                         CleanupSettings settings, CleanupGuardConfig guardConfig,
+                         FoliaCleanupConfig foliaCleanup, MovingItemConfig movingItems,
+                         FilledShulkerBoxConfig filledShulkerBoxes) {
         this.intervalSeconds = Math.max(0, intervalSeconds);
-        this.ignoredWorlds = normalizeWorlds(ignoredWorlds);
+        this.worldFilter = worldFilter == null ? CleanupWorldFilter.defaults() : worldFilter;
         this.directRemoveWorlds = normalizeWorlds(directRemoveWorlds);
         this.settings = settings;
         this.guardConfig = guardConfig == null ? CleanupGuardConfig.defaults() : guardConfig;
@@ -77,7 +86,17 @@ public final class CleanupConfig {
 
     /** 判断世界是否跳过清理。 */
     public boolean isIgnoredWorld(String worldName) {
-        return containsWorld(ignoredWorlds, worldName);
+        return !worldFilter.allows(worldName);
+    }
+
+    /** 判断世界过滤器是否至少配置了一条有效 include 规则。 */
+    public boolean hasWorldIncludeRules() {
+        return worldFilter.hasIncludeRules();
+    }
+
+    /** 判断新世界过滤器是否覆盖了同时存在的旧 ignored-worlds。 */
+    public boolean isLegacyIgnoredWorldsIgnored() {
+        return worldFilter.isLegacyIgnoredWorldsIgnored();
     }
 
     /** 判断该世界里的扫地物品是否必须绕过所有垃圾桶并直接删除。 */
