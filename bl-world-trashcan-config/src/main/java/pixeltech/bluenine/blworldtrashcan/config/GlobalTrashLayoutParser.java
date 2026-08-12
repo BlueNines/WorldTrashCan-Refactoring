@@ -21,21 +21,22 @@ public final class GlobalTrashLayoutParser {
         return parse(source, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId, true);
     }
 
-    /** 按当前运行时能力读取布局；不支持时完全跳过 model-id 字段。 */
-    public TrashConfig.GlobalTrashLayoutConfig parse(ConfigurationSource source,
-                                                      int legacyBackModelId,
-                                                      int legacyNextModelId,
+    /** 从指定配置路径读取布局，供公共与个人垃圾桶复用。 */
+    public TrashConfig.GlobalTrashLayoutConfig parse(ConfigurationSource source, String layoutPath,
+                                                      int legacyBackModelId, int legacyNextModelId,
                                                       int legacyBackgroundModelId,
                                                       boolean supportsCustomModelData) {
-        List<String> rows = source.getStringList(LAYOUT_PATH + ".position");
+        String effectivePath = layoutPath == null || layoutPath.trim().isEmpty()
+                ? LAYOUT_PATH : layoutPath.trim();
+        List<String> rows = source.getStringList(effectivePath + ".position");
         if (rows == null || rows.isEmpty()) {
             return TrashConfig.GlobalTrashLayoutConfig.defaultLayout(
                     legacyBackModelId, legacyNextModelId, legacyBackgroundModelId, null);
         }
-        List<String> errors = validateRows(rows);
+        List<String> errors = validateRows(rows, effectivePath);
         Set<Character> symbols = collectSymbols(rows);
         Map<Character, TrashConfig.GlobalTrashItemConfig> items = parseItems(
-                source, symbols, errors, supportsCustomModelData);
+                source, effectivePath, symbols, errors, supportsCustomModelData);
         validateItems(symbols, items, errors);
         if (!errors.isEmpty()) {
             return TrashConfig.GlobalTrashLayoutConfig.defaultLayout(
@@ -44,16 +45,26 @@ public final class GlobalTrashLayoutParser {
         return new TrashConfig.GlobalTrashLayoutConfig(rows, items, null);
     }
 
+    /** 按当前运行时能力读取布局；不支持时完全跳过 model-id 字段。 */
+    public TrashConfig.GlobalTrashLayoutConfig parse(ConfigurationSource source,
+                                                      int legacyBackModelId,
+                                                      int legacyNextModelId,
+                                                      int legacyBackgroundModelId,
+                                                      boolean supportsCustomModelData) {
+        return parse(source, LAYOUT_PATH, legacyBackModelId, legacyNextModelId,
+                legacyBackgroundModelId, supportsCustomModelData);
+    }
+
     /** 校验布局行数、宽度和字符范围。 */
-    private List<String> validateRows(List<String> rows) {
+    private List<String> validateRows(List<String> rows, String layoutPath) {
         List<String> errors = new ArrayList<>();
         if (rows.size() < 1 || rows.size() > 6) {
-            errors.add("global-trash.gui.layout.position 只能配置 1-6 行，当前为 " + rows.size() + " 行");
+            errors.add(layoutPath + ".position 只能配置 1-6 行，当前为 " + rows.size() + " 行");
         }
         for (int index = 0; index < rows.size(); index++) {
             String row = rows.get(index);
             if (row == null || row.length() != 9) {
-                errors.add("global-trash.gui.layout.position[" + index + "] 必须正好包含 9 个字符");
+                errors.add(layoutPath + ".position[" + index + "] 必须正好包含 9 个字符");
                 continue;
             }
             for (int column = 0; column < row.length(); column++) {
@@ -82,12 +93,12 @@ public final class GlobalTrashLayoutParser {
 
     /** 读取布局字符对应的物品定义。 */
     private Map<Character, TrashConfig.GlobalTrashItemConfig> parseItems(
-            ConfigurationSource source, Set<Character> symbols, List<String> errors,
+            ConfigurationSource source, String layoutPath, Set<Character> symbols, List<String> errors,
             boolean supportsCustomModelData) {
         Map<Character, TrashConfig.GlobalTrashItemConfig> items = new LinkedHashMap<>();
         for (Character symbolValue : symbols) {
             char symbol = symbolValue.charValue();
-            String path = LAYOUT_PATH + ".items." + symbol;
+            String path = layoutPath + ".items." + symbol;
             TrashConfig.GlobalTrashItemType type = parseType(source.getString(path + ".type", ""));
             if (type == null) {
                 errors.add(path + ".type 无效，可用值为 content、previous-page、next-page、background、actions、sort、close");
@@ -139,7 +150,7 @@ public final class GlobalTrashLayoutParser {
             }
         }
         if (!hasContent) {
-            errors.add("公共垃圾桶布局至少需要一个 type: content 的内容槽");
+            errors.add("垃圾桶布局至少需要一个 type: content 的内容槽");
         }
         validateUnavailableCycles(items, errors);
     }

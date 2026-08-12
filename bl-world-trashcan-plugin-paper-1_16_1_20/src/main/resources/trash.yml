@@ -227,11 +227,129 @@ global-trash:
 personal-trash:
   # 是否启用个人垃圾桶。
   enabled: true
+  # 个人垃圾桶显示模式；compact 为紧凑累计模式，stacked 为旧版原始堆叠模式。
+  mode: "compact"
+  # 紧凑模式配置；相同物品只占一个展示槽，真实累计数量显示在 Lore 中。
+  compact:
+    # 玩家首次打开时使用的排序；可选 insertion、amount-desc、amount-asc、name-asc、material-asc。
+    default-sort: "insertion"
+    # 紧凑模式最多存储页数；总物品种类上限为页数乘以每页 content 槽数量。
+    max-pages: 2
+    # 单种物品最多累计数量；-1 表示无限，达到上限后只接收到上限，剩余物品保留原处。
+    max-amount-per-entry: 9999
+    # 普通左键取出数量。
+    left-click-amount: 1
+    # Shift + 左键取出数量。
+    shift-left-click-amount: 64
+    # 是否启用右键取出；默认关闭以避免误操作。
+    right-click-enabled: false
+    # 普通右键取出数量，仅在 right-click-enabled 为 true 时生效。
+    right-click-amount: 1
+    # Shift + 右键取出数量，仅在 right-click-enabled 为 true 时生效。
+    shift-right-click-amount: 64
+    # 是否在展示物 Lore 顶部显示累计数量。
+    show-amount-lore: true
+    # 最多保留原物品 Lore 行数；-1 表示不截断。
+    max-original-lore-lines: 5
+    # 数量 Lore；支持 {amount}、页码变量和 PlaceholderAPI 变量。
+    amount-lore: "&#38BDF8数量：&#F5B82E{amount}"
+    # 原 Lore 被截断时显示；{count} 为省略行数。
+    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
+    # 内容展示物底部操作提示，可使用各类 take-amount 占位符。
+    action-lore:
+      - "&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个"
+      - "&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个"
+  # 原始堆叠模式配置；每个展示物按原版最大堆叠数显示，不添加紧凑模式 Lore。
+  stacked:
+    # 堆叠模式自己的默认排序，不读取 compact.default-sort。
+    default-sort: "insertion"
+    # 堆叠模式最多存储页数。
+    max-pages: 2
+  # 连续取物冷却，单位毫秒；0 表示关闭。
+  take-delay-millis: 0
+  # 是否允许玩家从自己的背包手动放入个人垃圾桶；失败时原物品保持不变。
+  allow-player-put: true
+  # 个人垃圾桶 GUI 布局；规则与公共垃圾桶一致，但容量和按钮完全独立配置。
+  gui:
+    # 小型字符布局配置，决定个人垃圾桶的行数、内容槽和按钮位置。
+    layout:
+      # 支持 1-6 行，每行必须正好 9 个字符；content 总数决定每页容量。
+      position:
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "xxxxxxxxx"
+        - "abbsbbbbc"
+      # 每个布局字符对应一个槽位类型；按钮区域不可拿取、拖动或数字键交换。
+      items:
+        # x 是默认个人垃圾桶内容槽字符。
+        x:
+          # content 为个人垃圾桶内容槽，不生成固定展示物。
+          type: "content"
+        # a 是默认上一页按钮字符。
+        a:
+          # previous-page 为上一页按钮。
+          type: "previous-page"
+          # 是否显示附魔光效；高版本优先使用无真实附魔的公开 API，旧版本自动降级。
+          glow: false
+          # CustomModelData；-1 表示不设置，1.14 以下自动忽略。
+          model-id: -1
+          # 从上到下选择当前版本可用的第一个材质。
+          material:
+            - "ARROW"
+          # 没有上一页时显示 b 对应的背景物；留空则该槽为空。
+          unavailable-item: "b"
+        # b 是默认背景板字符。
+        b:
+          # background 为不可操作背景板。
+          type: "background"
+          # 是否显示附魔光效。
+          glow: false
+          # CustomModelData；-1 表示不设置，低版本自动忽略。
+          model-id: -1
+          # 按当前版本能力依次降级材质。
+          material:
+            - "BLACK_STAINED_GLASS_PANE"
+            - "STAINED_GLASS_PANE"
+            - "GLASS_PANE"
+          # 单个空格隐藏原版物品名。
+          name: " "
+          # 背景板默认不显示 Lore。
+          lore: []
+        # s 是玩家自己的排序按钮字符。
+        s:
+          # sort 为玩家独立排序按钮；左键下一种，右键上一种，只刷新当前玩家视图。
+          type: "sort"
+          # 是否显示附魔光效。
+          glow: false
+          # CustomModelData；-1 表示不设置，低版本自动忽略。
+          model-id: -1
+          # 高低版本比较器材质候选。
+          material:
+            - "COMPARATOR"
+            - "REDSTONE_COMPARATOR"
+        # c 是默认下一页按钮字符。
+        c:
+          # next-page 为下一页按钮。
+          type: "next-page"
+          # 是否显示附魔光效。
+          glow: false
+          # CustomModelData；-1 表示不设置，低版本自动忽略。
+          model-id: -1
+          # 从上到下选择当前版本可用的第一个材质。
+          material:
+            - "ARROW"
+          # 没有下一页时显示 b 对应的背景物。
+          unavailable-item: "b"
+        # 可另设字符并使用 type: actions，支持 [console]、[command]、[message]、[close] 和 PAPI 变量。
+        # 也可使用 type: close 制作任意点击都会关闭菜单的按钮；name、lore、glow、model-id 均可配置。
   # 是否追踪玩家主动丢弃物品。
-  # paper-1.16-1.20 支持 PDC，因此该项可完整生效。
+  # 高版本优先使用 PDC，低版本使用有过期时间的内存记录，均不会长期保存玩家引用。
   track-player-dropped-items: true
-  # 个人垃圾桶满时是否自动清空旧内容，再尝试放入新物品。
-  auto-clear-when-full: true
+  # 自动路由因整个容器容量不足而失败时，是否清空旧内容并只重试一次。
+  # 默认 false；不作用于玩家手动放入、单条目数量上限和已经部分接收的请求。
+  auto-clear-when-full: false
   # 玩家从个人垃圾桶取出物品时扣除的 Vault 金额；-1 表示不扣费。
   take-cost: -1
   # 物品自动进入个人垃圾桶时的在线提示设置。

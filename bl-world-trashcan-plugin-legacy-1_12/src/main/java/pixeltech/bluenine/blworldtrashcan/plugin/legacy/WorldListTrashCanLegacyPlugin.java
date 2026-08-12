@@ -90,7 +90,7 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
         PersonalTrashService personalTrashService = new PersonalTrashService(this,
                 configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService,
                 platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
-                globalTrashService.getIdentityProvider());
+                globalTrashService.getIdentityProvider(), customModelDataSupport);
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,

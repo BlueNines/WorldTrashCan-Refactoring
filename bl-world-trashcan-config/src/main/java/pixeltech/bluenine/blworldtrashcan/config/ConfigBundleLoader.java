@@ -30,8 +30,10 @@ public final class ConfigBundleLoader {
                 ? trash.getInt("global-trash.gui.next-model-id", -1) : -1;
         int legacyBackgroundModelId = supportsCustomModelData
                 ? trash.getInt("global-trash.gui.background-model-id", -1) : -1;
-        TrashConfig.GlobalTrashLayoutConfig globalTrashLayout = new GlobalTrashLayoutParser().parse(
-                trash, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId, supportsCustomModelData);
+        GlobalTrashLayoutParser layoutParser = new GlobalTrashLayoutParser();
+        TrashConfig.GlobalTrashLayoutConfig globalTrashLayout = layoutParser.parse(
+                trash, "global-trash.gui.layout", legacyBackModelId, legacyNextModelId,
+                legacyBackgroundModelId, supportsCustomModelData);
         int legacyGlobalMaxPages = trash.getInt("global-trash.max-pages", 5);
         List<String> compactActionLore = trash.contains("global-trash.compact.action-lore")
                 ? trash.getStringList("global-trash.compact.action-lore")
@@ -57,6 +59,31 @@ public final class ConfigBundleLoader {
                 trash.getInt("global-trash.stacked.max-pages", legacyGlobalMaxPages),
                 TrashConfig.GlobalTrashSortType.parse(
                         trash.getString("global-trash.stacked.default-sort", "insertion")));
+        TrashConfig.GlobalTrashLayoutConfig personalTrashLayout = layoutParser.parse(
+                trash, "personal-trash.gui.layout", -1, -1, -1, supportsCustomModelData);
+        TrashConfig.CompactGlobalTrashConfig compactPersonalTrash = new TrashConfig.CompactGlobalTrashConfig(
+                trash.getInt("personal-trash.compact.max-pages", 2),
+                trash.getInt("personal-trash.compact.max-amount-per-entry", 9999),
+                trash.getInt("personal-trash.compact.left-click-amount", 1),
+                trash.getInt("personal-trash.compact.shift-left-click-amount", 64),
+                trash.getBoolean("personal-trash.compact.right-click-enabled", false),
+                trash.getInt("personal-trash.compact.right-click-amount", 1),
+                trash.getInt("personal-trash.compact.shift-right-click-amount", 64),
+                trash.getBoolean("personal-trash.compact.show-amount-lore", true),
+                trash.getInt("personal-trash.compact.max-original-lore-lines", 5),
+                trash.getString("personal-trash.compact.amount-lore", "&#38BDF8数量：&#F5B82E{amount}"),
+                trash.getString("personal-trash.compact.omitted-lore",
+                        "&#64748B...省略 &#AAB6C5{count} &#64748B行..."),
+                trash.contains("personal-trash.compact.action-lore")
+                        ? trash.getStringList("personal-trash.compact.action-lore")
+                        : TrashConfig.CompactGlobalTrashConfig.defaults().getActionLore(),
+                TrashConfig.GlobalTrashSortType.parse(
+                        trash.getString("personal-trash.compact.default-sort", "insertion"))
+        );
+        TrashConfig.StackedGlobalTrashConfig stackedPersonalTrash = new TrashConfig.StackedGlobalTrashConfig(
+                trash.getInt("personal-trash.stacked.max-pages", 2),
+                TrashConfig.GlobalTrashSortType.parse(
+                        trash.getString("personal-trash.stacked.default-sort", "insertion")));
         boolean legacyItemProtectionConfigured = cleanup.contains("ignored-materials")
                 || cleanup.contains("ignored-name-fragments")
                 || cleanup.contains("ignored-lore-fragments");
@@ -138,8 +165,14 @@ public final class ConfigBundleLoader {
                 ),
                 new TrashConfig.PersonalTrashConfig(
                         trash.getBoolean("personal-trash.enabled", true),
+                        trash.getInt("personal-trash.take-delay-millis", 0),
+                        trash.getBoolean("personal-trash.allow-player-put", true),
+                        personalTrashLayout,
+                        TrashConfig.GlobalTrashMode.parse(trash.getString("personal-trash.mode", "compact")),
+                        compactPersonalTrash,
+                        stackedPersonalTrash,
                         trash.getBoolean("personal-trash.track-player-dropped-items", true),
-                        trash.getBoolean("personal-trash.auto-clear-when-full", true),
+                        trash.getBoolean("personal-trash.auto-clear-when-full", false),
                         trash.getDouble("personal-trash.take-cost", -1D),
                         parseDamageRecoveryMode(trash.getString("personal-trash.damage-recovery.mode", "disabled")),
                         trash.getInt("personal-trash.damage-recovery.delay-seconds", 6),

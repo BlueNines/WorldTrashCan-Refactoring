@@ -553,7 +553,8 @@ public final class CleanupFeature implements Feature {
                         remaining.setAmount(currentAmount - acceptedAmount);
                         item.setItemStack(remaining);
                     }
-                    plugin.getLogger().info("[Cleanup] 公共垃圾桶达到紧凑模式单条目上限，保留掉落物剩余数量: accepted="
+                    plugin.getLogger().info("[Cleanup] 目标垃圾桶只接收了部分物品，已保留掉落物剩余数量: route="
+                            + decision.getRoute() + ", accepted="
                             + acceptedAmount + ", remaining=" + (currentAmount - acceptedAmount));
                     return decision;
                 }

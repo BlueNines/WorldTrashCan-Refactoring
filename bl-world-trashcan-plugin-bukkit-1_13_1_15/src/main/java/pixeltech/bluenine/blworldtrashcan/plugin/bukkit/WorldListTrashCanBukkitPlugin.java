@@ -95,7 +95,7 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
                 messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
-                globalTrashService.getIdentityProvider());
+                globalTrashService.getIdentityProvider(), customModelDataSupport);
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,

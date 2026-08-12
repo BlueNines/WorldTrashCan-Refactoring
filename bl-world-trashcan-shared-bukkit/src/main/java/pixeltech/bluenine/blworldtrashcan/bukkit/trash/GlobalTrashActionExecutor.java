@@ -22,13 +22,21 @@ final class GlobalTrashActionExecutor {
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final GlobalTrashTextResolver textResolver;
+    private final String logName;
     private final Set<String> warnedActions = ConcurrentHashMap.newKeySet();
 
     /** 创建动作执行器。 */
     GlobalTrashActionExecutor(Plugin plugin, ServerPlatform platform, GlobalTrashTextResolver textResolver) {
+        this(plugin, platform, textResolver, "GlobalTrash");
+    }
+
+    /** 创建带明确日志作用域的动作执行器。 */
+    GlobalTrashActionExecutor(Plugin plugin, ServerPlatform platform,
+                              GlobalTrashTextResolver textResolver, String logName) {
         this.plugin = plugin;
         this.platform = platform;
         this.textResolver = textResolver;
+        this.logName = logName == null || logName.trim().isEmpty() ? "TrashContainer" : logName.trim();
     }
 
     /** 按配置顺序分派按钮动作。 */
@@ -44,7 +52,7 @@ final class GlobalTrashActionExecutor {
     /** 检查动作列表并对无效前缀输出一次配置警告。 */
     void validate(char symbol, List<String> actions) {
         if (actions == null || actions.isEmpty()) {
-            plugin.getLogger().warning("[GlobalTrash] actions 布局字符 '" + symbol
+            plugin.getLogger().warning('[' + logName + "] actions 布局字符 '" + symbol
                     + "' 没有配置 actions，按钮将保持无操作。");
             return;
         }
@@ -119,7 +127,7 @@ final class GlobalTrashActionExecutor {
     private void warnUnknown(String action, String source) {
         String value = action == null ? "null" : action.trim();
         if (warnedActions.add(source + '\n' + value)) {
-            plugin.getLogger().warning("[GlobalTrash] " + source + " 存在未知 action，已跳过: " + value);
+            plugin.getLogger().warning('[' + logName + "] " + source + " 存在未知 action，已跳过: " + value);
         }
     }
 }

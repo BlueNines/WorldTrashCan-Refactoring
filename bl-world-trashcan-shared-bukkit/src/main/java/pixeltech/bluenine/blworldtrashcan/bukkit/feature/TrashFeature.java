@@ -94,6 +94,7 @@ public final class TrashFeature implements Feature, Listener {
             dropOwnerTracker.clear();
         }
         globalTrashService.close();
+        personalTrashService.close();
         registered = false;
     }
 
@@ -157,22 +158,30 @@ public final class TrashFeature implements Feature, Listener {
         personalTrashService.handleClick(event);
     }
 
-    /** 阻止拖拽修改公共垃圾桶 GUI 的内容槽和展示物。 */
+    /** 阻止拖拽修改公共或个人垃圾桶 GUI 的内容槽和展示物。 */
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        globalTrashService.handleDrag(event);
+        if (globalTrashService.handleDrag(event)) {
+            return;
+        }
+        personalTrashService.handleDrag(event);
     }
 
-    /** 公共垃圾桶关闭时释放按玩家生成的展示视图。 */
+    /** 公共或个人垃圾桶关闭时释放按玩家生成的展示视图。 */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        globalTrashService.handleClose(event);
+        if (globalTrashService.handleClose(event)) {
+            return;
+        }
+        personalTrashService.handleClose(event);
     }
 
-    /** 玩家退出时释放公共垃圾桶的轻量排序偏好和会话引用。 */
+    /** 玩家退出时释放两类虚拟桶的轻量排序偏好和会话引用。 */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        globalTrashService.handleQuit(event.getPlayer().getUniqueId());
+        UUID playerId = event.getPlayer().getUniqueId();
+        globalTrashService.handleQuit(playerId);
+        personalTrashService.handleQuit(playerId);
     }
 
     /** 给玩家主动丢弃的物品写入所属玩家标记。 */

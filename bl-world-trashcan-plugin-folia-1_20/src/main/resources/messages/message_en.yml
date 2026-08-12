@@ -15,6 +15,8 @@ global-trash:
   no-take-permission: "{prefix}&#FFD166You do not have permission to take items from global trash."
   # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
   take-cooldown: "{prefix}&#FFD166You must wait {time} seconds before taking another item."
+  # Shown when the player's inventory cannot receive the selected global trash item.
+  inventory-full: "{prefix}&#FFD166Your inventory does not have enough space to take this item."
   # Shown when a manually deposited item does not match the global trash admission whitelist.
   admission-rejected: "{prefix}&#FFD166Deposit rejected &#64748B| &#C9D4E2This item does not match the global trash admission whitelist."
   # 公共垃圾桶 GUI 文案。
@@ -50,10 +52,25 @@ personal-trash:
   inventory-full: "{prefix}&#FFD166Your inventory does not have enough space to take this item."
   # 玩家成功支付取出费用，{cost} 为扣费显示。
   pay-success: "{prefix}&#5AC8FAPaid {cost}."
+  # Personal trash take cooldown; {time} is the remaining number of seconds.
+  take-cooldown: "{prefix}&#FFD166You must wait {time} seconds before taking another personal trash item."
   # 个人垃圾桶 GUI 文案。
   gui:
-    # GUI 标题，{player} 为玩家名。
-    title: "&#0F172A{player}'s Personal Trash"
+    # GUI title; {player} is the owner, {page} is the current page and {max} is the page count.
+    title: "&#0F172A{player}'s Personal Trash &#5AC8FA{page}&#64748B/&#FFD166{max}"
+    back: "&#5AC8FAPrevious Page"
+    next: "&#FFD166Next Page"
+    sort:
+      name: "&#FFD166Sort Order"
+      current: "&#C9D4E2Current: &#FFD166{sort}"
+      next: "&#5AC8FALeft click &#C9D4E2to use &#FFD166{next-sort}"
+      previous: "&#5AC8FARight click &#C9D4E2to use &#FFD166{previous-sort}"
+      types:
+        insertion: "Insertion order"
+        amount-desc: "Amount high to low"
+        amount-asc: "Amount low to high"
+        name-asc: "Name A-Z"
+        material-asc: "Material A-Z"
   # 自动进入个人垃圾桶时的提示文案。
   recycle:
     # 单个来源进入个人垃圾桶时发送，{items} 为格式化后的物品列表。

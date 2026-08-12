@@ -15,6 +15,8 @@ global-trash:
   no-take-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你不能从公共垃圾桶取出物品。"
   # 公共垃圾桶拿取冷却提示，{time} 为剩余秒数。
   take-cooldown: "{prefix}&#C9D4E2公共垃圾桶冷却剩余 &#FFD166{time} &#C9D4E2秒。"
+  # 玩家背包没有空间接收公共垃圾桶物品时提示。
+  inventory-full: "{prefix}&#FFD166背包空间不足 &#64748B| &#C9D4E2无法取出该物品。"
   # 玩家手动物品未命中公共垃圾桶准入白名单时提示。
   admission-rejected: "{prefix}&#FFD166拒绝放入 &#64748B| &#C9D4E2该物品未命中公共垃圾桶准入白名单。"
   # 公共垃圾桶 GUI 文案。
@@ -50,10 +52,28 @@ personal-trash:
   inventory-full: "{prefix}&#FFD166背包空间不足 &#64748B| &#C9D4E2无法取出该物品。"
   # 玩家成功支付取出费用，{cost} 为扣费显示。
   pay-success: "{prefix}&#5AC8FA已支付 &#FFD166{cost}&#C9D4E2。"
+  # 个人垃圾桶拿取冷却提示，{time} 为剩余秒数。
+  take-cooldown: "{prefix}&#C9D4E2个人垃圾桶冷却剩余 &#FFD166{time} &#C9D4E2秒。"
   # 个人垃圾桶 GUI 文案。
   gui:
-    # GUI 标题，{player} 为玩家名。
-    title: "&#0F172A{player} &#C9D4E2的个人垃圾桶"
+    # GUI 标题，{player} 为玩家名，{page} 当前页，{max} 总页数。
+    title: "&#0F172A{player} &#C9D4E2的个人垃圾桶 &#5AC8FA{page}&#64748B/&#FFD166{max}"
+    # 上一页按钮名称。
+    back: "&#5AC8FA上一页"
+    # 下一页按钮名称。
+    next: "&#FFD166下一页"
+    # 玩家独立排序按钮文案。
+    sort:
+      name: "&#FFD166排序方式"
+      current: "&#C9D4E2当前：&#FFD166{sort}"
+      next: "&#5AC8FA左键 &#C9D4E2切换为 &#FFD166{next-sort}"
+      previous: "&#5AC8FA右键 &#C9D4E2切换为 &#FFD166{previous-sort}"
+      types:
+        insertion: "进入顺序"
+        amount-desc: "数量从多到少"
+        amount-asc: "数量从少到多"
+        name-asc: "名称 A-Z"
+        material-asc: "材质 A-Z"
   # 自动进入个人垃圾桶时的提示文案。
   recycle:
     # 单个来源进入个人垃圾桶时发送，{items} 为格式化后的物品列表。

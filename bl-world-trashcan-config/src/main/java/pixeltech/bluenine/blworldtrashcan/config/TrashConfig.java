@@ -91,8 +91,35 @@ public final class TrashConfig {
         }
     }
 
+    /** 公共与个人虚拟垃圾桶共同使用的容器配置契约。 */
+    public interface TrashContainerConfig {
+        /** 判断容器是否启用。 */
+        boolean isEnabled();
+
+        /** 返回容器显示模式。 */
+        GlobalTrashMode getMode();
+
+        /** 返回紧凑模式配置。 */
+        CompactGlobalTrashConfig getCompact();
+
+        /** 返回堆叠模式配置。 */
+        StackedGlobalTrashConfig getStacked();
+
+        /** 返回当前模式最大页数。 */
+        int getMaxPages();
+
+        /** 返回拿取冷却毫秒。 */
+        int getTakeDelayMillis();
+
+        /** 判断是否允许玩家手动放入。 */
+        boolean isAllowPlayerPut();
+
+        /** 返回字符布局配置。 */
+        GlobalTrashLayoutConfig getLayout();
+    }
+
     /** 公共垃圾桶配置。 */
-    public static final class GlobalTrashConfig {
+    public static final class GlobalTrashConfig implements TrashContainerConfig {
         private final boolean enabled;
         private final int takeDelayMillis;
         private final int clearEveryCleanups;
@@ -712,8 +739,14 @@ public final class TrashConfig {
     }
 
     /** 个人垃圾桶配置。 */
-    public static final class PersonalTrashConfig {
+    public static final class PersonalTrashConfig implements TrashContainerConfig {
         private final boolean enabled;
+        private final int takeDelayMillis;
+        private final boolean allowPlayerPut;
+        private final GlobalTrashLayoutConfig layout;
+        private final GlobalTrashMode mode;
+        private final CompactGlobalTrashConfig compact;
+        private final StackedGlobalTrashConfig stacked;
         private final boolean trackPlayerDroppedItems;
         private final boolean autoClearWhenFull;
         private final double takeCost;
@@ -727,7 +760,28 @@ public final class TrashConfig {
                                    boolean autoClearWhenFull, double takeCost,
                                    DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds,
                                    boolean notifyWhenRouted, int notifyMaxDisplayItems) {
+            this(enabled, 0, true,
+                    GlobalTrashLayoutConfig.defaultLayout(-1, -1, -1, null),
+                    GlobalTrashMode.COMPACT, personalCompactDefaults(),
+                    new StackedGlobalTrashConfig(2), trackPlayerDroppedItems,
+                    autoClearWhenFull, takeCost, damageRecoveryMode, damageRecoveryDelaySeconds,
+                    notifyWhenRouted, notifyMaxDisplayItems);
+        }
+
+        /** 创建包含通用容器设置和个人专属策略的完整配置。 */
+        public PersonalTrashConfig(boolean enabled, int takeDelayMillis, boolean allowPlayerPut,
+                                   GlobalTrashLayoutConfig layout, GlobalTrashMode mode,
+                                   CompactGlobalTrashConfig compact, StackedGlobalTrashConfig stacked,
+                                   boolean trackPlayerDroppedItems, boolean autoClearWhenFull, double takeCost,
+                                   DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds,
+                                   boolean notifyWhenRouted, int notifyMaxDisplayItems) {
             this.enabled = enabled;
+            this.takeDelayMillis = Math.max(0, takeDelayMillis);
+            this.allowPlayerPut = allowPlayerPut;
+            this.layout = layout == null ? GlobalTrashLayoutConfig.defaultLayout(-1, -1, -1, null) : layout;
+            this.mode = mode == null ? GlobalTrashMode.COMPACT : mode;
+            this.compact = compact == null ? personalCompactDefaults() : compact;
+            this.stacked = stacked == null ? new StackedGlobalTrashConfig(2) : stacked;
             this.trackPlayerDroppedItems = trackPlayerDroppedItems;
             this.autoClearWhenFull = autoClearWhenFull;
             this.takeCost = takeCost;
@@ -740,6 +794,41 @@ public final class TrashConfig {
         /** 判断个人垃圾桶是否启用。 */
         public boolean isEnabled() {
             return enabled;
+        }
+
+        /** 返回个人垃圾桶显示模式。 */
+        public GlobalTrashMode getMode() {
+            return mode;
+        }
+
+        /** 返回个人垃圾桶紧凑模式配置。 */
+        public CompactGlobalTrashConfig getCompact() {
+            return compact;
+        }
+
+        /** 返回个人垃圾桶堆叠模式配置。 */
+        public StackedGlobalTrashConfig getStacked() {
+            return stacked;
+        }
+
+        /** 返回当前模式最大页数。 */
+        public int getMaxPages() {
+            return mode == GlobalTrashMode.COMPACT ? compact.getMaxPages() : stacked.getMaxPages();
+        }
+
+        /** 返回个人垃圾桶拿取冷却毫秒。 */
+        public int getTakeDelayMillis() {
+            return takeDelayMillis;
+        }
+
+        /** 判断是否允许玩家手动放入个人垃圾桶。 */
+        public boolean isAllowPlayerPut() {
+            return allowPlayerPut;
+        }
+
+        /** 返回个人垃圾桶字符布局。 */
+        public GlobalTrashLayoutConfig getLayout() {
+            return layout;
         }
 
         /** 判断是否标记玩家主动丢弃的物品。 */
@@ -775,6 +864,16 @@ public final class TrashConfig {
         /** 返回个人垃圾桶提示中最多完整展示的物品条目数。 */
         public int getNotifyMaxDisplayItems() {
             return notifyMaxDisplayItems;
+        }
+
+        /** 返回个人垃圾桶默认紧凑模式配置。 */
+        private static CompactGlobalTrashConfig personalCompactDefaults() {
+            List<String> actions = new ArrayList<>();
+            actions.add("&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个");
+            actions.add("&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个");
+            return new CompactGlobalTrashConfig(2, 9999L, 1, 64, false,
+                    1, 64, true, 5, "&#38BDF8数量：&#F5B82E{amount}",
+                    "&#64748B...省略 &#AAB6C5{count} &#64748B行...", actions);
         }
     }
 

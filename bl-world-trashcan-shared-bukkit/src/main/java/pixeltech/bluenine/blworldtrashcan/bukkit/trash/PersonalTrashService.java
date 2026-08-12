@@ -4,14 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
+import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProviderSelector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
@@ -20,13 +23,13 @@ import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
 import pixeltech.worldlisttrashcan.api.audit.TrashMutationReason;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-/** 个人垃圾桶 GUI 和路由服务。 */
+/** 个人垃圾桶服务，按玩家 UUID 隔离通用容器状态。 */
 public final class PersonalTrashService {
     private final Plugin plugin;
     private final PaymentService paymentService;
@@ -34,109 +37,149 @@ public final class PersonalTrashService {
     private final ItemSnapshotMapper itemSnapshotMapper;
     private final ServerPlatform platform;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
-    private final AuditTrackingKeyFactory trackingKeyFactory;
-    private final Map<UUID, Inventory> inventories = new HashMap<>();
-    private final Map<UUID, String> inventoryTitles = new HashMap<>();
+    private final ItemIdentityProvider identityProvider;
+    private final TrashContainerMenu containerMenu;
+    private final Map<UUID, TrashContainerStore> stores = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lastTakeMillis = new ConcurrentHashMap<>();
     private TrashConfig.PersonalTrashConfig config;
 
     /** 创建个人垃圾桶服务。 */
-    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
-                                BukkitMessageService messages) {
-        this(plugin, config, paymentService, messages, null, null, null);
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages) {
+        this(plugin, config, paymentService, messages, null, null, null, null,
+                CustomModelDataSupport.detect(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建个人垃圾桶服务。 */
-    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
-                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper) {
-        this(plugin, config, paymentService, messages, itemSnapshotMapper, null, null);
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages,
+                                ItemSnapshotMapper itemSnapshotMapper) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, null, null, null,
+                CustomModelDataSupport.detect(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建个人垃圾桶服务。 */
-    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
-                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
-                                ServerPlatform platform) {
-        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, null);
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages,
+                                ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, null, null,
+                CustomModelDataSupport.detect(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建带审计变更分发器的个人垃圾桶服务。 */
-    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
-                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
-                                ServerPlatform platform, DefaultWorldListTrashCanAuditBridge auditBridge) {
-        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, auditBridge, null);
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages,
+                                ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
+                                DefaultWorldListTrashCanAuditBridge auditBridge) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, auditBridge, null,
+                CustomModelDataSupport.detect(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建带审计分发器和主插件物品身份实现的个人垃圾桶服务。 */
-    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config, PaymentService paymentService,
-                                BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
-                                ServerPlatform platform, DefaultWorldListTrashCanAuditBridge auditBridge,
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages,
+                                ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
+                                DefaultWorldListTrashCanAuditBridge auditBridge,
                                 ItemIdentityProvider identityProvider) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, auditBridge,
+                identityProvider, CustomModelDataSupport.detect(plugin == null ? null : plugin.getLogger()));
+    }
+
+    /** 创建具备完整菜单外观能力的个人垃圾桶服务。 */
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages,
+                                ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
+                                DefaultWorldListTrashCanAuditBridge auditBridge,
+                                ItemIdentityProvider identityProvider,
+                                CustomModelDataSupport customModelDataSupport) {
         this.plugin = plugin;
-        this.paymentService = paymentService;
+        this.paymentService = paymentService == null ? new NoPaymentService() : paymentService;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
         this.platform = platform;
         this.auditBridge = auditBridge;
-        this.trackingKeyFactory = new AuditTrackingKeyFactory(identityProvider);
-        this.config = config;
+        this.identityProvider = identityProvider == null
+                ? new ItemIdentityProviderSelector().select(plugin) : identityProvider;
+        this.containerMenu = new TrashContainerMenu(plugin, platform, itemSnapshotMapper,
+                customModelDataSupport, new PersonalMenuPolicy());
+        reload(config);
     }
 
-    /** 重载个人垃圾桶配置。 */
+    /** 重载个人垃圾桶配置并保留所有玩家运行期存量。 */
     public void reload(TrashConfig.PersonalTrashConfig nextConfig) {
         this.config = nextConfig;
+        containerMenu.reload(nextConfig);
+        int contentSlots = containerMenu.getContentSlotsPerPage();
+        for (TrashContainerStore store : stores.values()) {
+            store.configure(nextConfig, contentSlots);
+        }
+        plugin.getLogger().info("[PersonalTrash] mode=" + modeName()
+                + ", identity=" + identityProvider.id()
+                + ", loadedOwners=" + stores.size()
+                + ", contentSlots=" + contentSlots
+                + ", maxPages=" + (nextConfig == null ? 0 : nextConfig.getMaxPages())
+                + ", autoClearWhenFull=" + (nextConfig != null && nextConfig.isAutoClearWhenFull()));
     }
 
     /** 判断个人垃圾桶是否启用。 */
     public boolean isEnabled() {
-        return config != null && config.isEnabled();
+        return config != null && config.isEnabled()
+                && !config.getLayout().getContentSlots().isEmpty();
     }
 
-    /** 判断玩家是否有个人垃圾桶容量。 */
+    /** 判断一次自动路由是否至少可以接收一个物品。 */
     public boolean hasSpace(UUID ownerUuid, ItemStack itemStack) {
         if (!isEnabled() || ownerUuid == null) {
             return false;
         }
         ItemStack cleanItemStack = sanitize(itemStack);
-        Inventory inventory = inventory(ownerUuid, "离线玩家");
-        return InventorySlotUtil.hasSpace(inventory, cleanItemStack, 0, inventory.getSize())
-                || config.isAutoClearWhenFull();
+        if (InventorySlotUtil.isEmpty(cleanItemStack)) {
+            return false;
+        }
+        return store(ownerUuid).canAccept(cleanItemStack, true, config.isAutoClearWhenFull());
     }
 
-    /** 向个人垃圾桶放入物品。 */
+    /** 向个人垃圾桶完整放入一个非扫地自动路由物品。 */
     public boolean addItem(UUID ownerUuid, ItemStack itemStack) {
-        return addItem(ownerUuid, itemStack, false,
-                TrashMutationReason.NON_CLEANUP_DEPOSIT).isAccepted();
+        return addAutomaticItem(ownerUuid, itemStack, false,
+                TrashMutationReason.NON_CLEANUP_DEPOSIT).getStatus()
+                == TrashWriteResult.Status.ACCEPTED_FULL;
     }
 
-    /** 放入正式扫地物品并返回实际数量和同源物品追踪键。 */
+    /** 放入正式扫地物品，并允许紧凑模式部分接收。 */
     public TrashWriteResult addCleanupItem(UUID ownerUuid, ItemStack itemStack) {
-        return addItem(ownerUuid, itemStack, true, TrashMutationReason.NON_CLEANUP_DEPOSIT);
+        return addAutomaticItem(ownerUuid, itemStack, true,
+                TrashMutationReason.NON_CLEANUP_DEPOSIT);
     }
 
-    /** 按来源放入物品并维护非审计数量账本。 */
-    private TrashWriteResult addItem(UUID ownerUuid, ItemStack itemStack, boolean cleanupSource,
-                                     TrashMutationReason reason) {
+    /** 自动路由写入；只有容器容量拒绝时才按配置清空并重试一次。 */
+    private TrashWriteResult addAutomaticItem(UUID ownerUuid, ItemStack itemStack,
+                                              boolean cleanupSource,
+                                              TrashMutationReason reason) {
         if (!isEnabled() || ownerUuid == null) {
             return TrashWriteResult.rejected();
         }
         ItemStack cleanItemStack = sanitize(itemStack);
-        Inventory inventory = inventory(ownerUuid, "离线玩家");
-        if (!InventorySlotUtil.hasSpace(inventory, cleanItemStack, 0, inventory.getSize()) && config.isAutoClearWhenFull()) {
-            inventory.clear();
-            if (hasAuditConsumer()) {
-                recordMutation(TrashMutation.clear(personalDestination(ownerUuid),
-                        TrashMutationReason.PERSONAL_AUTO_CLEAR, System.currentTimeMillis()));
-            }
-        }
-        boolean added = InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize());
-        if (!added) {
+        if (InventorySlotUtil.isEmpty(cleanItemStack)) {
             return TrashWriteResult.rejected();
         }
-        String trackingKey = hasAuditConsumer() ? trackingKeyFactory.create(cleanItemStack) : "";
-        if (!cleanupSource && !trackingKey.isEmpty()) {
-            recordMutation(TrashMutation.untrackedDeposit(personalDestination(ownerUuid), cleanItemStack,
-                    trackingKey, cleanItemStack.getAmount(), reason, System.currentTimeMillis()));
+        TrashContainerStore store = store(ownerUuid);
+        TrashWriteResult result = config.isAutoClearWhenFull()
+                ? store.addWithClearRetry(cleanItemStack, cleanupSource)
+                : store.add(cleanItemStack, cleanupSource);
+        if (result.isClearedBeforeWrite()) {
+            recordMutation(TrashMutation.clear(personalDestination(ownerUuid),
+                    TrashMutationReason.PERSONAL_AUTO_CLEAR, System.currentTimeMillis()));
+            plugin.getLogger().info("[PersonalTrash] 个人垃圾桶容量不足，已按配置清空并仅重试一次: owner="
+                    + ownerUuid);
         }
-        return TrashWriteResult.accepted(cleanItemStack.getAmount(), trackingKey);
+        if (!cleanupSource && result.getStatus() == TrashWriteResult.Status.ACCEPTED_FULL
+                && hasAuditConsumer()) {
+            recordMutation(TrashMutation.untrackedDeposit(personalDestination(ownerUuid),
+                    cleanItemStack, result.getTrackingKey(), result.getAcceptedAmount(),
+                    reason, System.currentTimeMillis()));
+        }
+        return result;
     }
 
     /** 发送单个来源进入个人垃圾桶的提示。 */
@@ -170,125 +213,78 @@ public final class PersonalTrashService {
 
     /** 打开玩家自己的个人垃圾桶。 */
     public void open(Player player) {
-        if (!isEnabled()) {
-            player.sendMessage(message("personal-trash.disabled", "&c个人垃圾桶未启用。"));
+        if (player == null) {
             return;
         }
-        player.openInventory(inventoryForOpen(player));
+        if (!isEnabled()) {
+            player.sendMessage(message(player, "personal-trash.disabled", "&c个人垃圾桶未启用。"));
+            return;
+        }
+        containerMenu.open(player, store(player.getUniqueId()));
     }
 
     /** 处理个人垃圾桶点击。 */
     public boolean handleClick(InventoryClickEvent event) {
-        UUID ownerUuid = ownerOf(event.getInventory());
-        if (ownerUuid == null) {
-            return false;
-        }
-        event.setCancelled(true);
-        if (!(event.getWhoClicked() instanceof Player)) {
-            return true;
-        }
-        Player player = (Player) event.getWhoClicked();
-        int rawSlot = event.getRawSlot();
-        if (rawSlot >= 0 && rawSlot < event.getInventory().getSize()) {
-            takeItem(player, ownerUuid, event.getInventory(), rawSlot);
-            return true;
-        }
-        if (rawSlot >= event.getInventory().getSize()) {
-            putFromPlayer(player, ownerUuid, event);
-        }
-        return true;
+        return containerMenu.handleClick(event);
     }
 
-    /** 返回已创建的个人垃圾桶数量。 */
+    /** 阻止拖拽修改个人垃圾桶菜单。 */
+    public boolean handleDrag(InventoryDragEvent event) {
+        return containerMenu.handleDrag(event);
+    }
+
+    /** 关闭个人垃圾桶时释放菜单视图。 */
+    public boolean handleClose(InventoryCloseEvent event) {
+        return containerMenu.handleClose(event);
+    }
+
+    /** 玩家退出时释放个人桶菜单偏好和冷却。 */
+    public void handleQuit(UUID playerId) {
+        containerMenu.handleQuit(playerId);
+        if (playerId != null) {
+            lastTakeMillis.remove(playerId);
+        }
+    }
+
+    /** 插件关闭时释放个人桶视图和会话缓存，运行期存量随插件生命周期结束。 */
+    public void close() {
+        containerMenu.close();
+        lastTakeMillis.clear();
+        stores.clear();
+    }
+
+    /** 返回已创建的个人垃圾桶状态数量。 */
     public int getLoadedInventoryCount() {
-        return inventories.size();
+        return stores.size();
     }
 
     /** 返回指定玩家个人垃圾桶的物品总数量。 */
     public int getStoredItemAmount(UUID ownerUuid) {
-        Inventory inventory = inventories.get(ownerUuid);
-        if (inventory == null) {
-            return 0;
-        }
-        int amount = 0;
-        for (int slot = 0; slot < inventory.getSize(); slot++) {
-            ItemStack itemStack = inventory.getItem(slot);
-            if (!InventorySlotUtil.isEmpty(itemStack)) {
-                amount += itemStack.getAmount();
-            }
-        }
-        return amount;
+        TrashContainerStore store = ownerUuid == null ? null : stores.get(ownerUuid);
+        return store == null ? 0 : store.getStoredItemAmount();
     }
 
-    /** 返回指定玩家个人垃圾桶的堆叠数量。 */
+    /** 返回指定玩家个人垃圾桶当前模式的展示堆叠数量。 */
     public int getStoredStackCount(UUID ownerUuid) {
-        Inventory inventory = inventories.get(ownerUuid);
-        if (inventory == null) {
-            return 0;
-        }
-        int count = 0;
-        for (int slot = 0; slot < inventory.getSize(); slot++) {
-            if (!InventorySlotUtil.isEmpty(inventory.getItem(slot))) {
-                count++;
-            }
-        }
-        return count;
+        TrashContainerStore store = ownerUuid == null ? null : stores.get(ownerUuid);
+        return store == null ? 0 : store.getStoredStackCount();
     }
 
-    /** 取出个人垃圾桶物品。 */
-    private void takeItem(Player player, UUID ownerUuid, Inventory inventory, int slot) {
-        if (!hasTrashPermission(player, "WorldListTrashCan.PersonalTrashTakeItem")) {
-            player.sendMessage(message("personal-trash.no-take-permission", "&c你没有权限从个人垃圾桶取出物品。"));
-            return;
+    /** 返回或创建一个玩家独立的容器状态。 */
+    private TrashContainerStore store(UUID ownerUuid) {
+        TrashContainerStore existing = stores.get(ownerUuid);
+        if (existing != null) {
+            return existing;
         }
-        ItemStack itemStack = inventory.getItem(slot);
-        if (InventorySlotUtil.isEmpty(itemStack)) {
-            return;
+        TrashContainerStore created = new TrashContainerStore(identityProvider,
+                "personal:" + ownerUuid.toString());
+        created.configure(config, containerMenu.getContentSlotsPerPage());
+        TrashContainerStore raced = stores.putIfAbsent(ownerUuid, created);
+        if (raced == null) {
+            plugin.getLogger().fine("[PersonalTrash] 创建个人垃圾桶状态: " + ownerUuid);
+            return created;
         }
-        if (!InventorySlotUtil.hasAnyStorageSpace(player.getInventory(), itemStack)) {
-            player.sendMessage(message("personal-trash.inventory-full", "&c背包空间不足，无法取出该物品。"));
-            return;
-        }
-        double cost = config.getTakeCost();
-        if (cost > 0D && !paymentService.charge(player, cost)) {
-            player.sendMessage(message("personal-trash.not-enough-money", "&c余额不足，无法取出该物品。"));
-            return;
-        }
-        Map<Integer, ItemStack> leftovers = player.getInventory().addItem(itemStack.clone());
-        if (leftovers.isEmpty()) {
-            recordTake(player, ownerUuid, itemStack, itemStack.getAmount());
-            inventory.clear(slot);
-            if (cost > 0D) {
-                player.sendMessage(message("personal-trash.pay-success", "&a已支付 {cost}。",
-                        "{cost}", paymentService.format(cost)));
-            }
-            return;
-        }
-        ItemStack remaining = leftovers.values().iterator().next();
-        int moved = itemStack.getAmount() - remaining.getAmount();
-        if (moved > 0) {
-            recordTake(player, ownerUuid, itemStack, moved);
-        }
-        itemStack.setAmount(remaining.getAmount());
-        inventory.setItem(slot, itemStack);
-    }
-
-    /** 玩家手动放入个人垃圾桶。 */
-    private void putFromPlayer(Player player, UUID ownerUuid, InventoryClickEvent event) {
-        if (!hasTrashPermission(player, "WorldListTrashCan.PersonalTrashPutItem")) {
-            return;
-        }
-        Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory == null || event.getSlot() < 0 || event.getSlot() >= clickedInventory.getSize()) {
-            return;
-        }
-        ItemStack itemStack = clickedInventory.getItem(event.getSlot());
-        if (InventorySlotUtil.isEmpty(itemStack)) {
-            return;
-        }
-        if (addItem(ownerUuid, itemStack, false, TrashMutationReason.MANUAL_DEPOSIT).isAccepted()) {
-            clickedInventory.setItem(event.getSlot(), null);
-        }
+        return raced;
     }
 
     /** 判断玩家是否拥有个人垃圾桶操作权限，并保留 OP 旁路。 */
@@ -296,19 +292,27 @@ public final class PersonalTrashService {
         return player != null && (player.isOp() || player.hasPermission(permission));
     }
 
+    /** 判断玩家是否仍在个人垃圾桶拿取冷却中。 */
+    private boolean isCoolingDown(Player player) {
+        long delay = config == null ? 0L : config.getTakeDelayMillis();
+        if (delay <= 0L) {
+            return false;
+        }
+        Long lastValue = lastTakeMillis.get(player.getUniqueId());
+        long remain = (lastValue == null ? 0L : lastValue.longValue()) + delay
+                - System.currentTimeMillis();
+        if (remain <= 0L) {
+            return false;
+        }
+        player.sendMessage(message(player, "personal-trash.take-cooldown",
+                "&c个人垃圾桶拿取冷却剩余 {time} 秒。",
+                "{time}", String.valueOf(Math.max(1L, remain / 100L) / 10D)));
+        return true;
+    }
+
     /** 清理插件内部物品标记后用于入库。 */
     private ItemStack sanitize(ItemStack itemStack) {
         return itemSnapshotMapper == null ? itemStack : itemSnapshotMapper.sanitizeForStorage(itemStack);
-    }
-
-    /** 查找当前虚拟背包所属玩家。 */
-    private UUID ownerOf(Inventory inventory) {
-        for (Map.Entry<UUID, Inventory> entry : inventories.entrySet()) {
-            if (entry.getValue() == inventory) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
     /** 创建包含当前可用名字的个人垃圾桶去向。 */
@@ -316,18 +320,6 @@ public final class PersonalTrashService {
         OfflinePlayer owner = Bukkit.getOfflinePlayer(ownerUuid);
         return CleanupItemDestination.personalTrash(ownerUuid,
                 owner.getName() == null ? "" : owner.getName());
-    }
-
-    /** 记录玩家从个人垃圾桶实际取出的数量。 */
-    private void recordTake(Player player, UUID ownerUuid, ItemStack itemStack, int amount) {
-        if (!hasAuditConsumer()) {
-            return;
-        }
-        String trackingKey = trackingKeyFactory.create(itemStack);
-        if (!trackingKey.isEmpty()) {
-            recordMutation(TrashMutation.take(personalDestination(ownerUuid), itemStack,
-                    trackingKey, amount, player.getUniqueId(), player.getName(), System.currentTimeMillis()));
-        }
     }
 
     /** 在附属存在时转发变更；没有附属时保持空操作。 */
@@ -368,15 +360,15 @@ public final class PersonalTrashService {
     private String formatItemList(List<ItemStack> itemStacks) {
         List<NotificationEntry> entries = mergeEntries(itemStacks);
         int maxDisplay = config == null ? 3 : config.getNotifyMaxDisplayItems();
-        int displayCount = entries.size() > maxDisplay ? maxDisplay : entries.size();
+        int displayCount = Math.min(entries.size(), maxDisplay);
         List<String> parts = new ArrayList<>();
         for (int index = 0; index < displayCount; index++) {
             parts.add(formatEntry(entries.get(index)));
         }
         if (entries.size() > maxDisplay) {
-            parts.add(message("personal-trash.recycle.ellipsis", "&7...", new String[0]));
+            parts.add(message("personal-trash.recycle.ellipsis", "&7..."));
         }
-        String joined = join(parts, message("personal-trash.recycle.separator", "&7, ", new String[0]));
+        String joined = join(parts, message("personal-trash.recycle.separator", "&7, "));
         return message("personal-trash.recycle.list", "&7[{items}&7]", "{items}", joined);
     }
 
@@ -429,49 +421,12 @@ public final class PersonalTrashService {
         return builder.toString();
     }
 
-    /** 获取或创建个人垃圾桶。 */
-    private Inventory inventory(UUID ownerUuid, String playerName) {
-        Inventory inventory = inventories.get(ownerUuid);
-        if (inventory != null) {
-            return inventory;
-        }
-        String title = personalTrashTitle(ownerUuid, playerName);
-        Inventory created = Bukkit.createInventory(null, 54, title);
-        inventories.put(ownerUuid, created);
-        inventoryTitles.put(ownerUuid, title);
-        plugin.getLogger().fine("[PersonalTrash] 创建个人垃圾桶: " + ownerUuid);
-        return created;
-    }
-
-    /** 打开前按当前语言配置刷新菜单标题。 */
-    private Inventory inventoryForOpen(Player player) {
-        UUID ownerUuid = player.getUniqueId();
-        Inventory inventory = inventory(ownerUuid, player.getName());
-        String title = personalTrashTitle(ownerUuid, player.getName());
-        String previousTitle = inventoryTitles.get(ownerUuid);
-        if (!shouldRecreateInventory(previousTitle, title, inventory.getViewers().isEmpty())) {
-            return inventory;
-        }
-        Inventory recreated = Bukkit.createInventory(null, inventory.getSize(), title);
-        moveInventoryContents(inventory, recreated);
-        inventories.put(ownerUuid, recreated);
-        inventoryTitles.put(ownerUuid, title);
-        plugin.getLogger().fine("[PersonalTrash] 已刷新个人垃圾桶标题: " + ownerUuid);
-        return recreated;
-    }
-
-    /** 渲染当前语言文件中的个人垃圾桶标题。 */
-    private String personalTrashTitle(UUID ownerUuid, String playerName) {
-        return message("personal-trash.gui.title", "&8{player} 的个人垃圾桶",
-                "{player}", resolveOwnerName(ownerUuid, playerName));
-    }
-
-    /** 标题变化且菜单无人查看时才允许重建。 */
+    /** 标题变化且菜单无人查看时才允许重建；保留给旧迁移单测。 */
     static boolean shouldRecreateInventory(String previousTitle, String nextTitle, boolean noViewers) {
         return noViewers && previousTitle != null && !previousTitle.equals(nextTitle);
     }
 
-    /** 按原槽位迁移个人垃圾桶内容，复制成功后清空旧菜单引用。 */
+    /** 按原槽位迁移库存内容；保留给旧迁移单测。 */
     static void moveInventoryContents(Inventory source, Inventory target) {
         int size = Math.min(source.getSize(), target.getSize());
         for (int slot = 0; slot < size; slot++) {
@@ -480,7 +435,7 @@ public final class PersonalTrashService {
         source.clear();
     }
 
-    /** 优先使用 Bukkit 已知的真实玩家名，未知时才采用调用方兜底名。 */
+    /** 优先使用 Bukkit 已知的真实玩家名。 */
     private String resolveOwnerName(UUID ownerUuid, String fallbackName) {
         Player online = Bukkit.getPlayer(ownerUuid);
         if (online != null && online.getName() != null && !online.getName().trim().isEmpty()) {
@@ -493,14 +448,138 @@ public final class PersonalTrashService {
         return fallbackName == null || fallbackName.trim().isEmpty() ? "离线玩家" : fallbackName;
     }
 
-    /** 转换颜色代码。 */
-    private String color(String text) {
-        return RichTextRenderer.color(text);
+    /** 返回当前个人桶显示模式名称。 */
+    private String modeName() {
+        return config == null || config.getMode() == null
+                ? "disabled" : config.getMode().name().toLowerCase();
     }
 
     /** 返回格式化消息。 */
     private String message(String key, String fallback, String... replacements) {
-        return messages == null ? color(fallback) : messages.text(key, fallback, replacements);
+        return messages == null ? RichTextRenderer.color(replace(fallback, replacements))
+                : messages.text(key, fallback, replacements);
+    }
+
+    /** 按玩家协议版本返回格式化消息。 */
+    private String message(Player player, String key, String fallback, String... replacements) {
+        return messages == null ? RichTextRenderer.color(player, replace(fallback, replacements))
+                : messages.text(player, key, fallback, replacements);
+    }
+
+    /** 为没有消息服务的单元场景替换简单变量。 */
+    private String replace(String value, String... replacements) {
+        String result = value == null ? "" : value;
+        if (replacements == null) {
+            return result;
+        }
+        for (int index = 0; index + 1 < replacements.length; index += 2) {
+            result = result.replace(replacements[index],
+                    replacements[index + 1] == null ? "" : replacements[index + 1]);
+        }
+        return result;
+    }
+
+    /** 个人垃圾桶专属菜单策略。 */
+    private final class PersonalMenuPolicy implements TrashContainerMenuPolicy {
+        /** 返回个人桶后台日志作用域。 */
+        @Override
+        public String getLogName() {
+            return "PersonalTrash";
+        }
+
+        /** 返回当前玩家自己的个人桶标题。 */
+        @Override
+        public String getTitle(Player player, int pageIndex, int maxPages) {
+            return PersonalTrashService.this.message(player, "personal-trash.gui.title",
+                    "&8{player} 的个人垃圾桶 {page}/{max}",
+                    "{player}", resolveOwnerName(player.getUniqueId(), player.getName()),
+                    "{page}", String.valueOf(pageIndex + 1),
+                    "{max}", String.valueOf(maxPages));
+        }
+
+        /** 发送个人桶关闭提示。 */
+        @Override
+        public void sendDisabled(Player player) {
+            player.sendMessage(PersonalTrashService.this.message(player,
+                    "personal-trash.disabled", "&c个人垃圾桶未启用。"));
+        }
+
+        /** 判断个人桶取物权限。 */
+        @Override
+        public boolean canTake(Player player) {
+            if (hasTrashPermission(player, "WorldListTrashCan.PersonalTrashTakeItem")) {
+                return true;
+            }
+            player.sendMessage(PersonalTrashService.this.message(player,
+                    "personal-trash.no-take-permission",
+                    "&c你没有权限从个人垃圾桶取出物品。"));
+            return false;
+        }
+
+        /** 执行个人桶冷却和 Vault 收费检查。 */
+        @Override
+        public boolean beforeTake(Player player, ItemStack itemStack, int requestedAmount) {
+            if (isCoolingDown(player)) {
+                return false;
+            }
+            double cost = config == null ? -1D : config.getTakeCost();
+            if (cost <= 0D || paymentService.charge(player, cost)) {
+                return true;
+            }
+            player.sendMessage(PersonalTrashService.this.message(player,
+                    "personal-trash.not-enough-money",
+                    "&c余额不足，无法取出该物品。"));
+            return false;
+        }
+
+        /** 记录个人桶实际取物、冷却、付款提示和审计。 */
+        @Override
+        public void afterTake(Player player, ItemStack itemStack,
+                              String trackingKey, int removedAmount) {
+            lastTakeMillis.put(player.getUniqueId(), System.currentTimeMillis());
+            double cost = config == null ? -1D : config.getTakeCost();
+            if (cost > 0D) {
+                player.sendMessage(PersonalTrashService.this.message(player,
+                        "personal-trash.pay-success", "&a已支付 {cost}。",
+                        "{cost}", paymentService.format(cost)));
+            }
+            if (hasAuditConsumer()) {
+                recordMutation(TrashMutation.take(personalDestination(player.getUniqueId()), itemStack,
+                        trackingKey, removedAmount, player.getUniqueId(), player.getName(),
+                        System.currentTimeMillis()));
+            }
+        }
+
+        /** 判断个人桶手动放入权限。 */
+        @Override
+        public boolean canManualPut(Player player, ItemStack itemStack) {
+            return hasTrashPermission(player, "WorldListTrashCan.PersonalTrashPutItem");
+        }
+
+        /** 记录个人桶手动放入审计；手动放入永不触发自动清空。 */
+        @Override
+        public void afterManualPut(Player player, ItemStack itemStack,
+                                   String trackingKey, int acceptedAmount) {
+            if (hasAuditConsumer()) {
+                recordMutation(TrashMutation.untrackedDeposit(personalDestination(player.getUniqueId()),
+                        itemStack, trackingKey, acceptedAmount,
+                        TrashMutationReason.MANUAL_DEPOSIT, System.currentTimeMillis()));
+            }
+        }
+
+        /** 读取个人桶语言键。 */
+        @Override
+        public String message(String suffix, String fallback, String... replacements) {
+            return PersonalTrashService.this.message("personal-trash." + suffix, fallback, replacements);
+        }
+
+        /** 发送个人桶背包空间不足提示。 */
+        @Override
+        public void onTakeInventoryFull(Player player) {
+            player.sendMessage(PersonalTrashService.this.message(player,
+                    "personal-trash.inventory-full",
+                    "&c背包空间不足，无法取出该物品。"));
+        }
     }
 
     /** 个人垃圾桶提示里的合并物品条目。 */

@@ -10,11 +10,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 final class GlobalTrashTextResolver {
     private final Plugin plugin;
     private final boolean placeholderApiAvailable;
+    private final String logName;
     private final AtomicBoolean failureLogged = new AtomicBoolean();
 
     /** 创建变量解析器，未安装 PlaceholderAPI 时保持零依赖降级。 */
     GlobalTrashTextResolver(Plugin plugin) {
+        this(plugin, "GlobalTrash");
+    }
+
+    /** 创建带明确日志作用域的变量解析器。 */
+    GlobalTrashTextResolver(Plugin plugin, String logName) {
         this.plugin = plugin;
+        this.logName = logName == null || logName.trim().isEmpty() ? "TrashContainer" : logName.trim();
         this.placeholderApiAvailable = plugin != null
                 && plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
     }
@@ -63,7 +70,7 @@ final class GlobalTrashTextResolver {
     /** 首次解析失败时输出一次警告，避免每次点击刷屏。 */
     private void logFailureOnce(Throwable throwable) {
         if (plugin != null && failureLogged.compareAndSet(false, true)) {
-            plugin.getLogger().warning("[GlobalTrash] PlaceholderAPI 变量解析失败，已保留原文: "
+            plugin.getLogger().warning('[' + logName + "] PlaceholderAPI 变量解析失败，已保留原文: "
                     + throwable.getClass().getSimpleName() + ": " + throwable.getMessage());
         }
     }

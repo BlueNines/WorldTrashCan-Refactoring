@@ -21,6 +21,8 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 紧凑模式容量 | 无单物品逻辑上限 | 每种物品可配置累计上限，`-1` 为无限；达到上限时按剩余容量接收，不会把一批物品拆成大量条目 |
 | 公共垃圾桶缩容 | 缩小容量可能造成旧物品无处显示 | 自动进入只读溢出页，可查看和取出，不静默丢失 |
 | 公共垃圾桶动作 | 只能使用固定按钮 | 支持 `[console]`、`[command]`、`[message]`、`[close]`、`type: close` 和 PAPI 变量 |
+| 个人垃圾桶界面 | 固定 54 格原版库存 | 与公共桶一样支持独立布局、紧凑/堆叠双模式、分页、玩家独立排序、actions、close、glow 和 PAPI |
+| 个人垃圾桶容量 | 满时默认直接清空旧内容 | 默认拒绝新路由且保留旧内容；可显式开启“容量不足时清空并只重试一次” |
 | 个人垃圾桶提示 | 单个或批量提示不完整 | 单个物品单独提示，扫地批量汇总提示，默认显示前 3 类 |
 | 扫地启动条件 | 到时间就执行 | 可按在线人数和实体数量跳过低压力清理 |
 | 手动扫地 | 只有固定执行方式 | `/wtc clear true/false` 可选择是否忽略扫地门禁 |
@@ -67,6 +69,12 @@ global-trash:
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
 公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
+
+### 个人垃圾桶显示与容量
+
+个人垃圾桶使用与公共垃圾桶相同的存储和菜单核心，但每个玩家按 UUID 隔离状态。`personal-trash.mode` 可选 `compact` 或 `stacked`，两种模式拥有独立的 `max-pages` 和默认排序；布局、翻页、排序、`actions`、`close`、`glow`、RGB、传统颜色和 PAPI 写法与公共桶一致。
+
+个人桶默认使用紧凑模式、2 页、单种物品上限 `9999`，允许手动放入且没有拿取冷却。个人桶满时默认拒绝路由并保留旧物品。只有显式设置 `auto-clear-when-full: true` 后，自动路由遇到“整个容器容量不足”才会清空并只重试一次；玩家 GUI 手动放入、单种物品达到上限和已经部分接收的请求绝不会触发清空。个人专属物品也不会因为个人桶满而自动改投公共桶。
 
 #### 兼容性和稳定性增强
 
@@ -211,11 +219,12 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.2.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`AD8050CC74741E9AC84B0CA17F380092D27467A178F674D7765023D547000626`
+- SHA-256：`6D977DAD138453916AB6095458ED829EE0A6FB0FF9D636378CCA5D8EB14655E4`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
-- 修改 `personal-trash.gui.title` 后执行 `/wtc reload`，已创建的个人垃圾桶会在下次打开时更新标题，并保留桶内物品。
+- 个人垃圾桶统一容器已使用同一整包在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.8 完成匹配版本真实客户端验收，覆盖紧凑/堆叠、Lore 截断、翻页、玩家排序、actions、close、glow、PAPI、手动放入、取出、重载保留、容量策略和 UUID 隔离。
+- 三端各完成 600 次菜单打开压力检查，观测 TPS 分别为 `19.974`、`19.998`、`19.995`，服务端日志未发现本专项禁止异常。
 
 ## English
 
@@ -233,6 +242,8 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Public trash-can buttons | Fixed material and position | Material fallbacks, CustomModelData, name, Lore, and replacement items |
 | Public trash-can display mode | Only vanilla stack display | `compact` shows one display item per type and puts the amount in Lore; `stacked` preserves the legacy 64/16/1 display |
 | Public trash-can sorting | One fixed insertion order shared by everyone | Each player can independently select insertion, amount, name, or material sorting; `compact` and `stacked` preferences remain separate |
+| Personal trash-can UI | Fixed 54-slot inventory | Independent layout, compact/stacked modes, pagination, per-player sorting, actions, close, glow, and PAPI using the same container core |
+| Personal trash capacity | Full containers clear old contents by default | New routes are rejected by default while old contents remain; optional clear-and-retry runs only once for container-capacity failures |
 | Compact per-item capacity | No logical per-item cap | Each type has a configurable accumulated cap; `-1` means unlimited, and incoming batches use remaining capacity instead of creating duplicate entries |
 | Smaller public trash-can capacity | Items could become inaccessible | A read-only overflow page keeps items visible and retrievable instead of silently losing them |
 | Public trash-can actions | Only fixed button behavior | Supports `[console]`, `[command]`, `[message]`, `[close]`, `type: close`, and PlaceholderAPI variables |
@@ -282,6 +293,12 @@ Compact mode does not split a batch into many duplicate display entries. For exa
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
 Layout display items support `glow: true` for page, background, sort, actions, and close buttons. Minecraft 1.20.5 and newer use Bukkit's native glint override without a real enchantment. Older versions automatically fall back to a hidden enchantment, so no enchantment name appears in the tooltip. `type: content` always ignores this option and never mutates stored trash items.
+
+### Personal trash-can display and capacity
+
+Personal trash uses the same storage and menu core as global trash, while state remains isolated by owner UUID. `personal-trash.mode` accepts `compact` or `stacked`; both modes have independent `max-pages` and default sort settings. Layout, pagination, sorting, `actions`, `close`, `glow`, RGB, legacy colors, and PAPI work the same way as global trash.
+
+The personal default is compact mode, 2 pages, a per-item limit of `9999`, manual deposits enabled, and no take delay. When full, personal trash rejects new routes by default and keeps its existing contents. Only with `auto-clear-when-full: true` will an automatic route clear and retry once after a whole-container-capacity rejection. Manual GUI deposits, per-entry limits, and partially accepted requests never trigger a clear. Personal-only items are not redirected to global trash just because the personal container is full.
 
 #### Compatibility and stability improvements
 
@@ -425,8 +442,9 @@ Final universal artifact information:
 
 - Version: `7.2.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `AD8050CC74741E9AC84B0CA17F380092D27467A178F674D7765023D547000626`
+- SHA-256: `6D977DAD138453916AB6095458ED829EE0A6FB0FF9D636378CCA5D8EB14655E4`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
-- After changing `personal-trash.gui.title`, `/wtc reload` refreshes existing personal trash-can titles on the next open without losing stored items.
+- The unified personal container was verified with the same universal JAR and matching real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.8. Coverage includes compact/stacked modes, Lore truncation, pagination, per-player sorting, actions, close, glow, PAPI, manual deposits, withdrawals, reload retention, capacity policies, and UUID isolation.
+- Each platform completed a 600-open menu stress check with observed TPS of `19.974`, `19.998`, and `19.995`; no forbidden runtime exceptions were found for this matrix.
