@@ -298,14 +298,10 @@ public final class CleanupFeature implements Feature {
         }
         if (countdownSeconds <= 0) {
             CleanupStats stats = runNow();
-            if (stats.isGuardSkipped()) {
-                sendNotify(-5, stats);
-                countdownSeconds = interval;
-                nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
-                return;
+            if (!stats.isGuardSkipped()) {
+                sendNotify(0, stats);
+                sendNotify(globalTrashStatusNotifyCount(stats), stats);
             }
-            sendNotify(0, stats);
-            sendNotify(globalTrashStatusNotifyCount(stats), stats);
             countdownSeconds = interval;
             nextRunAtMillis = System.currentTimeMillis() + countdownSeconds * 1000L;
             return;

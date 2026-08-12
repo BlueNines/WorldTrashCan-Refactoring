@@ -209,7 +209,7 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`52318fadfe527a35ed9d0e225ecc8d7ec5d16b3fb1196e36e16c93e38b9060bd`
+- SHA-256：`80c5a2c22f5a413e831ab75d825778c07f9c059e2bc9b7d0b934bc46d70733c9`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 
@@ -419,6 +419,6 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `52318fadfe527a35ed9d0e225ecc8d7ec5d16b3fb1196e36e16c93e38b9060bd`
+- SHA-256: `80c5a2c22f5a413e831ab75d825778c07f9c059e2bc9b7d0b934bc46d70733c9`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
