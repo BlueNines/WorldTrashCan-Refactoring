@@ -245,6 +245,10 @@ public final class GlobalTrashService {
                 actionExecutor.execute(player, item.getActions(), pageIndex, snapshot.getPageCount());
                 return true;
             }
+            if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.CLOSE) {
+                player.closeInventory();
+                return true;
+            }
             if (item != null && item.getType() == TrashConfig.GlobalTrashItemType.SORT
                     && isNormalActionClick(event.getClick())) {
                 changeSort(player, snapshot.getSortType(), event.getClick());

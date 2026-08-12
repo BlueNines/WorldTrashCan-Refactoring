@@ -692,7 +692,8 @@ public final class TrashConfig {
         NEXT_PAGE,
         BACKGROUND,
         ACTIONS,
-        SORT
+        SORT,
+        CLOSE
     }
 
     /** 个人垃圾桶配置。 */

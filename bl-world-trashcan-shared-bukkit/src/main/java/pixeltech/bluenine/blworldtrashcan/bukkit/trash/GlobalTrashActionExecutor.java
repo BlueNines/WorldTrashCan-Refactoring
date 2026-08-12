@@ -12,11 +12,12 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** 执行公共垃圾桶 actions 按钮的三种轻量动作。 */
+/** 执行公共垃圾桶 actions 按钮的轻量动作。 */
 final class GlobalTrashActionExecutor {
     private static final String CONSOLE = "[console]";
     private static final String COMMAND = "[command]";
     private static final String MESSAGE = "[message]";
+    private static final String CLOSE = "[close]";
 
     private final Plugin plugin;
     private final ServerPlatform platform;
@@ -73,6 +74,10 @@ final class GlobalTrashActionExecutor {
             player.sendMessage(RichTextRenderer.color(player, parsed.substring(MESSAGE.length()).trim()));
             return;
         }
+        if (CLOSE.equals(normalized)) {
+            player.closeInventory();
+            return;
+        }
         warnUnknown(action, "运行期");
     }
 
@@ -101,12 +106,13 @@ final class GlobalTrashActionExecutor {
         return command.startsWith("/") ? command.substring(1).trim() : command;
     }
 
-    /** 判断动作是否使用支持的三种前缀。 */
+    /** 判断动作是否使用支持的前缀或无参数关闭动作。 */
     static boolean isSupported(String action) {
         String normalized = action == null ? "" : action.trim().toLowerCase(Locale.ROOT);
         return normalized.startsWith(CONSOLE)
                 || normalized.startsWith(COMMAND)
-                || normalized.startsWith(MESSAGE);
+                || normalized.startsWith(MESSAGE)
+                || CLOSE.equals(normalized);
     }
 
     /** 对同一条未知动作只记录一次，避免点击刷屏。 */

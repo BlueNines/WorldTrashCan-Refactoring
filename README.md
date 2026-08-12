@@ -20,7 +20,7 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 公共垃圾桶排序 | 所有玩家共用固定进入顺序 | 每名玩家可独立选择进入顺序、数量升降序、名称或材质排序；`compact` 与 `stacked` 偏好互不污染 |
 | 紧凑模式容量 | 无单物品逻辑上限 | 每种物品可配置累计上限，`-1` 为无限；达到上限时按剩余容量接收，不会把一批物品拆成大量条目 |
 | 公共垃圾桶缩容 | 缩小容量可能造成旧物品无处显示 | 自动进入只读溢出页，可查看和取出，不静默丢失 |
-| 公共垃圾桶动作 | 只能使用固定按钮 | 支持 `[console]`、`[command]`、`[message]` 和 PAPI 变量 |
+| 公共垃圾桶动作 | 只能使用固定按钮 | 支持 `[console]`、`[command]`、`[message]`、`[close]`、`type: close` 和 PAPI 变量 |
 | 个人垃圾桶提示 | 单个或批量提示不完整 | 单个物品单独提示，扫地批量汇总提示，默认显示前 3 类 |
 | 扫地启动条件 | 到时间就执行 | 可按在线人数和实体数量跳过低压力清理 |
 | 手动扫地 | 只有固定执行方式 | `/wtc clear true/false` 可选择是否忽略扫地门禁 |
@@ -209,7 +209,7 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`65fcebfef71f96cd9c579ff34885da7ba96a99d626d28722e39490fa37bd95b4`
+- SHA-256：`52318fadfe527a35ed9d0e225ecc8d7ec5d16b3fb1196e36e16c93e38b9060bd`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 
@@ -231,7 +231,7 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Public trash-can sorting | One fixed insertion order shared by everyone | Each player can independently select insertion, amount, name, or material sorting; `compact` and `stacked` preferences remain separate |
 | Compact per-item capacity | No logical per-item cap | Each type has a configurable accumulated cap; `-1` means unlimited, and incoming batches use remaining capacity instead of creating duplicate entries |
 | Smaller public trash-can capacity | Items could become inaccessible | A read-only overflow page keeps items visible and retrievable instead of silently losing them |
-| Public trash-can actions | Only fixed button behavior | Supports `[console]`, `[command]`, `[message]`, and PlaceholderAPI variables |
+| Public trash-can actions | Only fixed button behavior | Supports `[console]`, `[command]`, `[message]`, `[close]`, `type: close`, and PlaceholderAPI variables |
 | Personal trash-can notifications | Incomplete single-item and batch messages | Individual notifications for single items and grouped notifications for cleanup batches, showing up to 3 types by default |
 | Cleanup guards | Cleanup ran when its timer elapsed | Automatic cleanup can be skipped when online-player or entity-count thresholds are not met |
 | Manual cleanup | One fixed execution mode | `/wtc clear true/false` chooses whether cleanup guards are ignored |
@@ -419,6 +419,6 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `65fcebfef71f96cd9c579ff34885da7ba96a99d626d28722e39490fa37bd95b4`
+- SHA-256: `52318fadfe527a35ed9d0e225ecc8d7ec5d16b3fb1196e36e16c93e38b9060bd`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.

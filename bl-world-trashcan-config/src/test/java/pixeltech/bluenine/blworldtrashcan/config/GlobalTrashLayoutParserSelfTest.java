@@ -34,7 +34,7 @@ public final class GlobalTrashLayoutParserSelfTest {
     private static void verifyCustomLayout() {
         MapConfigurationSource source = new MapConfigurationSource();
         source.put("global-trash.gui.layout.position", Arrays.asList(
-                "xxxxxxxxx", "xxxxxxxxx", "abbsdbbbc"));
+                "xxxxxxxxx", "xxxxxxxxx", "abdsqbbbc"));
         source.put("global-trash.gui.layout.items.x.type", "content");
         source.put("global-trash.gui.layout.items.a.type", "previous-page");
         source.put("global-trash.gui.layout.items.a.model-id", Integer.valueOf(77));
@@ -56,6 +56,8 @@ public final class GlobalTrashLayoutParserSelfTest {
         source.put("global-trash.gui.layout.items.s.type", "sort");
         source.put("global-trash.gui.layout.items.s.material", Arrays.asList(
                 "COMPARATOR", "REDSTONE_COMPARATOR"));
+        source.put("global-trash.gui.layout.items.q.type", "close");
+        source.put("global-trash.gui.layout.items.q.name", "&c关闭");
 
         TrashConfig.GlobalTrashLayoutConfig layout = new GlobalTrashLayoutParser().parse(source, -1, -1, -1);
         assertEquals("custom size", 27, layout.getInventorySize());
@@ -73,6 +75,8 @@ public final class GlobalTrashLayoutParserSelfTest {
         assertEquals("custom actions", 2, layout.getItem('d').getActions().size());
         assertEquals("custom sort type", "sort", layout.getItem('s').getType().name().toLowerCase());
         assertEquals("custom sort materials", 2, layout.getItem('s').getMaterials().size());
+        assertEquals("custom close type", "close", layout.getItem('q').getType().name().toLowerCase());
+        assertEquals("custom close default material", "BARRIER", layout.getItem('q').getMaterials().get(0));
         assertEquals("empty name override", "", layout.getItem('b').getName());
         assertNull("custom validation", layout.getValidationError());
     }

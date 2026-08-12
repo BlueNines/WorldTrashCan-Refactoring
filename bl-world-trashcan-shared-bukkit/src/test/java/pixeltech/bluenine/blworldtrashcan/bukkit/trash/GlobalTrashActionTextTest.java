@@ -23,12 +23,14 @@ public final class GlobalTrashActionTextTest {
         Assert.assertEquals("%player_level% Alice", actual);
     }
 
-    /** 验证只接受 BLLevelManager 同语义的三种动作前缀。 */
+    /** 验证只接受支持的动作前缀和无参数关闭动作。 */
     @Test
     public void validatesSupportedActionPrefixes() {
         Assert.assertTrue(GlobalTrashActionExecutor.isSupported("[console] say ok"));
         Assert.assertTrue(GlobalTrashActionExecutor.isSupported(" [COMMAND] wtc stats"));
         Assert.assertTrue(GlobalTrashActionExecutor.isSupported("[message] &aok"));
+        Assert.assertTrue(GlobalTrashActionExecutor.isSupported(" [CLOSE] "));
+        Assert.assertFalse(GlobalTrashActionExecutor.isSupported("[close] ignored"));
         Assert.assertFalse(GlobalTrashActionExecutor.isSupported("[player] wtc stats"));
         Assert.assertFalse(GlobalTrashActionExecutor.isSupported("say unsafe"));
     }

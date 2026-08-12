@@ -164,7 +164,8 @@ global-trash:
         #     - "&#C9D4E2玩家: &f{player}"
         #     - "&#C9D4E2等级: &f%player_level%"
         #     - "&#79879C点击查看第 {page}/{max-page} 页统计"
-        #   # 动作从上到下分派；[console] 是控制台命令，[command] 是玩家命令，[message] 是玩家消息。
+        #   # 动作从上到下分派；[console] 是控制台命令，[command] 是玩家命令，[message] 是玩家消息，[close] 关闭当前菜单。
+        #   # [close] 不需要参数，必须单独写成 "[close]"；关闭后列表中的后续动作仍会继续执行。
         #   # 命令开头的 / 可以省略；未知动作会被跳过并在后台警告。
         #   # 内置变量: {player}、{uuid}、{world}、{page}、{max-page}、{previous-page}、{next-page}。
         #   # 安装 PlaceholderAPI 后支持 %...% 变量；未安装时保留 PAPI 原文，其它功能不受影响。
@@ -172,6 +173,20 @@ global-trash:
         #   actions:
         #     - "[message] &#5AC8FA当前位于公共垃圾桶第 &#FFD166{page}/{max-page} &#5AC8FA页"
         #     - "[command] wtc stats"
+        #     - "[close]"
+        # close 关闭按钮示例：在 position 中放入对应字符后，点击该槽位会直接关闭当前菜单。
+        # e:
+        #   # close 不需要 actions；任意点击方式都会关闭当前玩家的公共垃圾桶菜单。
+        #   type: "close"
+        #   # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
+        #   model-id: -1
+        #   # 按顺序使用当前服务端存在的第一个材质；不配置时默认使用 BARRIER。
+        #   material:
+        #     - "BARRIER"
+        #   # 可选名称和 Lore，支持 RGB、传统颜色、内置变量和 PlaceholderAPI 变量。
+        #   name: "&#F87171关闭菜单"
+        #   lore:
+        #     - "&#C9D4E2点击关闭公共垃圾桶"
   # 公共垃圾桶准入白名单；关闭时保持旧版“除黑名单外都可进入”的行为。
   admission-whitelist:
     # 默认关闭；开启后以下五类规则任意命中才允许进入公共垃圾桶。
