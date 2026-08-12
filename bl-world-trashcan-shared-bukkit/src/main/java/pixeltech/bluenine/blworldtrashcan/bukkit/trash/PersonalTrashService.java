@@ -36,6 +36,7 @@ public final class PersonalTrashService {
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final AuditTrackingKeyFactory trackingKeyFactory;
     private final Map<UUID, Inventory> inventories = new HashMap<>();
+    private final Map<UUID, String> inventoryTitles = new HashMap<>();
     private TrashConfig.PersonalTrashConfig config;
 
     /** 创建个人垃圾桶服务。 */
@@ -173,7 +174,7 @@ public final class PersonalTrashService {
             player.sendMessage(message("personal-trash.disabled", "&c个人垃圾桶未启用。"));
             return;
         }
-        player.openInventory(inventory(player.getUniqueId(), player.getName()));
+        player.openInventory(inventoryForOpen(player));
     }
 
     /** 处理个人垃圾桶点击。 */
@@ -434,12 +435,49 @@ public final class PersonalTrashService {
         if (inventory != null) {
             return inventory;
         }
-        Inventory created = Bukkit.createInventory(null, 54,
-                message("personal-trash.gui.title", "&8{player} 的个人垃圾桶",
-                        "{player}", resolveOwnerName(ownerUuid, playerName)));
+        String title = personalTrashTitle(ownerUuid, playerName);
+        Inventory created = Bukkit.createInventory(null, 54, title);
         inventories.put(ownerUuid, created);
+        inventoryTitles.put(ownerUuid, title);
         plugin.getLogger().fine("[PersonalTrash] 创建个人垃圾桶: " + ownerUuid);
         return created;
+    }
+
+    /** 打开前按当前语言配置刷新菜单标题。 */
+    private Inventory inventoryForOpen(Player player) {
+        UUID ownerUuid = player.getUniqueId();
+        Inventory inventory = inventory(ownerUuid, player.getName());
+        String title = personalTrashTitle(ownerUuid, player.getName());
+        String previousTitle = inventoryTitles.get(ownerUuid);
+        if (!shouldRecreateInventory(previousTitle, title, inventory.getViewers().isEmpty())) {
+            return inventory;
+        }
+        Inventory recreated = Bukkit.createInventory(null, inventory.getSize(), title);
+        moveInventoryContents(inventory, recreated);
+        inventories.put(ownerUuid, recreated);
+        inventoryTitles.put(ownerUuid, title);
+        plugin.getLogger().fine("[PersonalTrash] 已刷新个人垃圾桶标题: " + ownerUuid);
+        return recreated;
+    }
+
+    /** 渲染当前语言文件中的个人垃圾桶标题。 */
+    private String personalTrashTitle(UUID ownerUuid, String playerName) {
+        return message("personal-trash.gui.title", "&8{player} 的个人垃圾桶",
+                "{player}", resolveOwnerName(ownerUuid, playerName));
+    }
+
+    /** 标题变化且菜单无人查看时才允许重建。 */
+    static boolean shouldRecreateInventory(String previousTitle, String nextTitle, boolean noViewers) {
+        return noViewers && previousTitle != null && !previousTitle.equals(nextTitle);
+    }
+
+    /** 按原槽位迁移个人垃圾桶内容，复制成功后清空旧菜单引用。 */
+    static void moveInventoryContents(Inventory source, Inventory target) {
+        int size = Math.min(source.getSize(), target.getSize());
+        for (int slot = 0; slot < size; slot++) {
+            target.setItem(slot, source.getItem(slot));
+        }
+        source.clear();
     }
 
     /** 优先使用 Bukkit 已知的真实玩家名，未知时才采用调用方兜底名。 */

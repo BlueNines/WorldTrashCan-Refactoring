@@ -211,10 +211,11 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`52842291f67c3741195577529d320ad893ba23305b342fe7cff1759c8896965b`
+- SHA-256：`ac9d2470e427d8643753b835ab7a57ba3e3cc56b6bb1df4e98c05351593a4d65`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
+- 修改 `personal-trash.gui.title` 后执行 `/wtc reload`，已创建的个人垃圾桶会在下次打开时更新标题，并保留桶内物品。
 
 ## English
 
@@ -424,7 +425,8 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `52842291f67c3741195577529d320ad893ba23305b342fe7cff1759c8896965b`
+- SHA-256: `ac9d2470e427d8643753b835ab7a57ba3e3cc56b6bb1df4e98c05351593a4d65`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
+- After changing `personal-trash.gui.title`, `/wtc reload` refreshes existing personal trash-can titles on the next open without losing stored items.
