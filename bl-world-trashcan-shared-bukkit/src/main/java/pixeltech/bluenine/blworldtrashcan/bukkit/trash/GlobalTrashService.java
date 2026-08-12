@@ -56,6 +56,7 @@ public final class GlobalTrashService {
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final GlobalTrashTextResolver textResolver;
     private final GlobalTrashActionExecutor actionExecutor;
+    private final LayoutItemGlint layoutItemGlint;
     private final GlobalTrashStore store;
     private final ItemRuleEvaluator itemRuleEvaluator;
     private final Map<UUID, Long> lastTakeMillis = new ConcurrentHashMap<>();
@@ -94,6 +95,7 @@ public final class GlobalTrashService {
         this.auditBridge = auditBridge;
         this.textResolver = new GlobalTrashTextResolver(plugin);
         this.actionExecutor = new GlobalTrashActionExecutor(plugin, platform, textResolver);
+        this.layoutItemGlint = new LayoutItemGlint(plugin.getLogger());
         ItemIdentityProvider identityProvider = new ItemIdentityProviderSelector().select(plugin);
         this.store = new GlobalTrashStore(identityProvider);
         this.itemRuleEvaluator = new ItemRuleEvaluator(itemSnapshotMapper);
@@ -117,6 +119,7 @@ public final class GlobalTrashService {
         validateLayoutActions();
         plugin.getLogger().info("[GlobalTrash] mode=" + modeName()
                 + ", identity=" + store.getIdentityProviderId()
+                + ", layoutGlow=" + layoutItemGlint.getModeName()
                 + ", rows=" + layout.getRows().size()
                 + ", slots=" + layout.getInventorySize()
                 + ", contentSlots=" + layout.getContentSlots().size()
@@ -813,6 +816,9 @@ public final class GlobalTrashService {
                 meta.setLore(lore);
             }
             applyCustomModelData(meta, item.getModelId());
+            if (item.isGlow()) {
+                layoutItemGlint.apply(meta);
+            }
             itemStack.setItemMeta(meta);
         }
         return itemStack;

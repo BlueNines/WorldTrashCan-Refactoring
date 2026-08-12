@@ -93,7 +93,7 @@ public final class GlobalTrashLayoutParser {
                     source.getString(path + ".unavailable-item", ""), path, errors);
             items.put(symbolValue, new TrashConfig.GlobalTrashItemConfig(
                     symbol, type, source.getInt(path + ".model-id", -1), materials,
-                    name, lore, actions, unavailableItem));
+                    name, lore, actions, source.getBoolean(path + ".glow", false), unavailableItem));
         }
         return items;
     }

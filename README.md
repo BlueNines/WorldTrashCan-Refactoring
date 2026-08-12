@@ -66,6 +66,8 @@ global-trash:
 
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
+公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
+
 #### 兼容性和稳定性增强
 
 - 提供 `WorldListTrashCan-universal.jar`，高低版本和 Folia/Luminol 使用同一个整包；也保留轻量分版本 Jar。
@@ -209,9 +211,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.0.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`80c5a2c22f5a413e831ab75d825778c07f9c059e2bc9b7d0b934bc46d70733c9`
+- SHA-256：`52842291f67c3741195577529d320ad893ba23305b342fe7cff1759c8896965b`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
+- 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
 
 ## English
 
@@ -276,6 +279,8 @@ global-trash:
 Compact mode does not split a batch into many duplicate display entries. For example, when `9980` items are stored and another `20` arrive, the remaining capacity is accepted and the entry becomes `9999`; any remainder follows the existing routing rules. Public trash contents are runtime data and are cleared on restart, matching the legacy behavior.
 
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
+
+Layout display items support `glow: true` for page, background, sort, actions, and close buttons. Minecraft 1.20.5 and newer use Bukkit's native glint override without a real enchantment. Older versions automatically fall back to a hidden enchantment, so no enchantment name appears in the tooltip. `type: content` always ignores this option and never mutates stored trash items.
 
 #### Compatibility and stability improvements
 
@@ -419,6 +424,7 @@ Final universal artifact information:
 
 - Version: `7.0.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `80c5a2c22f5a413e831ab75d825778c07f9c059e2bc9b7d0b934bc46d70733c9`
+- SHA-256: `52842291f67c3741195577529d320ad893ba23305b342fe7cff1759c8896965b`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
+- Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.

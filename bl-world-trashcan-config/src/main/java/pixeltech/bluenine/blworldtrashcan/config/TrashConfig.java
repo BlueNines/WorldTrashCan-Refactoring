@@ -615,19 +615,28 @@ public final class TrashConfig {
         private final String name;
         private final List<String> lore;
         private final List<String> actions;
+        private final boolean glow;
         private final Character unavailableItem;
 
         /** 创建单个布局物品配置。 */
         public GlobalTrashItemConfig(char symbol, GlobalTrashItemType type, int modelId,
                                      List<String> materials, String name, List<String> lore,
                                      Character unavailableItem) {
-            this(symbol, type, modelId, materials, name, lore, Collections.<String>emptyList(), unavailableItem);
+            this(symbol, type, modelId, materials, name, lore,
+                    Collections.<String>emptyList(), false, unavailableItem);
         }
 
         /** 创建带点击动作的单个布局物品配置。 */
         public GlobalTrashItemConfig(char symbol, GlobalTrashItemType type, int modelId,
                                      List<String> materials, String name, List<String> lore,
                                      List<String> actions, Character unavailableItem) {
+            this(symbol, type, modelId, materials, name, lore, actions, false, unavailableItem);
+        }
+
+        /** 创建带点击动作和附魔光效设置的单个布局物品配置。 */
+        public GlobalTrashItemConfig(char symbol, GlobalTrashItemType type, int modelId,
+                                     List<String> materials, String name, List<String> lore,
+                                     List<String> actions, boolean glow, Character unavailableItem) {
             this.symbol = symbol;
             this.type = type;
             this.modelId = modelId;
@@ -641,6 +650,7 @@ public final class TrashConfig {
             this.actions = actions == null
                     ? Collections.<String>emptyList()
                     : Collections.unmodifiableList(new ArrayList<>(actions));
+            this.glow = glow && type != GlobalTrashItemType.CONTENT;
             this.unavailableItem = unavailableItem;
         }
 
@@ -677,6 +687,11 @@ public final class TrashConfig {
         /** 返回玩家点击时按顺序执行的动作。 */
         public List<String> getActions() {
             return actions;
+        }
+
+        /** 判断布局展示物是否启用附魔光效；内容槽始终返回 false。 */
+        public boolean isGlow() {
+            return glow;
         }
 
         /** 返回按钮不可用时显示的布局字符。 */

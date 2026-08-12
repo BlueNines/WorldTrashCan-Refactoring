@@ -41,6 +41,7 @@ public final class GlobalTrashLayoutParserSelfTest {
         source.put("global-trash.gui.layout.items.a.material", Arrays.asList("NEW_ARROW", "ARROW"));
         source.put("global-trash.gui.layout.items.a.name", "&#5AC8FA上一页 {page}");
         source.put("global-trash.gui.layout.items.a.lore", Arrays.asList("第 {page} 页", "共 {max-page} 页"));
+        source.put("global-trash.gui.layout.items.a.glow", Boolean.TRUE);
         source.put("global-trash.gui.layout.items.a.unavailable-item", "b");
         source.put("global-trash.gui.layout.items.b.type", "background");
         source.put("global-trash.gui.layout.items.b.material", Collections.singletonList("STONE"));
@@ -58,6 +59,7 @@ public final class GlobalTrashLayoutParserSelfTest {
                 "COMPARATOR", "REDSTONE_COMPARATOR"));
         source.put("global-trash.gui.layout.items.q.type", "close");
         source.put("global-trash.gui.layout.items.q.name", "&c关闭");
+        source.put("global-trash.gui.layout.items.q.glow", "ture");
 
         TrashConfig.GlobalTrashLayoutConfig layout = new GlobalTrashLayoutParser().parse(source, -1, -1, -1);
         assertEquals("custom size", 27, layout.getInventorySize());
@@ -70,6 +72,10 @@ public final class GlobalTrashLayoutParserSelfTest {
         assertEquals("custom model", 77, layout.getItem('a').getModelId());
         assertEquals("custom material candidates", 2, layout.getItem('a').getMaterials().size());
         assertEquals("custom lore", 2, layout.getItem('a').getLore().size());
+        assertTrue("custom glow", layout.getItem('a').isGlow());
+        assertFalse("missing glow defaults false", layout.getItem('b').isGlow());
+        assertFalse("misspelled glow stays false", layout.getItem('q').isGlow());
+        assertFalse("content never glows", layout.getItem('x').isGlow());
         assertEquals("custom actions type", "actions",
                 layout.getItem('d').getType().name().toLowerCase());
         assertEquals("custom actions", 2, layout.getItem('d').getActions().size());
