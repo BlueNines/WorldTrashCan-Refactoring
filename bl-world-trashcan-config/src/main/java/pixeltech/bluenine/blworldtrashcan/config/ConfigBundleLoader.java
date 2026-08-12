@@ -14,14 +14,24 @@ import java.util.Set;
 
 /** 把拆分后的 YAML 配置读取为类型化配置对象。 */
 public final class ConfigBundleLoader {
-    /** 读取完整配置集合。 */
+    /** 读取完整配置集合；兼容既有纯配置调用并解析 model-id。 */
     public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
-                             ConfigurationSource protections, ConfigurationSource entityLimits) {
-        int legacyBackModelId = trash.getInt("global-trash.gui.back-model-id", -1);
-        int legacyNextModelId = trash.getInt("global-trash.gui.next-model-id", -1);
-        int legacyBackgroundModelId = trash.getInt("global-trash.gui.background-model-id", -1);
+                              ConfigurationSource protections, ConfigurationSource entityLimits) {
+        return load(main, cleanup, trash, protections, entityLimits, true);
+    }
+
+    /** 按当前运行时能力读取完整配置集合。 */
+    public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
+                             ConfigurationSource protections, ConfigurationSource entityLimits,
+                             boolean supportsCustomModelData) {
+        int legacyBackModelId = supportsCustomModelData
+                ? trash.getInt("global-trash.gui.back-model-id", -1) : -1;
+        int legacyNextModelId = supportsCustomModelData
+                ? trash.getInt("global-trash.gui.next-model-id", -1) : -1;
+        int legacyBackgroundModelId = supportsCustomModelData
+                ? trash.getInt("global-trash.gui.background-model-id", -1) : -1;
         TrashConfig.GlobalTrashLayoutConfig globalTrashLayout = new GlobalTrashLayoutParser().parse(
-                trash, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId);
+                trash, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId, supportsCustomModelData);
         int legacyGlobalMaxPages = trash.getInt("global-trash.max-pages", 5);
         List<String> compactActionLore = trash.contains("global-trash.compact.action-lore")
                 ? trash.getStringList("global-trash.compact.action-lore")

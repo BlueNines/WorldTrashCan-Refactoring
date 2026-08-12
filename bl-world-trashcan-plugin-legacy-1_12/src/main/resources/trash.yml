@@ -94,8 +94,6 @@ global-trash:
           type: "previous-page"
           # 是否显示附魔光效；1.20.5+ 使用无附魔数据的 Bukkit 纯光效，旧版本自动降级为隐藏附魔。
           glow: false
-          # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
-          model-id: -1
           # 按顺序使用当前服务端存在的第一个材质；全部无效时降级为 STONE 并输出警告。
           material:
             - "ARROW"
@@ -112,8 +110,6 @@ global-trash:
           type: "background"
           # 是否显示附魔光效；只改变这个背景展示物的外观，默认关闭。
           glow: false
-          # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
-          model-id: -1
           # 新版本优先使用黑色玻璃板，旧版本按顺序降级。
           material:
             - "BLACK_STAINED_GLASS_PANE"
@@ -129,8 +125,6 @@ global-trash:
           type: "sort"
           # 是否显示附魔光效；只改变排序按钮外观，不影响排序和存储逻辑。
           glow: false
-          # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
-          model-id: -1
           # 高版本优先使用 COMPARATOR，旧版本自动尝试 REDSTONE_COMPARATOR。
           material:
             - "COMPARATOR"
@@ -145,8 +139,6 @@ global-trash:
           type: "next-page"
           # 是否显示附魔光效；true 时高版本没有真实附魔，旧版本会隐藏降级附魔的名称。
           glow: false
-          # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
-          model-id: -1
           # 按顺序使用当前服务端存在的第一个材质。
           material:
             - "ARROW"
@@ -163,8 +155,6 @@ global-trash:
         #   type: "actions"
         #   # 是否显示附魔光效；只影响这个 actions 展示按钮。
         #   glow: false
-        #   # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
-        #   model-id: -1
         #   # 按顺序使用当前服务端存在的第一个材质；全部无效时降级为 STONE 并输出警告。
         #   material:
         #     - "BOOK"
@@ -190,8 +180,6 @@ global-trash:
         #   type: "close"
         #   # 是否显示附魔光效；只影响这个 close 展示按钮。
         #   glow: false
-        #   # CustomModelData；-1 表示不设置，1.12.2 会自动忽略。
-        #   model-id: -1
         #   # 按顺序使用当前服务端存在的第一个材质；不配置时默认使用 BARRIER。
         #   material:
         #     - "BARRIER"

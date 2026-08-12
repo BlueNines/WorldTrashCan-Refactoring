@@ -26,6 +26,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.CustomModelDataSupport;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PaymentService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
@@ -60,6 +61,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
     private DropOwnerTracker dropOwnerTracker;
     private FoliaEntityLimitFeature entityLimitFeature;
     private Metrics metrics;
+    private CustomModelDataSupport customModelDataSupport;
 
     /** 启动插件并注册当前产物的平台能力。 */
     @Override
@@ -68,6 +70,9 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         configMigrator.migrateIfNeeded();
         saveDefaultConfigs();
         configMigrator.repairCurrentRuntimeDefaults();
+        this.customModelDataSupport = CustomModelDataSupport.detect(getLogger());
+        getLogger().info("Capability custom-model-data: "
+                + (customModelDataSupport.isSupported() ? "enabled (model-id parsed)" : "disabled (model-id skipped)"));
         this.configBundle = loadConfigBundle();
         this.messageService = new BukkitMessageService(this);
         this.messageService.reload(configBundle.getLanguageFile());
@@ -85,7 +90,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         };
         PaymentService paymentService = FoliaVaultPaymentService.create(this);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
-                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
+                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
                 globalTrashService.getIdentityProvider());
@@ -220,7 +225,8 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
                 new BukkitConfigurationSource(loadYaml("cleanup.yml")),
                 new BukkitConfigurationSource(loadYaml("trash.yml")),
                 new BukkitConfigurationSource(loadYaml("protections.yml")),
-                new BukkitConfigurationSource(loadYaml("entity-limits.yml"))
+                new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
+                customModelDataSupport.isSupported()
         );
     }
 

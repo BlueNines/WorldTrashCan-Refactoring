@@ -18,6 +18,15 @@ public final class GlobalTrashLayoutParser {
                                                       int legacyBackModelId,
                                                       int legacyNextModelId,
                                                       int legacyBackgroundModelId) {
+        return parse(source, legacyBackModelId, legacyNextModelId, legacyBackgroundModelId, true);
+    }
+
+    /** 按当前运行时能力读取布局；不支持时完全跳过 model-id 字段。 */
+    public TrashConfig.GlobalTrashLayoutConfig parse(ConfigurationSource source,
+                                                      int legacyBackModelId,
+                                                      int legacyNextModelId,
+                                                      int legacyBackgroundModelId,
+                                                      boolean supportsCustomModelData) {
         List<String> rows = source.getStringList(LAYOUT_PATH + ".position");
         if (rows == null || rows.isEmpty()) {
             return TrashConfig.GlobalTrashLayoutConfig.defaultLayout(
@@ -25,7 +34,8 @@ public final class GlobalTrashLayoutParser {
         }
         List<String> errors = validateRows(rows);
         Set<Character> symbols = collectSymbols(rows);
-        Map<Character, TrashConfig.GlobalTrashItemConfig> items = parseItems(source, symbols, errors);
+        Map<Character, TrashConfig.GlobalTrashItemConfig> items = parseItems(
+                source, symbols, errors, supportsCustomModelData);
         validateItems(symbols, items, errors);
         if (!errors.isEmpty()) {
             return TrashConfig.GlobalTrashLayoutConfig.defaultLayout(
@@ -72,7 +82,8 @@ public final class GlobalTrashLayoutParser {
 
     /** 读取布局字符对应的物品定义。 */
     private Map<Character, TrashConfig.GlobalTrashItemConfig> parseItems(
-            ConfigurationSource source, Set<Character> symbols, List<String> errors) {
+            ConfigurationSource source, Set<Character> symbols, List<String> errors,
+            boolean supportsCustomModelData) {
         Map<Character, TrashConfig.GlobalTrashItemConfig> items = new LinkedHashMap<>();
         for (Character symbolValue : symbols) {
             char symbol = symbolValue.charValue();
@@ -91,8 +102,9 @@ public final class GlobalTrashLayoutParser {
             List<String> actions = source.getStringList(path + ".actions");
             Character unavailableItem = parseUnavailableItem(
                     source.getString(path + ".unavailable-item", ""), path, errors);
+            int modelId = supportsCustomModelData ? source.getInt(path + ".model-id", -1) : -1;
             items.put(symbolValue, new TrashConfig.GlobalTrashItemConfig(
-                    symbol, type, source.getInt(path + ".model-id", -1), materials,
+                    symbol, type, modelId, materials,
                     name, lore, actions, source.getBoolean(path + ".glow", false), unavailableItem));
         }
         return items;

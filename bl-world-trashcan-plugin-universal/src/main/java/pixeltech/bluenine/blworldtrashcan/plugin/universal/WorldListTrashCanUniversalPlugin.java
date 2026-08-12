@@ -30,6 +30,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.CustomModelDataSupport;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.NoPaymentService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PaymentService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
@@ -75,6 +76,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
     private BukkitMessageService messageService;
     private DropOwnerTracker dropOwnerTracker;
     private Metrics metrics;
+    private CustomModelDataSupport customModelDataSupport;
 
     /** 启动通用总包并按当前服务端选择平台实现。 */
     @Override
@@ -405,10 +407,15 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         configMigrator.migrateIfNeeded();
         saveDefaultConfigs();
         configMigrator.repairCurrentRuntimeDefaults();
+        this.runtimeKind = detectRuntimeKind();
+        this.customModelDataSupport = detectMinecraftMinorVersion() >= 14
+                ? CustomModelDataSupport.detect(getLogger())
+                : CustomModelDataSupport.unsupported(getLogger());
+        getLogger().info("Capability custom-model-data: "
+                + (customModelDataSupport.isSupported() ? "enabled (model-id parsed)" : "disabled (model-id skipped)"));
         this.configBundle = loadConfigBundle();
         this.messageService = new BukkitMessageService(this);
         this.messageService.reload(configBundle.getLanguageFile());
-        this.runtimeKind = detectRuntimeKind();
         this.platform = createPlatform(runtimeKind);
         this.apiHost = new WorldListTrashCanApiHost(this, platform);
         this.apiHost.enable();
@@ -423,7 +430,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         };
         PaymentService paymentService = createPaymentService(runtimeKind);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
-                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
+                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
                 globalTrashService.getIdentityProvider());
@@ -637,7 +644,8 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
                 new BukkitConfigurationSource(loadYaml("cleanup.yml")),
                 new BukkitConfigurationSource(loadYaml("trash.yml")),
                 new BukkitConfigurationSource(loadYaml("protections.yml")),
-                new BukkitConfigurationSource(loadYaml("entity-limits.yml"))
+                new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
+                customModelDataSupport.isSupported()
         );
     }
 

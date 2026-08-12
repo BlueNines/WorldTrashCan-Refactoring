@@ -27,6 +27,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.CustomModelDataSupport;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.NoPaymentService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
@@ -57,6 +58,7 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
     private DropOwnerTracker dropOwnerTracker;
     private EntityLimitFeature entityLimitFeature;
     private Metrics metrics;
+    private CustomModelDataSupport customModelDataSupport;
 
     /** 启动插件。 */
     @Override
@@ -65,6 +67,8 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
         configMigrator.migrateIfNeeded();
         saveDefaultConfigs();
         configMigrator.repairCurrentRuntimeDefaults();
+        this.customModelDataSupport = CustomModelDataSupport.unsupported(getLogger());
+        getLogger().info("Capability custom-model-data: disabled (model-id skipped)");
         this.configBundle = loadConfigBundle();
         this.messageService = new BukkitMessageService(this);
         this.messageService.reload(configBundle.getLanguageFile());
@@ -82,7 +86,7 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
         };
         GlobalTrashService globalTrashService = new GlobalTrashService(this,
                 configBundle.getTrashConfig().getGlobalTrash(), messageService,
-                platform.itemSnapshotMapper(), platform, apiHost.auditBridge());
+                platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
         PersonalTrashService personalTrashService = new PersonalTrashService(this,
                 configBundle.getTrashConfig().getPersonalTrash(), new NoPaymentService(), messageService,
                 platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
@@ -389,7 +393,8 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
                 new BukkitConfigurationSource(loadYaml("cleanup.yml")),
                 new BukkitConfigurationSource(loadYaml("trash.yml")),
                 new BukkitConfigurationSource(loadYaml("protections.yml")),
-                new BukkitConfigurationSource(loadYaml("entity-limits.yml"))
+                new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
+                false
         );
     }
 

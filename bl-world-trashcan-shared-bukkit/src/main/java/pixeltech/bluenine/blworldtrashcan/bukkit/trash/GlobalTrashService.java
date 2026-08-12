@@ -57,6 +57,7 @@ public final class GlobalTrashService {
     private final GlobalTrashTextResolver textResolver;
     private final GlobalTrashActionExecutor actionExecutor;
     private final LayoutItemGlint layoutItemGlint;
+    private final CustomModelDataSupport customModelDataSupport;
     private final GlobalTrashStore store;
     private final ItemRuleEvaluator itemRuleEvaluator;
     private final Map<UUID, Long> lastTakeMillis = new ConcurrentHashMap<>();
@@ -68,26 +69,38 @@ public final class GlobalTrashService {
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages) {
-        this(plugin, config, messages, null, null, null);
+        this(plugin, config, messages, null, null, null,
+                CustomModelDataSupport.unsupported(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
                               ItemSnapshotMapper itemSnapshotMapper) {
-        this(plugin, config, messages, itemSnapshotMapper, null, null);
+        this(plugin, config, messages, itemSnapshotMapper, null, null,
+                CustomModelDataSupport.unsupported(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建带审计变更分发器的公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
                               ItemSnapshotMapper itemSnapshotMapper,
                               DefaultWorldListTrashCanAuditBridge auditBridge) {
-        this(plugin, config, messages, itemSnapshotMapper, null, auditBridge);
+        this(plugin, config, messages, itemSnapshotMapper, null, auditBridge,
+                CustomModelDataSupport.unsupported(plugin == null ? null : plugin.getLogger()));
     }
 
     /** 创建带平台调度和审计分发能力的公共垃圾桶服务。 */
     public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
+                               ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
+                               DefaultWorldListTrashCanAuditBridge auditBridge) {
+        this(plugin, config, messages, itemSnapshotMapper, platform, auditBridge,
+                CustomModelDataSupport.unsupported(plugin == null ? null : plugin.getLogger()));
+    }
+
+    /** 创建带平台调度、审计和版本外观能力的公共垃圾桶服务。 */
+    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config, BukkitMessageService messages,
                               ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
-                              DefaultWorldListTrashCanAuditBridge auditBridge) {
+                              DefaultWorldListTrashCanAuditBridge auditBridge,
+                              CustomModelDataSupport customModelDataSupport) {
         this.plugin = plugin;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
@@ -96,6 +109,8 @@ public final class GlobalTrashService {
         this.textResolver = new GlobalTrashTextResolver(plugin);
         this.actionExecutor = new GlobalTrashActionExecutor(plugin, platform, textResolver);
         this.layoutItemGlint = new LayoutItemGlint(plugin.getLogger());
+        this.customModelDataSupport = customModelDataSupport == null
+                ? CustomModelDataSupport.unsupported(plugin.getLogger()) : customModelDataSupport;
         ItemIdentityProvider identityProvider = new ItemIdentityProviderSelector().select(plugin);
         this.store = new GlobalTrashStore(identityProvider);
         this.itemRuleEvaluator = new ItemRuleEvaluator(itemSnapshotMapper);
@@ -815,7 +830,7 @@ public final class GlobalTrashService {
                 }
                 meta.setLore(lore);
             }
-            applyCustomModelData(meta, item.getModelId());
+            customModelDataSupport.apply(meta, item.getModelId());
             if (item.isGlow()) {
                 layoutItemGlint.apply(meta);
             }
@@ -857,21 +872,6 @@ public final class GlobalTrashService {
     /** 按玩家版本渲染颜色。 */
     private String renderColor(Player player, String text) {
         return player == null ? RichTextRenderer.color(text) : RichTextRenderer.color(player, text);
-    }
-
-    /** 尝试设置 CustomModelData，旧版本没有该 API 时自动忽略。 */
-    private void applyCustomModelData(ItemMeta meta, int modelId) {
-        if (meta == null || modelId < 0) {
-            return;
-        }
-        try {
-            java.lang.reflect.Method method = meta.getClass().getMethod("setCustomModelData", Integer.class);
-            method.invoke(meta, Integer.valueOf(modelId));
-        } catch (ReflectiveOperationException ignored) {
-            // 1.12 没有 CustomModelData，保持旧版本可加载。
-        } catch (RuntimeException ignored) {
-            // 反射目标来自服务端实现，异常时只跳过外观字段，不影响 GUI 可用性。
-        }
     }
 
     /** 关闭仍在查看旧分页的玩家，避免 reload 后操作失效页面。 */
