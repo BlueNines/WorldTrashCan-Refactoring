@@ -77,7 +77,7 @@ global-trash:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.0.0`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.2.0`。
 
 ### 性能优化估算
 
@@ -209,9 +209,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.0.0`
+- 版本：`7.2.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`ac9d2470e427d8643753b835ab7a57ba3e3cc56b6bb1df4e98c05351593a4d65`
+- SHA-256：`AD8050CC74741E9AC84B0CA17F380092D27467A178F674D7765023D547000626`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
@@ -291,7 +291,7 @@ Layout display items support `glow: true` for page, background, sort, actions, a
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.0.0`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.2.0`.
 
 ### Estimated performance improvements
 
@@ -423,9 +423,9 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.0.0`
+- Version: `7.2.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `ac9d2470e427d8643753b835ab7a57ba3e3cc56b6bb1df4e98c05351593a4d65`
+- SHA-256: `AD8050CC74741E9AC84B0CA17F380092D27467A178F674D7765023D547000626`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
