@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 
 /** 公共和个人垃圾桶共用的分页、排序、展示与取放菜单实现。 */
 final class TrashContainerMenu {
+    private static final String CONTENT_PLACEHOLDER = "{content}";
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final ItemSnapshotMapper itemSnapshotMapper;
@@ -71,6 +72,7 @@ final class TrashContainerMenu {
         layoutMaterials.clear();
         resolveLayoutMaterials();
         validateLayoutActions();
+        validateCompactLoreTemplate();
         if (layout.getValidationError() != null) {
             plugin.getLogger().warning('[' + policy.getLogName() + "] 布局无效，已回退默认布局: "
                     + layout.getValidationError());
@@ -468,6 +470,23 @@ final class TrashContainerMenu {
         }
     }
 
+    /** 重载时提示重复的原 Lore 展开占位符，每个菜单作用域只输出一次。 */
+    private void validateCompactLoreTemplate() {
+        if (config == null || config.getCompact() == null) {
+            return;
+        }
+        int contentPlaceholders = 0;
+        for (String line : config.getCompact().getItemLore()) {
+            if (isContentPlaceholder(line)) {
+                contentPlaceholders++;
+            }
+        }
+        if (contentPlaceholders > 1) {
+            plugin.getLogger().warning('[' + policy.getLogName() + "] compact.item-lore 配置了多个独立的 "
+                    + CONTENT_PLACEHOLDER + "，仅第一个会展开原物品 Lore，其余已忽略。");
+        }
+    }
+
     /** 创建紧凑或堆叠模式内容展示物。 */
     private ItemStack createContentItem(TrashContainerStore.DisplayItem display, Player player,
                                         int pageIndex, int maxPages) {
@@ -484,30 +503,52 @@ final class TrashContainerMenu {
         TrashConfig.CompactGlobalTrashConfig compact = config.getCompact();
         List<String> originalLore = meta.hasLore() && meta.getLore() != null
                 ? new ArrayList<>(meta.getLore()) : Collections.<String>emptyList();
-        List<String> lore = new ArrayList<>();
-        if (compact.isShowAmountLore()) {
-            lore.add(resolveContentText(player, compact.getAmountLore(), pageIndex, maxPages, display, 0));
-        }
-        int maxOriginal = compact.getMaxOriginalLoreLines();
-        int visibleOriginal = maxOriginal < 0 ? originalLore.size() : Math.min(maxOriginal, originalLore.size());
-        for (int index = 0; index < visibleOriginal; index++) {
-            lore.add(resolveContentText(player, originalLore.get(index), pageIndex, maxPages, display, 0));
-        }
-        if (maxOriginal >= 0 && originalLore.size() > visibleOriginal) {
-            lore.add(resolveContentText(player, compact.getOmittedLore(), pageIndex, maxPages,
-                    display, originalLore.size() - visibleOriginal));
-        }
-        for (String line : compact.getActionLore()) {
+        List<String> expandedLore = expandCompactLore(compact.getItemLore(), originalLore,
+                compact.getMaxOriginalLoreLines(), compact.getOmittedLore());
+        List<String> lore = new ArrayList<>(expandedLore.size());
+        for (String line : expandedLore) {
             lore.add(resolveContentText(player, line, pageIndex, maxPages, display, 0));
         }
-        if (!lore.isEmpty()) {
-            meta.setLore(lore);
-        }
+        meta.setLore(lore.isEmpty() ? null : lore);
         if (meta.hasDisplayName()) {
             meta.setDisplayName(resolveContentText(player, meta.getDisplayName(), pageIndex, maxPages, display, 0));
         }
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    /** 按完整模板展开原物品 Lore；只处理首个独占一行的 {content}。 */
+    static List<String> expandCompactLore(List<String> template, List<String> originalLore,
+                                          int maxOriginalLoreLines, String omittedLore) {
+        List<String> sourceTemplate = template == null ? Collections.<String>emptyList() : template;
+        List<String> sourceLore = originalLore == null ? Collections.<String>emptyList() : originalLore;
+        int visibleCount = maxOriginalLoreLines < 0
+                ? sourceLore.size() : Math.min(maxOriginalLoreLines, sourceLore.size());
+        List<String> result = new ArrayList<>(sourceTemplate.size() + visibleCount + 1);
+        boolean contentExpanded = false;
+        for (String line : sourceTemplate) {
+            if (isContentPlaceholder(line)) {
+                if (contentExpanded) {
+                    continue;
+                }
+                contentExpanded = true;
+                for (int index = 0; index < visibleCount; index++) {
+                    result.add(sourceLore.get(index));
+                }
+                if (maxOriginalLoreLines >= 0 && sourceLore.size() > visibleCount) {
+                    result.add((omittedLore == null ? "" : omittedLore)
+                            .replace("{count}", String.valueOf(sourceLore.size() - visibleCount)));
+                }
+                continue;
+            }
+            result.add(line == null ? "" : line);
+        }
+        return result;
+    }
+
+    /** 判断模板行是否只包含原 Lore 展开占位符。 */
+    private static boolean isContentPlaceholder(String line) {
+        return line != null && CONTENT_PLACEHOLDER.equals(line.trim());
     }
 
     /** 创建布局按钮展示物。 */

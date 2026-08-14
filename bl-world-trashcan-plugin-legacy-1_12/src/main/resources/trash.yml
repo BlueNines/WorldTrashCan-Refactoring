@@ -44,18 +44,18 @@ global-trash:
     right-click-amount: 1
     # Shift + 右键从紧凑条目取出多少个。
     shift-right-click-amount: 64
-    # 是否在展示物 Lore 第一行显示当前累计数量。
-    show-amount-lore: true
     # 最多保留多少行原始物品 Lore；-1 表示全部保留。
     max-original-lore-lines: 5
-    # 数量 Lore 模板；支持 {amount}、{page}、{max-page} 和 PlaceholderAPI 变量。
-    amount-lore: "&#38BDF8数量：&#F5B82E{amount}"
-    # 原始 Lore 超过上限时追加的省略模板；{count} 为被隐藏的行数。
-    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
-    # 紧凑模式最底部的操作提示；支持 {take-amount}、{shift-take-amount}、{right-take-amount}、{shift-right-take-amount}。
-    action-lore:
+    # 紧凑展示物的完整 Lore 模板，列表顺序就是游戏内顺序；RGB 在 1.12.2 自动降级，也兼容传统颜色和 PlaceholderAPI。
+    # {content} 必须独占一行，用于在当前位置展开原物品 Lore；没有它表示隐藏原 Lore，配置多个时只展开第一个。
+    # 可使用 {amount}、{take-amount}、{shift-take-amount}、{right-take-amount}、{shift-right-take-amount}、{page}、{max-page}。
+    item-lore:
+      - "&#38BDF8数量：&#F5B82E{amount}"
+      - "{content}"
       - "&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个"
       - "&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个"
+    # 原始 Lore 超过上限时追加的省略模板；{count} 为被隐藏的行数。
+    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
   # 旧版堆叠显示模式配置；每个展示物按物品原本最大堆叠数显示，不使用紧凑模式 Lore。
   stacked:
     # 堆叠模式自己的默认排序，不读取 compact.default-sort。
@@ -243,18 +243,17 @@ personal-trash:
     right-click-amount: 1
     # Shift + 右键取出数量，仅在 right-click-enabled 为 true 时生效。
     shift-right-click-amount: 64
-    # 是否在展示物 Lore 顶部显示累计数量。
-    show-amount-lore: true
     # 最多保留原物品 Lore 行数；-1 表示不截断。
     max-original-lore-lines: 5
-    # 数量 Lore；1.12.2 自动把 RGB 降级为传统颜色。
-    amount-lore: "&#38BDF8数量：&#F5B82E{amount}"
-    # 原 Lore 被截断时显示；{count} 为省略行数。
-    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
-    # 内容展示物底部操作提示，可使用各类 take-amount 占位符。
-    action-lore:
+    # 个人桶紧凑展示物的完整 Lore 模板；RGB 在 1.12.2 自动降级，其余顺序、颜色和变量与公共桶相同。
+    # {content} 必须独占一行；没有它会隐藏原 Lore，多个时只展开第一个。固定空行可填写 "" 或 "&7"。
+    item-lore:
+      - "&#38BDF8数量：&#F5B82E{amount}"
+      - "{content}"
       - "&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个"
       - "&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个"
+    # 原 Lore 被截断时显示；{count} 为省略行数。
+    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
   # 原始堆叠模式配置；每个展示物按原版最大堆叠数显示，不添加紧凑模式 Lore。
   stacked:
     # 堆叠模式自己的默认排序，不读取 compact.default-sort。

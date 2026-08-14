@@ -53,8 +53,16 @@ global-trash:
     max-pages: 5
     # 单种物品最多累计数量；-1 表示无限。
     max-amount-per-entry: 9999
-    # 数量、原始 Lore 截断和操作提示都写在展示物 Lore 中。
+    # 最多展开多少行原物品 Lore；-1 表示不截断。
     max-original-lore-lines: 5
+    # 完整 Lore 模板；{content} 必须独占一行并在当前位置展开原物品 Lore。
+    item-lore:
+      - "&#38BDF8数量：&#F5B82E{amount}"
+      - "{content}"
+      - "&#38BDF8左键 &#D5DEE9取出 &#F5B82E{take-amount} &#D5DEE9个"
+      - "&#FFD166Shift + 左键 &#D5DEE9取出 &#F5B82E{shift-take-amount} &#D5DEE9个"
+    # 原 Lore 超过上限时显示；{count} 是省略行数。
+    omitted-lore: "&#64748B...省略 &#AAB6C5{count} &#64748B行..."
     left-click-amount: 1
     shift-left-click-amount: 64
   stacked:
@@ -65,6 +73,8 @@ global-trash:
 ```
 
 紧凑模式不会把每个数量拆成多个展示物。例如当前有 `9980` 个物品，再放入 `20` 个时会接收到剩余容量，显示为 `9999`，不会产生 20 个重复条目；超过容量的剩余部分按原有路由规则继续处理。公共垃圾桶存量是运行期数据，重启后按原版行为清空。
+
+`compact.item-lore` 同时控制数量、原 Lore 和操作提示的完整顺序，公共桶与个人桶都可独立配置。`{content}` 展开经过 `max-original-lore-lines` 截断后的原 Lore；没有该行表示主动隐藏原 Lore，重复配置时只展开第一个并在重载时警告。固定空行可写 `""` 或 `"&7"`。普通模板行支持 RGB、传统颜色、页码/数量变量和 PlaceholderAPI。旧服已有的 `show-amount-lore`、`amount-lore`、`action-lore` 仍会按原顺序兼容，但新生成配置不再写出这些旧节点。
 
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
@@ -219,12 +229,12 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.2.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`6D977DAD138453916AB6095458ED829EE0A6FB0FF9D636378CCA5D8EB14655E4`
+- SHA-256：`C495F613296BA3BE598F7A711E98634DE59B8C916BECFEFDE2DE5623901A3ABC`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
-- 个人垃圾桶统一容器已使用同一整包在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.8 完成匹配版本真实客户端验收，覆盖紧凑/堆叠、Lore 截断、翻页、玩家排序、actions、close、glow、PAPI、手动放入、取出、重载保留、容量策略和 UUID 隔离。
-- 三端各完成 600 次菜单打开压力检查，观测 TPS 分别为 `19.974`、`19.998`、`19.995`，服务端日志未发现本专项禁止异常。
+- 个人垃圾桶统一容器已使用同一整包在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.8 完成匹配版本真实客户端验收，覆盖完整 `item-lore` 模板、空行、多行原 Lore 截断、隐藏原 Lore、重复 `{content}`、旧节点回退，以及紧凑/堆叠、翻页、玩家排序、actions、close、glow、PAPI、手动放入、取出、重载保留、容量策略和 UUID 隔离。
+- 三端各完成 600 次菜单打开压力检查，观测 TPS 分别为 `19.981`、`19.996`、`19.998`，服务端日志未发现本专项禁止异常。
 
 ## English
 
@@ -277,8 +287,16 @@ global-trash:
     max-pages: 5
     # Maximum accumulated amount for one type; -1 means unlimited.
     max-amount-per-entry: 9999
-    # Amount, original Lore truncation, and operation hints are placed in Lore.
+    # Maximum original Lore lines to expand; -1 keeps all lines.
     max-original-lore-lines: 5
+    # Complete Lore template. {content} must be on its own line and expands original Lore here.
+    item-lore:
+      - "&#38BDF8Amount: &#F5B82E{amount}"
+      - "{content}"
+      - "&#38BDF8Left click &#D5DEE9to take &#F5B82E{take-amount}"
+      - "&#FFD166Shift + left click &#D5DEE9to take &#F5B82E{shift-take-amount}"
+    # Shown after truncated original Lore; {count} is the number of omitted lines.
+    omitted-lore: "&#64748B...omitted &#AAB6C5{count} &#64748Blines..."
     left-click-amount: 1
     shift-left-click-amount: 64
   stacked:
@@ -289,6 +307,8 @@ global-trash:
 ```
 
 Compact mode does not split a batch into many duplicate display entries. For example, when `9980` items are stored and another `20` arrive, the remaining capacity is accepted and the entry becomes `9999`; any remainder follows the existing routing rules. Public trash contents are runtime data and are cleared on restart, matching the legacy behavior.
+
+`compact.item-lore` controls the complete order of the amount, original Lore, and operation hints. Global and personal trash can configure it independently. `{content}` expands original Lore after `max-original-lore-lines` truncation. Omitting it intentionally hides original Lore; duplicates expand only the first and produce one reload warning. Use `""` or `"&7"` for a fixed blank line. Normal template lines support RGB, legacy colors, page/amount variables, and PlaceholderAPI. Existing `show-amount-lore`, `amount-lore`, and `action-lore` settings remain compatible in their legacy order, but new defaults no longer emit them.
 
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
@@ -442,9 +462,9 @@ Final universal artifact information:
 
 - Version: `7.2.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `6D977DAD138453916AB6095458ED829EE0A6FB0FF9D636378CCA5D8EB14655E4`
+- SHA-256: `C495F613296BA3BE598F7A711E98634DE59B8C916BECFEFDE2DE5623901A3ABC`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
-- The unified personal container was verified with the same universal JAR and matching real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.8. Coverage includes compact/stacked modes, Lore truncation, pagination, per-player sorting, actions, close, glow, PAPI, manual deposits, withdrawals, reload retention, capacity policies, and UUID isolation.
-- Each platform completed a 600-open menu stress check with observed TPS of `19.974`, `19.998`, and `19.995`; no forbidden runtime exceptions were found for this matrix.
+- The unified personal container was verified with the same universal JAR and matching real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.8. Coverage includes the complete `item-lore` template, blank lines, multi-line original Lore truncation, hidden original Lore, duplicate `{content}`, legacy-node fallback, compact/stacked modes, pagination, per-player sorting, actions, close, glow, PAPI, manual deposits, withdrawals, reload retention, capacity policies, and UUID isolation.
+- Each platform completed a 600-open menu stress check with observed TPS of `19.981`, `19.996`, and `19.998`; no forbidden runtime exceptions were found for this matrix.

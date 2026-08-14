@@ -38,6 +38,7 @@ public final class ConfigBundleLoader {
         List<String> compactActionLore = trash.contains("global-trash.compact.action-lore")
                 ? trash.getStringList("global-trash.compact.action-lore")
                 : TrashConfig.CompactGlobalTrashConfig.defaults().getActionLore();
+        List<String> compactItemLore = optionalStringList(trash, "global-trash.compact.item-lore");
         TrashConfig.CompactGlobalTrashConfig compactGlobalTrash = new TrashConfig.CompactGlobalTrashConfig(
                 trash.getInt("global-trash.compact.max-pages", legacyGlobalMaxPages),
                 trash.getInt("global-trash.compact.max-amount-per-entry", 9999),
@@ -53,7 +54,8 @@ public final class ConfigBundleLoader {
                 "&#64748B...省略 &#AAB6C5{count} &#64748B行..."),
                 compactActionLore,
                 TrashConfig.GlobalTrashSortType.parse(
-                        trash.getString("global-trash.compact.default-sort", "insertion"))
+                        trash.getString("global-trash.compact.default-sort", "insertion")),
+                compactItemLore
         );
         TrashConfig.StackedGlobalTrashConfig stackedGlobalTrash = new TrashConfig.StackedGlobalTrashConfig(
                 trash.getInt("global-trash.stacked.max-pages", legacyGlobalMaxPages),
@@ -61,6 +63,7 @@ public final class ConfigBundleLoader {
                         trash.getString("global-trash.stacked.default-sort", "insertion")));
         TrashConfig.GlobalTrashLayoutConfig personalTrashLayout = layoutParser.parse(
                 trash, "personal-trash.gui.layout", -1, -1, -1, supportsCustomModelData);
+        List<String> personalItemLore = optionalStringList(trash, "personal-trash.compact.item-lore");
         TrashConfig.CompactGlobalTrashConfig compactPersonalTrash = new TrashConfig.CompactGlobalTrashConfig(
                 trash.getInt("personal-trash.compact.max-pages", 2),
                 trash.getInt("personal-trash.compact.max-amount-per-entry", 9999),
@@ -78,7 +81,8 @@ public final class ConfigBundleLoader {
                         ? trash.getStringList("personal-trash.compact.action-lore")
                         : TrashConfig.CompactGlobalTrashConfig.defaults().getActionLore(),
                 TrashConfig.GlobalTrashSortType.parse(
-                        trash.getString("personal-trash.compact.default-sort", "insertion"))
+                        trash.getString("personal-trash.compact.default-sort", "insertion")),
+                personalItemLore
         );
         TrashConfig.StackedGlobalTrashConfig stackedPersonalTrash = new TrashConfig.StackedGlobalTrashConfig(
                 trash.getInt("personal-trash.stacked.max-pages", 2),
@@ -237,6 +241,19 @@ public final class ConfigBundleLoader {
                 main.getString("language", "message_zh.yml"),
                 main.getBoolean("debug", false)
         );
+    }
+
+    /** 读取可选字符串列表；单行字符串也兼容为单元素列表，路径缺失时返回 null。 */
+    private List<String> optionalStringList(ConfigurationSource source, String path) {
+        if (!source.contains(path)) {
+            return null;
+        }
+        if (source.isList(path)) {
+            return new ArrayList<>(source.getStringList(path));
+        }
+        List<String> result = new ArrayList<>();
+        result.add(source.getString(path, ""));
+        return result;
     }
 
     /** 读取新世界过滤器；新节点不存在时兼容旧 ignored-worlds。 */

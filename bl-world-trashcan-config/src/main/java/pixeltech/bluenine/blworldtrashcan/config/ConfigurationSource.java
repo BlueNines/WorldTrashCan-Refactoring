@@ -8,6 +8,11 @@ public interface ConfigurationSource {
     /** 判断配置路径是否存在。 */
     boolean contains(String path);
 
+    /** 判断配置路径是否为列表；不支持类型检测的来源默认返回 false。 */
+    default boolean isList(String path) {
+        return false;
+    }
+
     /** 读取字符串。 */
     String getString(String path, String fallback);
 

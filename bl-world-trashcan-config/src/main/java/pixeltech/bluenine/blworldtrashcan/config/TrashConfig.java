@@ -351,6 +351,7 @@ public final class TrashConfig {
         private final String amountLore;
         private final String omittedLore;
         private final List<String> actionLore;
+        private final List<String> itemLore;
         private final GlobalTrashSortType defaultSort;
 
         /** 创建紧凑模式配置。 */
@@ -363,7 +364,7 @@ public final class TrashConfig {
             this(maxPages, maxAmountPerEntry, leftClickAmount, shiftLeftClickAmount,
                     rightClickEnabled, rightClickAmount, shiftRightClickAmount, showAmountLore,
                     maxOriginalLoreLines, amountLore, omittedLore, actionLore,
-                    GlobalTrashSortType.INSERTION);
+                    GlobalTrashSortType.INSERTION, null);
         }
 
         /** 创建包含独立默认排序的紧凑模式配置。 */
@@ -374,6 +375,19 @@ public final class TrashConfig {
                                         int maxOriginalLoreLines, String amountLore,
                                         String omittedLore, List<String> actionLore,
                                         GlobalTrashSortType defaultSort) {
+            this(maxPages, maxAmountPerEntry, leftClickAmount, shiftLeftClickAmount,
+                    rightClickEnabled, rightClickAmount, shiftRightClickAmount, showAmountLore,
+                    maxOriginalLoreLines, amountLore, omittedLore, actionLore, defaultSort, null);
+        }
+
+        /** 创建包含可重排完整 Lore 模板的紧凑模式配置。 */
+        public CompactGlobalTrashConfig(int maxPages, long maxAmountPerEntry,
+                                        int leftClickAmount, int shiftLeftClickAmount,
+                                        boolean rightClickEnabled, int rightClickAmount,
+                                        int shiftRightClickAmount, boolean showAmountLore,
+                                        int maxOriginalLoreLines, String amountLore,
+                                        String omittedLore, List<String> actionLore,
+                                        GlobalTrashSortType defaultSort, List<String> itemLore) {
             this.maxPages = Math.max(1, maxPages);
             this.maxAmountPerEntry = maxAmountPerEntry == -1L
                     ? -1L : Math.max(1L, maxAmountPerEntry);
@@ -389,7 +403,23 @@ public final class TrashConfig {
             this.actionLore = actionLore == null
                     ? Collections.<String>emptyList()
                     : Collections.unmodifiableList(new ArrayList<>(actionLore));
+            List<String> resolvedItemLore = itemLore == null
+                    ? legacyItemLore(showAmountLore, this.amountLore, this.actionLore)
+                    : new ArrayList<>(itemLore);
+            this.itemLore = Collections.unmodifiableList(resolvedItemLore);
             this.defaultSort = defaultSort == null ? GlobalTrashSortType.INSERTION : defaultSort;
+        }
+
+        /** 把旧数量与操作节点合成为兼容模板。 */
+        private static List<String> legacyItemLore(boolean showAmountLore, String amountLore,
+                                                   List<String> actionLore) {
+            List<String> result = new ArrayList<>();
+            if (showAmountLore) {
+                result.add(amountLore);
+            }
+            result.add("{content}");
+            result.addAll(actionLore);
+            return result;
         }
 
         /** 返回开箱默认紧凑模式配置。 */
@@ -460,6 +490,11 @@ public final class TrashConfig {
         /** 返回紧凑模式操作 Lore。 */
         public List<String> getActionLore() {
             return actionLore;
+        }
+
+        /** 返回紧凑模式完整 Lore 模板；{content} 用于展开原物品 Lore。 */
+        public List<String> getItemLore() {
+            return itemLore;
         }
 
         /** 返回紧凑模式没有玩家缓存时使用的排序方式。 */
