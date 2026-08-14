@@ -105,14 +105,16 @@ public final class BukkitLegacyConfigMigrator {
     }
 
     /** 补齐当前版本运行时需要的新增默认配置。 */
-    public void repairCurrentRuntimeDefaults() {
+    public boolean repairCurrentRuntimeDefaults() {
         try {
             if (mergeCleanupGuardNotifyDefaults()) {
                 plugin.getLogger().info("[Config] 已补齐 cleanup.yml 缺失的 -5 扫地门禁通知默认文案。");
+                return true;
             }
         } catch (IOException exception) {
             plugin.getLogger().warning("[Config] 补齐 cleanup.yml 默认通知失败: " + exception.getMessage());
         }
+        return false;
     }
 
     /** 把 cleanup.yml 中缺失的扫地门禁通知默认项追加回原配置。 */
@@ -138,7 +140,8 @@ public final class BukkitLegacyConfigMigrator {
         if (updated.equals(original)) {
             return false;
         }
-        Files.write(file.toPath(), updated.getBytes(UTF8));
+        File backup = BukkitCurrentConfigUpdater.replaceYamlWithBackup(file, updated);
+        plugin.getLogger().info("[ConfigUpdate] cleanup.yml 更新前备份: " + backup.getName());
         return true;
     }
 

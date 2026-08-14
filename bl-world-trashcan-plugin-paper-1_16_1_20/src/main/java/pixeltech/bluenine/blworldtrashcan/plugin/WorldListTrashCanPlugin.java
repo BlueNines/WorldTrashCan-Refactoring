@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.BStatsMetricsService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.Metrics;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
+import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitCurrentConfigUpdater;
 import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitLegacyConfigMigrator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.BanGuiFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.WorldListTrashCanApiHost;
@@ -68,7 +69,9 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         BukkitLegacyConfigMigrator configMigrator = new BukkitLegacyConfigMigrator(this);
         configMigrator.migrateIfNeeded();
         saveDefaultConfigs();
-        configMigrator.repairCurrentRuntimeDefaults();
+        reloadConfig();
+        new BukkitCurrentConfigUpdater(this).updateIfEnabled();
+        reloadConfig();
         this.customModelDataSupport = CustomModelDataSupport.detect(getLogger());
         getLogger().info("Capability custom-model-data: "
                 + (customModelDataSupport.isSupported() ? "enabled (model-id parsed)" : "disabled (model-id skipped)"));
@@ -143,7 +146,8 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
     /** 重载插件配置和功能模块。 */
     public void reloadPlugin() {
         saveDefaultConfigs();
-        new BukkitLegacyConfigMigrator(this).repairCurrentRuntimeDefaults();
+        reloadConfig();
+        new BukkitCurrentConfigUpdater(this).updateIfEnabled();
         reloadConfig();
         this.configBundle = loadConfigBundle();
         if (messageService != null) {

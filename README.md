@@ -76,6 +76,17 @@ global-trash:
 
 `compact.item-lore` 同时控制数量、原 Lore 和操作提示的完整顺序，公共桶与个人桶都可独立配置。`{content}` 展开经过 `max-original-lore-lines` 截断后的原 Lore；没有该行表示主动隐藏原 Lore，重复配置时只展开第一个并在重载时警告。固定空行可写 `""` 或 `"&7"`。普通模板行支持 RGB、传统颜色、页码/数量变量和 PlaceholderAPI。旧服已有的 `show-amount-lore`、`amount-lore`、`action-lore` 仍会按原顺序兼容，但新生成配置不再写出这些旧节点。
 
+### 配置文件保守更新
+
+当前重构版默认不会改写服主已有配置，旧配置节点会继续兼容读取。希望把受支持的旧写法整理为当前格式时，可以在 `config.yml` 主动开启：
+
+```yaml
+config-update:
+  enabled: true
+```
+
+启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。`trash.yml` 的旧 `show-amount-lore`、`amount-lore`、`action-lore` 会按原显示语义组成 `item-lore`，自定义颜色、PAPI 文本、空列表和用户注释都会保留。已有 `item-lore` 时绝不覆盖；新旧节点同时存在则维持 `item-lore` 优先并给出警告。
+
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
 公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
@@ -95,7 +106,7 @@ global-trash:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.2.0`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.3.0`。
 
 ### 性能优化估算
 
@@ -227,9 +238,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.2.0`
+- 版本：`7.3.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`C495F613296BA3BE598F7A711E98634DE59B8C916BECFEFDE2DE5623901A3ABC`
+- SHA-256：`C24C3A2B64734EF6A25BC1A9763C20FC0606D0176AB884D1AF26ECAC40AC8A6E`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
@@ -310,6 +321,17 @@ Compact mode does not split a batch into many duplicate display entries. For exa
 
 `compact.item-lore` controls the complete order of the amount, original Lore, and operation hints. Global and personal trash can configure it independently. `{content}` expands original Lore after `max-original-lore-lines` truncation. Omitting it intentionally hides original Lore; duplicates expand only the first and produce one reload warning. Use `""` or `"&7"` for a fixed blank line. Normal template lines support RGB, legacy colors, page/amount variables, and PlaceholderAPI. Existing `show-amount-lore`, `amount-lore`, and `action-lore` settings remain compatible in their legacy order, but new defaults no longer emit them.
 
+### Conservative configuration updates
+
+The refactored plugin does not rewrite an administrator's existing configuration by default. Legacy nodes remain readable. To convert supported legacy syntax to the current format, explicitly enable this option in `config.yml`:
+
+```yaml
+config-update:
+  enabled: true
+```
+
+On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. Legacy `show-amount-lore`, `amount-lore`, and `action-lore` values in `trash.yml` are combined into `item-lore` with the same display semantics, while custom colors, PAPI text, empty lists, and administrator comments are retained. An existing `item-lore` is never overwritten; if both syntaxes are active, `item-lore` keeps priority and a warning is logged.
+
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
 Layout display items support `glow: true` for page, background, sort, actions, and close buttons. Minecraft 1.20.5 and newer use Bukkit's native glint override without a real enchantment. Older versions automatically fall back to a hidden enchantment, so no enchantment name appears in the tooltip. `type: content` always ignores this option and never mutates stored trash items.
@@ -328,7 +350,7 @@ The personal default is compact mode, 2 pages, a per-item limit of `9999`, manua
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.2.0`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.3.0`.
 
 ### Estimated performance improvements
 
@@ -460,9 +482,9 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.2.0`
+- Version: `7.3.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `C495F613296BA3BE598F7A711E98634DE59B8C916BECFEFDE2DE5623901A3ABC`
+- SHA-256: `C24C3A2B64734EF6A25BC1A9763C20FC0606D0176AB884D1AF26ECAC40AC8A6E`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
