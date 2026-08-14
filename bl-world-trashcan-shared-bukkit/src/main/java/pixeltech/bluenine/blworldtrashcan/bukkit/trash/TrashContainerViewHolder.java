@@ -11,7 +11,7 @@ final class TrashContainerViewHolder implements InventoryHolder {
     private final UUID playerId;
     private final int pageIndex;
     private final TrashContainerStore store;
-    private final TrashContainerStore.ViewSnapshot snapshot;
+    private volatile TrashContainerStore.ViewSnapshot snapshot;
     private Inventory inventory;
 
     /** 创建绑定具体 Store 和稳定快照的菜单视图。 */
@@ -52,6 +52,13 @@ final class TrashContainerViewHolder implements InventoryHolder {
     /** 返回打开时冻结的视图快照。 */
     TrashContainerStore.ViewSnapshot getSnapshot() {
         return snapshot;
+    }
+
+    /** 替换为保持现有顺序的增量快照。 */
+    void replaceSnapshot(TrashContainerStore.ViewSnapshot nextSnapshot) {
+        if (nextSnapshot != null) {
+            this.snapshot = nextSnapshot;
+        }
     }
 
     /** 返回当前 Bukkit 库存。 */

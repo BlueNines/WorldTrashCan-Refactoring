@@ -123,6 +123,88 @@ public final class TrashContainerStoreTest {
         Assert.assertEquals(2, store.getStoredStackCount());
     }
 
+    /** 数量排序视图中的数量变化只能原地更新，重新打开时才重新排序。 */
+    @Test
+    public void compactRefreshKeepsSessionOrderUntilNextSnapshot() {
+        TrashContainerStore store = store("personal:stable-sort", compactConfig(9999L, 1), 3);
+        store.add(new ItemStack(Material.DIRT, 20), false);
+        store.add(new ItemStack(Material.STONE, 10), false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.AMOUNT_DESC);
+
+        ItemStack added = new ItemStack(Material.STONE, 30);
+        store.add(added, true);
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(added));
+
+        Assert.assertEquals(Material.DIRT, store.getDisplayItem(refreshed.getReference(0, 0)).getSample().getType());
+        Assert.assertEquals(Material.STONE, store.getDisplayItem(refreshed.getReference(0, 1)).getSample().getType());
+        Assert.assertEquals(40L, store.getDisplayItem(refreshed.getReference(0, 1)).getLogicalAmount());
+        TrashContainerStore.ViewSnapshot reopened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.AMOUNT_DESC);
+        Assert.assertEquals(Material.STONE, store.getDisplayItem(reopened.getReference(0, 0)).getSample().getType());
+    }
+
+    /** 新身份只追加到当前会话，不应顺带加载其它在打开后进入的身份。 */
+    @Test
+    public void compactRefreshAddsOnlyChangedIdentity() {
+        TrashContainerStore store = store("personal:changed-only", compactConfig(9999L, 1), 4);
+        store.add(new ItemStack(Material.STONE, 1), false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+        store.add(new ItemStack(Material.DIRT, 2), false);
+        ItemStack manuallyAdded = new ItemStack(Material.GOLD_INGOT, 3);
+        store.add(manuallyAdded, true);
+
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(manuallyAdded));
+
+        Assert.assertEquals(2, refreshed.getReferenceCount());
+        Assert.assertEquals(Material.STONE, store.getDisplayItem(refreshed.getReference(0, 0)).getSample().getType());
+        Assert.assertEquals(Material.GOLD_INGOT,
+                store.getDisplayItem(refreshed.getReference(0, 1)).getSample().getType());
+    }
+
+    /** 原始堆叠模式跨过 64 个后应补出新堆叠，但不能移动旧堆叠。 */
+    @Test
+    public void stackedRefreshAppendsOverflowStackWithoutReordering() {
+        TrashContainerStore store = store("personal:stacked-refresh", stackedConfig(1), 3);
+        ItemStack stone = new ItemStack(Material.STONE, 60);
+        store.add(stone, false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+
+        store.add(new ItemStack(Material.STONE, 10), true);
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(stone));
+
+        Assert.assertEquals(2, refreshed.getReferenceCount());
+        Assert.assertEquals(64, store.getDisplayItem(refreshed.getReference(0, 0)).getDisplayAmount());
+        Assert.assertEquals(6, store.getDisplayItem(refreshed.getReference(0, 1)).getDisplayAmount());
+    }
+
+    /** 已失效槽位应被本次新身份复用，不能让当前页留下无意义空洞。 */
+    @Test
+    public void compactRefreshReusesVacantReferenceSlot() {
+        TrashContainerStore store = store("personal:reuse-vacant", compactConfig(9999L, 1), 3);
+        ItemStack stone = new ItemStack(Material.STONE, 1);
+        store.add(stone, false);
+        store.add(new ItemStack(Material.DIRT, 2), false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+        TrashContainerStore.DisplayItem removed = store.getDisplayItem(opened.getReference(0, 0));
+        store.remove(removed.getEntryId(), removed.getLogicalAmount());
+        ItemStack gold = new ItemStack(Material.GOLD_INGOT, 3);
+        store.add(gold, true);
+
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(gold));
+
+        Assert.assertEquals(Material.GOLD_INGOT,
+                store.getDisplayItem(refreshed.getReference(0, 0)).getSample().getType());
+        Assert.assertEquals(Material.DIRT, store.getDisplayItem(refreshed.getReference(0, 1)).getSample().getType());
+    }
+
     /** 创建已经配置好的测试 Store。 */
     private TrashContainerStore store(String prefix, TrashConfig.TrashContainerConfig config,
                                       int contentSlots) {

@@ -10,10 +10,12 @@ import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /** 公共和个人垃圾桶共用的模型存储，不使用 Bukkit Inventory 保存业务状态。 */
@@ -184,6 +186,66 @@ public class TrashContainerStore {
         int requiredPages = (references.size() + contentSlotsPerPage - 1) / contentSlotsPerPage;
         int pageCount = Math.max(configuredMaxPages(), Math.max(1, requiredPages));
         return new ViewSnapshot(effectiveSort, contentSlotsPerPage, pageCount, references);
+    }
+
+    /** 只把指定物品身份缺少的引用补入旧快照，不移动任何仍有效的现有引用。 */
+    synchronized ViewSnapshot refreshIdentityInSnapshot(ViewSnapshot current, String identityKey) {
+        if (current == null || config == null || identityKey == null) {
+            return current;
+        }
+        StoredEntry changedEntry = entries.get(identityKey);
+        if (changedEntry == null) {
+            return current;
+        }
+        List<Integer> reusableIndexes = new ArrayList<>();
+        Set<Long> referencedOffsets = new HashSet<>();
+        for (int index = 0; index < current.references.size(); index++) {
+            DisplayReference reference = current.references.get(index);
+            StoredEntry referencedEntry = entriesById.get(Long.valueOf(reference.entryId));
+            if (referencedEntry == null || referencedEntry.amount <= reference.offset) {
+                reusableIndexes.add(Integer.valueOf(index));
+                continue;
+            }
+            if (reference.entryId == changedEntry.entryId) {
+                referencedOffsets.add(Long.valueOf(reference.offset));
+            }
+        }
+        List<DisplayReference> missing = missingReferences(changedEntry, referencedOffsets);
+        if (missing.isEmpty()) {
+            return current;
+        }
+        List<DisplayReference> refreshed = new ArrayList<>(current.references);
+        int reusableIndex = 0;
+        for (DisplayReference reference : missing) {
+            if (reusableIndex < reusableIndexes.size()) {
+                refreshed.set(reusableIndexes.get(reusableIndex).intValue(), reference);
+                reusableIndex++;
+                continue;
+            }
+            refreshed.add(reference);
+        }
+        int requiredPages = (refreshed.size() + current.contentSlotsPerPage - 1)
+                / current.contentSlotsPerPage;
+        int pageCount = Math.max(current.pageCount, Math.max(configuredMaxPages(), requiredPages));
+        return new ViewSnapshot(current.sortType, current.contentSlotsPerPage, pageCount, refreshed);
+    }
+
+    /** 生成指定条目尚未出现在旧视图中的紧凑或原始堆叠引用。 */
+    private List<DisplayReference> missingReferences(StoredEntry entry, Set<Long> referencedOffsets) {
+        List<DisplayReference> missing = new ArrayList<>();
+        if (config.getMode() == TrashConfig.GlobalTrashMode.COMPACT) {
+            if (!referencedOffsets.contains(Long.valueOf(0L))) {
+                missing.add(new DisplayReference(entry.entryId, 0L, 1));
+            }
+            return missing;
+        }
+        int maxStack = maxStackSize(entry.sample);
+        for (long offset = 0L; offset < entry.amount; offset += maxStack) {
+            if (!referencedOffsets.contains(Long.valueOf(offset))) {
+                missing.add(new DisplayReference(entry.entryId, offset, maxStack));
+            }
+        }
+        return missing;
     }
 
     /** 解析打开会话中的稳定引用，条目失效时返回 null。 */

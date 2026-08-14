@@ -363,7 +363,46 @@ final class TrashContainerMenu {
             sourceInventory.setItem(sourceSlot, remainder);
         }
         cleanItemStack.setAmount(accepted);
+        syncManualPutView(player, store, store.identityKey(cleanItemStack));
         policy.afterManualPut(player, cleanItemStack, result.getTrackingKey(), accepted);
+    }
+
+    /** 手动放入后只补充本次物品引用并重绘当前页对应槽位。 */
+    private void syncManualPutView(Player player, TrashContainerStore store, String identityKey) {
+        if (player == null || store == null || identityKey == null) {
+            return;
+        }
+        TrashContainerViewHolder holder = activeViews.get(player.getUniqueId());
+        if (holder == null || holder.getStore() != store || holder.getInventory() == null) {
+            return;
+        }
+        InventoryView openView = player.getOpenInventory();
+        if (openView == null || openView.getTopInventory() != holder.getInventory()) {
+            return;
+        }
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                holder.getSnapshot(), identityKey);
+        holder.replaceSnapshot(refreshed);
+        syncIdentitySlots(player, holder, identityKey);
+    }
+
+    /** 只重绘当前页中属于指定身份的内容槽，避免整页刷新和排序跳动。 */
+    private void syncIdentitySlots(Player player, TrashContainerViewHolder holder, String identityKey) {
+        TrashContainerStore.ViewSnapshot snapshot = holder.getSnapshot();
+        if (snapshot == null) {
+            return;
+        }
+        List<Integer> contentSlots = layout.getContentSlots();
+        for (int contentIndex = 0; contentIndex < contentSlots.size(); contentIndex++) {
+            TrashContainerStore.DisplayReference reference = snapshot.getReference(
+                    holder.getPageIndex(), contentIndex);
+            TrashContainerStore.DisplayItem display = holder.getStore().getDisplayItem(reference);
+            if (display == null || !identityKey.equals(display.getKey())) {
+                continue;
+            }
+            holder.getInventory().setItem(contentSlots.get(contentIndex).intValue(),
+                    createContentItem(display, player, holder.getPageIndex(), snapshot.getPageCount()));
+        }
     }
 
     /** 只同步刚操作的内容槽，避免整页闪烁。 */

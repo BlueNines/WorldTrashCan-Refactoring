@@ -105,6 +105,8 @@ entities:
 
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
+玩家在已打开的公共桶或个人桶中手动放入物品后，当前页会立即原地更新对应数量、Lore 和新增堆叠，不需要关闭后重新打开。该更新只补充本次物品的显示引用，不会重新排序、重开菜单或整页刷新；下一次打开菜单或主动切换排序时才重新按所选规则排列。
+
 公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
 
 ### 个人垃圾桶显示与容量
@@ -122,7 +124,7 @@ entities:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.4.1`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.4.2`。
 
 ### 性能优化估算
 
@@ -257,7 +259,7 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.4.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`53C64FEC3D0140EA0B1FD19E40FE9AA2727A2DF4BC3BE815B405C618BCD7D57F`
+- SHA-256：`22DFA27D82B174D8F01E642B6D02325D6ECFA1470E8562F8E249ACD67FCCFD02`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
@@ -367,6 +369,8 @@ Missing, empty, or entirely invalid lists bypass name matching. Rules containing
 
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
+After a player manually deposits an item into an open global or personal trash menu, the affected amount, Lore, and any newly required stack are updated in place immediately. The menu is not reopened, fully refreshed, or resorted; only references for that deposited item are added. The selected sort is applied again only when the menu is reopened or the player explicitly changes it.
+
 Layout display items support `glow: true` for page, background, sort, actions, and close buttons. Minecraft 1.20.5 and newer use Bukkit's native glint override without a real enchantment. Older versions automatically fall back to a hidden enchantment, so no enchantment name appears in the tooltip. `type: content` always ignores this option and never mutates stored trash items.
 
 ### Personal trash-can display and capacity
@@ -383,7 +387,7 @@ The personal default is compact mode, 2 pages, a per-item limit of `9999`, manua
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.4.1`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.4.2`.
 
 ### Estimated performance improvements
 
@@ -518,7 +522,7 @@ Final universal artifact information:
 
 - Version: `7.4.1`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `53C64FEC3D0140EA0B1FD19E40FE9AA2727A2DF4BC3BE815B405C618BCD7D57F`
+- SHA-256: `22DFA27D82B174D8F01E642B6D02325D6ECFA1470E8562F8E249ACD67FCCFD02`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
