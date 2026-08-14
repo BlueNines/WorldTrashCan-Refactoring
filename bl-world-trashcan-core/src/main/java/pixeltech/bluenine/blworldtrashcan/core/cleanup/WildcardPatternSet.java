@@ -48,7 +48,14 @@ public final class WildcardPatternSet {
         if (text == null || patterns.isEmpty()) {
             return false;
         }
-        String normalized = normalize(text);
+        return matchesNormalized(normalize(text));
+    }
+
+    /** 判断已经完成小写和首尾空白处理的文本是否命中，供热路径复用。 */
+    boolean matchesNormalized(String normalized) {
+        if (normalized == null || patterns.isEmpty()) {
+            return false;
+        }
         for (CompiledPattern pattern : patterns) {
             if (pattern.matches(normalized)) {
                 return true;

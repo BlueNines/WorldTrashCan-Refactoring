@@ -107,8 +107,18 @@ public final class DefaultCleanupPolicy implements CleanupPolicy {
         if (settings.matchesEntityWhitelist(entity.getTypeKey(), entity.getName())) {
             return new EntityCleanupDecision(EntityCleanupAction.SKIP, "entity-whitelist");
         }
+        NamedEntityRules.Match namedMatch = NamedEntityRules.Match.NONE;
+        if (settings.hasNamedEntityRules() && !entity.getCustomName().isEmpty()) {
+            namedMatch = settings.matchNamedEntity(entity.getTypeKey(), entity.getCustomName());
+            if (namedMatch == NamedEntityRules.Match.WHITELIST) {
+                return new EntityCleanupDecision(EntityCleanupAction.SKIP, "named-entity-whitelist");
+            }
+        }
         if (settings.matchesEntityBlacklist(entity.getTypeKey(), entity.getName())) {
             return new EntityCleanupDecision(EntityCleanupAction.REMOVE, "entity-blacklist");
+        }
+        if (namedMatch == NamedEntityRules.Match.BLACKLIST) {
+            return new EntityCleanupDecision(EntityCleanupAction.REMOVE, "named-entity-blacklist");
         }
         if (isExperienceOrb(entity.getTypeKey()) && settings.isClearExperienceOrb()) {
             return new EntityCleanupDecision(EntityCleanupAction.REMOVE, "experience-orb");

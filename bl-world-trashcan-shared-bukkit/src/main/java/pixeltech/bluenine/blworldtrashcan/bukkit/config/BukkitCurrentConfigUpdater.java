@@ -7,6 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -31,6 +33,18 @@ public final class BukkitCurrentConfigUpdater {
     private static final String TRASH_FILE = "trash.yml";
     private static final String TRASH_SCHEMA_PATH = "config-schema-version";
     private static final int TRASH_SCHEMA_VERSION = 2;
+    private static final String CLEANUP_FILE = "cleanup.yml";
+    private static final int CLEANUP_SCHEMA_VERSION = 1;
+    private static final String NAMED_WHITELIST_PATH = "entities.named-whitelist";
+    private static final String NAMED_BLACKLIST_PATH = "entities.named-blacklist";
+    private static final int CLEANUP_GUARD_NOTIFY_KEY = -5;
+    private static final String CLEANUP_GUARD_NOTIFY_COMMENT = "# -5 表示本轮被扫地启动门禁跳过。";
+    private static final String[] CLEANUP_GUARD_NOTIFY_PATHS = {
+            "notify.chat.messages",
+            "notify.actionbar.messages",
+            "notify.bossbar.messages",
+            "notify.title.messages"
+    };
     private static final String LORE_CHANGE_VERSION = "7.2.0";
     private static final String[] COMPACT_SCOPES = {
             "global-trash.compact",
@@ -56,6 +70,7 @@ public final class BukkitCurrentConfigUpdater {
     public boolean updateIfEnabled() {
         if (!plugin.getConfig().getBoolean(UPDATE_ENABLED_PATH, false)) {
             reportPendingTrashUpdate();
+            reportPendingCleanupUpdate();
             return false;
         }
         boolean changed = false;
@@ -65,8 +80,15 @@ public final class BukkitCurrentConfigUpdater {
             plugin.getLogger().warning("[ConfigUpdate] trash.yml 更新失败，原文件保持不变: "
                     + exception.getMessage());
         }
-        if (new BukkitLegacyConfigMigrator(plugin).repairCurrentRuntimeDefaults()) {
-            changed = true;
+        try {
+            YamlConfiguration cleanupDefaults = loadResourceYaml(CLEANUP_FILE);
+            if (updateCleanupFile(new File(plugin.getDataFolder(), CLEANUP_FILE),
+                    cleanupDefaults, plugin.getLogger())) {
+                changed = true;
+            }
+        } catch (IOException exception) {
+            plugin.getLogger().warning("[ConfigUpdate] cleanup.yml 更新失败，原文件保持不变: "
+                    + exception.getMessage());
         }
         return changed;
     }
@@ -88,6 +110,26 @@ public final class BukkitCurrentConfigUpdater {
             }
         } catch (IOException exception) {
             plugin.getLogger().warning("[ConfigUpdate] 无法检查 trash.yml 是否需要更新: "
+                    + exception.getMessage());
+        }
+    }
+
+    /** 自动更新关闭时提示 cleanup.yml 仍可进入独立结构版本。 */
+    private void reportPendingCleanupUpdate() {
+        File file = new File(plugin.getDataFolder(), CLEANUP_FILE);
+        if (!file.isFile()) {
+            return;
+        }
+        try {
+            YamlConfiguration yaml = loadStrict(file);
+            if (readSchemaVersion(yaml) < CLEANUP_SCHEMA_VERSION
+                    || !yaml.contains(NAMED_WHITELIST_PATH)
+                    || !yaml.contains(NAMED_BLACKLIST_PATH)) {
+                plugin.getLogger().info("[ConfigUpdate] 检测到 cleanup.yml 可保守更新；当前缺失节点继续按空规则兼容。"
+                        + "如需写入独立结构版本和新节点，请在 config.yml 设置 config-update.enabled: true 后执行 /wtc reload。");
+            }
+        } catch (IOException exception) {
+            plugin.getLogger().warning("[ConfigUpdate] 无法检查 cleanup.yml 是否需要更新: "
                     + exception.getMessage());
         }
     }
@@ -131,6 +173,232 @@ public final class BukkitCurrentConfigUpdater {
         }
     }
 
+    /** 更新 cleanup.yml 的结构版本、新名单和历史门禁通知，并且整轮只备份一次。 */
+    static boolean updateCleanupFile(File file, YamlConfiguration defaults, Logger logger) throws IOException {
+        if (!file.isFile()) {
+            return false;
+        }
+        YamlConfiguration before = loadStrict(file);
+        int schemaVersion = readSchemaVersion(before);
+        if (schemaVersion > CLEANUP_SCHEMA_VERSION) {
+            logger.severe("[ConfigUpdate] cleanup.yml 的配置结构版本 " + schemaVersion
+                    + " 高于当前插件支持的 " + CLEANUP_SCHEMA_VERSION + "，已拒绝改写该文件。");
+            return false;
+        }
+        validateNamedRuleNodeType(before, NAMED_WHITELIST_PATH);
+        validateNamedRuleNodeType(before, NAMED_BLACKLIST_PATH);
+        boolean addNamedWhitelist = !before.contains(NAMED_WHITELIST_PATH);
+        boolean addNamedBlacklist = !before.contains(NAMED_BLACKLIST_PATH);
+        List<NotifyInsertion> notifyInsertions = prepareNotifyInsertions(before, defaults);
+        String original = new String(Files.readAllBytes(file.toPath()), UTF8);
+        String updated = buildCleanupUpdatedText(original, schemaVersion,
+                addNamedWhitelist, addNamedBlacklist, notifyInsertions);
+        if (updated.equals(original)) {
+            return false;
+        }
+        Path temporary = Files.createTempFile(file.toPath().getParent(), file.getName() + ".", ".update.tmp");
+        try {
+            Files.write(temporary, updated.getBytes(UTF8));
+            YamlConfiguration after = loadStrict(temporary.toFile());
+            validateCleanupUpdate(before, after, addNamedWhitelist, addNamedBlacklist, notifyInsertions);
+            File backup = createVerifiedBackup(file);
+            replaceAtomically(temporary, file.toPath());
+            logger.info("[ConfigUpdate] 已保守更新 cleanup.yml，结构版本、新名单与门禁通知共用备份: "
+                    + backup.getName());
+            return true;
+        } finally {
+            Files.deleteIfExists(temporary);
+        }
+    }
+
+    /** 读取 Jar 内默认 YAML，作为历史缺失默认值的唯一来源。 */
+    private YamlConfiguration loadResourceYaml(String path) throws IOException {
+        InputStream input = plugin.getResource(path);
+        if (input == null) {
+            throw new IOException("Jar 内缺少默认资源: " + path);
+        }
+        try (Reader reader = new InputStreamReader(input, UTF8)) {
+            return YamlConfiguration.loadConfiguration(reader);
+        }
+    }
+
+    /** 已存在的命名实体节点必须是列表，错误类型不允许静默覆盖。 */
+    private static void validateNamedRuleNodeType(YamlConfiguration yaml, String path) throws IOException {
+        if (yaml.contains(path) && !yaml.isList(path)) {
+            throw new IOException(path + " 必须是规则列表，已取消自动更新");
+        }
+    }
+
+    /** 计算当前 cleanup.yml 缺少的 -5 通知。 */
+    private static List<NotifyInsertion> prepareNotifyInsertions(YamlConfiguration before,
+                                                                  YamlConfiguration defaults) {
+        List<NotifyInsertion> result = new ArrayList<>();
+        if (defaults == null) {
+            return result;
+        }
+        for (String path : CLEANUP_GUARD_NOTIFY_PATHS) {
+            if (!before.isList(path) || hasEventMessage(before.getStringList(path), CLEANUP_GUARD_NOTIFY_KEY)) {
+                continue;
+            }
+            String value = firstEventMessage(defaults.getStringList(path), CLEANUP_GUARD_NOTIFY_KEY);
+            if (!value.isEmpty()) {
+                result.add(new NotifyInsertion(path, value));
+            }
+        }
+        return result;
+    }
+
+    /** 判断分号消息列表是否已有指定事件键。 */
+    private static boolean hasEventMessage(List<String> values, int key) {
+        return !firstEventMessage(values, key).isEmpty();
+    }
+
+    /** 返回分号消息列表中指定事件键的第一条消息。 */
+    private static String firstEventMessage(List<String> values, int key) {
+        if (values == null) {
+            return "";
+        }
+        String expected = String.valueOf(key);
+        for (String value : values) {
+            if (expected.equals(eventKey(value))) {
+                return value == null ? "" : value;
+            }
+        }
+        return "";
+    }
+
+    /** 提取分号消息的事件键。 */
+    private static String eventKey(String value) {
+        if (value == null) {
+            return "";
+        }
+        int split = value.indexOf(';');
+        return (split < 0 ? value : value.substring(0, split)).trim();
+    }
+
+    /** 为 cleanup.yml 生成最小文本添加计划。 */
+    private static String buildCleanupUpdatedText(String original, int schemaVersion,
+                                                  boolean addNamedWhitelist, boolean addNamedBlacklist,
+                                                  List<NotifyInsertion> notifyInsertions) throws IOException {
+        boolean bom = original.startsWith("\uFEFF");
+        String body = bom ? original.substring(1) : original;
+        String separator = body.contains("\r\n") ? "\r\n" : "\n";
+        String[] lines = body.split("\\r?\\n", -1);
+        TextEdits edits = new TextEdits();
+        prepareSchemaEdit(lines, schemaVersion, CLEANUP_SCHEMA_VERSION, edits);
+        prepareNamedRuleInsertions(lines, addNamedWhitelist, addNamedBlacklist, edits);
+        prepareNotifyTextInsertions(lines, notifyInsertions, edits);
+        String updated = applyTextEdits(lines, separator, edits);
+        return bom ? "\uFEFF" + updated : updated;
+    }
+
+    /** 在 entities 段末尾添加缺失的默认空名称名单和完整注释。 */
+    private static void prepareNamedRuleInsertions(String[] lines, boolean addNamedWhitelist,
+                                                   boolean addNamedBlacklist, TextEdits edits) throws IOException {
+        if (!addNamedWhitelist && !addNamedBlacklist) {
+            return;
+        }
+        NodeRange entities = findNodeRange(lines, "entities");
+        if (entities == null) {
+            throw new IOException("无法定位 entities，已取消 cleanup.yml 自动更新");
+        }
+        int insertAt = entities.contentEnd;
+        for (String path : Arrays.asList("entities.blacklist", NAMED_WHITELIST_PATH, NAMED_BLACKLIST_PATH)) {
+            NodeRange existing = findNodeRange(lines, path);
+            if (existing != null) {
+                insertAt = Math.max(insertAt == entities.contentEnd ? 0 : insertAt, existing.contentEnd);
+            }
+        }
+        if (insertAt <= 0) {
+            insertAt = entities.contentEnd;
+        }
+        String indent = spaces(findChildIndent(lines, entities));
+        List<String> block = new ArrayList<>();
+        if (addNamedWhitelist) {
+            block.add("");
+            block.add(indent + "# [WorldListTrashCan] 7.4.0 加入：按实体类型 AND Bukkit 自定义名称保护实体。");
+            block.add(indent + "# 默认 []；节点缺失或为空时直接跳过。type-patterns 与 name-patterns 都支持 * 通配。");
+            block.add(indent + "# 名称含颜色时颜色参与匹配；名称不含颜色时忽略实体名称颜色。白名单优先于黑名单。");
+            block.add(indent + "named-whitelist: []");
+        }
+        if (addNamedBlacklist) {
+            block.add("");
+            block.add(indent + "# [WorldListTrashCan] 7.4.0 加入：按实体类型 AND Bukkit 自定义名称强制清理实体。");
+            block.add(indent + "# 默认 []；适合在 clear-named-entities: false 时仅清理指定 MythicMobs 小怪。");
+            block.add(indent + "named-blacklist: []");
+        }
+        edits.addInsertion(insertAt, block);
+    }
+
+    /** 在已有通知列表末尾添加缺失的 -5 文案。 */
+    private static void prepareNotifyTextInsertions(String[] lines, List<NotifyInsertion> insertions,
+                                                    TextEdits edits) throws IOException {
+        for (NotifyInsertion insertion : insertions) {
+            NodeRange range = findNodeRange(lines, insertion.path);
+            if (range == null) {
+                throw new IOException("无法定位通知列表 " + insertion.path + "，已取消 cleanup.yml 自动更新");
+            }
+            String sourceLine = lines[range.start].trim();
+            if (!sourceLine.equals(lastPathSegment(insertion.path) + ":")) {
+                throw new IOException(insertion.path + " 使用了行内列表，无法仅添加一行并保留原文");
+            }
+            String indent = spaces(findChildIndent(lines, range));
+            edits.addInsertion(range.contentEnd, Arrays.asList(
+                    indent + CLEANUP_GUARD_NOTIFY_COMMENT,
+                    indent + "- \"" + escapeYamlDoubleQuoted(insertion.value) + "\""
+            ));
+        }
+    }
+
+    /** 返回点分路径最后一个键名。 */
+    private static String lastPathSegment(String path) {
+        int split = path.lastIndexOf('.');
+        return split < 0 ? path : path.substring(split + 1);
+    }
+
+    /** 验证 cleanup.yml 更新只改变了允许的结构、新节点和指定通知列表。 */
+    private static void validateCleanupUpdate(YamlConfiguration before, YamlConfiguration after,
+                                              boolean addedWhitelist, boolean addedBlacklist,
+                                              List<NotifyInsertion> insertions) throws IOException {
+        if (after.getInt(TRASH_SCHEMA_PATH, -1) != CLEANUP_SCHEMA_VERSION) {
+            throw new IOException("更新后的 cleanup.yml 配置结构版本校验失败");
+        }
+        if (addedWhitelist && (!after.isList(NAMED_WHITELIST_PATH)
+                || !after.getMapList(NAMED_WHITELIST_PATH).isEmpty())) {
+            throw new IOException(NAMED_WHITELIST_PATH + " 默认空列表校验失败");
+        }
+        if (addedBlacklist && (!after.isList(NAMED_BLACKLIST_PATH)
+                || !after.getMapList(NAMED_BLACKLIST_PATH).isEmpty())) {
+            throw new IOException(NAMED_BLACKLIST_PATH + " 默认空列表校验失败");
+        }
+        for (NotifyInsertion insertion : insertions) {
+            List<String> expected = new ArrayList<>(before.getStringList(insertion.path));
+            expected.add(insertion.value);
+            if (!expected.equals(after.getStringList(insertion.path))) {
+                throw new IOException(insertion.path + " 的 -5 通知更新结果不一致");
+            }
+        }
+        Map<String, Object> beforeLeaves = leafValues(before);
+        Map<String, Object> afterLeaves = leafValues(after);
+        beforeLeaves.remove(TRASH_SCHEMA_PATH);
+        afterLeaves.remove(TRASH_SCHEMA_PATH);
+        if (addedWhitelist) {
+            beforeLeaves.remove(NAMED_WHITELIST_PATH);
+            afterLeaves.remove(NAMED_WHITELIST_PATH);
+        }
+        if (addedBlacklist) {
+            beforeLeaves.remove(NAMED_BLACKLIST_PATH);
+            afterLeaves.remove(NAMED_BLACKLIST_PATH);
+        }
+        for (NotifyInsertion insertion : insertions) {
+            beforeLeaves.remove(insertion.path);
+            afterLeaves.remove(insertion.path);
+        }
+        if (!beforeLeaves.equals(afterLeaves)) {
+            throw new IOException("cleanup.yml 更新触及了允许范围以外的配置，已取消替换");
+        }
+    }
+
     /** 读取 trash.yml 的结构版本；缺失时视为最早版本。 */
     private static int readSchemaVersion(YamlConfiguration yaml) throws IOException {
         if (!yaml.contains(TRASH_SCHEMA_PATH)) {
@@ -140,11 +408,15 @@ public final class BukkitCurrentConfigUpdater {
         if (!(value instanceof Number)) {
             throw new IOException(TRASH_SCHEMA_PATH + " 必须是整数，已取消自动更新");
         }
-        int version = ((Number) value).intValue();
-        if (version < 0) {
-            throw new IOException(TRASH_SCHEMA_PATH + " 不能小于 0，已取消自动更新");
+        if (value instanceof Float || value instanceof Double) {
+            throw new IOException(TRASH_SCHEMA_PATH + " 必须是整数，已取消自动更新");
         }
-        return version;
+        long rawVersion = ((Number) value).longValue();
+        if (rawVersion < 0L || rawVersion > Integer.MAX_VALUE) {
+            throw new IOException(TRASH_SCHEMA_PATH + " 必须在 0 到 " + Integer.MAX_VALUE
+                    + " 之间，已取消自动更新");
+        }
+        return (int) rawVersion;
     }
 
     /** 为单个 compact 配置准备旧 Lore 到 item-lore 的迁移数据。 */
@@ -247,7 +519,7 @@ public final class BukkitCurrentConfigUpdater {
         String separator = body.contains("\r\n") ? "\r\n" : "\n";
         String[] lines = body.split("\\r?\\n", -1);
         TextEdits edits = new TextEdits();
-        prepareSchemaEdit(lines, schemaVersion, edits);
+        prepareSchemaEdit(lines, schemaVersion, TRASH_SCHEMA_VERSION, edits);
         for (ScopeMigration migration : migrations) {
             prepareScopeTextEdits(lines, migration, edits);
         }
@@ -256,17 +528,21 @@ public final class BukkitCurrentConfigUpdater {
     }
 
     /** 添加或保守更新 trash.yml 的结构版本。 */
-    private static void prepareSchemaEdit(String[] lines, int schemaVersion, TextEdits edits) throws IOException {
-        if (schemaVersion == TRASH_SCHEMA_VERSION) {
+    private static void prepareSchemaEdit(String[] lines, int schemaVersion,
+                                          int targetVersion, TextEdits edits) throws IOException {
+        if (schemaVersion == targetVersion) {
             return;
         }
         if (schemaVersion == 0) {
-            edits.addInsertion(0, Arrays.asList(
-                    "# 配置结构版本，由插件自动维护；请勿手动删除或降低。",
-                    TRASH_SCHEMA_PATH + ": " + TRASH_SCHEMA_VERSION,
-                    ""
-            ));
-            return;
+            NodeRange existingZero = findNodeRange(lines, TRASH_SCHEMA_PATH);
+            if (existingZero == null) {
+                edits.addInsertion(0, Arrays.asList(
+                        "# 配置结构版本，由插件自动维护；请勿手动删除或降低。",
+                        TRASH_SCHEMA_PATH + ": " + targetVersion,
+                        ""
+                ));
+                return;
+            }
         }
         NodeRange range = findNodeRange(lines, TRASH_SCHEMA_PATH);
         if (range == null) {
@@ -277,7 +553,7 @@ public final class BukkitCurrentConfigUpdater {
         edits.addCommentRange(range);
         edits.addInsertion(range.contentEnd, Arrays.asList(
                 "# [WorldListTrashCan] 当前插件使用的配置结构版本。",
-                TRASH_SCHEMA_PATH + ": " + TRASH_SCHEMA_VERSION
+                TRASH_SCHEMA_PATH + ": " + targetVersion
         ));
     }
 
@@ -549,20 +825,6 @@ public final class BukkitCurrentConfigUpdater {
         }
     }
 
-    /** 校验新 YAML，生成备份后再原子替换已有配置。 */
-    static File replaceYamlWithBackup(File file, String updated) throws IOException {
-        Path temporary = Files.createTempFile(file.toPath().getParent(), file.getName() + ".", ".update.tmp");
-        try {
-            Files.write(temporary, updated.getBytes(UTF8));
-            loadStrict(temporary.toFile());
-            File backup = createVerifiedBackup(file);
-            replaceAtomically(temporary, file.toPath());
-            return backup;
-        } finally {
-            Files.deleteIfExists(temporary);
-        }
-    }
-
     /** 创建唯一 .bak 文件并流式核验内容。 */
     static File createVerifiedBackup(File source) throws IOException {
         String stamp = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS").format(new Date());
@@ -614,6 +876,18 @@ public final class BukkitCurrentConfigUpdater {
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (AtomicMoveNotSupportedException ignored) {
             Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /** cleanup.yml 中一条待追加的门禁通知。 */
+    private static final class NotifyInsertion {
+        private final String path;
+        private final String value;
+
+        /** 保存通知列表路径和默认消息。 */
+        private NotifyInsertion(String path, String value) {
+            this.path = path;
+            this.value = value;
         }
     }
 

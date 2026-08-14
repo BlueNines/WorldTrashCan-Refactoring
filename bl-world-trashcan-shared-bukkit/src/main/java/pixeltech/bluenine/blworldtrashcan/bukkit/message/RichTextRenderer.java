@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 /** 统一渲染传统颜色、RGB、渐变和可点击消息。 */
 public final class RichTextRenderer {
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("(?i)&#([0-9a-f]{6})");
+    private static final char LITERAL_AMPERSAND_PLACEHOLDER = '\uE000';
     private static final char[] LEGACY_COLOR_CODES = "0123456789abcdef".toCharArray();
     private static final int[][] LEGACY_COLOR_RGB = {
             {0, 0, 0},
@@ -90,7 +91,14 @@ public final class RichTextRenderer {
 
     /** 渲染带建议命令的 Bungee 组件。 */
     public static BaseComponent[] suggest(Player player, String text, String command) {
-        return click(player, text, "suggest_command", command);
+        BaseComponent[] components = click(player, text, "suggest_command", command);
+        restoreLiteralAmpersands(components);
+        return components;
+    }
+
+    /** 临时保护变量值中的字面量 &，组件颜色编译完成后会自动还原。 */
+    public static String escapeLiteralAmpersands(String value) {
+        return value == null ? "" : value.replace('&', LITERAL_AMPERSAND_PLACEHOLDER);
     }
 
     /** 渲染带点击事件的 Bungee 组件。 */
@@ -175,4 +183,33 @@ public final class RichTextRenderer {
             applyClickEvent(child, clickEvent);
         }
     }
+
+    /** 还原组件树中为配置文本保留的字面量 &。 */
+    private static void restoreLiteralAmpersands(BaseComponent[] components) {
+        if (components == null) {
+            return;
+        }
+        for (BaseComponent component : components) {
+            restoreLiteralAmpersands(component);
+        }
+    }
+
+    /** 递归还原单个文本组件及其子组件中的字面量 &。 */
+    private static void restoreLiteralAmpersands(BaseComponent component) {
+        if (component == null) {
+            return;
+        }
+        if (component instanceof TextComponent) {
+            TextComponent text = (TextComponent) component;
+            text.setText(text.getText().replace(LITERAL_AMPERSAND_PLACEHOLDER, '&'));
+        }
+        List<BaseComponent> extra = component.getExtra();
+        if (extra == null || extra.isEmpty()) {
+            return;
+        }
+        for (BaseComponent child : extra) {
+            restoreLiteralAmpersands(child);
+        }
+    }
+
 }

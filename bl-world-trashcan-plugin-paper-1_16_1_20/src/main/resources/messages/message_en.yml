@@ -117,6 +117,12 @@ protection:
   look-prompt: "{prefix}&#5AC8FARight-click an entity to inspect its name."
   # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
   entity-result: "{prefix}&#5AC8FAEntity: &#C9D4E2{name} &#64748B({type})"
+  # Bukkit custom name in ampersand color format; {name} can be pasted into config.
+  entity-custom-name: "{prefix}&#5AC8FACustom name (config format): &#C9D4E2{name}"
+  # The entity has no Bukkit custom name.
+  entity-custom-name-none: "{prefix}&#64748BCustom name: &#C9D4E2Not set"
+  # Bukkit custom name without colors; {name} is plain text.
+  entity-plain-name: "{prefix}&#5AC8FACustom name (without colors): &#C9D4E2{name}"
   # 当前区块实体列表标题。
   chunk-entities-title: "{prefix}&#5AC8FACurrent chunk entities:"
   # 当前区块实体单行，{text} 为实体名和数量。

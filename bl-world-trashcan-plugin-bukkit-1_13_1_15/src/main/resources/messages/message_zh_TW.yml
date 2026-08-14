@@ -117,6 +117,12 @@ protection:
   look-prompt: "{prefix}&#5AC8FA請右鍵一個實體以查詢實體名稱。"
   # look 查詢實體結果，{name} 為實體名，{type} 為實體類型。
   entity-result: "{prefix}&#5AC8FA實體: &#C9D4E2{name} &#64748B({type})"
+  # 實體 Bukkit 自訂名稱；{name} 為可直接寫入設定的 & 顏色格式。
+  entity-custom-name: "{prefix}&#5AC8FA自訂名稱（設定格式）: &#C9D4E2{name}"
+  # 實體沒有 Bukkit 自訂名稱。
+  entity-custom-name-none: "{prefix}&#64748B自訂名稱: &#C9D4E2未設定"
+  # 實體移除顏色後的自訂名稱；{name} 為純文字。
+  entity-plain-name: "{prefix}&#5AC8FA自訂名稱（移除顏色）: &#C9D4E2{name}"
   # 當前區塊實體列表標題。
   chunk-entities-title: "{prefix}&#5AC8FA當前區塊實體:"
   # 當前區塊實體單行，{text} 為實體名和數量。

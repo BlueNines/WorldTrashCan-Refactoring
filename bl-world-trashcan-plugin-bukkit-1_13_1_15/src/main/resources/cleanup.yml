@@ -1,3 +1,6 @@
+# 配置结构版本，由插件自动维护；cleanup.yml 与其他配置文件独立演进，请勿手动删除或降低。
+config-schema-version: 1
+
 # 清理周期，单位秒。
 # 默认 360 秒；设为 0 时只允许管理员手动触发清理。
 interval-seconds: 360
@@ -134,6 +137,29 @@ entities:
   # 实体黑名单命中后强制清理，支持 * 通配；白名单优先级更高。
   blacklist:
     - "FLAMMPFEIL.SLASHBLADE_BLADESTAND"
+
+  # 按“实体类型 AND Bukkit 自定义名称”保护指定实体；白名单优先于全部黑名单。
+  # 默认 [] 表示关闭，节点缺失或有效规则为空时热路径会直接跳过，不产生名称转换和通配检查。
+  # 每条规则的 type-patterns 内部是 OR，普通类型名完整匹配，支持 * 通配。
+  # name-patterns 内部是 OR，普通文本按包含匹配，支持 * 通配；类型和名称必须同时命中。
+  # 名称包含颜色时颜色参与匹配，&c 与 §c 等价；名称不含颜色时会忽略实体名称中的颜色。
+  named-whitelist: []
+  # 示例：保护所有名称包含金色“世界 Boss”的原版僵尸；删除下面每行开头的 # 后使用。
+  # named-whitelist:
+  #   - type-patterns:
+  #       - "ZOMBIE"
+  #     name-patterns:
+  #       - "&6世界 Boss"
+
+  # 按“实体类型 AND Bukkit 自定义名称”强制清理指定实体；仍低于船内、带鞍、主人和白名单保护。
+  # 默认 [] 表示关闭；适合在 clear-named-entities: false 时只清理指定 MythicMobs 小怪。
+  named-blacklist: []
+  # 示例：清理名称中包含红色“特殊的怪物”的僵尸，前后等级、血量等变量不会影响包含匹配。
+  # named-blacklist:
+  #   - type-patterns:
+  #       - "ZOMBIE"
+  #     name-patterns:
+  #       - "&c特殊的怪物"
 
 # 清理通知配置。
 # 这些通知都属于扫地功能的一部分，因此统一放在 cleanup.yml 中维护。

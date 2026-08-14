@@ -24,6 +24,7 @@ public final class CleanupSettings {
     private final boolean ignoreEntitiesWithOwner;
     private final List<CompiledPattern> entityWhitePatterns;
     private final List<CompiledPattern> entityBlackPatterns;
+    private final NamedEntityRules namedEntityRules;
 
     /** 创建清理配置快照。 */
     public CleanupSettings(Set<String> ignoredMaterialKeys, Set<String> ignoredNameFragments,
@@ -48,6 +49,23 @@ public final class CleanupSettings {
                            boolean ignoreEntitiesWithOwner, Set<String> entityWhitePatterns,
                            Set<String> entityBlackPatterns,
                            CustomItemRoutingSettings customItemRouting) {
+        this(ignoredMaterialKeys, ignoredNameFragments, ignoredLoreFragments,
+                entityCleanupEnabled, clearExperienceOrb, clearMonster, clearAnimals,
+                clearProjectile, clearNamedEntity, ignoreEntitiesInBoat,
+                ignoreEntitiesWithSaddle, ignoreEntitiesWithOwner, entityWhitePatterns,
+                entityBlackPatterns, customItemRouting, NamedEntityRules.empty());
+    }
+
+    /** 创建包含自定义物品路由和命名实体规则的核心配置快照。 */
+    public CleanupSettings(Set<String> ignoredMaterialKeys, Set<String> ignoredNameFragments,
+                           Set<String> ignoredLoreFragments, boolean entityCleanupEnabled,
+                           boolean clearExperienceOrb, boolean clearMonster, boolean clearAnimals,
+                           boolean clearProjectile, boolean clearNamedEntity,
+                           boolean ignoreEntitiesInBoat, boolean ignoreEntitiesWithSaddle,
+                           boolean ignoreEntitiesWithOwner, Set<String> entityWhitePatterns,
+                           Set<String> entityBlackPatterns,
+                           CustomItemRoutingSettings customItemRouting,
+                           NamedEntityRules namedEntityRules) {
         this.ignoredMaterialKeys = normalizeSet(ignoredMaterialKeys);
         this.ignoredNamePatterns = WildcardPatternSet.compile(ignoredNameFragments, true);
         this.ignoredLorePatterns = WildcardPatternSet.compile(ignoredLoreFragments, true);
@@ -65,6 +83,7 @@ public final class CleanupSettings {
         this.ignoreEntitiesWithOwner = ignoreEntitiesWithOwner;
         this.entityWhitePatterns = compilePatterns(entityWhitePatterns, false);
         this.entityBlackPatterns = compilePatterns(entityBlackPatterns, false);
+        this.namedEntityRules = namedEntityRules == null ? NamedEntityRules.empty() : namedEntityRules;
     }
 
     /** 判断物品类型是否跳过清理。 */
@@ -148,6 +167,16 @@ public final class CleanupSettings {
     /** 判断实体是否命中黑名单规则。 */
     public boolean matchesEntityBlacklist(String typeKey, String entityName) {
         return matchesPatterns(typeKey, entityBlackPatterns) || matchesPatterns(entityName, entityBlackPatterns);
+    }
+
+    /** 判断是否配置了至少一条有效的命名实体规则。 */
+    public boolean hasNamedEntityRules() {
+        return namedEntityRules.hasRules();
+    }
+
+    /** 按白名单优先级匹配实体类型和自定义名称。 */
+    public NamedEntityRules.Match matchNamedEntity(String typeKey, String customName) {
+        return namedEntityRules.match(typeKey, customName);
     }
 
     /** 复制并标准化字符串集合。 */

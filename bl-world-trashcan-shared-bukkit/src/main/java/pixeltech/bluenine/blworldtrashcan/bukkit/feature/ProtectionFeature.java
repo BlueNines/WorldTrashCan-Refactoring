@@ -31,6 +31,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ProtectionConfig;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityNameCodec;
 
 import java.util.HashSet;
 import java.util.List;
@@ -231,8 +232,21 @@ public final class ProtectionFeature implements Feature, Listener {
         }
         Entity entity = event.getRightClicked();
         String name = entity.getName();
-        sendSuggest(player, message("protection.entity-result", "&a实体: &f{name} &7({type})",
-                "{name}", name, "{type}", entity.getType().name()), name);
+        sendSuggestMessage(player, "protection.entity-result", "&a实体: &f{name} &7({type})", name,
+                "{name}", name, "{type}", entity.getType().name());
+        String customName = entity.getCustomName();
+        if (customName == null || customName.isEmpty()) {
+            player.sendMessage(message("protection.entity-custom-name-none",
+                    "&8自定义名称: 未设置"));
+            return;
+        }
+        String configName = EntityNameCodec.toConfigText(customName);
+        String plainName = EntityNameCodec.stripColors(customName);
+        sendSuggestMessage(player, "protection.entity-custom-name",
+                "&a自定义名称（配置格式）: &f{name}", configName,
+                "{name}", RichTextRenderer.escapeLiteralAmpersands(configName));
+        sendSuggestMessage(player, "protection.entity-plain-name",
+                "&a自定义名称（去除颜色）: &f{name}", plainName, "{name}", plainName);
     }
 
     /** 判断玩家当前操作是否应该被限频。 */
@@ -271,7 +285,8 @@ public final class ProtectionFeature implements Feature, Listener {
         player.sendMessage(message("protection.chunk-entities-title", "&a当前区块实体:"));
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {
             String text = "- " + entry.getKey() + (entry.getValue() > 1 ? " *" + entry.getValue() : "");
-            sendSuggest(player, message("protection.chunk-entity-line", "&a{text}", "{text}", text), entry.getKey());
+            sendSuggestMessage(player, "protection.chunk-entity-line", "&a{text}", entry.getKey(),
+                    "{text}", text);
         }
     }
 
@@ -279,7 +294,8 @@ public final class ProtectionFeature implements Feature, Listener {
     private void sendHandItem(Player player) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         String material = itemStack == null ? "AIR" : itemStack.getType().name();
-        sendSuggest(player, message("protection.hand-item", "&a手持物品: &f{material}", "{material}", material), material);
+        sendSuggestMessage(player, "protection.hand-item", "&a手持物品: &f{material}", material,
+                "{material}", material);
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
@@ -287,8 +303,8 @@ public final class ProtectionFeature implements Feature, Listener {
         if (meta != null && meta.hasDisplayName() && meta.getDisplayName() != null
                 && !meta.getDisplayName().trim().isEmpty()) {
             String displayName = meta.getDisplayName();
-            sendSuggest(player, message("protection.hand-item-name", "&a物品显示名: &f{name}",
-                    "{name}", displayName), displayName);
+            sendSuggestMessage(player, "protection.hand-item-name", "&a物品显示名: &f{name}", displayName,
+                    "{name}", displayName);
         }
         List<String> lore = meta == null ? null : meta.getLore();
         if (lore != null && !lore.isEmpty()) {
@@ -296,8 +312,8 @@ public final class ProtectionFeature implements Feature, Listener {
             int shown = Math.min(MAX_LOOK_LORE_LINES, lore.size());
             for (int index = 0; index < shown; index++) {
                 String line = lore.get(index) == null ? "" : lore.get(index);
-                sendSuggest(player, message("protection.hand-item-lore-line", "&7- &f{line}",
-                        "{line}", line), line);
+                sendSuggestMessage(player, "protection.hand-item-lore-line", "&7- &f{line}", line,
+                        "{line}", line);
             }
             if (lore.size() > shown) {
                 player.sendMessage(message("protection.hand-item-lore-truncated",
@@ -334,8 +350,8 @@ public final class ProtectionFeature implements Feature, Listener {
             if (shown >= MAX_LOOK_DATA_KEYS) {
                 break;
             }
-            sendSuggest(player, message("protection.hand-item-data-key-line", "&7- &f{key}",
-                    "{key}", key), key);
+            sendSuggestMessage(player, "protection.hand-item-data-key-line", "&7- &f{key}", key,
+                    "{key}", key);
             shown++;
         }
         if (keys.size() > shown) {
@@ -344,9 +360,25 @@ public final class ProtectionFeature implements Feature, Listener {
         }
     }
 
-    /** 发送点击后填入聊天框的文本。 */
-    private void sendSuggest(Player player, String text, String suggest) {
-        player.spigot().sendMessage(RichTextRenderer.suggest(player, text, suggest));
+    /** 从原始颜色文本直接编译可点击组件，避免现代 Paper 拒绝旧式 RGB 字符串。 */
+    private void sendSuggestMessage(Player player, String key, String fallback, String suggest,
+                                    String... replacements) {
+        String raw = messages == null ? replaceTokens(fallback, replacements)
+                : messages.rawText(key, fallback, replacements);
+        String safeSuggest = EntityNameCodec.toConfigText(suggest);
+        player.spigot().sendMessage(RichTextRenderer.suggest(player, raw, safeSuggest));
+    }
+
+    /** 在消息服务不可用时完成最小变量替换。 */
+    private String replaceTokens(String raw, String... replacements) {
+        String result = raw == null ? "" : raw;
+        if (replacements == null) {
+            return result;
+        }
+        for (int index = 0; index + 1 < replacements.length; index += 2) {
+            result = result.replace(replacements[index], replacements[index + 1]);
+        }
+        return result;
     }
 
     /** 判断弓是否带无限附魔。 */

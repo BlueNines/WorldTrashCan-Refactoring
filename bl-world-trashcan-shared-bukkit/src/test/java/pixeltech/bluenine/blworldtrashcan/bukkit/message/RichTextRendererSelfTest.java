@@ -14,12 +14,33 @@ public final class RichTextRendererSelfTest {
                 RichTextRenderer.clickable(null, "&#5AC8FAAI_CLICK_NOTIFY_0 &#FFD166点我", "/wtc stats"),
                 ClickEvent.Action.RUN_COMMAND,
                 "/wtc stats");
+        assertNoLegacyMarkers("run command RGB text",
+                RichTextRenderer.clickable(null, "&#5AC8FAAI_CLICK_NOTIFY_0 &#FFD166点我", "/wtc stats"));
         assertClickEvent("suggest command legacy text",
                 RichTextRenderer.suggest(null, "&a/wtc clear false", "/wtc clear false"),
                 ClickEvent.Action.SUGGEST_COMMAND,
                 "/wtc clear false");
+        assertRenderedSuggestKeepsLiteralAmpersand();
         assertLegacyFallback();
         System.out.println("RichTextRendererSelfTest passed");
+    }
+
+    /** 断言已经渲染的查询文本不会把可复制的 &6 再解释成颜色。 */
+    private static void assertRenderedSuggestKeepsLiteralAmpersand() {
+        String configName = RichTextRenderer.escapeLiteralAmpersands("&6世界 Boss");
+        BaseComponent[] components = RichTextRenderer.suggest(
+                null, "&a配置格式: &f" + configName, "&6世界 Boss");
+        assertClickEvent("rendered suggest literal ampersand", components,
+                ClickEvent.Action.SUGGEST_COMMAND, "&6世界 Boss");
+        StringBuilder visible = new StringBuilder();
+        for (BaseComponent component : components) {
+            if (component != null) {
+                visible.append(component.toLegacyText());
+            }
+        }
+        if (!visible.toString().contains("&6世界 Boss")) {
+            throw new IllegalStateException("rendered suggest lost literal &6: " + visible);
+        }
     }
 
     /** 断言 PrismaticAPI 兜底路径会降级 RGB 且继续兼容传统 & 颜色。 */
@@ -82,6 +103,34 @@ public final class RichTextRendererSelfTest {
             checked += assertComponentClickEvent(name, child, action, value);
         }
         return checked;
+    }
+
+    /** 断言组件文本字段不携带现代 Paper 禁止发送的 §。 */
+    private static void assertNoLegacyMarkers(String name, BaseComponent[] components) {
+        if (components == null) {
+            return;
+        }
+        for (BaseComponent component : components) {
+            assertComponentHasNoLegacyMarker(name, component);
+        }
+    }
+
+    /** 递归断言单个组件及其子组件没有 §。 */
+    private static void assertComponentHasNoLegacyMarker(String name, BaseComponent component) {
+        if (component == null) {
+            return;
+        }
+        if (component instanceof net.md_5.bungee.api.chat.TextComponent
+                && ((net.md_5.bungee.api.chat.TextComponent) component).getText().indexOf('\u00A7') >= 0) {
+            throw new IllegalStateException(name + " leaked legacy marker: " + component.toLegacyText());
+        }
+        List<BaseComponent> extra = component.getExtra();
+        if (extra == null || extra.isEmpty()) {
+            return;
+        }
+        for (BaseComponent child : extra) {
+            assertComponentHasNoLegacyMarker(name, child);
+        }
     }
 
     /** 阻止实例化测试类。 */

@@ -149,11 +149,117 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertEquals(0, backups().length);
     }
 
+    /** 验证 cleanup.yml 一次备份同时加入结构版本、名称名单和全部 -5 通知。 */
+    @Test
+    public void updatesCleanupFileInOneVerifiedBackup() throws Exception {
+        String original = "# 服主 cleanup 注释\r\n"
+                + "entities:\r\n"
+                + "  clear-named-entities: false\r\n"
+                + "  blacklist:\r\n"
+                + "    - \"ZOMBIE\"\r\n"
+                + "notify:\r\n"
+                + "  chat:\r\n"
+                + "    messages:\r\n"
+                + "      - \"0;聊天完成\"\r\n"
+                + "  actionbar:\r\n"
+                + "    messages:\r\n"
+                + "      - \"0;动作栏完成\"\r\n"
+                + "  bossbar:\r\n"
+                + "    messages:\r\n"
+                + "      - \"0;BossBar完成;SOLID;BLUE\"\r\n"
+                + "  title:\r\n"
+                + "    messages:\r\n"
+                + "      - \"0;标题;副标题\"\r\n";
+        File file = writeCleanup(original);
+
+        assertTrue(BukkitCurrentConfigUpdater.updateCleanupFile(file, cleanupDefaults(), LOGGER));
+
+        YamlConfiguration yaml = load(file);
+        assertEquals(1, yaml.getInt("config-schema-version"));
+        assertTrue(yaml.isList("entities.named-whitelist"));
+        assertTrue(yaml.getMapList("entities.named-whitelist").isEmpty());
+        assertTrue(yaml.isList("entities.named-blacklist"));
+        assertTrue(yaml.getMapList("entities.named-blacklist").isEmpty());
+        assertTrue(hasMessage(yaml.getStringList("notify.chat.messages"), "-5;聊天跳过"));
+        assertTrue(hasMessage(yaml.getStringList("notify.actionbar.messages"), "-5;动作栏跳过"));
+        assertTrue(hasMessage(yaml.getStringList("notify.bossbar.messages"), "-5;BossBar跳过;SOLID;YELLOW"));
+        assertTrue(hasMessage(yaml.getStringList("notify.title.messages"), "-5;标题跳过;副标题"));
+        assertTrue(read(file).contains("# 服主 cleanup 注释\r\n"));
+        assertEquals(original, read(singleBackup()));
+        assertEquals(1, backups().length);
+    }
+
+    /** 验证 cleanup.yml 第二次更新保持字节和备份数量不变。 */
+    @Test
+    public void cleanupSecondRunIsByteStable() throws Exception {
+        File file = writeCleanup("entities:\n  blacklist: []\nnotify:\n  chat:\n    messages:\n      - \"0;完成\"\n");
+        YamlConfiguration defaults = new YamlConfiguration();
+        defaults.set("notify.chat.messages", Arrays.asList("0;完成", "-5;跳过"));
+
+        assertTrue(BukkitCurrentConfigUpdater.updateCleanupFile(file, defaults, LOGGER));
+        byte[] first = Files.readAllBytes(file.toPath());
+        assertFalse(BukkitCurrentConfigUpdater.updateCleanupFile(file, defaults, LOGGER));
+
+        assertTrue(Arrays.equals(first, Files.readAllBytes(file.toPath())));
+        assertEquals(1, backups().length);
+    }
+
+    /** 验证 cleanup.yml 已有名称规则时不覆盖服主内容。 */
+    @Test
+    public void existingCleanupNamedRulesArePreserved() throws Exception {
+        File file = writeCleanup("entities:\n"
+                + "  named-whitelist:\n"
+                + "    - type-patterns: [\"ZOMBIE\"]\n"
+                + "      name-patterns: [\"&6Boss\"]\n"
+                + "  named-blacklist: []\n");
+
+        assertTrue(BukkitCurrentConfigUpdater.updateCleanupFile(file, new YamlConfiguration(), LOGGER));
+
+        assertEquals(Collections.singletonList("&6Boss"),
+                load(file).getMapList("entities.named-whitelist").get(0).get("name-patterns"));
+        assertEquals(1, backups().length);
+    }
+
+    /** 验证 cleanup.yml 较新结构版本不会被旧 Jar 改写。 */
+    @Test
+    public void newerCleanupSchemaIsLeftUntouched() throws Exception {
+        String original = "config-schema-version: 99\nentities:\n  named-whitelist: []\n  named-blacklist: []\n";
+        File file = writeCleanup(original);
+
+        assertFalse(BukkitCurrentConfigUpdater.updateCleanupFile(file, new YamlConfiguration(), LOGGER));
+
+        assertEquals(original, read(file));
+        assertEquals(0, backups().length);
+    }
+
     /** 在临时目录写入 trash.yml。 */
     private File writeTrash(String text) throws IOException {
         File file = folder.newFile("trash.yml");
         Files.write(file.toPath(), text.getBytes(UTF8));
         return file;
+    }
+
+    /** 在临时目录写入 cleanup.yml。 */
+    private File writeCleanup(String text) throws IOException {
+        File file = folder.newFile("cleanup.yml");
+        Files.write(file.toPath(), text.getBytes(UTF8));
+        return file;
+    }
+
+    /** 创建包含四个 -5 默认通知的 Jar 内资源替身。 */
+    private YamlConfiguration cleanupDefaults() {
+        YamlConfiguration defaults = new YamlConfiguration();
+        defaults.set("notify.chat.messages", Arrays.asList("0;聊天完成", "-5;聊天跳过"));
+        defaults.set("notify.actionbar.messages", Arrays.asList("0;动作栏完成", "-5;动作栏跳过"));
+        defaults.set("notify.bossbar.messages", Arrays.asList(
+                "0;BossBar完成;SOLID;BLUE", "-5;BossBar跳过;SOLID;YELLOW"));
+        defaults.set("notify.title.messages", Arrays.asList("0;标题;副标题", "-5;标题跳过;副标题"));
+        return defaults;
+    }
+
+    /** 判断列表是否包含指定消息。 */
+    private boolean hasMessage(List<String> values, String expected) {
+        return values != null && values.contains(expected);
     }
 
     /** 以 UTF-8 读取文件。 */

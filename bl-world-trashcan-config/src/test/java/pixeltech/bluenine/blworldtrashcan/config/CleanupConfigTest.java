@@ -1,6 +1,10 @@
 package pixeltech.bluenine.blworldtrashcan.config;
 
 import org.junit.Test;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.NamedEntityRules;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
+import pixeltech.bluenine.blworldtrashcan.core.model.EntitySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -222,6 +226,56 @@ public final class CleanupConfigTest {
         assertTrue(load(cleanup).getCleanupConfig().getFilledShulkerBoxes().isEnabled());
     }
 
+    /** 验证缺少命名实体名单时使用共享空规则并跳过匹配。 */
+    @Test
+    public void missingNamedEntityRulesRemainDisabled() {
+        assertFalse(load(new MapConfigurationSource()).getCleanupConfig()
+                .getSettings().hasNamedEntityRules());
+    }
+
+    /** 验证映射列表被解析为类型与名称同时命中的白黑名单。 */
+    @Test
+    public void namedEntityRulesParseMapLists() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        Map<String, Object> whitelist = new HashMap<>();
+        whitelist.put("type-patterns", Collections.singletonList("ZOMBIE"));
+        whitelist.put("name-patterns", Collections.singletonList("&6Boss"));
+        Map<String, Object> blacklist = new HashMap<>();
+        blacklist.put("type-patterns", Arrays.asList("ZOMBIE", "SKELETON"));
+        blacklist.put("name-patterns", Collections.singletonList("&c*小怪*"));
+        cleanup.put("entities.named-whitelist", Collections.singletonList(whitelist));
+        cleanup.put("entities.named-blacklist", Collections.singletonList(blacklist));
+
+        assertEquals(NamedEntityRules.Match.WHITELIST, load(cleanup).getCleanupConfig().getSettings()
+                .matchNamedEntity("ZOMBIE", "§6Boss [1000/1000]"));
+        assertEquals(NamedEntityRules.Match.BLACKLIST, load(cleanup).getCleanupConfig().getSettings()
+                .matchNamedEntity("SKELETON", "§c[Lv.5] 小怪"));
+        assertEquals(NamedEntityRules.Match.NONE, load(cleanup).getCleanupConfig().getSettings()
+                .matchNamedEntity("CREEPER", "§c[Lv.5] 小怪"));
+    }
+
+    /** 验证名称黑名单可越过宽泛命名保护，而名称白名单仍优先于类型黑名单。 */
+    @Test
+    public void namedEntityPolicyKeepsWhitelistPriority() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("entities.clear-named-entities", false);
+        cleanup.put("entities.blacklist", Collections.singletonList("ZOMBIE"));
+        Map<String, Object> whitelist = new HashMap<>();
+        whitelist.put("type-patterns", Collections.singletonList("ZOMBIE"));
+        whitelist.put("name-patterns", Collections.singletonList("&6Boss"));
+        Map<String, Object> blacklist = new HashMap<>();
+        blacklist.put("type-patterns", Collections.singletonList("ZOMBIE"));
+        blacklist.put("name-patterns", Collections.singletonList("&c小怪"));
+        cleanup.put("entities.named-whitelist", Collections.singletonList(whitelist));
+        cleanup.put("entities.named-blacklist", Collections.singletonList(blacklist));
+        DefaultCleanupPolicy policy = new DefaultCleanupPolicy(load(cleanup).getCleanupConfig().getSettings());
+
+        assertEquals(EntityCleanupAction.SKIP, policy.decideEntity(new EntitySnapshot(
+                "ZOMBIE", "Zombie", "§6Boss §c小怪", true, true, false, false)).getAction());
+        assertEquals(EntityCleanupAction.REMOVE, policy.decideEntity(new EntitySnapshot(
+                "ZOMBIE", "Zombie", "§c小怪", true, true, false, false)).getAction());
+    }
+
     /** 使用空配置补齐其他配置源并加载完整配置。 */
     private ConfigBundle load(ConfigurationSource cleanup) {
         return load(cleanup, new MapConfigurationSource());
@@ -293,7 +347,17 @@ public final class CleanupConfigTest {
         /** 读取映射列表。 */
         @Override
         public List<Map<?, ?>> getMapList(String path) {
-            return Collections.emptyList();
+            Object value = values.get(path);
+            if (!(value instanceof List<?>)) {
+                return Collections.emptyList();
+            }
+            List<Map<?, ?>> result = new ArrayList<>();
+            for (Object entry : (List<?>) value) {
+                if (entry instanceof Map<?, ?>) {
+                    result.add((Map<?, ?>) entry);
+                }
+            }
+            return result;
         }
     }
 }

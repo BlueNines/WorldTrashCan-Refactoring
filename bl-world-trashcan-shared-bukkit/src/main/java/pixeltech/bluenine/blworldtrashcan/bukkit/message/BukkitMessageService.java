@@ -46,6 +46,11 @@ public final class BukkitMessageService {
 
     /** 按玩家版本返回格式化后的单行消息。 */
     public String text(Player player, String key, String fallback, String... replacements) {
+        return color(player, rawText(key, fallback, replacements));
+    }
+
+    /** 返回只完成变量替换、尚未解释颜色代码的单行消息。 */
+    public String rawText(String key, String fallback, String... replacements) {
         String raw = activeMessages.getString(key);
         if (raw == null) {
             raw = bundledActiveMessages.getString(key);
@@ -56,7 +61,7 @@ public final class BukkitMessageService {
         if (raw == null) {
             raw = bundledDefaultMessages.getString(key, fallback);
         }
-        return color(player, applyPlaceholders(raw, replacements));
+        return applyPlaceholders(raw, replacements);
     }
 
     /** 直接渲染调用方提供的原始消息。 */

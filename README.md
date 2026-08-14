@@ -85,7 +85,23 @@ config-update:
   enabled: true
 ```
 
-启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。`trash.yml` 的旧 `show-amount-lore`、`amount-lore`、`action-lore` 会按原显示语义组成 `item-lore`，自定义颜色、PAPI 文本、空列表和用户注释都会保留。已有 `item-lore` 时绝不覆盖；新旧节点同时存在则维持 `item-lore` 优先并给出警告。
+启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。`trash.yml` 和 `cleanup.yml` 分别维护独立结构版本；同一轮同一文件只生成一份备份。`trash.yml` 的旧 `show-amount-lore`、`amount-lore`、`action-lore` 会按原显示语义组成 `item-lore`；`cleanup.yml` 会补入缺失的命名实体名单和历史 `-5` 门禁通知。自定义颜色、PAPI 文本、空列表和用户注释都会保留，已有新节点绝不覆盖。
+
+### 按类型和自定义名称清理实体
+
+`cleanup.yml` 的 `entities.named-whitelist` 和 `entities.named-blacklist` 用于区分同一 Bukkit 实体类型下的普通怪、MythicMobs 小怪和 Boss。每条规则要求 `type-patterns` 与 `name-patterns` 同时命中；两个列表内部均为 OR，且支持 `*` 通配。名称不含 `*` 时按包含匹配，因此等级、血量等前后缀不会影响固定名称正文。
+
+```yaml
+entities:
+  named-whitelist:
+    - type-patterns: ["ZOMBIE"]
+      name-patterns: ["&6世界 Boss"]
+  named-blacklist:
+    - type-patterns: ["ZOMBIE"]
+      name-patterns: ["&c特殊的怪物"]
+```
+
+节点缺失、空列表或没有有效规则时直接跳过名称匹配。配置包含颜色时颜色参与匹配，`&c` 与 `§c` 等价；配置不含颜色时忽略实体名称中的颜色。白名单优先于所有黑名单，船内、带鞍和 Bukkit `Tameable` 主人保护继续保持更高优先级。`/wtc look` 右键实体后会显示可点击复制的类型、配置颜色名称和去色名称。若名称只由客户端发包、伪装或独立悬浮字显示而未写入 Bukkit `getCustomName()`，则不会命中本规则。
 
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
@@ -106,7 +122,7 @@ config-update:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.3.0`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.4.0`。
 
 ### 性能优化估算
 
@@ -238,9 +254,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.3.0`
+- 版本：`7.4.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`C24C3A2B64734EF6A25BC1A9763C20FC0606D0176AB884D1AF26ECAC40AC8A6E`
+- SHA-256：`1201DE1E9BE0A2C7C142C941D82DB3B029B1E00A397D6EEF06D5BA1749E3E9CA`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
@@ -330,7 +346,23 @@ config-update:
   enabled: true
 ```
 
-On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. Legacy `show-amount-lore`, `amount-lore`, and `action-lore` values in `trash.yml` are combined into `item-lore` with the same display semantics, while custom colors, PAPI text, empty lists, and administrator comments are retained. An existing `item-lore` is never overwritten; if both syntaxes are active, `item-lore` keeps priority and a warning is logged.
+On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. `trash.yml` and `cleanup.yml` maintain independent schema versions, and each changed file receives only one backup per update. Legacy Lore nodes in `trash.yml` are combined into `item-lore`; `cleanup.yml` receives missing named-entity lists and legacy `-5` guard notifications. Custom colors, PAPI text, empty lists, and administrator comments are retained, and existing replacement nodes are never overwritten.
+
+### Entity type and custom-name rules
+
+`entities.named-whitelist` and `entities.named-blacklist` in `cleanup.yml` distinguish ordinary mobs, MythicMobs minions, and bosses that share one Bukkit entity type. A rule requires both `type-patterns` and `name-patterns` to match. Each list uses OR semantics and supports `*`; a name without `*` uses substring matching, so level and health prefixes or suffixes do not break a stable name fragment.
+
+```yaml
+entities:
+  named-whitelist:
+    - type-patterns: ["ZOMBIE"]
+      name-patterns: ["&6World Boss"]
+  named-blacklist:
+    - type-patterns: ["ZOMBIE"]
+      name-patterns: ["&cSpecial Monster"]
+```
+
+Missing, empty, or entirely invalid lists bypass name matching. Rules containing colors are color-sensitive, while `&c` and `§c` are equivalent; rules without colors compare against the color-stripped custom name. The whitelist wins over all blacklists, and boat, saddle, and Bukkit `Tameable` owner protections keep their higher priority. `/wtc look` now exposes clickable entity type, config-formatted custom name, and color-stripped name. Names rendered only through client packets, disguises, or separate holograms cannot match unless they are also stored in Bukkit `getCustomName()`.
 
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
@@ -350,7 +382,7 @@ The personal default is compact mode, 2 pages, a per-item limit of `9999`, manua
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.3.0`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.4.0`.
 
 ### Estimated performance improvements
 
@@ -482,9 +514,9 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.3.0`
+- Version: `7.4.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `C24C3A2B64734EF6A25BC1A9763C20FC0606D0176AB884D1AF26ECAC40AC8A6E`
+- SHA-256: `1201DE1E9BE0A2C7C142C941D82DB3B029B1E00A397D6EEF06D5BA1749E3E9CA`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.

@@ -3,10 +3,12 @@ package pixeltech.bluenine.blworldtrashcan.config;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.CustomItemRoutingSettings;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.ItemMatchRules;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.NamedEntityRules;
 import pixeltech.bluenine.blworldtrashcan.core.trash.RejectedCleanupAction;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +114,10 @@ public final class ConfigBundleLoader {
                         CustomItemRoutingSettings.Mode.parse(
                                 cleanup.getString("custom-data-items.routing.mode", "personal-only")),
                         CustomItemRoutingSettings.UnavailableAction.parse(cleanup.getString(
-                                "custom-data-items.routing.personal-unavailable", "keep-ground"))
+                                "custom-data-items.routing.personal-unavailable", "keep-ground"))),
+                NamedEntityRules.compile(
+                        parseNamedEntityRuleSpecs(cleanup.getMapList("entities.named-whitelist")),
+                        parseNamedEntityRuleSpecs(cleanup.getMapList("entities.named-blacklist"))
                 )
         );
         CleanupConfig cleanupConfig = new CleanupConfig(
@@ -324,6 +329,41 @@ public final class ConfigBundleLoader {
             if (!entity.isEmpty() && maxCount > 0) {
                 result.put(entity, new EntityLimitConfig.GatherRule(maxCount, radius, removeCount));
             }
+        }
+        return result;
+    }
+
+    /** 解析“类型 AND 自定义名称”的实体名单规则。 */
+    private List<NamedEntityRules.RuleSpec> parseNamedEntityRuleSpecs(List<Map<?, ?>> values) {
+        if (values == null || values.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<NamedEntityRules.RuleSpec> result = new ArrayList<>();
+        for (Map<?, ?> value : values) {
+            Set<String> types = stringSet(value.get("type-patterns"));
+            Set<String> names = stringSet(value.get("name-patterns"));
+            if (!types.isEmpty() && !names.isEmpty()) {
+                result.add(new NamedEntityRules.RuleSpec(types, names));
+            }
+        }
+        return result;
+    }
+
+    /** 将 YAML 中的字符串或字符串列表转成去空白集合。 */
+    private Set<String> stringSet(Object value) {
+        Set<String> result = new HashSet<>();
+        if (value instanceof Iterable<?>) {
+            for (Object entry : (Iterable<?>) value) {
+                String text = stringValue(entry);
+                if (!text.isEmpty()) {
+                    result.add(text);
+                }
+            }
+            return result;
+        }
+        String text = stringValue(value);
+        if (!text.isEmpty()) {
+            result.add(text);
         }
         return result;
     }

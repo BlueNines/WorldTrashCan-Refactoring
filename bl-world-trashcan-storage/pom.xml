@@ -6,7 +6,7 @@
     <parent>
         <groupId>pixeltech.bluenine</groupId>
         <artifactId>bl-world-trashcan-parent</artifactId>
-        <version>7.3.0</version>
+        <version>7.4.0</version>
     </parent>
     <artifactId>bl-world-trashcan-storage</artifactId>
     <packaging>jar</packaging>
