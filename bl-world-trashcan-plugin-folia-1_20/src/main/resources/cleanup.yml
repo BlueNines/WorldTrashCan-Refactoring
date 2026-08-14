@@ -1,5 +1,5 @@
 # 配置结构版本，由插件自动维护；cleanup.yml 与其他配置文件独立演进，请勿手动删除或降低。
-config-schema-version: 1
+config-schema-version: 2
 
 # 清理周期，单位秒。
 # 默认 360 秒；设为 0 时只允许管理员手动触发清理。
@@ -19,6 +19,10 @@ world-filter:
 # 强制直接删除扫地物品的世界名列表。
 # 命中后，物品仍会先经过 ignored-materials、名字和 lore 保护；确认需要清理后不会进入世界、个人或公共垃圾桶，而是直接删除。
 # 仅影响定时扫地和 /wtc clear，不影响仙人掌、岩浆、虚空等独立回收功能；默认 [] 表示关闭。
+# [WorldListTrashCan] 7.4.1 直删世界填写示例：把下面的 [] 改为列表；可填写完整世界名或 * 通配，不要保留重复节点。
+# direct-remove-worlds:
+#   - "resource_world"
+#   - "event_*"
 direct-remove-worlds: []
 
 # 扫地时是否跳过当前仍在移动的掉落物。
@@ -86,6 +90,12 @@ custom-data-items:
     enabled: false
     # 五类识别规则；任意一类命中即执行 routing。
     detection:
+      # [WorldListTrashCan] 7.4.1 五类物品匹配填写示例；请把需要的示例值填入下面对应列表，不要新增重复节点。
+      # material-patterns 示例："DIAMOND_SWORD"、"*_SHULKER_BOX"；填写 /wtc look 输出的 Material。
+      # name-key-patterns 示例："*史诗武器*"、"&#FFD166限定道具"；这里匹配物品显示名文本，不是数据 key。
+      # lore-key-patterns 示例："*不可交易*"、"*灵魂绑定*"；对原物品 Lore 的每一行分别匹配。
+      # pdc-key-patterns 示例："myplugin:item_id"、"myplugin:*"；请直接复制 /wtc look 输出的 PDC Key。
+      # nbt-key-patterns 示例："tag.PublicBukkitValues.myplugin:item_id"、"tag.CustomData.*"；请优先复制 /wtc look 输出的实际路径。
       # 五类规则是 OR 关系；Material 不含 * 时完整匹配。
       material-patterns: []
       # 名称不含 * 时按包含匹配。
@@ -123,8 +133,8 @@ entities:
   # 是否跳过实际装备了鞍的实体。
   # 默认 true；支持当前平台 Bukkit API 可识别的马、驴、骡、猪、炽足兽、骆驼等坐骑。
   ignore-entities-with-saddle: true
-# 是否跳过拥有 Bukkit Tameable 主人的实体。
-# 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
+  # 是否跳过拥有 Bukkit Tameable 主人的实体。
+  # 默认 true；保护狼、猫、鹦鹉和已驯服马类等，不会把投射物 shooter、TNT 来源、掉落物丢弃者或任意 owner 元数据视为主人。
   ignore-entities-with-owner: true
   # 不确定实体类型或名称时，请先执行 /wtc look，再右键目标实体。
   # 这里填写 /wtc look 输出的实体类型或 Entity#getName()；匹配不区分大小写，支持 * 通配。
@@ -144,17 +154,22 @@ entities:
   # name-patterns 内部是 OR，普通文本按包含匹配，支持 * 通配；类型和名称必须同时命中。
   # 名称包含颜色时颜色参与匹配，&c 与 §c 等价；名称不含颜色时会忽略实体名称中的颜色。
   named-whitelist: []
-  # 示例：保护所有名称包含金色“世界 Boss”的原版僵尸；删除下面每行开头的 # 后使用。
+  # [WorldListTrashCan] 7.4.1 命名实体规则填写示例。
+  # 使用时将上面的 named-whitelist: [] 替换为下面内容，不要保留两个同名节点。
+  # 示例：保护所有名称包含金色“世界 Boss”或“副本 Boss”的僵尸和骷髅。
   # named-whitelist:
   #   - type-patterns:
   #       - "ZOMBIE"
+  #       - "SKELETON"
   #     name-patterns:
   #       - "&6世界 Boss"
+  #       - "&6副本 Boss"
 
   # 按“实体类型 AND Bukkit 自定义名称”强制清理指定实体；仍低于船内、带鞍、主人和白名单保护。
   # 默认 [] 表示关闭；适合在 clear-named-entities: false 时只清理指定 MythicMobs 小怪。
   named-blacklist: []
-  # 示例：清理名称中包含红色“特殊的怪物”的僵尸，前后等级、血量等变量不会影响包含匹配。
+  # 使用时将上面的 named-blacklist: [] 替换为下面内容，不要保留两个同名节点。
+  # 示例：清理名称中包含红色“特殊的怪物”的僵尸；前后等级、血量等变量不会影响包含匹配。
   # named-blacklist:
   #   - type-patterns:
   #       - "ZOMBIE"

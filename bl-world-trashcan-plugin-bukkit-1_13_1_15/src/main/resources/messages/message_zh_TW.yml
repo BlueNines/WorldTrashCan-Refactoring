@@ -116,23 +116,23 @@ protection:
   # look 查詢等待玩家右鍵實體。
   look-prompt: "{prefix}&#5AC8FA請右鍵一個實體以查詢實體名稱。"
   # look 查詢實體結果，{name} 為實體名，{type} 為實體類型。
-  entity-result: "{prefix}&#5AC8FA實體: &#C9D4E2{name} &#64748B({type})"
+  entity-result: "{prefix}&#5AC8FA實體類型（type-patterns）: &#C9D4E2{type} &#64748B| &#C9D4E2{name}"
   # 實體 Bukkit 自訂名稱；{name} 為可直接寫入設定的 & 顏色格式。
-  entity-custom-name: "{prefix}&#5AC8FA自訂名稱（設定格式）: &#C9D4E2{name}"
+  entity-custom-name: "{prefix}&#5AC8FA自訂名稱（name-patterns，設定格式）: &#C9D4E2{name}"
   # 實體沒有 Bukkit 自訂名稱。
   entity-custom-name-none: "{prefix}&#64748B自訂名稱: &#C9D4E2未設定"
   # 實體移除顏色後的自訂名稱；{name} 為純文字。
-  entity-plain-name: "{prefix}&#5AC8FA自訂名稱（移除顏色）: &#C9D4E2{name}"
+  entity-plain-name: "{prefix}&#5AC8FA自訂名稱（name-patterns，忽略顏色）: &#C9D4E2{name}"
   # 當前區塊實體列表標題。
   chunk-entities-title: "{prefix}&#5AC8FA當前區塊實體:"
   # 當前區塊實體單行，{text} 為實體名和數量。
   chunk-entity-line: "{prefix}&#5AC8FA{text}"
   # 手持物品查詢結果，{material} 為物品類型。
-  hand-item: "{prefix}&#5AC8FA手持物品: &#C9D4E2{material}"
+  hand-item: "{prefix}&#5AC8FAMaterial（material-patterns）: &#C9D4E2{material}"
   # look 查詢手持物品顯示名，{name} 為自訂顯示名。
-  hand-item-name: "{prefix}&#5AC8FA物品顯示名: &#C9D4E2{name}"
+  hand-item-name: "{prefix}&#5AC8FA物品顯示名（name-key-patterns）: &#C9D4E2{name}"
   # look 查詢手持物品 Lore 標題。
-  hand-item-lore-title: "{prefix}&#5AC8FA物品 Lore:"
+  hand-item-lore-title: "{prefix}&#5AC8FA物品 Lore（lore-key-patterns）:"
   # look 查詢手持物品 Lore 單行，{line} 為 Lore 內容。
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # look 查詢 Lore 超過顯示上限時的省略提示，{count} 為省略行數。
@@ -142,9 +142,9 @@ protection:
   # 當前服務端無法讀取 Raw NBT key 時提示。
   hand-item-nbt-unavailable: "{prefix}&#FFD166Raw NBT key 不可用 &#64748B| &#C9D4E2請查看後台能力警告。"
   # look 查詢手持物品 PDC key 標題。
-  hand-item-pdc-title: "{prefix}&#5AC8FA物品 PDC Keys:"
+  hand-item-pdc-title: "{prefix}&#5AC8FA物品 PDC Keys（pdc-key-patterns）:"
   # look 查詢手持物品 Raw NBT key 標題。
-  hand-item-nbt-title: "{prefix}&#5AC8FA物品 Raw NBT Keys:"
+  hand-item-nbt-title: "{prefix}&#5AC8FA物品 Raw NBT Keys（nbt-key-patterns）:"
   # look 查詢物品資料 key 單行，{key} 為 key 或路徑。
   hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
   # look 查詢資料 key 超過顯示上限時的省略提示，{count} 為省略數量。

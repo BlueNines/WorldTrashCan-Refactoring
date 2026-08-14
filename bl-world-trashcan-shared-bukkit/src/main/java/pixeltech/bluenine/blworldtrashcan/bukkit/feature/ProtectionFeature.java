@@ -232,8 +232,9 @@ public final class ProtectionFeature implements Feature, Listener {
         }
         Entity entity = event.getRightClicked();
         String name = entity.getName();
-        sendSuggestMessage(player, "protection.entity-result", "&a实体: &f{name} &7({type})", name,
-                "{name}", name, "{type}", entity.getType().name());
+        String type = entity.getType().name();
+        sendSuggestMessage(player, "protection.entity-result", "&a实体类型（type-patterns）: &f{type}", type,
+                "{name}", name, "{type}", type);
         String customName = entity.getCustomName();
         if (customName == null || customName.isEmpty()) {
             player.sendMessage(message("protection.entity-custom-name-none",

@@ -119,23 +119,23 @@ protection:
   # look 查询等待玩家右键实体。
   look-prompt: "{prefix}&#C9D4E2请右键一个实体以查询实体名称。"
   # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
-  entity-result: "{prefix}&#5AC8FA实体 &#64748B| &#C9D4E2{name} &#64748B({type})"
+  entity-result: "{prefix}&#5AC8FA实体类型（type-patterns） &#64748B| &#C9D4E2{type} &#64748B| &#C9D4E2{name}"
   # 实体 Bukkit 自定义名称；{name} 为可直接写入配置的 & 颜色格式。
-  entity-custom-name: "{prefix}&#5AC8FA自定义名称（配置格式） &#64748B| &#C9D4E2{name}"
+  entity-custom-name: "{prefix}&#5AC8FA自定义名称（name-patterns，配置格式） &#64748B| &#C9D4E2{name}"
   # 实体没有 Bukkit 自定义名称。
   entity-custom-name-none: "{prefix}&#64748B自定义名称 &#64748B| &#C9D4E2未设置"
   # 实体去除颜色后的自定义名称；{name} 为纯文本。
-  entity-plain-name: "{prefix}&#5AC8FA自定义名称（去除颜色） &#64748B| &#C9D4E2{name}"
+  entity-plain-name: "{prefix}&#5AC8FA自定义名称（name-patterns，忽略颜色） &#64748B| &#C9D4E2{name}"
   # 当前区块实体列表标题。
   chunk-entities-title: "{prefix}&#5AC8FA当前区块实体:"
   # 当前区块实体单行，{text} 为实体名和数量。
   chunk-entity-line: "{prefix}&#C9D4E2{text}"
   # 手持物品查询结果，{material} 为物品类型。
-  hand-item: "{prefix}&#5AC8FA手持物品 &#64748B| &#FFD166{material}"
+  hand-item: "{prefix}&#5AC8FAMaterial（material-patterns） &#64748B| &#FFD166{material}"
   # look 查询手持物品显示名，{name} 为自定义显示名。
-  hand-item-name: "{prefix}&#5AC8FA物品显示名 &#64748B| &#C9D4E2{name}"
+  hand-item-name: "{prefix}&#5AC8FA物品显示名（name-key-patterns） &#64748B| &#C9D4E2{name}"
   # look 查询手持物品 Lore 标题。
-  hand-item-lore-title: "{prefix}&#5AC8FA物品 Lore:"
+  hand-item-lore-title: "{prefix}&#5AC8FA物品 Lore（lore-key-patterns）:"
   # look 查询手持物品 Lore 单行，{line} 为 Lore 内容。
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # look 查询 Lore 超过显示上限时的省略提示，{count} 为省略行数。
@@ -145,9 +145,9 @@ protection:
   # 当前服务端无法读取 Raw NBT key 时提示。
   hand-item-nbt-unavailable: "{prefix}&#FFD166Raw NBT key 不可用 &#64748B| &#C9D4E2请查看后台能力告警。"
   # look 查询手持物品 PDC key 标题。
-  hand-item-pdc-title: "{prefix}&#5AC8FA物品 PDC Keys:"
+  hand-item-pdc-title: "{prefix}&#5AC8FA物品 PDC Keys（pdc-key-patterns）:"
   # look 查询手持物品 Raw NBT key 标题。
-  hand-item-nbt-title: "{prefix}&#5AC8FA物品 Raw NBT Keys:"
+  hand-item-nbt-title: "{prefix}&#5AC8FA物品 Raw NBT Keys（nbt-key-patterns）:"
   # look 查询物品数据 key 单行，{key} 为 key 或路径。
   hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
   # look 查询数据 key 超过显示上限时的省略提示，{count} 为省略数量。

@@ -54,7 +54,7 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertTrue(updated.contains("item-lore 于 7.2.0 加入"));
 
         YamlConfiguration yaml = load(file);
-        assertEquals(2, yaml.getInt("config-schema-version"));
+        assertEquals(3, yaml.getInt("config-schema-version"));
         assertEquals(Arrays.asList(
                 "&b自定义数量 {amount} %player_name%",
                 "{content}",
@@ -117,6 +117,41 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertEquals(1, backups().length);
     }
 
+    /** 验证 schema 2 的 trash.yml 只增加填写示例，不改变白名单和个人按钮配置。 */
+    @Test
+    public void trashSchemaTwoReceivesUsageExamplesWithoutValueChanges() throws Exception {
+        String original = "config-schema-version: 2\n"
+                + "global-trash:\n"
+                + "  admission-whitelist:\n"
+                + "    enabled: true\n"
+                + "    material-patterns: [\"*_INGOT\"]\n"
+                + "personal-trash:\n"
+                + "  gui:\n"
+                + "    layout:\n"
+                + "      items:\n"
+                + "        c:\n"
+                + "          type: \"next-page\"\n";
+        File file = writeTrash(original);
+
+        assertTrue(BukkitCurrentConfigUpdater.updateTrashFile(file, LOGGER));
+
+        String updated = read(file);
+        YamlConfiguration yaml = load(file);
+        assertEquals(3, yaml.getInt("config-schema-version"));
+        assertTrue(yaml.getBoolean("global-trash.admission-whitelist.enabled"));
+        assertEquals(Collections.singletonList("*_INGOT"),
+                yaml.getStringList("global-trash.admission-whitelist.material-patterns"));
+        assertEquals("next-page", yaml.getString("personal-trash.gui.layout.items.c.type"));
+        assertTrue(updated.contains("7.4.1 公共桶准入白名单填写示例"));
+        assertTrue(updated.contains("7.4.1 个人桶 actions/close 最小示例"));
+        assertEquals(original, read(singleBackup()));
+
+        byte[] first = Files.readAllBytes(file.toPath());
+        assertFalse(BukkitCurrentConfigUpdater.updateTrashFile(file, LOGGER));
+        assertTrue(Arrays.equals(first, Files.readAllBytes(file.toPath())));
+        assertEquals(1, backups().length);
+    }
+
     /** 验证非法 YAML 在创建备份和覆盖原文件之前终止。 */
     @Test
     public void invalidYamlNeverCreatesBackupOrChangesFile() throws Exception {
@@ -153,6 +188,11 @@ public final class BukkitCurrentConfigUpdaterTest {
     @Test
     public void updatesCleanupFileInOneVerifiedBackup() throws Exception {
         String original = "# 服主 cleanup 注释\r\n"
+                + "direct-remove-worlds: []\r\n"
+                + "custom-data-items:\r\n"
+                + "  routing:\r\n"
+                + "    detection:\r\n"
+                + "      material-patterns: []\r\n"
                 + "entities:\r\n"
                 + "  clear-named-entities: false\r\n"
                 + "  blacklist:\r\n"
@@ -175,7 +215,7 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertTrue(BukkitCurrentConfigUpdater.updateCleanupFile(file, cleanupDefaults(), LOGGER));
 
         YamlConfiguration yaml = load(file);
-        assertEquals(1, yaml.getInt("config-schema-version"));
+        assertEquals(2, yaml.getInt("config-schema-version"));
         assertTrue(yaml.isList("entities.named-whitelist"));
         assertTrue(yaml.getMapList("entities.named-whitelist").isEmpty());
         assertTrue(yaml.isList("entities.named-blacklist"));
@@ -184,7 +224,11 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertTrue(hasMessage(yaml.getStringList("notify.actionbar.messages"), "-5;动作栏跳过"));
         assertTrue(hasMessage(yaml.getStringList("notify.bossbar.messages"), "-5;BossBar跳过;SOLID;YELLOW"));
         assertTrue(hasMessage(yaml.getStringList("notify.title.messages"), "-5;标题跳过;副标题"));
-        assertTrue(read(file).contains("# 服主 cleanup 注释\r\n"));
+        String updated = read(file);
+        assertTrue(updated.contains("# 服主 cleanup 注释\r\n"));
+        assertTrue(updated.contains("7.4.1 直删世界填写示例"));
+        assertTrue(updated.contains("7.4.1 五类物品匹配填写示例"));
+        assertTrue(updated.contains("7.4.1 命名实体规则填写示例"));
         assertEquals(original, read(singleBackup()));
         assertEquals(1, backups().length);
     }

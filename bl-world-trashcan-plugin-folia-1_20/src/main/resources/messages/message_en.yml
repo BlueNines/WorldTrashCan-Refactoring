@@ -116,23 +116,23 @@ protection:
   # look 查询等待玩家右键实体。
   look-prompt: "{prefix}&#5AC8FARight-click an entity to inspect its name."
   # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
-  entity-result: "{prefix}&#5AC8FAEntity: &#C9D4E2{name} &#64748B({type})"
+  entity-result: "{prefix}&#5AC8FAEntity type (type-patterns): &#C9D4E2{type} &#64748B| &#C9D4E2{name}"
   # Bukkit custom name in ampersand color format; {name} can be pasted into config.
-  entity-custom-name: "{prefix}&#5AC8FACustom name (config format): &#C9D4E2{name}"
+  entity-custom-name: "{prefix}&#5AC8FACustom name (name-patterns, config format): &#C9D4E2{name}"
   # The entity has no Bukkit custom name.
   entity-custom-name-none: "{prefix}&#64748BCustom name: &#C9D4E2Not set"
   # Bukkit custom name without colors; {name} is plain text.
-  entity-plain-name: "{prefix}&#5AC8FACustom name (without colors): &#C9D4E2{name}"
+  entity-plain-name: "{prefix}&#5AC8FACustom name (name-patterns, ignore colors): &#C9D4E2{name}"
   # 当前区块实体列表标题。
   chunk-entities-title: "{prefix}&#5AC8FACurrent chunk entities:"
   # 当前区块实体单行，{text} 为实体名和数量。
   chunk-entity-line: "{prefix}&#5AC8FA{text}"
   # 手持物品查询结果，{material} 为物品类型。
-  hand-item: "{prefix}&#5AC8FAMain hand item: &#C9D4E2{material}"
+  hand-item: "{prefix}&#5AC8FAMaterial (material-patterns): &#C9D4E2{material}"
   # look hand item display name, {name} is the custom display name.
-  hand-item-name: "{prefix}&#5AC8FADisplay name: &#C9D4E2{name}"
+  hand-item-name: "{prefix}&#5AC8FADisplay name (name-key-patterns): &#C9D4E2{name}"
   # look hand item lore title.
-  hand-item-lore-title: "{prefix}&#5AC8FAItem Lore:"
+  hand-item-lore-title: "{prefix}&#5AC8FAItem Lore (lore-key-patterns):"
   # look hand item lore line, {line} is the lore content.
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # look lore truncation notice, {count} is the omitted line count.
@@ -142,9 +142,9 @@ protection:
   # Shown when Raw NBT keys cannot be read on the current server.
   hand-item-nbt-unavailable: "{prefix}&#FFD166Raw NBT keys unavailable &#64748B| &#C9D4E2Check the server capability warning."
   # Header for PDC keys reported by /wtc look.
-  hand-item-pdc-title: "{prefix}&#5AC8FAItem PDC Keys:"
+  hand-item-pdc-title: "{prefix}&#5AC8FAItem PDC Keys (pdc-key-patterns):"
   # Header for Raw NBT key paths reported by /wtc look.
-  hand-item-nbt-title: "{prefix}&#5AC8FAItem Raw NBT Keys:"
+  hand-item-nbt-title: "{prefix}&#5AC8FAItem Raw NBT Keys (nbt-key-patterns):"
   # One data key line; {key} is a key or path.
   hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
   # Shown when data key output exceeds the limit; {count} is the omitted count.

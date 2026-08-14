@@ -32,11 +32,21 @@ public final class BukkitCurrentConfigUpdater {
     private static final String UPDATE_ENABLED_PATH = "config-update.enabled";
     private static final String TRASH_FILE = "trash.yml";
     private static final String TRASH_SCHEMA_PATH = "config-schema-version";
-    private static final int TRASH_SCHEMA_VERSION = 2;
+    private static final int TRASH_SCHEMA_VERSION = 3;
     private static final String CLEANUP_FILE = "cleanup.yml";
-    private static final int CLEANUP_SCHEMA_VERSION = 1;
+    private static final int CLEANUP_SCHEMA_VERSION = 2;
     private static final String NAMED_WHITELIST_PATH = "entities.named-whitelist";
     private static final String NAMED_BLACKLIST_PATH = "entities.named-blacklist";
+    private static final String CUSTOM_ITEM_EXAMPLE_MARKER =
+            "[WorldListTrashCan] 7.4.1 五类物品匹配填写示例";
+    private static final String NAMED_ENTITY_EXAMPLE_MARKER =
+            "[WorldListTrashCan] 7.4.1 命名实体规则填写示例";
+    private static final String DIRECT_REMOVE_EXAMPLE_MARKER =
+            "[WorldListTrashCan] 7.4.1 直删世界填写示例";
+    private static final String ADMISSION_EXAMPLE_MARKER =
+            "[WorldListTrashCan] 7.4.1 公共桶准入白名单填写示例";
+    private static final String PERSONAL_BUTTON_EXAMPLE_MARKER =
+            "[WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例";
     private static final int CLEANUP_GUARD_NOTIFY_KEY = -5;
     private static final String CLEANUP_GUARD_NOTIFY_COMMENT = "# -5 表示本轮被扫地启动门禁跳过。";
     private static final String[] CLEANUP_GUARD_NOTIFY_PATHS = {
@@ -101,6 +111,11 @@ public final class BukkitCurrentConfigUpdater {
         }
         try {
             YamlConfiguration yaml = loadStrict(file);
+            if (readSchemaVersion(yaml) < TRASH_SCHEMA_VERSION) {
+                plugin.getLogger().info("[ConfigUpdate] 检测到 trash.yml 可补充配置填写示例；当前业务配置继续原样使用。"
+                        + "如需保守更新，请在 config.yml 设置 config-update.enabled: true 后执行 /wtc reload。");
+                return;
+            }
             for (String scope : COMPACT_SCOPES) {
                 if (!yaml.contains(scope + ".item-lore") && hasLegacyLoreNode(yaml, scope)) {
                     plugin.getLogger().info("[ConfigUpdate] 检测到旧 compact Lore 配置；当前继续兼容使用。"
@@ -154,7 +169,8 @@ public final class BukkitCurrentConfigUpdater {
             }
         }
         String original = new String(Files.readAllBytes(file.toPath()), UTF8);
-        String updated = buildUpdatedText(original, schemaVersion, migrations);
+        String updated = buildUpdatedText(original, schemaVersion, migrations,
+                schemaVersion < TRASH_SCHEMA_VERSION);
         if (updated.equals(original)) {
             return false;
         }
@@ -192,7 +208,8 @@ public final class BukkitCurrentConfigUpdater {
         List<NotifyInsertion> notifyInsertions = prepareNotifyInsertions(before, defaults);
         String original = new String(Files.readAllBytes(file.toPath()), UTF8);
         String updated = buildCleanupUpdatedText(original, schemaVersion,
-                addNamedWhitelist, addNamedBlacklist, notifyInsertions);
+                addNamedWhitelist, addNamedBlacklist, notifyInsertions,
+                schemaVersion < CLEANUP_SCHEMA_VERSION);
         if (updated.equals(original)) {
             return false;
         }
@@ -278,15 +295,18 @@ public final class BukkitCurrentConfigUpdater {
 
     /** 为 cleanup.yml 生成最小文本添加计划。 */
     private static String buildCleanupUpdatedText(String original, int schemaVersion,
-                                                  boolean addNamedWhitelist, boolean addNamedBlacklist,
-                                                  List<NotifyInsertion> notifyInsertions) throws IOException {
+                                                   boolean addNamedWhitelist, boolean addNamedBlacklist,
+                                                   List<NotifyInsertion> notifyInsertions,
+                                                   boolean addUsageExamples) throws IOException {
         boolean bom = original.startsWith("\uFEFF");
         String body = bom ? original.substring(1) : original;
         String separator = body.contains("\r\n") ? "\r\n" : "\n";
         String[] lines = body.split("\\r?\\n", -1);
         TextEdits edits = new TextEdits();
         prepareSchemaEdit(lines, schemaVersion, CLEANUP_SCHEMA_VERSION, edits);
-        prepareNamedRuleInsertions(lines, addNamedWhitelist, addNamedBlacklist, edits);
+        prepareDirectRemoveExampleInsertion(lines, addUsageExamples, edits);
+        prepareCustomItemExampleInsertion(lines, addUsageExamples, edits);
+        prepareNamedRuleInsertions(lines, addNamedWhitelist, addNamedBlacklist, addUsageExamples, edits);
         prepareNotifyTextInsertions(lines, notifyInsertions, edits);
         String updated = applyTextEdits(lines, separator, edits);
         return bom ? "\uFEFF" + updated : updated;
@@ -294,8 +314,10 @@ public final class BukkitCurrentConfigUpdater {
 
     /** 在 entities 段末尾添加缺失的默认空名称名单和完整注释。 */
     private static void prepareNamedRuleInsertions(String[] lines, boolean addNamedWhitelist,
-                                                   boolean addNamedBlacklist, TextEdits edits) throws IOException {
-        if (!addNamedWhitelist && !addNamedBlacklist) {
+                                                   boolean addNamedBlacklist, boolean addUsageExample,
+                                                   TextEdits edits) throws IOException {
+        boolean insertExample = addUsageExample && !containsMarker(lines, NAMED_ENTITY_EXAMPLE_MARKER);
+        if (!addNamedWhitelist && !addNamedBlacklist && !insertExample) {
             return;
         }
         NodeRange entities = findNodeRange(lines, "entities");
@@ -327,7 +349,74 @@ public final class BukkitCurrentConfigUpdater {
             block.add(indent + "# 默认 []；适合在 clear-named-entities: false 时仅清理指定 MythicMobs 小怪。");
             block.add(indent + "named-blacklist: []");
         }
+        if (insertExample) {
+            block.add("");
+            block.add(indent + "# " + NAMED_ENTITY_EXAMPLE_MARKER + "。");
+            block.add(indent + "# 使用时把已有 named-whitelist: [] 替换为下面内容；已有自定义规则时只追加列表项，不要新增重复键。");
+            block.add(indent + "# named-whitelist:");
+            block.add(indent + "#   - type-patterns:");
+            block.add(indent + "#       - \"ZOMBIE\"");
+            block.add(indent + "#       - \"SKELETON\"");
+            block.add(indent + "#     name-patterns:");
+            block.add(indent + "#       - \"&6世界 Boss\"");
+            block.add(indent + "#       - \"&6副本 Boss\"");
+            block.add(indent + "# named-blacklist:");
+            block.add(indent + "#   - type-patterns:");
+            block.add(indent + "#       - \"ZOMBIE\"");
+            block.add(indent + "#     name-patterns:");
+            block.add(indent + "#       - \"&c特殊的怪物\"");
+        }
         edits.addInsertion(insertAt, block);
+    }
+
+    /** 在 direct-remove-worlds 前加入不会生效的世界名和通配示例。 */
+    private static void prepareDirectRemoveExampleInsertion(String[] lines, boolean addUsageExample,
+                                                            TextEdits edits) throws IOException {
+        if (!addUsageExample || containsMarker(lines, DIRECT_REMOVE_EXAMPLE_MARKER)) {
+            return;
+        }
+        NodeRange range = findNodeRange(lines, "direct-remove-worlds");
+        if (range == null) {
+            return;
+        }
+        String indent = spaces(range.indent);
+        edits.addInsertion(range.start, Arrays.asList(
+                indent + "# " + DIRECT_REMOVE_EXAMPLE_MARKER + "；把 [] 改为列表，不要保留重复节点。",
+                indent + "# direct-remove-worlds:",
+                indent + "#   - \"resource_world\"",
+                indent + "#   - \"event_*\""
+        ));
+    }
+
+    /** 在自定义数据 detection 中加入五类规则的具体填写值。 */
+    private static void prepareCustomItemExampleInsertion(String[] lines, boolean addUsageExample,
+                                                          TextEdits edits) throws IOException {
+        if (!addUsageExample || containsMarker(lines, CUSTOM_ITEM_EXAMPLE_MARKER)) {
+            return;
+        }
+        NodeRange detection = findNodeRange(lines, "custom-data-items.routing.detection");
+        if (detection == null) {
+            return;
+        }
+        String indent = spaces(findChildIndent(lines, detection));
+        edits.addInsertion(detection.start + 1, Arrays.asList(
+                indent + "# " + CUSTOM_ITEM_EXAMPLE_MARKER + "；请把需要的值填入下面对应列表，不要新增重复节点。",
+                indent + "# material-patterns: \"DIAMOND_SWORD\"、\"*_SHULKER_BOX\"；填写 /wtc look 输出的 Material。",
+                indent + "# name-key-patterns: \"*史诗武器*\"、\"&#FFD166限定道具\"；匹配物品显示名文本，不是数据 key。",
+                indent + "# lore-key-patterns: \"*不可交易*\"、\"*灵魂绑定*\"；对原物品 Lore 的每一行分别匹配。",
+                indent + "# pdc-key-patterns: \"myplugin:item_id\"、\"myplugin:*\"；直接复制 /wtc look 输出的 PDC Key。",
+                indent + "# nbt-key-patterns: \"tag.PublicBukkitValues.myplugin:item_id\"；优先复制 /wtc look 输出的实际路径。"
+        ));
+    }
+
+    /** 判断原文本是否已经包含指定版本的注释示例。 */
+    private static boolean containsMarker(String[] lines, String marker) {
+        for (String line : lines) {
+            if (line.contains(marker)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** 在已有通知列表末尾添加缺失的 -5 文案。 */
@@ -513,7 +602,8 @@ public final class BukkitCurrentConfigUpdater {
 
     /** 根据迁移计划生成只注释旧节点并添加新节点的文本。 */
     private static String buildUpdatedText(String original, int schemaVersion,
-                                           List<ScopeMigration> migrations) throws IOException {
+                                           List<ScopeMigration> migrations,
+                                           boolean addUsageExamples) throws IOException {
         boolean bom = original.startsWith("\uFEFF");
         String body = bom ? original.substring(1) : original;
         String separator = body.contains("\r\n") ? "\r\n" : "\n";
@@ -523,8 +613,62 @@ public final class BukkitCurrentConfigUpdater {
         for (ScopeMigration migration : migrations) {
             prepareScopeTextEdits(lines, migration, edits);
         }
+        prepareAdmissionExampleInsertion(lines, addUsageExamples, edits);
+        preparePersonalButtonExampleInsertion(lines, addUsageExamples, edits);
         String updated = applyTextEdits(lines, separator, edits);
         return bom ? "\uFEFF" + updated : updated;
+    }
+
+    /** 在公共桶准入白名单中加入五类规则的具体示例。 */
+    private static void prepareAdmissionExampleInsertion(String[] lines, boolean addUsageExample,
+                                                         TextEdits edits) throws IOException {
+        if (!addUsageExample || containsMarker(lines, ADMISSION_EXAMPLE_MARKER)) {
+            return;
+        }
+        NodeRange whitelist = findNodeRange(lines, "global-trash.admission-whitelist");
+        if (whitelist == null) {
+            return;
+        }
+        NodeRange enabled = findNodeRange(lines, "global-trash.admission-whitelist.enabled");
+        int insertAt = enabled == null ? whitelist.start + 1 : enabled.contentEnd;
+        String indent = spaces(findChildIndent(lines, whitelist));
+        edits.addInsertion(insertAt, Arrays.asList(
+                indent + "# " + ADMISSION_EXAMPLE_MARKER + "；请把需要的值填入下面对应列表，不要新增重复节点。",
+                indent + "# material-patterns: \"STONE\"、\"*_INGOT\"；name-key-patterns: \"*可回收*\"，匹配物品显示名文本。",
+                indent + "# lore-key-patterns: \"*允许进入公共垃圾桶*\"；pdc-key-patterns: \"myplugin:recyclable\"、\"myplugin:*\"。",
+                indent + "# nbt-key-patterns: \"tag.PublicBukkitValues.myplugin:recyclable\"；PDC/NBT 优先复制 /wtc look 输出。"
+        ));
+    }
+
+    /** 在个人桶布局中加入 actions 和 close 的最小可复制示例。 */
+    private static void preparePersonalButtonExampleInsertion(String[] lines, boolean addUsageExample,
+                                                              TextEdits edits) throws IOException {
+        if (!addUsageExample || containsMarker(lines, PERSONAL_BUTTON_EXAMPLE_MARKER)) {
+            return;
+        }
+        NodeRange items = findNodeRange(lines, "personal-trash.gui.layout.items");
+        if (items == null) {
+            return;
+        }
+        NodeRange nextPage = findNodeRange(lines, "personal-trash.gui.layout.items.c");
+        int insertAt = nextPage == null ? items.contentEnd : nextPage.contentEnd;
+        String indent = spaces(findChildIndent(lines, items));
+        edits.addInsertion(insertAt, Arrays.asList(
+                indent + "# " + PERSONAL_BUTTON_EXAMPLE_MARKER + "；先在 position 中放入 d 或 e。",
+                indent + "# d:",
+                indent + "#   type: \"actions\"",
+                indent + "#   material:",
+                indent + "#     - \"BOOK\"",
+                indent + "#   name: \"&#FFD166个人桶信息\"",
+                indent + "#   actions:",
+                indent + "#     - \"[message] &#5AC8FA当前是第 &#FFD166{page}/{max-page} &#5AC8FA页\"",
+                indent + "#     - \"[close]\"",
+                indent + "# e:",
+                indent + "#   type: \"close\"",
+                indent + "#   material:",
+                indent + "#     - \"BARRIER\"",
+                indent + "#   name: \"&#F87171关闭菜单\""
+        ));
     }
 
     /** 添加或保守更新 trash.yml 的结构版本。 */

@@ -1,5 +1,5 @@
 # 配置结构版本，由插件自动维护；请勿手动删除或降低。
-config-schema-version: 2
+config-schema-version: 3
 
 # 世界垃圾桶设置。
 world-trash:
@@ -206,6 +206,10 @@ global-trash:
   admission-whitelist:
     # 默认关闭；开启后以下五类规则任意命中才允许进入公共垃圾桶。
     enabled: false
+    # [WorldListTrashCan] 7.4.1 公共桶准入白名单填写示例；请把需要的值填入下面对应列表，不要新增重复节点。
+    # material-patterns 示例："STONE"、"*_INGOT"；name-key-patterns 示例："*可回收*"，匹配物品显示名文本。
+    # lore-key-patterns 示例："*允许进入公共垃圾桶*"；pdc-key-patterns 示例："myplugin:recyclable"、"myplugin:*"。
+    # nbt-key-patterns 示例："tag.PublicBukkitValues.myplugin:recyclable"；PDC/NBT 请优先复制 /wtc look 输出。
     # Material 不含 * 时完整匹配，支持例如 "*_LOG"。
     material-patterns: []
     # 名称不含 * 时按包含匹配。
@@ -345,6 +349,20 @@ personal-trash:
           # 没有下一页时显示 b 对应的背景物。
           unavailable-item: "b"
         # 可另设字符并使用 type: actions，支持 [console]、[command]、[message]、[close] 和 PAPI 变量。
+        # [WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例；先在 position 中放入 d 或 e，再复制需要的按钮配置。
+        # d:
+        #   type: "actions"
+        #   material:
+        #     - "BOOK"
+        #   name: "&#FFD166个人桶信息"
+        #   actions:
+        #     - "[message] &#5AC8FA当前是第 &#FFD166{page}/{max-page} &#5AC8FA页"
+        #     - "[close]"
+        # e:
+        #   type: "close"
+        #   material:
+        #     - "BARRIER"
+        #   name: "&#F87171关闭菜单"
         # 也可使用 type: close 制作关闭按钮；name、lore、glow、model-id 均可配置。
   # 是否追踪玩家主动丢弃物品。
   # 高版本优先使用 PDC，低版本使用有过期时间的内存记录，均不会长期保存玩家引用。

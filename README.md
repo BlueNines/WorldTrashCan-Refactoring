@@ -85,7 +85,7 @@ config-update:
   enabled: true
 ```
 
-启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。`trash.yml` 和 `cleanup.yml` 分别维护独立结构版本；同一轮同一文件只生成一份备份。`trash.yml` 的旧 `show-amount-lore`、`amount-lore`、`action-lore` 会按原显示语义组成 `item-lore`；`cleanup.yml` 会补入缺失的命名实体名单和历史 `-5` 门禁通知。自定义颜色、PAPI 文本、空列表和用户注释都会保留，已有新节点绝不覆盖。
+启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。当前 `trash.yml` 结构版本为 `3`，`cleanup.yml` 为 `2`；同一轮同一文件只生成一份备份。`trash.yml` 的旧 Lore 节点会按原显示语义组成 `item-lore`，并补充公共桶白名单及个人桶按钮示例；`cleanup.yml` 会补入缺失的命名实体名单、历史 `-5` 门禁通知、直删世界和五类匹配示例。自定义颜色、PAPI 文本、空列表和用户注释都会保留，已有新节点绝不覆盖。
 
 ### 按类型和自定义名称清理实体
 
@@ -94,14 +94,14 @@ config-update:
 ```yaml
 entities:
   named-whitelist:
-    - type-patterns: ["ZOMBIE"]
-      name-patterns: ["&6世界 Boss"]
+    - type-patterns: ["ZOMBIE", "SKELETON"]
+      name-patterns: ["&6世界 Boss", "&6副本 Boss"]
   named-blacklist:
     - type-patterns: ["ZOMBIE"]
       name-patterns: ["&c特殊的怪物"]
 ```
 
-节点缺失、空列表或没有有效规则时直接跳过名称匹配。配置包含颜色时颜色参与匹配，`&c` 与 `§c` 等价；配置不含颜色时忽略实体名称中的颜色。白名单优先于所有黑名单，船内、带鞍和 Bukkit `Tameable` 主人保护继续保持更高优先级。`/wtc look` 右键实体后会显示可点击复制的类型、配置颜色名称和去色名称。若名称只由客户端发包、伪装或独立悬浮字显示而未写入 Bukkit `getCustomName()`，则不会命中本规则。
+节点缺失、空列表或没有有效规则时直接跳过名称匹配。配置包含颜色时颜色参与匹配，`&c` 与 `§c` 等价；配置不含颜色时忽略实体名称中的颜色。白名单优先于所有黑名单，船内、带鞍和 Bukkit `Tameable` 主人保护继续保持更高优先级。`/wtc look` 右键实体后会把实体类型直接标记为 `type-patterns`，把配置颜色名称和去色名称标记为 `name-patterns`，结果可点击复制。若名称只由客户端发包、伪装或独立悬浮字显示而未写入 Bukkit `getCustomName()`，则不会命中本规则。
 
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
@@ -122,7 +122,7 @@ entities:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.4.0`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.4.1`。
 
 ### 性能优化估算
 
@@ -196,12 +196,13 @@ custom-data-items:
     enabled: false
     detection:
       # 五类规则是 OR，任意一类命中即可。
-      material-patterns: []
-      name-key-patterns: []
-      lore-key-patterns: []
+      material-patterns: ["DIAMOND_SWORD", "*_SHULKER_BOX"]
+      name-key-patterns: ["*史诗武器*", "&#FFD166限定道具"]
+      lore-key-patterns: ["*不可交易*", "*灵魂绑定*"]
       pdc-key-patterns:
-        - "*"
-      nbt-key-patterns: []
+        - "myplugin:item_id"
+        - "myplugin:*"
+      nbt-key-patterns: ["tag.PublicBukkitValues.myplugin:item_id"]
     # personal-only、keep-ground、direct-remove。
     mode: "personal-only"
     # personal-only 无法确认物主或个人桶不可用时的动作。
@@ -217,11 +218,11 @@ custom-data-items:
 global-trash:
   admission-whitelist:
     enabled: false
-    material-patterns: []
-    name-key-patterns: []
-    lore-key-patterns: []
-    pdc-key-patterns: []
-    nbt-key-patterns: []
+    material-patterns: ["STONE", "*_INGOT"]
+    name-key-patterns: ["*可回收*"]
+    lore-key-patterns: ["*允许进入公共垃圾桶*"]
+    pdc-key-patterns: ["myplugin:recyclable", "myplugin:*"]
+    nbt-key-patterns: ["tag.PublicBukkitValues.myplugin:recyclable"]
     rejected-cleanup-action: "keep-ground"
 ```
 
@@ -235,7 +236,7 @@ global-trash:
 /wtc stats                查看最近一次清理状态
 /wtc clear true           手动清理并忽略扫地门禁
 /wtc clear false          手动清理但遵守扫地门禁
-/wtc look                 查看手持物品的匹配信息，或等待右键查询实体
+/wtc look                 查看匹配值，并直接标明对应的 *-patterns 配置键
 ```
 
 正式长命令为 `/worldlisttrashcan`，简写为 `/wtc`。权限统一使用 `WorldListTrashCan.*`。
@@ -254,9 +255,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.4.0`
+- 版本：`7.4.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`1201DE1E9BE0A2C7C142C941D82DB3B029B1E00A397D6EEF06D5BA1749E3E9CA`
+- SHA-256：`53C64FEC3D0140EA0B1FD19E40FE9AA2727A2DF4BC3BE815B405C618BCD7D57F`
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
@@ -346,7 +347,7 @@ config-update:
   enabled: true
 ```
 
-On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. `trash.yml` and `cleanup.yml` maintain independent schema versions, and each changed file receives only one backup per update. Legacy Lore nodes in `trash.yml` are combined into `item-lore`; `cleanup.yml` receives missing named-entity lists and legacy `-5` guard notifications. Custom colors, PAPI text, empty lists, and administrator comments are retained, and existing replacement nodes are never overwritten.
+On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. The current schema is `3` for `trash.yml` and `2` for `cleanup.yml`, and each changed file receives only one backup per update. Legacy Lore nodes in `trash.yml` are combined into `item-lore`, and usage examples are added for admission rules and personal buttons. `cleanup.yml` receives missing named-entity lists, legacy `-5` guard notifications, and examples for direct-remove worlds and all five item match sources. Custom colors, PAPI text, empty lists, and administrator comments are retained, and existing replacement nodes are never overwritten.
 
 ### Entity type and custom-name rules
 
@@ -355,14 +356,14 @@ On startup or `/wtc reload`, the updater first creates a unique timestamped `.ba
 ```yaml
 entities:
   named-whitelist:
-    - type-patterns: ["ZOMBIE"]
-      name-patterns: ["&6World Boss"]
+    - type-patterns: ["ZOMBIE", "SKELETON"]
+      name-patterns: ["&6World Boss", "&6Dungeon Boss"]
   named-blacklist:
     - type-patterns: ["ZOMBIE"]
       name-patterns: ["&cSpecial Monster"]
 ```
 
-Missing, empty, or entirely invalid lists bypass name matching. Rules containing colors are color-sensitive, while `&c` and `§c` are equivalent; rules without colors compare against the color-stripped custom name. The whitelist wins over all blacklists, and boat, saddle, and Bukkit `Tameable` owner protections keep their higher priority. `/wtc look` now exposes clickable entity type, config-formatted custom name, and color-stripped name. Names rendered only through client packets, disguises, or separate holograms cannot match unless they are also stored in Bukkit `getCustomName()`.
+Missing, empty, or entirely invalid lists bypass name matching. Rules containing colors are color-sensitive, while `&c` and `§c` are equivalent; rules without colors compare against the color-stripped custom name. The whitelist wins over all blacklists, and boat, saddle, and Bukkit `Tameable` owner protections keep their higher priority. `/wtc look` labels the entity type as `type-patterns` and both custom-name forms as `name-patterns`; each value remains clickable. Names rendered only through client packets, disguises, or separate holograms cannot match unless they are also stored in Bukkit `getCustomName()`.
 
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
@@ -382,7 +383,7 @@ The personal default is compact mode, 2 pages, a per-item limit of `9999`, manua
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.4.0`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.4.1`.
 
 ### Estimated performance improvements
 
@@ -457,12 +458,13 @@ custom-data-items:
     enabled: false
     detection:
       # The five sources use OR semantics.
-      material-patterns: []
-      name-key-patterns: []
-      lore-key-patterns: []
+      material-patterns: ["DIAMOND_SWORD", "*_SHULKER_BOX"]
+      name-key-patterns: ["*Epic Weapon*", "&6Limited Item"]
+      lore-key-patterns: ["*Untradeable*", "*Soulbound*"]
       pdc-key-patterns:
-        - "*"
-      nbt-key-patterns: []
+        - "myplugin:item_id"
+        - "myplugin:*"
+      nbt-key-patterns: ["tag.PublicBukkitValues.myplugin:item_id"]
     # personal-only, keep-ground, or direct-remove.
     mode: "personal-only"
     personal-unavailable: "keep-ground"
@@ -477,11 +479,11 @@ The public trash can has a separate admission allowlist that applies to cleanup,
 global-trash:
   admission-whitelist:
     enabled: false
-    material-patterns: []
-    name-key-patterns: []
-    lore-key-patterns: []
-    pdc-key-patterns: []
-    nbt-key-patterns: []
+    material-patterns: ["STONE", "*_INGOT"]
+    name-key-patterns: ["*Recyclable*"]
+    lore-key-patterns: ["*Allowed in public trash*"]
+    pdc-key-patterns: ["myplugin:recyclable", "myplugin:*"]
+    nbt-key-patterns: ["tag.PublicBukkitValues.myplugin:recyclable"]
     rejected-cleanup-action: "keep-ground"
 ```
 
@@ -495,7 +497,7 @@ Enabling the allowlist with all five rule lists empty rejects every item. `globa
 /wtc stats                Show the latest cleanup status
 /wtc clear true           Run manual cleanup and ignore cleanup guards
 /wtc clear false          Run manual cleanup while respecting cleanup guards
-/wtc look                 Inspect held-item match data or wait to inspect an entity
+/wtc look                 Inspect match values with their target *-patterns keys
 ```
 
 The formal long command is `/worldlisttrashcan`, with `/wtc` as its short alias. Permissions use the `WorldListTrashCan.*` namespace.
@@ -514,9 +516,9 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.4.0`
+- Version: `7.4.1`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `1201DE1E9BE0A2C7C142C941D82DB3B029B1E00A397D6EEF06D5BA1749E3E9CA`
+- SHA-256: `53C64FEC3D0140EA0B1FD19E40FE9AA2727A2DF4BC3BE815B405C618BCD7D57F`
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.

@@ -116,23 +116,23 @@ protection:
   # look 查询等待玩家右键实体。
   look-prompt: "{prefix}&#5AC8FAHaz clic derecho en una entidad para inspeccionarla."
   # look 查询实体结果，{name} 为实体名，{type} 为实体类型。
-  entity-result: "{prefix}&#5AC8FAEntidad: &#C9D4E2{name} &#64748B({type})"
+  entity-result: "{prefix}&#5AC8FATipo de entidad (type-patterns): &#C9D4E2{type} &#64748B| &#C9D4E2{name}"
   # Nombre personalizado Bukkit en formato de color con &; {name} se puede pegar en la configuracion.
-  entity-custom-name: "{prefix}&#5AC8FANombre personalizado (configuracion): &#C9D4E2{name}"
+  entity-custom-name: "{prefix}&#5AC8FANombre personalizado (name-patterns, configuracion): &#C9D4E2{name}"
   # La entidad no tiene nombre personalizado Bukkit.
   entity-custom-name-none: "{prefix}&#64748BNombre personalizado: &#C9D4E2No establecido"
   # Nombre personalizado sin colores; {name} es texto plano.
-  entity-plain-name: "{prefix}&#5AC8FANombre personalizado (sin colores): &#C9D4E2{name}"
+  entity-plain-name: "{prefix}&#5AC8FANombre personalizado (name-patterns, sin colores): &#C9D4E2{name}"
   # 当前区块实体列表标题。
   chunk-entities-title: "{prefix}&#5AC8FAEntidades del chunk actual:"
   # 当前区块实体单行，{text} 为实体名和数量。
   chunk-entity-line: "{prefix}&#5AC8FA{text}"
   # 手持物品查询结果，{material} 为物品类型。
-  hand-item: "{prefix}&#5AC8FAObjeto en mano: &#C9D4E2{material}"
+  hand-item: "{prefix}&#5AC8FAMaterial (material-patterns): &#C9D4E2{material}"
   # look nombre visible del objeto, {name} es el nombre personalizado.
-  hand-item-name: "{prefix}&#5AC8FANombre visible: &#C9D4E2{name}"
+  hand-item-name: "{prefix}&#5AC8FANombre visible (name-key-patterns): &#C9D4E2{name}"
   # título del lore del objeto consultado con look.
-  hand-item-lore-title: "{prefix}&#5AC8FALore del objeto:"
+  hand-item-lore-title: "{prefix}&#5AC8FALore del objeto (lore-key-patterns):"
   # línea del lore, {line} es el contenido.
   hand-item-lore-line: "{prefix}&#64748B- &#C9D4E2{line}"
   # aviso de truncamiento del lore, {count} es el número de líneas omitidas.
@@ -142,9 +142,9 @@ protection:
   # Se muestra cuando no se pueden leer las claves Raw NBT.
   hand-item-nbt-unavailable: "{prefix}&#FFD166Claves Raw NBT no disponibles &#64748B| &#C9D4E2Revisa la advertencia de capacidades del servidor."
   # Encabezado de claves PDC mostrado por /wtc look.
-  hand-item-pdc-title: "{prefix}&#5AC8FAClaves PDC del objeto:"
+  hand-item-pdc-title: "{prefix}&#5AC8FAClaves PDC (pdc-key-patterns):"
   # Encabezado de rutas Raw NBT mostrado por /wtc look.
-  hand-item-nbt-title: "{prefix}&#5AC8FAClaves Raw NBT del objeto:"
+  hand-item-nbt-title: "{prefix}&#5AC8FAClaves Raw NBT (nbt-key-patterns):"
   # Una clave o ruta de datos; {key} contiene el texto.
   hand-item-data-key-line: "{prefix}&#64748B- &#C9D4E2{key}"
   # Se muestra cuando se supera el límite; {count} es la cantidad omitida.
