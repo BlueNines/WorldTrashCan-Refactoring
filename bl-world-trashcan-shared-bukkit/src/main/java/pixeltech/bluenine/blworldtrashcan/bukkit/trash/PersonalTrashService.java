@@ -189,7 +189,7 @@ public final class PersonalTrashService {
         }
         List<ItemStack> itemStacks = new ArrayList<>();
         itemStacks.add(itemStack.clone());
-        sendToOwner(ownerUuid, message("personal-trash.recycle.single",
+        sendToOwner(ownerUuid, rawMessage("personal-trash.recycle.single",
                 "{prefix}&a已回收到个人垃圾桶: {items}",
                 "{items}", formatItemList(itemStacks)));
     }
@@ -205,7 +205,7 @@ public final class PersonalTrashService {
             if (!canNotify(ownerUuid) || itemStacks == null || itemStacks.isEmpty()) {
                 continue;
             }
-            sendToOwner(ownerUuid, message("personal-trash.recycle.batch",
+            sendToOwner(ownerUuid, rawMessage("personal-trash.recycle.batch",
                     "{prefix}&a本次清理已回收到个人垃圾桶: {items}",
                     "{items}", formatItemList(itemStacks)));
         }
@@ -346,13 +346,23 @@ public final class PersonalTrashService {
 
     /** 向在线拥有者发送消息。 */
     private void sendToOwner(UUID ownerUuid, String text) {
+        String clickCommand = normalizeClickCommand(config == null ? "" : config.getNotifyClickCommand());
         if (platform != null) {
-            platform.sendMessage(ownerUuid, text);
+            if (clickCommand.isEmpty()) {
+                platform.sendMessage(ownerUuid, text);
+            } else {
+                platform.executeForPlayer(ownerUuid, player -> player.spigot().sendMessage(
+                        RichTextRenderer.clickable(player, text, clickCommand)));
+            }
             return;
         }
         Player player = Bukkit.getPlayer(ownerUuid);
         if (player != null) {
-            player.sendMessage(RichTextRenderer.color(player, text));
+            if (clickCommand.isEmpty()) {
+                player.sendMessage(RichTextRenderer.color(player, text));
+            } else {
+                player.spigot().sendMessage(RichTextRenderer.clickable(player, text, clickCommand));
+            }
         }
     }
 
@@ -366,10 +376,10 @@ public final class PersonalTrashService {
             parts.add(formatEntry(entries.get(index)));
         }
         if (entries.size() > maxDisplay) {
-            parts.add(message("personal-trash.recycle.ellipsis", "&7..."));
+            parts.add(rawMessage("personal-trash.recycle.ellipsis", "&7..."));
         }
-        String joined = join(parts, message("personal-trash.recycle.separator", "&7, "));
-        return message("personal-trash.recycle.list", "&7[{items}&7]", "{items}", joined);
+        String joined = join(parts, rawMessage("personal-trash.recycle.separator", "&7, "));
+        return rawMessage("personal-trash.recycle.list", "&7[{items}&7]", "{items}", joined);
     }
 
     /** 合并同名物品条目，减少批量清理提示噪声。 */
@@ -393,10 +403,10 @@ public final class PersonalTrashService {
     /** 格式化单个物品条目。 */
     private String formatEntry(NotificationEntry entry) {
         if (entry.getAmount() <= 1) {
-            return message("personal-trash.recycle.item-single", "&f{name}",
+            return rawMessage("personal-trash.recycle.item-single", "&f{name}",
                     "{name}", entry.getName());
         }
-        return message("personal-trash.recycle.item", "&f{name}&7*&f{amount}",
+        return rawMessage("personal-trash.recycle.item", "&f{name}&7*&f{amount}",
                 "{name}", entry.getName(), "{amount}", String.valueOf(entry.getAmount()));
     }
 
@@ -460,6 +470,12 @@ public final class PersonalTrashService {
                 : messages.text(key, fallback, replacements);
     }
 
+    /** 返回只替换变量、尚未渲染颜色的消息，供可点击组件统一处理。 */
+    private String rawMessage(String key, String fallback, String... replacements) {
+        return messages == null ? replace(fallback, replacements)
+                : messages.rawText(key, fallback, replacements);
+    }
+
     /** 按玩家协议版本返回格式化消息。 */
     private String message(Player player, String key, String fallback, String... replacements) {
         return messages == null ? RichTextRenderer.color(player, replace(fallback, replacements))
@@ -477,6 +493,15 @@ public final class PersonalTrashService {
                     replacements[index + 1] == null ? "" : replacements[index + 1]);
         }
         return result;
+    }
+
+    /** 规范化点击命令，允许服主省略命令开头的斜杠。 */
+    static String normalizeClickCommand(String command) {
+        String value = command == null ? "" : command.trim();
+        if (value.isEmpty()) {
+            return "";
+        }
+        return value.startsWith("/") ? value : "/" + value;
     }
 
     /** 个人垃圾桶专属菜单策略。 */

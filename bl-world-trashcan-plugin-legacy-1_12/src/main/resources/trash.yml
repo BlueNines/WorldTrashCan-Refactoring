@@ -1,5 +1,5 @@
 # 配置结构版本，由插件自动维护；请勿手动删除或降低。
-config-schema-version: 3
+config-schema-version: 4
 
 # 世界垃圾桶设置。
 world-trash:
@@ -374,6 +374,8 @@ personal-trash:
     enabled: true
     # 批量提示中最多完整展示多少个物品条目；超过后会按语言文件里的 ellipsis 追加省略标记。
     max-display-items: 3
+    # 点击个人垃圾桶通知后执行的命令；留空则只发送普通文本，不添加点击事件。
+    click-command: "/wtc personal"
   # 玩家主动丢弃的物品被仙人掌、岩浆、火焰等损坏时，是否在短时间内回收到垃圾桶。
   damage-recovery:
     # 回收模式。

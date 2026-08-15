@@ -23,7 +23,7 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 公共垃圾桶动作 | 只能使用固定按钮 | 支持 `[console]`、`[command]`、`[message]`、`[close]`、`type: close` 和 PAPI 变量 |
 | 个人垃圾桶界面 | 固定 54 格原版库存 | 与公共桶一样支持独立布局、紧凑/堆叠双模式、分页、玩家独立排序、actions、close、glow 和 PAPI |
 | 个人垃圾桶容量 | 满时默认直接清空旧内容 | 默认拒绝新路由且保留旧内容；可显式开启“容量不足时清空并只重试一次” |
-| 个人垃圾桶提示 | 单个或批量提示不完整 | 单个物品单独提示，扫地批量汇总提示，默认显示前 3 类 |
+| 个人垃圾桶提示 | 单个或批量提示不完整 | 单个物品单独提示，扫地批量汇总提示，默认显示前 3 类；点击消息可直接打开个人垃圾桶 |
 | 扫地启动条件 | 到时间就执行 | 可按在线人数和实体数量跳过低压力清理 |
 | 手动扫地 | 只有固定执行方式 | `/wtc clear true/false` 可选择是否忽略扫地门禁 |
 | 扫地世界过滤 | 只能逐个填写不清理的世界 | `include/exclude` 支持 `*` 通配；默认允许全部世界并保护名称包含 dungeon 的世界 |
@@ -85,7 +85,7 @@ config-update:
   enabled: true
 ```
 
-启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。当前 `trash.yml` 结构版本为 `3`，`cleanup.yml` 为 `2`；同一轮同一文件只生成一份备份。`trash.yml` 的旧 Lore 节点会按原显示语义组成 `item-lore`，并补充公共桶白名单及个人桶按钮示例；`cleanup.yml` 会补入缺失的命名实体名单、历史 `-5` 门禁通知、直删世界和五类匹配示例。自定义颜色、PAPI 文本、空列表和用户注释都会保留，已有新节点绝不覆盖。
+启动插件或执行 `/wtc reload` 后，更新器会先在原文件旁生成带时间戳且不会覆盖旧备份的 `.bak`，再原地注释弃用节点并添加新节点；不删除、不移动其他原始行。备份失败、YAML 无法解析、节点重复、配置类型错误或无法可靠确定节点范围时会取消写入并继续使用原配置。当前 `trash.yml` 结构版本为 `4`，`cleanup.yml` 为 `2`；同一轮同一文件只生成一份备份。`trash.yml` 的旧 Lore 节点会按原显示语义组成 `item-lore`，并补充公共桶白名单、个人桶按钮示例和个人桶通知点击命令；`cleanup.yml` 会补入缺失的命名实体名单、历史 `-5` 门禁通知、直删世界和五类匹配示例。自定义颜色、PAPI 文本、空列表和用户注释都会保留，已有新节点绝不覆盖。
 
 ### 按类型和自定义名称清理实体
 
@@ -115,6 +115,8 @@ entities:
 
 个人桶默认使用紧凑模式、2 页、单种物品上限 `9999`，允许手动放入且没有拿取冷却。个人桶满时默认拒绝路由并保留旧物品。只有显式设置 `auto-clear-when-full: true` 后，自动路由遇到“整个容器容量不足”才会清空并只重试一次；玩家 GUI 手动放入、单种物品达到上限和已经部分接收的请求绝不会触发清空。个人专属物品也不会因为个人桶满而自动改投公共桶。
 
+个人桶回收通知默认整条可点击并执行 `/wtc personal`。`personal-trash.notify.click-command` 可改为其它命令；设置为空字符串后只发送普通文本，不添加点击事件。点击命令会在玩家所属合法线程执行，兼容普通 Bukkit/Paper 和 Folia/Luminol。
+
 #### 兼容性和稳定性增强
 
 - 提供 `WorldListTrashCan-universal.jar`，高低版本和 Folia/Luminol 使用同一个整包；也保留轻量分版本 Jar。
@@ -124,7 +126,7 @@ entities:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.4.2`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.0`。
 
 ### 性能优化估算
 
@@ -257,9 +259,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.4.1`
+- 版本：`7.5.0`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`22DFA27D82B174D8F01E642B6D02325D6ECFA1470E8562F8E249ACD67FCCFD02`
+- SHA-256：`2C621653993C4840DD6DF62E6BB41833EF48D2059D1C367133CAEF172E9D7043`
+- 个人垃圾桶通知点击已在 Paper 1.21.4 使用真实客户端验证，覆盖正式扫地回收通知、原生聊天点击和点击后个人桶 GUI。
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
@@ -287,7 +290,7 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Compact per-item capacity | No logical per-item cap | Each type has a configurable accumulated cap; `-1` means unlimited, and incoming batches use remaining capacity instead of creating duplicate entries |
 | Smaller public trash-can capacity | Items could become inaccessible | A read-only overflow page keeps items visible and retrievable instead of silently losing them |
 | Public trash-can actions | Only fixed button behavior | Supports `[console]`, `[command]`, `[message]`, `[close]`, `type: close`, and PlaceholderAPI variables |
-| Personal trash-can notifications | Incomplete single-item and batch messages | Individual notifications for single items and grouped notifications for cleanup batches, showing up to 3 types by default |
+| Personal trash-can notifications | Incomplete single-item and batch messages | Individual notifications and grouped cleanup summaries show up to 3 types by default; clicking the message opens personal trash |
 | Cleanup guards | Cleanup ran when its timer elapsed | Automatic cleanup can be skipped when online-player or entity-count thresholds are not met |
 | Manual cleanup | One fixed execution mode | `/wtc clear true/false` chooses whether cleanup guards are ignored |
 | Cleanup world filter | Only per-world exclusions | `include/exclude` supports `*` wildcards; all worlds are included by default while names containing dungeon are protected |
@@ -349,7 +352,7 @@ config-update:
   enabled: true
 ```
 
-On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. The current schema is `3` for `trash.yml` and `2` for `cleanup.yml`, and each changed file receives only one backup per update. Legacy Lore nodes in `trash.yml` are combined into `item-lore`, and usage examples are added for admission rules and personal buttons. `cleanup.yml` receives missing named-entity lists, legacy `-5` guard notifications, and examples for direct-remove worlds and all five item match sources. Custom colors, PAPI text, empty lists, and administrator comments are retained, and existing replacement nodes are never overwritten.
+On startup or `/wtc reload`, the updater first creates a unique timestamped `.bak` beside the original file. It then comments deprecated nodes in place and adds the replacement nodes without deleting or moving unrelated original lines. A failed backup, invalid YAML, duplicate path, invalid value type, or uncertain node boundary cancels the write and leaves the original configuration active. The current schema is `4` for `trash.yml` and `2` for `cleanup.yml`, and each changed file receives only one backup per update. Legacy Lore nodes in `trash.yml` are combined into `item-lore`, and usage examples are added for admission rules, personal buttons, and the personal-notification click command. `cleanup.yml` receives missing named-entity lists, legacy `-5` guard notifications, and examples for direct-remove worlds and all five item match sources. Custom colors, PAPI text, empty lists, and administrator comments are retained, and existing replacement nodes are never overwritten.
 
 ### Entity type and custom-name rules
 
@@ -379,6 +382,8 @@ Personal trash uses the same storage and menu core as global trash, while state 
 
 The personal default is compact mode, 2 pages, a per-item limit of `9999`, manual deposits enabled, and no take delay. When full, personal trash rejects new routes by default and keeps its existing contents. Only with `auto-clear-when-full: true` will an automatic route clear and retry once after a whole-container-capacity rejection. Manual GUI deposits, per-entry limits, and partially accepted requests never trigger a clear. Personal-only items are not redirected to global trash just because the personal container is full.
 
+Personal-trash recovery notifications are clickable by default and run `/wtc personal`. Change `personal-trash.notify.click-command` to use another command, or set it to an empty string to send plain text without a click event. The click component is sent on the player's legal execution context on both Bukkit/Paper and Folia/Luminol.
+
 #### Compatibility and stability improvements
 
 - `WorldListTrashCan-universal.jar` runs across supported server versions, including Folia/Luminol; lightweight version-specific JARs are also available.
@@ -387,7 +392,7 @@ The personal default is compact mode, 2 pages, a per-item limit of `9999`, manua
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.4.2`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.0`.
 
 ### Estimated performance improvements
 
@@ -520,9 +525,10 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.4.1`
+- Version: `7.5.0`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `22DFA27D82B174D8F01E642B6D02325D6ECFA1470E8562F8E249ACD67FCCFD02`
+- SHA-256: `2C621653993C4840DD6DF62E6BB41833EF48D2059D1C367133CAEF172E9D7043`
+- Personal-trash notification clicks were verified with a real client on Paper 1.21.4, covering the cleanup notification, native chat click, and the resulting personal-trash GUI.
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.

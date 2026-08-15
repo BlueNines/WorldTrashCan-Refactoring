@@ -32,7 +32,7 @@ public final class BukkitCurrentConfigUpdater {
     private static final String UPDATE_ENABLED_PATH = "config-update.enabled";
     private static final String TRASH_FILE = "trash.yml";
     private static final String TRASH_SCHEMA_PATH = "config-schema-version";
-    private static final int TRASH_SCHEMA_VERSION = 3;
+    private static final int TRASH_SCHEMA_VERSION = 4;
     private static final String CLEANUP_FILE = "cleanup.yml";
     private static final int CLEANUP_SCHEMA_VERSION = 2;
     private static final String NAMED_WHITELIST_PATH = "entities.named-whitelist";
@@ -47,6 +47,10 @@ public final class BukkitCurrentConfigUpdater {
             "[WorldListTrashCan] 7.4.1 公共桶准入白名单填写示例";
     private static final String PERSONAL_BUTTON_EXAMPLE_MARKER =
             "[WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例";
+    private static final String PERSONAL_NOTIFY_EXAMPLE_MARKER =
+            "[WorldListTrashCan] 7.5.0 个人桶通知点击示例";
+    private static final String PERSONAL_NOTIFY_CLICK_COMMAND_PATH =
+            "personal-trash.notify.click-command";
     private static final int CLEANUP_GUARD_NOTIFY_KEY = -5;
     private static final String CLEANUP_GUARD_NOTIFY_COMMENT = "# -5 表示本轮被扫地启动门禁跳过。";
     private static final String[] CLEANUP_GUARD_NOTIFY_PATHS = {
@@ -615,6 +619,7 @@ public final class BukkitCurrentConfigUpdater {
         }
         prepareAdmissionExampleInsertion(lines, addUsageExamples, edits);
         preparePersonalButtonExampleInsertion(lines, addUsageExamples, edits);
+        preparePersonalNotifyClickCommandInsertion(lines, addUsageExamples, edits);
         String updated = applyTextEdits(lines, separator, edits);
         return bom ? "\uFEFF" + updated : updated;
     }
@@ -668,6 +673,29 @@ public final class BukkitCurrentConfigUpdater {
                 indent + "#   material:",
                 indent + "#     - \"BARRIER\"",
                 indent + "#   name: \"&#F87171关闭菜单\""
+        ));
+    }
+
+    /** 为旧版 trash.yml 补充个人桶通知点击命令，保留服主已有注释和配置。 */
+    private static void preparePersonalNotifyClickCommandInsertion(String[] lines, boolean addUsageExample,
+                                                                   TextEdits edits) throws IOException {
+        if (!addUsageExample || containsMarker(lines, PERSONAL_NOTIFY_EXAMPLE_MARKER)
+                || findNodeRange(lines, PERSONAL_NOTIFY_CLICK_COMMAND_PATH) != null) {
+            return;
+        }
+        NodeRange notify = findNodeRange(lines, "personal-trash.notify");
+        if (notify == null) {
+            return;
+        }
+        NodeRange maxDisplayItems = findNodeRange(lines, "personal-trash.notify.max-display-items");
+        NodeRange enabled = findNodeRange(lines, "personal-trash.notify.enabled");
+        int insertAt = maxDisplayItems != null ? maxDisplayItems.contentEnd
+                : enabled != null ? enabled.contentEnd : notify.start + 1;
+        String indent = spaces(findChildIndent(lines, notify));
+        edits.addInsertion(insertAt, Arrays.asList(
+                indent + "# " + PERSONAL_NOTIFY_EXAMPLE_MARKER
+                        + "；点击个人垃圾桶通知后执行命令，留空则只发送普通文本。",
+                indent + "click-command: \"/wtc personal\""
         ));
     }
 
@@ -952,6 +980,7 @@ public final class BukkitCurrentConfigUpdater {
                 changed.add(scope + "." + key);
             }
         }
+        changed.add(PERSONAL_NOTIFY_CLICK_COMMAND_PATH);
         for (String path : changed) {
             values.remove(path);
         }

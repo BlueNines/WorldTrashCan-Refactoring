@@ -82,10 +82,11 @@ public final class DefaultResourceDocumentationTest {
             String text = read(file);
             YamlConfiguration yaml = load(file);
 
-            assertEquals(3, yaml.getInt("config-schema-version"));
+            assertEquals(4, yaml.getInt("config-schema-version"));
             assertFalse(yaml.getBoolean("global-trash.admission-whitelist.enabled"));
             assertEquals(1, occurrences(text, "[WorldListTrashCan] 7.4.1 公共桶准入白名单填写示例"));
             assertEquals(1, occurrences(text, "[WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例"));
+            assertEquals("/wtc personal", yaml.getString("personal-trash.notify.click-command"));
             assertFalse(yaml.contains("personal-trash.gui.layout.items.d"));
             assertFalse(yaml.contains("personal-trash.gui.layout.items.e"));
         }

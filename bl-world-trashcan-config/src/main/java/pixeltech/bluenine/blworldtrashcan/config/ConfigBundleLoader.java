@@ -186,7 +186,8 @@ public final class ConfigBundleLoader {
                         parseDamageRecoveryMode(trash.getString("personal-trash.damage-recovery.mode", "disabled")),
                         trash.getInt("personal-trash.damage-recovery.delay-seconds", 6),
                         trash.getBoolean("personal-trash.notify.enabled", true),
-                        trash.getInt("personal-trash.notify.max-display-items", 3)
+                        trash.getInt("personal-trash.notify.max-display-items", 3),
+                        trash.getString("personal-trash.notify.click-command", "/wtc personal")
                 )
         );
         ProtectionConfig protectionConfig = new ProtectionConfig(

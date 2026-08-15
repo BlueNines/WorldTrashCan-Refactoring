@@ -12,6 +12,15 @@ import java.lang.reflect.Proxy;
 
 /** 验证个人垃圾桶标题刷新与物品迁移规则。 */
 public final class PersonalTrashInventoryTest {
+    /** 点击命令应补全斜杠，空配置必须保持禁用点击。 */
+    @Test
+    public void normalizesPersonalNotificationClickCommand() {
+        Assert.assertEquals("/wtc personal", PersonalTrashService.normalizeClickCommand("wtc personal"));
+        Assert.assertEquals("/custom", PersonalTrashService.normalizeClickCommand(" /custom "));
+        Assert.assertEquals("", PersonalTrashService.normalizeClickCommand("  "));
+        Assert.assertEquals("", PersonalTrashService.normalizeClickCommand(null));
+    }
+
     /** 标题变化且无人查看时应重建菜单。 */
     @Test
     public void recreatesInventoryForChangedTitleWithoutViewers() {

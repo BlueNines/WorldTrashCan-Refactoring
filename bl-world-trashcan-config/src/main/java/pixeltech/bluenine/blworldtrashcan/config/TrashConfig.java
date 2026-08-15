@@ -789,6 +789,7 @@ public final class TrashConfig {
         private final int damageRecoveryDelaySeconds;
         private final boolean notifyWhenRouted;
         private final int notifyMaxDisplayItems;
+        private final String notifyClickCommand;
 
         /** 创建个人垃圾桶配置。 */
         public PersonalTrashConfig(boolean enabled, boolean trackPlayerDroppedItems,
@@ -800,7 +801,7 @@ public final class TrashConfig {
                     GlobalTrashMode.COMPACT, personalCompactDefaults(),
                     new StackedGlobalTrashConfig(2), trackPlayerDroppedItems,
                     autoClearWhenFull, takeCost, damageRecoveryMode, damageRecoveryDelaySeconds,
-                    notifyWhenRouted, notifyMaxDisplayItems);
+                    notifyWhenRouted, notifyMaxDisplayItems, "/wtc personal");
         }
 
         /** 创建包含通用容器设置和个人专属策略的完整配置。 */
@@ -810,6 +811,19 @@ public final class TrashConfig {
                                    boolean trackPlayerDroppedItems, boolean autoClearWhenFull, double takeCost,
                                    DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds,
                                    boolean notifyWhenRouted, int notifyMaxDisplayItems) {
+            this(enabled, takeDelayMillis, allowPlayerPut, layout, mode, compact, stacked,
+                    trackPlayerDroppedItems, autoClearWhenFull, takeCost, damageRecoveryMode,
+                    damageRecoveryDelaySeconds, notifyWhenRouted, notifyMaxDisplayItems, "/wtc personal");
+        }
+
+        /** 创建包含个人桶通知点击命令的完整配置。 */
+        public PersonalTrashConfig(boolean enabled, int takeDelayMillis, boolean allowPlayerPut,
+                                   GlobalTrashLayoutConfig layout, GlobalTrashMode mode,
+                                   CompactGlobalTrashConfig compact, StackedGlobalTrashConfig stacked,
+                                   boolean trackPlayerDroppedItems, boolean autoClearWhenFull, double takeCost,
+                                   DamageRecoveryMode damageRecoveryMode, int damageRecoveryDelaySeconds,
+                                   boolean notifyWhenRouted, int notifyMaxDisplayItems,
+                                   String notifyClickCommand) {
             this.enabled = enabled;
             this.takeDelayMillis = Math.max(0, takeDelayMillis);
             this.allowPlayerPut = allowPlayerPut;
@@ -824,6 +838,7 @@ public final class TrashConfig {
             this.damageRecoveryDelaySeconds = Math.max(0, damageRecoveryDelaySeconds);
             this.notifyWhenRouted = notifyWhenRouted;
             this.notifyMaxDisplayItems = Math.max(1, notifyMaxDisplayItems);
+            this.notifyClickCommand = notifyClickCommand == null ? "" : notifyClickCommand.trim();
         }
 
         /** 判断个人垃圾桶是否启用。 */
@@ -899,6 +914,11 @@ public final class TrashConfig {
         /** 返回个人垃圾桶提示中最多完整展示的物品条目数。 */
         public int getNotifyMaxDisplayItems() {
             return notifyMaxDisplayItems;
+        }
+
+        /** 返回个人垃圾桶通知的点击命令；空字符串表示只发送普通文本。 */
+        public String getNotifyClickCommand() {
+            return notifyClickCommand;
         }
 
         /** 返回个人垃圾桶默认紧凑模式配置。 */

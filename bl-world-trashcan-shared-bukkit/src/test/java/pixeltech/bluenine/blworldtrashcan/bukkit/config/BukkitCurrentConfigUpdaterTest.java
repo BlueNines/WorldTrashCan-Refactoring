@@ -54,7 +54,7 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertTrue(updated.contains("item-lore 于 7.2.0 加入"));
 
         YamlConfiguration yaml = load(file);
-        assertEquals(3, yaml.getInt("config-schema-version"));
+        assertEquals(4, yaml.getInt("config-schema-version"));
         assertEquals(Arrays.asList(
                 "&b自定义数量 {amount} %player_name%",
                 "{content}",
@@ -126,6 +126,9 @@ public final class BukkitCurrentConfigUpdaterTest {
                 + "    enabled: true\n"
                 + "    material-patterns: [\"*_INGOT\"]\n"
                 + "personal-trash:\n"
+                + "  notify:\n"
+                + "    enabled: true\n"
+                + "    max-display-items: 3\n"
                 + "  gui:\n"
                 + "    layout:\n"
                 + "      items:\n"
@@ -137,13 +140,15 @@ public final class BukkitCurrentConfigUpdaterTest {
 
         String updated = read(file);
         YamlConfiguration yaml = load(file);
-        assertEquals(3, yaml.getInt("config-schema-version"));
+        assertEquals(4, yaml.getInt("config-schema-version"));
         assertTrue(yaml.getBoolean("global-trash.admission-whitelist.enabled"));
         assertEquals(Collections.singletonList("*_INGOT"),
                 yaml.getStringList("global-trash.admission-whitelist.material-patterns"));
         assertEquals("next-page", yaml.getString("personal-trash.gui.layout.items.c.type"));
         assertTrue(updated.contains("7.4.1 公共桶准入白名单填写示例"));
         assertTrue(updated.contains("7.4.1 个人桶 actions/close 最小示例"));
+        assertTrue(updated.contains("7.5.0 个人桶通知点击示例"));
+        assertEquals("/wtc personal", yaml.getString("personal-trash.notify.click-command"));
         assertEquals(original, read(singleBackup()));
 
         byte[] first = Files.readAllBytes(file.toPath());
