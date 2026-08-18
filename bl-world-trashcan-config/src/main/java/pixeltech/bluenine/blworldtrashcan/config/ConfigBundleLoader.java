@@ -90,6 +90,14 @@ public final class ConfigBundleLoader {
                 trash.getInt("personal-trash.stacked.max-pages", 2),
                 TrashConfig.GlobalTrashSortType.parse(
                         trash.getString("personal-trash.stacked.default-sort", "insertion")));
+        String legacyPersonalClickCommand = trash.contains("personal-trash.notify.click-command")
+                ? trash.getString("personal-trash.notify.click-command", "") : null;
+        String personalClickCommand = trash.contains("personal-trash.notify.personal-click-command")
+                ? trash.getString("personal-trash.notify.personal-click-command", "/wtc personal")
+                : legacyPersonalClickCommand == null ? "/wtc personal" : legacyPersonalClickCommand;
+        String globalClickCommand = trash.contains("personal-trash.notify.global-click-command")
+                ? trash.getString("personal-trash.notify.global-click-command", "/wtc global")
+                : legacyPersonalClickCommand == null ? "/wtc global" : "";
         boolean legacyItemProtectionConfigured = cleanup.contains("ignored-materials")
                 || cleanup.contains("ignored-name-fragments")
                 || cleanup.contains("ignored-lore-fragments");
@@ -187,7 +195,8 @@ public final class ConfigBundleLoader {
                         trash.getInt("personal-trash.damage-recovery.delay-seconds", 6),
                         trash.getBoolean("personal-trash.notify.enabled", true),
                         trash.getInt("personal-trash.notify.max-display-items", 3),
-                        trash.getString("personal-trash.notify.click-command", "/wtc personal")
+                        personalClickCommand,
+                        globalClickCommand
                 )
         );
         ProtectionConfig protectionConfig = new ProtectionConfig(

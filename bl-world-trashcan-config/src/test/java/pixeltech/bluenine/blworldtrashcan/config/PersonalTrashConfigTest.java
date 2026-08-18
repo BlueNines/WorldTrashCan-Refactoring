@@ -32,6 +32,8 @@ public final class PersonalTrashConfigTest {
         assertTrue(config.isAllowPlayerPut());
         assertFalse(config.isAutoClearWhenFull());
         assertEquals("/wtc personal", config.getNotifyClickCommand());
+        assertEquals("/wtc personal", config.getNotifyPersonalClickCommand());
+        assertEquals("/wtc global", config.getNotifyGlobalClickCommand());
         assertFalse(config.getLayout().getContentSlots().isEmpty());
     }
 
@@ -45,7 +47,8 @@ public final class PersonalTrashConfigTest {
         trash.put("personal-trash.take-delay-millis", 250);
         trash.put("personal-trash.allow-player-put", false);
         trash.put("personal-trash.auto-clear-when-full", true);
-        trash.put("personal-trash.notify.click-command", "wtc personal");
+        trash.put("personal-trash.notify.personal-click-command", "wtc personal");
+        trash.put("personal-trash.notify.global-click-command", "wtc global");
         trash.put("personal-trash.compact.max-pages", 3);
         trash.put("personal-trash.compact.max-amount-per-entry", 1234);
         trash.put("personal-trash.compact.default-sort", "amount-desc");
@@ -77,6 +80,8 @@ public final class PersonalTrashConfigTest {
         assertFalse(config.isAllowPlayerPut());
         assertTrue(config.isAutoClearWhenFull());
         assertEquals("wtc personal", config.getNotifyClickCommand());
+        assertEquals("wtc personal", config.getNotifyPersonalClickCommand());
+        assertEquals("wtc global", config.getNotifyGlobalClickCommand());
         assertEquals(2, config.getLayout().getRows().size());
         assertEquals(15, config.getLayout().getContentSlots().size());
         assertEquals(TrashConfig.GlobalTrashItemType.SORT,
@@ -87,6 +92,19 @@ public final class PersonalTrashConfigTest {
         assertEquals("关闭个人桶", config.getLayout().getItem('c').getName());
         assertEquals(Collections.singletonList("点击关闭"),
                 config.getLayout().getItem('c').getLore());
+    }
+
+    /** 验证旧 click-command 仍只作为个人按钮命令读取，未配置公共按钮时不改变旧行为。 */
+    @Test
+    public void legacyClickCommandKeepsPersonalOnlyBehavior() {
+        MapConfigurationSource trash = new MapConfigurationSource();
+        trash.put("personal-trash.notify.click-command", "custom personal");
+
+        TrashConfig.PersonalTrashConfig config = load(trash)
+                .getTrashConfig().getPersonalTrash();
+
+        assertEquals("custom personal", config.getNotifyPersonalClickCommand());
+        assertEquals("", config.getNotifyGlobalClickCommand());
     }
 
     /** 使用指定 trash.yml 配置和其它空配置加载完整配置集合。 */

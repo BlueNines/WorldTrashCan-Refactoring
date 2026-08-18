@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,6 +90,30 @@ public final class RichTextRenderer {
         return click(player, text, "run_command", command);
     }
 
+    /** 渲染一条正文和两个独立点击按钮组成的聊天消息。 */
+    public static BaseComponent[] clickableButtons(Player player, String text,
+                                                   String firstText, String firstCommand,
+                                                   String separatorText,
+                                                   String secondText, String secondCommand) {
+        List<BaseComponent> result = new ArrayList<>();
+        append(result, components(player, text));
+        boolean firstVisible = hasAction(firstText, firstCommand);
+        boolean secondVisible = hasAction(secondText, secondCommand);
+        if (firstVisible) {
+            append(result, clickable(player, firstText, firstCommand));
+        }
+        if (firstVisible && secondVisible) {
+            append(result, components(player, separatorText));
+        }
+        if (secondVisible) {
+            append(result, clickable(player, secondText, secondCommand));
+        }
+        if (result.isEmpty()) {
+            return new BaseComponent[]{new TextComponent("")};
+        }
+        return result.toArray(new BaseComponent[0]);
+    }
+
     /** 渲染带建议命令的 Bungee 组件。 */
     public static BaseComponent[] suggest(Player player, String text, String command) {
         BaseComponent[] components = click(player, text, "suggest_command", command);
@@ -107,6 +132,23 @@ public final class RichTextRenderer {
         String clickAction = action == null ? "" : action;
         String clickCommand = command == null ? "" : command;
         return withClickEvent(components(player, raw), clickAction, clickCommand);
+    }
+
+    /** 判断一个按钮是否同时具有可显示文本和可执行命令。 */
+    private static boolean hasAction(String text, String command) {
+        return text != null && !text.isEmpty() && command != null && !command.isEmpty();
+    }
+
+    /** 把组件数组追加到一条聊天消息中。 */
+    private static void append(List<BaseComponent> target, BaseComponent[] source) {
+        if (source == null || source.length == 0) {
+            return;
+        }
+        for (BaseComponent component : source) {
+            if (component != null) {
+                target.add(component);
+            }
+        }
     }
 
     /** 去除颜色后返回可执行命令文本。 */

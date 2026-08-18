@@ -87,6 +87,12 @@ personal-trash:
     item-single: "&#C9D4E2{name}"
     # 物品条目超过 trash.yml 中 max-display-items 后追加的省略标记。
     ellipsis: "&#64748B..."
+    # Texto del boton de papelera personal; se oculta si el comando esta vacio.
+    personal-button: "&#38BDF8[Papelera personal]"
+    # Separador entre los dos botones.
+    button-separator: " &#64748B| "
+    # Texto del boton de papelera global; se oculta si el comando esta vacio.
+    global-button: "&#FFD166[Papelera global]"
 
 # 黑名单 GUI 相关消息。
 ban-gui:

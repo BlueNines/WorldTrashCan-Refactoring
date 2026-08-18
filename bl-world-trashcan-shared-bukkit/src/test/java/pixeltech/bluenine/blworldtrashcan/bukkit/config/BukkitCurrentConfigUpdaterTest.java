@@ -54,7 +54,7 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertTrue(updated.contains("item-lore 于 7.2.0 加入"));
 
         YamlConfiguration yaml = load(file);
-        assertEquals(4, yaml.getInt("config-schema-version"));
+        assertEquals(5, yaml.getInt("config-schema-version"));
         assertEquals(Arrays.asList(
                 "&b自定义数量 {amount} %player_name%",
                 "{content}",
@@ -140,21 +140,41 @@ public final class BukkitCurrentConfigUpdaterTest {
 
         String updated = read(file);
         YamlConfiguration yaml = load(file);
-        assertEquals(4, yaml.getInt("config-schema-version"));
+        assertEquals(5, yaml.getInt("config-schema-version"));
         assertTrue(yaml.getBoolean("global-trash.admission-whitelist.enabled"));
         assertEquals(Collections.singletonList("*_INGOT"),
                 yaml.getStringList("global-trash.admission-whitelist.material-patterns"));
         assertEquals("next-page", yaml.getString("personal-trash.gui.layout.items.c.type"));
         assertTrue(updated.contains("7.4.1 公共桶准入白名单填写示例"));
         assertTrue(updated.contains("7.4.1 个人桶 actions/close 最小示例"));
-        assertTrue(updated.contains("7.5.0 个人桶通知点击示例"));
-        assertEquals("/wtc personal", yaml.getString("personal-trash.notify.click-command"));
+        assertTrue(updated.contains("7.5.1 个人桶通知双按钮示例"));
+        assertEquals("/wtc personal", yaml.getString("personal-trash.notify.personal-click-command"));
+        assertEquals("/wtc global", yaml.getString("personal-trash.notify.global-click-command"));
         assertEquals(original, read(singleBackup()));
 
         byte[] first = Files.readAllBytes(file.toPath());
         assertFalse(BukkitCurrentConfigUpdater.updateTrashFile(file, LOGGER));
         assertTrue(Arrays.equals(first, Files.readAllBytes(file.toPath())));
         assertEquals(1, backups().length);
+    }
+
+    /** 验证旧 click-command 的自定义值保留，并只补充缺少的公共按钮命令。 */
+    @Test
+    public void legacyPersonalClickCommandKeepsCustomValueWhenAddingGlobalButton() throws Exception {
+        String original = "config-schema-version: 4\n"
+                + "personal-trash:\n"
+                + "  notify:\n"
+                + "    click-command: \"/custom-personal\"\n";
+        File file = writeTrash(original);
+
+        assertTrue(BukkitCurrentConfigUpdater.updateTrashFile(file, LOGGER));
+
+        YamlConfiguration yaml = load(file);
+        assertEquals(5, yaml.getInt("config-schema-version"));
+        assertEquals("/custom-personal", yaml.getString("personal-trash.notify.click-command"));
+        assertEquals("/wtc global", yaml.getString("personal-trash.notify.global-click-command"));
+        assertFalse(yaml.contains("personal-trash.notify.personal-click-command"));
+        assertTrue(read(file).contains("7.5.1 个人桶通知双按钮示例"));
     }
 
     /** 验证非法 YAML 在创建备份和覆盖原文件之前终止。 */

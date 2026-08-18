@@ -346,22 +346,35 @@ public final class PersonalTrashService {
 
     /** 向在线拥有者发送消息。 */
     private void sendToOwner(UUID ownerUuid, String text) {
-        String clickCommand = normalizeClickCommand(config == null ? "" : config.getNotifyClickCommand());
+        String personalCommand = normalizeClickCommand(config == null ? ""
+                : config.getNotifyPersonalClickCommand());
+        String globalCommand = normalizeClickCommand(config == null ? ""
+                : config.getNotifyGlobalClickCommand());
+        String personalButton = rawMessage("personal-trash.recycle.personal-button",
+                "&#38BDF8[个人垃圾桶]");
+        String buttonSeparator = rawMessage("personal-trash.recycle.button-separator",
+                " &#64748B| ");
+        String globalButton = rawMessage("personal-trash.recycle.global-button",
+                "&#FFD166[公共垃圾桶]");
         if (platform != null) {
-            if (clickCommand.isEmpty()) {
+            if (personalCommand.isEmpty() && globalCommand.isEmpty()) {
                 platform.sendMessage(ownerUuid, text);
             } else {
                 platform.executeForPlayer(ownerUuid, player -> player.spigot().sendMessage(
-                        RichTextRenderer.clickable(player, text, clickCommand)));
+                        RichTextRenderer.clickableButtons(player, text,
+                                personalButton, personalCommand, buttonSeparator,
+                                globalButton, globalCommand)));
             }
             return;
         }
         Player player = Bukkit.getPlayer(ownerUuid);
         if (player != null) {
-            if (clickCommand.isEmpty()) {
+            if (personalCommand.isEmpty() && globalCommand.isEmpty()) {
                 player.sendMessage(RichTextRenderer.color(player, text));
             } else {
-                player.spigot().sendMessage(RichTextRenderer.clickable(player, text, clickCommand));
+                player.spigot().sendMessage(RichTextRenderer.clickableButtons(player, text,
+                        personalButton, personalCommand, buttonSeparator,
+                        globalButton, globalCommand));
             }
         }
     }

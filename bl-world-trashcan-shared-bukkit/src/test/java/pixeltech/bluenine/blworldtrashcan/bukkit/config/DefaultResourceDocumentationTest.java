@@ -82,11 +82,12 @@ public final class DefaultResourceDocumentationTest {
             String text = read(file);
             YamlConfiguration yaml = load(file);
 
-            assertEquals(4, yaml.getInt("config-schema-version"));
+            assertEquals(5, yaml.getInt("config-schema-version"));
             assertFalse(yaml.getBoolean("global-trash.admission-whitelist.enabled"));
             assertEquals(1, occurrences(text, "[WorldListTrashCan] 7.4.1 公共桶准入白名单填写示例"));
             assertEquals(1, occurrences(text, "[WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例"));
-            assertEquals("/wtc personal", yaml.getString("personal-trash.notify.click-command"));
+            assertEquals("/wtc personal", yaml.getString("personal-trash.notify.personal-click-command"));
+            assertEquals("/wtc global", yaml.getString("personal-trash.notify.global-click-command"));
             assertFalse(yaml.contains("personal-trash.gui.layout.items.d"));
             assertFalse(yaml.contains("personal-trash.gui.layout.items.e"));
         }
@@ -111,6 +112,10 @@ public final class DefaultResourceDocumentationTest {
                 assertContains(yaml, "protection.hand-item-lore-title", "lore-key-patterns");
                 assertContains(yaml, "protection.hand-item-pdc-title", "pdc-key-patterns");
                 assertContains(yaml, "protection.hand-item-nbt-title", "nbt-key-patterns");
+                assertTrue(language + " 缺少个人按钮文案",
+                        yaml.contains("personal-trash.recycle.personal-button"));
+                assertTrue(language + " 缺少公共按钮文案",
+                        yaml.contains("personal-trash.recycle.global-button"));
                 if (expectedText == null) {
                     expectedText = text;
                 } else {

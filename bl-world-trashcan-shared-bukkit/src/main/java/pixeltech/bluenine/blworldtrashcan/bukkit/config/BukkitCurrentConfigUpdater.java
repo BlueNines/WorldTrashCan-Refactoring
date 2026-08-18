@@ -32,7 +32,7 @@ public final class BukkitCurrentConfigUpdater {
     private static final String UPDATE_ENABLED_PATH = "config-update.enabled";
     private static final String TRASH_FILE = "trash.yml";
     private static final String TRASH_SCHEMA_PATH = "config-schema-version";
-    private static final int TRASH_SCHEMA_VERSION = 4;
+    private static final int TRASH_SCHEMA_VERSION = 5;
     private static final String CLEANUP_FILE = "cleanup.yml";
     private static final int CLEANUP_SCHEMA_VERSION = 2;
     private static final String NAMED_WHITELIST_PATH = "entities.named-whitelist";
@@ -48,9 +48,13 @@ public final class BukkitCurrentConfigUpdater {
     private static final String PERSONAL_BUTTON_EXAMPLE_MARKER =
             "[WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例";
     private static final String PERSONAL_NOTIFY_EXAMPLE_MARKER =
-            "[WorldListTrashCan] 7.5.0 个人桶通知点击示例";
-    private static final String PERSONAL_NOTIFY_CLICK_COMMAND_PATH =
+            "[WorldListTrashCan] 7.5.1 个人桶通知双按钮示例";
+    private static final String PERSONAL_NOTIFY_LEGACY_CLICK_COMMAND_PATH =
             "personal-trash.notify.click-command";
+    private static final String PERSONAL_NOTIFY_PERSONAL_CLICK_COMMAND_PATH =
+            "personal-trash.notify.personal-click-command";
+    private static final String PERSONAL_NOTIFY_GLOBAL_CLICK_COMMAND_PATH =
+            "personal-trash.notify.global-click-command";
     private static final int CLEANUP_GUARD_NOTIFY_KEY = -5;
     private static final String CLEANUP_GUARD_NOTIFY_COMMENT = "# -5 表示本轮被扫地启动门禁跳过。";
     private static final String[] CLEANUP_GUARD_NOTIFY_PATHS = {
@@ -619,7 +623,7 @@ public final class BukkitCurrentConfigUpdater {
         }
         prepareAdmissionExampleInsertion(lines, addUsageExamples, edits);
         preparePersonalButtonExampleInsertion(lines, addUsageExamples, edits);
-        preparePersonalNotifyClickCommandInsertion(lines, addUsageExamples, edits);
+        preparePersonalNotifyButtonInsertion(lines, addUsageExamples, edits);
         String updated = applyTextEdits(lines, separator, edits);
         return bom ? "\uFEFF" + updated : updated;
     }
@@ -676,27 +680,35 @@ public final class BukkitCurrentConfigUpdater {
         ));
     }
 
-    /** 为旧版 trash.yml 补充个人桶通知点击命令，保留服主已有注释和配置。 */
-    private static void preparePersonalNotifyClickCommandInsertion(String[] lines, boolean addUsageExample,
-                                                                   TextEdits edits) throws IOException {
-        if (!addUsageExample || containsMarker(lines, PERSONAL_NOTIFY_EXAMPLE_MARKER)
-                || findNodeRange(lines, PERSONAL_NOTIFY_CLICK_COMMAND_PATH) != null) {
+    /** 为旧版 trash.yml 补充个人桶通知双按钮配置，保留旧命令兼容。 */
+    private static void preparePersonalNotifyButtonInsertion(String[] lines, boolean addUsageExample,
+                                                             TextEdits edits) throws IOException {
+        if (!addUsageExample || containsMarker(lines, PERSONAL_NOTIFY_EXAMPLE_MARKER)) {
             return;
         }
         NodeRange notify = findNodeRange(lines, "personal-trash.notify");
         if (notify == null) {
             return;
         }
+        NodeRange personal = findNodeRange(lines, PERSONAL_NOTIFY_PERSONAL_CLICK_COMMAND_PATH);
+        NodeRange global = findNodeRange(lines, PERSONAL_NOTIFY_GLOBAL_CLICK_COMMAND_PATH);
+        NodeRange legacy = findNodeRange(lines, PERSONAL_NOTIFY_LEGACY_CLICK_COMMAND_PATH);
         NodeRange maxDisplayItems = findNodeRange(lines, "personal-trash.notify.max-display-items");
         NodeRange enabled = findNodeRange(lines, "personal-trash.notify.enabled");
-        int insertAt = maxDisplayItems != null ? maxDisplayItems.contentEnd
-                : enabled != null ? enabled.contentEnd : notify.start + 1;
+        NodeRange anchor = global != null ? global : personal != null ? personal
+                : legacy != null ? legacy : maxDisplayItems != null ? maxDisplayItems : enabled;
+        int insertAt = anchor == null ? notify.start + 1 : anchor.contentEnd;
         String indent = spaces(findChildIndent(lines, notify));
-        edits.addInsertion(insertAt, Arrays.asList(
-                indent + "# " + PERSONAL_NOTIFY_EXAMPLE_MARKER
-                        + "；点击个人垃圾桶通知后执行命令，留空则只发送普通文本。",
-                indent + "click-command: \"/wtc personal\""
-        ));
+        List<String> additions = new ArrayList<>();
+        additions.add(indent + "# " + PERSONAL_NOTIFY_EXAMPLE_MARKER
+                + "；两个按钮分别打开个人垃圾桶和公共垃圾桶。留空则隐藏对应按钮。");
+        if (personal == null && legacy == null) {
+            additions.add(indent + "personal-click-command: \"/wtc personal\"");
+        }
+        if (global == null) {
+            additions.add(indent + "global-click-command: \"/wtc global\"");
+        }
+        edits.addInsertion(insertAt, additions);
     }
 
     /** 添加或保守更新 trash.yml 的结构版本。 */
@@ -980,7 +992,8 @@ public final class BukkitCurrentConfigUpdater {
                 changed.add(scope + "." + key);
             }
         }
-        changed.add(PERSONAL_NOTIFY_CLICK_COMMAND_PATH);
+        changed.add(PERSONAL_NOTIFY_PERSONAL_CLICK_COMMAND_PATH);
+        changed.add(PERSONAL_NOTIFY_GLOBAL_CLICK_COMMAND_PATH);
         for (String path : changed) {
             values.remove(path);
         }

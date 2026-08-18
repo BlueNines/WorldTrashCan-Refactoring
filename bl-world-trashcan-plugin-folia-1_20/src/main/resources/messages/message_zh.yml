@@ -90,6 +90,12 @@ personal-trash:
     item-single: "&#C9D4E2{name}"
     # 物品条目超过 trash.yml 中 max-display-items 后追加的省略标记。
     ellipsis: "&#64748B..."
+    # 点击打开个人垃圾桶的按钮；点击命令为空时不显示。
+    personal-button: "&#38BDF8[打开个人垃圾桶]"
+    # 两个按钮之间的分隔符。
+    button-separator: " &#64748B| "
+    # 点击打开公共垃圾桶的按钮；点击命令为空时不显示。
+    global-button: "&#FFD166[打开公共垃圾桶]"
 
 # 黑名单 GUI 相关消息。
 ban-gui:

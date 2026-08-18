@@ -87,6 +87,12 @@ personal-trash:
     item-single: "&#C9D4E2{name}"
     # 物品条目超过 trash.yml 中 max-display-items 后追加的省略标记。
     ellipsis: "&#64748B..."
+    # Personal-trash button text; the button is hidden when its command is empty.
+    personal-button: "&#38BDF8[Personal Trash]"
+    # Separator between the two buttons.
+    button-separator: " &#64748B| "
+    # Global-trash button text; the button is hidden when its command is empty.
+    global-button: "&#FFD166[Global Trash]"
 
 # 黑名单 GUI 相关消息。
 ban-gui:
