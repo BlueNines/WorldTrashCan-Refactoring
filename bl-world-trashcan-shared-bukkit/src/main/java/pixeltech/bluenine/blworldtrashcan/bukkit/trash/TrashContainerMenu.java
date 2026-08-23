@@ -380,10 +380,18 @@ final class TrashContainerMenu {
         if (openView == null || openView.getTopInventory() != holder.getInventory()) {
             return;
         }
+        TrashContainerStore.ViewSnapshot previous = holder.getSnapshot();
         TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
-                holder.getSnapshot(), identityKey);
+                previous, identityKey);
+        int targetPage = store.findChangedIdentityPage(
+                previous, refreshed, identityKey, holder.getPageIndex());
         holder.replaceSnapshot(refreshed);
+        if (targetPage >= 0 && targetPage != holder.getPageIndex()) {
+            openPage(player, store, targetPage, refreshed);
+            return;
+        }
         syncIdentitySlots(player, holder, identityKey);
+        player.updateInventory();
     }
 
     /** 只重绘当前页中属于指定身份的内容槽，避免整页刷新和排序跳动。 */

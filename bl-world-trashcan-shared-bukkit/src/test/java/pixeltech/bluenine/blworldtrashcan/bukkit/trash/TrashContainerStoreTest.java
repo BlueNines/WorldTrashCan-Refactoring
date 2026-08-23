@@ -205,6 +205,66 @@ public final class TrashContainerStoreTest {
         Assert.assertEquals(Material.DIRT, store.getDisplayItem(refreshed.getReference(0, 1)).getSample().getType());
     }
 
+    /** 当前页已满时，新身份应定位到新增引用所在页，避免必须关闭重开。 */
+    @Test
+    public void compactRefreshLocatesNewIdentityOnOverflowPage() {
+        TrashContainerStore store = store("personal:locate-new", compactConfig(9999L, 2), 2);
+        store.add(new ItemStack(Material.STONE, 1), false);
+        store.add(new ItemStack(Material.DIRT, 1), false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+        ItemStack gold = new ItemStack(Material.GOLD_INGOT, 3);
+        store.add(gold, true);
+
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(gold));
+
+        Assert.assertEquals(1, store.findChangedIdentityPage(
+                opened, refreshed, store.identityKey(gold), 0));
+        Assert.assertEquals(Material.GOLD_INGOT,
+                store.getDisplayItem(refreshed.getReference(1, 0)).getSample().getType());
+    }
+
+    /** 已有身份发生数量变化时，应停留在当前包含该身份的页面。 */
+    @Test
+    public void compactRefreshKeepsCurrentPageForVisibleIdentity() {
+        TrashContainerStore store = store("personal:locate-existing", compactConfig(9999L, 2), 2);
+        ItemStack stone = new ItemStack(Material.STONE, 1);
+        store.add(stone, false);
+        store.add(new ItemStack(Material.DIRT, 1), false);
+        store.add(new ItemStack(Material.GOLD_INGOT, 1), false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+        store.add(new ItemStack(Material.STONE, 5), true);
+
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(stone));
+
+        Assert.assertEquals(0, store.findChangedIdentityPage(
+                opened, refreshed, store.identityKey(stone), 0));
+        Assert.assertEquals(6L,
+                store.getDisplayItem(refreshed.getReference(0, 0)).getLogicalAmount());
+    }
+
+    /** 原始堆叠模式新增溢出堆叠时，应定位新增堆叠所在页。 */
+    @Test
+    public void stackedRefreshLocatesNewOverflowStackPage() {
+        TrashContainerStore store = store("personal:locate-stacked", stackedConfig(2), 1);
+        ItemStack stone = new ItemStack(Material.STONE, 60);
+        store.add(stone, false);
+        TrashContainerStore.ViewSnapshot opened = store.createViewSnapshot(
+                TrashConfig.GlobalTrashSortType.INSERTION);
+        store.add(new ItemStack(Material.STONE, 10), true);
+
+        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
+                opened, store.identityKey(stone));
+
+        Assert.assertEquals(1, store.findChangedIdentityPage(
+                opened, refreshed, store.identityKey(stone), 0));
+        Assert.assertEquals(6,
+                store.getDisplayItem(refreshed.getReference(1, 0)).getDisplayAmount());
+    }
+
     /** 创建已经配置好的测试 Store。 */
     private TrashContainerStore store(String prefix, TrashConfig.TrashContainerConfig config,
                                       int contentSlots) {

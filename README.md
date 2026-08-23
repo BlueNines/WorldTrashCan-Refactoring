@@ -105,7 +105,7 @@ entities:
 
 公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。排序只在打开菜单或玩家明确切换时执行；打开后的翻页和取物使用同一份轻量条目 ID 快照，不会因其他玩家操作或扫地入库突然重排。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
-玩家在已打开的公共桶或个人桶中手动放入物品后，当前页会立即原地更新对应数量、Lore 和新增堆叠，不需要关闭后重新打开。该更新只补充本次物品的显示引用，不会重新排序、重开菜单或整页刷新；下一次打开菜单或主动切换排序时才重新按所选规则排列。
+玩家在已打开的公共桶或个人桶中手动放入物品后，菜单会立即更新，不需要关闭后重新打开。同类物品的数量和 Lore 会留在当前页原地刷新；如果新物品或新堆叠只能进入后续页，菜单会自动切到新增内容所在页。该增量更新不会重新排序；下一次打开菜单或主动切换排序时才重新按所选规则排列。
 
 公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
 
@@ -385,7 +385,7 @@ Missing, empty, or entirely invalid lists bypass name matching. Rules containing
 
 The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Sorting runs only when the menu is opened or the player explicitly switches modes. Pagination and item taking keep the same lightweight entry-ID snapshot, so another player or cleanup deposit cannot unexpectedly reorder an open menu. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
-After a player manually deposits an item into an open global or personal trash menu, the affected amount, Lore, and any newly required stack are updated in place immediately. The menu is not reopened, fully refreshed, or resorted; only references for that deposited item are added. The selected sort is applied again only when the menu is reopened or the player explicitly changes it.
+After a player manually deposits an item into an open global or personal trash menu, the menu updates immediately without requiring a close and reopen. An existing item stays on the current page while its amount and Lore refresh in place. If a new item or stack only fits on a later page, the menu automatically opens the page containing that new content. This incremental update does not resort the view; the selected sort is applied again only when the menu is reopened or the player explicitly changes it.
 
 Layout display items support `glow: true` for page, background, sort, actions, and close buttons. Minecraft 1.20.5 and newer use Bukkit's native glint override without a real enchantment. Older versions automatically fall back to a hidden enchantment, so no enchantment name appears in the tooltip. `type: content` always ignores this option and never mutates stored trash items.
 

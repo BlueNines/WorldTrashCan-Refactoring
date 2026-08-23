@@ -230,6 +230,52 @@ public class TrashContainerStore {
         return new ViewSnapshot(current.sortType, current.contentSlotsPerPage, pageCount, refreshed);
     }
 
+    /** 返回本次身份变化后最应该展示的页面，优先定位新增引用。 */
+    synchronized int findChangedIdentityPage(ViewSnapshot previous, ViewSnapshot refreshed,
+                                             String identityKey, int currentPage) {
+        if (refreshed == null || identityKey == null) {
+            return -1;
+        }
+        StoredEntry changedEntry = entries.get(identityKey);
+        if (changedEntry == null) {
+            return -1;
+        }
+        Set<Long> previousOffsets = referencedOffsets(previous, changedEntry.entryId);
+        int firstPage = -1;
+        int currentMatchPage = -1;
+        for (int index = 0; index < refreshed.references.size(); index++) {
+            DisplayReference reference = refreshed.references.get(index);
+            if (reference.entryId != changedEntry.entryId || changedEntry.amount <= reference.offset) {
+                continue;
+            }
+            int page = index / refreshed.contentSlotsPerPage;
+            if (firstPage < 0) {
+                firstPage = page;
+            }
+            if (!previousOffsets.contains(Long.valueOf(reference.offset))) {
+                return page;
+            }
+            if (page == currentPage) {
+                currentMatchPage = page;
+            }
+        }
+        return currentMatchPage >= 0 ? currentMatchPage : firstPage;
+    }
+
+    /** 收集旧快照中指定条目的展示偏移，供增量页定位使用。 */
+    private Set<Long> referencedOffsets(ViewSnapshot snapshot, long entryId) {
+        Set<Long> offsets = new HashSet<>();
+        if (snapshot == null) {
+            return offsets;
+        }
+        for (DisplayReference reference : snapshot.references) {
+            if (reference.entryId == entryId) {
+                offsets.add(Long.valueOf(reference.offset));
+            }
+        }
+        return offsets;
+    }
+
     /** 生成指定条目尚未出现在旧视图中的紧凑或原始堆叠引用。 */
     private List<DisplayReference> missingReferences(StoredEntry entry, Set<Long> referencedOffsets) {
         List<DisplayReference> missing = new ArrayList<>();
