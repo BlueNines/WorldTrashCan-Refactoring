@@ -22,10 +22,17 @@ public final class ConfigBundleLoader {
         return load(main, cleanup, trash, protections, entityLimits, true);
     }
 
-    /** 按当前运行时能力读取完整配置集合。 */
+    /** 按当前运行时能力读取完整配置集合；堆叠开关由独立配置文件提供。 */
+    public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
+                              ConfigurationSource protections, ConfigurationSource entityLimits,
+                              boolean supportsCustomModelData) {
+        return load(main, cleanup, trash, protections, entityLimits, null, supportsCustomModelData);
+    }
+
+    /** 按当前运行时能力和独立堆叠配置读取完整配置集合。 */
     public ConfigBundle load(ConfigurationSource main, ConfigurationSource cleanup, ConfigurationSource trash,
                              ConfigurationSource protections, ConfigurationSource entityLimits,
-                             boolean supportsCustomModelData) {
+                             ConfigurationSource itemStacking, boolean supportsCustomModelData) {
         int legacyBackModelId = supportsCustomModelData
                 ? trash.getInt("global-trash.gui.back-model-id", -1) : -1;
         int legacyNextModelId = supportsCustomModelData
@@ -256,7 +263,7 @@ public final class ConfigBundleLoader {
                 loadNotifyConfig(cleanup),
                 main.getString("language", "message_zh.yml"),
                 main.getBoolean("debug", false),
-                main.getBoolean("features.item-stacking.enabled", false)
+                itemStacking != null && itemStacking.getBoolean("enabled", false)
         );
     }
 

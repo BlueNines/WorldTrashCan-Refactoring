@@ -176,6 +176,11 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
         return messageService;
     }
 
+    /** 返回独立堆叠配置中的开关状态。 */
+    public boolean isItemStackingEnabled() {
+        return configBundle != null && configBundle.isItemStackingEnabled();
+    }
+
     /** 返回最近一次清理统计。 */
     public CleanupFeature.CleanupStats getLastCleanupStats() {
         return cleanupFeature == null ? CleanupFeature.CleanupStats.empty() : cleanupFeature.getLastStats();
@@ -375,6 +380,7 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
         saveResourceIfMissing("trash.yml");
         saveResourceIfMissing("entity-limits.yml");
         saveResourceIfMissing("protections.yml");
+        saveResourceIfMissing("item-stacking.yml");
         saveResourceIfMissing("messages/message_zh.yml");
         saveResourceIfMissing("messages/message_zh_TW.yml");
         saveResourceIfMissing("messages/message_en.yml");
@@ -398,6 +404,7 @@ public final class WorldListTrashCanLegacyPlugin extends JavaPlugin {
                 new BukkitConfigurationSource(loadYaml("trash.yml")),
                 new BukkitConfigurationSource(loadYaml("protections.yml")),
                 new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
+                new BukkitConfigurationSource(loadYaml("item-stacking.yml")),
                 false
         );
     }

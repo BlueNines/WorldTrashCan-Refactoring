@@ -133,20 +133,18 @@ personal-trash:
 
 ### 地面掉落物逻辑堆叠
 
-这是默认关闭的实验性功能。关闭时插件不会创建堆叠功能对象，不探测现代 API，不注册对应监听器或任务，也不会在数据目录生成 `item-stacking.yml`。开启方式：
+这是默认关闭的实验性功能。独立配置文件 `item-stacking.yml` 会随其它默认配置一起生成；关闭时配置加载器只取其中的 `enabled`，不会把详细参数加载为运行配置，也不会创建堆叠功能对象、探测现代 API 或注册对应监听器、任务、队列和索引。开启方式：
 
 ```yaml
-# config.yml
-features:
-  item-stacking:
-    enabled: true
+# item-stacking.yml
+enabled: true
 ```
 
 插件在启动时按 PDC、掉落物 owner、拾取、漏斗、合并、区块事件和调度 API 的实际能力决定是否启用，不读取服务端品牌名，也不硬编码 Minecraft 小版本。缺少实体 PDC 的运行时会明确拒绝；具备完整能力的运行时才会启用。1.12.2 属于前者，但插件不把这个结论写死成版本判断。检测到 RoseStacker、WildStacker、UltimateStacker 或 StackMob 时拒绝同时运行。
 
 逻辑数量只写在地面掉落物实体的 PDC 中，不修改背包物品，因此不会破坏普通物品堆叠。相同 `ItemStack` 数据和相同 owner 的附近物品才会聚集，不同名称、Lore、附魔、PDC、Data Components 或 owner 不会混合。主动处理使用有容量、TTL、数量和微秒预算的 dirty-chunk 队列与空间网格，不周期遍历全部世界实体，也不强制加载区块。Folia 的世界垃圾桶转移在目标箱子所属 region 内完成写入和数量扣减。
 
-详细参数首次启用后生成在 `item-stacking.yml`。`/wtc stacking status` 查看运行、排空、队列和数量统计；关闭总开关后使用 `/wtc stacking drain` 把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理。
+所有详细参数与总开关都在 `item-stacking.yml`。旧位置 `config.yml -> features.item-stacking.enabled` 不再读取。`/wtc stacking status` 查看运行、排空、队列和数量统计；把 `enabled` 改回 `false` 后，插件会把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理，也可以使用 `/wtc stacking drain` 主动请求排空。
 
 #### 兼容性和稳定性增强
 
@@ -303,7 +301,8 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.5.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`1B3331B953B1297E32F7116A72E1FBE742A70A3473E98E869A1CE192CF6DCD47`
+- 文件大小：`871954` 字节
+- SHA-256：`4FDD36726DD1EF2C960E082C7256E9DC185011BC933041FC5FB8D21AD5542CC8`
 - 地面掉落物逻辑堆叠已使用同一 Universal 整包在 Paper 1.21.8 和 Folia 1.21.8 真实客户端中验证，覆盖数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由；Paper 的 `10004` 个圆石在 9 秒内收敛为 2 个实体且逻辑总数完整守恒。
 - 个人垃圾桶通知双按钮已使用整包 JAR 在 Paper 1.21.4、Paper 1.12.2 和 Folia 1.21.8 的真实客户端中验证，覆盖正式扫地回收通知、左右按钮可见性，以及从客户端聊天输入两条命令后分别打开个人桶/公共桶 GUI；本轮未把鼠标实际点击计入通过项。
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
@@ -441,19 +440,18 @@ Each command is attached to its own chat component. Leaving one command empty hi
 
 ### Logical ground-item stacking
 
-This is an experimental, opt-in feature. While disabled, the plugin does not create a stacking object, probe modern APIs, register its listeners or task, or generate `item-stacking.yml` in the data folder. Enable it in `config.yml`:
+This is an experimental, opt-in feature. `item-stacking.yml` is generated with the other default files. While disabled, the configuration loader reads only its `enabled` value into the runtime snapshot; it does not load detailed settings into a stacking object, probe modern APIs, or register stacking listeners, tasks, queues, or indexes. Enable it in the independent file:
 
 ```yaml
-features:
-  item-stacking:
-    enabled: true
+# item-stacking.yml
+enabled: true
 ```
 
 Startup checks the actual PDC, item-owner, pickup, hopper, merge, chunk-event, and scheduler APIs. It does not inspect server brand names or hard-code a Minecraft minor version. Runtimes without entity PDC are rejected; only runtimes that pass the complete capability probe are enabled. Minecraft 1.12.2 is one such rejected runtime, but this is not hard-coded as a version rule. RoseStacker, WildStacker, UltimateStacker, and StackMob are treated as conflicts.
 
 The logical amount is stored only on the dropped entity, never on inventory item stacks. Nearby items merge only when their complete `ItemStack` data and owner match, so names, Lore, enchantments, PDC, Data Components, and different owners stay separate. Processing uses a bounded, deduplicated dirty-chunk queue with TTL, count, and microsecond budgets plus a spatial grid. It does not periodically scan every world entity or force-load chunks. On Folia, world-trash insertion and entity deduction are committed in the target chest's region.
 
-Detailed settings are generated in `item-stacking.yml` after the first successful enable. `/wtc stacking status` shows runtime, draining, queue, and amount counters. After disabling the main switch, `/wtc stacking drain` splits logical amounts in loaded chunks back into vanilla stacks; unloaded chunks wait for natural loading.
+The switch and all detailed settings live in `item-stacking.yml`. The former `config.yml -> features.item-stacking.enabled` path is no longer read. `/wtc stacking status` shows runtime, draining, queue, and amount counters. Setting `enabled` back to `false` drains logical amounts in loaded chunks into vanilla stacks; unloaded chunks wait for natural loading. `/wtc stacking drain` can also request this explicitly.
 
 #### Compatibility and stability improvements
 
@@ -609,7 +607,8 @@ Final universal artifact information:
 
 - Version: `7.5.1`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `1B3331B953B1297E32F7116A72E1FBE742A70A3473E98E869A1CE192CF6DCD47`
+- File size: `871954` bytes
+- SHA-256: `4FDD36726DD1EF2C960E082C7256E9DC185011BC933041FC5FB8D21AD5542CC8`
 - Logical ground-item stacking was verified with this exact universal JAR on real Paper 1.21.8 and Folia 1.21.8 clients. Coverage includes the logical cap, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. On Paper, `10004` cobblestone items converged to two entities within nine seconds with the full logical amount preserved.
 - Personal-trash dual notification buttons were verified with the universal JAR on real clients running Paper 1.21.4, Paper 1.12.2, and Folia 1.21.8. The evidence covers the cleanup notification, separate left/right button visibility, and opening the personal/global GUIs from commands entered in the client chat; physical mouse clicks are not claimed as passed.
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.

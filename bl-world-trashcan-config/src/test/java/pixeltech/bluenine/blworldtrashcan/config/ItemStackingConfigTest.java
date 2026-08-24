@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /** 验证掉落物逻辑堆叠独立配置的默认值和边界。 */
@@ -57,6 +58,24 @@ public final class ItemStackingConfigTest {
         assertEquals(100, config.getTimeBudgetMicros());
         assertEquals(16, config.getMaxQueuedChunks());
         assertEquals(3600, config.getQueueTtlSeconds());
+    }
+
+    /** 总开关只读取独立配置根节点，不再兼容 config.yml 旧路径。 */
+    @Test
+    public void enableSwitchComesOnlyFromIndependentConfiguration() {
+        MapConfigurationSource main = new MapConfigurationSource();
+        MapConfigurationSource empty = new MapConfigurationSource();
+        MapConfigurationSource itemStacking = new MapConfigurationSource();
+        main.put("features.item-stacking.enabled", Boolean.TRUE);
+
+        ConfigBundle disabled = new ConfigBundleLoader().load(
+                main, empty, empty, empty, empty, itemStacking, true);
+        assertFalse(disabled.isItemStackingEnabled());
+
+        itemStacking.put("enabled", Boolean.TRUE);
+        ConfigBundle enabled = new ConfigBundleLoader().load(
+                main, empty, empty, empty, empty, itemStacking, true);
+        assertTrue(enabled.isItemStackingEnabled());
     }
 
     /** 仅供本测试使用的轻量配置来源。 */

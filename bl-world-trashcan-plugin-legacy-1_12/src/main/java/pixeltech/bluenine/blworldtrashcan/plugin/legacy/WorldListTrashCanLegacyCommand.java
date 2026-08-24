@@ -286,7 +286,7 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
         if ("status".equals(action)) {
             sender.sendMessage("§b掉落物逻辑堆叠状态:");
             sender.sendMessage("§7- §f配置请求: §a"
-                    + plugin.getConfig().getBoolean("features.item-stacking.enabled", false));
+                    + plugin.isItemStackingEnabled());
             sender.sendMessage("§7- §f运行: §cfalse");
             sender.sendMessage("§7- §f原因: §e当前服务端缺少实体 PersistentDataContainer API；未创建监听器、任务或队列。");
             return;

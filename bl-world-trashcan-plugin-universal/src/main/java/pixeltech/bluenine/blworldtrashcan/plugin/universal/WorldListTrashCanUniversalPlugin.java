@@ -566,7 +566,6 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
             getLogger().warning("[ItemStacking] " + itemStackingUnavailableReason);
             return null;
         }
-        saveResourceIfMissing("item-stacking.yml");
         final Supplier<ItemStackingConfig> supplier = new Supplier<ItemStackingConfig>() {
             /** 每次重载时读取最新独立配置。 */
             @Override
@@ -765,6 +764,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         saveResourceIfMissing("trash.yml");
         saveResourceIfMissing("entity-limits.yml");
         saveResourceIfMissing("protections.yml");
+        saveResourceIfMissing("item-stacking.yml");
         saveResourceIfMissing("messages/message_zh.yml");
         saveResourceIfMissing("messages/message_zh_TW.yml");
         saveResourceIfMissing("messages/message_en.yml");
@@ -788,6 +788,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
                 new BukkitConfigurationSource(loadYaml("trash.yml")),
                 new BukkitConfigurationSource(loadYaml("protections.yml")),
                 new BukkitConfigurationSource(loadYaml("entity-limits.yml")),
+                new BukkitConfigurationSource(loadYaml("item-stacking.yml")),
                 customModelDataSupport.isSupported()
         );
     }

@@ -10,13 +10,6 @@ language: "message_zh.yml"
 # 默认 false；开启后会输出配置加载、功能启停、清理决策等额外信息。
 debug: false
 
-# 可选功能总开关。
-# 地面掉落物逻辑堆叠默认完全关闭；关闭时不会注册监听器、任务、队列，也不会读取 item-stacking.yml。
-features:
-  item-stacking:
-    # 开启后会先检测实体 PDC、owner、拾取、漏斗、合并和调度 API；能力不足时插件主体仍会正常运行。
-    enabled: false
-
 # 当前重构版配置文件更新设置。
 config-update:
   # 是否自动把仍受支持的旧配置写法保守更新为当前格式。

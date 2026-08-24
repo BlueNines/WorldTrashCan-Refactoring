@@ -105,14 +105,16 @@ public final class DefaultResourceDocumentationTest {
             String detailText = read(detailFile);
 
             assertFalse(module + " 必须默认关闭掉落物逻辑堆叠",
-                    config.getBoolean("features.item-stacking.enabled", true));
+                    detail.getBoolean("enabled", true));
+            assertFalse(module + " 不应继续在 config.yml 暴露旧堆叠开关",
+                    config.contains("features.item-stacking.enabled"));
             assertEquals(10000, detail.getInt("stack.max-logical-amount"));
             assertEquals(8, detail.getInt("scheduler.max-chunks-per-run"));
             assertEquals(4096, detail.getInt("scheduler.max-queued-chunks"));
             if (module.contains("legacy")) {
                 assertTrue(detailText.contains("1.12.2 缺少掉落物实体 PDC"));
             } else {
-                assertTrue(detailText.contains("只有 config.yml 的 features.item-stacking.enabled 为 true"));
+                assertTrue(detailText.contains("关闭时配置加载器只取 enabled"));
             }
             assertTrue(detailText.contains("不会无限占用内存"));
         }

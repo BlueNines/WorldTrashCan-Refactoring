@@ -10,13 +10,6 @@ language: "message_zh.yml"
 # 默认 false；开启后会输出配置加载、功能启停、清理决策等额外信息。
 debug: false
 
-# 可选功能总开关。
-# 1.12.2 缺少实体 PDC，因此该功能在本平台保持关闭；误开启时会输出能力缺失原因，不影响其它功能。
-features:
-  item-stacking:
-    # 默认 false；不要在 1.12.2 上开启。
-    enabled: false
-
 # 当前重构版配置文件更新设置。
 config-update:
   # 是否自动把仍受支持的旧配置写法保守更新为当前格式。
