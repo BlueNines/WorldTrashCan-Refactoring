@@ -38,12 +38,20 @@ public final class EntityLimitConfig {
     /** 单世界实体数量限制配置。 */
     public static final class WorldLimitConfig {
         private final boolean enabled;
+        private final boolean logBlockedSpawns;
         private final Set<String> ignoredWorlds;
         private final Map<String, Integer> limits;
 
         /** 创建单世界实体限制配置。 */
         public WorldLimitConfig(boolean enabled, Set<String> ignoredWorlds, Map<String, Integer> limits) {
+            this(enabled, false, ignoredWorlds, limits);
+        }
+
+        /** 创建带拦截日志开关的单世界实体限制配置。 */
+        public WorldLimitConfig(boolean enabled, boolean logBlockedSpawns, Set<String> ignoredWorlds,
+                                Map<String, Integer> limits) {
             this.enabled = enabled;
+            this.logBlockedSpawns = logBlockedSpawns;
             this.ignoredWorlds = normalizeSet(ignoredWorlds);
             this.limits = normalizeIntegerMap(limits);
         }
@@ -51,6 +59,11 @@ public final class EntityLimitConfig {
         /** 判断世界实体数量限制是否启用。 */
         public boolean isEnabled() {
             return enabled;
+        }
+
+        /** 判断是否记录被上限拦截的实体生成日志。 */
+        public boolean isLogBlockedSpawns() {
+            return logBlockedSpawns;
         }
 
         /** 判断世界是否跳过限制。 */

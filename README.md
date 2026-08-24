@@ -195,6 +195,17 @@ filled-shulker-boxes:
 
 `world-filter` 同时作用于定时扫地和 `/wtc clear true/false`；`clear true` 只忽略 guards，不会绕过世界过滤。它不影响仙人掌、岩浆、虚空等独立回收，也不读取 `entity-limits.yml` 的 `world-limits.ignored-worlds` 或 `gather-limits.ignored-worlds`。
 
+世界实体上限仍需启用、但不希望每次拦截生成都刷控制台时，在 `entity-limits.yml` 使用：
+
+```yaml
+world-limits:
+  enabled: true
+  # false 只关闭逐条拦截日志，不会关闭实体数量限制。
+  log-blocked-spawns: false
+```
+
+需要排障时可临时改为 `true`，然后执行 `/wtc reload`；默认值为 `false`。
+
 “潜影盒物品”指掉落物实体携带的 `ItemStack`，不是世界中已经放置的潜影盒方块。开启后，装有物品的潜影盒掉落物会保留在地面；空潜影盒仍会正常清理。
 
 ### 自定义数据物品路由
@@ -472,6 +483,17 @@ filled-shulker-boxes:
 ```
 
 `world-filter` applies to scheduled cleanup and `/wtc clear true/false`; `clear true` only bypasses guards and never bypasses the world filter. It does not affect cactus, lava, void, or other independent recovery listeners, and it does not read `world-limits.ignored-worlds` or `gather-limits.ignored-worlds` from `entity-limits.yml`.
+
+To keep per-world entity limits enabled without logging every blocked spawn, use this in `entity-limits.yml`:
+
+```yaml
+world-limits:
+  enabled: true
+  # false suppresses per-spawn logs without disabling the entity limit.
+  log-blocked-spawns: false
+```
+
+Temporarily set it to `true` and run `/wtc reload` when troubleshooting. The default is `false`.
 
 “Shulker-box items” means an `ItemStack` carried by a dropped-item entity, not a shulker-box block placed in the world. When enabled, dropped filled shulker boxes remain on the ground; empty shulker boxes are still cleaned normally.
 

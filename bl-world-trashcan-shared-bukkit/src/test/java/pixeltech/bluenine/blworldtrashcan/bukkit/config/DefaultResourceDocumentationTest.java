@@ -93,6 +93,22 @@ public final class DefaultResourceDocumentationTest {
         }
     }
 
+    /** 验证四套产物都提供默认关闭的实体生成拦截日志开关。 */
+    @Test
+    public void entityLimitBlockedSpawnLoggingIsDocumented() throws Exception {
+        Path root = repositoryRoot();
+        for (String module : MODULES) {
+            Path file = resources(root, module).resolve("entity-limits.yml");
+            String text = read(file);
+            YamlConfiguration yaml = load(file);
+
+            assertFalse(module + " 不应默认输出实体生成拦截日志",
+                    yaml.getBoolean("world-limits.log-blocked-spawns", true));
+            assertTrue(module + " 缺少实体生成拦截日志配置注释",
+                    text.contains("达到上限而拦截实体生成时"));
+        }
+    }
+
     /** 验证四语言 look 标签都直接标明目标配置键，且四个平台内容一致。 */
     @Test
     public void lookMessagesPointToMatchingConfigKeys() throws Exception {

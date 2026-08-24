@@ -146,6 +146,32 @@ public final class CleanupConfigTest {
         assertTrue(bundle.getEntityLimitConfig().getGatherLimit().isIgnoredWorld("GATHER_LIMIT_SKIP"));
     }
 
+    /** 验证缺少拦截日志开关时默认不逐条记录实体生成日志。 */
+    @Test
+    public void blockedSpawnLoggingDefaultsToDisabled() {
+        MapConfigurationSource entityLimits = new MapConfigurationSource();
+        entityLimits.put("world-limits.enabled", true);
+
+        EntityLimitConfig.WorldLimitConfig worldLimit = load(new MapConfigurationSource(), entityLimits)
+                .getEntityLimitConfig().getWorldLimit();
+
+        assertTrue(worldLimit.isEnabled());
+        assertFalse(worldLimit.isLogBlockedSpawns());
+    }
+
+    /** 验证显式开启后能够把实体生成拦截日志开关传入运行配置。 */
+    @Test
+    public void blockedSpawnLoggingReadsConfiguredValue() {
+        MapConfigurationSource entityLimits = new MapConfigurationSource();
+        entityLimits.put("world-limits.enabled", true);
+        entityLimits.put("world-limits.log-blocked-spawns", true);
+
+        EntityLimitConfig.WorldLimitConfig worldLimit = load(new MapConfigurationSource(), entityLimits)
+                .getEntityLimitConfig().getWorldLimit();
+
+        assertTrue(worldLimit.isLogBlockedSpawns());
+    }
+
     /** 验证旧配置缺少强制直删列表时保持默认关闭。 */
     @Test
     public void missingDirectRemoveWorldsDefaultsToEmpty() {

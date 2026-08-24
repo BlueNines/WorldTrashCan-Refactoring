@@ -110,10 +110,12 @@ public final class EntityLimitFeature implements Feature, Listener {
         }
         event.setCancelled(true);
         event.getEntity().remove();
-        plugin.getLogger().info("[EntityLimit] 已按缓存数量拦截实体生成 world=" + world.getName()
-                + ", type=" + type.name()
-                + ", current=" + current
-                + ", max=" + maxCount);
+        if (config.isLogBlockedSpawns()) {
+            plugin.getLogger().info("[EntityLimit] 已按缓存数量拦截实体生成 world=" + world.getName()
+                    + ", type=" + type.name()
+                    + ", current=" + current
+                    + ", max=" + maxCount);
+        }
         return true;
     }
 

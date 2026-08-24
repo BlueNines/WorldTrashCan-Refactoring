@@ -220,6 +220,7 @@ public final class ConfigBundleLoader {
         EntityLimitConfig entityLimitConfig = new EntityLimitConfig(
                 new EntityLimitConfig.WorldLimitConfig(
                         entityLimits.getBoolean("world-limits.enabled", false),
+                        entityLimits.getBoolean("world-limits.log-blocked-spawns", false),
                         toSet(entityLimits.getStringList("world-limits.ignored-worlds")),
                         parseWorldLimits(entityLimits.getMapList("world-limits.defaults"))
                 ),

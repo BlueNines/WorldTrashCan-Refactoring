@@ -2,6 +2,9 @@
 world-limits:
   # 是否启用世界实体数量限制。
   enabled: false
+  # 达到上限而拦截实体生成时，是否逐条写入控制台日志。
+  # 高频刷怪场景会产生大量日志；仅建议排障时临时开启。
+  log-blocked-spawns: false
   # 不受限制的世界名。
   ignored-worlds:
     - "testWorld"
