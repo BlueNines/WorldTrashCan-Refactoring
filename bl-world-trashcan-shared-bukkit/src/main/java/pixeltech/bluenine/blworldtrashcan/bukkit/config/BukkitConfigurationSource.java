@@ -1,8 +1,10 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigurationSource;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,5 +63,21 @@ public final class BukkitConfigurationSource implements ConfigurationSource {
     @Override
     public List<Map<?, ?>> getMapList(String path) {
         return configuration.getMapList(path);
+    }
+
+    /** 递归读取配置节点中的字符串映射，保留点号分隔的完整相对路径。 */
+    @Override
+    public Map<String, String> getStringMap(String path) {
+        ConfigurationSection section = configuration.getConfigurationSection(path);
+        if (section == null) {
+            return java.util.Collections.emptyMap();
+        }
+        Map<String, String> values = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> entry : section.getValues(true).entrySet()) {
+            if (entry.getValue() instanceof String) {
+                values.put(entry.getKey(), (String) entry.getValue());
+            }
+        }
+        return values;
     }
 }

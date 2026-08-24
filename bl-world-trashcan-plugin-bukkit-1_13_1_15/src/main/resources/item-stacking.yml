@@ -37,5 +37,12 @@ display:
   custom-name:
     # 是否在逻辑数量大于 1 时显示掉落物悬浮名称。
     enabled: true
-    # {name} 为物品显示名或材质枚举名，{amount} 为实际逻辑数量；支持 RGB 和传统 &a 颜色。
+    # {name} 为物品自定义名或内置本地化名称，{amount} 为实际逻辑数量；支持 RGB 和传统 &a 颜色。
     format: "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"
+    # 无自定义名的原版物品使用哪种内置语言；支持 zh_CN、en_US、ja_JP。
+    # 修改后执行 /wtc reload 即可刷新已有受管掉落物，不需要重启服务器。
+    locale: "zh_CN"
+    # 服主自定义名称优先于内置翻译；键支持 minecraft:stone、block.minecraft.stone
+    # 或 Bukkit 材质名 stone。这里只影响 item-stacking 的掉落物头顶名称。
+    overrides:
+      # "minecraft:stone": "自定义石头名称"

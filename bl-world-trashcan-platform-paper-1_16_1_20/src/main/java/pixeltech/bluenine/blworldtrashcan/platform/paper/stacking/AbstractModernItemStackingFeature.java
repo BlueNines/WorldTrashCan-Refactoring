@@ -90,6 +90,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     private final AtomicLong delayedItems = new AtomicLong();
     private final AtomicLong dispatchedChunks = new AtomicLong();
     private volatile ItemStackingConfig config;
+    private volatile ItemStackingItemNameResolver itemNameResolver;
     private volatile boolean activeState;
     private volatile boolean enabled;
     private final ItemStackingLifecycle lifecycle;
@@ -99,6 +100,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         this.plugin = plugin;
         this.configSupplier = configSupplier;
         this.config = configSupplier.get();
+        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config);
         this.amountKey = new NamespacedKey(plugin, "stack_amount");
         this.displayOwnedKey = new NamespacedKey(plugin, "stack_display_owned");
         this.originalNameKey = new NamespacedKey(plugin, "stack_original_name");
@@ -143,6 +145,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     @Override
     public final void reload() {
         this.config = configSupplier.get();
+        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config);
         if (enabled) {
             stopProcessor();
             startProcessor();
@@ -926,7 +929,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         if (meta != null && meta.hasDisplayName()) {
             return meta.getDisplayName();
         }
-        return stack.getType().name();
+        return itemNameResolver.resolve(stack.getType());
     }
 
     /** 尽可能向库存插入数量并返回可精确回滚的槽位收据。 */

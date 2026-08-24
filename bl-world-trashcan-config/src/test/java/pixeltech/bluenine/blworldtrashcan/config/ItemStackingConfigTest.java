@@ -29,6 +29,8 @@ public final class ItemStackingConfigTest {
         assertEquals(4096, config.getMaxQueuedChunks());
         assertEquals(30, config.getQueueTtlSeconds());
         assertTrue(config.isDisplayNameEnabled());
+        assertEquals("zh_CN", config.getDisplayNameLocale());
+        assertTrue(config.getDisplayNameOverrides().isEmpty());
     }
 
     /** 极端配置必须被收敛，避免无限队列或单轮无界扫描。 */
@@ -58,6 +60,21 @@ public final class ItemStackingConfigTest {
         assertEquals(100, config.getTimeBudgetMicros());
         assertEquals(16, config.getMaxQueuedChunks());
         assertEquals(3600, config.getQueueTtlSeconds());
+    }
+
+    /** 语言配置只属于堆叠悬浮名称，覆盖项应被复制并规范化键名。 */
+    @Test
+    public void displayNameLocaleAndOverridesAreLoaded() {
+        MapConfigurationSource source = new MapConfigurationSource();
+        source.put("display.custom-name.locale", "ja-jp");
+        Map<String, String> overrides = new HashMap<>();
+        overrides.put(" Minecraft:Stone ", "特製石");
+        source.put("display.custom-name.overrides", overrides);
+
+        ItemStackingConfig config = ItemStackingConfig.load(source);
+
+        assertEquals("ja_JP", config.getDisplayNameLocale());
+        assertEquals("特製石", config.getDisplayNameOverrides().get("minecraft:stone"));
     }
 
     /** 总开关只读取独立配置根节点，不再兼容 config.yml 旧路径。 */
@@ -137,6 +154,14 @@ public final class ItemStackingConfigTest {
         @Override
         public List<Map<?, ?>> getMapList(String path) {
             return Collections.emptyList();
+        }
+
+        /** 读取本测试用的字符串映射。 */
+        @Override
+        @SuppressWarnings("unchecked")
+        public Map<String, String> getStringMap(String path) {
+            Object value = values.get(path);
+            return value instanceof Map ? (Map<String, String>) value : Collections.<String, String>emptyMap();
         }
     }
 }

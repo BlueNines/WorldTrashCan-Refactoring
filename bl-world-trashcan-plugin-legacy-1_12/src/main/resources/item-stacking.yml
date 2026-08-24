@@ -34,7 +34,13 @@ scheduler:
 
 display:
   custom-name:
+    # 这里只影响 item-stacking 的掉落物头顶名称；1.12.2 不运行该功能。
     # 是否在逻辑数量大于 1 时显示掉落物悬浮名称。
     enabled: true
-    # {name} 为物品显示名或材质枚举名，{amount} 为实际逻辑数量；支持 RGB 和传统 &a 颜色。
+    # {name} 为物品显示名，{amount} 为逻辑数量；1.12.2 不运行该功能。
     format: "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"
+    # 1.12.2 不加载翻译资源；现代兼容端支持 zh_CN、en_US、ja_JP。
+    locale: "zh_CN"
+    # 1.12.2 不运行该功能；保留与现代端一致的名称覆盖结构。
+    overrides:
+      # "minecraft:stone": "自定义石头名称"

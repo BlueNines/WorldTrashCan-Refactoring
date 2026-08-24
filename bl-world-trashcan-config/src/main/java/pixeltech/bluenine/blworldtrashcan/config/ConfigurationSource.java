@@ -30,4 +30,9 @@ public interface ConfigurationSource {
 
     /** 读取映射列表。 */
     List<Map<?, ?>> getMapList(String path);
+
+    /** 读取字符串映射；不支持映射节点的来源返回空映射。 */
+    default Map<String, String> getStringMap(String path) {
+        return java.util.Collections.emptyMap();
+    }
 }

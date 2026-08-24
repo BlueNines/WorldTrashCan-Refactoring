@@ -144,6 +144,17 @@ enabled: true
 
 逻辑数量只写在地面掉落物实体的 PDC 中，不修改背包物品，因此不会破坏普通物品堆叠。相同 `ItemStack` 数据和相同 owner 的附近物品才会聚集，不同名称、Lore、附魔、PDC、Data Components 或 owner 不会混合。主动处理使用有容量、TTL、数量和微秒预算的 dirty-chunk 队列与空间网格，不周期遍历全部世界实体，也不强制加载区块。Folia 的世界垃圾桶转移在目标箱子所属 region 内完成写入和数量扣减。
 
+掉落物头顶名称支持内置 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，只影响 item-stacking，不改变插件语言文件。名称按“物品自定义名 → `display.custom-name.overrides` 服主覆盖 → 内置翻译 → 可读英文材质名”解析；修改 `locale` 或覆盖项后执行 `/wtc reload` 生效。翻译资源位于 JAR 内，运行时不联网；功能或头顶名称关闭时不会加载，开启后也只保留当前语言的材质数组。
+
+```yaml
+# item-stacking.yml
+display:
+  custom-name:
+    locale: "zh_CN" # zh_CN、en_US、ja_JP
+    overrides:
+      "minecraft:stone": "自定义石头名称"
+```
+
 所有详细参数与总开关都在 `item-stacking.yml`。旧位置 `config.yml -> features.item-stacking.enabled` 不再读取。`/wtc stacking status` 查看运行、排空、队列和数量统计；把 `enabled` 改回 `false` 后，插件会把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理，也可以使用 `/wtc stacking drain` 主动请求排空。
 
 #### 兼容性和稳定性增强
@@ -301,9 +312,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.5.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`871954` 字节
-- SHA-256：`4FDD36726DD1EF2C960E082C7256E9DC185011BC933041FC5FB8D21AD5542CC8`
-- 地面掉落物逻辑堆叠已使用同一 Universal 整包在 Paper 1.21.8 和 Folia 1.21.8 真实客户端中验证，覆盖数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由；Paper 的 `10004` 个圆石在 9 秒内收敛为 2 个实体且逻辑总数完整守恒。
+- 文件大小：`952174` 字节
+- SHA-256：`D848216F1C33B8C0D3C8DAE6D1ACE1F31ED6832D3665AB2ABF4F78CF8DE7BF9D`
+- 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证中、英、日三种内置名称、点号覆盖键和物品自定义名优先级；五种画面依次为 `圆石 x 80`、`Cobblestone x 80`、`丸石 x 80`、`Dotted_Key_Override x 80`、`Item_Custom_Name x 80`。
+- 地面掉落物逻辑堆叠的数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由，已在翻译功能加入前使用同一套实现的历史 Universal 整包于 Paper 1.21.8 和 Folia 1.21.8 完成真实客户端全链路验收；这些历史业务证据不冒充当前 SHA 的重复全量验收。
 - 个人垃圾桶通知双按钮已使用整包 JAR 在 Paper 1.21.4、Paper 1.12.2 和 Folia 1.21.8 的真实客户端中验证，覆盖正式扫地回收通知、左右按钮可见性，以及从客户端聊天输入两条命令后分别打开个人桶/公共桶 GUI；本轮未把鼠标实际点击计入通过项。
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
@@ -450,6 +462,17 @@ enabled: true
 Startup checks the actual PDC, item-owner, pickup, hopper, merge, chunk-event, and scheduler APIs. It does not inspect server brand names or hard-code a Minecraft minor version. Runtimes without entity PDC are rejected; only runtimes that pass the complete capability probe are enabled. Minecraft 1.12.2 is one such rejected runtime, but this is not hard-coded as a version rule. RoseStacker, WildStacker, UltimateStacker, and StackMob are treated as conflicts.
 
 The logical amount is stored only on the dropped entity, never on inventory item stacks. Nearby items merge only when their complete `ItemStack` data and owner match, so names, Lore, enchantments, PDC, Data Components, and different owners stay separate. Processing uses a bounded, deduplicated dirty-chunk queue with TTL, count, and microsecond budgets plus a spatial grid. It does not periodically scan every world entity or force-load chunks. On Folia, world-trash insertion and entity deduction are committed in the target chest's region.
+
+Ground-item labels include bundled vanilla item translations for `zh_CN`, `en_US`, and `ja_JP`. This setting affects item-stacking only and does not change the plugin message locale. Names resolve in this order: custom item name, administrator override in `display.custom-name.overrides`, bundled translation, then a readable English material name. Run `/wtc reload` after changing `locale` or overrides. Resources are bundled in the JAR and never downloaded at runtime; they are not loaded while stacking or labels are disabled, and only the selected locale is retained as a material-indexed array.
+
+```yaml
+# item-stacking.yml
+display:
+  custom-name:
+    locale: "en_US" # zh_CN, en_US, ja_JP
+    overrides:
+      "minecraft:stone": "Custom Stone Name"
+```
 
 The switch and all detailed settings live in `item-stacking.yml`. The former `config.yml -> features.item-stacking.enabled` path is no longer read. `/wtc stacking status` shows runtime, draining, queue, and amount counters. Setting `enabled` back to `false` drains logical amounts in loaded chunks into vanilla stacks; unloaded chunks wait for natural loading. `/wtc stacking drain` can also request this explicitly.
 
@@ -607,9 +630,10 @@ Final universal artifact information:
 
 - Version: `7.5.1`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `871954` bytes
-- SHA-256: `4FDD36726DD1EF2C960E082C7256E9DC185011BC933041FC5FB8D21AD5542CC8`
-- Logical ground-item stacking was verified with this exact universal JAR on real Paper 1.21.8 and Folia 1.21.8 clients. Coverage includes the logical cap, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. On Paper, `10004` cobblestone items converged to two entities within nine seconds with the full logical amount preserved.
+- File size: `952174` bytes
+- SHA-256: `D848216F1C33B8C0D3C8DAE6D1ACE1F31ED6832D3665AB2ABF4F78CF8DE7BF9D`
+- This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for bundled Chinese, English, and Japanese names, dotted-key overrides, and custom-item-name precedence. The five visible results were `圆石 x 80`, `Cobblestone x 80`, `丸石 x 80`, `Dotted_Key_Override x 80`, and `Item_Custom_Name x 80`.
+- Before the translation resources were added, the same stacking implementation completed real-client end-to-end verification on Paper 1.21.8 and Folia 1.21.8 for logical caps, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. Those historical business checks are not presented as a full rerun of the current SHA.
 - Personal-trash dual notification buttons were verified with the universal JAR on real clients running Paper 1.21.4, Paper 1.12.2, and Folia 1.21.8. The evidence covers the cleanup notification, separate left/right button visibility, and opening the personal/global GUIs from commands entered in the client chat; physical mouse clicks are not claimed as passed.
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.

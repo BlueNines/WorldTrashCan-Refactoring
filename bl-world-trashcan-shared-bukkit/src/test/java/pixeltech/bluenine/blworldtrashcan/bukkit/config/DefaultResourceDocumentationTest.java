@@ -111,6 +111,9 @@ public final class DefaultResourceDocumentationTest {
             assertEquals(10000, detail.getInt("stack.max-logical-amount"));
             assertEquals(8, detail.getInt("scheduler.max-chunks-per-run"));
             assertEquals(4096, detail.getInt("scheduler.max-queued-chunks"));
+            assertEquals("zh_CN", detail.getString("display.custom-name.locale"));
+            assertTrue(detailText.contains("这里只影响 item-stacking 的掉落物头顶名称"));
+            assertTrue(detailText.contains("minecraft:stone"));
             if (module.contains("legacy")) {
                 assertTrue(detailText.contains("1.12.2 缺少掉落物实体 PDC"));
             } else {
