@@ -367,7 +367,7 @@ final class TrashContainerMenu {
         policy.afterManualPut(player, cleanItemStack, result.getTrackingKey(), accepted);
     }
 
-    /** 手动放入后只补充本次物品引用并重绘当前页对应槽位。 */
+    /** 手动放入后重新发送当前页，兼容旧版服务端包装过的顶部库存对象。 */
     private void syncManualPutView(Player player, TrashContainerStore store, String identityKey) {
         if (player == null || store == null || identityKey == null) {
             return;
@@ -377,7 +377,7 @@ final class TrashContainerMenu {
             return;
         }
         InventoryView openView = player.getOpenInventory();
-        if (openView == null || openView.getTopInventory() != holder.getInventory()) {
+        if (openView == null || !isViewingThisMenu(player)) {
             return;
         }
         TrashContainerStore.ViewSnapshot previous = holder.getSnapshot();
@@ -386,31 +386,8 @@ final class TrashContainerMenu {
         int targetPage = store.findChangedIdentityPage(
                 previous, refreshed, identityKey, holder.getPageIndex());
         holder.replaceSnapshot(refreshed);
-        if (targetPage >= 0 && targetPage != holder.getPageIndex()) {
-            openPage(player, store, targetPage, refreshed);
-            return;
-        }
-        syncIdentitySlots(player, holder, identityKey);
-        player.updateInventory();
-    }
-
-    /** 只重绘当前页中属于指定身份的内容槽，避免整页刷新和排序跳动。 */
-    private void syncIdentitySlots(Player player, TrashContainerViewHolder holder, String identityKey) {
-        TrashContainerStore.ViewSnapshot snapshot = holder.getSnapshot();
-        if (snapshot == null) {
-            return;
-        }
-        List<Integer> contentSlots = layout.getContentSlots();
-        for (int contentIndex = 0; contentIndex < contentSlots.size(); contentIndex++) {
-            TrashContainerStore.DisplayReference reference = snapshot.getReference(
-                    holder.getPageIndex(), contentIndex);
-            TrashContainerStore.DisplayItem display = holder.getStore().getDisplayItem(reference);
-            if (display == null || !identityKey.equals(display.getKey())) {
-                continue;
-            }
-            holder.getInventory().setItem(contentSlots.get(contentIndex).intValue(),
-                    createContentItem(display, player, holder.getPageIndex(), snapshot.getPageCount()));
-        }
+        int page = targetPage >= 0 ? targetPage : holder.getPageIndex();
+        openPage(player, store, page, refreshed);
     }
 
     /** 只同步刚操作的内容槽，避免整页闪烁。 */
