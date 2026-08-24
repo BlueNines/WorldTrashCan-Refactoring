@@ -11,6 +11,18 @@ import java.util.Collections;
 
 /** 验证公共与个人垃圾桶共用存储的容量、隔离和重试语义。 */
 public final class TrashContainerStoreTest {
+    /** 未提交写入可按追踪键精确回滚，且不会误删同类后续数量。 */
+    @Test
+    public void rollbackUsesOpaqueTrackingKey() {
+        TrashContainerStore store = store("personal:rollback", compactConfig(100L, 1), 1);
+        TrashWriteResult first = store.add(new ItemStack(Material.STONE, 1), 20, true);
+        store.add(new ItemStack(Material.STONE, 1), 5, true);
+
+        Assert.assertEquals(20, store.rollback(first.getTrackingKey(), 20));
+        Assert.assertEquals(5, store.getStoredItemAmount());
+        Assert.assertEquals(0, store.rollback("wrong-key", 20));
+    }
+
     /** 两个玩家 Store 中的同类物品必须完全隔离。 */
     @Test
     public void independentStoresDoNotShareAmountsOrTrackingKeys() {

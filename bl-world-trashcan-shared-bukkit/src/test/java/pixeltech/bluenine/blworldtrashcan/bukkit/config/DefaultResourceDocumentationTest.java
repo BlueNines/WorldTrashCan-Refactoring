@@ -93,6 +93,31 @@ public final class DefaultResourceDocumentationTest {
         }
     }
 
+    /** 验证四套产物都默认关闭堆叠，并提供完整中文注释的独立配置。 */
+    @Test
+    public void itemStackingDefaultsAreDisabledAndDocumented() throws Exception {
+        Path root = repositoryRoot();
+        for (String module : MODULES) {
+            Path resources = resources(root, module);
+            YamlConfiguration config = load(resources.resolve("config.yml"));
+            Path detailFile = resources.resolve("item-stacking.yml");
+            YamlConfiguration detail = load(detailFile);
+            String detailText = read(detailFile);
+
+            assertFalse(module + " 必须默认关闭掉落物逻辑堆叠",
+                    config.getBoolean("features.item-stacking.enabled", true));
+            assertEquals(10000, detail.getInt("stack.max-logical-amount"));
+            assertEquals(8, detail.getInt("scheduler.max-chunks-per-run"));
+            assertEquals(4096, detail.getInt("scheduler.max-queued-chunks"));
+            if (module.contains("legacy")) {
+                assertTrue(detailText.contains("1.12.2 缺少掉落物实体 PDC"));
+            } else {
+                assertTrue(detailText.contains("只有 config.yml 的 features.item-stacking.enabled 为 true"));
+            }
+            assertTrue(detailText.contains("不会无限占用内存"));
+        }
+    }
+
     /** 验证四套产物都提供默认关闭的实体生成拦截日志开关。 */
     @Test
     public void entityLimitBlockedSpawnLoggingIsDocumented() throws Exception {

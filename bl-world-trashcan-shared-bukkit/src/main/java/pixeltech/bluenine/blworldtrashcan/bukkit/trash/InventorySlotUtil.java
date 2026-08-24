@@ -101,6 +101,62 @@ final class InventorySlotUtil {
         return remaining <= 0;
     }
 
+    /** 在连续槽位中尽可能写入指定实际数量并返回成功数量。 */
+    static int addPartial(Inventory inventory, ItemStack sample, int requestedAmount,
+                          int start, int endExclusive) {
+        if (inventory == null || isEmpty(sample) || requestedAmount <= 0) {
+            return 0;
+        }
+        int remaining = requestedAmount;
+        int maxStack = Math.max(1, sample.getMaxStackSize());
+        for (int slot = start; slot < endExclusive && slot < inventory.getSize() && remaining > 0; slot++) {
+            ItemStack current = inventory.getItem(slot);
+            if (!isEmpty(current) && current.isSimilar(sample) && current.getAmount() < maxStack) {
+                int moved = Math.min(remaining, maxStack - current.getAmount());
+                current.setAmount(current.getAmount() + moved);
+                inventory.setItem(slot, current);
+                remaining -= moved;
+            }
+        }
+        for (int slot = start; slot < endExclusive && slot < inventory.getSize() && remaining > 0; slot++) {
+            if (isEmpty(inventory.getItem(slot))) {
+                int moved = Math.min(remaining, maxStack);
+                ItemStack copy = sample.clone();
+                copy.setAmount(moved);
+                inventory.setItem(slot, copy);
+                remaining -= moved;
+            }
+        }
+        return requestedAmount - remaining;
+    }
+
+    /** 从连续槽位末端回收指定数量的相似物品并返回实际回收量。 */
+    static int removePartialReverse(Inventory inventory, ItemStack sample, int requestedAmount,
+                                    int start, int endExclusive) {
+        if (inventory == null || isEmpty(sample) || requestedAmount <= 0) {
+            return 0;
+        }
+        int remaining = requestedAmount;
+        int lastSlot = Math.min(endExclusive, inventory.getSize()) - 1;
+        for (int slot = lastSlot; slot >= start && remaining > 0; slot--) {
+            ItemStack current = inventory.getItem(slot);
+            if (isEmpty(current) || !current.isSimilar(sample)) {
+                continue;
+            }
+            int removed = Math.min(remaining, current.getAmount());
+            int nextAmount = current.getAmount() - removed;
+            if (nextAmount <= 0) {
+                inventory.setItem(slot, null);
+            } else {
+                ItemStack updated = current.clone();
+                updated.setAmount(nextAmount);
+                inventory.setItem(slot, updated);
+            }
+            remaining -= removed;
+        }
+        return requestedAmount - remaining;
+    }
+
     /** 把物品完整放入指定离散槽位；调用前会先验证容量。 */
     static boolean add(Inventory inventory, ItemStack itemStack, List<Integer> slots) {
         if (!hasSpace(inventory, itemStack, slots)) {

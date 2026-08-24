@@ -79,6 +79,7 @@
                                     <include>pixeltech.bluenine:bl-world-trashcan-config</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-storage</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-shared-bukkit</include>
+                                    <include>pixeltech.bluenine:bl-world-trashcan-platform-paper-1_16_1_20</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-platform-folia-1_20</include>
                                     <include>me.croabeast:PrismaticAPI</include>
                                 </includes>

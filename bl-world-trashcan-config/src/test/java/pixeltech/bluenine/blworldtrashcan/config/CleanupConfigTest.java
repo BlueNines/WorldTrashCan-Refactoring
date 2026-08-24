@@ -3,6 +3,8 @@ package pixeltech.bluenine.blworldtrashcan.config;
 import org.junit.Test;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.NamedEntityRules;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntitySnapshotRequirements;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.model.EntitySnapshot;
 
@@ -250,6 +252,79 @@ public final class CleanupConfigTest {
         cleanup.put("filled-shulker-boxes.enabled", true);
 
         assertTrue(load(cleanup).getCleanupConfig().getFilledShulkerBoxes().isEnabled());
+    }
+
+    /** 验证 Folia 默认吞吐参数和零延迟值不会被错误改回旧默认值。 */
+    @Test
+    public void foliaDefaultsUseFullScanAndZeroDelay() {
+        CleanupConfig.FoliaCleanupConfig defaults = load(new MapConfigurationSource())
+                .getCleanupConfig().getFoliaCleanup();
+
+        assertEquals(0, defaults.getMaxChunksPerCleanup());
+        assertEquals(800, defaults.getChunkBatchSize());
+        assertEquals(0, defaults.getChunkBatchDelayTicks());
+
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("folia.max-chunks-per-cleanup", 0);
+        cleanup.put("folia.chunk-batch-size", 800);
+        cleanup.put("folia.chunk-batch-delay-ticks", 0);
+        CleanupConfig.FoliaCleanupConfig configured = load(cleanup).getCleanupConfig().getFoliaCleanup();
+
+        assertEquals(0, configured.getMaxChunksPerCleanup());
+        assertEquals(800, configured.getChunkBatchSize());
+        assertEquals(0, configured.getChunkBatchDelayTicks());
+    }
+
+    /** 验证关闭动态实体保护时不会要求读取鞍、主人、载具和名称字段。 */
+    @Test
+    public void disabledEntityChecksTrimSnapshotReads() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("entities.clear-named-entities", true);
+        cleanup.put("entities.ignore-entities-with-saddle", false);
+        cleanup.put("entities.ignore-entities-with-owner", false);
+        CleanupSettings settings = load(cleanup).getCleanupConfig().getSettings();
+        EntitySnapshotRequirements requirements = settings.getEntitySnapshotRequirements();
+
+        assertFalse(requirements.readEntityName());
+        assertFalse(requirements.readCustomName());
+        assertFalse(requirements.readInsideBoat());
+        assertFalse(requirements.readSaddle());
+        assertFalse(requirements.readOwner());
+    }
+
+    /** 验证启用实体名称规则时只打开名称读取，不无条件打开其它动态字段。 */
+    @Test
+    public void entityNameRulesOnlyEnableNameRead() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("entities.clear-named-entities", true);
+        cleanup.put("entities.whitelist", Collections.singletonList("ZOMBIE"));
+        cleanup.put("entities.ignore-entities-with-saddle", false);
+        cleanup.put("entities.ignore-entities-with-owner", false);
+        CleanupSettings settings = load(cleanup).getCleanupConfig().getSettings();
+        EntitySnapshotRequirements requirements = settings.getEntitySnapshotRequirements();
+
+        assertTrue(requirements.readEntityName());
+        assertFalse(requirements.readCustomName());
+        assertFalse(requirements.readInsideBoat());
+        assertFalse(requirements.readSaddle());
+        assertFalse(requirements.readOwner());
+    }
+
+    /** 验证命名实体规则启用时才读取 Bukkit 自定义名称。 */
+    @Test
+    public void namedEntityRulesEnableCustomNameRead() {
+        MapConfigurationSource cleanup = new MapConfigurationSource();
+        cleanup.put("entities.clear-named-entities", true);
+        Map<String, Object> namedWhitelist = new HashMap<>();
+        namedWhitelist.put("type-patterns", Collections.singletonList("ZOMBIE"));
+        namedWhitelist.put("name-patterns", Collections.singletonList("Boss"));
+        cleanup.put("entities.named-whitelist", Collections.singletonList(namedWhitelist));
+
+        EntitySnapshotRequirements requirements = load(cleanup).getCleanupConfig().getSettings()
+                .getEntitySnapshotRequirements();
+
+        assertFalse(requirements.readEntityName());
+        assertTrue(requirements.readCustomName());
     }
 
     /** 验证缺少命名实体名单时使用共享空规则并跳过匹配。 */

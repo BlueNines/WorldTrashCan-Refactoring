@@ -7,6 +7,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -14,7 +15,16 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupConsoleDetailFormatter;
@@ -26,6 +36,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashCheck;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
@@ -40,6 +51,7 @@ import pixeltech.bluenine.blworldtrashcan.core.cleanup.CleanupSettings;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.DefaultCleanupPolicy;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupAction;
 import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntityCleanupDecision;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntitySnapshotRequirements;
 import pixeltech.bluenine.blworldtrashcan.core.model.EntitySnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.model.ItemSnapshot;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -50,9 +62,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import pixeltech.worldlisttrashcan.api.audit.CleanupAuditSession;
@@ -62,7 +77,8 @@ import pixeltech.worldlisttrashcan.api.audit.CleanupRunContext;
 import pixeltech.worldlisttrashcan.api.audit.CleanupTrigger;
 
 /** Folia 专用 region-safe 清理实现。 */
-public final class FoliaRegionCleanupFeature implements Feature {
+public final class FoliaRegionCleanupFeature implements Feature, Listener {
+    private static final String WORLD_TRASH_TRANSFER_METADATA = "worldlisttrashcan_world_trash_transfer";
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
@@ -72,7 +88,10 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private final DropOwnerTracker dropOwnerTracker;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final ItemRuleEvaluator itemRuleEvaluator;
+    private volatile ItemQuantityService itemQuantityService;
     private final AtomicBoolean cleanupRunning = new AtomicBoolean(false);
+    private final Set<UUID> pendingWorldTrashItems = ConcurrentHashMap.newKeySet();
+    private boolean listenerRegistered;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
     private BossBar bossBar;
@@ -86,6 +105,16 @@ public final class FoliaRegionCleanupFeature implements Feature {
                                      WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
                                      PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker,
                                      DefaultWorldListTrashCanAuditBridge auditBridge) {
+        this(plugin, platform, configSupplier, trashRouter, globalTrashService, personalTrashService,
+                dropOwnerTracker, auditBridge, null);
+    }
+
+    /** 创建可读取逻辑实际数量的 Folia region-safe 清理功能。 */
+    public FoliaRegionCleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
+                                     WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
+                                     PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker,
+                                     DefaultWorldListTrashCanAuditBridge auditBridge,
+                                     ItemQuantityService itemQuantityService) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
@@ -95,6 +124,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
         this.dropOwnerTracker = dropOwnerTracker;
         this.auditBridge = auditBridge;
         this.itemRuleEvaluator = new ItemRuleEvaluator(platform.itemSnapshotMapper());
+        this.itemQuantityService = itemQuantityService;
     }
 
     /** 返回功能 ID。 */
@@ -106,6 +136,10 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** 启动 Folia 倒计时清理任务。 */
     @Override
     public void enable() {
+        if (!listenerRegistered) {
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            listenerRegistered = true;
+        }
         startTask();
     }
 
@@ -127,6 +161,48 @@ public final class FoliaRegionCleanupFeature implements Feature {
         removeBossBar();
         nextRunAtMillis = 0L;
         countdownSeconds = 0;
+    }
+
+    /** 阻止玩家拾取正处于跨 region 世界垃圾桶事务中的物品。 */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPendingPlayerPickup(EntityPickupItemEvent event) {
+        if (pendingWorldTrashItems.contains(event.getItem().getUniqueId())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** 阻止漏斗拾取正处于跨 region 世界垃圾桶事务中的物品。 */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPendingInventoryPickup(InventoryPickupItemEvent event) {
+        if (pendingWorldTrashItems.contains(event.getItem().getUniqueId())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** 阻止事务占用中的物品参与原版实体合并。 */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPendingMerge(ItemMergeEvent event) {
+        if (pendingWorldTrashItems.contains(event.getEntity().getUniqueId())
+                || pendingWorldTrashItems.contains(event.getTarget().getUniqueId())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** 阻止事务占用中的物品在提交前自然消失。 */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPendingDespawn(ItemDespawnEvent event) {
+        if (pendingWorldTrashItems.contains(event.getEntity().getUniqueId())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** 阻止事务占用中的物品在提交前被火焰、岩浆或仙人掌销毁。 */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPendingDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Item
+                && pendingWorldTrashItems.contains(event.getEntity().getUniqueId())) {
+            event.setCancelled(true);
+        }
     }
 
     /** 立即启动一次异步 region-safe 清理，默认遵守定时扫地门禁。 */
@@ -193,6 +269,11 @@ public final class FoliaRegionCleanupFeature implements Feature {
     /** 返回最近一次清理统计。 */
     public CleanupFeature.CleanupStats getLastStats() {
         return lastStats;
+    }
+
+    /** 在可选堆叠功能动态启用后更新数量来源。 */
+    public void setItemQuantityService(ItemQuantityService itemQuantityService) {
+        this.itemQuantityService = itemQuantityService;
     }
 
     /** 测试用：在 Folia 全局区域按正式通知配置触发指定编号的清理通知。 */
@@ -354,34 +435,30 @@ public final class FoliaRegionCleanupFeature implements Feature {
         if (!tracker.isOpen()) {
             return;
         }
-        int endIndex = Math.min(chunks.size(), startIndex + foliaConfig.getChunkBatchSize());
-        for (int index = startIndex; index < endIndex; index++) {
-            scheduleGuardCount(chunks.get(index), policy, tracker);
-        }
-        if (endIndex >= chunks.size()) {
+        if (!tracker.isDispatchOpen()) {
             tracker.initialSchedulingDone();
             return;
         }
-        try {
-            platform.scheduler().runLater(new Runnable() {
-                /** 继续派发下一批门禁计数任务。 */
-                @Override
-                public void run() {
-                    scheduleGuardCountBatch(chunks, endIndex, policy, tracker, foliaConfig);
-                }
-            }, foliaConfig.getChunkBatchDelayTicks());
-        } catch (RuntimeException exception) {
-            plugin.getLogger().warning("[FoliaCleanup] 分批派发门禁计数失败: " + exception.getMessage());
-            tracker.initialSchedulingDone();
+        int endIndex = Math.min(chunks.size(), startIndex + foliaConfig.getChunkBatchSize());
+        GuardCountBatch batch = new GuardCountBatch(tracker, endIndex);
+        for (int index = startIndex; index < endIndex; index++) {
+            scheduleGuardCount(chunks.get(index), policy, tracker, batch);
+            if (!tracker.isDispatchOpen()) {
+                break;
+            }
         }
+        batch.finishScheduling();
     }
 
     /** 安排单个 chunk 的门禁目标实体计数任务。 */
-    private void scheduleGuardCount(final Chunk chunk, final CleanupPolicy policy, final GuardCountTracker tracker) {
+    private void scheduleGuardCount(final Chunk chunk, final CleanupPolicy policy, final GuardCountTracker tracker,
+                                    final GuardCountBatch batch) {
         if (!tracker.isOpen()) {
             return;
         }
         tracker.taskStarted();
+        batch.taskStarted();
+        tracker.chunkScheduled();
         try {
             Bukkit.getRegionScheduler().run(plugin, chunk.getWorld(), chunk.getX(), chunk.getZ(), new Consumer<ScheduledTask>() {
                 /** 在 chunk 所在 region 内统计会被扫地处理的实体。 */
@@ -396,6 +473,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
                                 + chunk.getWorld().getName() + "," + chunk.getX() + "," + chunk.getZ()
                                 + " - " + exception.getMessage());
                     } finally {
+                        tracker.chunkDone();
+                        batch.taskDone();
                         tracker.taskDone();
                     }
                 }
@@ -404,15 +483,45 @@ public final class FoliaRegionCleanupFeature implements Feature {
             plugin.getLogger().warning("[FoliaCleanup] 分派门禁计数失败: "
                     + chunk.getWorld().getName() + "," + chunk.getX() + "," + chunk.getZ()
                     + " - " + exception.getMessage());
+            tracker.chunkDone();
+            batch.taskDone();
             tracker.taskDone();
+        }
+    }
+
+    /** 在当前门禁批次收口后继续派发下一批，避免一次性压入全部区块任务。 */
+    private void continueGuardCountBatch(final List<Chunk> chunks, final GuardCountBatch batch,
+                                         final CleanupPolicy policy, final CleanupConfig.FoliaCleanupConfig foliaConfig) {
+        GuardCountTracker tracker = batch.tracker;
+        if (!tracker.isOpen() || !tracker.isDispatchOpen() || batch.nextIndex >= chunks.size()) {
+            tracker.initialSchedulingDone();
+            return;
+        }
+        Runnable continuation = new Runnable() {
+            /** 继续派发下一批门禁计数任务。 */
+            @Override
+            public void run() {
+                scheduleGuardCountBatch(chunks, batch.nextIndex, policy, tracker, foliaConfig);
+            }
+        };
+        try {
+            if (foliaConfig.getChunkBatchDelayTicks() <= 0) {
+                Bukkit.getGlobalRegionScheduler().execute(plugin, continuation);
+            } else {
+                platform.scheduler().runLater(continuation, foliaConfig.getChunkBatchDelayTicks());
+            }
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[FoliaCleanup] 分批派发门禁计数失败: " + exception.getMessage());
+            tracker.initialSchedulingDone();
         }
     }
 
     /** 在当前 region 内统计会被扫地处理的实体。 */
     private void countChunkTargets(Chunk chunk, CleanupPolicy policy, GuardCountTracker tracker) {
         Entity[] entities = chunk.getEntities();
+        tracker.entitiesChecked.addAndGet(entities.length);
         for (Entity entity : entities) {
-            if (!tracker.isOpen()) {
+            if (!tracker.isAcceptingTargets()) {
                 return;
             }
             if (!(entity instanceof Player) && isCleanableTarget(entity, tracker.cleanupConfig, policy)) {
@@ -441,6 +550,13 @@ public final class FoliaRegionCleanupFeature implements Feature {
     private void finishGuardCountOnGlobalRegion(GuardCountTracker tracker, boolean timedOut) {
         CleanupFeature.CleanupStats stats = tracker.stats;
         stats.setGuardTargetEntities(tracker.targetEntities.get());
+        plugin.getLogger().info("[FoliaCleanup] guardScan="
+                + "chunksScheduled=" + tracker.chunksScheduled.get()
+                + ", chunksDone=" + tracker.chunksDone.get()
+                + ", entitiesChecked=" + tracker.entitiesChecked.get()
+                + ", targetEntities=" + tracker.targetEntities.get()
+                + ", stoppedEarly=" + tracker.stopDispatch.get()
+                + ", timedOut=" + timedOut);
         if (timedOut || stats.getGuardTargetEntities() < stats.getGuardMinTotalEntities()) {
             stats.markGuardSkipped(CleanupFeature.GUARD_REASON_TARGET_ENTITIES);
             finishCleanupOnGlobalRegion(stats, null, timedOut);
@@ -460,6 +576,18 @@ public final class FoliaRegionCleanupFeature implements Feature {
                                     final CleanupFeature.CleanupStats stats, final CompletionTracker tracker,
                                     final CleanupConfig.FoliaCleanupConfig foliaConfig) {
         if (!tracker.isOpen()) {
+            return;
+        }
+        if (foliaConfig.getChunkBatchDelayTicks() <= 0) {
+            int nextIndex = startIndex;
+            while (nextIndex < chunks.size() && tracker.isOpen()) {
+                int batchEndIndex = Math.min(chunks.size(), nextIndex + foliaConfig.getChunkBatchSize());
+                for (int index = nextIndex; index < batchEndIndex; index++) {
+                    scheduleChunkScan(chunks.get(index), policy, stats, tracker);
+                }
+                nextIndex = batchEndIndex;
+            }
+            tracker.initialSchedulingDone();
             return;
         }
         int endIndex = Math.min(chunks.size(), startIndex + foliaConfig.getChunkBatchSize());
@@ -549,7 +677,9 @@ public final class FoliaRegionCleanupFeature implements Feature {
         if (entity instanceof Item) {
             return isCleanableItemTarget((Item) entity, cleanupConfig, policy);
         }
-        EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
+        EntitySnapshotRequirements requirements = cleanupConfig.getSettings().getEntitySnapshotRequirements();
+        EntityCleanupDecision decision = policy.decideEntity(
+                platform.entitySnapshotMapper().toSnapshot(entity, requirements));
         return decision.getAction() == EntityCleanupAction.REMOVE;
     }
 
@@ -583,19 +713,21 @@ public final class FoliaRegionCleanupFeature implements Feature {
             stats.addItemsSkipped(1);
             return;
         }
+        int actualAmount = actualAmount(item);
         if (isMovingItemProtected(item, tracker.cleanupConfig)) {
-            stats.addItemsSkipped(itemStack.getAmount());
+            stats.addItemsSkipped(actualAmount);
             return;
         }
         if (CleanupItemProtection.isFilledShulkerItem(itemStack, tracker.cleanupConfig)) {
-            stats.addItemsSkipped(itemStack.getAmount());
+            stats.addItemsSkipped(actualAmount);
             return;
         }
         ItemStack routedStack = itemStack.clone();
         ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
-                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), tracker.cleanupConfig);
+                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)
+                        .withAmount(actualAmount)), tracker.cleanupConfig);
         RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack, tracker.cleanupConfig);
-        routeWithFallback(item, routedStack, snapshot, policy, state, stats, tracker);
+        routeWithFallback(item, routedStack, actualAmount, snapshot, policy, state, stats, tracker);
     }
 
     /** 判断掉落物是否因当前速度达到阈值而在本轮扫地中受保护。 */
@@ -628,7 +760,8 @@ public final class FoliaRegionCleanupFeature implements Feature {
     }
 
     /** 按核心策略逐级路由或删除物品。 */
-    private void routeWithFallback(Item item, ItemStack itemStack, ItemSnapshot snapshot, CleanupPolicy policy,
+    private void routeWithFallback(Item item, ItemStack itemStack, int actualAmount,
+                                   ItemSnapshot snapshot, CleanupPolicy policy,
                                    RouteState state, CleanupFeature.CleanupStats stats, CompletionTracker tracker) {
         TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable,
                 state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
@@ -638,14 +771,15 @@ public final class FoliaRegionCleanupFeature implements Feature {
             }
             TrashRoute route = decision.getRoute();
             if (route == TrashRoute.SKIP) {
-                stats.addItemsSkipped(itemStack.getAmount());
+                stats.addItemsSkipped(actualAmount);
                 return;
             }
             if (route == TrashRoute.REMOVE) {
                 forgetTrackedOwner(item);
                 item.remove();
-                tracker.recordItem(itemStack, CleanupItemDestination.directRemove(), "");
-                stats.addItemsRemoved(itemStack.getAmount());
+                recordItemAmount(tracker, itemStack, actualAmount,
+                        CleanupItemDestination.directRemove(), "");
+                stats.addItemsRemoved(actualAmount);
                 return;
             }
             if (route == TrashRoute.WORLD_TRASH) {
@@ -656,33 +790,44 @@ public final class FoliaRegionCleanupFeature implements Feature {
                             state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
                     continue;
                 }
-                tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, 0);
-                return;
-            }
-            TrashRoutingResult virtualResult = routeVirtual(item, itemStack, snapshot.getOwnerUuid(), route);
-            if (virtualResult.isSuccess()) {
-                int acceptedAmount = Math.min(itemStack.getAmount(), virtualResult.getAcceptedAmount());
-                if (acceptedAmount <= 0) {
-                    stats.addItemsSkipped(itemStack.getAmount());
+                if (!beginWorldTrashTransfer(item)) {
+                    stats.addItemsSkipped(actualAmount);
                     return;
                 }
-                ItemStack acceptedStack = itemStack.clone();
-                acceptedStack.setAmount(acceptedAmount);
-                tracker.recordItem(acceptedStack, virtualResult.getDestination(), virtualResult.getTrackingKey());
+                WorldTrashTransfer transfer = new WorldTrashTransfer(item.getLocation().clone());
+                tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
+                        stats, tracker, locations, 0, transfer);
+                return;
+            }
+            TrashRoutingResult virtualResult = routeVirtual(
+                    item, itemStack, actualAmount, snapshot.getOwnerUuid(), route);
+            if (virtualResult.isSuccess()) {
+                int acceptedAmount = Math.min(actualAmount, virtualResult.getAcceptedAmount());
+                if (acceptedAmount <= 0) {
+                    stats.addItemsSkipped(actualAmount);
+                    return;
+                }
+                if (!setRemainingAmount(item, actualAmount, actualAmount - acceptedAmount)) {
+                    int rolledBack;
+                    synchronized (trashRouter) {
+                        rolledBack = trashRouter.rollbackRouted(virtualResult, itemStack, acceptedAmount);
+                    }
+                    plugin.getLogger().severe("[FoliaCleanup] 地面数量提交失败，已回滚虚拟垃圾桶写入: route="
+                            + route + ", accepted=" + acceptedAmount + ", rolledBack=" + rolledBack);
+                    return;
+                }
+                recordItemAmount(tracker, itemStack, acceptedAmount,
+                        virtualResult.getDestination(), virtualResult.getTrackingKey());
                 stats.addItemsRouted(acceptedAmount, route);
                 if (route == TrashRoute.PERSONAL_TRASH) {
-                    stats.addPersonalTrashItem(snapshot.getOwnerUuid(), acceptedStack);
+                    addPersonalTrashAmount(stats, snapshot.getOwnerUuid(), itemStack, acceptedAmount);
                 }
-                if (acceptedAmount < itemStack.getAmount()) {
-                    ItemStack remainingStack = itemStack.clone();
-                    remainingStack.setAmount(itemStack.getAmount() - acceptedAmount);
-                    item.setItemStack(remainingStack);
+                if (acceptedAmount < actualAmount) {
                     plugin.getLogger().info("[FoliaCleanup] 公共垃圾桶达到紧凑模式单条目上限，保留掉落物剩余数量: accepted="
-                            + acceptedAmount + ", remaining=" + remainingStack.getAmount());
+                            + acceptedAmount + ", remaining=" + (actualAmount - acceptedAmount));
                     return;
                 }
                 forgetTrackedOwner(item);
-                item.remove();
                 return;
             }
             state.markUnavailable(route);
@@ -700,71 +845,170 @@ public final class FoliaRegionCleanupFeature implements Feature {
     }
 
     /** 尝试把物品写入世界垃圾桶位置列表。 */
-    private void tryWorldTrash(final Item item, final ItemStack itemStack, final ItemSnapshot snapshot,
+    private void tryWorldTrash(final Item item, final ItemStack itemStack, final int actualAmount,
+                               final ItemSnapshot snapshot,
                                final CleanupPolicy policy, final RouteState state,
                                final CleanupFeature.CleanupStats stats, final CompletionTracker tracker,
-                               final List<TrashLocation> locations, final int index) {
+                               final List<TrashLocation> locations, final int index,
+                               final WorldTrashTransfer transfer) {
         if (!tracker.isOpen()) {
+            returnWorldTrashItem(item, transfer, tracker, null);
             return;
         }
         if (index >= locations.size()) {
-            scheduleItemFallback(item, itemStack, snapshot, policy, state, stats, tracker);
+            returnForWorldTrashFallback(item, itemStack, actualAmount, snapshot,
+                    policy, state, stats, tracker, transfer);
             return;
         }
         final TrashLocation location = locations.get(index);
         final World world = Bukkit.getWorld(location.getWorldName());
-        if (world == null) {
-            tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, index + 1);
+        if (world == null || !world.isChunkLoaded(location.getX() >> 4, location.getZ() >> 4)) {
+            tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
+                    stats, tracker, locations, index + 1, transfer);
             return;
         }
         tracker.taskStarted();
         try {
-            Bukkit.getRegionScheduler().run(plugin, world, location.getX() >> 4, location.getZ() >> 4, new Consumer<ScheduledTask>() {
-                /** 在箱子所在 region 内写入世界垃圾桶。 */
+            Location target = new Location(world, location.getX() + 0.5D,
+                    location.getY() + 1.0D, location.getZ() + 0.5D);
+            item.teleportAsync(target).whenComplete(new BiConsumer<Boolean, Throwable>() {
+                /** 传送完成后在物品的新 region 内提交箱子和实体数量。 */
                 @Override
-                public void accept(ScheduledTask task) {
-                    try {
-                        if (!tracker.isOpen()) {
-                            return;
-                        }
-                        if (trashRouter.routeWorldTrashAt(location, itemStack.clone())) {
-                            forgetTrackedOwner(item);
-                            stats.addItemsRouted(itemStack.getAmount(), TrashRoute.WORLD_TRASH);
-                            scheduleRemoveRoutedItem(item, itemStack, tracker,
-                                    trashRouter.destination(location));
-                        } else {
-                            tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, index + 1);
-                        }
-                    } finally {
-                        tracker.taskDone();
+                public void accept(Boolean teleported, Throwable error) {
+                    if (error != null || !Boolean.TRUE.equals(teleported)) {
+                        plugin.getLogger().warning("[FoliaCleanup] 物品转移到世界垃圾桶 region 失败: "
+                                + location.getWorldName() + "," + location.getX() + ","
+                                + location.getY() + "," + location.getZ()
+                                + (error == null ? "" : " - " + error.getMessage()));
                     }
+                    scheduleWorldTrashStep(item, tracker, new Runnable() {
+                        /** 在物品当前 region 继续提交或尝试下一个世界垃圾桶。 */
+                        @Override
+                        public void run() {
+                            if (error == null && Boolean.TRUE.equals(teleported)) {
+                                commitWorldTrashTransfer(item, itemStack, actualAmount, snapshot,
+                                        policy, state, stats, tracker, locations, index,
+                                        location, transfer);
+                            } else {
+                                tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
+                                        stats, tracker, locations, index + 1, transfer);
+                            }
+                        }
+                    }, "目标 region 提交任务未能执行");
                 }
             });
         } catch (RuntimeException exception) {
-            plugin.getLogger().warning("[FoliaCleanup] 分派世界垃圾桶写入失败: "
+            plugin.getLogger().warning("[FoliaCleanup] 分派世界垃圾桶传送失败: "
                     + location.getWorldName() + "," + location.getX() + "," + location.getY() + "," + location.getZ()
                     + " - " + exception.getMessage());
-            tryWorldTrash(item, itemStack, snapshot, policy, state, stats, tracker, locations, index + 1);
+            tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
+                    stats, tracker, locations, index + 1, transfer);
             tracker.taskDone();
         }
     }
 
-    /** 世界垃圾桶全部失败后回到物品实体 region 继续降级路由。 */
-    private void scheduleItemFallback(final Item item, final ItemStack itemStack, final ItemSnapshot snapshot,
-                                      final CleanupPolicy policy, final RouteState state,
-                                      final CleanupFeature.CleanupStats stats, final CompletionTracker tracker) {
+    /** 在目标 region 内写入容器并立即提交同 region 的实体数量。 */
+    private void commitWorldTrashTransfer(final Item item, final ItemStack itemStack,
+                                          final int actualAmount, final ItemSnapshot snapshot,
+                                          final CleanupPolicy policy, final RouteState state,
+                                          final CleanupFeature.CleanupStats stats,
+                                           final CompletionTracker tracker,
+                                           final List<TrashLocation> locations, final int index,
+                                           final TrashLocation location, final WorldTrashTransfer transfer) {
         if (!tracker.isOpen()) {
+            returnWorldTrashItem(item, transfer, tracker, null);
             return;
         }
+        int accepted = trashRouter.routeWorldTrashAtAmount(location, itemStack.clone(), actualAmount);
+        if (accepted <= 0) {
+            tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
+                    stats, tracker, locations, index + 1, transfer);
+            return;
+        }
+        if (!setRemainingAmount(item, actualAmount, actualAmount - accepted)) {
+            int rolledBack = trashRouter.rollbackWorldTrashAtAmount(location, itemStack, accepted);
+            plugin.getLogger().severe("[FoliaCleanup] 世界垃圾桶事务提交失败，已回滚容器: entity="
+                    + item.getUniqueId() + ", expected=" + actualAmount + ", accepted=" + accepted
+                    + ", rolledBack=" + rolledBack);
+            returnWorldTrashItem(item, transfer, tracker, null);
+            return;
+        }
+        if (tracker.isOpen()) {
+            stats.addItemsRouted(accepted, TrashRoute.WORLD_TRASH);
+            recordItemAmount(tracker, itemStack, accepted, trashRouter.destination(location), "");
+        }
+        if (accepted >= actualAmount) {
+            forgetTrackedOwner(item);
+            finishWorldTrashTransfer(item);
+            return;
+        }
+        returnWorldTrashItem(item, transfer, tracker, null);
+    }
+
+    /** 世界垃圾桶全部不可用时先返回原位置，再执行个人、公共或删除降级。 */
+    private void returnForWorldTrashFallback(final Item item, final ItemStack itemStack,
+                                             final int actualAmount, final ItemSnapshot snapshot,
+                                             final CleanupPolicy policy, final RouteState state,
+                                             final CleanupFeature.CleanupStats stats,
+                                             final CompletionTracker tracker,
+                                             final WorldTrashTransfer transfer) {
         state.worldAvailable = false;
+        returnWorldTrashItem(item, transfer, tracker, new Runnable() {
+            /** 回到原 region 后继续原有降级决策。 */
+            @Override
+            public void run() {
+                routeWithFallback(item, itemStack, actualAmount,
+                        snapshot, policy, state, stats, tracker);
+            }
+        });
+    }
+
+    /** 把仍存在的物品实体传回扫地前的位置并执行后续动作。 */
+    private void returnWorldTrashItem(final Item item, final WorldTrashTransfer transfer,
+                                      final CompletionTracker tracker, final Runnable afterReturn) {
+        if (!item.isValid() || item.isDead()) {
+            finishWorldTrashTransfer(item);
+            return;
+        }
         tracker.taskStarted();
+        try {
+            item.teleportAsync(transfer.origin).whenComplete(new BiConsumer<Boolean, Throwable>() {
+                /** 返回原位置后在实体 region 释放事务标记。 */
+                @Override
+                public void accept(final Boolean returned, final Throwable error) {
+                    scheduleWorldTrashStep(item, tracker, new Runnable() {
+                        /** 释放占用，并仅在成功返回时继续降级路由。 */
+                        @Override
+                        public void run() {
+                            finishWorldTrashTransfer(item);
+                            if (error == null && Boolean.TRUE.equals(returned) && afterReturn != null) {
+                                afterReturn.run();
+                            } else if (error != null || !Boolean.TRUE.equals(returned)) {
+                                plugin.getLogger().warning("[FoliaCleanup] 世界垃圾桶事务物品返回原位置失败: entity="
+                                        + item.getUniqueId() + (error == null ? "" : " - " + error.getMessage()));
+                            }
+                        }
+                    }, "返回原位置后的实体任务未能执行");
+                }
+            });
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[FoliaCleanup] 分派物品返回原位置失败: " + exception.getMessage());
+            finishWorldTrashTransfer(item);
+            tracker.taskDone();
+        }
+    }
+
+    /** 在物品所属 region 安排事务步骤，并保证完成计数只释放一次。 */
+    private void scheduleWorldTrashStep(final Item item, final CompletionTracker tracker,
+                                        final Runnable action, final String retiredReason) {
         final AtomicBoolean finished = new AtomicBoolean(false);
         Runnable retired = new Runnable() {
-            /** 实体已卸载时结束降级任务。 */
+            /** 实体已卸载时释放事务和完成计数。 */
             @Override
             public void run() {
                 if (finished.compareAndSet(false, true)) {
-                    stats.addItemsSkipped(itemStack.getAmount());
+                    finishWorldTrashTransfer(item);
+                    plugin.getLogger().warning("[FoliaCleanup] " + retiredReason + ": entity=" + item.getUniqueId());
                     tracker.taskDone();
                 }
             }
@@ -772,13 +1016,11 @@ public final class FoliaRegionCleanupFeature implements Feature {
         boolean scheduled;
         try {
             scheduled = item.getScheduler().execute(plugin, new Runnable() {
-                /** 在物品实体 region 内继续降级路由。 */
+                /** 在实体合法 region 执行事务动作。 */
                 @Override
                 public void run() {
                     try {
-                        if (tracker.isOpen()) {
-                            routeWithFallback(item, itemStack, snapshot, policy, state, stats, tracker);
-                        }
+                        action.run();
                     } finally {
                         if (finished.compareAndSet(false, true)) {
                             tracker.taskDone();
@@ -787,7 +1029,7 @@ public final class FoliaRegionCleanupFeature implements Feature {
                 }
             }, retired, 1L);
         } catch (RuntimeException exception) {
-            plugin.getLogger().warning("[FoliaCleanup] 分派物品降级路由失败: " + exception.getMessage());
+            plugin.getLogger().warning("[FoliaCleanup] 分派世界垃圾桶事务实体任务失败: " + exception.getMessage());
             scheduled = false;
         }
         if (!scheduled) {
@@ -795,55 +1037,104 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
     }
 
-    /** 删除已经成功路由的物品实体。 */
-    private void scheduleRemoveRoutedItem(final Item item, final ItemStack itemStack,
-                                          final CompletionTracker tracker,
-                                          final CleanupItemDestination destination) {
-        if (!tracker.isOpen()) {
+    /** 标记物品进入短生命周期的跨 region 世界垃圾桶事务。 */
+    private boolean beginWorldTrashTransfer(Item item) {
+        if (item == null || !pendingWorldTrashItems.add(item.getUniqueId())) {
+            return false;
+        }
+        item.setMetadata(WORLD_TRASH_TRANSFER_METADATA, new FixedMetadataValue(plugin, Boolean.TRUE));
+        return true;
+    }
+
+    /** 释放跨 region 世界垃圾桶事务占用。 */
+    private void finishWorldTrashTransfer(Item item) {
+        if (item == null) {
             return;
         }
-        tracker.taskStarted();
-        final AtomicBoolean finished = new AtomicBoolean(false);
-        Runnable retired = new Runnable() {
-            /** 实体已卸载时结束删除任务。 */
-            @Override
-            public void run() {
-                if (finished.compareAndSet(false, true)) {
-                    tracker.taskDone();
-                }
-            }
-        };
-        boolean scheduled;
-        try {
-            scheduled = item.getScheduler().execute(plugin, new Runnable() {
-                /** 在物品实体 region 内删除实体。 */
-                @Override
-                public void run() {
-                    try {
-                        if (tracker.isOpen()) {
-                            item.remove();
-                            tracker.recordItem(itemStack, destination, "");
-                        }
-                    } finally {
-                        if (finished.compareAndSet(false, true)) {
-                            tracker.taskDone();
-                        }
-                    }
-                }
-            }, retired, 1L);
-        } catch (RuntimeException exception) {
-            plugin.getLogger().warning("[FoliaCleanup] 分派物品删除失败: " + exception.getMessage());
-            scheduled = false;
-        }
-        if (!scheduled) {
-            retired.run();
+        pendingWorldTrashItems.remove(item.getUniqueId());
+        if (item.isValid() && !item.isDead()) {
+            item.removeMetadata(WORLD_TRASH_TRANSFER_METADATA, plugin);
         }
     }
 
     /** 路由到个人或公共虚拟垃圾桶。 */
-    private TrashRoutingResult routeVirtual(Item item, ItemStack itemStack, UUID ownerUuid, TrashRoute route) {
+    private TrashRoutingResult routeVirtual(Item item, ItemStack itemStack, int actualAmount,
+                                            UUID ownerUuid, TrashRoute route) {
         synchronized (trashRouter) {
-            return trashRouter.routeDetailed(item.getWorld(), ownerUuid, itemStack.clone(), route, true);
+            return trashRouter.routeDetailedAmount(
+                    item.getWorld(), ownerUuid, itemStack.clone(), actualAmount, route, true);
+        }
+    }
+
+    /** 返回掉落物实际数量；未启用数量提供者时保持原始路径。 */
+    private int actualAmount(Item item) {
+        if (item == null || item.getItemStack() == null) {
+            return 0;
+        }
+        return itemQuantityService == null
+                ? item.getItemStack().getAmount() : itemQuantityService.getAmount(item);
+    }
+
+    /** 按预期数量写入剩余；默认路径直接修改物理堆叠。 */
+    private boolean setRemainingAmount(Item item, int expectedAmount, int remainingAmount) {
+        if (itemQuantityService != null) {
+            return itemQuantityService.setRemaining(item, expectedAmount, remainingAmount);
+        }
+        if (item == null || item.getItemStack() == null
+                || item.getItemStack().getAmount() != expectedAmount || remainingAmount < 0) {
+            return false;
+        }
+        if (remainingAmount == 0) {
+            item.remove();
+            return true;
+        }
+        ItemStack remaining = item.getItemStack();
+        remaining.setAmount(remainingAmount);
+        item.setItemStack(remaining);
+        return true;
+    }
+
+    /** 按原版堆叠上限拆分并记录审计物品。 */
+    private void recordItemAmount(final CompletionTracker tracker, ItemStack sample, int amount,
+                                  final CleanupItemDestination destination, final String trackingKey) {
+        forEachLegalStack(sample, amount, new ItemQuantityService.ItemStackConsumer() {
+            /** 记录一个合法数量的物品快照。 */
+            @Override
+            public void accept(ItemStack itemStack) {
+                tracker.recordItem(itemStack, destination, trackingKey);
+            }
+        });
+    }
+
+    /** 按原版堆叠上限拆分个人垃圾桶通知物品。 */
+    private void addPersonalTrashAmount(final CleanupFeature.CleanupStats stats, final UUID ownerUuid,
+                                        ItemStack sample, int amount) {
+        forEachLegalStack(sample, amount, new ItemQuantityService.ItemStackConsumer() {
+            /** 记录一个合法数量的个人通知快照。 */
+            @Override
+            public void accept(ItemStack itemStack) {
+                stats.addPersonalTrashItem(ownerUuid, itemStack);
+            }
+        });
+    }
+
+    /** 使用数量服务或本地循环拆分合法物品堆叠。 */
+    private void forEachLegalStack(ItemStack sample, int amount, ItemQuantityService.ItemStackConsumer consumer) {
+        if (sample == null || amount <= 0 || consumer == null) {
+            return;
+        }
+        if (itemQuantityService != null) {
+            itemQuantityService.forEachStack(sample, amount, consumer);
+            return;
+        }
+        int max = Math.max(1, sample.getMaxStackSize());
+        int remaining = amount;
+        while (remaining > 0) {
+            ItemStack copy = sample.clone();
+            int moved = Math.min(max, remaining);
+            copy.setAmount(moved);
+            consumer.accept(copy);
+            remaining -= moved;
         }
     }
 
@@ -1409,6 +1700,16 @@ public final class FoliaRegionCleanupFeature implements Feature {
         }
     }
 
+    /** 单次世界垃圾桶转移需要保留的原始位置。 */
+    private static final class WorldTrashTransfer {
+        private final Location origin;
+
+        /** 保存扫地开始时的掉落物位置。 */
+        private WorldTrashTransfer(Location origin) {
+            this.origin = origin;
+        }
+    }
+
     /** 跟踪器日志指标。 */
     private enum TrackerMetric {
         CHUNKS_SEEN {
@@ -1458,6 +1759,39 @@ public final class FoliaRegionCleanupFeature implements Feature {
         abstract int value(CompletionTracker tracker);
     }
 
+    /** Folia 门禁单批次的任务收口状态。 */
+    private final class GuardCountBatch {
+        private final GuardCountTracker tracker;
+        private final int nextIndex;
+        private final AtomicInteger pendingTasks = new AtomicInteger(1);
+        private final AtomicBoolean schedulingDone = new AtomicBoolean(false);
+
+        /** 创建一个门禁计数批次。 */
+        private GuardCountBatch(GuardCountTracker tracker, int nextIndex) {
+            this.tracker = tracker;
+            this.nextIndex = nextIndex;
+        }
+
+        /** 记录批次内新增的区块任务。 */
+        private void taskStarted() {
+            pendingTasks.incrementAndGet();
+        }
+
+        /** 记录批次内一个区块任务已经收口。 */
+        private void taskDone() {
+            if (pendingTasks.decrementAndGet() == 0) {
+                continueGuardCountBatch(tracker.chunks, this, tracker.policy, tracker.foliaConfig);
+            }
+        }
+
+        /** 标记批次已经完成派发，并在无任务时立即收口。 */
+        private void finishScheduling() {
+            if (schedulingDone.compareAndSet(false, true)) {
+                taskDone();
+            }
+        }
+    }
+
     /** Folia 门禁目标实体计数跟踪器。 */
     private final class GuardCountTracker {
         private final CleanupFeature.CleanupStats stats;
@@ -1469,7 +1803,12 @@ public final class FoliaRegionCleanupFeature implements Feature {
         private final boolean guardsIgnored;
         private final AtomicInteger pendingTasks = new AtomicInteger(1);
         private final AtomicBoolean completed = new AtomicBoolean(false);
+        private final AtomicBoolean stopDispatch = new AtomicBoolean(false);
+        private final AtomicBoolean schedulingDone = new AtomicBoolean(false);
         private final AtomicInteger targetEntities = new AtomicInteger();
+        private final AtomicInteger chunksScheduled = new AtomicInteger();
+        private final AtomicInteger chunksDone = new AtomicInteger();
+        private final AtomicInteger entitiesChecked = new AtomicInteger();
         private TaskHandle timeoutTask;
 
         /** 创建 Folia 门禁目标实体计数跟踪器。 */
@@ -1509,9 +1848,29 @@ public final class FoliaRegionCleanupFeature implements Feature {
             return !completed.get();
         }
 
+        /** 判断门禁是否仍允许派发新的区块任务。 */
+        private boolean isDispatchOpen() {
+            return isOpen() && !stopDispatch.get();
+        }
+
+        /** 判断当前区块是否仍允许继续统计目标实体。 */
+        private boolean isAcceptingTargets() {
+            return isOpen() && !stopDispatch.get();
+        }
+
         /** 记录新任务。 */
         private void taskStarted() {
             pendingTasks.incrementAndGet();
+        }
+
+        /** 记录已派发的门禁区块任务。 */
+        private void chunkScheduled() {
+            chunksScheduled.incrementAndGet();
+        }
+
+        /** 记录已收口的门禁区块任务。 */
+        private void chunkDone() {
+            chunksDone.incrementAndGet();
         }
 
         /** 记录任务完成。 */
@@ -1523,12 +1882,17 @@ public final class FoliaRegionCleanupFeature implements Feature {
 
         /** 初始任务分派完成。 */
         private void initialSchedulingDone() {
-            taskDone();
+            if (schedulingDone.compareAndSet(false, true)) {
+                taskDone();
+            }
         }
 
         /** 增加一个会被扫地处理的目标实体。 */
         private void targetFound() {
-            targetEntities.incrementAndGet();
+            int target = targetEntities.incrementAndGet();
+            if (target >= stats.getGuardMinTotalEntities()) {
+                stopDispatch.set(true);
+            }
         }
 
         /** 完成门禁计数。 */

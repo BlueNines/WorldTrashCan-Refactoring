@@ -146,35 +146,59 @@ public final class PersonalTrashService {
                 == TrashWriteResult.Status.ACCEPTED_FULL;
     }
 
+    /** 按独立数量写入非扫地来源，并维护个人桶审计变更。 */
+    public TrashWriteResult addItemAmount(UUID ownerUuid, ItemStack itemStack, int requestedAmount) {
+        return addAutomaticItem(ownerUuid, itemStack, requestedAmount, false,
+                TrashMutationReason.NON_CLEANUP_DEPOSIT);
+    }
+
     /** 放入正式扫地物品，并允许紧凑模式部分接收。 */
     public TrashWriteResult addCleanupItem(UUID ownerUuid, ItemStack itemStack) {
-        return addAutomaticItem(ownerUuid, itemStack, true,
+        return addCleanupItem(ownerUuid, itemStack, itemStack == null ? 0 : itemStack.getAmount());
+    }
+
+    /** 按独立实际数量放入正式扫地物品。 */
+    public TrashWriteResult addCleanupItem(UUID ownerUuid, ItemStack itemStack, int requestedAmount) {
+        return addAutomaticItem(ownerUuid, itemStack, requestedAmount, true,
                 TrashMutationReason.NON_CLEANUP_DEPOSIT);
+    }
+
+    /** 回滚来源实体扣减失败前已经写入个人桶的数量。 */
+    public int rollbackWrite(UUID ownerUuid, String trackingKey, int requestedAmount) {
+        TrashContainerStore ownerStore = ownerUuid == null ? null : stores.get(ownerUuid);
+        return ownerStore == null ? 0 : ownerStore.rollback(trackingKey, requestedAmount);
     }
 
     /** 自动路由写入；只有容器容量拒绝时才按配置清空并重试一次。 */
     private TrashWriteResult addAutomaticItem(UUID ownerUuid, ItemStack itemStack,
-                                              boolean cleanupSource,
-                                              TrashMutationReason reason) {
+                                               boolean cleanupSource,
+                                               TrashMutationReason reason) {
+        return addAutomaticItem(ownerUuid, itemStack, itemStack == null ? 0 : itemStack.getAmount(),
+                cleanupSource, reason);
+    }
+
+    /** 按独立数量自动路由写入。 */
+    private TrashWriteResult addAutomaticItem(UUID ownerUuid, ItemStack itemStack, int requestedAmount,
+                                               boolean cleanupSource,
+                                               TrashMutationReason reason) {
         if (!isEnabled() || ownerUuid == null) {
             return TrashWriteResult.rejected();
         }
         ItemStack cleanItemStack = sanitize(itemStack);
-        if (InventorySlotUtil.isEmpty(cleanItemStack)) {
+        if (InventorySlotUtil.isEmpty(cleanItemStack) || requestedAmount <= 0) {
             return TrashWriteResult.rejected();
         }
         TrashContainerStore store = store(ownerUuid);
         TrashWriteResult result = config.isAutoClearWhenFull()
-                ? store.addWithClearRetry(cleanItemStack, cleanupSource)
-                : store.add(cleanItemStack, cleanupSource);
+                ? store.addWithClearRetry(cleanItemStack, requestedAmount, cleanupSource)
+                : store.add(cleanItemStack, requestedAmount, cleanupSource);
         if (result.isClearedBeforeWrite()) {
             recordMutation(TrashMutation.clear(personalDestination(ownerUuid),
                     TrashMutationReason.PERSONAL_AUTO_CLEAR, System.currentTimeMillis()));
             plugin.getLogger().info("[PersonalTrash] 个人垃圾桶容量不足，已按配置清空并仅重试一次: owner="
                     + ownerUuid);
         }
-        if (!cleanupSource && result.getStatus() == TrashWriteResult.Status.ACCEPTED_FULL
-                && hasAuditConsumer()) {
+        if (!cleanupSource && result.isAccepted() && hasAuditConsumer()) {
             recordMutation(TrashMutation.untrackedDeposit(personalDestination(ownerUuid),
                     cleanItemStack, result.getTrackingKey(), result.getAcceptedAmount(),
                     reason, System.currentTimeMillis()));
@@ -184,11 +208,24 @@ public final class PersonalTrashService {
 
     /** 发送单个来源进入个人垃圾桶的提示。 */
     public void notifySingle(UUID ownerUuid, ItemStack itemStack) {
-        if (!canNotify(ownerUuid) || InventorySlotUtil.isEmpty(itemStack)) {
+        notifySingleAmount(ownerUuid, itemStack, itemStack == null ? 0 : itemStack.getAmount());
+    }
+
+    /** 按独立实际数量发送单次个人垃圾桶回收提示。 */
+    public void notifySingleAmount(UUID ownerUuid, ItemStack sample, int amount) {
+        if (!canNotify(ownerUuid) || InventorySlotUtil.isEmpty(sample) || amount <= 0) {
             return;
         }
         List<ItemStack> itemStacks = new ArrayList<>();
-        itemStacks.add(itemStack.clone());
+        int max = Math.max(1, sample.getMaxStackSize());
+        int remaining = amount;
+        while (remaining > 0) {
+            ItemStack copy = sample.clone();
+            int moved = Math.min(max, remaining);
+            copy.setAmount(moved);
+            itemStacks.add(copy);
+            remaining -= moved;
+        }
         sendToOwner(ownerUuid, rawMessage("personal-trash.recycle.single",
                 "{prefix}&a已回收到个人垃圾桶: {items}",
                 "{items}", formatItemList(itemStacks)));

@@ -15,6 +15,15 @@ public final class FeatureRegistry {
         }
     }
 
+    /** 动态注册并立即启用单个功能。 */
+    public void registerAndEnable(Feature feature) {
+        if (feature == null || features.contains(feature)) {
+            return;
+        }
+        features.add(feature);
+        feature.enable();
+    }
+
     /** 启用所有功能。 */
     public void enableAll() {
         for (Feature feature : features) {

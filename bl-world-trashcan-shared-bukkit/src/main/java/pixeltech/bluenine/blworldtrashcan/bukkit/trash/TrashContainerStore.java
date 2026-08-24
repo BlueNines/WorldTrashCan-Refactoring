@@ -105,14 +105,18 @@ public class TrashContainerStore {
 
     /** 添加物品；allowPartial 为 true 时返回尽可能接受的数量和实际条目追踪键。 */
     public synchronized TrashWriteResult add(ItemStack itemStack, boolean allowPartial) {
-        if (config == null || itemStack == null || itemStack.getAmount() <= 0) {
+        return add(itemStack, itemStack == null ? 0 : itemStack.getAmount(), allowPartial);
+    }
+
+    /** 按独立实际数量添加样品，避免为逻辑堆叠制造超上限 ItemStack。 */
+    public synchronized TrashWriteResult add(ItemStack itemStack, int requested, boolean allowPartial) {
+        if (config == null || itemStack == null || requested <= 0) {
             return TrashWriteResult.rejected();
         }
         String key = identityProvider.key(itemStack);
         if (key == null) {
             return TrashWriteResult.rejected();
         }
-        int requested = itemStack.getAmount();
         long capacity = capacityFor(key, itemStack);
         long accepted = allowPartial ? Math.min(requested, capacity) : requested <= capacity ? requested : 0L;
         if (accepted <= 0L) {
@@ -135,7 +139,13 @@ public class TrashContainerStore {
 
     /** 容量拒绝时原子清空并只重试一次，其它拒绝和部分接收绝不清空。 */
     public synchronized TrashWriteResult addWithClearRetry(ItemStack itemStack, boolean allowPartial) {
-        TrashWriteResult first = add(itemStack, allowPartial);
+        return addWithClearRetry(itemStack, itemStack == null ? 0 : itemStack.getAmount(), allowPartial);
+    }
+
+    /** 按独立实际数量执行一次容量清空重试。 */
+    public synchronized TrashWriteResult addWithClearRetry(ItemStack itemStack, int requested,
+                                                           boolean allowPartial) {
+        TrashWriteResult first = add(itemStack, requested, allowPartial);
         if (first.getStatus() != TrashWriteResult.Status.REJECTED_CONTAINER_CAPACITY) {
             return first;
         }
@@ -143,11 +153,11 @@ public class TrashContainerStore {
             return first;
         }
         clear();
-        TrashWriteResult retried = add(itemStack, allowPartial);
+        TrashWriteResult retried = add(itemStack, requested, allowPartial);
         if (!retried.isAccepted()) {
             return retried;
         }
-        return TrashWriteResult.accepted(retried.getAcceptedAmount(), itemStack.getAmount(),
+        return TrashWriteResult.accepted(retried.getAcceptedAmount(), requested,
                 retried.getTrackingKey(), true);
     }
 
@@ -160,6 +170,19 @@ public class TrashContainerStore {
     /** 按稳定条目 ID 移除数量，避免旧视图命中新建的同类物品。 */
     public synchronized int remove(long entryId, long requestedAmount) {
         return removeEntry(entriesById.get(Long.valueOf(entryId)), requestedAmount);
+    }
+
+    /** 按不透明追踪键回滚一次尚未提交的写入；仅错误路径执行线性查找。 */
+    public synchronized int rollback(String trackingKey, long requestedAmount) {
+        if (trackingKey == null || trackingKey.isEmpty() || requestedAmount <= 0L) {
+            return 0;
+        }
+        for (StoredEntry entry : entriesById.values()) {
+            if (trackingKey.equals(entry.trackingKey)) {
+                return removeEntry(entry, requestedAmount);
+            }
+        }
+        return 0;
     }
 
     /** 创建一次打开会话使用的稳定排序和分页引用快照。 */

@@ -35,6 +35,7 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 潜影盒物品保护 | 没有 | 可选择跳过掉落物携带的装满潜影盒物品，默认关闭 |
 | 自定义数据物品路由 | 只能依赖材质、名称和 Lore 排除 | 可按 Material、名称、Lore、PDC key、Raw NBT/Data Components key 识别，并选择只进个人桶、留地或直接删除 |
 | 公共垃圾桶准入 | 只有材质黑名单 | 可选五类规则白名单；未命中物品不会进入公共桶，扫地拒绝动作可选留地或直接删除 |
+| 地面掉落物聚集 | 依赖原版最多 64 个 | 实验性逻辑堆叠可让一个实体代表最多 `10000` 个物品，并兼容拾取、漏斗、重启、扫地与损坏回收；默认完全关闭 |
 
 上表只列服主能直接感知的业务变化，没有把内部实现细节重复算成新功能。
 
@@ -129,6 +130,23 @@ personal-trash:
 ```
 
 两个命令分别绑定到自己的聊天组件，互不覆盖；只配置一侧时只显示一侧。旧配置中的 `personal-trash.notify.click-command` 仍作为个人按钮命令读取，且在没有新公共命令的旧配置中不会强行增加公共按钮。两个命令都为空时恢复普通文本消息。点击命令会在玩家所属合法线程执行，兼容普通 Bukkit/Paper 和 Folia/Luminol。
+
+### 地面掉落物逻辑堆叠
+
+这是默认关闭的实验性功能。关闭时插件不会创建堆叠功能对象，不探测现代 API，不注册对应监听器或任务，也不会在数据目录生成 `item-stacking.yml`。开启方式：
+
+```yaml
+# config.yml
+features:
+  item-stacking:
+    enabled: true
+```
+
+插件在启动时按 PDC、掉落物 owner、拾取、漏斗、合并、区块事件和调度 API 的实际能力决定是否启用，不读取服务端品牌名，也不硬编码 Minecraft 小版本。缺少实体 PDC 的运行时会明确拒绝；具备完整能力的运行时才会启用。1.12.2 属于前者，但插件不把这个结论写死成版本判断。检测到 RoseStacker、WildStacker、UltimateStacker 或 StackMob 时拒绝同时运行。
+
+逻辑数量只写在地面掉落物实体的 PDC 中，不修改背包物品，因此不会破坏普通物品堆叠。相同 `ItemStack` 数据和相同 owner 的附近物品才会聚集，不同名称、Lore、附魔、PDC、Data Components 或 owner 不会混合。主动处理使用有容量、TTL、数量和微秒预算的 dirty-chunk 队列与空间网格，不周期遍历全部世界实体，也不强制加载区块。Folia 的世界垃圾桶转移在目标箱子所属 region 内完成写入和数量扣减。
+
+详细参数首次启用后生成在 `item-stacking.yml`。`/wtc stacking status` 查看运行、排空、队列和数量统计；关闭总开关后使用 `/wtc stacking drain` 把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理。
 
 #### 兼容性和稳定性增强
 
@@ -285,7 +303,8 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.5.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- SHA-256：`4A9E531C6F566B1B6BEC3EEABA22A207EF32F21288D81012FEF5419A5E316B94`
+- SHA-256：`1B3331B953B1297E32F7116A72E1FBE742A70A3473E98E869A1CE192CF6DCD47`
+- 地面掉落物逻辑堆叠已使用同一 Universal 整包在 Paper 1.21.8 和 Folia 1.21.8 真实客户端中验证，覆盖数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由；Paper 的 `10004` 个圆石在 9 秒内收敛为 2 个实体且逻辑总数完整守恒。
 - 个人垃圾桶通知双按钮已使用整包 JAR 在 Paper 1.21.4、Paper 1.12.2 和 Folia 1.21.8 的真实客户端中验证，覆盖正式扫地回收通知、左右按钮可见性，以及从客户端聊天输入两条命令后分别打开个人桶/公共桶 GUI；本轮未把鼠标实际点击计入通过项。
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
 - 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
@@ -326,6 +345,7 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Filled shulker-box item protection | Not available | Cleanup can skip dropped item stacks containing filled shulker boxes; disabled by default |
 | Custom-data item routing | Exclusions relied on material, name, and Lore | Material, name, Lore, PDC keys, and Raw NBT/Data Components keys can route items to personal trash only, keep them on the ground, or remove them directly |
 | Public trash admission | Material blacklist only | An optional five-source allowlist controls every public-trash entry; rejected cleanup items can remain on the ground or be removed |
+| Ground-item aggregation | Limited to vanilla stacks of 64 | Experimental logical stacking lets one entity represent up to `10000` items while supporting pickup, hoppers, restarts, cleanup, and damage recovery; fully disabled by default |
 
 This table lists changes directly visible to server administrators and does not count internal implementation details as separate features.
 
@@ -418,6 +438,22 @@ personal-trash:
 ```
 
 Each command is attached to its own chat component. Leaving one command empty hides only that button; leaving both empty restores a plain text notification. The legacy `personal-trash.notify.click-command` remains the personal-button command, and an old configuration without a new global command does not gain a global button unexpectedly. Commands execute on the player's legal scheduler context on both Bukkit/Paper and Folia/Luminol.
+
+### Logical ground-item stacking
+
+This is an experimental, opt-in feature. While disabled, the plugin does not create a stacking object, probe modern APIs, register its listeners or task, or generate `item-stacking.yml` in the data folder. Enable it in `config.yml`:
+
+```yaml
+features:
+  item-stacking:
+    enabled: true
+```
+
+Startup checks the actual PDC, item-owner, pickup, hopper, merge, chunk-event, and scheduler APIs. It does not inspect server brand names or hard-code a Minecraft minor version. Runtimes without entity PDC are rejected; only runtimes that pass the complete capability probe are enabled. Minecraft 1.12.2 is one such rejected runtime, but this is not hard-coded as a version rule. RoseStacker, WildStacker, UltimateStacker, and StackMob are treated as conflicts.
+
+The logical amount is stored only on the dropped entity, never on inventory item stacks. Nearby items merge only when their complete `ItemStack` data and owner match, so names, Lore, enchantments, PDC, Data Components, and different owners stay separate. Processing uses a bounded, deduplicated dirty-chunk queue with TTL, count, and microsecond budgets plus a spatial grid. It does not periodically scan every world entity or force-load chunks. On Folia, world-trash insertion and entity deduction are committed in the target chest's region.
+
+Detailed settings are generated in `item-stacking.yml` after the first successful enable. `/wtc stacking status` shows runtime, draining, queue, and amount counters. After disabling the main switch, `/wtc stacking drain` splits logical amounts in loaded chunks back into vanilla stacks; unloaded chunks wait for natural loading.
 
 #### Compatibility and stability improvements
 
@@ -573,7 +609,8 @@ Final universal artifact information:
 
 - Version: `7.5.1`
 - File: `WorldListTrashCan-universal.jar`
-- SHA-256: `4A9E531C6F566B1B6BEC3EEABA22A207EF32F21288D81012FEF5419A5E316B94`
+- SHA-256: `1B3331B953B1297E32F7116A72E1FBE742A70A3473E98E869A1CE192CF6DCD47`
+- Logical ground-item stacking was verified with this exact universal JAR on real Paper 1.21.8 and Folia 1.21.8 clients. Coverage includes the logical cap, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. On Paper, `10004` cobblestone items converged to two entities within nine seconds with the full logical amount preserved.
 - Personal-trash dual notification buttons were verified with the universal JAR on real clients running Paper 1.21.4, Paper 1.12.2, and Folia 1.21.8. The evidence covers the cleanup notification, separate left/right button visibility, and opening the personal/global GUIs from commands entered in the client chat; physical mouse clicks are not claimed as passed.
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
 - Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.

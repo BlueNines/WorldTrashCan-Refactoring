@@ -11,6 +11,7 @@ import org.bukkit.entity.Steerable;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.EntitySnapshotMapper;
+import pixeltech.bluenine.blworldtrashcan.core.cleanup.EntitySnapshotRequirements;
 import pixeltech.bluenine.blworldtrashcan.core.model.EntitySnapshot;
 
 /** Folia 实体快照映射器。 */
@@ -18,21 +19,32 @@ public final class FoliaEntitySnapshotMapper implements EntitySnapshotMapper {
     /** 将 Bukkit 实体转成核心层快照。 */
     @Override
     public EntitySnapshot toSnapshot(Entity entity) {
+        return toSnapshot(entity, EntitySnapshotRequirements.all());
+    }
+
+    /** 按当前清理配置读取 Folia 实体快照。 */
+    @Override
+    public EntitySnapshot toSnapshot(Entity entity, EntitySnapshotRequirements requirements) {
         if (entity == null) {
             return new EntitySnapshot("", "", "", false, false, false, false, false, false);
         }
-        boolean insideBoat = entity.isInsideVehicle() && entity.getVehicle() instanceof Boat;
-        String customName = entity.getCustomName() == null ? "" : entity.getCustomName();
+        EntitySnapshotRequirements actual = requirements == null
+                ? EntitySnapshotRequirements.all() : requirements;
+        boolean insideBoat = actual.readInsideBoat()
+                && entity.isInsideVehicle() && entity.getVehicle() instanceof Boat;
+        String entityName = actual.readEntityName() ? entity.getName() : "";
+        String rawCustomName = actual.readCustomName() ? entity.getCustomName() : null;
+        String customName = rawCustomName == null ? "" : rawCustomName;
         return new EntitySnapshot(
                 entity.getType().name(),
-                entity.getName(),
+                entityName,
                 customName,
                 entity instanceof LivingEntity,
                 entity instanceof Monster,
                 entity instanceof Projectile,
                 insideBoat,
-                hasSaddle(entity),
-                hasTameableOwner(entity)
+                actual.readSaddle() && hasSaddle(entity),
+                actual.readOwner() && hasTameableOwner(entity)
         );
     }
 

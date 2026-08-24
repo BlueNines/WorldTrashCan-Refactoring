@@ -17,6 +17,10 @@
         </dependency>
         <dependency>
             <groupId>pixeltech.bluenine</groupId>
+            <artifactId>bl-world-trashcan-platform-paper-1_16_1_20</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pixeltech.bluenine</groupId>
             <artifactId>bl-world-trashcan-config</artifactId>
         </dependency>
         <dependency>
@@ -80,6 +84,7 @@
                                     <include>pixeltech.bluenine:bl-world-trashcan-storage</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-shared-bukkit</include>
                                     <include>pixeltech.bluenine:bl-world-trashcan-platform-bukkit-1_13_1_15</include>
+                                    <include>pixeltech.bluenine:bl-world-trashcan-platform-paper-1_16_1_20</include>
                                     <include>me.croabeast:PrismaticAPI</include>
                                 </includes>
                             </artifactSet>

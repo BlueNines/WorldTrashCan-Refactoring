@@ -213,6 +213,7 @@ command:
     - "&#5AC8FA/wtc stats &#64748B- &#C9D4E2查看清理和垃圾桶统计"
     - "&#5AC8FA/wtc add <数量> &#64748B- &#C9D4E2增加当前世界可创建的世界垃圾桶数量"
     - "&#5AC8FA/wtc add <世界名> <数量> &#64748B- &#C9D4E2后台增加指定世界可创建的世界垃圾桶数量"
+    - "&#5AC8FA/wtc stacking <status|drain> &#64748B- &#C9D4E2查看掉落物逻辑堆叠状态或安全排空"
     - "&#5AC8FA/wtc debughelp &#64748B- &#C9D4E2查看后台调试命令"
     - "&#5AC8FA/wtc reload &#64748B- &#C9D4E2重载插件"
   # /wtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
@@ -262,6 +263,10 @@ command:
   add-usage:
     - "&#FFD166用法: &#C9D4E2/wtc add <数量>"
     - "&#FFD166用法: &#C9D4E2/wtc add <世界名> <数量>"
+  # 掉落物逻辑堆叠管理命令提示。
+  stacking-drain-started: "{prefix}&#FFD166已进入掉落物逻辑堆叠排空模式，不会强制加载区块。"
+  stacking-drain-unavailable: "{prefix}&#FF6B6B当前没有可排空的掉落物逻辑堆叠运行实例。"
+  stacking-usage: "{prefix}&#FFD166用法: &#C9D4E2/wtc stacking <status|drain>"
   # 没有防丢弃模式权限时提示。
   no-dropmode-permission: "{prefix}&#FFD166权限不足 &#64748B| &#C9D4E2你没有权限使用防丢弃模式。"
   # 没有 look 查询权限时提示。

@@ -139,9 +139,9 @@ public final class ConfigBundleLoader {
                 ),
                 new CleanupConfig.FoliaCleanupConfig(
                         cleanup.getInt("folia.timeout-seconds", 30),
-                        cleanup.getInt("folia.max-chunks-per-cleanup", 4096),
-                        cleanup.getInt("folia.chunk-batch-size", 64),
-                        cleanup.getInt("folia.chunk-batch-delay-ticks", 1)
+                        cleanup.getInt("folia.max-chunks-per-cleanup", 0),
+                        cleanup.getInt("folia.chunk-batch-size", 800),
+                        cleanup.getInt("folia.chunk-batch-delay-ticks", 0)
                 ),
                 new CleanupConfig.MovingItemConfig(
                         cleanup.getBoolean("moving-items.enabled", false),
@@ -255,7 +255,8 @@ public final class ConfigBundleLoader {
                 entityLimitConfig,
                 loadNotifyConfig(cleanup),
                 main.getString("language", "message_zh.yml"),
-                main.getBoolean("debug", false)
+                main.getBoolean("debug", false),
+                main.getBoolean("features.item-stacking.enabled", false)
         );
     }
 

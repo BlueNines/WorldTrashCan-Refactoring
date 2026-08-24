@@ -41,9 +41,26 @@ public interface TrashRouter {
     TrashRoutingResult routeDetailed(World world, UUID ownerUuid, ItemStack itemStack,
                                      TrashRoute route, boolean cleanupSource);
 
+    /** 按独立实际数量路由样品；未覆盖的实现保守退回单个 ItemStack 数量。 */
+    default TrashRoutingResult routeDetailedAmount(World world, UUID ownerUuid, ItemStack sample,
+                                                    int requestedAmount, TrashRoute route,
+                                                    boolean cleanupSource) {
+        if (sample == null || requestedAmount <= 0) {
+            return TrashRoutingResult.failure();
+        }
+        ItemStack request = sample.clone();
+        request.setAmount(requestedAmount);
+        return routeDetailed(world, ownerUuid, request, route, cleanupSource);
+    }
+
     /** 按非扫地来源路由物品并返回是否成功。 */
     default boolean route(World world, UUID ownerUuid, ItemStack itemStack, TrashRoute route) {
         return routeDetailed(world, ownerUuid, itemStack, route, false).isSuccess();
+    }
+
+    /** 回滚一次已写入但来源扣减失败的路由结果，返回实际撤回数量。 */
+    default int rollbackRouted(TrashRoutingResult result, ItemStack sample, int requestedAmount) {
+        return 0;
     }
 
     /** 重载路由数据。 */

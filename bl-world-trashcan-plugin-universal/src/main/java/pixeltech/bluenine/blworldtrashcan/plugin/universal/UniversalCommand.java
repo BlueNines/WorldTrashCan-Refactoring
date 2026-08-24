@@ -85,6 +85,10 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
             handleAdd(sender, args);
             return true;
         }
+        if ("stacking".equals(sub)) {
+            handleStacking(sender, args);
+            return true;
+        }
         if ("debughelp".equals(sub)) {
             sendDebugHelp(sender);
             return true;
@@ -154,6 +158,9 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
         }
         if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
             return filter(ClearCommandOptions.booleanValues(), args[1]);
+        }
+        if (args.length == 2 && "stacking".equalsIgnoreCase(args[0])) {
+            return filter(Arrays.asList("status", "drain"), args[1]);
         }
         if (args.length == 2 && "debugnotify".equalsIgnoreCase(args[0])) {
             return filter(Arrays.asList("10", "5", "0", "-1", "-2", "-3", "-4", "-5"), args[1]);
@@ -301,9 +308,32 @@ public final class UniversalCommand implements CommandExecutor, TabCompleter {
                 "&b/wtc stats &7- 查看清理和垃圾桶统计",
                 "&b/wtc add <数量> &7- 增加当前世界可创建的世界垃圾桶数量",
                 "&b/wtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
+                "&b/wtc stacking <status|drain> &7- 查看掉落物堆叠状态或安全排空",
                 "&b/wtc debughelp &7- 查看后台调试命令",
                 "&b/wtc reload &7- 重载插件"));
         addonCommands.sendHelp(sender);
+    }
+
+    /** 处理掉落物堆叠状态和排空命令。 */
+    private void handleStacking(CommandSender sender, String[] args) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        String action = args.length < 2 ? "status" : args[1].toLowerCase(Locale.ROOT);
+        if ("status".equals(action)) {
+            for (String line : plugin.getItemStackingStatusLines()) {
+                sender.sendMessage(line);
+            }
+            return;
+        }
+        if ("drain".equals(action)) {
+            sender.sendMessage(plugin.drainItemStacking()
+                    ? message("command.stacking-drain-started", "{prefix}&e已进入掉落物逻辑堆叠排空模式，不会强制加载区块。")
+                    : message("command.stacking-drain-unavailable", "{prefix}&c当前没有可排空的掉落物逻辑堆叠运行实例。"));
+            return;
+        }
+        sender.sendMessage(message("command.stacking-usage", "{prefix}&c用法: /wtc stacking <status|drain>"));
     }
 
     /** 发送调试命令帮助。 */

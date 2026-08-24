@@ -10,12 +10,12 @@ import java.util.Set;
 public final class WorldListTrashCanCommandNames {
     private static final List<String> REGULAR = Collections.unmodifiableList(Arrays.asList(
             "help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
-            "dropmode", "look", "ban", "globalban"));
+            "dropmode", "look", "ban", "globalban", "stacking"));
     private static final List<String> ALL = Collections.unmodifiableList(Arrays.asList(
             "help", "debughelp", "reload", "platform", "clear", "global", "personal", "stats", "add",
             "dropmode", "look", "ban", "globalban", "debugopen", "debugworldtrash", "debugroute",
             "debugdrop", "debugdamage", "debugstock", "debugsummary", "debugdensity", "debugnotify",
-            "debugplayer", "debugrgb", "debugrgbchannels"));
+            "debugplayer", "debugrgb", "debugrgbchannels", "stacking"));
     private static final Set<String> RESERVED;
 
     static {

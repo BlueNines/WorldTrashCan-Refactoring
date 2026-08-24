@@ -201,9 +201,9 @@ public final class CleanupConfig {
     /** Folia 专用清理保护配置。 */
     public static final class FoliaCleanupConfig {
         private static final int DEFAULT_TIMEOUT_SECONDS = 30;
-        private static final int DEFAULT_MAX_CHUNKS_PER_CLEANUP = 4096;
-        private static final int DEFAULT_CHUNK_BATCH_SIZE = 64;
-        private static final int DEFAULT_CHUNK_BATCH_DELAY_TICKS = 1;
+        private static final int DEFAULT_MAX_CHUNKS_PER_CLEANUP = 0;
+        private static final int DEFAULT_CHUNK_BATCH_SIZE = 800;
+        private static final int DEFAULT_CHUNK_BATCH_DELAY_TICKS = 0;
 
         private final int timeoutSeconds;
         private final int maxChunksPerCleanup;
@@ -216,9 +216,7 @@ public final class CleanupConfig {
             this.timeoutSeconds = timeoutSeconds <= 0 ? DEFAULT_TIMEOUT_SECONDS : timeoutSeconds;
             this.maxChunksPerCleanup = Math.max(0, maxChunksPerCleanup);
             this.chunkBatchSize = chunkBatchSize <= 0 ? DEFAULT_CHUNK_BATCH_SIZE : chunkBatchSize;
-            this.chunkBatchDelayTicks = chunkBatchDelayTicks <= 0
-                    ? DEFAULT_CHUNK_BATCH_DELAY_TICKS
-                    : chunkBatchDelayTicks;
+            this.chunkBatchDelayTicks = Math.max(0, chunkBatchDelayTicks);
         }
 
         /** 返回默认 Folia 清理保护配置。 */
@@ -246,7 +244,7 @@ public final class CleanupConfig {
             return chunkBatchSize;
         }
 
-        /** 返回每批 chunk 扫描任务之间的延迟 tick，最小为 1。 */
+        /** 返回每批 chunk 扫描任务之间的延迟 tick，0 表示尽快派发下一批。 */
         public int getChunkBatchDelayTicks() {
             return chunkBatchDelayTicks;
         }

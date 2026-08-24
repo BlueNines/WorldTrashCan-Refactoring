@@ -25,6 +25,7 @@ public final class CleanupSettings {
     private final List<CompiledPattern> entityWhitePatterns;
     private final List<CompiledPattern> entityBlackPatterns;
     private final NamedEntityRules namedEntityRules;
+    private final EntitySnapshotRequirements entitySnapshotRequirements;
 
     /** 创建清理配置快照。 */
     public CleanupSettings(Set<String> ignoredMaterialKeys, Set<String> ignoredNameFragments,
@@ -84,6 +85,7 @@ public final class CleanupSettings {
         this.entityWhitePatterns = compilePatterns(entityWhitePatterns, false);
         this.entityBlackPatterns = compilePatterns(entityBlackPatterns, false);
         this.namedEntityRules = namedEntityRules == null ? NamedEntityRules.empty() : namedEntityRules;
+        this.entitySnapshotRequirements = EntitySnapshotRequirements.from(this);
     }
 
     /** 判断物品类型是否跳过清理。 */
@@ -169,6 +171,11 @@ public final class CleanupSettings {
         return matchesPatterns(typeKey, entityBlackPatterns) || matchesPatterns(entityName, entityBlackPatterns);
     }
 
+    /** 判断实体名称规则是否需要读取 Bukkit 实体名称。 */
+    public boolean hasEntityNameRules() {
+        return !entityWhitePatterns.isEmpty() || !entityBlackPatterns.isEmpty();
+    }
+
     /** 判断是否配置了至少一条有效的命名实体规则。 */
     public boolean hasNamedEntityRules() {
         return namedEntityRules.hasRules();
@@ -177,6 +184,11 @@ public final class CleanupSettings {
     /** 按白名单优先级匹配实体类型和自定义名称。 */
     public NamedEntityRules.Match matchNamedEntity(String typeKey, String customName) {
         return namedEntityRules.match(typeKey, customName);
+    }
+
+    /** 返回已经按当前配置裁剪好的实体快照读取计划。 */
+    public EntitySnapshotRequirements getEntitySnapshotRequirements() {
+        return entitySnapshotRequirements;
     }
 
     /** 复制并标准化字符串集合。 */

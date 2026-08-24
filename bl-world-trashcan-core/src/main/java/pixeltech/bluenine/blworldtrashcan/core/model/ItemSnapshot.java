@@ -103,6 +103,17 @@ public final class ItemSnapshot {
                 globalWhitelistRejectedAction);
     }
 
+    /** 返回使用指定实际数量的新快照。 */
+    public ItemSnapshot withAmount(int actualAmount) {
+        int normalized = Math.max(0, actualAmount);
+        if (amount == normalized) {
+            return this;
+        }
+        return new ItemSnapshot(materialKey, normalized, displayName, lore, ownerUuid,
+                customRoutingMatched, globalTrashAvailabilityEvaluated, globalTrashAvailable,
+                globalWhitelistRejectedAction);
+    }
+
     /** 返回带有本轮自定义路由和公共桶准入结果的新快照。 */
     public ItemSnapshot withRoutingMetadata(boolean matched,
                                             boolean evaluated,

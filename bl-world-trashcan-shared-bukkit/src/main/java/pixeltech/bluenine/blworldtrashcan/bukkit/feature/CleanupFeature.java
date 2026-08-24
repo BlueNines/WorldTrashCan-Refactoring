@@ -17,6 +17,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAud
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashCheck;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
@@ -67,6 +68,7 @@ public final class CleanupFeature implements Feature {
     private final DropOwnerTracker dropOwnerTracker;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final ItemRuleEvaluator itemRuleEvaluator;
+    private volatile ItemQuantityService itemQuantityService;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
     private BossBar bossBar;
@@ -80,6 +82,16 @@ public final class CleanupFeature implements Feature {
                           TrashRouter trashRouter, GlobalTrashService globalTrashService,
                           PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker,
                           DefaultWorldListTrashCanAuditBridge auditBridge) {
+        this(plugin, platform, configSupplier, trashRouter, globalTrashService, personalTrashService,
+                dropOwnerTracker, auditBridge, null);
+    }
+
+    /** 创建可读取外部逻辑数量的后台清理功能。 */
+    public CleanupFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
+                          TrashRouter trashRouter, GlobalTrashService globalTrashService,
+                          PersonalTrashService personalTrashService, DropOwnerTracker dropOwnerTracker,
+                          DefaultWorldListTrashCanAuditBridge auditBridge,
+                          ItemQuantityService itemQuantityService) {
         this.plugin = plugin;
         this.platform = platform;
         this.configSupplier = configSupplier;
@@ -89,6 +101,7 @@ public final class CleanupFeature implements Feature {
         this.dropOwnerTracker = dropOwnerTracker;
         this.auditBridge = auditBridge;
         this.itemRuleEvaluator = new ItemRuleEvaluator(platform.itemSnapshotMapper());
+        this.itemQuantityService = itemQuantityService;
     }
 
     /** 返回功能 ID。 */
@@ -259,6 +272,11 @@ public final class CleanupFeature implements Feature {
         plugin.getLogger().info("[Cleanup] 定时清理已启动，间隔 " + interval + " 秒。");
     }
 
+    /** 在可选堆叠功能动态启用后更新数量来源。 */
+    public void setItemQuantityService(ItemQuantityService itemQuantityService) {
+        this.itemQuantityService = itemQuantityService;
+    }
+
     /** 输出世界过滤、旧物品保护路径和数据读取能力告警。 */
     private void logWorldFilterWarnings(CleanupConfig cleanupConfig) {
         if (!cleanupConfig.hasWorldIncludeRules()) {
@@ -426,7 +444,9 @@ public final class CleanupFeature implements Feature {
         if (entity instanceof Item) {
             return isCleanableItemTarget((Item) entity, cleanupConfig, policy);
         }
-        EntityCleanupDecision decision = policy.decideEntity(platform.entitySnapshotMapper().toSnapshot(entity));
+        EntityCleanupDecision decision = policy.decideEntity(
+                platform.entitySnapshotMapper().toSnapshot(entity,
+                        cleanupConfig.getSettings().getEntitySnapshotRequirements()));
         return decision.getAction() == EntityCleanupAction.REMOVE;
     }
 
@@ -439,7 +459,8 @@ public final class CleanupFeature implements Feature {
             return false;
         }
         ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
-                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), cleanupConfig);
+                snapshotWithTrackedOwner(item, withActualAmount(item,
+                        platform.itemSnapshotMapper().toSnapshot(item))), cleanupConfig);
         ItemStack itemStack = item.getItemStack();
         if (itemStack == null) {
             return false;
@@ -472,7 +493,8 @@ public final class CleanupFeature implements Feature {
             return;
         }
         ItemSnapshot snapshot = snapshotWithRoutingMetadata(item,
-                snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)), cleanupConfig);
+                snapshotWithTrackedOwner(item, withActualAmount(item,
+                        platform.itemSnapshotMapper().toSnapshot(item))), cleanupConfig);
         if (snapshot == null) {
             stats.itemsSkipped++;
             return;
@@ -480,16 +502,18 @@ public final class CleanupFeature implements Feature {
         TrashRoutingDecision decision = decideItemRoute(
                 item, snapshot, item.getItemStack(), cleanupConfig, policy);
         if (decision.getRoute() == TrashRoute.SKIP) {
-            stats.itemsSkipped++;
+            stats.addItemsSkipped(actualAmount(item));
             return;
         }
         TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats, auditSession);
         if (finalDecision.getRoute() == TrashRoute.REMOVE) {
             ItemStack removedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
+            int removedAmount = actualAmount(item);
             forgetTrackedOwner(item);
             item.remove();
-            auditSession.recordItem(removedItemStack, CleanupItemDestination.directRemove(), "");
-            stats.itemsRemoved += Math.max(1, snapshot.getAmount());
+            recordItemAmount(auditSession, removedItemStack, removedAmount,
+                    CleanupItemDestination.directRemove(), "");
+            stats.addItemsRemoved(removedAmount);
         }
     }
 
@@ -533,33 +557,33 @@ public final class CleanupFeature implements Feature {
                 : trashRouter.hasGlobalTrash(item.getItemStack());
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
             ItemStack routedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
-            TrashRoutingResult routed = trashRouter.routeDetailed(item.getWorld(), snapshot.getOwnerUuid(),
-                    item.getItemStack(), decision.getRoute(), true);
+            int currentAmount = actualAmount(item);
+            TrashRoutingResult routed = trashRouter.routeDetailedAmount(item.getWorld(), snapshot.getOwnerUuid(),
+                    item.getItemStack(), currentAmount, decision.getRoute(), true);
             if (routed.isSuccess()) {
-                int currentAmount = item.getItemStack() == null ? snapshot.getAmount() : item.getItemStack().getAmount();
                 int acceptedAmount = Math.min(currentAmount, routed.getAcceptedAmount());
                 if (acceptedAmount <= 0) {
                     return new TrashRoutingDecision(TrashRoute.SKIP, "route-accepted-zero");
                 }
-                routedItemStack.setAmount(acceptedAmount);
-                auditSession.recordItem(routedItemStack, routed.getDestination(), routed.getTrackingKey());
+                if (!setRemainingAmount(item, currentAmount, currentAmount - acceptedAmount)) {
+                    int rolledBack = trashRouter.rollbackRouted(routed, routedItemStack, acceptedAmount);
+                    plugin.getLogger().severe("[Cleanup] 地面数量提交失败，已回滚垃圾桶写入: route="
+                            + decision.getRoute() + ", accepted=" + acceptedAmount + ", rolledBack=" + rolledBack);
+                    return new TrashRoutingDecision(TrashRoute.SKIP, "route-source-commit-failed");
+                }
+                recordItemAmount(auditSession, routedItemStack, acceptedAmount,
+                        routed.getDestination(), routed.getTrackingKey());
                 stats.addItemsRouted(acceptedAmount, decision.getRoute());
                 if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {
-                    stats.addPersonalTrashItem(snapshot.getOwnerUuid(), routedItemStack);
+                    addPersonalTrashAmount(stats, snapshot.getOwnerUuid(), routedItemStack, acceptedAmount);
                 }
                 if (acceptedAmount < currentAmount) {
-                    ItemStack remaining = item.getItemStack();
-                    if (remaining != null) {
-                        remaining.setAmount(currentAmount - acceptedAmount);
-                        item.setItemStack(remaining);
-                    }
                     plugin.getLogger().info("[Cleanup] 目标垃圾桶只接收了部分物品，已保留掉落物剩余数量: route="
                             + decision.getRoute() + ", accepted="
                             + acceptedAmount + ", remaining=" + (currentAmount - acceptedAmount));
                     return decision;
                 }
                 forgetTrackedOwner(item);
-                item.remove();
                 return decision;
             }
             if (decision.getRoute() == TrashRoute.WORLD_TRASH) {
@@ -575,6 +599,83 @@ public final class CleanupFeature implements Feature {
             stats.itemsSkipped++;
         }
         return decision;
+    }
+
+    /** 把平台快照中的物理数量替换为逻辑实际数量。 */
+    private ItemSnapshot withActualAmount(Item item, ItemSnapshot snapshot) {
+        return snapshot == null ? null : snapshot.withAmount(actualAmount(item));
+    }
+
+    /** 返回掉落物实际数量；未启用数量提供者时保持原始路径。 */
+    private int actualAmount(Item item) {
+        if (item == null || item.getItemStack() == null) {
+            return 0;
+        }
+        return itemQuantityService == null
+                ? item.getItemStack().getAmount() : itemQuantityService.getAmount(item);
+    }
+
+    /** 按预期数量写入地面剩余；默认路径直接修改物理堆叠。 */
+    private boolean setRemainingAmount(Item item, int expectedAmount, int remainingAmount) {
+        if (itemQuantityService != null) {
+            return itemQuantityService.setRemaining(item, expectedAmount, remainingAmount);
+        }
+        if (item == null || item.getItemStack() == null
+                || item.getItemStack().getAmount() != expectedAmount || remainingAmount < 0) {
+            return false;
+        }
+        if (remainingAmount == 0) {
+            item.remove();
+            return true;
+        }
+        ItemStack remaining = item.getItemStack();
+        remaining.setAmount(remainingAmount);
+        item.setItemStack(remaining);
+        return true;
+    }
+
+    /** 按原版堆叠上限拆分审计快照，避免非法超上限 ItemStack。 */
+    private void recordItemAmount(final CleanupAuditSession auditSession, ItemStack sample, int amount,
+                                  final CleanupItemDestination destination, final String trackingKey) {
+        forEachLegalStack(sample, amount, new ItemQuantityService.ItemStackConsumer() {
+            /** 记录一个合法数量的审计快照。 */
+            @Override
+            public void accept(ItemStack itemStack) {
+                auditSession.recordItem(itemStack, destination, trackingKey);
+            }
+        });
+    }
+
+    /** 按原版堆叠上限拆分个人垃圾桶通知快照。 */
+    private void addPersonalTrashAmount(final CleanupStats stats, final UUID ownerUuid,
+                                        ItemStack sample, int amount) {
+        forEachLegalStack(sample, amount, new ItemQuantityService.ItemStackConsumer() {
+            /** 记录一个合法数量的个人通知快照。 */
+            @Override
+            public void accept(ItemStack itemStack) {
+                stats.addPersonalTrashItem(ownerUuid, itemStack);
+            }
+        });
+    }
+
+    /** 使用数量服务或本地轻量循环拆分合法物品堆叠。 */
+    private void forEachLegalStack(ItemStack sample, int amount, ItemQuantityService.ItemStackConsumer consumer) {
+        if (sample == null || amount <= 0 || consumer == null) {
+            return;
+        }
+        if (itemQuantityService != null) {
+            itemQuantityService.forEachStack(sample, amount, consumer);
+            return;
+        }
+        int max = Math.max(1, sample.getMaxStackSize());
+        int remaining = amount;
+        while (remaining > 0) {
+            ItemStack copy = sample.clone();
+            int moved = Math.min(max, remaining);
+            copy.setAmount(moved);
+            consumer.accept(copy);
+            remaining -= moved;
+        }
     }
 
     /** 完成有内容的审计批次；空批次直接丢弃。 */

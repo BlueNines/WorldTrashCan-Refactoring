@@ -210,6 +210,7 @@ command:
     - "&#5AC8FA/wtc stats &#64748B- 查看清理和垃圾桶統計"
     - "&#5AC8FA/wtc add <數量> &#64748B- 增加目前世界可建立的世界垃圾桶數量"
     - "&#5AC8FA/wtc add <世界名> <數量> &#64748B- 後台增加指定世界可建立的世界垃圾桶數量"
+    - "&#5AC8FA/wtc stacking <status|drain> &#64748B- 查看掉落物邏輯堆疊狀態或安全排空"
     - "&#5AC8FA/wtc debughelp &#64748B- 查看後台調試命令"
     - "&#5AC8FA/wtc reload &#64748B- 重載插件"
   # /wtc debughelp 輸出，每行一條。調試命令會改變測試服運行狀態，不作為普通玩家功能展示。
@@ -259,6 +260,10 @@ command:
   add-usage:
     - "&#FFD166用法: /wtc add <數量>"
     - "&#FFD166用法: /wtc add <世界名> <數量>"
+  # 掉落物邏輯堆疊管理指令提示。
+  stacking-drain-started: "{prefix}&#FFD166已進入掉落物邏輯堆疊排空模式，不會強制載入區塊。"
+  stacking-drain-unavailable: "{prefix}&#FF6B6B目前沒有可排空的掉落物邏輯堆疊運行實例。"
+  stacking-usage: "{prefix}&#FFD166用法: &#C9D4E2/wtc stacking <status|drain>"
   # 沒有防丟棄模式權限時提示。
   no-dropmode-permission: "{prefix}&#FFD166你沒有權限使用防丟棄模式。"
   # 沒有 look 查詢權限時提示。

@@ -10,6 +10,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.BStatsMetricsService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.bstats.Metrics;
@@ -27,6 +28,8 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingCapabilityProbe;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.CustomModelDataSupport;
@@ -35,17 +38,24 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundleLoader;
+import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.platform.bukkit.BukkitPlatform;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 /** Bukkit/Spigot 1.13-1.15 产物入口。 */
 public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
+    private static final String PAPER_ITEM_STACKING =
+            "pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.PaperItemStackingFeature";
+    private static final String[] STACKING_CONFLICTS = new String[]{
+            "RoseStacker", "WildStacker", "UltimateStacker", "StackMob"
+    };
     private FeatureRegistry featureRegistry;
     private WorldListTrashCanApiHost apiHost;
     private ServerPlatform platform;
@@ -63,6 +73,8 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
     private EntityLimitFeature entityLimitFeature;
     private Metrics metrics;
     private CustomModelDataSupport customModelDataSupport;
+    private ItemStackingFeature itemStackingFeature;
+    private String itemStackingUnavailableReason = "总开关未开启";
 
     /** 启动插件并注册当前产物的平台能力。 */
     @Override
@@ -93,6 +105,7 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
                 return configBundle;
             }
         };
+        this.itemStackingFeature = createItemStackingFeature();
         PaymentService paymentService = BukkitVaultPaymentService.create(this);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
                 messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
@@ -108,9 +121,12 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
                 configBundle.getTrashConfig(),
                 platform.itemSnapshotMapper()
         );
-        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService, dropOwnerTracker);
+        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter,
+                globalTrashService, personalTrashService, messageService, dropOwnerTracker,
+                itemStackingFeature == null ? null : itemStackingFeature.quantities());
         this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService,
-                personalTrashService, dropOwnerTracker, apiHost.auditBridge());
+                personalTrashService, dropOwnerTracker, apiHost.auditBridge(),
+                itemStackingFeature == null ? null : itemStackingFeature.quantities());
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
             /** 刷新公共黑名单等运行期配置。 */
@@ -119,6 +135,7 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
                 reloadPlugin();
             }
         });
+        featureRegistry.register(itemStackingFeature);
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
@@ -129,6 +146,7 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
         registerPlaceholderApi();
         logCapabilities();
         featureRegistry.enableAll();
+        applyItemStackingMode();
     }
 
     /** 判断当前 Minecraft 版本是否已经提供 CustomModelData。 */
@@ -170,9 +188,121 @@ public final class WorldListTrashCanBukkitPlugin extends JavaPlugin {
         if (messageService != null) {
             messageService.reload(configBundle.getLanguageFile());
         }
+        reconcileItemStackingFeature();
         if (featureRegistry != null) {
             featureRegistry.reloadAll();
         }
+        applyItemStackingMode();
+    }
+
+    /** 返回掉落物堆叠状态；关闭态不创建功能对象。 */
+    public List<String> getItemStackingStatusLines() {
+        if (itemStackingFeature != null) {
+            return itemStackingFeature.statusLines();
+        }
+        List<String> lines = new ArrayList<>();
+        lines.add("§b掉落物逻辑堆叠状态:");
+        lines.add("§7- §f配置请求: §a" + (configBundle != null && configBundle.isItemStackingEnabled()));
+        lines.add("§7- §f运行: §cfalse");
+        lines.add("§7- §f原因: §e" + itemStackingUnavailableReason);
+        return lines;
+    }
+
+    /** 请求安全排空当前逻辑堆叠。 */
+    public boolean drainItemStacking() {
+        return itemStackingFeature != null && itemStackingFeature.requestDrain();
+    }
+
+    /** 仅在配置请求或存在活动数据时创建现代堆叠实现。 */
+    private ItemStackingFeature createItemStackingFeature() {
+        boolean requested = configBundle.isItemStackingEnabled();
+        boolean activeState = hasItemStackingActiveState();
+        if (!requested && !activeState) {
+            itemStackingUnavailableReason = "总开关未开启，关闭态未创建任何运行对象";
+            return null;
+        }
+        String conflict = findStackingConflict();
+        if (conflict != null && !activeState) {
+            itemStackingUnavailableReason = "检测到冲突插件 " + conflict;
+            getLogger().severe("[ItemStacking] " + itemStackingUnavailableReason + "，已拒绝同时启用。");
+            return null;
+        }
+        if (conflict != null) {
+            getLogger().warning("[ItemStacking] 检测到未排空数据和冲突插件 " + conflict + "，将只执行安全排空。");
+        }
+        ItemStackingCapabilityProbe.Result capability = new ItemStackingCapabilityProbe().probe(this, false);
+        if (!capability.isSupported()) {
+            itemStackingUnavailableReason = "运行时 API 能力不足: " + capability.getMissing();
+            getLogger().warning("[ItemStacking] " + itemStackingUnavailableReason);
+            return null;
+        }
+        saveResourceIfMissing("item-stacking.yml");
+        final Supplier<ItemStackingConfig> supplier = new Supplier<ItemStackingConfig>() {
+            /** 每次重载读取最新独立配置。 */
+            @Override
+            public ItemStackingConfig get() {
+                return ItemStackingConfig.load(new BukkitConfigurationSource(loadYaml("item-stacking.yml")));
+            }
+        };
+        try {
+            Constructor<?> constructor = Class.forName(PAPER_ITEM_STACKING)
+                    .getConstructor(Plugin.class, Supplier.class);
+            itemStackingUnavailableReason = "";
+            return (ItemStackingFeature) constructor.newInstance(this, supplier);
+        } catch (ReflectiveOperationException exception) {
+            itemStackingUnavailableReason = "无法创建平台实现: " + exception.getMessage();
+            getLogger().severe("[ItemStacking] " + itemStackingUnavailableReason);
+            return null;
+        }
+    }
+
+    /** reload 时按总开关动态创建实现并接入清理数量服务。 */
+    private void reconcileItemStackingFeature() {
+        if (featureRegistry == null || itemStackingFeature != null
+                || (!configBundle.isItemStackingEnabled() && !hasItemStackingActiveState())) {
+            return;
+        }
+        ItemStackingFeature created = createItemStackingFeature();
+        if (created == null) {
+            return;
+        }
+        itemStackingFeature = created;
+        featureRegistry.registerAndEnable(created);
+        if (cleanupFeature != null) {
+            cleanupFeature.setItemQuantityService(created.quantities());
+        }
+        if (trashFeature != null) {
+            trashFeature.setItemQuantityService(created.quantities());
+        }
+    }
+
+    /** 按总开关恢复聚集或安全排空已有逻辑数量。 */
+    private void applyItemStackingMode() {
+        if (itemStackingFeature == null) {
+            return;
+        }
+        if (configBundle.isItemStackingEnabled()) {
+            itemStackingFeature.resumeMerging();
+        } else {
+            itemStackingFeature.requestDrain();
+        }
+    }
+
+    /** 返回已启用的同类堆叠冲突插件。 */
+    private String findStackingConflict() {
+        for (String pluginName : STACKING_CONFLICTS) {
+            Plugin conflict = getServer().getPluginManager().getPlugin(pluginName);
+            if (conflict != null && conflict.isEnabled()) {
+                return conflict.getName();
+            }
+        }
+        return null;
+    }
+
+    /** 仅读取小型状态文件判断是否存在待解释的逻辑数量。 */
+    private boolean hasItemStackingActiveState() {
+        File file = new File(getDataFolder(), "data/item-stacking-state.yml");
+        return file.isFile() && YamlConfiguration.loadConfiguration(file).getBoolean("active", false);
     }
 
     /** 返回当前平台实现。 */

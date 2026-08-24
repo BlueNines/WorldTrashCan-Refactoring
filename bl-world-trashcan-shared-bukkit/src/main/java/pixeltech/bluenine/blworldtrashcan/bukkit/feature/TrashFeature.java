@@ -24,10 +24,12 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
+import pixeltech.bluenine.blworldtrashcan.bukkit.trash.TrashRoutingResult;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -37,6 +39,7 @@ import java.util.UUID;
 
 /** 玩家可见垃圾桶功能，负责告示牌、GUI、主动丢弃标记和损坏回收。 */
 public final class TrashFeature implements Feature, Listener {
+    private static final String WORLD_TRASH_TRANSFER_METADATA = "worldlisttrashcan_world_trash_transfer";
     private final Plugin plugin;
     private final ServerPlatform platform;
     private final Supplier<ConfigBundle> configSupplier;
@@ -45,6 +48,7 @@ public final class TrashFeature implements Feature, Listener {
     private final PersonalTrashService personalTrashService;
     private final BukkitMessageService messages;
     private final DropOwnerTracker dropOwnerTracker;
+    private volatile ItemQuantityService itemQuantityService;
     private boolean registered;
 
     /** 创建垃圾桶功能。 */
@@ -60,6 +64,21 @@ public final class TrashFeature implements Feature, Listener {
         this.personalTrashService = personalTrashService;
         this.messages = messages;
         this.dropOwnerTracker = dropOwnerTracker;
+    }
+
+    /** 创建可解释逻辑掉落物数量的垃圾桶功能。 */
+    public TrashFeature(Plugin plugin, ServerPlatform platform, Supplier<ConfigBundle> configSupplier,
+                        WorldTrashRouter trashRouter, GlobalTrashService globalTrashService,
+                        PersonalTrashService personalTrashService, BukkitMessageService messages,
+                        DropOwnerTracker dropOwnerTracker, ItemQuantityService itemQuantityService) {
+        this(plugin, platform, configSupplier, trashRouter, globalTrashService,
+                personalTrashService, messages, dropOwnerTracker);
+        this.itemQuantityService = itemQuantityService;
+    }
+
+    /** 动态接入逻辑掉落物数量服务。 */
+    public void setItemQuantityService(ItemQuantityService itemQuantityService) {
+        this.itemQuantityService = itemQuantityService;
     }
 
     /** 返回功能 ID。 */
@@ -210,21 +229,64 @@ public final class TrashFeature implements Feature, Listener {
             return;
         }
         Item item = (Item) entity;
-        UUID ownerUuid = dropOwnerTracker == null ? null : dropOwnerTracker.removeOwner(item);
+        if (item.hasMetadata(WORLD_TRASH_TRANSFER_METADATA)) {
+            return;
+        }
+        UUID ownerUuid = dropOwnerTracker == null ? null : dropOwnerTracker.findOwner(item);
         if (ownerUuid == null) {
             return;
         }
-        ItemStack itemStack = item.getItemStack();
+        ItemStack itemStack = item.getItemStack().clone();
+        int actualAmount = actualAmount(item);
         TrashRoute route = mode == TrashConfig.DamageRecoveryMode.GLOBAL_TRASH
                 ? TrashRoute.GLOBAL_TRASH
                 : TrashRoute.PERSONAL_TRASH;
-        if (trashRouter.route(item.getWorld(), ownerUuid, itemStack, route)) {
+        TrashRoutingResult result = trashRouter.routeDetailedAmount(
+                item.getWorld(), ownerUuid, itemStack, actualAmount, route, false);
+        int acceptedAmount = Math.min(actualAmount, result.getAcceptedAmount());
+        if (result.isSuccess() && acceptedAmount > 0) {
+            if (!setRemainingAmount(item, actualAmount, actualAmount - acceptedAmount)) {
+                int rolledBack = trashRouter.rollbackRouted(result, itemStack, acceptedAmount);
+                plugin.getLogger().severe("[DamageRecovery] 地面数量提交失败，已回滚垃圾桶写入: route="
+                        + route + ", accepted=" + acceptedAmount + ", rolledBack=" + rolledBack);
+                return;
+            }
             event.setCancelled(true);
-            item.remove();
+            if (acceptedAmount >= actualAmount && dropOwnerTracker != null) {
+                dropOwnerTracker.removeOwner(item);
+            }
             if (route == TrashRoute.PERSONAL_TRASH) {
-                personalTrashService.notifySingle(ownerUuid, itemStack);
+                personalTrashService.notifySingleAmount(ownerUuid, itemStack, acceptedAmount);
             }
         }
+    }
+
+    /** 返回掉落物当前实际数量。 */
+    private int actualAmount(Item item) {
+        if (item == null || item.getItemStack() == null) {
+            return 0;
+        }
+        return itemQuantityService == null
+                ? item.getItemStack().getAmount() : itemQuantityService.getAmount(item);
+    }
+
+    /** 按预期数量写入损坏回收后的地面剩余。 */
+    private boolean setRemainingAmount(Item item, int expectedAmount, int remainingAmount) {
+        if (itemQuantityService != null) {
+            return itemQuantityService.setRemaining(item, expectedAmount, remainingAmount);
+        }
+        if (item == null || item.getItemStack() == null
+                || item.getItemStack().getAmount() != expectedAmount || remainingAmount < 0) {
+            return false;
+        }
+        if (remainingAmount == 0) {
+            item.remove();
+            return true;
+        }
+        ItemStack remaining = item.getItemStack().clone();
+        remaining.setAmount(remainingAmount);
+        item.setItemStack(remaining);
+        return true;
     }
 
     /** 打开公共垃圾桶。 */

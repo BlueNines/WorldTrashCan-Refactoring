@@ -6,6 +6,10 @@ author: BlueNine
 softdepend:
   - Vault
   - PlaceholderAPI
+  - RoseStacker
+  - WildStacker
+  - UltimateStacker
+  - StackMob
 commands:
   worldlisttrashcan:
     description: WorldListTrashCan 主命令

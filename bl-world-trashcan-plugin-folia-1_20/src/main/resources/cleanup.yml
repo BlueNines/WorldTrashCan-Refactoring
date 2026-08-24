@@ -57,12 +57,12 @@ guards:
 folia:
   # 单轮 Folia 清理最多执行多少秒；超时后会释放清理状态，迟到的 region 任务不再计入本轮统计。
   timeout-seconds: 30
-  # 单轮最多扫描多少个已加载 chunk；0 表示不限制。大型生存服建议保持默认或更低，避免一次扫完整个加载世界。
-  max-chunks-per-cleanup: 4096
-  # 每批向 Folia RegionScheduler 派发多少个 chunk 扫描任务；数值越大瞬时压力越高。
-  chunk-batch-size: 64
-  # 每批 chunk 扫描任务之间间隔多少 tick；最小 1，默认 1 用来削峰。
-  chunk-batch-delay-ticks: 1
+  # 单轮最多扫描多少个已加载 chunk；0 表示完整扫描本轮收集到的全部区块。
+  max-chunks-per-cleanup: 0
+  # 每批向 Folia RegionScheduler 派发多少个 chunk 扫描任务；只控制提交批次，不改变清理范围。
+  chunk-batch-size: 800
+  # 每批 chunk 扫描任务之间间隔多少 tick；0 表示不增加人为等待。
+  chunk-batch-delay-ticks: 0
 
 # ==================== 名称查询提示 ====================
 # 重要：不确定物品或实体名称时，请先以玩家身份执行 /wtc look。

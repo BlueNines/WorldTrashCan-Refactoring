@@ -13,6 +13,10 @@
     <dependencies>
         <dependency>
             <groupId>pixeltech.bluenine</groupId>
+            <artifactId>bl-world-trashcan-platform-paper-1_16_1_20</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pixeltech.bluenine</groupId>
             <artifactId>bl-world-trashcan-shared-bukkit</artifactId>
         </dependency>
         <dependency>

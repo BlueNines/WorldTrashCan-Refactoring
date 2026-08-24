@@ -162,16 +162,45 @@ public final class GlobalTrashService {
         return addItem(itemStack, TrashMutationReason.NON_CLEANUP_DEPOSIT);
     }
 
-    /** 放入扫地物品并返回实际接收数量和主存储条目追踪键。 */
-    public TrashWriteResult addCleanupItem(ItemStack itemStack) {
+    /** 按独立数量写入非扫地来源，并维护审计变更记录。 */
+    public TrashWriteResult addItemAmount(ItemStack itemStack, int requestedAmount) {
         ItemStack cleanItemStack = sanitize(itemStack);
-        if (InventorySlotUtil.isEmpty(cleanItemStack) || config == null
+        if (InventorySlotUtil.isEmpty(cleanItemStack) || requestedAmount <= 0 || config == null
                 || config.isBannedMaterial(cleanItemStack.getType().name())
                 || !isAdmissionAllowed(cleanItemStack)) {
             return TrashWriteResult.rejected();
         }
-        return store.add(cleanItemStack,
+        TrashWriteResult result = store.add(cleanItemStack, requestedAmount,
                 config.getMode() == TrashConfig.GlobalTrashMode.COMPACT);
+        if (result.isAccepted() && hasAuditConsumer()) {
+            recordMutation(TrashMutation.untrackedDeposit(
+                    CleanupItemDestination.globalTrash(), cleanItemStack,
+                    result.getTrackingKey(), result.getAcceptedAmount(),
+                    TrashMutationReason.NON_CLEANUP_DEPOSIT, System.currentTimeMillis()));
+        }
+        return result;
+    }
+
+    /** 放入扫地物品并返回实际接收数量和主存储条目追踪键。 */
+    public TrashWriteResult addCleanupItem(ItemStack itemStack) {
+        return addCleanupItem(itemStack, itemStack == null ? 0 : itemStack.getAmount());
+    }
+
+    /** 按独立实际数量放入扫地物品。 */
+    public TrashWriteResult addCleanupItem(ItemStack itemStack, int requestedAmount) {
+        ItemStack cleanItemStack = sanitize(itemStack);
+        if (InventorySlotUtil.isEmpty(cleanItemStack) || requestedAmount <= 0 || config == null
+                || config.isBannedMaterial(cleanItemStack.getType().name())
+                || !isAdmissionAllowed(cleanItemStack)) {
+            return TrashWriteResult.rejected();
+        }
+        return store.add(cleanItemStack, requestedAmount,
+                config.getMode() == TrashConfig.GlobalTrashMode.COMPACT);
+    }
+
+    /** 回滚来源实体扣减失败前已经写入公共桶的数量。 */
+    public int rollbackWrite(String trackingKey, int requestedAmount) {
+        return store.rollback(trackingKey, requestedAmount);
     }
 
     /** 按来源完整放入公共模型并维护非清理审计账本。 */

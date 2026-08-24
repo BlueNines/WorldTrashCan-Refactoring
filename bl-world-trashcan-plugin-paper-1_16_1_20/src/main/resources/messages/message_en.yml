@@ -210,6 +210,7 @@ command:
     - "&#5AC8FA/wtc stats &#64748B- Show cleanup and trash statistics"
     - "&#5AC8FA/wtc add <amount> &#64748B- Add world trash slots to your current world"
     - "&#5AC8FA/wtc add <world> <amount> &#64748B- Add world trash slots to a specific world"
+    - "&#5AC8FA/wtc stacking <status|drain> &#64748B- Show logical item stacking status or drain it safely"
     - "&#5AC8FA/wtc debughelp &#64748B- Show debug commands"
     - "&#5AC8FA/wtc reload &#64748B- Reload the plugin"
   # /wtc debughelp 输出，每行一条。调试命令会改变测试服运行态，不作为普通玩家功能展示。
@@ -259,6 +260,10 @@ command:
   add-usage:
     - "&#FFD166Usage: /wtc add <amount>"
     - "&#FFD166Usage: /wtc add <world> <amount>"
+  # 掉落物逻辑堆叠管理命令提示。
+  stacking-drain-started: "{prefix}&#FFD166Logical item stacking is draining without force-loading chunks."
+  stacking-drain-unavailable: "{prefix}&#FF6B6BThere is no active logical item stacking instance to drain."
+  stacking-usage: "{prefix}&#FFD166Usage: &#C9D4E2/wtc stacking <status|drain>"
   # 没有防丢弃模式权限时提示。
   no-dropmode-permission: "{prefix}&#FFD166You do not have permission to use drop protection."
   # 没有 look 查询权限时提示。

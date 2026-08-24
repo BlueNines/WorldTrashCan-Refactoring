@@ -41,6 +41,25 @@ public final class InventorySlotUtilTest {
                 inventory(contents), stack(Material.STONE, 8)));
     }
 
+    /** 批量写入后反向回滚应恢复原有同类堆叠和空槽。 */
+    @Test
+    public void partialAddCanBeRolledBackWithoutChangingTotal() {
+        ItemStack[] contents = fullStorage();
+        contents[0] = stack(Material.STONE, 60);
+        contents[1] = null;
+        Inventory inventory = inventory(contents);
+
+        int accepted = InventorySlotUtil.addPartial(inventory, stack(Material.STONE, 1),
+                20, 0, contents.length);
+        int rolledBack = InventorySlotUtil.removePartialReverse(inventory, stack(Material.STONE, 1),
+                accepted, 0, contents.length);
+
+        Assert.assertEquals(20, accepted);
+        Assert.assertEquals(accepted, rolledBack);
+        Assert.assertEquals(60, inventory.getItem(0).getAmount());
+        Assert.assertNull(inventory.getItem(1));
+    }
+
     /** 创建全满的 36 槽玩家存储区。 */
     private ItemStack[] fullStorage() {
         ItemStack[] contents = new ItemStack[36];
@@ -65,6 +84,13 @@ public final class InventorySlotUtilTest {
                     }
                     if ("getSize".equals(method.getName())) {
                         return contents.length;
+                    }
+                    if ("getItem".equals(method.getName())) {
+                        return contents[((Integer) args[0]).intValue()];
+                    }
+                    if ("setItem".equals(method.getName())) {
+                        contents[((Integer) args[0]).intValue()] = (ItemStack) args[1];
+                        return null;
                     }
                     if ("toString".equals(method.getName())) {
                         return "InventorySlotUtilTestInventory";

@@ -1,0 +1,36 @@
+# 地面掉落物逻辑堆叠详细配置。
+# 只有 config.yml 的 features.item-stacking.enabled 为 true 时，插件才会生成并读取本文件。
+
+stack:
+  # 单个掉落物实体最多代表多少个实际物品。
+  # 范围 2-2147483647；达到上限后，多出的物品会留在其它实体中，不会被吞掉。
+  max-logical-amount: 10000
+
+merge:
+  # 水平方向允许聚集的最大距离，单位为方块；范围 0.1-16。
+  horizontal-radius: 3.0
+  # 垂直方向允许聚集的最大距离，单位为方块；范围 0.1-16。
+  vertical-radius: 1.5
+
+scheduler:
+  # dirty chunk 队列处理周期，单位 tick；20 tick 约等于 1 秒。
+  process-interval-ticks: 5
+  # 新掉落物生成后至少等待多少 tick 再参与主动聚集，避免连续生成时重复扫描。
+  merge-delay-ticks: 10
+  # 每轮最多处理多少个 dirty chunk。
+  max-chunks-per-run: 8
+  # 每个 chunk 每轮最多检查多少个掉落物实体。
+  max-items-per-chunk: 256
+  # Folia 每个 region 任务允许占用的最长时间，单位微秒；达到预算立即让出。
+  time-budget-micros: 1500
+  # dirty chunk 队列最大容量；队列满时丢弃新请求，不会无限占用内存。
+  max-queued-chunks: 4096
+  # 队列条目最长保留时间，单位秒；过期后自动移除。
+  queue-ttl-seconds: 30
+
+display:
+  custom-name:
+    # 是否在逻辑数量大于 1 时显示掉落物悬浮名称。
+    enabled: true
+    # {name} 为物品显示名或材质枚举名，{amount} 为实际逻辑数量；支持 RGB 和传统 &a 颜色。
+    format: "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"

@@ -125,6 +125,10 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
             handleAdd(sender, args);
             return true;
         }
+        if ("stacking".equals(sub)) {
+            handleStacking(sender, args);
+            return true;
+        }
         if ("debughelp".equals(sub)) {
             sendDebugHelp(sender);
             return true;
@@ -195,6 +199,9 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
         if (args.length == 2 && "clear".equalsIgnoreCase(args[0])) {
             return filter(ClearCommandOptions.booleanValues(), args[1]);
         }
+        if (args.length == 2 && "stacking".equalsIgnoreCase(args[0])) {
+            return filter(Arrays.asList("status", "drain"), args[1]);
+        }
         if (args.length == 2 && "debugnotify".equalsIgnoreCase(args[0])) {
             return filter(Arrays.asList("10", "5", "0", "-1", "-2", "-3", "-4", "-5"), args[1]);
         }
@@ -263,9 +270,33 @@ public final class WorldListTrashCanLegacyCommand implements CommandExecutor, Ta
                 "&b/wtc stats &7- 查看清理和垃圾桶统计",
                 "&b/wtc add <数量> &7- 增加当前世界可创建的世界垃圾桶数量",
                 "&b/wtc add <世界名> <数量> &7- 后台增加指定世界可创建的世界垃圾桶数量",
+                "&b/wtc stacking <status|drain> &7- 查看掉落物堆叠能力状态",
                 "&b/wtc debughelp &7- 查看后台调试命令",
                 "&b/wtc reload &7- 重载插件"));
         addonCommands.sendHelp(sender);
+    }
+
+    /** 在 1.12 上明确报告实体 PDC 能力缺失，不尝试加载高版本实现。 */
+    private void handleStacking(CommandSender sender, String[] args) {
+        if (!hasAdminPermission(sender)) {
+            sender.sendMessage(message("command.no-permission", "{prefix}&c你没有权限执行该命令。"));
+            return;
+        }
+        String action = args.length < 2 ? "status" : args[1].toLowerCase(Locale.ROOT);
+        if ("status".equals(action)) {
+            sender.sendMessage("§b掉落物逻辑堆叠状态:");
+            sender.sendMessage("§7- §f配置请求: §a"
+                    + plugin.getConfig().getBoolean("features.item-stacking.enabled", false));
+            sender.sendMessage("§7- §f运行: §cfalse");
+            sender.sendMessage("§7- §f原因: §e当前服务端缺少实体 PersistentDataContainer API；未创建监听器、任务或队列。");
+            return;
+        }
+        if ("drain".equals(action)) {
+            sender.sendMessage(message("command.stacking-drain-unavailable",
+                    "{prefix}&c当前版本没有可排空的掉落物逻辑堆叠实例。"));
+            return;
+        }
+        sender.sendMessage(message("command.stacking-usage", "{prefix}&c用法: /wtc stacking <status|drain>"));
     }
 
     /** 发送调试命令帮助。 */

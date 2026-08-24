@@ -17,6 +17,7 @@ import pixeltech.bluenine.blworldtrashcan.storage.TrashLocation;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashData;
 import pixeltech.bluenine.blworldtrashcan.storage.WorldTrashStorage;
 import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
+import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestinationType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -111,19 +112,31 @@ public final class WorldTrashRouter implements TrashRouter {
     @Override
     public TrashRoutingResult routeDetailed(World world, UUID ownerUuid, ItemStack itemStack,
                                             TrashRoute route, boolean cleanupSource) {
+        return routeDetailedAmount(world, ownerUuid, itemStack,
+                itemStack == null ? 0 : itemStack.getAmount(), route, cleanupSource);
+    }
+
+    /** 按样品和实际数量尝试路由，支持逻辑堆叠的部分接收。 */
+    @Override
+    public TrashRoutingResult routeDetailedAmount(World world, UUID ownerUuid, ItemStack itemStack,
+                                                   int requestedAmount, TrashRoute route,
+                                                   boolean cleanupSource) {
+        if (itemStack == null || requestedAmount <= 0) {
+            return TrashRoutingResult.failure();
+        }
         if (route == TrashRoute.PERSONAL_TRASH) {
             if (personalTrashService == null || ownerUuid == null) {
                 return TrashRoutingResult.failure();
             }
             if (cleanupSource) {
-                TrashWriteResult result = personalTrashService.addCleanupItem(ownerUuid, itemStack);
+                TrashWriteResult result = personalTrashService.addCleanupItem(ownerUuid, itemStack, requestedAmount);
                 return result.isAccepted() ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
                         ownerUuid, playerName(ownerUuid)), result.getAcceptedAmount(), result.getTrackingKey())
                         : TrashRoutingResult.failure();
             }
-            boolean added = personalTrashService.addItem(ownerUuid, itemStack);
-            return added ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
-                    ownerUuid, playerName(ownerUuid)), itemStack.getAmount(), "")
+            TrashWriteResult result = personalTrashService.addItemAmount(ownerUuid, itemStack, requestedAmount);
+            return result.isAccepted() ? TrashRoutingResult.success(CleanupItemDestination.personalTrash(
+                    ownerUuid, playerName(ownerUuid)), result.getAcceptedAmount(), result.getTrackingKey())
                     : TrashRoutingResult.failure();
         }
         if (route == TrashRoute.GLOBAL_TRASH) {
@@ -131,14 +144,14 @@ public final class WorldTrashRouter implements TrashRouter {
                 return TrashRoutingResult.failure();
             }
             if (cleanupSource) {
-                TrashWriteResult result = globalTrashService.addCleanupItem(itemStack);
+                TrashWriteResult result = globalTrashService.addCleanupItem(itemStack, requestedAmount);
                 return result.isAccepted() ? TrashRoutingResult.success(
                         CleanupItemDestination.globalTrash(), result.getAcceptedAmount(), result.getTrackingKey())
                         : TrashRoutingResult.failure();
             }
-            boolean added = globalTrashService.addItem(itemStack);
-            return added ? TrashRoutingResult.success(
-                    CleanupItemDestination.globalTrash(), itemStack.getAmount(), "")
+            TrashWriteResult result = globalTrashService.addItemAmount(itemStack, requestedAmount);
+            return result.isAccepted() ? TrashRoutingResult.success(
+                    CleanupItemDestination.globalTrash(), result.getAcceptedAmount(), result.getTrackingKey())
                     : TrashRoutingResult.failure();
         }
         if (route != TrashRoute.WORLD_TRASH) {
@@ -149,13 +162,39 @@ public final class WorldTrashRouter implements TrashRouter {
             return TrashRoutingResult.failure();
         }
         ItemStack cleanItemStack = sanitize(itemStack);
+        cleanItemStack.setAmount(1);
         for (TrashLocation location : data.getLocations()) {
             Inventory inventory = getInventory(location);
-            if (inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize())) {
-                return TrashRoutingResult.success(destination(location), itemStack.getAmount(), "");
+            int accepted = inventory == null ? 0 : InventorySlotUtil.addPartial(
+                    inventory, cleanItemStack, requestedAmount, 0, inventory.getSize());
+            if (accepted > 0) {
+                return TrashRoutingResult.success(destination(location), accepted, "");
             }
         }
         return TrashRoutingResult.failure();
+    }
+
+    /** 按成功结果的精确目标回滚尚未提交的垃圾桶写入。 */
+    @Override
+    public int rollbackRouted(TrashRoutingResult result, ItemStack sample, int requestedAmount) {
+        if (result == null || !result.isSuccess() || sample == null || requestedAmount <= 0) {
+            return 0;
+        }
+        CleanupItemDestination destination = result.getDestination();
+        if (destination.getType() == CleanupItemDestinationType.GLOBAL_TRASH) {
+            return globalTrashService == null ? 0
+                    : globalTrashService.rollbackWrite(result.getTrackingKey(), requestedAmount);
+        }
+        if (destination.getType() == CleanupItemDestinationType.PERSONAL_TRASH) {
+            return personalTrashService == null ? 0 : personalTrashService.rollbackWrite(
+                    destination.getOwnerUuid(), result.getTrackingKey(), requestedAmount);
+        }
+        if (destination.getType() == CleanupItemDestinationType.WORLD_TRASH) {
+            TrashLocation location = new TrashLocation(destination.getWorldName(), destination.getX(),
+                    destination.getY(), destination.getZ(), destination.getOwnerUuid(), destination.getOwnerName());
+            return rollbackWorldTrashAtAmount(location, sample, requestedAmount);
+        }
+        return 0;
     }
 
     /** 返回指定世界可尝试的世界垃圾桶位置快照。 */
@@ -178,6 +217,30 @@ public final class WorldTrashRouter implements TrashRouter {
         ItemStack cleanItemStack = sanitize(itemStack);
         Inventory inventory = getInventory(location);
         return inventory != null && InventorySlotUtil.add(inventory, cleanItemStack, 0, inventory.getSize());
+    }
+
+    /** 在调用方确认线程安全的区域上下文中部分写入指定实际数量。 */
+    public int routeWorldTrashAtAmount(TrashLocation location, ItemStack sample, int requestedAmount) {
+        if (location == null || sample == null || requestedAmount <= 0) {
+            return 0;
+        }
+        ItemStack cleanItemStack = sanitize(sample);
+        cleanItemStack.setAmount(1);
+        Inventory inventory = getInventory(location);
+        return inventory == null ? 0 : InventorySlotUtil.addPartial(
+                inventory, cleanItemStack, requestedAmount, 0, inventory.getSize());
+    }
+
+    /** 在世界垃圾桶事务未能提交时，从同一容器回滚对应数量。 */
+    public int rollbackWorldTrashAtAmount(TrashLocation location, ItemStack sample, int requestedAmount) {
+        if (location == null || sample == null || requestedAmount <= 0) {
+            return 0;
+        }
+        ItemStack cleanItemStack = sanitize(sample);
+        cleanItemStack.setAmount(1);
+        Inventory inventory = getInventory(location);
+        return inventory == null ? 0 : InventorySlotUtil.removePartialReverse(
+                inventory, cleanItemStack, requestedAmount, 0, inventory.getSize());
     }
 
     /** 重载存储中的世界垃圾桶数据。 */

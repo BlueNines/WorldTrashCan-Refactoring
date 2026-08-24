@@ -25,6 +25,8 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingCapabilityProbe;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.CustomModelDataSupport;
@@ -33,11 +35,14 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.PersonalTrashService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundleLoader;
+import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaEntityLimitFeature;
+import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaItemStackingFeature;
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaPlatform;
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaRegionCleanupFeature;
+import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.AbstractModernItemStackingFeature;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +51,9 @@ import java.util.function.Supplier;
 
 /** Folia 1.20 产物入口。 */
 public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
+    private static final String[] STACKING_CONFLICTS = new String[]{
+            "RoseStacker", "WildStacker", "UltimateStacker", "StackMob"
+    };
     private FeatureRegistry featureRegistry;
     private WorldListTrashCanApiHost apiHost;
     private ServerPlatform platform;
@@ -63,6 +71,8 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
     private FoliaEntityLimitFeature entityLimitFeature;
     private Metrics metrics;
     private CustomModelDataSupport customModelDataSupport;
+    private ItemStackingFeature itemStackingFeature;
+    private String itemStackingUnavailableReason = "总开关未开启";
 
     /** 启动插件并注册当前产物的平台能力。 */
     @Override
@@ -91,6 +101,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
                 return configBundle;
             }
         };
+        this.itemStackingFeature = createItemStackingFeature();
         PaymentService paymentService = FoliaVaultPaymentService.create(this);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
                 messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
@@ -106,9 +117,12 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
                 configBundle.getTrashConfig(),
                 platform.itemSnapshotMapper()
         );
-        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter, globalTrashService, personalTrashService, messageService, dropOwnerTracker);
+        this.trashFeature = new TrashFeature(this, platform, configSupplier, trashRouter,
+                globalTrashService, personalTrashService, messageService, dropOwnerTracker,
+                itemStackingFeature == null ? null : itemStackingFeature.quantities());
         this.cleanupFeature = new FoliaRegionCleanupFeature(this, platform, configSupplier, trashRouter,
-                globalTrashService, personalTrashService, dropOwnerTracker, apiHost.auditBridge());
+                globalTrashService, personalTrashService, dropOwnerTracker, apiHost.auditBridge(),
+                itemStackingFeature == null ? null : itemStackingFeature.quantities());
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
             /** 刷新公共黑名单等运行期配置。 */
@@ -117,6 +131,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
                 reloadPlugin();
             }
         });
+        featureRegistry.register(itemStackingFeature);
         featureRegistry.register(trashFeature);
         featureRegistry.register(cleanupFeature);
         featureRegistry.register(protectionFeature);
@@ -127,6 +142,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         registerPlaceholderApi();
         logCapabilities();
         featureRegistry.enableAll();
+        applyItemStackingMode();
     }
 
     /** 禁用插件并按顺序释放功能模块。 */
@@ -154,9 +170,11 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         if (messageService != null) {
             messageService.reload(configBundle.getLanguageFile());
         }
+        reconcileItemStackingFeature();
         if (featureRegistry != null) {
             featureRegistry.reloadAll();
         }
+        applyItemStackingMode();
     }
 
     /** 返回当前平台实现。 */
@@ -177,6 +195,24 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
     /** 返回消息服务。 */
     public BukkitMessageService messages() {
         return messageService;
+    }
+
+    /** 返回掉落物堆叠状态。 */
+    public List<String> getItemStackingStatusLines() {
+        if (itemStackingFeature != null) {
+            return itemStackingFeature.statusLines();
+        }
+        List<String> lines = new ArrayList<>();
+        lines.add("§b掉落物逻辑堆叠状态:");
+        lines.add("§7- §f配置请求: §a" + (configBundle != null && configBundle.isItemStackingEnabled()));
+        lines.add("§7- §f运行: §cfalse");
+        lines.add("§7- §f原因: §e" + itemStackingUnavailableReason);
+        return lines;
+    }
+
+    /** 请求安全排空逻辑堆叠。 */
+    public boolean drainItemStacking() {
+        return itemStackingFeature != null && itemStackingFeature.requestDrain();
     }
 
     /** 立即提交一次 Folia 异步清理，默认遵守定时扫地门禁。 */
@@ -237,6 +273,79 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
     /** 从插件数据目录读取 YAML。 */
     private YamlConfiguration loadYaml(String path) {
         return YamlConfiguration.loadConfiguration(new File(getDataFolder(), path));
+    }
+
+    /** 仅在请求开启或存在未排空状态时创建 Folia 堆叠功能。 */
+    private ItemStackingFeature createItemStackingFeature() {
+        boolean requested = configBundle.isItemStackingEnabled();
+        boolean active = AbstractModernItemStackingFeature.hasActiveState(getDataFolder());
+        if (!requested && !active) {
+            itemStackingUnavailableReason = "总开关未开启，关闭态未创建任何运行对象";
+            return null;
+        }
+        String conflict = findStackingConflict();
+        if (conflict != null && !active) {
+            itemStackingUnavailableReason = "检测到冲突插件 " + conflict;
+            getLogger().severe("[ItemStacking] " + itemStackingUnavailableReason + "，已拒绝同时启用。");
+            return null;
+        }
+        if (conflict != null) {
+            getLogger().warning("[ItemStacking] 检测到未排空数据和冲突插件 " + conflict + "，将只执行安全排空。");
+        }
+        ItemStackingCapabilityProbe.Result result = new ItemStackingCapabilityProbe().probe(this, true);
+        if (!result.isSupported()) {
+            itemStackingUnavailableReason = "运行时 API 能力不足: " + result.getMissing();
+            getLogger().warning("[ItemStacking] " + itemStackingUnavailableReason);
+            return null;
+        }
+        saveResourceIfMissing("item-stacking.yml");
+        itemStackingUnavailableReason = "";
+        return new FoliaItemStackingFeature(this, new Supplier<ItemStackingConfig>() {
+            /** 每次重载时读取最新独立配置。 */
+            @Override
+            public ItemStackingConfig get() {
+                return ItemStackingConfig.load(new BukkitConfigurationSource(loadYaml("item-stacking.yml")));
+            }
+        });
+    }
+
+    /** reload 时补建从关闭切换到开启的功能。 */
+    private void reconcileItemStackingFeature() {
+        if (featureRegistry == null || itemStackingFeature != null
+                || (!configBundle.isItemStackingEnabled()
+                && !AbstractModernItemStackingFeature.hasActiveState(getDataFolder()))) {
+            return;
+        }
+        ItemStackingFeature created = createItemStackingFeature();
+        if (created != null) {
+        itemStackingFeature = created;
+        featureRegistry.registerAndEnable(created);
+        cleanupFeature.setItemQuantityService(created.quantities());
+        trashFeature.setItemQuantityService(created.quantities());
+        }
+    }
+
+    /** 按总开关恢复聚集或安全排空已有逻辑数量。 */
+    private void applyItemStackingMode() {
+        if (itemStackingFeature == null) {
+            return;
+        }
+        if (configBundle.isItemStackingEnabled()) {
+            itemStackingFeature.resumeMerging();
+        } else {
+            itemStackingFeature.requestDrain();
+        }
+    }
+
+    /** 返回已启用的同类堆叠插件名。 */
+    private String findStackingConflict() {
+        for (String name : STACKING_CONFLICTS) {
+            org.bukkit.plugin.Plugin conflict = getServer().getPluginManager().getPlugin(name);
+            if (conflict != null && conflict.isEnabled()) {
+                return conflict.getName();
+            }
+        }
+        return null;
     }
 
     /** 注册主命令和旧命令别名。 */
