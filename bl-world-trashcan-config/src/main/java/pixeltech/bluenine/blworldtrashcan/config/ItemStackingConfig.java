@@ -21,27 +21,27 @@ public final class ItemStackingConfig {
     private final boolean displayNameEnabled;
     private final String displayNameFormat;
     private final String displayNameLocale;
-    private final Map<String, String> displayNameOverrides;
+    private final Map<String, ItemRule> itemRules;
+    private final ItemRule defaultItemRule;
 
     /** 创建经过边界收敛的堆叠配置。 */
     public ItemStackingConfig(int maxLogicalAmount, double horizontalRadius, double verticalRadius,
                               int processIntervalTicks, int mergeDelayTicks, int maxChunksPerRun,
                               int maxItemsPerChunk, int timeBudgetMicros, int maxQueuedChunks,
-                              int queueTtlSeconds, boolean displayNameEnabled, String displayNameFormat,
-                              String displayNameLocale, Map<String, String> displayNameOverrides) {
+                              int queueTtlSeconds, boolean displayNameEnabled, String displayNameFormat) {
         this(true, maxLogicalAmount, horizontalRadius, verticalRadius, processIntervalTicks,
                 mergeDelayTicks, maxChunksPerRun, maxItemsPerChunk, timeBudgetMicros, maxQueuedChunks,
-                queueTtlSeconds, displayNameEnabled, displayNameFormat, displayNameLocale,
-                displayNameOverrides);
+                queueTtlSeconds, displayNameEnabled, displayNameFormat, "zh_CN",
+                Collections.<String, ItemRule>emptyMap());
     }
 
-    /** 创建包含功能开关的完整堆叠配置。 */
+    /** 创建包含功能开关和逐物品规则的完整配置。 */
     private ItemStackingConfig(boolean featureEnabled, int maxLogicalAmount, double horizontalRadius,
                                double verticalRadius, int processIntervalTicks, int mergeDelayTicks,
                                int maxChunksPerRun, int maxItemsPerChunk, int timeBudgetMicros,
                                int maxQueuedChunks, int queueTtlSeconds, boolean displayNameEnabled,
                                String displayNameFormat, String displayNameLocale,
-                               Map<String, String> displayNameOverrides) {
+                               Map<String, ItemRule> itemRules) {
         this.featureEnabled = featureEnabled;
         this.maxLogicalAmount = Math.max(2, maxLogicalAmount);
         this.horizontalRadius = clamp(horizontalRadius, 0.1D, 16.0D);
@@ -57,32 +57,21 @@ public final class ItemStackingConfig {
         this.displayNameFormat = displayNameFormat == null || displayNameFormat.trim().isEmpty()
                 ? "&#38BDF8{name} &#64748Bx &#F5B82E{amount}" : displayNameFormat;
         this.displayNameLocale = normalizeLocale(displayNameLocale);
-        Map<String, String> copiedOverrides = new LinkedHashMap<>();
-        if (displayNameOverrides != null) {
-            for (Map.Entry<String, String> entry : displayNameOverrides.entrySet()) {
-                if (entry.getKey() != null && entry.getValue() != null) {
-                    copiedOverrides.put(entry.getKey().trim().toLowerCase(Locale.ROOT), entry.getValue());
-                }
-            }
-        }
-        this.displayNameOverrides = Collections.unmodifiableMap(copiedOverrides);
+        this.itemRules = immutableRules(itemRules);
+        this.defaultItemRule = new ItemRule(true, this.maxLogicalAmount, null);
     }
 
-    /** 使用旧参数创建配置，保持平台测试和扩展调用兼容。 */
-    public ItemStackingConfig(int maxLogicalAmount, double horizontalRadius, double verticalRadius,
-                              int processIntervalTicks, int mergeDelayTicks, int maxChunksPerRun,
-                              int maxItemsPerChunk, int timeBudgetMicros, int maxQueuedChunks,
-                              int queueTtlSeconds, boolean displayNameEnabled, String displayNameFormat) {
-        this(maxLogicalAmount, horizontalRadius, verticalRadius, processIntervalTicks, mergeDelayTicks,
-                maxChunksPerRun, maxItemsPerChunk, timeBudgetMicros, maxQueuedChunks, queueTtlSeconds,
-                displayNameEnabled, displayNameFormat, "zh_CN", Collections.<String, String>emptyMap());
-    }
-
-    /** 从独立配置文件读取设置。 */
+    /** 只从总配置读取设置，不读取任何逐物品配置。 */
     public static ItemStackingConfig load(ConfigurationSource source) {
+        return load(source, null);
+    }
+
+    /** 从总配置和独立逐物品配置读取设置。 */
+    public static ItemStackingConfig load(ConfigurationSource source, ConfigurationSource itemSource) {
+        int globalMaximum = Math.max(2, source.getInt("stack.max-logical-amount", 10000));
         return new ItemStackingConfig(
                 source.getBoolean("enabled", false),
-                source.getInt("stack.max-logical-amount", 10000),
+                globalMaximum,
                 source.getDouble("merge.horizontal-radius", 3.0D),
                 source.getDouble("merge.vertical-radius", 1.5D),
                 source.getInt("scheduler.process-interval-ticks", 5),
@@ -96,8 +85,46 @@ public final class ItemStackingConfig {
                 source.getString("display.custom-name.format",
                         "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"),
                 source.getString("display.custom-name.locale", "zh_CN"),
-                source.getStringMap("display.custom-name.overrides")
+                loadItemRules(itemSource, globalMaximum)
         );
+    }
+
+    /** 从逐物品文件读取第一层 Material 规则。 */
+    private static Map<String, ItemRule> loadItemRules(ConfigurationSource source, int globalMaximum) {
+        if (source == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, ItemRule> rules = new LinkedHashMap<>();
+        for (String key : source.getKeys("")) {
+            if (key == null || key.trim().isEmpty()) {
+                continue;
+            }
+            String normalized = key.trim().toUpperCase(Locale.ROOT);
+            String path = key + ".";
+            boolean enabled = source.getBoolean(path + "enabled", true);
+            int configuredMaximum = source.getInt(path + "max-stack-size", -1);
+            int maximum = configuredMaximum == -1 ? globalMaximum : Math.max(2, configuredMaximum);
+            String displayName = normalizeDisplayName(source.getString(path + "display-name", "default"));
+            rules.put(normalized, new ItemRule(enabled, maximum, displayName));
+        }
+        return rules;
+    }
+
+    /** 复制逐物品规则，防止重载后外部映射修改当前快照。 */
+    private static Map<String, ItemRule> immutableRules(Map<String, ItemRule> itemRules) {
+        if (itemRules == null || itemRules.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return Collections.unmodifiableMap(new LinkedHashMap<>(itemRules));
+    }
+
+    /** 把 default 和空名称统一表示为使用内置翻译。 */
+    private static String normalizeDisplayName(String displayName) {
+        if (displayName == null || displayName.trim().isEmpty()
+                || "default".equalsIgnoreCase(displayName.trim())) {
+            return null;
+        }
+        return displayName;
     }
 
     /** 判断独立配置是否请求启用堆叠功能。 */
@@ -170,9 +197,18 @@ public final class ItemStackingConfig {
         return displayNameLocale;
     }
 
-    /** 返回服主对物品键的名称覆盖。 */
-    public Map<String, String> getDisplayNameOverrides() {
-        return displayNameOverrides;
+    /** 返回不可变的逐 Material 规则。 */
+    public Map<String, ItemRule> getItemRules() {
+        return itemRules;
+    }
+
+    /** 返回指定 Bukkit Material 名的规则，缺失时继承全局设置。 */
+    public ItemRule getItemRule(String materialName) {
+        if (materialName == null) {
+            return defaultItemRule;
+        }
+        ItemRule rule = itemRules.get(materialName.toUpperCase(Locale.ROOT));
+        return rule == null ? defaultItemRule : rule;
     }
 
     /** 将配置语言收敛到内置语言标识。 */
@@ -198,5 +234,34 @@ public final class ItemStackingConfig {
     /** 收敛小数配置边界。 */
     private static double clamp(double value, double minimum, double maximum) {
         return Math.max(minimum, Math.min(maximum, value));
+    }
+
+    /** 单个 Bukkit Material 的堆叠和显示规则。 */
+    public static final class ItemRule {
+        private final boolean enabled;
+        private final int maxStackSize;
+        private final String displayName;
+
+        /** 创建已经解析继承值的逐物品规则。 */
+        public ItemRule(boolean enabled, int maxStackSize, String displayName) {
+            this.enabled = enabled;
+            this.maxStackSize = Math.max(2, maxStackSize);
+            this.displayName = displayName;
+        }
+
+        /** 判断插件是否接管该物品的逻辑堆叠。 */
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /** 返回该物品最终生效的逻辑上限。 */
+        public int getMaxStackSize() {
+            return maxStackSize;
+        }
+
+        /** 返回独立显示名；null 表示使用内置语言。 */
+        public String getDisplayName() {
+            return displayName;
+        }
     }
 }

@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,7 +32,7 @@ public final class ItemStackingConfigTest {
         assertEquals(30, config.getQueueTtlSeconds());
         assertTrue(config.isDisplayNameEnabled());
         assertEquals("zh_CN", config.getDisplayNameLocale());
-        assertTrue(config.getDisplayNameOverrides().isEmpty());
+        assertTrue(config.getItemRules().isEmpty());
     }
 
     /** 极端配置必须被收敛，避免无限队列或单轮无界扫描。 */
@@ -62,9 +64,9 @@ public final class ItemStackingConfigTest {
         assertEquals(3600, config.getQueueTtlSeconds());
     }
 
-    /** 语言配置只属于堆叠悬浮名称，覆盖项应被复制并规范化键名。 */
+    /** 语言配置只属于堆叠悬浮名称，旧 overrides 节点必须彻底忽略。 */
     @Test
-    public void displayNameLocaleAndOverridesAreLoaded() {
+    public void displayNameLocaleLoadsWithoutLegacyOverrides() {
         MapConfigurationSource source = new MapConfigurationSource();
         source.put("display.custom-name.locale", "ja-jp");
         Map<String, String> overrides = new HashMap<>();
@@ -74,7 +76,46 @@ public final class ItemStackingConfigTest {
         ItemStackingConfig config = ItemStackingConfig.load(source);
 
         assertEquals("ja_JP", config.getDisplayNameLocale());
-        assertEquals("特製石", config.getDisplayNameOverrides().get("minecraft:stone"));
+        assertTrue(config.getItemRules().isEmpty());
+    }
+
+    /** 逐 Material 配置应支持禁用、继承上限、独立上限和独立显示名。 */
+    @Test
+    public void independentItemRulesLoadAllSupportedFields() {
+        MapConfigurationSource global = new MapConfigurationSource();
+        global.put("stack.max-logical-amount", 10000);
+        MapConfigurationSource items = new MapConfigurationSource();
+        items.put("STONE.enabled", false);
+        items.put("STONE.max-stack-size", -1);
+        items.put("STONE.display-name", "自定义石头");
+        items.put("DIRT.enabled", true);
+        items.put("DIRT.max-stack-size", 320);
+        items.put("DIRT.display-name", "default");
+
+        ItemStackingConfig config = ItemStackingConfig.load(global, items);
+
+        ItemStackingConfig.ItemRule stone = config.getItemRule("stone");
+        assertFalse(stone.isEnabled());
+        assertEquals(10000, stone.getMaxStackSize());
+        assertEquals("自定义石头", stone.getDisplayName());
+        ItemStackingConfig.ItemRule dirt = config.getItemRule("DIRT");
+        assertTrue(dirt.isEnabled());
+        assertEquals(320, dirt.getMaxStackSize());
+        assertEquals(null, dirt.getDisplayName());
+    }
+
+    /** 缺少逐物品条目时应继承全局启用状态和数量上限。 */
+    @Test
+    public void missingItemRuleInheritsGlobalDefaults() {
+        MapConfigurationSource global = new MapConfigurationSource();
+        global.put("stack.max-logical-amount", 4567);
+
+        ItemStackingConfig.ItemRule rule = ItemStackingConfig.load(global,
+                new MapConfigurationSource()).getItemRule("NEW_VERSION_ITEM");
+
+        assertTrue(rule.isEnabled());
+        assertEquals(4567, rule.getMaxStackSize());
+        assertEquals(null, rule.getDisplayName());
     }
 
     /** 总开关只读取独立配置根节点，不再兼容 config.yml 旧路径。 */
@@ -156,12 +197,20 @@ public final class ItemStackingConfigTest {
             return Collections.emptyList();
         }
 
-        /** 读取本测试用的字符串映射。 */
+        /** 返回测试值中指定节点的第一层键。 */
         @Override
-        @SuppressWarnings("unchecked")
-        public Map<String, String> getStringMap(String path) {
-            Object value = values.get(path);
-            return value instanceof Map ? (Map<String, String>) value : Collections.<String, String>emptyMap();
+        public Set<String> getKeys(String path) {
+            String prefix = path == null || path.isEmpty() ? "" : path + ".";
+            Set<String> keys = new LinkedHashSet<>();
+            for (String key : values.keySet()) {
+                if (!key.startsWith(prefix)) {
+                    continue;
+                }
+                String remaining = key.substring(prefix.length());
+                int separator = remaining.indexOf('.');
+                keys.add(separator < 0 ? remaining : remaining.substring(0, separator));
+            }
+            return keys;
         }
     }
 }

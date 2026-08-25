@@ -90,6 +90,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     private final AtomicLong delayedItems = new AtomicLong();
     private final AtomicLong dispatchedChunks = new AtomicLong();
     private volatile ItemStackingConfig config;
+    private volatile ItemStackingMaterialPolicy materialPolicy;
     private volatile ItemStackingItemNameResolver itemNameResolver;
     private volatile boolean activeState;
     private volatile boolean enabled;
@@ -100,7 +101,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         this.plugin = plugin;
         this.configSupplier = configSupplier;
         this.config = configSupplier.get();
-        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config);
+        this.materialPolicy = ItemStackingMaterialPolicy.from(this.config);
+        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config, this.materialPolicy);
         this.amountKey = new NamespacedKey(plugin, "stack_amount");
         this.displayOwnedKey = new NamespacedKey(plugin, "stack_display_owned");
         this.originalNameKey = new NamespacedKey(plugin, "stack_original_name");
@@ -145,7 +147,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     @Override
     public final void reload() {
         this.config = configSupplier.get();
-        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config);
+        this.materialPolicy = ItemStackingMaterialPolicy.from(this.config);
+        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config, this.materialPolicy);
         if (enabled) {
             stopProcessor();
             startProcessor();
@@ -303,9 +306,12 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         if (lifecycle.isMergeBlocked() || lifecycle.isConflictBlocked()) {
             return;
         }
-        spawnEvents.incrementAndGet();
         // ItemSpawnEvent 可能早于实体进入区块索引，此时 isValid() 仍为 false；只记录坐标并延后扫描。
         Item item = event.getEntity();
+        if (!materialPolicy.isEnabled(item.getItemStack().getType())) {
+            return;
+        }
+        spawnEvents.incrementAndGet();
         Location location = item.getLocation();
         enqueue(new StackingChunkKey(item.getWorld().getUID(),
                 location.getBlockX() >> 4, location.getBlockZ() >> 4),
@@ -320,6 +326,15 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         Item target = event.getTarget();
         if (isWorldTrashTransfer(source) || isWorldTrashTransfer(target)) {
             event.setCancelled(true);
+            return;
+        }
+        if (!materialPolicy.isEnabled(source.getItemStack().getType())
+                || !materialPolicy.isEnabled(target.getItemStack().getType())) {
+            if (isManaged(source) || isManaged(target)) {
+                event.setCancelled(true);
+                enqueue(source, 0L);
+                enqueue(target, 0L);
+            }
             return;
         }
         if (!sameOwner(source, target) || !sameOriginalDisplay(source, target)
@@ -646,7 +661,9 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 continue;
             }
             Item item = (Item) entity;
-            if (!usable(item) || (logicalOnly && !isManaged(item))) {
+            if (!usable(item) || (logicalOnly && !isManaged(item))
+                    || (!logicalOnly && !isManaged(item)
+                    && !materialPolicy.isEnabled(item.getItemStack().getType()))) {
                 continue;
             }
             result.add(item);
@@ -663,6 +680,9 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 return;
             }
             if (isWorldTrashTransfer(item)) {
+                continue;
+            }
+            if (rebalanceToMaterialPolicy(item)) {
                 continue;
             }
             int waitTicks = remainingMergeDelayTicks(item);
@@ -691,7 +711,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             if (!usable(item)) {
                 continue;
             }
-            if (getAmount(item) < config.getMaxLogicalAmount()) {
+            if (getAmount(item) < materialPolicy.maximumAmount(item.getItemStack().getType())) {
                 Deque<Item> targets = cells.get(sourceCell);
                 if (targets == null) {
                     targets = new ArrayDeque<>();
@@ -730,7 +750,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         Iterator<Item> iterator = targets.iterator();
         while (iterator.hasNext() && usable(source)) {
             Item target = iterator.next();
-            if (!usable(target) || getAmount(target) >= config.getMaxLogicalAmount()) {
+            if (!usable(target) || getAmount(target)
+                    >= materialPolicy.maximumAmount(target.getItemStack().getType())) {
                 iterator.remove();
                 continue;
             }
@@ -738,7 +759,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 mergeDistanceMatches.incrementAndGet();
                 mergeInto(target, source);
             }
-            if (!usable(target) || getAmount(target) >= config.getMaxLogicalAmount()) {
+            if (!usable(target) || getAmount(target)
+                    >= materialPolicy.maximumAmount(target.getItemStack().getType())) {
                 iterator.remove();
             }
         }
@@ -755,7 +777,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
         int targetAmount = getAmount(target);
         int sourceAmount = getAmount(source);
-        int capacity = config.getMaxLogicalAmount() - targetAmount;
+        int capacity = materialPolicy.maximumAmount(target.getItemStack().getType()) - targetAmount;
         int moved = Math.min(Math.max(0, capacity), sourceAmount);
         if (moved <= 0) {
             return;
@@ -837,6 +859,83 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         writeAmount(item, remaining);
         enqueue(item, config.getProcessIntervalTicks());
         return true;
+    }
+
+    /** 按逐物品启用状态和上限修正实体；返回 true 表示本轮不再参与合并。 */
+    private boolean rebalanceToMaterialPolicy(Item item) {
+        if (!usable(item)) {
+            return true;
+        }
+        Material material = item.getItemStack().getType();
+        if (!materialPolicy.isEnabled(material)) {
+            if (isManaged(item)) {
+                drainItem(item);
+            }
+            return true;
+        }
+        int maximum = materialPolicy.maximumAmount(material);
+        if (getAmount(item) <= maximum) {
+            return false;
+        }
+        splitAboveMaterialMaximum(item, maximum);
+        return true;
+    }
+
+    /** 按单轮实体预算把超出逐物品上限的数量无损拆开。 */
+    private void splitAboveMaterialMaximum(Item item, int maximum) {
+        int remaining = getAmount(item);
+        int spawned = 0;
+        while (usable(item) && remaining > maximum && spawned < MAX_DRAIN_STACKS_PER_ENTITY) {
+            int previous = remaining;
+            int next = remaining - maximum;
+            Item split = spawnPolicySplit(item, maximum);
+            if (split == null) {
+                return;
+            }
+            writeAmount(item, next);
+            if (!usable(item) || getAmount(item) != next) {
+                split.remove();
+                restoreLogicalAmount(item, previous);
+                return;
+            }
+            remaining = next;
+            spawned++;
+        }
+        if (usable(item) && remaining > maximum) {
+            enqueue(item, config.getProcessIntervalTicks());
+        }
+    }
+
+    /** 在原实体附近生成一个继承归属和原始名称的拆分实体。 */
+    private Item spawnPolicySplit(Item source, int amount) {
+        ItemStack sample = source.getItemStack().clone();
+        sample.setAmount(Math.min(Math.max(1, sample.getMaxStackSize()), amount));
+        String owner = trackedOwner(source);
+        String originalName = originalDisplayName(source);
+        boolean originalVisible = originalDisplayVisible(source);
+        Item split = null;
+        try {
+            split = source.getWorld().dropItem(source.getLocation(), sample);
+            split.setVelocity(source.getVelocity());
+            split.setPickupDelay(source.getPickupDelay());
+            split.setOwner(source.getOwner());
+            if (owner != null) {
+                split.getPersistentDataContainer().set(trackedOwnerKey, PersistentDataType.STRING, owner);
+            }
+            split.setCustomName(originalName);
+            split.setCustomNameVisible(originalVisible);
+            writeAmount(split, amount);
+            if (usable(split) && getAmount(split) == amount) {
+                return split;
+            }
+        } catch (RuntimeException exception) {
+            plugin.getLogger().warning("[ItemStacking] 按逐物品上限拆分掉落物失败: "
+                    + exception.getMessage());
+        }
+        if (split != null && split.isValid()) {
+            split.remove();
+        }
+        return null;
     }
 
     /** 写入实际数量、物理展示数量和状态标记。 */

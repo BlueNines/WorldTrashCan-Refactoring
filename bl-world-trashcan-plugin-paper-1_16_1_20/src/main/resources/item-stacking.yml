@@ -42,7 +42,5 @@ display:
     # 无自定义名的原版物品使用哪种内置语言；支持 zh_CN、en_US、ja_JP。
     # 修改后执行 /wtc reload 即可刷新已有受管掉落物，不需要重启服务器。
     locale: "zh_CN"
-    # 服主自定义名称优先于内置翻译；键支持 minecraft:stone、block.minecraft.stone
-    # 或 Bukkit 材质名 stone。这里只影响 item-stacking 的掉落物头顶名称。
-    overrides:
-      # "minecraft:stone": "自定义石头名称"
+    # 单个物品的启用状态、独立上限和显示名统一配置在 item-stacking-items.yml。
+    # 该文件会在本功能首次开启时按当前服务端 Material 自动生成，升级后只追加新物品。

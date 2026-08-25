@@ -144,16 +144,20 @@ enabled: true
 
 逻辑数量只写在地面掉落物实体的 PDC 中，不修改背包物品，因此不会破坏普通物品堆叠。相同 `ItemStack` 数据和相同 owner 的附近物品才会聚集，不同名称、Lore、附魔、PDC、Data Components 或 owner 不会混合。主动处理使用有容量、TTL、数量和微秒预算的 dirty-chunk 队列与空间网格，不周期遍历全部世界实体，也不强制加载区块。Folia 的世界垃圾桶转移在目标箱子所属 region 内完成写入和数量扣减。
 
-掉落物头顶名称支持内置 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，只影响 item-stacking，不改变插件语言文件。名称按“物品自定义名 → `display.custom-name.overrides` 服主覆盖 → 内置翻译 → 可读英文材质名”解析；修改 `locale` 或覆盖项后执行 `/wtc reload` 生效。翻译资源位于 JAR 内，运行时不联网；功能或头顶名称关闭时不会加载，开启后也只保留当前语言的材质数组。
+掉落物头顶名称支持内置 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，只影响 item-stacking，不改变插件语言文件。名称按“物品自身的自定义名 → `item-stacking-items.yml` 的独立显示名 → 内置翻译 → 可读英文材质名”解析。翻译资源位于 JAR 内，运行时不联网；功能或头顶名称关闭时不会加载，开启后也只保留当前语言的材质数组。
 
 ```yaml
-# item-stacking.yml
-display:
-  custom-name:
-    locale: "zh_CN" # zh_CN、en_US、ja_JP
-    overrides:
-      "minecraft:stone": "自定义石头名称"
+# item-stacking-items.yml
+STONE:
+  # false 表示本插件完全不接管石头，保留服务端原版掉落物合并。
+  enabled: true
+  # -1 继承 item-stacking.yml 的全局上限；其它值最小为 2。
+  max-stack-size: -1
+  # default 或空值使用内置语言，也可以直接填写自定义名称。
+  display-name: "default"
 ```
+
+`item-stacking-items.yml` 只在功能开启且运行时能力检测通过后生成。插件会按当前服务端的全部可用 Material 生成完整条目；服务器升级后只追加新物品，不覆盖服主已有设置。`/wtc reload` 可直接应用单物品启用状态、上限和名称：改为禁用会按预算拆回原版实体，降低上限会无损拆成多个不超过新上限的逻辑实体，不强制加载未加载区块。旧 `display.custom-name.overrides` 不读取、不迁移，也不兼容。
 
 所有详细参数与总开关都在 `item-stacking.yml`。旧位置 `config.yml -> features.item-stacking.enabled` 不再读取。`/wtc stacking status` 查看运行、排空、队列和数量统计；把 `enabled` 改回 `false` 后，插件会把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理，也可以使用 `/wtc stacking drain` 主动请求排空。
 
@@ -312,9 +316,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.5.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`952174` 字节
-- SHA-256：`D848216F1C33B8C0D3C8DAE6D1ACE1F31ED6832D3665AB2ABF4F78CF8DE7BF9D`
-- 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证中、英、日三种内置名称、点号覆盖键和物品自定义名优先级；五种画面依次为 `圆石 x 80`、`Cobblestone x 80`、`丸石 x 80`、`Dotted_Key_Override x 80`、`Item_Custom_Name x 80`。
+- 文件大小：`960002` 字节
+- SHA-256：`EC223B2C8C88286CD753C22773364FEEA8099617B0C19C696702D57F286BDFBD`
+- 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证完整逐 Material 配置：圆石独立上限 `30`、金锭独立上限 `50`、钻石禁用接管、独立显示名，以及物品自身名称 `Item_Custom_Name x 80` 的最高优先级。另一次连续验收确认 `/wtc reload` 把逻辑数量 `80` 无损拆为最大 `30`，再禁用后保持总量 `80` 且受管实体归零。
 - 地面掉落物逻辑堆叠的数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由，已在翻译功能加入前使用同一套实现的历史 Universal 整包于 Paper 1.21.8 和 Folia 1.21.8 完成真实客户端全链路验收；这些历史业务证据不冒充当前 SHA 的重复全量验收。
 - 个人垃圾桶通知双按钮已使用整包 JAR 在 Paper 1.21.4、Paper 1.12.2 和 Folia 1.21.8 的真实客户端中验证，覆盖正式扫地回收通知、左右按钮可见性，以及从客户端聊天输入两条命令后分别打开个人桶/公共桶 GUI；本轮未把鼠标实际点击计入通过项。
 - 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
@@ -463,16 +467,20 @@ Startup checks the actual PDC, item-owner, pickup, hopper, merge, chunk-event, a
 
 The logical amount is stored only on the dropped entity, never on inventory item stacks. Nearby items merge only when their complete `ItemStack` data and owner match, so names, Lore, enchantments, PDC, Data Components, and different owners stay separate. Processing uses a bounded, deduplicated dirty-chunk queue with TTL, count, and microsecond budgets plus a spatial grid. It does not periodically scan every world entity or force-load chunks. On Folia, world-trash insertion and entity deduction are committed in the target chest's region.
 
-Ground-item labels include bundled vanilla item translations for `zh_CN`, `en_US`, and `ja_JP`. This setting affects item-stacking only and does not change the plugin message locale. Names resolve in this order: custom item name, administrator override in `display.custom-name.overrides`, bundled translation, then a readable English material name. Run `/wtc reload` after changing `locale` or overrides. Resources are bundled in the JAR and never downloaded at runtime; they are not loaded while stacking or labels are disabled, and only the selected locale is retained as a material-indexed array.
+Ground-item labels include bundled vanilla item translations for `zh_CN`, `en_US`, and `ja_JP`. This setting affects item-stacking only and does not change the plugin message locale. Names resolve in this order: the item's own custom name, the independent name in `item-stacking-items.yml`, the bundled translation, then a readable English material name. Resources are bundled in the JAR and never downloaded at runtime; they are not loaded while stacking or labels are disabled, and only the selected locale is retained as a material-indexed array.
 
 ```yaml
-# item-stacking.yml
-display:
-  custom-name:
-    locale: "en_US" # zh_CN, en_US, ja_JP
-    overrides:
-      "minecraft:stone": "Custom Stone Name"
+# item-stacking-items.yml
+STONE:
+  # false leaves stone entirely to vanilla item merging.
+  enabled: true
+  # -1 inherits the global limit from item-stacking.yml; other values must be at least 2.
+  max-stack-size: -1
+  # default or an empty value uses the bundled locale; a custom name can be entered directly.
+  display-name: "default"
 ```
+
+`item-stacking-items.yml` is created only after stacking is enabled and the runtime capability probe succeeds. It contains every usable Material available on the current server. Server upgrades append only newly introduced materials and never overwrite administrator settings. `/wtc reload` applies per-item enable switches, limits, and names immediately: disabling a material drains its managed stacks back to vanilla entities under the normal processing budget, while lowering a limit losslessly splits oversized logical stacks without force-loading unloaded chunks. The former `display.custom-name.overrides` node is not read, migrated, or supported.
 
 The switch and all detailed settings live in `item-stacking.yml`. The former `config.yml -> features.item-stacking.enabled` path is no longer read. `/wtc stacking status` shows runtime, draining, queue, and amount counters. Setting `enabled` back to `false` drains logical amounts in loaded chunks into vanilla stacks; unloaded chunks wait for natural loading. `/wtc stacking drain` can also request this explicitly.
 
@@ -630,9 +638,9 @@ Final universal artifact information:
 
 - Version: `7.5.1`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `952174` bytes
-- SHA-256: `D848216F1C33B8C0D3C8DAE6D1ACE1F31ED6832D3665AB2ABF4F78CF8DE7BF9D`
-- This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for bundled Chinese, English, and Japanese names, dotted-key overrides, and custom-item-name precedence. The five visible results were `圆石 x 80`, `Cobblestone x 80`, `丸石 x 80`, `Dotted_Key_Override x 80`, and `Item_Custom_Name x 80`.
+- File size: `960002` bytes
+- SHA-256: `EC223B2C8C88286CD753C22773364FEEA8099617B0C19C696702D57F286BDFBD`
+- This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the complete per-Material configuration: independent limits of `30` for cobblestone and `50` for gold ingots, disabled management for diamonds, independent display names, and highest precedence for the item's own `Item_Custom_Name x 80`. A second continuous run verified that `/wtc reload` losslessly split a logical amount of `80` to a maximum of `30`, then disabled management while preserving the total amount of `80` and reducing managed entities to zero.
 - Before the translation resources were added, the same stacking implementation completed real-client end-to-end verification on Paper 1.21.8 and Folia 1.21.8 for logical caps, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. Those historical business checks are not presented as a full rerun of the current SHA.
 - Personal-trash dual notification buttons were verified with the universal JAR on real clients running Paper 1.21.4, Paper 1.12.2, and Folia 1.21.8. The evidence covers the cleanup notification, separate left/right button visibility, and opening the personal/global GUIs from commands entered in the client chat; physical mouse clicks are not claimed as passed.
 - Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.

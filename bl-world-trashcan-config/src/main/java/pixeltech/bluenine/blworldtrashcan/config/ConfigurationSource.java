@@ -2,6 +2,7 @@ package pixeltech.bluenine.blworldtrashcan.config;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** 配置读取来源，隔离 Bukkit FileConfiguration 和核心配置解析。 */
 public interface ConfigurationSource {
@@ -31,8 +32,8 @@ public interface ConfigurationSource {
     /** 读取映射列表。 */
     List<Map<?, ?>> getMapList(String path);
 
-    /** 读取字符串映射；不支持映射节点的来源返回空映射。 */
-    default Map<String, String> getStringMap(String path) {
-        return java.util.Collections.emptyMap();
+    /** 读取节点下第一层键名；空路径表示根节点。 */
+    default Set<String> getKeys(String path) {
+        return java.util.Collections.emptySet();
     }
 }

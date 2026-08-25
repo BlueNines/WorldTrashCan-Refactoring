@@ -3,27 +3,45 @@ package pixeltech.bluenine.blworldtrashcan.bukkit.config;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
 
-import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-/** 验证 Bukkit 配置适配器对字符串映射的读取语义。 */
+/** 验证 Bukkit 配置适配器对节点第一层键的读取语义。 */
 public final class BukkitConfigurationSourceTest {
-    /** 点号键被 Bukkit 展开为嵌套节点后仍应恢复为完整覆盖键。 */
+    /** 根节点读取应只返回 Material，不把它们的字段展开。 */
     @Test
-    public void dottedOverrideKeysAreFlattened() throws Exception {
+    public void rootKeysExposeIndependentMaterialEntries() throws Exception {
         YamlConfiguration yaml = new YamlConfiguration();
         yaml.loadFromString(
-                "display:\n"
-                        + "  custom-name:\n"
-                        + "    overrides:\n"
-                        + "      'minecraft:stone': '命名空间覆盖'\n"
-                        + "      'block.minecraft.stone': '翻译键覆盖'\n");
+                "STONE:\n"
+                        + "  enabled: true\n"
+                        + "  max-stack-size: -1\n"
+                        + "DIRT:\n"
+                        + "  enabled: false\n");
 
-        Map<String, String> values = new BukkitConfigurationSource(yaml)
-                .getStringMap("display.custom-name.overrides");
+        Set<String> keys = new BukkitConfigurationSource(yaml).getKeys("");
 
-        assertEquals("命名空间覆盖", values.get("minecraft:stone"));
-        assertEquals("翻译键覆盖", values.get("block.minecraft.stone"));
+        assertEquals(2, keys.size());
+        assertTrue(keys.contains("STONE"));
+        assertTrue(keys.contains("DIRT"));
+    }
+
+    /** 子节点读取应只返回该节点直接包含的字段。 */
+    @Test
+    public void nestedKeysStayAtOneLevel() throws Exception {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.loadFromString(
+                "STONE:\n"
+                        + "  enabled: true\n"
+                        + "  nested:\n"
+                        + "    ignored: true\n");
+
+        Set<String> keys = new BukkitConfigurationSource(yaml).getKeys("STONE");
+
+        assertEquals(2, keys.size());
+        assertTrue(keys.contains("enabled"));
+        assertTrue(keys.contains("nested"));
     }
 }

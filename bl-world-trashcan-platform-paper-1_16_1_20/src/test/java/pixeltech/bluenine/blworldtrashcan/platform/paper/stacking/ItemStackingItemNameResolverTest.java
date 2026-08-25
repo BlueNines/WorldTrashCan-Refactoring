@@ -6,14 +6,13 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
 /** 验证 item-stacking 名称映射的键优先级和英文回退。 */
 public final class ItemStackingItemNameResolverTest {
-    /** 原版方块优先读取 block 键，且服主覆盖优先于内置值。 */
+    /** 原版方块优先读取 block 键，且独立物品显示名优先于内置值。 */
     @Test
     public void blockTranslationAndOverrideArePreferred() {
         Properties translations = new Properties();
@@ -21,9 +20,9 @@ public final class ItemStackingItemNameResolverTest {
         translations.setProperty("item.minecraft.stone", "Stone Item");
 
         assertEquals("石头", ItemStackingItemNameResolver.resolveConfiguredName(
-                Material.STONE, Collections.<String, String>emptyMap(), translations));
+                Material.STONE, null, translations));
         assertEquals("自定义石头", ItemStackingItemNameResolver.resolveConfiguredName(
-                Material.STONE, Collections.singletonMap("minecraft:stone", "自定义石头"), translations));
+                Material.STONE, "自定义石头", translations));
     }
 
     /** 缺少翻译时必须保持稳定的英文材质名。 */

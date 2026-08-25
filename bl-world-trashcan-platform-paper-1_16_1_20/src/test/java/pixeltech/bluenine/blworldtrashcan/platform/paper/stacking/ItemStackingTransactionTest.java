@@ -6,6 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
+import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -19,6 +20,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
+import pixeltech.bluenine.blworldtrashcan.bukkit.config.BukkitConfigurationSource;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.lang.reflect.InvocationHandler;
@@ -92,6 +95,41 @@ public final class ItemStackingTransactionTest {
         assertEquals(100, feature.getAmount(target.proxy()));
         assertEquals(10, feature.getAmount(source.proxy()));
         assertTrue(source.isValid());
+    }
+
+    /** 单 Material 独立上限必须优先于全局上限。 */
+    @Test
+    public void perMaterialLimitOverridesGlobalLimit() throws Exception {
+        TestFeature feature = feature(1000, "COBBLESTONE:\n  max-stack-size: 90\n");
+        FakeItem target = new FakeItem(80);
+        FakeItem source = new FakeItem(30);
+
+        invokeMerge(feature, target.proxy(), source.proxy());
+
+        assertEquals(90, feature.getAmount(target.proxy()));
+        assertEquals(20, feature.getAmount(source.proxy()));
+    }
+
+    /** 禁用 Material 的普通原版合并事件不得被插件取消。 */
+    @Test
+    public void disabledMaterialLeavesVanillaMergeUntouched() throws Exception {
+        TestFeature feature = feature(1000, "COBBLESTONE:\n  enabled: false\n");
+        ItemMergeEvent event = new ItemMergeEvent(new FakeItem(10).proxy(), new FakeItem(20).proxy());
+
+        feature.onItemMerge(event);
+
+        assertFalse(event.isCancelled());
+    }
+
+    /** 禁用前已经存在的逻辑实体仍需阻止原版误合并，等待预算化排空。 */
+    @Test
+    public void disabledMaterialProtectsExistingLogicalAmountUntilDrain() throws Exception {
+        TestFeature feature = feature(1000, "COBBLESTONE:\n  enabled: false\n");
+        ItemMergeEvent event = new ItemMergeEvent(new FakeItem(80).proxy(), new FakeItem(20).proxy());
+
+        feature.onItemMerge(event);
+
+        assertTrue(event.isCancelled());
     }
 
     /** 目标写入异常值时必须同时保留目标和来源的原始数量。 */
@@ -198,6 +236,19 @@ public final class ItemStackingTransactionTest {
         return new TestFeature(plugin, config);
     }
 
+    /** 创建带逐物品 YAML 的测试实现。 */
+    private TestFeature feature(int maxLogicalAmount, String itemYaml) throws Exception {
+        File dataFolder = temporaryFolder.newFolder();
+        YamlConfiguration global = new YamlConfiguration();
+        global.loadFromString("enabled: true\nstack:\n  max-logical-amount: " + maxLogicalAmount
+                + "\ndisplay:\n  custom-name:\n    enabled: false\n");
+        YamlConfiguration items = new YamlConfiguration();
+        items.loadFromString(itemYaml);
+        ItemStackingConfig config = ItemStackingConfig.load(new BukkitConfigurationSource(global),
+                new BukkitConfigurationSource(items));
+        return new TestFeature(pluginProxy(dataFolder), config);
+    }
+
     /** 调用私有合并方法，直接覆盖事务结果。 */
     private void invokeMerge(TestFeature feature, Item target, Item source) throws Exception {
         Method method = AbstractModernItemStackingFeature.class.getDeclaredMethod("mergeInto", Item.class, Item.class);
@@ -241,6 +292,9 @@ public final class ItemStackingTransactionTest {
                         }
                         if ("getClassLoader".equals(method.getName())) {
                             return getClass().getClassLoader();
+                        }
+                        if ("getLogger".equals(method.getName())) {
+                            return Logger.getLogger("ItemStackingTransactionTest");
                         }
                         return defaultValue(method.getReturnType());
                     }

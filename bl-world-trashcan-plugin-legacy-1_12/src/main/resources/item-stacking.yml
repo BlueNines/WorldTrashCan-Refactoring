@@ -41,6 +41,5 @@ display:
     format: "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"
     # 1.12.2 不加载翻译资源；现代兼容端支持 zh_CN、en_US、ja_JP。
     locale: "zh_CN"
-    # 1.12.2 不运行该功能；保留与现代端一致的名称覆盖结构。
-    overrides:
-      # "minecraft:stone": "自定义石头名称"
+    # 逐物品文件只会在运行时具备现代堆叠能力且本功能开启时生成。
+    # 1.12.2 不具备所需 PDC 能力，因此不会读取或生成 item-stacking-items.yml。

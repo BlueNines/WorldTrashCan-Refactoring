@@ -41,6 +41,7 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.PaperPlatform;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.AbstractModernItemStackingFeature;
+import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingConfigurationLoader;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.PaperItemStackingFeature;
 
 import java.io.File;
@@ -284,7 +285,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
             /** 每次重载时读取最新独立配置。 */
             @Override
             public ItemStackingConfig get() {
-                return ItemStackingConfig.load(new BukkitConfigurationSource(loadYaml("item-stacking.yml")));
+                return ItemStackingConfigurationLoader.load(WorldListTrashCanPlugin.this);
             }
         });
     }

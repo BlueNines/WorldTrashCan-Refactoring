@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 
 /** 将当前服务端材质映射为 item-stacking 使用的单语言名称。 */
@@ -35,7 +34,8 @@ final class ItemStackingItemNameResolver {
     }
 
     /** 按配置加载一个语言；关闭态不读取任何翻译资源。 */
-    static ItemStackingItemNameResolver load(Plugin plugin, ItemStackingConfig config) {
+    static ItemStackingItemNameResolver load(Plugin plugin, ItemStackingConfig config,
+                                             ItemStackingMaterialPolicy policy) {
         if (plugin == null || config == null || !config.isFeatureEnabled()
                 || !config.isDisplayNameEnabled()) {
             return new ItemStackingItemNameResolver();
@@ -60,7 +60,7 @@ final class ItemStackingItemNameResolver {
         String[] names = new String[materials.length];
         int translated = 0;
         for (Material material : materials) {
-            String name = resolveConfiguredName(material, config.getDisplayNameOverrides(), translations);
+            String name = resolveConfiguredName(material, policy.displayName(material), translations);
             if (name != null && !name.trim().isEmpty()) {
                 names[material.ordinal()] = name;
                 translated++;
@@ -96,20 +96,16 @@ final class ItemStackingItemNameResolver {
         return translatedCount;
     }
 
-    /** 按材质类型选择 block/item 翻译键并应用服主覆盖。 */
-    static String resolveConfiguredName(Material material, Map<String, String> overrides,
+    /** 优先使用逐物品显示名，否则按材质类型选择 block/item 内置翻译键。 */
+    static String resolveConfiguredName(Material material, String configuredName,
                                         Properties translations) {
         NamespacedKey key = material.getKey();
         String namespace = key.getNamespace();
         String value = key.getKey();
         String preferred = (material.isBlock() ? "block." : "item.") + namespace + "." + value;
         String alternate = (material.isBlock() ? "item." : "block.") + namespace + "." + value;
-        String namespaced = namespace + ":" + value;
-
-        String overridden = firstNonBlank(overrides.get(preferred), overrides.get(alternate),
-                overrides.get(namespaced), overrides.get(material.name().toLowerCase(Locale.ROOT)));
-        if (overridden != null) {
-            return overridden;
+        if (configuredName != null && !configuredName.trim().isEmpty()) {
+            return configuredName;
         }
         return firstNonBlank(translations.getProperty(preferred), translations.getProperty(alternate));
     }
