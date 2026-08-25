@@ -47,12 +47,16 @@ public final class ItemStackingItemNameResolverTest {
         assertEquals("石", loadLocale("ja_jp").getProperty("block.minecraft.stone"));
     }
 
-    /** 关闭堆叠时也能只加载内置语言名称，且不会访问插件数据目录。 */
+    /** 关闭堆叠时也能从统一配置加载内置语言名称，且不会访问插件数据目录。 */
     @Test
     public void baseResolverLoadsTranslationWithoutItemConfiguration() {
         Plugin plugin = pluginWithBundledResources();
 
-        ItemStackingItemNameResolver resolver = ItemStackingItemNameResolver.loadBase(plugin, "zh-CN");
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set("enabled", Boolean.FALSE);
+        yaml.set("display.custom-name.locale", "zh-CN");
+        ItemStackingItemNameResolver resolver = ItemStackingItemNameResolver.load(plugin,
+                ItemStackingConfig.load(new BukkitConfigurationSource(yaml)));
 
         assertEquals("石头", resolver.resolve(Material.STONE));
         assertEquals("zh_CN", resolver.getLocale());
@@ -70,13 +74,11 @@ public final class ItemStackingItemNameResolverTest {
     /** 逐物品 display-name 必须覆盖内置翻译并可供通知复用。 */
     @Test
     public void perMaterialNameOverridesBundledTranslation() {
-        YamlConfiguration global = new YamlConfiguration();
-        global.set("enabled", Boolean.TRUE);
-        global.set("display.custom-name.locale", "zh_CN");
-        YamlConfiguration items = new YamlConfiguration();
-        items.set("STONE.display-name", "配置石头");
-        ItemStackingConfig config = ItemStackingConfig.load(
-                new BukkitConfigurationSource(global), new BukkitConfigurationSource(items));
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set("enabled", Boolean.TRUE);
+        yaml.set("display.custom-name.locale", "zh_CN");
+        yaml.set("items.STONE.display-name", "配置石头");
+        ItemStackingConfig config = ItemStackingConfig.load(new BukkitConfigurationSource(yaml));
 
         ItemStackingItemNameResolver resolver = ItemStackingItemNameResolver.load(
                 pluginWithBundledResources(), config);

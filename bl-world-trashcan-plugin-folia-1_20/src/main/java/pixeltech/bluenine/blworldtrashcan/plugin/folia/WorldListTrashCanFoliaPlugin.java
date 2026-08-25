@@ -45,7 +45,6 @@ import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaItemStackingFeatur
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaPlatform;
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaRegionCleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.AbstractModernItemStackingFeature;
-import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingConfigurationLoader;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingItemNameResolver;
 
 import java.io.File;
@@ -310,10 +309,10 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         }
         itemStackingUnavailableReason = "";
         return new FoliaItemStackingFeature(this, new Supplier<ItemStackingConfig>() {
-            /** 每次重载时读取最新独立配置。 */
+            /** 每次重载返回统一配置文件的最新不可变快照。 */
             @Override
             public ItemStackingConfig get() {
-                return ItemStackingConfigurationLoader.load(WorldListTrashCanFoliaPlugin.this);
+                return configBundle.getItemStackingConfig();
             }
         });
     }
@@ -327,7 +326,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
                 || !configBundle.getTrashConfig().getPersonalTrash().isNotifyWhenRouted()) {
             return SimpleItemDisplayNameResolver.getInstance();
         }
-        return ItemStackingItemNameResolver.loadBase(this, configBundle.getItemDisplayNameLocale());
+        return ItemStackingItemNameResolver.load(this, configBundle.getItemStackingConfig());
     }
 
     /** reload 时补建从关闭切换到开启的功能。 */

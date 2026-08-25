@@ -108,11 +108,12 @@ public final class DefaultResourceDocumentationTest {
                     detail.getBoolean("enabled", true));
             assertFalse(module + " 不应继续在 config.yml 暴露旧堆叠开关",
                     config.contains("features.item-stacking.enabled"));
-            assertEquals(10000, detail.getInt("stack.max-logical-amount"));
+            assertEquals(1024, detail.getInt("stack.max-logical-amount"));
             assertEquals(8, detail.getInt("scheduler.max-chunks-per-run"));
             assertEquals(4096, detail.getInt("scheduler.max-queued-chunks"));
             assertEquals("zh_CN", detail.getString("display.custom-name.locale"));
-            assertTrue(detailText.contains("item-stacking-items.yml"));
+            assertTrue(detail.contains("items.DIAMOND_BLOCK"));
+            assertEquals(200, detail.getInt("items.DIAMOND_BLOCK.max-stack-size"));
             assertTrue(detailText.contains("max-stack-size 为 -1"));
             assertTrue(detailText.contains("DIAMOND_BLOCK"));
             assertTrue(detailText.contains("200"));
@@ -123,8 +124,8 @@ public final class DefaultResourceDocumentationTest {
             if (module.contains("legacy")) {
                 assertTrue(detailText.contains("1.12.2 缺少掉落物实体 PDC"));
             } else {
-                assertTrue(detailText.contains("关闭时只保留 enabled 和供个人垃圾桶通知使用的名称语言"));
-                assertTrue(detailText.contains("不读取逐物品配置"));
+                assertTrue(detailText.contains("items 只作为本文件中的小型稀疏覆盖表读取一次"));
+                assertTrue(detailText.contains("不会自动生成完整清单"));
             }
             assertTrue(detailText.contains("不会无限占用内存"));
         }

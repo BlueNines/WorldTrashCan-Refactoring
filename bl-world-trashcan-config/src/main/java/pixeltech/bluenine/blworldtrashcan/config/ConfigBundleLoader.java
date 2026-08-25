@@ -263,9 +263,7 @@ public final class ConfigBundleLoader {
                 loadNotifyConfig(cleanup),
                 main.getString("language", "message_zh.yml"),
                 main.getBoolean("debug", false),
-                itemStacking != null && itemStacking.getBoolean("enabled", false),
-                itemStacking == null ? "zh_CN"
-                        : itemStacking.getString("display.custom-name.locale", "zh_CN")
+                itemStacking == null ? null : ItemStackingConfig.load(itemStacking)
         );
     }
 

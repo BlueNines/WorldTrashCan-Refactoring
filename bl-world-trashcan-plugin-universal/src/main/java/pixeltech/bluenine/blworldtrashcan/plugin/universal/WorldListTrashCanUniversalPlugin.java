@@ -43,7 +43,6 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.trash.WorldTrashRouter;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundleLoader;
 import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
-import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingConfigurationLoader;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingItemNameResolver;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
@@ -575,10 +574,10 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
             return null;
         }
         final Supplier<ItemStackingConfig> supplier = new Supplier<ItemStackingConfig>() {
-            /** 每次重载时读取最新独立配置。 */
+            /** 每次重载返回统一配置文件的最新不可变快照。 */
             @Override
             public ItemStackingConfig get() {
-                return ItemStackingConfigurationLoader.load(WorldListTrashCanUniversalPlugin.this);
+                return configBundle.getItemStackingConfig();
             }
         };
         String className = runtimeKind == RuntimeKind.FOLIA ? FOLIA_ITEM_STACKING : PAPER_ITEM_STACKING;
@@ -603,7 +602,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
                 || !configBundle.getTrashConfig().getPersonalTrash().isNotifyWhenRouted()) {
             return SimpleItemDisplayNameResolver.getInstance();
         }
-        return ItemStackingItemNameResolver.loadBase(this, configBundle.getItemDisplayNameLocale());
+        return ItemStackingItemNameResolver.load(this, configBundle.getItemStackingConfig());
     }
 
     /** 在 reload 时按总开关动态补建功能并把数量服务接入扫地。 */

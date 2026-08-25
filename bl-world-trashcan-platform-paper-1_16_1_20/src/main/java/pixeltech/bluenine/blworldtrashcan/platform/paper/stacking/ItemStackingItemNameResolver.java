@@ -77,11 +77,6 @@ public final class ItemStackingItemNameResolver implements ItemDisplayNameResolv
         return new ItemStackingItemNameResolver(locale, names, translated);
     }
 
-    /** 只按总配置语言加载名称，不读取或生成逐物品配置。 */
-    public static ItemStackingItemNameResolver loadBase(Plugin plugin, String locale) {
-        return load(plugin, ItemStackingConfig.namesOnly(locale));
-    }
-
     /** 返回物品名称，物品自身名称始终拥有最高优先级。 */
     @Override
     public String resolve(ItemStack itemStack) {

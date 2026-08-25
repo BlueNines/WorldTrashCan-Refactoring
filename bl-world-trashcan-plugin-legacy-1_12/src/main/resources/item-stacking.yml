@@ -8,9 +8,19 @@ enabled: false
 stack:
   # 单个掉落物实体最多代表多少个实际物品。
   # 范围 2-2147483647；达到上限后，多出的物品会留在其它实体中，不会被吞掉。
-  # 现代兼容端的 item-stacking-items.yml 中，max-stack-size 为 -1 或缺少条目的物品会继承此值。
-  # 例如现代兼容端可设全局 1024、DIAMOND_BLOCK 独立 200；1.12.2 本身不会运行该功能。
-  max-logical-amount: 10000
+  # 现代兼容端 items 中 max-stack-size 为 -1 或缺少条目的物品会继承此值。
+  # 默认 1024；1.12.2 本身不会运行该功能。
+  max-logical-amount: 1024
+
+# 现代兼容端的单物品覆盖规则；1.12.2 会解析配置结构，但不会运行地面逻辑堆叠。
+items:
+  DIAMOND_BLOCK:
+    # 现代兼容端是否由本插件接管钻石块；1.12.2 会忽略运行效果。
+    enabled: true
+    # 现代兼容端把钻石块独立限制为 200；-1 表示继承全局 1024。
+    max-stack-size: 200
+    # 现代兼容端使用的独立显示名；default 表示使用 locale 对应的内置名称。
+    display-name: "default"
 
 merge:
   # 水平方向允许聚集的最大距离，单位为方块；范围 0.1-16。
@@ -43,5 +53,5 @@ display:
     format: "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"
     # 1.12.2 不加载翻译资源；现代兼容端支持 zh_CN、en_US、ja_JP。
     locale: "zh_CN"
-    # 逐物品文件只会在运行时具备现代堆叠能力且本功能开启时生成。
-    # 1.12.2 不具备所需 PDC 能力，因此不会读取或生成 item-stacking-items.yml。
+    # 现代兼容端的单物品显示名覆盖统一配置在本文件根节点 items 中。
+    # 1.12.2 不具备所需 PDC 能力，因此不会创建堆叠监听器、任务、队列或索引。

@@ -11,15 +11,13 @@ public final class ConfigBundle {
     private final NotifyConfig notifyConfig;
     private final String languageFile;
     private final boolean debug;
-    private final boolean itemStackingEnabled;
-    private final String itemDisplayNameLocale;
+    private final ItemStackingConfig itemStackingConfig;
 
     /** 创建配置集合。 */
     public ConfigBundle(CleanupConfig cleanupConfig, TrashConfig trashConfig,
                         ProtectionConfig protectionConfig, EntityLimitConfig entityLimitConfig,
                          NotifyConfig notifyConfig,
-                         String languageFile, boolean debug, boolean itemStackingEnabled,
-                         String itemDisplayNameLocale) {
+                         String languageFile, boolean debug, ItemStackingConfig itemStackingConfig) {
         this.cleanupConfig = cleanupConfig;
         this.trashConfig = trashConfig;
         this.protectionConfig = protectionConfig;
@@ -27,8 +25,8 @@ public final class ConfigBundle {
         this.notifyConfig = notifyConfig;
         this.languageFile = languageFile == null || languageFile.trim().isEmpty() ? "message_zh.yml" : languageFile;
         this.debug = debug;
-        this.itemStackingEnabled = itemStackingEnabled;
-        this.itemDisplayNameLocale = itemDisplayNameLocale;
+        this.itemStackingConfig = itemStackingConfig == null
+                ? ItemStackingConfig.defaults() : itemStackingConfig;
     }
 
     /** 返回清理配置。 */
@@ -73,11 +71,16 @@ public final class ConfigBundle {
 
     /** 判断服主是否请求启用地面掉落物逻辑堆叠。 */
     public boolean isItemStackingEnabled() {
-        return itemStackingEnabled;
+        return itemStackingConfig.isFeatureEnabled();
     }
 
     /** 返回地面堆叠和垃圾桶提示共用的内置物品名称语言。 */
     public String getItemDisplayNameLocale() {
-        return itemDisplayNameLocale;
+        return itemStackingConfig.getDisplayNameLocale();
+    }
+
+    /** 返回统一文件解析出的完整地面堆叠配置快照。 */
+    public ItemStackingConfig getItemStackingConfig() {
+        return itemStackingConfig;
     }
 }

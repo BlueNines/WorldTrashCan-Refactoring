@@ -35,7 +35,7 @@ WorldListTrashCan 保留旧版的世界垃圾桶、公共垃圾桶、个人垃�
 | 潜影盒物品保护 | 没有 | 可选择跳过掉落物携带的装满潜影盒物品，默认关闭 |
 | 自定义数据物品路由 | 只能依赖材质、名称和 Lore 排除 | 可按 Material、名称、Lore、PDC key、Raw NBT/Data Components key 识别，并选择只进个人桶、留地或直接删除 |
 | 公共垃圾桶准入 | 只有材质黑名单 | 可选五类规则白名单；未命中物品不会进入公共桶，扫地拒绝动作可选留地或直接删除 |
-| 地面掉落物聚集 | 依赖原版最多 64 个 | 实验性逻辑堆叠可让一个实体代表最多 `10000` 个物品，并兼容拾取、漏斗、重启、扫地与损坏回收；默认完全关闭 |
+| 地面掉落物聚集 | 依赖原版最多 64 个 | 实验性逻辑堆叠默认让一个实体代表最多 `1024` 个物品，可按 Material 独立覆盖，并兼容拾取、漏斗、重启、扫地与损坏回收；默认完全关闭 |
 
 上表只列服主能直接感知的业务变化，没有把内部实现细节重复算成新功能。
 
@@ -116,7 +116,7 @@ entities:
 
 个人桶默认使用紧凑模式、2 页、单种物品上限 `9999`，允许手动放入且没有拿取冷却。个人桶满时默认拒绝路由并保留旧物品。只有显式设置 `auto-clear-when-full: true` 后，自动路由遇到“整个容器容量不足”才会清空并只重试一次；玩家 GUI 手动放入、单种物品达到上限和已经部分接收的请求绝不会触发清空。个人专属物品也不会因为个人桶满而自动改投公共桶。
 
-个人桶回收通知中的物品名与地面堆叠共用同一条解析链路：物品自身自定义名优先；堆叠开启时继续读取 `item-stacking-items.yml` 的逐物品 `display-name`；否则使用 `item-stacking.yml -> display.custom-name.locale` 指定的内置语言，最后才降级为可读英文材质名。关闭堆叠时不会读取或生成 `item-stacking-items.yml`，也不会创建任何堆叠监听、任务或队列。通知默认在同一条消息中显示两个独立按钮：左侧 `[打开个人垃圾桶]` 执行 `/wtc personal`，右侧 `[打开公共垃圾桶]` 执行 `/wtc global`。按钮文本位于语言文件的 `personal-trash.recycle.personal-button`、`button-separator` 和 `global-button`，两侧命令位于 `trash.yml`：
+个人桶回收通知中的物品名与地面堆叠共用同一条解析链路：物品自身自定义名优先，其次读取 `item-stacking.yml -> items` 的逐物品 `display-name`，然后使用 `display.custom-name.locale` 指定的内置语言，最后才降级为可读英文材质名。关闭堆叠时仍可复用同一份小型配置快照显示名称，但不会创建任何堆叠监听、任务、队列或索引。通知默认在同一条消息中显示两个独立按钮：左侧 `[打开个人垃圾桶]` 执行 `/wtc personal`，右侧 `[打开公共垃圾桶]` 执行 `/wtc global`。按钮文本位于语言文件的 `personal-trash.recycle.personal-button`、`button-separator` 和 `global-button`，两侧命令位于 `trash.yml`：
 
 ```yaml
 personal-trash:
@@ -133,7 +133,7 @@ personal-trash:
 
 ### 地面掉落物逻辑堆叠
 
-这是默认关闭的实验性功能。独立配置文件 `item-stacking.yml` 会随其它默认配置一起生成；关闭时只保留 `enabled` 和供个人桶通知使用的 `display.custom-name.locale`，不会读取或生成 `item-stacking-items.yml`，也不会创建堆叠功能对象、探测现代 API 或注册对应监听器、任务、队列和索引。开启方式：
+这是默认关闭的实验性功能。唯一配置文件 `item-stacking.yml` 会随其它默认配置一起生成，包含总开关、全局上限、性能参数、显示设置和 `items` 单物品覆盖规则。关闭时不会创建堆叠功能对象、探测现代 API 或注册对应监听器、任务、队列和索引。开启方式：
 
 ```yaml
 # item-stacking.yml
@@ -144,24 +144,25 @@ enabled: true
 
 逻辑数量只写在地面掉落物实体的 PDC 中，不修改背包物品，因此不会破坏普通物品堆叠。相同 `ItemStack` 数据和相同 owner 的附近物品才会聚集，不同名称、Lore、附魔、PDC、Data Components 或 owner 不会混合。主动处理使用有容量、TTL、数量和微秒预算的 dirty-chunk 队列与空间网格，不周期遍历全部世界实体，也不强制加载区块。Folia 的世界垃圾桶转移在目标箱子所属 region 内完成写入和数量扣减。
 
-内置名称支持 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，并同时用于掉落物头顶名称和个人垃圾桶回收通知，不改变插件消息语言文件。名称按“物品自身的自定义名 → `item-stacking-items.yml` 的独立显示名（堆叠开启时）→ 内置翻译 → 可读英文材质名”解析。翻译资源位于 JAR 内，运行时不联网；只保留当前语言的 `Material.ordinal()` 数组。堆叠和个人桶通知都关闭时不加载这份数组。
+内置名称支持 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，并同时用于掉落物头顶名称和个人垃圾桶回收通知，不改变插件消息语言文件。名称按“物品自身的自定义名 → `item-stacking.yml -> items` 的独立显示名 → 内置翻译 → 可读英文材质名”解析。翻译资源位于 JAR 内，运行时不联网；只保留当前语言的 `Material.ordinal()` 数组。堆叠和个人桶通知都关闭时不加载这份数组。
 
 ```yaml
-# item-stacking.yml：所有未单独设置的物品最多堆叠 1024 个。
+# item-stacking.yml
 stack:
+  # 所有未在 items 中单独设置的物品最多堆叠 1024 个。
   max-logical-amount: 1024
 
-# item-stacking-items.yml
-DIAMOND_BLOCK:
-  # false 表示本插件完全不接管钻石块，保留服务端原版掉落物合并。
-  enabled: true
-  # 本例让钻石块最多堆叠 200 个；填 -1 则继承上面的 1024。
-  max-stack-size: 200
-  # default 或空值使用内置语言，也可以直接填写自定义名称。
-  display-name: "default"
+items:
+  DIAMOND_BLOCK:
+    # false 表示本插件完全不接管钻石块，保留服务端原版掉落物合并。
+    enabled: true
+    # 本例让钻石块最多堆叠 200 个；填 -1 则继承上面的 1024。
+    max-stack-size: 200
+    # default 或空值使用内置语言，也可以直接填写自定义名称。
+    display-name: "default"
 ```
 
-`item-stacking-items.yml` 只在功能开启且运行时能力检测通过后生成。插件会按当前服务端的全部可用 Material 生成完整条目；服务器升级后只追加新物品，不覆盖服主已有设置。`/wtc reload` 可直接应用单物品启用状态、上限和名称：改为禁用会按预算拆回原版实体，降低上限会无损拆成多个不超过新上限的逻辑实体，不强制加载未加载区块。旧 `display.custom-name.overrides` 不读取、不迁移，也不兼容。
+`items` 是稀疏覆盖表，只需填写确实需要特殊规则的 Bukkit Material，不会生成上千个默认条目。未配置 Material 自动启用并继承 `stack.max-logical-amount` 和内置语言名称。`/wtc reload` 可直接应用单物品启用状态、上限和名称：改为禁用会按预算拆回原版实体，降低上限会无损拆成多个不超过新上限的逻辑实体，不强制加载未加载区块。开发阶段使用过的 `item-stacking-items.yml` 和旧 `display.custom-name.overrides` 均不读取、不迁移，可直接删除。
 
 所有详细参数与总开关都在 `item-stacking.yml`。旧位置 `config.yml -> features.item-stacking.enabled` 不再读取。`/wtc stacking status` 查看运行、排空、队列和数量统计；把 `enabled` 改回 `false` 后，插件会把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理，也可以使用 `/wtc stacking drain` 主动请求排空。
 
@@ -365,7 +366,7 @@ It keeps the legacy world trash can, public trash can, personal trash can, item 
 | Filled shulker-box item protection | Not available | Cleanup can skip dropped item stacks containing filled shulker boxes; disabled by default |
 | Custom-data item routing | Exclusions relied on material, name, and Lore | Material, name, Lore, PDC keys, and Raw NBT/Data Components keys can route items to personal trash only, keep them on the ground, or remove them directly |
 | Public trash admission | Material blacklist only | An optional five-source allowlist controls every public-trash entry; rejected cleanup items can remain on the ground or be removed |
-| Ground-item aggregation | Limited to vanilla stacks of 64 | Experimental logical stacking lets one entity represent up to `10000` items while supporting pickup, hoppers, restarts, cleanup, and damage recovery; fully disabled by default |
+| Ground-item aggregation | Limited to vanilla stacks of 64 | Experimental logical stacking lets one entity represent up to `1024` items by default, supports per-Material overrides, pickup, hoppers, restarts, cleanup, and damage recovery; fully disabled by default |
 
 This table lists changes directly visible to server administrators and does not count internal implementation details as separate features.
 
@@ -446,7 +447,7 @@ Personal trash uses the same storage and menu core as global trash, while state 
 
 The personal default is compact mode, 2 pages, a per-item limit of `9999`, manual deposits enabled, and no take delay. When full, personal trash rejects new routes by default and keeps its existing contents. Only with `auto-clear-when-full: true` will an automatic route clear and retry once after a whole-container-capacity rejection. Manual GUI deposits, per-entry limits, and partially accepted requests never trigger a clear. Personal-only items are not redirected to global trash just because the personal container is full.
 
-Personal-trash recovery notifications use the same item-name chain as ground-item stacking: the item's own custom name wins; while stacking is enabled, per-material `display-name` values from `item-stacking-items.yml` come next; otherwise the bundled locale selected by `item-stacking.yml -> display.custom-name.locale` is used, followed by a readable English material-name fallback. Disabling stacking never reads or creates `item-stacking-items.yml` and creates no stacking listener, task, or queue. Notifications contain two independent buttons in one chat message by default: `[Open Personal Trash]` runs `/wtc personal` on the left, and `[Open Global Trash]` runs `/wtc global` on the right. Button labels are configured in `personal-trash.recycle.personal-button`, `button-separator`, and `global-button` in the language file. Commands are configured in `trash.yml`:
+Personal-trash recovery notifications use the same item-name chain as ground-item stacking: the item's own custom name wins, followed by per-material `display-name` values under `item-stacking.yml -> items`, the bundled locale selected by `display.custom-name.locale`, and finally a readable English material-name fallback. While stacking is disabled, the same small configuration snapshot can still provide names, but no stacking listener, task, queue, or index is created. Notifications contain two independent buttons in one chat message by default: `[Open Personal Trash]` runs `/wtc personal` on the left, and `[Open Global Trash]` runs `/wtc global` on the right. Button labels are configured in `personal-trash.recycle.personal-button`, `button-separator`, and `global-button` in the language file. Commands are configured in `trash.yml`:
 
 ```yaml
 personal-trash:
@@ -461,7 +462,7 @@ Each command is attached to its own chat component. Leaving one command empty hi
 
 ### Logical ground-item stacking
 
-This is an experimental, opt-in feature. `item-stacking.yml` is generated with the other default files. While disabled, only `enabled` and `display.custom-name.locale` for personal-trash notifications are retained; `item-stacking-items.yml` is neither read nor created, and no stacking object, API probe, listener, task, queue, or index is created. Enable it in the independent file:
+This is an experimental, opt-in feature. `item-stacking.yml` is the only configuration file and contains the switch, global limit, performance parameters, display settings, and per-item overrides under `items`. While disabled, no stacking object, API probe, listener, task, queue, or index is created. Enable it in this file:
 
 ```yaml
 # item-stacking.yml
@@ -472,24 +473,25 @@ Startup checks the actual PDC, item-owner, pickup, hopper, merge, chunk-event, a
 
 The logical amount is stored only on the dropped entity, never on inventory item stacks. Nearby items merge only when their complete `ItemStack` data and owner match, so names, Lore, enchantments, PDC, Data Components, and different owners stay separate. Processing uses a bounded, deduplicated dirty-chunk queue with TTL, count, and microsecond budgets plus a spatial grid. It does not periodically scan every world entity or force-load chunks. On Folia, world-trash insertion and entity deduction are committed in the target chest's region.
 
-Bundled vanilla names support `zh_CN`, `en_US`, and `ja_JP` for both ground-item labels and personal-trash recovery notifications without changing the plugin message locale. Names resolve in this order: the item's own custom name, the independent name in `item-stacking-items.yml` while stacking is enabled, the bundled translation, then a readable English material name. Resources stay inside the JAR and are never downloaded; only the selected locale is retained as a `Material.ordinal()` array. The array is not loaded when both stacking and personal-trash notifications are disabled.
+Bundled vanilla names support `zh_CN`, `en_US`, and `ja_JP` for both ground-item labels and personal-trash recovery notifications without changing the plugin message locale. Names resolve in this order: the item's own custom name, the independent name under `item-stacking.yml -> items`, the bundled translation, then a readable English material name. Resources stay inside the JAR and are never downloaded; only the selected locale is retained as a `Material.ordinal()` array. The array is not loaded when both stacking and personal-trash notifications are disabled.
 
 ```yaml
-# item-stacking.yml: all items without an independent override stack up to 1024.
+# item-stacking.yml
 stack:
+  # All items without an override under items stack up to 1024.
   max-logical-amount: 1024
 
-# item-stacking-items.yml
-DIAMOND_BLOCK:
-  # false leaves diamond blocks entirely to vanilla item merging.
-  enabled: true
-  # This example limits diamond blocks to 200; -1 would inherit 1024 above.
-  max-stack-size: 200
-  # default or an empty value uses the bundled locale; a custom name can be entered directly.
-  display-name: "default"
+items:
+  DIAMOND_BLOCK:
+    # false leaves diamond blocks entirely to vanilla item merging.
+    enabled: true
+    # This example limits diamond blocks to 200; -1 would inherit 1024 above.
+    max-stack-size: 200
+    # default or an empty value uses the bundled locale; a custom name can be entered directly.
+    display-name: "default"
 ```
 
-`item-stacking-items.yml` is created only after stacking is enabled and the runtime capability probe succeeds. It contains every usable Material available on the current server. Server upgrades append only newly introduced materials and never overwrite administrator settings. `/wtc reload` applies per-item enable switches, limits, and names immediately: disabling a material drains its managed stacks back to vanilla entities under the normal processing budget, while lowering a limit losslessly splits oversized logical stacks without force-loading unloaded chunks. The former `display.custom-name.overrides` node is not read, migrated, or supported.
+`items` is a sparse override map: list only Bukkit Materials that need special behavior. Unlisted materials are enabled automatically and inherit `stack.max-logical-amount` plus the bundled locale name. `/wtc reload` applies per-item switches, limits, and names immediately: disabling a material drains its managed stacks back to vanilla entities under the normal processing budget, while lowering a limit losslessly splits oversized logical stacks without force-loading unloaded chunks. The development-only `item-stacking-items.yml` and the former `display.custom-name.overrides` node are not read or migrated and can be deleted.
 
 The switch and all detailed settings live in `item-stacking.yml`. The former `config.yml -> features.item-stacking.enabled` path is no longer read. `/wtc stacking status` shows runtime, draining, queue, and amount counters. Setting `enabled` back to `false` drains logical amounts in loaded chunks into vanilla stacks; unloaded chunks wait for natural loading. `/wtc stacking drain` can also request this explicitly.
 

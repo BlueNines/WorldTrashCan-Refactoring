@@ -61,22 +61,9 @@ public final class ItemStackingConfig {
         this.defaultItemRule = new ItemRule(true, this.maxLogicalAmount, null);
     }
 
-    /** 只从总配置读取设置，不读取任何逐物品配置。 */
+    /** 从统一配置文件读取全局设置和 items 稀疏覆盖规则。 */
     public static ItemStackingConfig load(ConfigurationSource source) {
-        return load(source, null);
-    }
-
-    /** 创建只用于共享物品名称解析的最小配置，不启用堆叠运行逻辑。 */
-    public static ItemStackingConfig namesOnly(String locale) {
-        return new ItemStackingConfig(false, 10000, 3.0D, 1.5D, 5, 10,
-                8, 256, 1500, 4096, 30, true,
-                "&#38BDF8{name} &#64748Bx &#F5B82E{amount}", locale,
-                Collections.<String, ItemRule>emptyMap());
-    }
-
-    /** 从总配置和独立逐物品配置读取设置。 */
-    public static ItemStackingConfig load(ConfigurationSource source, ConfigurationSource itemSource) {
-        int globalMaximum = Math.max(2, source.getInt("stack.max-logical-amount", 10000));
+        int globalMaximum = Math.max(2, source.getInt("stack.max-logical-amount", 1024));
         return new ItemStackingConfig(
                 source.getBoolean("enabled", false),
                 globalMaximum,
@@ -93,22 +80,27 @@ public final class ItemStackingConfig {
                 source.getString("display.custom-name.format",
                         "&#38BDF8{name} &#64748Bx &#F5B82E{amount}"),
                 source.getString("display.custom-name.locale", "zh_CN"),
-                loadItemRules(itemSource, globalMaximum)
+                loadItemRules(source, globalMaximum)
         );
     }
 
-    /** 从逐物品文件读取第一层 Material 规则。 */
+    /** 创建功能关闭且不含逐物品规则的默认配置。 */
+    public static ItemStackingConfig defaults() {
+        return new ItemStackingConfig(false, 1024, 3.0D, 1.5D, 5, 10,
+                8, 256, 1500, 4096, 30, true,
+                "&#38BDF8{name} &#64748Bx &#F5B82E{amount}", "zh_CN",
+                Collections.<String, ItemRule>emptyMap());
+    }
+
+    /** 从 items 节点读取显式配置的 Material 规则。 */
     private static Map<String, ItemRule> loadItemRules(ConfigurationSource source, int globalMaximum) {
-        if (source == null) {
-            return Collections.emptyMap();
-        }
         Map<String, ItemRule> rules = new LinkedHashMap<>();
-        for (String key : source.getKeys("")) {
+        for (String key : source.getKeys("items")) {
             if (key == null || key.trim().isEmpty()) {
                 continue;
             }
             String normalized = key.trim().toUpperCase(Locale.ROOT);
-            String path = key + ".";
+            String path = "items." + key + ".";
             boolean enabled = source.getBoolean(path + "enabled", true);
             int configuredMaximum = source.getInt(path + "max-stack-size", -1);
             int maximum = configuredMaximum == -1 ? globalMaximum : Math.max(2, configuredMaximum);

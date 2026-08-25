@@ -43,7 +43,6 @@ import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.PaperPlatform;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.AbstractModernItemStackingFeature;
-import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingConfigurationLoader;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingItemNameResolver;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.PaperItemStackingFeature;
 
@@ -289,10 +288,10 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         }
         itemStackingUnavailableReason = "";
         return new PaperItemStackingFeature(this, new Supplier<ItemStackingConfig>() {
-            /** 每次重载时读取最新独立配置。 */
+            /** 每次重载返回统一配置文件的最新不可变快照。 */
             @Override
             public ItemStackingConfig get() {
-                return ItemStackingConfigurationLoader.load(WorldListTrashCanPlugin.this);
+                return configBundle.getItemStackingConfig();
             }
         });
     }
@@ -306,7 +305,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
                 || !configBundle.getTrashConfig().getPersonalTrash().isNotifyWhenRouted()) {
             return SimpleItemDisplayNameResolver.getInstance();
         }
-        return ItemStackingItemNameResolver.loadBase(this, configBundle.getItemDisplayNameLocale());
+        return ItemStackingItemNameResolver.load(this, configBundle.getItemStackingConfig());
     }
 
     /** reload 时补建从关闭切换到开启的功能。 */

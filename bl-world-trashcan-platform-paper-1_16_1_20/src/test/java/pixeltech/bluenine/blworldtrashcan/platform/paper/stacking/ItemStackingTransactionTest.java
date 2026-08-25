@@ -239,13 +239,11 @@ public final class ItemStackingTransactionTest {
     /** 创建带逐物品 YAML 的测试实现。 */
     private TestFeature feature(int maxLogicalAmount, String itemYaml) throws Exception {
         File dataFolder = temporaryFolder.newFolder();
-        YamlConfiguration global = new YamlConfiguration();
-        global.loadFromString("enabled: true\nstack:\n  max-logical-amount: " + maxLogicalAmount
-                + "\ndisplay:\n  custom-name:\n    enabled: false\n");
-        YamlConfiguration items = new YamlConfiguration();
-        items.loadFromString(itemYaml);
-        ItemStackingConfig config = ItemStackingConfig.load(new BukkitConfigurationSource(global),
-                new BukkitConfigurationSource(items));
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.loadFromString("enabled: true\nstack:\n  max-logical-amount: " + maxLogicalAmount
+                + "\ndisplay:\n  custom-name:\n    enabled: false\nitems:\n  "
+                + itemYaml.replace("\n", "\n  "));
+        ItemStackingConfig config = ItemStackingConfig.load(new BukkitConfigurationSource(yaml));
         return new TestFeature(pluginProxy(dataFolder), config);
     }
 

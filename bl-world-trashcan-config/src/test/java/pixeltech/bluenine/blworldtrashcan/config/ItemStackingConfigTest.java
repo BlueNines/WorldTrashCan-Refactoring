@@ -13,14 +13,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/** 验证掉落物逻辑堆叠独立配置的默认值和边界。 */
+/** 验证掉落物逻辑堆叠统一配置的默认值和边界。 */
 public final class ItemStackingConfigTest {
-    /** 缺少独立配置文件时应使用低占用默认值。 */
+    /** 缺少配置值时应使用低占用默认值。 */
     @Test
     public void missingValuesUseDocumentedDefaults() {
         ItemStackingConfig config = ItemStackingConfig.load(new MapConfigurationSource());
 
-        assertEquals(10000, config.getMaxLogicalAmount());
+        assertEquals(1024, config.getMaxLogicalAmount());
         assertEquals(3.0D, config.getHorizontalRadius(), 0.0001D);
         assertEquals(1.5D, config.getVerticalRadius(), 0.0001D);
         assertEquals(5, config.getProcessIntervalTicks());
@@ -82,17 +82,16 @@ public final class ItemStackingConfigTest {
     /** 逐 Material 配置应支持禁用、继承上限、独立上限和独立显示名。 */
     @Test
     public void independentItemRulesLoadAllSupportedFields() {
-        MapConfigurationSource global = new MapConfigurationSource();
-        global.put("stack.max-logical-amount", 10000);
-        MapConfigurationSource items = new MapConfigurationSource();
-        items.put("STONE.enabled", false);
-        items.put("STONE.max-stack-size", -1);
-        items.put("STONE.display-name", "自定义石头");
-        items.put("DIRT.enabled", true);
-        items.put("DIRT.max-stack-size", 320);
-        items.put("DIRT.display-name", "default");
+        MapConfigurationSource configSource = new MapConfigurationSource();
+        configSource.put("stack.max-logical-amount", 10000);
+        configSource.put("items.STONE.enabled", false);
+        configSource.put("items.STONE.max-stack-size", -1);
+        configSource.put("items.STONE.display-name", "自定义石头");
+        configSource.put("items.DIRT.enabled", true);
+        configSource.put("items.DIRT.max-stack-size", 320);
+        configSource.put("items.DIRT.display-name", "default");
 
-        ItemStackingConfig config = ItemStackingConfig.load(global, items);
+        ItemStackingConfig config = ItemStackingConfig.load(configSource);
 
         ItemStackingConfig.ItemRule stone = config.getItemRule("stone");
         assertFalse(stone.isEnabled());
@@ -110,8 +109,7 @@ public final class ItemStackingConfigTest {
         MapConfigurationSource global = new MapConfigurationSource();
         global.put("stack.max-logical-amount", 4567);
 
-        ItemStackingConfig.ItemRule rule = ItemStackingConfig.load(global,
-                new MapConfigurationSource()).getItemRule("NEW_VERSION_ITEM");
+        ItemStackingConfig.ItemRule rule = ItemStackingConfig.load(global).getItemRule("NEW_VERSION_ITEM");
 
         assertTrue(rule.isEnabled());
         assertEquals(4567, rule.getMaxStackSize());
@@ -121,26 +119,15 @@ public final class ItemStackingConfigTest {
     /** 钻石块可独立限制 200，其余没有配置的物品应继承全局 1024。 */
     @Test
     public void diamondBlockCanUseTwoHundredWhileOthersInheritOneThousandTwentyFour() {
-        MapConfigurationSource global = new MapConfigurationSource();
-        global.put("stack.max-logical-amount", 1024);
-        MapConfigurationSource items = new MapConfigurationSource();
-        items.put("DIAMOND_BLOCK.enabled", true);
-        items.put("DIAMOND_BLOCK.max-stack-size", 200);
+        MapConfigurationSource configSource = new MapConfigurationSource();
+        configSource.put("stack.max-logical-amount", 1024);
+        configSource.put("items.DIAMOND_BLOCK.enabled", true);
+        configSource.put("items.DIAMOND_BLOCK.max-stack-size", 200);
 
-        ItemStackingConfig config = ItemStackingConfig.load(global, items);
+        ItemStackingConfig config = ItemStackingConfig.load(configSource);
 
         assertEquals(200, config.getItemRule("DIAMOND_BLOCK").getMaxStackSize());
         assertEquals(1024, config.getItemRule("COBBLESTONE").getMaxStackSize());
-    }
-
-    /** 仅名称配置不能误开启堆叠，也不能产生逐物品规则。 */
-    @Test
-    public void namesOnlyConfigKeepsStackingDisabled() {
-        ItemStackingConfig config = ItemStackingConfig.namesOnly("ja-jp");
-
-        assertFalse(config.isFeatureEnabled());
-        assertEquals("ja_JP", config.getDisplayNameLocale());
-        assertTrue(config.getItemRules().isEmpty());
     }
 
     /** 总开关只读取独立配置根节点，不再兼容 config.yml 旧路径。 */
@@ -162,6 +149,7 @@ public final class ItemStackingConfigTest {
                 main, empty, empty, empty, empty, itemStacking, true);
         assertTrue(enabled.isItemStackingEnabled());
         assertEquals("ja_JP", enabled.getItemDisplayNameLocale());
+        assertEquals("ja_JP", enabled.getItemStackingConfig().getDisplayNameLocale());
     }
 
     /** 仅供本测试使用的轻量配置来源。 */

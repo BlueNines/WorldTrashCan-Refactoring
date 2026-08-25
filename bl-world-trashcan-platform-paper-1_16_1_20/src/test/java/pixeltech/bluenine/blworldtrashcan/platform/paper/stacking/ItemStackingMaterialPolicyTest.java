@@ -21,16 +21,15 @@ public final class ItemStackingMaterialPolicyTest {
     /** 数组快照应保留禁用、独立上限、继承上限和显示名。 */
     @Test
     public void policyCompilesIndependentRulesToOrdinalArrays() {
-        MapSource global = new MapSource();
-        global.put("stack.max-logical-amount", 5000);
-        MapSource items = new MapSource();
-        items.put("STONE.enabled", false);
-        items.put("STONE.max-stack-size", 88);
-        items.put("STONE.display-name", "独立石头");
-        items.put("DIRT.max-stack-size", -1);
+        MapSource config = new MapSource();
+        config.put("stack.max-logical-amount", 5000);
+        config.put("items.STONE.enabled", false);
+        config.put("items.STONE.max-stack-size", 88);
+        config.put("items.STONE.display-name", "独立石头");
+        config.put("items.DIRT.max-stack-size", -1);
 
         ItemStackingMaterialPolicy policy = ItemStackingMaterialPolicy.from(
-                ItemStackingConfig.load(global, items));
+                ItemStackingConfig.load(config));
 
         assertFalse(policy.isEnabled(Material.STONE));
         assertEquals(88, policy.maximumAmount(Material.STONE));
@@ -101,13 +100,18 @@ public final class ItemStackingMaterialPolicyTest {
             return Collections.emptyList();
         }
 
-        /** 返回根节点第一层测试键。 */
+        /** 返回指定节点下的第一层测试键。 */
         @Override
         public Set<String> getKeys(String path) {
+            String prefix = path == null || path.isEmpty() ? "" : path + ".";
             Set<String> keys = new LinkedHashSet<>();
             for (String key : values.keySet()) {
-                int separator = key.indexOf('.');
-                keys.add(separator < 0 ? key : key.substring(0, separator));
+                if (!key.startsWith(prefix)) {
+                    continue;
+                }
+                String remainder = key.substring(prefix.length());
+                int separator = remainder.indexOf('.');
+                keys.add(separator < 0 ? remainder : remainder.substring(0, separator));
             }
             return keys;
         }
