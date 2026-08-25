@@ -333,7 +333,7 @@ public final class CleanupFeature implements Feature {
     private void cleanWorld(World world, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats,
                             CleanupAuditSession auditSession) {
         stats.worlds++;
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : entitySnapshot(world)) {
             if (entity instanceof Player) {
                 continue;
             }
@@ -374,7 +374,7 @@ public final class CleanupFeature implements Feature {
                 continue;
             }
             stats.worlds++;
-            for (Entity entity : world.getEntities()) {
+            for (Entity entity : entitySnapshot(world)) {
                 if (entity instanceof Player) {
                     continue;
                 }
@@ -407,7 +407,7 @@ public final class CleanupFeature implements Feature {
                 continue;
             }
             result.worlds++;
-            for (Entity entity : world.getEntities()) {
+            for (Entity entity : entitySnapshot(world)) {
                 if (!(entity instanceof Player) && isCleanableTarget(entity, cleanupConfig, policy)) {
                     result.targetEntities++;
                 }
@@ -578,10 +578,7 @@ public final class CleanupFeature implements Feature {
                     addPersonalTrashAmount(stats, snapshot.getOwnerUuid(), routedItemStack, acceptedAmount);
                 }
                 if (acceptedAmount < currentAmount) {
-                    plugin.getLogger().info("[Cleanup] 目标垃圾桶只接收了部分物品，已保留掉落物剩余数量: route="
-                            + decision.getRoute() + ", accepted="
-                            + acceptedAmount + ", remaining=" + (currentAmount - acceptedAmount));
-                    return decision;
+                    continue;
                 }
                 forgetTrackedOwner(item);
                 return decision;
@@ -596,9 +593,14 @@ public final class CleanupFeature implements Feature {
             decision = policy.decideItem(snapshot, worldAvailable, personalAvailable, globalAvailable);
         }
         if (decision.getRoute() == TrashRoute.SKIP) {
-            stats.itemsSkipped++;
+            stats.addItemsSkipped(actualAmount(item));
         }
         return decision;
+    }
+
+    /** 取得稳定实体快照，避免部分服务端在遍历期间删除实体时漏过后续元素。 */
+    private Entity[] entitySnapshot(World world) {
+        return world.getEntities().toArray(new Entity[0]);
     }
 
     /** 把平台快照中的物理数量替换为逻辑实际数量。 */

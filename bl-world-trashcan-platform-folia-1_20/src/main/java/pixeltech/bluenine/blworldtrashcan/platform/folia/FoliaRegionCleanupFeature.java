@@ -765,21 +765,22 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                                    RouteState state, CleanupFeature.CleanupStats stats, CompletionTracker tracker) {
         TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable,
                 state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
+        int remainingAmount = actualAmount;
         while (true) {
             if (!tracker.isOpen()) {
                 return;
             }
             TrashRoute route = decision.getRoute();
             if (route == TrashRoute.SKIP) {
-                stats.addItemsSkipped(actualAmount);
+                stats.addItemsSkipped(remainingAmount);
                 return;
             }
             if (route == TrashRoute.REMOVE) {
                 forgetTrackedOwner(item);
                 item.remove();
-                recordItemAmount(tracker, itemStack, actualAmount,
+                recordItemAmount(tracker, itemStack, remainingAmount,
                         CleanupItemDestination.directRemove(), "");
-                stats.addItemsRemoved(actualAmount);
+                stats.addItemsRemoved(remainingAmount);
                 return;
             }
             if (route == TrashRoute.WORLD_TRASH) {
@@ -791,23 +792,23 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                     continue;
                 }
                 if (!beginWorldTrashTransfer(item)) {
-                    stats.addItemsSkipped(actualAmount);
+                    stats.addItemsSkipped(remainingAmount);
                     return;
                 }
                 WorldTrashTransfer transfer = new WorldTrashTransfer(item.getLocation().clone());
-                tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
+                tryWorldTrash(item, itemStack, remainingAmount, snapshot, policy, state,
                         stats, tracker, locations, 0, transfer);
                 return;
             }
             TrashRoutingResult virtualResult = routeVirtual(
-                    item, itemStack, actualAmount, snapshot.getOwnerUuid(), route);
+                    item, itemStack, remainingAmount, snapshot.getOwnerUuid(), route);
             if (virtualResult.isSuccess()) {
-                int acceptedAmount = Math.min(actualAmount, virtualResult.getAcceptedAmount());
+                int acceptedAmount = Math.min(remainingAmount, virtualResult.getAcceptedAmount());
                 if (acceptedAmount <= 0) {
-                    stats.addItemsSkipped(actualAmount);
+                    stats.addItemsSkipped(remainingAmount);
                     return;
                 }
-                if (!setRemainingAmount(item, actualAmount, actualAmount - acceptedAmount)) {
+                if (!setRemainingAmount(item, remainingAmount, remainingAmount - acceptedAmount)) {
                     int rolledBack;
                     synchronized (trashRouter) {
                         rolledBack = trashRouter.rollbackRouted(virtualResult, itemStack, acceptedAmount);
@@ -822,10 +823,9 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 if (route == TrashRoute.PERSONAL_TRASH) {
                     addPersonalTrashAmount(stats, snapshot.getOwnerUuid(), itemStack, acceptedAmount);
                 }
-                if (acceptedAmount < actualAmount) {
-                    plugin.getLogger().info("[FoliaCleanup] 公共垃圾桶达到紧凑模式单条目上限，保留掉落物剩余数量: accepted="
-                            + acceptedAmount + ", remaining=" + (actualAmount - acceptedAmount));
-                    return;
+                remainingAmount -= acceptedAmount;
+                if (remainingAmount > 0) {
+                    continue;
                 }
                 forgetTrackedOwner(item);
                 return;
@@ -942,7 +942,8 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
             finishWorldTrashTransfer(item);
             return;
         }
-        returnWorldTrashItem(item, transfer, tracker, null);
+        tryWorldTrash(item, itemStack, actualAmount - accepted, snapshot, policy, state,
+                stats, tracker, locations, index + 1, transfer);
     }
 
     /** 世界垃圾桶全部不可用时先返回原位置，再执行个人、公共或删除降级。 */
