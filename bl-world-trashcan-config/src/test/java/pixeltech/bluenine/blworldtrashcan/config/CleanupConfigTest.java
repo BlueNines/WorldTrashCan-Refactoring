@@ -261,7 +261,7 @@ public final class CleanupConfigTest {
                 .getCleanupConfig().getFoliaCleanup();
 
         assertEquals(0, defaults.getMaxChunksPerCleanup());
-        assertEquals(1024, defaults.getChunkBatchSize());
+        assertEquals(2048, defaults.getChunkBatchSize());
         assertEquals(0, defaults.getChunkBatchDelayTicks());
 
         MapConfigurationSource cleanup = new MapConfigurationSource();
