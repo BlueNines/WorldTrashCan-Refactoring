@@ -113,6 +113,10 @@ public final class DefaultResourceDocumentationTest {
             assertEquals(4096, detail.getInt("scheduler.max-queued-chunks"));
             assertEquals("zh_CN", detail.getString("display.custom-name.locale"));
             assertTrue(detailText.contains("item-stacking-items.yml"));
+            assertTrue(detailText.contains("max-stack-size 为 -1"));
+            assertTrue(detailText.contains("DIAMOND_BLOCK"));
+            assertTrue(detailText.contains("200"));
+            assertTrue(detailText.contains("1024"));
             assertFalse("旧 display.custom-name.overrides 必须完全移除",
                     detail.contains("display.custom-name.overrides"));
             assertFalse(detailText.contains("minecraft:stone"));

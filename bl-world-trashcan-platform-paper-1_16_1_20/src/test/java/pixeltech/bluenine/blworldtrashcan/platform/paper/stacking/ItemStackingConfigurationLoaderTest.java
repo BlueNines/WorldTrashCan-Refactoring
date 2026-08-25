@@ -45,6 +45,7 @@ public final class ItemStackingConfigurationLoaderTest {
 
         assertTrue(config.isFeatureEnabled());
         assertTrue(text.contains("# enabled: 是否由本插件接管该物品"));
+        assertTrue(text.contains("# 常用示例：全局 1024、钻石块 200。"));
         assertTrue(text.contains(Material.STONE.name() + ":\n  enabled: true\n"
                 + "  max-stack-size: -1\n  display-name: \"default\""));
     }
@@ -64,8 +65,27 @@ public final class ItemStackingConfigurationLoaderTest {
         assertFalse(config.getItemRule("STONE").isEnabled());
         assertEquals(77, config.getItemRule("STONE").getMaxStackSize());
         assertEquals("测试石头", config.getItemRule("STONE").getDisplayName());
+        assertTrue(text.startsWith("# 地面掉落物逻辑堆叠的独立物品配置。\n"));
+        assertTrue(text.contains("其余 -1 或未配置物品继承 1024"));
         assertEquals(1, occurrences("\n" + text, "\nSTONE:\n"));
         assertTrue(text.contains("DIRT:"));
+    }
+
+    /** 已有旧版字段说明时只补常用示例，不重复写入整段文件头。 */
+    @Test
+    public void existingHeaderReceivesOnlyMissingUsageExample() throws Exception {
+        File folder = temporaryFolder.newFolder();
+        write(new File(folder, "item-stacking.yml"), "enabled: true\n");
+        write(new File(folder, "item-stacking-items.yml"),
+                "# 地面掉落物逻辑堆叠的独立物品配置。\nSTONE:\n  max-stack-size: 77\n");
+
+        ItemStackingConfigurationLoader.load(plugin(folder));
+        ItemStackingConfigurationLoader.load(plugin(folder));
+        String text = normalized(read(new File(folder, "item-stacking-items.yml")));
+
+        assertEquals(1, occurrences(text, "# 地面掉落物逻辑堆叠的独立物品配置。"));
+        assertEquals(1, occurrences(text, "# 常用示例：全局 1024、钻石块 200。"));
+        assertTrue(text.contains("STONE:\n  max-stack-size: 77"));
     }
 
     /** Material 根键大小写不应导致补全器追加重复默认规则。 */

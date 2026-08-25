@@ -147,12 +147,16 @@ enabled: true
 内置名称支持 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，并同时用于掉落物头顶名称和个人垃圾桶回收通知，不改变插件消息语言文件。名称按“物品自身的自定义名 → `item-stacking-items.yml` 的独立显示名（堆叠开启时）→ 内置翻译 → 可读英文材质名”解析。翻译资源位于 JAR 内，运行时不联网；只保留当前语言的 `Material.ordinal()` 数组。堆叠和个人桶通知都关闭时不加载这份数组。
 
 ```yaml
+# item-stacking.yml：所有未单独设置的物品最多堆叠 1024 个。
+stack:
+  max-logical-amount: 1024
+
 # item-stacking-items.yml
-STONE:
-  # false 表示本插件完全不接管石头，保留服务端原版掉落物合并。
+DIAMOND_BLOCK:
+  # false 表示本插件完全不接管钻石块，保留服务端原版掉落物合并。
   enabled: true
-  # -1 继承 item-stacking.yml 的全局上限；其它值最小为 2。
-  max-stack-size: -1
+  # 本例让钻石块最多堆叠 200 个；填 -1 则继承上面的 1024。
+  max-stack-size: 200
   # default 或空值使用内置语言，也可以直接填写自定义名称。
   display-name: "default"
 ```
@@ -471,12 +475,16 @@ The logical amount is stored only on the dropped entity, never on inventory item
 Bundled vanilla names support `zh_CN`, `en_US`, and `ja_JP` for both ground-item labels and personal-trash recovery notifications without changing the plugin message locale. Names resolve in this order: the item's own custom name, the independent name in `item-stacking-items.yml` while stacking is enabled, the bundled translation, then a readable English material name. Resources stay inside the JAR and are never downloaded; only the selected locale is retained as a `Material.ordinal()` array. The array is not loaded when both stacking and personal-trash notifications are disabled.
 
 ```yaml
+# item-stacking.yml: all items without an independent override stack up to 1024.
+stack:
+  max-logical-amount: 1024
+
 # item-stacking-items.yml
-STONE:
-  # false leaves stone entirely to vanilla item merging.
+DIAMOND_BLOCK:
+  # false leaves diamond blocks entirely to vanilla item merging.
   enabled: true
-  # -1 inherits the global limit from item-stacking.yml; other values must be at least 2.
-  max-stack-size: -1
+  # This example limits diamond blocks to 200; -1 would inherit 1024 above.
+  max-stack-size: 200
   # default or an empty value uses the bundled locale; a custom name can be entered directly.
   display-name: "default"
 ```

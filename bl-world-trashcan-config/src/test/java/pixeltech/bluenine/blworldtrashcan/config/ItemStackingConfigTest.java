@@ -118,6 +118,21 @@ public final class ItemStackingConfigTest {
         assertEquals(null, rule.getDisplayName());
     }
 
+    /** 钻石块可独立限制 200，其余没有配置的物品应继承全局 1024。 */
+    @Test
+    public void diamondBlockCanUseTwoHundredWhileOthersInheritOneThousandTwentyFour() {
+        MapConfigurationSource global = new MapConfigurationSource();
+        global.put("stack.max-logical-amount", 1024);
+        MapConfigurationSource items = new MapConfigurationSource();
+        items.put("DIAMOND_BLOCK.enabled", true);
+        items.put("DIAMOND_BLOCK.max-stack-size", 200);
+
+        ItemStackingConfig config = ItemStackingConfig.load(global, items);
+
+        assertEquals(200, config.getItemRule("DIAMOND_BLOCK").getMaxStackSize());
+        assertEquals(1024, config.getItemRule("COBBLESTONE").getMaxStackSize());
+    }
+
     /** 仅名称配置不能误开启堆叠，也不能产生逐物品规则。 */
     @Test
     public void namesOnlyConfigKeepsStackingDisabled() {

@@ -8,6 +8,8 @@ enabled: false
 stack:
   # 单个掉落物实体最多代表多少个实际物品。
   # 范围 2-2147483647；达到上限后，多出的物品会留在其它实体中，不会被吞掉。
+  # 现代兼容端的 item-stacking-items.yml 中，max-stack-size 为 -1 或缺少条目的物品会继承此值。
+  # 例如现代兼容端可设全局 1024、DIAMOND_BLOCK 独立 200；1.12.2 本身不会运行该功能。
   max-logical-amount: 10000
 
 merge:

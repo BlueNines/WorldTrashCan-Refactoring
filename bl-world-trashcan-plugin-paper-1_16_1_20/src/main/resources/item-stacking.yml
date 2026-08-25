@@ -9,6 +9,8 @@ enabled: false
 stack:
   # 单个掉落物实体最多代表多少个实际物品。
   # 范围 2-2147483647；达到上限后，多出的物品会留在其它实体中，不会被吞掉。
+  # item-stacking-items.yml 中 max-stack-size 为 -1 或没有独立条目的物品，都会继承此值。
+  # 例如这里改成 1024，再把 DIAMOND_BLOCK.max-stack-size 改成 200，即为钻石块 200、其余默认 1024。
   max-logical-amount: 10000
 
 merge:
@@ -44,3 +46,4 @@ display:
     locale: "zh_CN"
     # 单个物品的启用状态、独立上限和显示名统一配置在 item-stacking-items.yml。
     # 该文件会在本功能首次开启时按当前服务端 Material 自动生成，升级后只追加新物品。
+    # 已有无说明的旧文件会自动补回中文注释，但不会改动服主填写的任何值。

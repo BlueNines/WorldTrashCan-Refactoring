@@ -12,7 +12,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +27,8 @@ import java.util.Set;
 public final class ItemStackingConfigurationLoader {
     private static final String GLOBAL_FILE = "item-stacking.yml";
     private static final String ITEMS_FILE = "item-stacking-items.yml";
+    private static final String ITEMS_HEADER_MARKER = "# 地面掉落物逻辑堆叠的独立物品配置。";
+    private static final String ITEMS_EXAMPLE_MARKER = "# 常用示例：全局 1024、钻石块 200。";
 
     /** 工具类不允许实例化。 */
     private ItemStackingConfigurationLoader() {
@@ -67,13 +72,24 @@ public final class ItemStackingConfigurationLoader {
                 missing.add(material);
             }
         }
-        if (missing.isEmpty()) {
+        boolean writeHeader = !file.isFile() || file.length() == 0L;
+        DocumentationState documentation = inspectDocumentation(file, writeHeader);
+        if (missing.isEmpty() && documentation == DocumentationState.COMPLETE) {
             return current;
         }
         try {
-            appendMissingRules(file, missing, !file.isFile() || file.length() == 0L);
-            plugin.getLogger().info("[ItemStacking] 已向 " + ITEMS_FILE + " 补充 "
-                    + missing.size() + " 个当前版本物品配置，已有配置未被覆盖。");
+            if (documentation == DocumentationState.MISSING_HEADER) {
+                prependDocumentation(file, true);
+            } else if (documentation == DocumentationState.MISSING_EXAMPLE) {
+                prependDocumentation(file, false);
+            }
+            if (!missing.isEmpty()) {
+                appendMissingRules(file, missing, writeHeader);
+            }
+            plugin.getLogger().info("[ItemStacking] 已更新 " + ITEMS_FILE + "：补充 "
+                    + missing.size() + " 个当前版本物品配置"
+                    + (documentation == DocumentationState.COMPLETE ? "" : "，并补回中文配置说明")
+                    + "；已有配置未被覆盖。");
             return loadUtf8(plugin, file);
         } catch (IOException exception) {
             plugin.getLogger().warning("[ItemStacking] 无法补齐 " + ITEMS_FILE + ": "
@@ -111,6 +127,72 @@ public final class ItemStackingConfigurationLoader {
         return yaml;
     }
 
+    /** 检查已有逐物品文件是否具备字段说明和常用配置示例。 */
+    private static DocumentationState inspectDocumentation(File file, boolean emptyFile) {
+        if (emptyFile) {
+            return DocumentationState.COMPLETE;
+        }
+        boolean hasHeader = false;
+        boolean hasExample = false;
+        try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+            for (int lineIndex = 0; lineIndex < 32; lineIndex++) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                String trimmed = line.trim();
+                if (ITEMS_HEADER_MARKER.equals(trimmed)) {
+                    hasHeader = true;
+                } else if (ITEMS_EXAMPLE_MARKER.equals(trimmed)) {
+                    hasExample = true;
+                }
+            }
+        } catch (IOException ignored) {
+            return DocumentationState.COMPLETE;
+        }
+        if (!hasHeader) {
+            return DocumentationState.MISSING_HEADER;
+        }
+        return hasExample ? DocumentationState.COMPLETE : DocumentationState.MISSING_EXAMPLE;
+    }
+
+    /** 在原有配置内容前补充完整说明或仅补充新的常用示例。 */
+    private static void prependDocumentation(File file, boolean fullHeader) throws IOException {
+        Path source = file.toPath();
+        Path parent = source.getParent();
+        Path temporary = Files.createTempFile(parent, ITEMS_FILE + ".", ".tmp");
+        try {
+            try (BufferedWriter writer = Files.newBufferedWriter(temporary, StandardCharsets.UTF_8,
+                    StandardOpenOption.TRUNCATE_EXISTING)) {
+                if (fullHeader) {
+                    writeHeader(writer);
+                } else {
+                    writeUsageExample(writer);
+                    writer.newLine();
+                }
+                try (BufferedReader reader = Files.newBufferedReader(source, StandardCharsets.UTF_8)) {
+                    char[] buffer = new char[8192];
+                    int length;
+                    while ((length = reader.read(buffer)) >= 0) {
+                        writer.write(buffer, 0, length);
+                    }
+                }
+            }
+            replaceFile(temporary, source);
+        } finally {
+            Files.deleteIfExists(temporary);
+        }
+    }
+
+    /** 优先原子替换逐物品文件，不支持原子移动时退回普通替换。 */
+    private static void replaceFile(Path source, Path target) throws IOException {
+        try {
+            Files.move(source, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } catch (AtomicMoveNotSupportedException ignored) {
+            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
     /** 以追加方式写入缺失规则，保留原文件顺序、注释和服主修改。 */
     private static void appendMissingRules(File file, List<Material> materials,
                                            boolean writeHeader) throws IOException {
@@ -135,7 +217,7 @@ public final class ItemStackingConfigurationLoader {
 
     /** 写入逐物品文件的完整中文字段说明。 */
     private static void writeHeader(BufferedWriter writer) throws IOException {
-        writer.write("# 地面掉落物逻辑堆叠的独立物品配置。");
+        writer.write(ITEMS_HEADER_MARKER);
         writer.newLine();
         writer.write("# 本文件仅在 item-stacking.yml 的 enabled: true 时生成和读取。");
         writer.newLine();
@@ -149,8 +231,19 @@ public final class ItemStackingConfigurationLoader {
         writer.newLine();
         writer.write("# 物品自身已有自定义名称时永远优先，不会被 display-name 覆盖。");
         writer.newLine();
+        writeUsageExample(writer);
         writer.write("# 修改后执行 /wtc reload 生效；新增版本物品会自动追加，已有值不会被改写。");
         writer.newLine();
+        writer.newLine();
+    }
+
+    /** 写入全局 1024、钻石块 200 的可直接照抄示例说明。 */
+    private static void writeUsageExample(BufferedWriter writer) throws IOException {
+        writer.write(ITEMS_EXAMPLE_MARKER);
+        writer.newLine();
+        writer.write("# 先把 item-stacking.yml 的 stack.max-logical-amount 改成 1024，");
+        writer.newLine();
+        writer.write("# 再把本文件 DIAMOND_BLOCK.max-stack-size 改成 200；其余 -1 或未配置物品继承 1024。");
         writer.newLine();
     }
 
@@ -165,5 +258,12 @@ public final class ItemStackingConfigurationLoader {
         writer.newLine();
         writer.write("  display-name: \"default\"");
         writer.newLine();
+    }
+
+    /** 逐物品配置说明的当前完整程度。 */
+    private enum DocumentationState {
+        COMPLETE,
+        MISSING_HEADER,
+        MISSING_EXAMPLE
     }
 }
