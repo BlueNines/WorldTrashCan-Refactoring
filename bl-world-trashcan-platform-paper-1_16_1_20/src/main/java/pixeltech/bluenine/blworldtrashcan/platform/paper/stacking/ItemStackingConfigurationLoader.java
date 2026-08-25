@@ -145,7 +145,7 @@ public final class ItemStackingConfigurationLoader {
         writer.newLine();
         writer.write("# max-stack-size: 单个地面实体最多代表的实际数量；-1 继承 item-stacking.yml 的全局上限，其它值最小为 2。");
         writer.newLine();
-        writer.write("# display-name: 该物品的独立悬浮名称；default 或空值使用 item-stacking.yml 所选语言的内置名称。");
+        writer.write("# display-name: 地面悬浮名和个人桶回收提示共用；default 或空值使用 item-stacking.yml 所选语言的内置名称。");
         writer.newLine();
         writer.write("# 物品自身已有自定义名称时永远优先，不会被 display-name 覆盖。");
         writer.newLine();

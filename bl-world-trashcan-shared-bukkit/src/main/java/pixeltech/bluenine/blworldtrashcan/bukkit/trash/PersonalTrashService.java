@@ -8,15 +8,16 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProviderSelector;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemSnapshotMapper;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.SimpleItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import pixeltech.worldlisttrashcan.api.audit.CleanupItemDestination;
 import pixeltech.worldlisttrashcan.api.audit.TrashMutation;
@@ -41,6 +42,8 @@ public final class PersonalTrashService {
     private final TrashContainerMenu containerMenu;
     private final Map<UUID, TrashContainerStore> stores = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastTakeMillis = new ConcurrentHashMap<>();
+    private volatile ItemDisplayNameResolver itemDisplayNameResolver =
+            SimpleItemDisplayNameResolver.getInstance();
     private TrashConfig.PersonalTrashConfig config;
 
     /** 创建个人垃圾桶服务。 */
@@ -119,6 +122,12 @@ public final class PersonalTrashService {
                 + ", contentSlots=" + contentSlots
                 + ", maxPages=" + (nextConfig == null ? 0 : nextConfig.getMaxPages())
                 + ", autoClearWhenFull=" + (nextConfig != null && nextConfig.isAutoClearWhenFull()));
+    }
+
+    /** 更新通知使用的名称解析器；传入空值时退回可读英文材质名。 */
+    public void setItemDisplayNameResolver(ItemDisplayNameResolver resolver) {
+        this.itemDisplayNameResolver = resolver == null
+                ? SimpleItemDisplayNameResolver.getInstance() : resolver;
     }
 
     /** 判断个人垃圾桶是否启用。 */
@@ -460,13 +469,16 @@ public final class PersonalTrashService {
                 "{name}", entry.getName(), "{amount}", String.valueOf(entry.getAmount()));
     }
 
-    /** 返回物品显示名，没有自定义名时使用 Material 名称。 */
+    /** 使用与地面物品堆叠一致的链路返回通知物品名。 */
     private String displayName(ItemStack itemStack) {
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta != null && meta.hasDisplayName()) {
-            return meta.getDisplayName();
-        }
-        return itemStack.getType().name();
+        return resolveNotificationName(itemStack, itemDisplayNameResolver);
+    }
+
+    /** 使用指定解析器返回通知名称，空解析器自动降级。 */
+    static String resolveNotificationName(ItemStack itemStack, ItemDisplayNameResolver resolver) {
+        ItemDisplayNameResolver selected = resolver == null
+                ? SimpleItemDisplayNameResolver.getInstance() : resolver;
+        return selected.resolve(itemStack);
     }
 
     /** 拼接字符串列表。 */

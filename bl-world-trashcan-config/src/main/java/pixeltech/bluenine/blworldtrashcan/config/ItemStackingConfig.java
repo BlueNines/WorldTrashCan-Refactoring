@@ -66,6 +66,14 @@ public final class ItemStackingConfig {
         return load(source, null);
     }
 
+    /** 创建只用于共享物品名称解析的最小配置，不启用堆叠运行逻辑。 */
+    public static ItemStackingConfig namesOnly(String locale) {
+        return new ItemStackingConfig(false, 10000, 3.0D, 1.5D, 5, 10,
+                8, 256, 1500, 4096, 30, true,
+                "&#38BDF8{name} &#64748Bx &#F5B82E{amount}", locale,
+                Collections.<String, ItemRule>emptyMap());
+    }
+
     /** 从总配置和独立逐物品配置读取设置。 */
     public static ItemStackingConfig load(ConfigurationSource source, ConfigurationSource itemSource) {
         int globalMaximum = Math.max(2, source.getInt("stack.max-logical-amount", 10000));

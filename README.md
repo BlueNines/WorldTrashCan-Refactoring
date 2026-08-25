@@ -116,7 +116,7 @@ entities:
 
 个人桶默认使用紧凑模式、2 页、单种物品上限 `9999`，允许手动放入且没有拿取冷却。个人桶满时默认拒绝路由并保留旧物品。只有显式设置 `auto-clear-when-full: true` 后，自动路由遇到“整个容器容量不足”才会清空并只重试一次；玩家 GUI 手动放入、单种物品达到上限和已经部分接收的请求绝不会触发清空。个人专属物品也不会因为个人桶满而自动改投公共桶。
 
-个人桶回收通知默认在同一条消息中显示两个独立按钮：左侧 `[打开个人垃圾桶]` 执行 `/wtc personal`，右侧 `[打开公共垃圾桶]` 执行 `/wtc global`。按钮文本位于语言文件的 `personal-trash.recycle.personal-button`、`button-separator` 和 `global-button`，两侧命令位于 `trash.yml`：
+个人桶回收通知中的物品名与地面堆叠共用同一条解析链路：物品自身自定义名优先；堆叠开启时继续读取 `item-stacking-items.yml` 的逐物品 `display-name`；否则使用 `item-stacking.yml -> display.custom-name.locale` 指定的内置语言，最后才降级为可读英文材质名。关闭堆叠时不会读取或生成 `item-stacking-items.yml`，也不会创建任何堆叠监听、任务或队列。通知默认在同一条消息中显示两个独立按钮：左侧 `[打开个人垃圾桶]` 执行 `/wtc personal`，右侧 `[打开公共垃圾桶]` 执行 `/wtc global`。按钮文本位于语言文件的 `personal-trash.recycle.personal-button`、`button-separator` 和 `global-button`，两侧命令位于 `trash.yml`：
 
 ```yaml
 personal-trash:
@@ -133,7 +133,7 @@ personal-trash:
 
 ### 地面掉落物逻辑堆叠
 
-这是默认关闭的实验性功能。独立配置文件 `item-stacking.yml` 会随其它默认配置一起生成；关闭时配置加载器只取其中的 `enabled`，不会把详细参数加载为运行配置，也不会创建堆叠功能对象、探测现代 API 或注册对应监听器、任务、队列和索引。开启方式：
+这是默认关闭的实验性功能。独立配置文件 `item-stacking.yml` 会随其它默认配置一起生成；关闭时只保留 `enabled` 和供个人桶通知使用的 `display.custom-name.locale`，不会读取或生成 `item-stacking-items.yml`，也不会创建堆叠功能对象、探测现代 API 或注册对应监听器、任务、队列和索引。开启方式：
 
 ```yaml
 # item-stacking.yml
@@ -144,7 +144,7 @@ enabled: true
 
 逻辑数量只写在地面掉落物实体的 PDC 中，不修改背包物品，因此不会破坏普通物品堆叠。相同 `ItemStack` 数据和相同 owner 的附近物品才会聚集，不同名称、Lore、附魔、PDC、Data Components 或 owner 不会混合。主动处理使用有容量、TTL、数量和微秒预算的 dirty-chunk 队列与空间网格，不周期遍历全部世界实体，也不强制加载区块。Folia 的世界垃圾桶转移在目标箱子所属 region 内完成写入和数量扣减。
 
-掉落物头顶名称支持内置 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，只影响 item-stacking，不改变插件语言文件。名称按“物品自身的自定义名 → `item-stacking-items.yml` 的独立显示名 → 内置翻译 → 可读英文材质名”解析。翻译资源位于 JAR 内，运行时不联网；功能或头顶名称关闭时不会加载，开启后也只保留当前语言的材质数组。
+内置名称支持 `zh_CN`、`en_US`、`ja_JP` 三种原版物品翻译，并同时用于掉落物头顶名称和个人垃圾桶回收通知，不改变插件消息语言文件。名称按“物品自身的自定义名 → `item-stacking-items.yml` 的独立显示名（堆叠开启时）→ 内置翻译 → 可读英文材质名”解析。翻译资源位于 JAR 内，运行时不联网；只保留当前语言的 `Material.ordinal()` 数组。堆叠和个人桶通知都关闭时不加载这份数组。
 
 ```yaml
 # item-stacking-items.yml
@@ -316,8 +316,9 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.5.1`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`960002` 字节
-- SHA-256：`EC223B2C8C88286CD753C22773364FEEA8099617B0C19C696702D57F286BDFBD`
+- 文件大小：`962602` 字节
+- SHA-256：`21E944CC1785315030E3EC59EAAEDF82D5CD655DED9FE717F663A61AC3A5D825`
+- 当前 SHA 已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证个人桶回收提示的共享名称链路：堆叠关闭且逐物品配置不存在时显示 `橡树树苗*8、小麦种子*14、泥土*7`；开启堆叠并配置独立名称后显示 `图鉴树苗*5、农作种子*30、建筑泥土*54`，两轮均未暴露原始 Material 枚举名。
 - 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证完整逐 Material 配置：圆石独立上限 `30`、金锭独立上限 `50`、钻石禁用接管、独立显示名，以及物品自身名称 `Item_Custom_Name x 80` 的最高优先级。另一次连续验收确认 `/wtc reload` 把逻辑数量 `80` 无损拆为最大 `30`，再禁用后保持总量 `80` 且受管实体归零。
 - 地面掉落物逻辑堆叠的数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由，已在翻译功能加入前使用同一套实现的历史 Universal 整包于 Paper 1.21.8 和 Folia 1.21.8 完成真实客户端全链路验收；这些历史业务证据不冒充当前 SHA 的重复全量验收。
 - 个人垃圾桶通知双按钮已使用整包 JAR 在 Paper 1.21.4、Paper 1.12.2 和 Folia 1.21.8 的真实客户端中验证，覆盖正式扫地回收通知、左右按钮可见性，以及从客户端聊天输入两条命令后分别打开个人桶/公共桶 GUI；本轮未把鼠标实际点击计入通过项。
@@ -441,7 +442,7 @@ Personal trash uses the same storage and menu core as global trash, while state 
 
 The personal default is compact mode, 2 pages, a per-item limit of `9999`, manual deposits enabled, and no take delay. When full, personal trash rejects new routes by default and keeps its existing contents. Only with `auto-clear-when-full: true` will an automatic route clear and retry once after a whole-container-capacity rejection. Manual GUI deposits, per-entry limits, and partially accepted requests never trigger a clear. Personal-only items are not redirected to global trash just because the personal container is full.
 
-Personal-trash recovery notifications contain two independent buttons in one chat message by default: `[Open Personal Trash]` runs `/wtc personal` on the left, and `[Open Global Trash]` runs `/wtc global` on the right. Button labels are configured in `personal-trash.recycle.personal-button`, `button-separator`, and `global-button` in the language file. Commands are configured in `trash.yml`:
+Personal-trash recovery notifications use the same item-name chain as ground-item stacking: the item's own custom name wins; while stacking is enabled, per-material `display-name` values from `item-stacking-items.yml` come next; otherwise the bundled locale selected by `item-stacking.yml -> display.custom-name.locale` is used, followed by a readable English material-name fallback. Disabling stacking never reads or creates `item-stacking-items.yml` and creates no stacking listener, task, or queue. Notifications contain two independent buttons in one chat message by default: `[Open Personal Trash]` runs `/wtc personal` on the left, and `[Open Global Trash]` runs `/wtc global` on the right. Button labels are configured in `personal-trash.recycle.personal-button`, `button-separator`, and `global-button` in the language file. Commands are configured in `trash.yml`:
 
 ```yaml
 personal-trash:
@@ -456,7 +457,7 @@ Each command is attached to its own chat component. Leaving one command empty hi
 
 ### Logical ground-item stacking
 
-This is an experimental, opt-in feature. `item-stacking.yml` is generated with the other default files. While disabled, the configuration loader reads only its `enabled` value into the runtime snapshot; it does not load detailed settings into a stacking object, probe modern APIs, or register stacking listeners, tasks, queues, or indexes. Enable it in the independent file:
+This is an experimental, opt-in feature. `item-stacking.yml` is generated with the other default files. While disabled, only `enabled` and `display.custom-name.locale` for personal-trash notifications are retained; `item-stacking-items.yml` is neither read nor created, and no stacking object, API probe, listener, task, queue, or index is created. Enable it in the independent file:
 
 ```yaml
 # item-stacking.yml
@@ -467,7 +468,7 @@ Startup checks the actual PDC, item-owner, pickup, hopper, merge, chunk-event, a
 
 The logical amount is stored only on the dropped entity, never on inventory item stacks. Nearby items merge only when their complete `ItemStack` data and owner match, so names, Lore, enchantments, PDC, Data Components, and different owners stay separate. Processing uses a bounded, deduplicated dirty-chunk queue with TTL, count, and microsecond budgets plus a spatial grid. It does not periodically scan every world entity or force-load chunks. On Folia, world-trash insertion and entity deduction are committed in the target chest's region.
 
-Ground-item labels include bundled vanilla item translations for `zh_CN`, `en_US`, and `ja_JP`. This setting affects item-stacking only and does not change the plugin message locale. Names resolve in this order: the item's own custom name, the independent name in `item-stacking-items.yml`, the bundled translation, then a readable English material name. Resources are bundled in the JAR and never downloaded at runtime; they are not loaded while stacking or labels are disabled, and only the selected locale is retained as a material-indexed array.
+Bundled vanilla names support `zh_CN`, `en_US`, and `ja_JP` for both ground-item labels and personal-trash recovery notifications without changing the plugin message locale. Names resolve in this order: the item's own custom name, the independent name in `item-stacking-items.yml` while stacking is enabled, the bundled translation, then a readable English material name. Resources stay inside the JAR and are never downloaded; only the selected locale is retained as a `Material.ordinal()` array. The array is not loaded when both stacking and personal-trash notifications are disabled.
 
 ```yaml
 # item-stacking-items.yml
@@ -638,8 +639,9 @@ Final universal artifact information:
 
 - Version: `7.5.1`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `960002` bytes
-- SHA-256: `EC223B2C8C88286CD753C22773364FEEA8099617B0C19C696702D57F286BDFBD`
+- File size: `962602` bytes
+- SHA-256: `21E944CC1785315030E3EC59EAAEDF82D5CD655DED9FE717F663A61AC3A5D825`
+- This SHA was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the shared personal-trash item-name chain. With stacking disabled and no per-material file, the notification showed `橡树树苗*8, 小麦种子*14, 泥土*7`; after enabling stacking and configuring independent names, it showed `图鉴树苗*5, 农作种子*30, 建筑泥土*54`. Neither run exposed raw Material enum names.
 - This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the complete per-Material configuration: independent limits of `30` for cobblestone and `50` for gold ingots, disabled management for diamonds, independent display names, and highest precedence for the item's own `Item_Custom_Name x 80`. A second continuous run verified that `/wtc reload` losslessly split a logical amount of `80` to a maximum of `30`, then disabled management while preserving the total amount of `80` and reducing managed entities to zero.
 - Before the translation resources were added, the same stacking implementation completed real-client end-to-end verification on Paper 1.21.8 and Folia 1.21.8 for logical caps, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. Those historical business checks are not presented as a full rerun of the current SHA.
 - Personal-trash dual notification buttons were verified with the universal JAR on real clients running Paper 1.21.4, Paper 1.12.2, and Folia 1.21.8. The evidence covers the cleanup notification, separate left/right button visibility, and opening the personal/global GUIs from commands entered in the client chat; physical mouse clicks are not claimed as passed.

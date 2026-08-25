@@ -5,6 +5,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -59,6 +60,43 @@ public final class PersonalTrashInventoryTest {
         Assert.assertEquals(7, targetState.contents[53].getAmount());
         Assert.assertNull(sourceState.contents[0]);
         Assert.assertNull(sourceState.contents[53]);
+    }
+
+    /** 个人桶通知必须使用注入的共享名称解析链路。 */
+    @Test
+    public void notificationUsesSharedItemNameResolver() {
+        ItemDisplayNameResolver resolver = new ItemDisplayNameResolver() {
+            /** 返回测试用本地化名称。 */
+            @Override
+            public String resolve(ItemStack itemStack) {
+                return itemStack.getType() == Material.STONE ? "石头" : "未知物品";
+            }
+        };
+
+        String name = PersonalTrashService.resolveNotificationName(
+                new ItemStack(Material.STONE, 64), resolver);
+
+        Assert.assertEquals("石头", name);
+    }
+
+    /** 缺少现代解析器时也不能再显示原始枚举下划线。 */
+    @Test
+    public void notificationFallbackUsesReadableMaterialName() {
+        String name = PersonalTrashService.resolveNotificationName(
+                itemWithoutCustomName(Material.GOLD_INGOT), null);
+
+        Assert.assertEquals("Gold Ingot", name);
+    }
+
+    /** 创建无需 Bukkit ItemFactory 的普通物品测试替身。 */
+    private ItemStack itemWithoutCustomName(Material material) {
+        return new ItemStack(material) {
+            /** 测试物品明确没有自定义元数据。 */
+            @Override
+            public org.bukkit.inventory.meta.ItemMeta getItemMeta() {
+                return null;
+            }
+        };
     }
 
     /** 为测试提供只实现槽位读写的轻量背包。 */

@@ -23,7 +23,9 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.SimpleItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingCapabilityProbe;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingFeature;
@@ -44,6 +46,7 @@ import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaPlatform;
 import pixeltech.bluenine.blworldtrashcan.platform.folia.FoliaRegionCleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.AbstractModernItemStackingFeature;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingConfigurationLoader;
+import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingItemNameResolver;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -109,6 +112,7 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
                 globalTrashService.getIdentityProvider(), customModelDataSupport);
+        this.personalTrashService.setItemDisplayNameResolver(currentItemDisplayNames());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,
@@ -174,6 +178,9 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
         reconcileItemStackingFeature();
         if (featureRegistry != null) {
             featureRegistry.reloadAll();
+        }
+        if (personalTrashService != null) {
+            personalTrashService.setItemDisplayNameResolver(currentItemDisplayNames());
         }
         applyItemStackingMode();
     }
@@ -309,6 +316,18 @@ public final class WorldListTrashCanFoliaPlugin extends JavaPlugin {
                 return ItemStackingConfigurationLoader.load(WorldListTrashCanFoliaPlugin.this);
             }
         });
+    }
+
+    /** 返回当前堆叠解析器；关闭态只加载总配置中的语言资源。 */
+    private ItemDisplayNameResolver currentItemDisplayNames() {
+        if (itemStackingFeature != null) {
+            return itemStackingFeature;
+        }
+        if (!configBundle.getTrashConfig().getPersonalTrash().isEnabled()
+                || !configBundle.getTrashConfig().getPersonalTrash().isNotifyWhenRouted()) {
+            return SimpleItemDisplayNameResolver.getInstance();
+        }
+        return ItemStackingItemNameResolver.loadBase(this, configBundle.getItemDisplayNameLocale());
     }
 
     /** reload 时补建从关闭切换到开启的功能。 */

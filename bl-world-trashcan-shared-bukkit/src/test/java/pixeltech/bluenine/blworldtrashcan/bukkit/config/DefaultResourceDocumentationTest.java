@@ -119,7 +119,8 @@ public final class DefaultResourceDocumentationTest {
             if (module.contains("legacy")) {
                 assertTrue(detailText.contains("1.12.2 缺少掉落物实体 PDC"));
             } else {
-                assertTrue(detailText.contains("关闭时配置加载器只取 enabled"));
+                assertTrue(detailText.contains("关闭时只保留 enabled 和供个人垃圾桶通知使用的名称语言"));
+                assertTrue(detailText.contains("不读取逐物品配置"));
             }
             assertTrue(detailText.contains("不会无限占用内存"));
         }

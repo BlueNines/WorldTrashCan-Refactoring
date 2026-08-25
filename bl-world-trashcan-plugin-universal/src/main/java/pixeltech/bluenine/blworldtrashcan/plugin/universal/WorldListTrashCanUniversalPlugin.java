@@ -27,7 +27,9 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.SimpleItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.bukkit.storage.BukkitYamlWorldTrashStorage;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingCapabilityProbe;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingFeature;
@@ -42,6 +44,7 @@ import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundleLoader;
 import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
 import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingConfigurationLoader;
+import pixeltech.bluenine.blworldtrashcan.platform.paper.stacking.ItemStackingItemNameResolver;
 import pixeltech.bluenine.blworldtrashcan.core.capability.Capability;
 import pixeltech.bluenine.blworldtrashcan.core.trash.TrashRoute;
 
@@ -129,6 +132,9 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         reconcileItemStackingFeature();
         if (featureRegistry != null) {
             featureRegistry.reloadAll();
+        }
+        if (personalTrashService != null) {
+            personalTrashService.setItemDisplayNameResolver(currentItemDisplayNames());
         }
         applyItemStackingMode();
     }
@@ -452,6 +458,7 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
                 globalTrashService.getIdentityProvider(), customModelDataSupport);
+        this.personalTrashService.setItemDisplayNameResolver(currentItemDisplayNames());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
                 this,
@@ -584,6 +591,19 @@ public final class WorldListTrashCanUniversalPlugin extends JavaPlugin {
             getLogger().log(Level.SEVERE, "[ItemStacking] " + itemStackingUnavailableReason, unwrap(exception));
             return null;
         }
+    }
+
+    /** 返回当前堆叠解析器；Legacy 运行时不加载现代名称类。 */
+    private ItemDisplayNameResolver currentItemDisplayNames() {
+        if (itemStackingFeature != null) {
+            return itemStackingFeature;
+        }
+        if (runtimeKind == RuntimeKind.LEGACY
+                || !configBundle.getTrashConfig().getPersonalTrash().isEnabled()
+                || !configBundle.getTrashConfig().getPersonalTrash().isNotifyWhenRouted()) {
+            return SimpleItemDisplayNameResolver.getInstance();
+        }
+        return ItemStackingItemNameResolver.loadBase(this, configBundle.getItemDisplayNameLocale());
     }
 
     /** 在 reload 时按总开关动态补建功能并把数量服务接入扫地。 */

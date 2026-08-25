@@ -1,11 +1,12 @@
 package pixeltech.bluenine.blworldtrashcan.bukkit.stacking;
 
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
 
 import java.util.List;
 
 /** 地面掉落物逻辑堆叠的最小运行控制面。 */
-public interface ItemStackingFeature extends Feature {
+public interface ItemStackingFeature extends Feature, ItemDisplayNameResolver {
     /** 返回供扫地读取实际数量的服务。 */
     ItemQuantityService quantities();
 

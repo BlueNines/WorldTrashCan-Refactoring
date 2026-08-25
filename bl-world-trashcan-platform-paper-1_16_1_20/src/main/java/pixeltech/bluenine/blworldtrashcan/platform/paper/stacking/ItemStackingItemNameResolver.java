@@ -2,7 +2,11 @@ package pixeltech.bluenine.blworldtrashcan.platform.paper.stacking;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
+import pixeltech.bluenine.blworldtrashcan.bukkit.platform.SimpleItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
 
 import java.io.IOException;
@@ -12,8 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Properties;
 
-/** 将当前服务端材质映射为 item-stacking 使用的单语言名称。 */
-final class ItemStackingItemNameResolver {
+/** 将当前服务端材质映射为地面悬浮名和垃圾桶提示共用的单语言名称。 */
+public final class ItemStackingItemNameResolver implements ItemDisplayNameResolver {
     private static final String RESOURCE_DIRECTORY = "item-names/";
     private final String locale;
     private final String[] names;
@@ -34,10 +38,8 @@ final class ItemStackingItemNameResolver {
     }
 
     /** 按配置加载一个语言；关闭态不读取任何翻译资源。 */
-    static ItemStackingItemNameResolver load(Plugin plugin, ItemStackingConfig config,
-                                             ItemStackingMaterialPolicy policy) {
-        if (plugin == null || config == null || !config.isFeatureEnabled()
-                || !config.isDisplayNameEnabled()) {
+    public static ItemStackingItemNameResolver load(Plugin plugin, ItemStackingConfig config) {
+        if (plugin == null || config == null) {
             return new ItemStackingItemNameResolver();
         }
         String locale = config.getDisplayNameLocale();
@@ -45,13 +47,13 @@ final class ItemStackingItemNameResolver {
         Properties translations = new Properties();
         try (InputStream stream = plugin.getResource(resource)) {
             if (stream == null) {
-                plugin.getLogger().warning("[ItemStacking] 缺少内置物品名称资源 " + resource
+                plugin.getLogger().warning("[ItemNames] 缺少内置物品名称资源 " + resource
                         + "，已降级为英文材质名。");
                 return new ItemStackingItemNameResolver();
             }
             translations.load(new InputStreamReader(stream, StandardCharsets.UTF_8));
         } catch (IOException exception) {
-            plugin.getLogger().warning("[ItemStacking] 读取内置物品名称资源失败: "
+            plugin.getLogger().warning("[ItemNames] 读取内置物品名称资源失败: "
                     + exception.getMessage() + "，已降级为英文材质名。");
             return new ItemStackingItemNameResolver();
         }
@@ -60,19 +62,41 @@ final class ItemStackingItemNameResolver {
         String[] names = new String[materials.length];
         int translated = 0;
         for (Material material : materials) {
-            String name = resolveConfiguredName(material, policy.displayName(material), translations);
+            if (material.isLegacy()) {
+                continue;
+            }
+            String name = resolveConfiguredName(material,
+                    config.getItemRule(material.name()).getDisplayName(), translations);
             if (name != null && !name.trim().isEmpty()) {
                 names[material.ordinal()] = name;
                 translated++;
             }
         }
-        plugin.getLogger().info("[ItemStacking] 已加载 " + locale + " 物品名称 "
+        plugin.getLogger().info("[ItemNames] 已加载 " + locale + " 物品名称 "
                 + translated + "/" + materials.length + " 项；运行时仅保留当前语言缓存。");
         return new ItemStackingItemNameResolver(locale, names, translated);
     }
 
+    /** 只按总配置语言加载名称，不读取或生成逐物品配置。 */
+    public static ItemStackingItemNameResolver loadBase(Plugin plugin, String locale) {
+        return load(plugin, ItemStackingConfig.namesOnly(locale));
+    }
+
+    /** 返回物品名称，物品自身名称始终拥有最高优先级。 */
+    @Override
+    public String resolve(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
+            return "Item";
+        }
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null && meta.hasDisplayName()) {
+            return meta.getDisplayName();
+        }
+        return resolve(itemStack.getType());
+    }
+
     /** 返回物品名称，缺少翻译时使用可读英文材质名。 */
-    String resolve(Material material) {
+    public String resolve(Material material) {
         if (material == null || material == Material.AIR) {
             return "Item";
         }
@@ -87,12 +111,12 @@ final class ItemStackingItemNameResolver {
     }
 
     /** 返回当前缓存的语言标识。 */
-    String getLocale() {
+    public String getLocale() {
         return locale;
     }
 
     /** 返回当前缓存命中的材质数量。 */
-    int getTranslatedCount() {
+    public int getTranslatedCount() {
         return translatedCount;
     }
 
@@ -122,21 +146,6 @@ final class ItemStackingItemNameResolver {
 
     /** 将枚举材质名格式化为可读英文名称。 */
     static String formatMaterialName(String materialName) {
-        String[] words = materialName.toLowerCase(Locale.ROOT).split("_");
-        StringBuilder result = new StringBuilder(materialName.length());
-        for (String word : words) {
-            if (word.isEmpty()) {
-                continue;
-            }
-            if (result.length() > 0) {
-                result.append(' ');
-            }
-            if ("tnt".equals(word)) {
-                result.append("TNT");
-            } else {
-                result.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
-            }
-        }
-        return result.length() == 0 ? materialName : result.toString();
+        return SimpleItemDisplayNameResolver.formatMaterialName(materialName);
     }
 }

@@ -118,6 +118,16 @@ public final class ItemStackingConfigTest {
         assertEquals(null, rule.getDisplayName());
     }
 
+    /** 仅名称配置不能误开启堆叠，也不能产生逐物品规则。 */
+    @Test
+    public void namesOnlyConfigKeepsStackingDisabled() {
+        ItemStackingConfig config = ItemStackingConfig.namesOnly("ja-jp");
+
+        assertFalse(config.isFeatureEnabled());
+        assertEquals("ja_JP", config.getDisplayNameLocale());
+        assertTrue(config.getItemRules().isEmpty());
+    }
+
     /** 总开关只读取独立配置根节点，不再兼容 config.yml 旧路径。 */
     @Test
     public void enableSwitchComesOnlyFromIndependentConfiguration() {
@@ -129,11 +139,14 @@ public final class ItemStackingConfigTest {
         ConfigBundle disabled = new ConfigBundleLoader().load(
                 main, empty, empty, empty, empty, itemStacking, true);
         assertFalse(disabled.isItemStackingEnabled());
+        assertEquals("zh_CN", disabled.getItemDisplayNameLocale());
 
         itemStacking.put("enabled", Boolean.TRUE);
+        itemStacking.put("display.custom-name.locale", "ja_JP");
         ConfigBundle enabled = new ConfigBundleLoader().load(
                 main, empty, empty, empty, empty, itemStacking, true);
         assertTrue(enabled.isItemStackingEnabled());
+        assertEquals("ja_JP", enabled.getItemDisplayNameLocale());
     }
 
     /** 仅供本测试使用的轻量配置来源。 */

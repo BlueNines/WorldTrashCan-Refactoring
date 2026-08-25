@@ -23,7 +23,6 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -102,7 +101,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         this.configSupplier = configSupplier;
         this.config = configSupplier.get();
         this.materialPolicy = ItemStackingMaterialPolicy.from(this.config);
-        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config, this.materialPolicy);
+        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config);
         this.amountKey = new NamespacedKey(plugin, "stack_amount");
         this.displayOwnedKey = new NamespacedKey(plugin, "stack_display_owned");
         this.originalNameKey = new NamespacedKey(plugin, "stack_original_name");
@@ -148,7 +147,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     public final void reload() {
         this.config = configSupplier.get();
         this.materialPolicy = ItemStackingMaterialPolicy.from(this.config);
-        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config, this.materialPolicy);
+        this.itemNameResolver = ItemStackingItemNameResolver.load(plugin, this.config);
         if (enabled) {
             stopProcessor();
             startProcessor();
@@ -173,6 +172,12 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     @Override
     public final ItemQuantityService quantities() {
         return this;
+    }
+
+    /** 使用与地面悬浮名称相同的优先级解析任意物品显示名。 */
+    @Override
+    public final String resolve(ItemStack itemStack) {
+        return itemNameResolver.resolve(itemStack);
     }
 
     /** 返回掉落物代表的实际数量并修复明显坏数据。 */
@@ -1021,14 +1026,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
 
     /** 返回物品用于悬浮名称的名称。 */
     private String displayItemName(ItemStack stack) {
-        if (stack == null || stack.getType() == Material.AIR) {
-            return "ITEM";
-        }
-        ItemMeta meta = stack.getItemMeta();
-        if (meta != null && meta.hasDisplayName()) {
-            return meta.getDisplayName();
-        }
-        return itemNameResolver.resolve(stack.getType());
+        return resolve(stack);
     }
 
     /** 尽可能向库存插入数量并返回可精确回滚的槽位收据。 */
