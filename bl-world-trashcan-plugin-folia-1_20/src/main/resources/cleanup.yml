@@ -60,7 +60,7 @@ folia:
   # 单轮最多扫描多少个已加载 chunk；0 表示完整扫描本轮收集到的全部区块。
   max-chunks-per-cleanup: 0
   # 每批向 Folia RegionScheduler 派发多少个 chunk 扫描任务；只控制提交批次，不改变清理范围。
-  chunk-batch-size: 800
+  chunk-batch-size: 1024
   # 每批 chunk 扫描任务之间间隔多少 tick；0 表示不增加人为等待。
   chunk-batch-delay-ticks: 0
 

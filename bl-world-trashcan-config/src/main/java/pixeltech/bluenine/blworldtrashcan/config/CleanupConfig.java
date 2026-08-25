@@ -202,7 +202,7 @@ public final class CleanupConfig {
     public static final class FoliaCleanupConfig {
         private static final int DEFAULT_TIMEOUT_SECONDS = 30;
         private static final int DEFAULT_MAX_CHUNKS_PER_CLEANUP = 0;
-        private static final int DEFAULT_CHUNK_BATCH_SIZE = 800;
+        private static final int DEFAULT_CHUNK_BATCH_SIZE = 1024;
         private static final int DEFAULT_CHUNK_BATCH_DELAY_TICKS = 0;
 
         private final int timeoutSeconds;

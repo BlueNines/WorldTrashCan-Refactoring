@@ -147,7 +147,7 @@ public final class ConfigBundleLoader {
                 new CleanupConfig.FoliaCleanupConfig(
                         cleanup.getInt("folia.timeout-seconds", 30),
                         cleanup.getInt("folia.max-chunks-per-cleanup", 0),
-                        cleanup.getInt("folia.chunk-batch-size", 800),
+                        cleanup.getInt("folia.chunk-batch-size", 1024),
                         cleanup.getInt("folia.chunk-batch-delay-ticks", 0)
                 ),
                 new CleanupConfig.MovingItemConfig(

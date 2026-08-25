@@ -261,17 +261,17 @@ public final class CleanupConfigTest {
                 .getCleanupConfig().getFoliaCleanup();
 
         assertEquals(0, defaults.getMaxChunksPerCleanup());
-        assertEquals(800, defaults.getChunkBatchSize());
+        assertEquals(1024, defaults.getChunkBatchSize());
         assertEquals(0, defaults.getChunkBatchDelayTicks());
 
         MapConfigurationSource cleanup = new MapConfigurationSource();
         cleanup.put("folia.max-chunks-per-cleanup", 0);
-        cleanup.put("folia.chunk-batch-size", 800);
+        cleanup.put("folia.chunk-batch-size", 640);
         cleanup.put("folia.chunk-batch-delay-ticks", 0);
         CleanupConfig.FoliaCleanupConfig configured = load(cleanup).getCleanupConfig().getFoliaCleanup();
 
         assertEquals(0, configured.getMaxChunksPerCleanup());
-        assertEquals(800, configured.getChunkBatchSize());
+        assertEquals(640, configured.getChunkBatchSize());
         assertEquals(0, configured.getChunkBatchDelayTicks());
     }
 
