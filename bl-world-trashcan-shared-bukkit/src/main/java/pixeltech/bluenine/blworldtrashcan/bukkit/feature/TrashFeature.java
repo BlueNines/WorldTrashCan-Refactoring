@@ -232,7 +232,10 @@ public final class TrashFeature implements Feature, Listener {
         if (item.hasMetadata(WORLD_TRASH_TRANSFER_METADATA)) {
             return;
         }
-        UUID ownerUuid = dropOwnerTracker == null ? null : dropOwnerTracker.findOwner(item);
+        UUID ownerUuid = dropOwnerTracker == null ? null : dropOwnerTracker.findDamageRecoveryOwner(item);
+        if (ownerUuid == null) {
+            ownerUuid = platform.itemSnapshotMapper().findDamageRecoveryOwner(item);
+        }
         if (ownerUuid == null) {
             return;
         }
@@ -254,6 +257,9 @@ public final class TrashFeature implements Feature, Listener {
             event.setCancelled(true);
             if (acceptedAmount >= actualAmount && dropOwnerTracker != null) {
                 dropOwnerTracker.removeOwner(item);
+            }
+            if (acceptedAmount >= actualAmount) {
+                platform.itemSnapshotMapper().clearDamageRecoveryOwner(item);
             }
             if (route == TrashRoute.PERSONAL_TRASH) {
                 personalTrashService.notifySingleAmount(ownerUuid, itemStack, acceptedAmount);
@@ -377,14 +383,25 @@ public final class TrashFeature implements Feature, Listener {
         if (personalConfig.isTrackPlayerDroppedItems()) {
             platform.itemSnapshotMapper().markOwner(item, player);
         }
-        if (dropOwnerTracker == null) {
-            return;
+        if (dropOwnerTracker != null) {
+            int ttlSeconds = ownerTrackingSeconds(personalConfig);
+            if (ttlSeconds > 0 && personalConfig.isTrackPlayerDroppedItems()) {
+                dropOwnerTracker.track(item, player, ttlSeconds);
+            }
+            int damageRecoverySeconds = personalConfig.getDamageRecoveryMode()
+                    == TrashConfig.DamageRecoveryMode.DISABLED
+                    ? 0 : personalConfig.getDamageRecoveryDelaySeconds();
+            if (damageRecoverySeconds > 0) {
+                dropOwnerTracker.trackDamageRecovery(item, player, damageRecoverySeconds);
+            }
         }
-        int ttlSeconds = ownerTrackingSeconds(personalConfig);
-        if (ttlSeconds <= 0) {
-            return;
+        int damageRecoverySeconds = personalConfig.getDamageRecoveryMode()
+                == TrashConfig.DamageRecoveryMode.DISABLED
+                ? 0 : personalConfig.getDamageRecoveryDelaySeconds();
+        if (damageRecoverySeconds > 0) {
+            platform.itemSnapshotMapper().markDamageRecoveryOwner(item, player,
+                    System.currentTimeMillis() + damageRecoverySeconds * 1000L);
         }
-        dropOwnerTracker.track(item, player, ttlSeconds);
     }
 
     /** 计算短期 owner 记录保留时间，至少覆盖一轮清理间隔。 */

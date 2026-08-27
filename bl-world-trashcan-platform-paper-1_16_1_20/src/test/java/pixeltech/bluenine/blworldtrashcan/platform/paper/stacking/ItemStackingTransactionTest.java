@@ -27,8 +27,10 @@ import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -37,6 +39,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 
 /** 验证逻辑数量写入、合并和库存插入的事务边界。 */
 public final class ItemStackingTransactionTest {
@@ -227,6 +231,421 @@ public final class ItemStackingTransactionTest {
         assertNull(inventory.itemAt(1));
     }
 
+    /** 非玩家拾取逻辑堆叠时只交给原版一组，并保留剩余逻辑数量。 */
+    @Test
+    public void nonPlayerPickupPreservesLogicalRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+
+        assertFalse(event.isCancelled());
+        assertEquals(64, item.stackAmount());
+        assertEquals(64, feature.getAmount(item.proxy()));
+        assertEquals(1, world.spawnedItems().size());
+        FakeItem remainder = world.spawnedItems().get(0);
+        assertEquals(64, remainder.stackAmount());
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+
+        feature.runPendingPickupTask();
+
+        assertFalse(item.isValid());
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+    }
+
+    /** 非玩家拾取事件随后被其它插件取消时必须恢复原逻辑实体。 */
+    @Test
+    public void cancelledNonPlayerPickupRollsBackPreparation() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        event.setCancelled(true);
+        feature.onEntityPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertEquals(1024, feature.getAmount(item.proxy()));
+        assertEquals(64, item.stackAmount());
+        assertFalse(remainder.isValid());
+    }
+
+    /** 未被取消的非玩家拾取不得在监视阶段重复处理或删除逻辑余量。 */
+    @Test
+    public void acceptedNonPlayerPickupKeepsPreparationRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        feature.onEntityPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertFalse(item.isValid());
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertTrue(remainder.isValid());
+    }
+
+    /** 金锭原版拾取只消耗一枚时，逻辑总量必须准确减少一枚。 */
+    @Test
+    public void acceptedGoldPickupPreservesVanillaRemainingAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+
+        // 模拟 Paper 在事件收尾后的 Piglin.take(1) 和 ItemStack.setItem(63)。
+        item.setPhysicalAmount(63);
+        feature.onEntityPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertFalse(event.isCancelled());
+        assertEquals(63, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertEquals(1023, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+    }
+
+    /** 原版一次移除整个物理堆时，逻辑余量实体必须单独保留。 */
+    @Test
+    public void acceptedFullPhysicalPickupKeepsLogicalRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_NUGGET, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+
+        // 模拟原版完整消费源实体。
+        item.proxy().remove();
+        feature.onEntityPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertFalse(event.isCancelled());
+        assertFalse(item.isValid());
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+    }
+
+    /** 连续原版拾取不能重复使用逻辑数量，每次都只从当前物理源消费。 */
+    @Test
+    public void consecutiveVanillaPickupsRemainLossless() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+
+        EntityPickupItemEvent first = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+        feature.onEntityPickup(first);
+        FakeItem remainder = world.spawnedItems().get(0);
+        item.setPhysicalAmount(63);
+        feature.onEntityPickupMonitor(first);
+        feature.runPendingPickupTask();
+
+        EntityPickupItemEvent second = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 62);
+        feature.onEntityPickup(second);
+        feature.onEntityPickupMonitor(second);
+        item.setPhysicalAmount(62);
+
+        assertFalse(second.isCancelled());
+        assertEquals(62, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertEquals(1022, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+    }
+
+    /** 原版收尾前再次触发同一掉落实体的拾取必须取消，避免重复发放奖励。 */
+    @Test
+    public void pickupIsBlockedUntilReconciliation() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent first = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+        feature.onEntityPickup(first);
+
+        EntityPickupItemEvent second = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+        feature.onEntityPickup(second);
+
+        assertTrue(second.isCancelled());
+        assertEquals(1, world.spawnedItems().size());
+
+        item.setPhysicalAmount(63);
+        feature.onEntityPickupMonitor(first);
+        feature.runPendingPickupTask();
+    }
+
+    /** 后续被拦截的重复事件不得覆盖首个拾取事务的成功结果。 */
+    @Test
+    public void duplicatePickupEventCannotCancelOriginalPreparation() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent first = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(first);
+        FakeItem remainder = world.spawnedItems().get(0);
+
+        EntityPickupItemEvent duplicate = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+        feature.onEntityPickup(duplicate);
+        assertTrue(duplicate.isCancelled());
+
+        // 先收到重复事件的 MONITOR，再收到首个事件的 MONITOR，模拟插件链路的异常顺序。
+        feature.onEntityPickupMonitor(duplicate);
+        item.setPhysicalAmount(63);
+        feature.onEntityPickupMonitor(first);
+        feature.runPendingPickupTask();
+
+        assertTrue(item.isValid());
+        assertEquals(63, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertEquals(1023, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+    }
+
+    /** 拾取收尾调度失败时必须回滚拆分，不能丢失或复制数量。 */
+    @Test
+    public void failedPickupSchedulingRollsBackPreparation() throws Exception {
+        TestFeature feature = feature(1024);
+        feature.pickupSchedulingSucceeds = false;
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+
+        assertTrue(event.isCancelled());
+        assertEquals(1024, feature.getAmount(item.proxy()));
+        assertEquals(64, item.stackAmount());
+        assertEquals(1, world.spawnedItems().size());
+        assertFalse(world.spawnedItems().get(0).isValid());
+    }
+
+    /** Folia 实体调度器触发 retired 回调时也必须完成同一笔收尾事务。 */
+    @Test
+    public void retiredPickupCallbackReconcilesPreparation() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        feature.runPendingPickupRetiredTask();
+
+        assertFalse(item.isValid());
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertTrue(remainder.isValid());
+    }
+
+    /** 插件在事件尚未完成派发时关闭，必须保留物理源和逻辑余量的无损状态。 */
+    @Test
+    public void clearingUnobservedPickupKeepsLosslessPreparation() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        Method method = AbstractModernItemStackingFeature.class.getDeclaredMethod("clearPendingPickups");
+        method.setAccessible(true);
+        method.invoke(feature);
+
+        assertEquals(64, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertEquals(1024, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+        assertEquals(64, item.stackAmount());
+        assertTrue(remainder.isValid());
+    }
+
+    /** 插件关闭时已接受的非玩家拾取只能按真实物理变化收尾，不能回滚已发放奖励。 */
+    @Test
+    public void clearingAcceptedPickupKeepsConsumedAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        item.setPhysicalAmount(63);
+        feature.onEntityPickupMonitor(event);
+
+        Method method = AbstractModernItemStackingFeature.class.getDeclaredMethod("clearPendingPickups");
+        method.setAccessible(true);
+        method.invoke(feature);
+
+        assertEquals(63, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertEquals(1023, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+        assertTrue(item.isValid());
+        assertTrue(remainder.isValid());
+    }
+
+    /** 关闭时 MONITOR 已执行但原版尚未扣减，不能提前按事件剩余量扣除一次。 */
+    @Test
+    public void clearingObservedButNotAppliedPickupDoesNotDoubleConsume() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        // MONITOR 已经看到事件，但模拟原版仍未真正修改源 ItemStack。
+        feature.onEntityPickupMonitor(event);
+
+        Method method = AbstractModernItemStackingFeature.class.getDeclaredMethod("clearPendingPickups");
+        method.setAccessible(true);
+        method.invoke(feature);
+
+        assertEquals(64, item.stackAmount());
+        assertEquals(64, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+        assertEquals(1024, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+        assertTrue(item.isValid());
+        assertTrue(remainder.isValid());
+    }
+
+    /** 插件关闭时已取消的非玩家拾取必须完整撤销临时拆分。 */
+    @Test
+    public void clearingCancelledPickupRestoresOriginalAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        event.setCancelled(true);
+
+        Method method = AbstractModernItemStackingFeature.class.getDeclaredMethod("clearPendingPickups");
+        method.setAccessible(true);
+        method.invoke(feature);
+
+        assertEquals(1024, feature.getAmount(item.proxy()));
+        assertEquals(64, item.stackAmount());
+        assertFalse(remainder.isValid());
+    }
+
+    /** 收尾时物理数量异常增加不得被事务覆盖或误算成数量扣减。 */
+    @Test
+    public void increasedPhysicalAmountIsPreserved() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        item.setPhysicalAmount(65);
+        feature.onEntityPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertTrue(item.isValid());
+        assertEquals(65, item.stackAmount());
+        assertEquals(65, feature.getAmount(item.proxy()));
+        assertEquals(960, feature.getAmount(remainder.proxy()));
+    }
+
+    /** 原版没有及时回写 Bukkit 数量时，收尾任务必须按事件结果校正物理数量。 */
+    @Test
+    public void reconciliationCorrectsStalePhysicalAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 63);
+
+        feature.onEntityPickup(event);
+        feature.onEntityPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertEquals(63, item.stackAmount());
+        assertEquals(63, feature.getAmount(item.proxy()));
+    }
+
+    /** 事件提供非法剩余数量时必须拒绝交给原版，避免形成不可守恒事务。 */
+    @Test
+    public void invalidVanillaRemainingCancelsWithoutSplitting() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 65);
+
+        feature.onEntityPickup(event);
+
+        assertTrue(event.isCancelled());
+        assertTrue(world.spawnedItems().isEmpty());
+        assertEquals(1024, feature.getAmount(item.proxy()));
+    }
+
+    /** 非玩家拾取拆分失败时必须取消事件并保留原逻辑数量。 */
+    @Test
+    public void nonPlayerPickupFailureKeepsOriginalLogicalStack() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        world.failSpawn = true;
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 1024);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+
+        assertTrue(event.isCancelled());
+        assertEquals(64, item.stackAmount());
+        assertEquals(1024, feature.getAmount(item.proxy()));
+        assertTrue(world.spawnedItems().isEmpty());
+    }
+
+    /** 非逻辑堆叠物品的非玩家拾取必须保持原版事件状态。 */
+    @Test
+    public void physicalNonPlayerPickupRemainsVanilla() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.GOLD_INGOT, 64);
+        EntityPickupItemEvent event = new EntityPickupItemEvent(
+                livingEntityProxy(), item.proxy(), 0);
+
+        feature.onEntityPickup(event);
+
+        assertFalse(event.isCancelled());
+        assertEquals(64, feature.getAmount(item.proxy()));
+        assertTrue(world.spawnedItems().isEmpty());
+    }
+
+    /** 创建只覆盖拾取事件构造所需方法的生物实体代理。 */
+    private static LivingEntity livingEntityProxy() {
+        return (LivingEntity) Proxy.newProxyInstance(
+                ItemStackingTransactionTest.class.getClassLoader(),
+                new Class<?>[]{LivingEntity.class},
+                (proxy, method, arguments) -> defaultValue(method.getReturnType()));
+    }
+
     /** 创建使用临时数据目录的无调度测试实现。 */
     private TestFeature feature(int maxLogicalAmount) throws Exception {
         File dataFolder = temporaryFolder.newFolder();
@@ -374,10 +793,92 @@ public final class ItemStackingTransactionTest {
             return false;
         }
 
+        /** 记录测试中的延迟拾取收尾，供测试显式推进。 */
+        @Override
+        protected boolean schedulePickupReconciliation(Item item, Runnable runnable, Runnable retired) {
+            pendingPickupTask = runnable;
+            pendingPickupRetiredTask = retired;
+            return pickupSchedulingSucceeds;
+        }
+
+        /** 执行测试中的下一 tick 拾取收尾。 */
+        private void runPendingPickupTask() {
+            if (pendingPickupTask != null) {
+                Runnable task = pendingPickupTask;
+                pendingPickupTask = null;
+                pendingPickupRetiredTask = null;
+                task.run();
+            }
+        }
+
+        /** 执行测试中的实体 retired 拾取收尾。 */
+        private void runPendingPickupRetiredTask() {
+            if (pendingPickupRetiredTask != null) {
+                Runnable retired = pendingPickupRetiredTask;
+                pendingPickupTask = null;
+                pendingPickupRetiredTask = null;
+                retired.run();
+            }
+        }
+
+        private Runnable pendingPickupTask;
+        private Runnable pendingPickupRetiredTask;
+        private boolean pickupSchedulingSucceeds = true;
+
         /** 测试同步保存小型状态。 */
         @Override
         protected void saveStateAsync(Runnable runnable) {
             runnable.run();
+        }
+    }
+
+    /** 记录测试中的掉落物生成，并可注入生成失败。 */
+    private static final class SpawnTrackingWorld implements InvocationHandler {
+        private final World proxy;
+        private final List<FakeItem> spawned = new ArrayList<>();
+        private boolean failSpawn;
+
+        /** 创建可生成测试掉落物的世界代理。 */
+        private SpawnTrackingWorld() {
+            proxy = (World) Proxy.newProxyInstance(
+                    ItemStackingTransactionTest.class.getClassLoader(),
+                    new Class<?>[]{World.class}, this);
+        }
+
+        /** 返回世界代理。 */
+        private World proxy() {
+            return proxy;
+        }
+
+        /** 返回测试中生成的掉落物。 */
+        private List<FakeItem> spawnedItems() {
+            return spawned;
+        }
+
+        /** 实现测试世界的 UID 和掉落物生成。 */
+        @Override
+        public Object invoke(Object ignoredProxy, Method method, Object[] arguments) {
+            String name = method.getName();
+            if ("getUID".equals(name)) {
+                return FakeItem.WORLD_ID;
+            }
+            if ("dropItem".equals(name)) {
+                if (failSpawn) {
+                    return null;
+                }
+                FakeItem item = new FakeItem(proxy,
+                        ((ItemStack) arguments[1]).getType(),
+                        ((ItemStack) arguments[1]).getAmount());
+                spawned.add(item);
+                return item.proxy();
+            }
+            if ("equals".equals(name)) {
+                return Boolean.valueOf(ignoredProxy == arguments[0]);
+            }
+            if ("hashCode".equals(name)) {
+                return Integer.valueOf(System.identityHashCode(ignoredProxy));
+            }
+            return defaultValue(method.getReturnType());
         }
     }
 
@@ -386,7 +887,8 @@ public final class ItemStackingTransactionTest {
         private static final UUID WORLD_ID = UUID.fromString("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa");
         private final Map<NamespacedKey, Object> pdcValues = new HashMap<>();
         private final PersistentDataContainer pdc = pdcProxy(pdcValues, this);
-        private final World world = worldProxy();
+        private final World world;
+        private final UUID uniqueId = UUID.randomUUID();
         private final Item proxy;
         private ItemStack stack;
         private boolean valid = true;
@@ -397,7 +899,13 @@ public final class ItemStackingTransactionTest {
 
         /** 创建指定逻辑数量的实体。 */
         private FakeItem(int logicalAmount) {
-            stack = new ItemStack(Material.COBBLESTONE, Math.min(64, logicalAmount));
+            this(worldProxy(), Material.COBBLESTONE, logicalAmount);
+        }
+
+        /** 创建指定世界、材质和逻辑数量的实体。 */
+        private FakeItem(World world, Material material, int logicalAmount) {
+            this.world = world;
+            stack = new ItemStack(material, Math.min(material.getMaxStackSize(), logicalAmount));
             proxy = (Item) Proxy.newProxyInstance(ItemStackingTransactionTest.class.getClassLoader(),
                     new Class<?>[]{Item.class}, this);
             if (logicalAmount > stack.getAmount()) {
@@ -413,6 +921,11 @@ public final class ItemStackingTransactionTest {
         /** 返回当前物理数量。 */
         private int stackAmount() {
             return stack.getAmount();
+        }
+
+        /** 模拟原版直接修改掉落物的物理堆数量。 */
+        private void setPhysicalAmount(int amount) {
+            stack.setAmount(amount);
         }
 
         /** 判断实体当前是否有效。 */
@@ -450,6 +963,9 @@ public final class ItemStackingTransactionTest {
             }
             if ("getPersistentDataContainer".equals(name)) {
                 return pdc;
+            }
+            if ("getUniqueId".equals(name)) {
+                return uniqueId;
             }
             if ("getWorld".equals(name)) {
                 return world;

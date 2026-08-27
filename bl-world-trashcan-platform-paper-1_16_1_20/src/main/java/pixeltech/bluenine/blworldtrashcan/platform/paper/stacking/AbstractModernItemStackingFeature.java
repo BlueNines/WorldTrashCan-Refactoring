@@ -33,6 +33,7 @@ import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -53,6 +54,7 @@ import java.util.function.Supplier;
 public abstract class AbstractModernItemStackingFeature implements ItemStackingFeature, ItemQuantityService, Listener {
     private static final int MAX_DRAIN_STACKS_PER_ENTITY = 16;
     private static final String WORLD_TRASH_TRANSFER_METADATA = "worldlisttrashcan_world_trash_transfer";
+    private static final Method PDC_COPY_TO_METHOD = findPdcCopyToMethod();
     private static final Set<String> CONFLICT_PLUGIN_NAMES = new HashSet<>();
     static {
         CONFLICT_PLUGIN_NAMES.add("rosestacker");
@@ -67,7 +69,11 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     private final NamespacedKey originalNameKey;
     private final NamespacedKey originalVisibleKey;
     private final NamespacedKey trackedOwnerKey;
+    private final NamespacedKey damageRecoveryOwnerKey;
+    private final NamespacedKey damageRecoveryUntilKey;
     private final Map<StackingChunkKey, DirtyChunk> dirtyChunks = new ConcurrentHashMap<>();
+    private final Map<UUID, PickupPreparation> pendingPickups = new ConcurrentHashMap<>();
+    private final Set<UUID> pendingPickupEntities = ConcurrentHashMap.newKeySet();
     private final Set<StackingChunkKey> knownStackChunks = ConcurrentHashMap.newKeySet();
     private final ItemStackingStateStore stateStore;
     private final AtomicBoolean stateSaveQueued = new AtomicBoolean(false);
@@ -107,6 +113,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         this.originalNameKey = new NamespacedKey(plugin, "stack_original_name");
         this.originalVisibleKey = new NamespacedKey(plugin, "stack_original_name_visible");
         this.trackedOwnerKey = new NamespacedKey(plugin, "player_uuid");
+        this.damageRecoveryOwnerKey = new NamespacedKey(plugin, "damage_recovery_owner");
+        this.damageRecoveryUntilKey = new NamespacedKey(plugin, "damage_recovery_until");
         this.stateStore = new ItemStackingStateStore(new File(plugin.getDataFolder(),
                 "data/item-stacking-state.yml"));
         ItemStackingStateStore.State state = stateStore.load();
@@ -163,6 +171,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
         enabled = false;
         HandlerList.unregisterAll(this);
+        clearPendingPickups();
         stopProcessor();
         dirtyChunks.clear();
         saveStateNow();
@@ -343,6 +352,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             return;
         }
         if (!sameOwner(source, target) || !sameOriginalDisplay(source, target)
+                || !sameRecoveryMetadata(source, target)
                 || hasExternalEntityData(source) || hasExternalEntityData(target)) {
             event.setCancelled(true);
             return;
@@ -367,15 +377,15 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         enqueue(source, 0L);
     }
 
-    /** 玩家拾取逻辑堆叠时按真实背包容量部分扣减。 */
+    /** 玩家或其它实体拾取逻辑堆叠时按实际交接数量处理。 */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public final void onEntityPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) event.getEntity();
         Item item = event.getItem();
         if (isWorldTrashTransfer(item)) {
+            event.setCancelled(true);
+            return;
+        }
+        if (isPickupPending(item)) {
             event.setCancelled(true);
             return;
         }
@@ -383,6 +393,49 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         if (!isManaged(item)) {
             return;
         }
+        if (!(event.getEntity() instanceof Player)) {
+            int physical = physicalAmount(item);
+            if (actual <= physical) {
+                return;
+            }
+            // 原版实体只能理解物理 ItemStack；先交出一组合法数量，剩余数量继续由逻辑实体保存。
+                PickupPreparation preparation = prepareVanillaPickup(item, actual, physical,
+                    event);
+            if (preparation == null) {
+                event.setCancelled(true);
+            } else {
+                UUID sourceId = item.getUniqueId();
+                if (sourceId == null) {
+                    event.setCancelled(true);
+                    rollbackVanillaPickup(preparation);
+                    return;
+                }
+                pendingPickups.put(sourceId, preparation);
+                pendingPickupEntities.add(sourceId);
+                pendingPickupEntities.add(preparation.remainder.getUniqueId());
+                if (!schedulePickupReconciliation(item, new Runnable() {
+                    /** 在原版拾取完成后的合法线程收尾事务。 */
+                    @Override
+                    public void run() {
+                        reconcileVanillaPickup(sourceId);
+                    }
+                }, new Runnable() {
+                    /** 调度实体失效时也要释放待处理事务。 */
+                    @Override
+                    public void run() {
+                        reconcileVanillaPickup(sourceId);
+                    }
+                })) {
+                    pendingPickups.remove(sourceId, preparation);
+                    pendingPickupEntities.remove(sourceId);
+                    pendingPickupEntities.remove(preparation.remainder.getUniqueId());
+                    event.setCancelled(true);
+                    rollbackVanillaPickup(preparation);
+                }
+            }
+            return;
+        }
+        Player player = (Player) event.getEntity();
         UUID owner = item.getOwner();
         if (owner != null && !owner.equals(player.getUniqueId())) {
             event.setCancelled(true);
@@ -396,6 +449,26 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             playPickupFeedback(player, item);
         } else {
             insertion.rollback();
+        }
+    }
+
+    /** 在所有插件完成拾取事件后确认或回滚非玩家拾取拆分。 */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public final void onEntityPickupMonitor(EntityPickupItemEvent event) {
+        Item item = event.getItem();
+        if (item == null) {
+            return;
+        }
+        UUID itemId = item.getUniqueId();
+        if (itemId == null) {
+            return;
+        }
+        PickupPreparation preparation = pendingPickups.get(itemId);
+        if (preparation == null) {
+            return;
+        }
+        if (preparation.event == event) {
+            preparation.cancelled = event.isCancelled();
         }
     }
 
@@ -479,6 +552,9 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
 
     /** 提交一个区块到平台合法线程执行。 */
     protected abstract boolean dispatchChunk(StackingChunkKey key, long deadlineNanos);
+
+    /** 在源掉落实体所属的合法线程中延迟执行拾取收尾。 */
+    protected abstract boolean schedulePickupReconciliation(Item item, Runnable runnable, Runnable retired);
 
     /** 判断当前平台是否允许在本次任务线程读取指定区块。 */
     protected boolean canReadChunk(World world, int chunkX, int chunkZ) {
@@ -666,7 +742,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 continue;
             }
             Item item = (Item) entity;
-            if (!usable(item) || (logicalOnly && !isManaged(item))
+            if (isPickupPending(item) || !usable(item) || (logicalOnly && !isManaged(item))
                     || (!logicalOnly && !isManaged(item)
                     && !materialPolicy.isEnabled(item.getItemStack().getType()))) {
                 continue;
@@ -700,7 +776,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             if (hasExternalEntityData(item)) {
                 continue;
             }
-            MergeKey key = MergeKey.from(item, trackedOwner(item),
+            MergeKey key = MergeKey.from(item, trackedOwner(item), recoveryMetadata(item),
                     originalDisplayName(item), originalDisplayVisible(item));
             if (key == null) {
                 continue;
@@ -777,6 +853,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         if (!usable(target) || !usable(source) || target.equals(source)
                 || isWorldTrashTransfer(target) || isWorldTrashTransfer(source)
                 || !sameOwner(target, source) || !sameOriginalDisplay(target, source)
+                || !sameRecoveryMetadata(target, source)
                 || !target.getItemStack().isSimilar(source.getItemStack())) {
             return;
         }
@@ -851,6 +928,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             if (trackedOwner != null) {
                 dropped.getPersistentDataContainer().set(trackedOwnerKey, PersistentDataType.STRING, trackedOwner);
             }
+            copyRecoveryMetadata(item, dropped);
             dropped.setCustomName(originalDisplayName(item));
             dropped.setCustomNameVisible(originalDisplayVisible(item));
             remaining -= max;
@@ -921,12 +999,21 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         Item split = null;
         try {
             split = source.getWorld().dropItem(source.getLocation(), sample);
+            if (split == null) {
+                return null;
+            }
+            // 新旧 API 对实体 PDC 的复制方法不同，必须运行时探测，避免旧端链接失败。
+            if (!copyEntityData(source, split)) {
+                split.remove();
+                return null;
+            }
             split.setVelocity(source.getVelocity());
             split.setPickupDelay(source.getPickupDelay());
             split.setOwner(source.getOwner());
             if (owner != null) {
                 split.getPersistentDataContainer().set(trackedOwnerKey, PersistentDataType.STRING, owner);
             }
+            copyRecoveryMetadata(source, split);
             split.setCustomName(originalName);
             split.setCustomNameVisible(originalVisible);
             writeAmount(split, amount);
@@ -941,6 +1028,209 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             split.remove();
         }
         return null;
+    }
+
+    /** 为非玩家实体准备一组原版物理物品，并保留剩余逻辑数量。 */
+    private PickupPreparation prepareVanillaPickup(Item item, int actualAmount, int physicalAmount,
+                                                   EntityPickupItemEvent event) {
+        int expectedRemaining = event == null ? -1 : event.getRemaining();
+        if (!usable(item) || actualAmount <= physicalAmount || physicalAmount <= 0
+                || expectedRemaining < 0 || expectedRemaining > physicalAmount) {
+            return null;
+        }
+        int remainingAmount = actualAmount - physicalAmount;
+        Item remainder = spawnPolicySplit(item, remainingAmount);
+        if (remainder == null) {
+            return null;
+        }
+        writePhysicalAmount(item, physicalAmount);
+        restoreDisplay(item);
+        if (usable(item) && physicalAmount(item) == physicalAmount
+                && getAmount(item) == physicalAmount && !isManaged(item)) {
+            return new PickupPreparation(item, remainder, actualAmount, physicalAmount,
+                    expectedRemaining, event);
+        }
+        if (remainder.isValid()) {
+            remainder.remove();
+        }
+        if (usable(item)) {
+            restoreLogicalAmount(item, actualAmount);
+        }
+        return null;
+    }
+
+    /** 回滚被其它插件取消的非玩家拾取准备，始终保持总数量不丢失。 */
+    private void rollbackVanillaPickup(PickupPreparation preparation) {
+        Item source = preparation.source;
+        Item remainder = preparation.remainder;
+        if (!usable(source)) {
+            if (usable(remainder) && restoreLogicalAmount(remainder, preparation.originalAmount)) {
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消时源实体已失效，已将原逻辑数量转移到剩余实体: "
+                        + remainder.getUniqueId());
+            } else {
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消但源实体和剩余实体均无法恢复: "
+                        + (source == null ? "null" : source.getUniqueId()));
+            }
+            return;
+        }
+        if (!remainder.isValid()) {
+            if (!restoreLogicalAmount(source, preparation.originalAmount)) {
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消但无法恢复原逻辑数量: "
+                        + source.getUniqueId());
+            }
+            return;
+        }
+        if (!restoreLogicalAmount(source, preparation.originalAmount)) {
+            // 源实体仍是合法的物理数量，剩余实体继续保存逻辑余量，不能删除剩余实体。
+            return;
+        }
+        remainder.remove();
+        if (remainder.isValid()) {
+            // 删除失败时恢复为“物理数量 + 逻辑余量”，避免源实体和剩余实体重复计算。
+            writePhysicalAmount(source, preparation.physicalAmount);
+            restoreDisplay(source);
+            plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消且剩余实体无法移除，已保留拆分后的无损状态: "
+                    + source.getUniqueId());
+        }
+    }
+
+    /** 在原版拾取完成后按事件结果校正源实体，并释放事务保护。 */
+    private void reconcileVanillaPickup(UUID sourceId) {
+        PickupPreparation preparation = pendingPickups.remove(sourceId);
+        if (preparation == null) {
+            return;
+        }
+        try {
+            if (preparation.cancelled) {
+                rollbackVanillaPickup(preparation);
+                return;
+            }
+            Item source = preparation.source;
+            if (!isLiveItem(source)) {
+                // 源实体已被原版成功移除，拆分实体已经保存未拾取的逻辑余量。
+                return;
+            }
+            int observedPhysical = physicalAmount(source);
+            if (observedPhysical > preparation.physicalAmount) {
+                // 外部逻辑在事务窗口内增加了物理数量时不覆盖它，避免把并发变更误算成拾取结果。
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾发现物理数量异常增加，已保留当前实体状态: "
+                        + source.getUniqueId() + ", prepared=" + preparation.physicalAmount
+                        + ", actual=" + observedPhysical);
+                return;
+            }
+            int remaining = observedPhysical;
+            if (observedPhysical == preparation.physicalAmount
+                    && preparation.expectedRemaining < observedPhysical) {
+                // 某些 Paper/实现的事件收尾可能暂时没有反映到 Bukkit 包装层，使用事件结果兜底校正。
+                remaining = preparation.expectedRemaining;
+            }
+            if (remaining <= 0) {
+                StackingChunkKey previousChunk = chunkKey(source);
+                source.remove();
+                if (source.isValid()) {
+                    plugin.getLogger().warning("[ItemStacking] 非玩家拾取应移除源实体但移除失败: "
+                            + source.getUniqueId());
+                } else {
+                    enqueue(previousChunk, 0L);
+                }
+                return;
+            }
+            if (!writeVanillaPhysicalAmount(source, remaining)) {
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾无法校正源实体物理数量: "
+                        + source.getUniqueId() + ", expected=" + remaining
+                        + ", actual=" + physicalAmount(source));
+            }
+        } finally {
+            releasePickupProtection(preparation);
+        }
+    }
+
+    /** 判断掉落实体仍可读取和修改，即使它当前物理数量暂时为零。 */
+    private boolean isLiveItem(Item item) {
+        return item != null && item.isValid() && !item.isDead()
+                && item.getItemStack() != null
+                && item.getItemStack().getType() != Material.AIR;
+    }
+
+    /** 判断掉落实体是否正处于等待原版拾取收尾的事务中。 */
+    private boolean isPickupPending(Item item) {
+        UUID itemId = item == null ? null : item.getUniqueId();
+        return itemId != null && pendingPickupEntities.contains(itemId);
+    }
+
+    /** 释放源实体和拆分实体的拾取事务保护。 */
+    private void releasePickupProtection(PickupPreparation preparation) {
+        pendingPickupEntities.remove(preparation.source.getUniqueId());
+        pendingPickupEntities.remove(preparation.remainder.getUniqueId());
+    }
+
+    /** 插件关闭时清理所有待处理事务，避免跨生命周期泄漏引用。 */
+    private void clearPendingPickups() {
+        for (PickupPreparation preparation : new ArrayList<>(pendingPickups.values())) {
+            if (preparation.cancelled || preparation.event.isCancelled()) {
+                // 事件已经被取消，原版不会发放奖励，必须撤销本次临时拆分。
+                rollbackVanillaPickup(preparation);
+            } else {
+                // MONITOR 只代表事件派发完成，不代表原版已经扣减物理 ItemStack；
+                // 关闭时不能提前按 getRemaining() 对账，否则原版随后还会再次扣减。
+                // 保留“物理源 + 逻辑余量”的状态，让原版按自己的收尾流程完成拾取。
+                pendingPickups.remove(preparation.source.getUniqueId(), preparation);
+                releasePickupProtection(preparation);
+            }
+        }
+        pendingPickups.clear();
+        pendingPickupEntities.clear();
+    }
+
+    /** 返回当前运行时是否提供实体 PDC 的复制方法。 */
+    private static Method findPdcCopyToMethod() {
+        try {
+            return PersistentDataContainer.class.getMethod("copyTo",
+                    PersistentDataContainer.class, Boolean.TYPE);
+        } catch (NoSuchMethodException ignored) {
+            return null;
+        }
+    }
+
+    /** 跨 Bukkit/Paper 版本复制实体 PDC；能力不存在时仅允许无外部 PDC 的安全拆分。 */
+    private boolean copyEntityData(Item source, Item target) {
+        if (PDC_COPY_TO_METHOD != null) {
+            try {
+                PDC_COPY_TO_METHOD.invoke(source.getPersistentDataContainer(),
+                        target.getPersistentDataContainer(), Boolean.TRUE);
+                return true;
+            } catch (ReflectiveOperationException | RuntimeException exception) {
+                if (hasExternalEntityData(source)) {
+                    plugin.getLogger().fine("[ItemStacking] 当前端无法复制外部实体 PDC，已放弃拆分: "
+                            + exception.getClass().getSimpleName());
+                    return false;
+                }
+            }
+        }
+        return !hasExternalEntityData(source);
+    }
+
+    /** 记录一次等待事件最终结果的拾取拆分。 */
+    private final class PickupPreparation {
+        private final Item source;
+        private final Item remainder;
+        private final int originalAmount;
+        private final int physicalAmount;
+        private final int expectedRemaining;
+        private final EntityPickupItemEvent event;
+        private volatile boolean cancelled;
+
+        /** 创建拾取拆分记录。 */
+        private PickupPreparation(Item source, Item remainder, int originalAmount, int physicalAmount,
+                                  int expectedRemaining, EntityPickupItemEvent event) {
+            this.source = source;
+            this.remainder = remainder;
+            this.originalAmount = originalAmount;
+            this.physicalAmount = physicalAmount;
+            this.expectedRemaining = expectedRemaining;
+            this.event = event;
+        }
+
     }
 
     /** 写入实际数量、物理展示数量和状态标记。 */
@@ -972,8 +1262,24 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
         ItemStack stack = item.getItemStack();
         stack.setAmount(amount);
+        // 事件收尾前若物理数量已经相同，不替换服务端内部 ItemStack 引用。
+        if (physicalAmount(item) != amount) {
+            item.setItemStack(stack);
+        }
+        item.getPersistentDataContainer().remove(amountKey);
+    }
+
+    /** 在原版拾取完成后可靠写入物理数量，并移除逻辑数量标记。 */
+    private boolean writeVanillaPhysicalAmount(Item item, int amount) {
+        if (!isLiveItem(item) || amount <= 0) {
+            return false;
+        }
+        ItemStack stack = item.getItemStack();
+        stack.setAmount(amount);
         item.setItemStack(stack);
         item.getPersistentDataContainer().remove(amountKey);
+        restoreDisplay(item);
+        return isLiveItem(item) && physicalAmount(item) == amount && !isManaged(item);
     }
 
     /** 更新或恢复掉落物悬浮名称。 */
@@ -1092,6 +1398,98 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 : item.getPersistentDataContainer().get(trackedOwnerKey, PersistentDataType.STRING);
     }
 
+    /** 返回尚未过期的损坏回收元数据；过期数据会立即从实体移除。 */
+    private RecoveryMetadata recoveryMetadata(Item item) {
+        if (item == null) {
+            return null;
+        }
+        PersistentDataContainer pdc = item.getPersistentDataContainer();
+        String owner = pdc.get(damageRecoveryOwnerKey, PersistentDataType.STRING);
+        Long expiresAt = pdc.get(damageRecoveryUntilKey, PersistentDataType.LONG);
+        if (owner == null || expiresAt == null) {
+            if (owner != null || expiresAt != null) {
+                clearRecoveryMetadata(item);
+            }
+            return null;
+        }
+        if (expiresAt.longValue() <= System.currentTimeMillis() || !isUuid(owner)) {
+            clearRecoveryMetadata(item);
+            return null;
+        }
+        return new RecoveryMetadata(owner, expiresAt.longValue());
+    }
+
+    /** 判断两个掉落物的损坏回收归属和到期时间是否完全一致。 */
+    private boolean sameRecoveryMetadata(Item first, Item second) {
+        RecoveryMetadata firstMetadata = recoveryMetadata(first);
+        RecoveryMetadata secondMetadata = recoveryMetadata(second);
+        return firstMetadata == null ? secondMetadata == null : firstMetadata.equals(secondMetadata);
+    }
+
+    /** 把损坏回收元数据复制到拆分后的新实体。 */
+    private void copyRecoveryMetadata(Item source, Item target) {
+        RecoveryMetadata metadata = recoveryMetadata(source);
+        if (metadata == null) {
+            clearRecoveryMetadata(target);
+            return;
+        }
+        PersistentDataContainer pdc = target.getPersistentDataContainer();
+        pdc.set(damageRecoveryOwnerKey, PersistentDataType.STRING, metadata.owner);
+        pdc.set(damageRecoveryUntilKey, PersistentDataType.LONG, Long.valueOf(metadata.expiresAtMillis));
+    }
+
+    /** 清理实体上的损坏回收元数据。 */
+    private void clearRecoveryMetadata(Item item) {
+        if (item == null) {
+            return;
+        }
+        PersistentDataContainer pdc = item.getPersistentDataContainer();
+        pdc.remove(damageRecoveryOwnerKey);
+        pdc.remove(damageRecoveryUntilKey);
+    }
+
+    /** 校验 PDC 中保存的归属确实是一个 UUID，避免脏数据参与路由。 */
+    private boolean isUuid(String value) {
+        try {
+            UUID.fromString(value);
+            return true;
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
+    }
+
+    /** 表示一个实体当前可用于损坏回收的临时归属。 */
+    private static final class RecoveryMetadata {
+        private final String owner;
+        private final long expiresAtMillis;
+
+        /** 创建损坏回收元数据。 */
+        private RecoveryMetadata(String owner, long expiresAtMillis) {
+            this.owner = owner;
+            this.expiresAtMillis = expiresAtMillis;
+        }
+
+        /** 比较损坏回收元数据。 */
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof RecoveryMetadata)) {
+                return false;
+            }
+            RecoveryMetadata metadata = (RecoveryMetadata) other;
+            return expiresAtMillis == metadata.expiresAtMillis && owner.equals(metadata.owner);
+        }
+
+        /** 返回损坏回收元数据哈希。 */
+        @Override
+        public int hashCode() {
+            int result = owner.hashCode();
+            return 31 * result + (int) (expiresAtMillis ^ (expiresAtMillis >>> 32));
+        }
+    }
+
     /** 判断插件接管悬浮名称前的实体名称和可见状态是否一致。 */
     private boolean sameOriginalDisplay(Item first, Item second) {
         String firstName = originalDisplayName(first);
@@ -1125,7 +1523,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         for (NamespacedKey key : item.getPersistentDataContainer().getKeys()) {
             if (!amountKey.equals(key) && !displayOwnedKey.equals(key)
                     && !originalNameKey.equals(key) && !originalVisibleKey.equals(key)
-                    && !trackedOwnerKey.equals(key)) {
+                    && !trackedOwnerKey.equals(key) && !damageRecoveryOwnerKey.equals(key)
+                    && !damageRecoveryUntilKey.equals(key)) {
                 return true;
             }
         }
@@ -1380,33 +1779,38 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         private final ItemStack sample;
         private final UUID owner;
         private final String trackedOwner;
+        private final RecoveryMetadata recoveryMetadata;
         private final String entityName;
         private final boolean entityNameVisible;
         private final int hash;
 
         /** 创建分组键。 */
         private MergeKey(ItemStack sample, UUID owner, String trackedOwner,
-                         String entityName, boolean entityNameVisible) {
+                         RecoveryMetadata recoveryMetadata, String entityName,
+                         boolean entityNameVisible) {
             this.sample = sample;
             this.owner = owner;
             this.trackedOwner = trackedOwner;
+            this.recoveryMetadata = recoveryMetadata;
             this.entityName = entityName;
             this.entityNameVisible = entityNameVisible;
             int result = 31 * sample.getType().hashCode() + (owner == null ? 0 : owner.hashCode());
             result = 31 * result + (trackedOwner == null ? 0 : trackedOwner.hashCode());
+            result = 31 * result + (recoveryMetadata == null ? 0 : recoveryMetadata.hashCode());
             result = 31 * result + (entityName == null ? 0 : entityName.hashCode());
             this.hash = 31 * result + (entityNameVisible ? 1 : 0);
         }
 
         /** 从有效掉落物创建分组键。 */
         private static MergeKey from(Item item, String trackedOwner,
-                                     String entityName, boolean entityNameVisible) {
+                                     RecoveryMetadata recoveryMetadata, String entityName,
+                                     boolean entityNameVisible) {
             if (item == null || item.getItemStack() == null) {
                 return null;
             }
             ItemStack sample = item.getItemStack().clone();
             sample.setAmount(1);
-            return new MergeKey(sample, item.getOwner(), trackedOwner, entityName,
+            return new MergeKey(sample, item.getOwner(), trackedOwner, recoveryMetadata, entityName,
                     entityNameVisible);
         }
 
@@ -1423,8 +1827,11 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             boolean sameOwner = owner == null ? key.owner == null : owner.equals(key.owner);
             boolean sameTrackedOwner = trackedOwner == null
                     ? key.trackedOwner == null : trackedOwner.equals(key.trackedOwner);
+            boolean sameRecoveryMetadata = recoveryMetadata == null
+                    ? key.recoveryMetadata == null : recoveryMetadata.equals(key.recoveryMetadata);
             boolean sameName = entityName == null ? key.entityName == null : entityName.equals(key.entityName);
-            return sameOwner && sameTrackedOwner && sameName && entityNameVisible == key.entityNameVisible
+            return sameOwner && sameTrackedOwner && sameRecoveryMetadata && sameName
+                    && entityNameVisible == key.entityNameVisible
                     && sample.isSimilar(key.sample);
         }
 

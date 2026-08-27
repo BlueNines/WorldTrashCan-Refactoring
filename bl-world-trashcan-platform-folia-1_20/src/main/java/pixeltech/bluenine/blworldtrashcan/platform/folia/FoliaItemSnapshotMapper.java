@@ -56,6 +56,46 @@ public final class FoliaItemSnapshotMapper implements ItemSnapshotMapper {
         item.getPersistentDataContainer().set(ownerKey, PersistentDataType.STRING, player.getUniqueId().toString());
     }
 
+    /** 给 Folia 现代掉落实体写入带绝对到期时间的损坏回收归属。 */
+    @Override
+    public void markDamageRecoveryOwner(Item item, Player player, long expiresAtMillis) {
+        if (item == null || player == null || expiresAtMillis <= System.currentTimeMillis()) {
+            clearDamageRecoveryOwner(item);
+            return;
+        }
+        item.getPersistentDataContainer().set(damageRecoveryOwnerKey(),
+                PersistentDataType.STRING, player.getUniqueId().toString());
+        item.getPersistentDataContainer().set(damageRecoveryUntilKey(),
+                PersistentDataType.LONG, Long.valueOf(expiresAtMillis));
+    }
+
+    /** 读取 Folia 掉落实体尚未过期的损坏回收归属。 */
+    @Override
+    public UUID findDamageRecoveryOwner(Item item) {
+        if (item == null) {
+            return null;
+        }
+        Long expiresAt = item.getPersistentDataContainer().get(damageRecoveryUntilKey(),
+                PersistentDataType.LONG);
+        String rawOwner = item.getPersistentDataContainer().get(damageRecoveryOwnerKey(),
+                PersistentDataType.STRING);
+        if (expiresAt == null || rawOwner == null || expiresAt.longValue() <= System.currentTimeMillis()) {
+            clearDamageRecoveryOwner(item);
+            return null;
+        }
+        return parseOwnerUuid(rawOwner);
+    }
+
+    /** 清理 Folia 掉落实体的损坏回收归属和到期时间。 */
+    @Override
+    public void clearDamageRecoveryOwner(Item item) {
+        if (item == null) {
+            return;
+        }
+        item.getPersistentDataContainer().remove(damageRecoveryOwnerKey());
+        item.getPersistentDataContainer().remove(damageRecoveryUntilKey());
+    }
+
     /** 清理旧版本写入 ItemStack 的 owner PDC，避免入库后影响物品叠加。 */
     @Override
     public ItemStack sanitizeForStorage(ItemStack itemStack) {
@@ -81,6 +121,16 @@ public final class FoliaItemSnapshotMapper implements ItemSnapshotMapper {
             return null;
         }
         return parseOwnerUuid(item.getPersistentDataContainer().get(ownerKey, PersistentDataType.STRING));
+    }
+
+    /** 返回损坏回收归属键，单独命名以避免与普通个人桶归属混淆。 */
+    private NamespacedKey damageRecoveryOwnerKey() {
+        return new NamespacedKey(ownerKey.getNamespace(), "damage_recovery_owner");
+    }
+
+    /** 返回损坏回收归属到期时间键。 */
+    private NamespacedKey damageRecoveryUntilKey() {
+        return new NamespacedKey(ownerKey.getNamespace(), "damage_recovery_until");
     }
 
     /** 从旧 ItemStack PDC 读取玩家 UUID。 */

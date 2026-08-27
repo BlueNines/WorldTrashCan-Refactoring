@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class DropOwnerTracker {
     private final ServerPlatform platform;
     private final Map<UUID, OwnerEntry> owners = new ConcurrentHashMap<>();
+    private final Map<UUID, OwnerEntry> damageRecoveryOwners = new ConcurrentHashMap<>();
 
     /** 创建掉落物归属追踪器。 */
     public DropOwnerTracker(ServerPlatform platform) {
@@ -37,17 +38,47 @@ public final class DropOwnerTracker {
         }
     }
 
+    /** 记录只用于岩浆、仙人掌等损坏回收的短期归属。 */
+    public void trackDamageRecovery(Item item, Player player, int ttlSeconds) {
+        if (item == null || player == null || ttlSeconds <= 0) {
+            return;
+        }
+        final UUID itemUuid = item.getUniqueId();
+        final long expiresAtMillis = System.currentTimeMillis() + ttlSeconds * 1000L;
+        damageRecoveryOwners.put(itemUuid, new OwnerEntry(player.getUniqueId(), expiresAtMillis));
+        if (platform != null) {
+            platform.scheduler().runLater(new Runnable() {
+                /** 清理已经过期且未被新记录覆盖的损坏回收归属。 */
+                @Override
+                public void run() {
+                    removeIfExpired(damageRecoveryOwners, itemUuid, expiresAtMillis);
+                }
+            }, Math.max(1L, ttlSeconds * 20L));
+        }
+    }
+
     /** 查找掉落实体所属玩家，过期记录会被同步清理。 */
     public UUID findOwner(Item item) {
+        return findOwner(owners, item);
+    }
+
+    /** 查找掉落实体的损坏回收归属，过期记录会被同步清理。 */
+    public UUID findDamageRecoveryOwner(Item item) {
+        return findOwner(damageRecoveryOwners, item);
+    }
+
+    /** 从指定归属表查找掉落实体所属玩家。 */
+    private UUID findOwner(Map<UUID, OwnerEntry> ownerMap, Item item) {
         if (item == null) {
             return null;
         }
-        OwnerEntry entry = owners.get(item.getUniqueId());
+        UUID itemUuid = item.getUniqueId();
+        OwnerEntry entry = ownerMap.get(itemUuid);
         if (entry == null) {
             return null;
         }
         if (entry.isExpired()) {
-            owners.remove(item.getUniqueId(), entry);
+            ownerMap.remove(itemUuid, entry);
             return null;
         }
         return entry.ownerUuid;
@@ -59,6 +90,7 @@ public final class DropOwnerTracker {
             return null;
         }
         OwnerEntry entry = owners.remove(item.getUniqueId());
+        damageRecoveryOwners.remove(item.getUniqueId());
         if (entry == null || entry.isExpired()) {
             return null;
         }
@@ -68,13 +100,19 @@ public final class DropOwnerTracker {
     /** 清空全部短期归属记录。 */
     public void clear() {
         owners.clear();
+        damageRecoveryOwners.clear();
     }
 
     /** 仅当记录仍是同一过期时间时移除，避免误删新记录。 */
     private void removeIfExpired(UUID itemUuid, long expiresAtMillis) {
-        OwnerEntry entry = owners.get(itemUuid);
+        removeIfExpired(owners, itemUuid, expiresAtMillis);
+    }
+
+    /** 仅当指定归属表中的记录仍是同一过期时间时移除。 */
+    private void removeIfExpired(Map<UUID, OwnerEntry> ownerMap, UUID itemUuid, long expiresAtMillis) {
+        OwnerEntry entry = ownerMap.get(itemUuid);
         if (entry != null && entry.expiresAtMillis == expiresAtMillis && entry.isExpired()) {
-            owners.remove(itemUuid, entry);
+            ownerMap.remove(itemUuid, entry);
         }
     }
 

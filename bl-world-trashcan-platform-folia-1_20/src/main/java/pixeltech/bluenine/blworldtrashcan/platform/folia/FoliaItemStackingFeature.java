@@ -68,6 +68,19 @@ public final class FoliaItemStackingFeature extends AbstractModernItemStackingFe
         }
     }
 
+    /** 在掉落实体所属 Folia region 的下一 tick 执行非玩家拾取收尾。 */
+    @Override
+    protected boolean schedulePickupReconciliation(final org.bukkit.entity.Item item, final Runnable runnable,
+                                                   final Runnable retired) {
+        try {
+            return item.getScheduler().execute(plugin(), runnable, retired, 1L);
+        } catch (RuntimeException error) {
+            plugin().getLogger().warning("[ItemStacking] Folia 拾取收尾任务提交失败: "
+                    + error.getClass().getSimpleName() + ": " + error.getMessage());
+            return false;
+        }
+    }
+
     /** 只允许读取当前 Folia region 实际拥有的相邻区块。 */
     @Override
     protected boolean canReadChunk(World world, int chunkX, int chunkZ) {
