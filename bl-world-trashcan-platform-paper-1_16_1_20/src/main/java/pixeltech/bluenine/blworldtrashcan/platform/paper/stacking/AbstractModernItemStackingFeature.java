@@ -27,6 +27,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemStackingFeature;
 import pixeltech.bluenine.blworldtrashcan.config.ItemStackingConfig;
@@ -97,6 +98,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     private volatile ItemStackingConfig config;
     private volatile ItemStackingMaterialPolicy materialPolicy;
     private volatile ItemStackingItemNameResolver itemNameResolver;
+    private DebugOutput debugOutput = DebugOutput.disabled();
     private volatile boolean activeState;
     private volatile boolean enabled;
     private final ItemStackingLifecycle lifecycle;
@@ -175,6 +177,11 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         stopProcessor();
         dirtyChunks.clear();
         saveStateNow();
+    }
+
+    /** 更新逻辑堆叠模块的调试输出开关。 */
+    public final void setDebugOutput(DebugOutput debugOutput) {
+        this.debugOutput = debugOutput == null ? DebugOutput.disabled() : debugOutput;
     }
 
     /** 返回当前数量服务。 */
@@ -1201,7 +1208,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 return true;
             } catch (ReflectiveOperationException | RuntimeException exception) {
                 if (hasExternalEntityData(source)) {
-                    plugin.getLogger().fine("[ItemStacking] 当前端无法复制外部实体 PDC，已放弃拆分: "
+                    debugOutput.trace(() -> "[ItemStacking] 当前端无法复制外部实体 PDC，已放弃拆分: "
                             + exception.getClass().getSimpleName());
                     return false;
                 }
@@ -1376,7 +1383,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         try {
             player.playSound(player.getLocation(), "entity.item.pickup", 0.2F, 1.8F);
         } catch (RuntimeException ignored) {
-            plugin.getLogger().fine("[ItemStacking] 当前端无法播放逻辑拾取音效: " + item.getUniqueId());
+            debugOutput.trace(() -> "[ItemStacking] 当前端无法播放逻辑拾取音效: " + item.getUniqueId());
         }
     }
 

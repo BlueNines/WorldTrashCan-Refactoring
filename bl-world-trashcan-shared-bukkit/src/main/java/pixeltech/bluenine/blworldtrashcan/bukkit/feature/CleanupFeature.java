@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
@@ -68,6 +69,7 @@ public final class CleanupFeature implements Feature {
     private final DropOwnerTracker dropOwnerTracker;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final ItemRuleEvaluator itemRuleEvaluator;
+    private DebugOutput debugOutput = DebugOutput.disabled();
     private volatile ItemQuantityService itemQuantityService;
     private TaskHandle taskHandle;
     private TaskHandle bossBarRemoveTask;
@@ -228,7 +230,7 @@ public final class CleanupFeature implements Feature {
         if (count == 0 || count == -4) {
             logConsoleCleanupDetails(lastStats, count == -4);
         }
-        plugin.getLogger().info("[Debug] debugNotify count=" + count);
+        debugOutput.debug(() -> "[Debug] debugNotify count=" + count);
         return true;
     }
 
@@ -275,6 +277,11 @@ public final class CleanupFeature implements Feature {
     /** 在可选堆叠功能动态启用后更新数量来源。 */
     public void setItemQuantityService(ItemQuantityService itemQuantityService) {
         this.itemQuantityService = itemQuantityService;
+    }
+
+    /** 更新清理模块的调试输出开关。 */
+    public void setDebugOutput(DebugOutput debugOutput) {
+        this.debugOutput = debugOutput == null ? DebugOutput.disabled() : debugOutput;
     }
 
     /** 输出世界过滤、旧物品保护路径和数据读取能力告警。 */

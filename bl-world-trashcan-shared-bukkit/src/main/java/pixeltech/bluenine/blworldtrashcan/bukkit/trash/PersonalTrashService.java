@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProviderSelector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
@@ -42,6 +43,7 @@ public final class PersonalTrashService {
     private final TrashContainerMenu containerMenu;
     private final Map<UUID, TrashContainerStore> stores = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastTakeMillis = new ConcurrentHashMap<>();
+    private DebugOutput debugOutput = DebugOutput.disabled();
     private volatile ItemDisplayNameResolver itemDisplayNameResolver =
             SimpleItemDisplayNameResolver.getInstance();
     private TrashConfig.PersonalTrashConfig config;
@@ -95,14 +97,27 @@ public final class PersonalTrashService {
                                 DefaultWorldListTrashCanAuditBridge auditBridge,
                                 ItemIdentityProvider identityProvider,
                                 CustomModelDataSupport customModelDataSupport) {
+        this(plugin, config, paymentService, messages, itemSnapshotMapper, platform, auditBridge,
+                identityProvider, customModelDataSupport, DebugOutput.disabled());
+    }
+
+    /** 创建具备完整菜单外观和调试输出能力的个人垃圾桶服务。 */
+    public PersonalTrashService(Plugin plugin, TrashConfig.PersonalTrashConfig config,
+                                PaymentService paymentService, BukkitMessageService messages,
+                                ItemSnapshotMapper itemSnapshotMapper, ServerPlatform platform,
+                                DefaultWorldListTrashCanAuditBridge auditBridge,
+                                ItemIdentityProvider identityProvider,
+                                CustomModelDataSupport customModelDataSupport,
+                                DebugOutput debugOutput) {
         this.plugin = plugin;
         this.paymentService = paymentService == null ? new NoPaymentService() : paymentService;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
         this.platform = platform;
         this.auditBridge = auditBridge;
+        this.debugOutput = debugOutput == null ? DebugOutput.disabled() : debugOutput;
         this.identityProvider = identityProvider == null
-                ? new ItemIdentityProviderSelector().select(plugin) : identityProvider;
+                ? new ItemIdentityProviderSelector().select(plugin, this.debugOutput) : identityProvider;
         this.containerMenu = new TrashContainerMenu(plugin, platform, itemSnapshotMapper,
                 customModelDataSupport, new PersonalMenuPolicy());
         reload(config);
@@ -128,6 +143,11 @@ public final class PersonalTrashService {
     public void setItemDisplayNameResolver(ItemDisplayNameResolver resolver) {
         this.itemDisplayNameResolver = resolver == null
                 ? SimpleItemDisplayNameResolver.getInstance() : resolver;
+    }
+
+    /** 更新个人垃圾桶的调试输出开关。 */
+    public void setDebugOutput(DebugOutput debugOutput) {
+        this.debugOutput = debugOutput == null ? DebugOutput.disabled() : debugOutput;
     }
 
     /** 判断个人垃圾桶是否启用。 */
@@ -327,7 +347,7 @@ public final class PersonalTrashService {
         created.configure(config, containerMenu.getContentSlotsPerPage());
         TrashContainerStore raced = stores.putIfAbsent(ownerUuid, created);
         if (raced == null) {
-            plugin.getLogger().fine("[PersonalTrash] 创建个人垃圾桶状态: " + ownerUuid);
+            debugOutput.trace(() -> "[PersonalTrash] 创建个人垃圾桶状态: " + ownerUuid);
             return created;
         }
         return raced;

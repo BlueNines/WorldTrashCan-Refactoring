@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAuditBridge;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProvider;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemIdentityProviderSelector;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
@@ -85,11 +86,23 @@ public final class GlobalTrashService {
                               ServerPlatform platform,
                               DefaultWorldListTrashCanAuditBridge auditBridge,
                               CustomModelDataSupport customModelDataSupport) {
+        this(plugin, config, messages, itemSnapshotMapper, platform, auditBridge,
+                customModelDataSupport, DebugOutput.disabled());
+    }
+
+    /** 创建具备完整平台外观和调试输出能力的公共垃圾桶服务。 */
+    public GlobalTrashService(Plugin plugin, TrashConfig.GlobalTrashConfig config,
+                              BukkitMessageService messages, ItemSnapshotMapper itemSnapshotMapper,
+                              ServerPlatform platform,
+                              DefaultWorldListTrashCanAuditBridge auditBridge,
+                              CustomModelDataSupport customModelDataSupport,
+                              DebugOutput debugOutput) {
+        DebugOutput output = debugOutput == null ? DebugOutput.disabled() : debugOutput;
         this.plugin = plugin;
         this.messages = messages;
         this.itemSnapshotMapper = itemSnapshotMapper;
         this.auditBridge = auditBridge;
-        ItemIdentityProvider identityProvider = new ItemIdentityProviderSelector().select(plugin);
+        ItemIdentityProvider identityProvider = new ItemIdentityProviderSelector().select(plugin, output);
         this.store = new GlobalTrashStore(identityProvider);
         CustomModelDataSupport modelDataSupport = customModelDataSupport == null
                 ? CustomModelDataSupport.unsupported(plugin.getLogger()) : customModelDataSupport;

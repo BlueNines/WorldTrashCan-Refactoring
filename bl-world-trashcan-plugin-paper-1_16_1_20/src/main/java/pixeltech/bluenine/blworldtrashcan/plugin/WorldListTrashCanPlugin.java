@@ -24,6 +24,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.ProtectionFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.TrashFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitRgbDebugSender;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemDisplayNameResolver;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.SimpleItemDisplayNameResolver;
@@ -60,6 +61,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
     private WorldListTrashCanApiHost apiHost;
     private ServerPlatform platform;
     private ConfigBundle configBundle;
+    private DebugOutput debugOutput;
     private CleanupFeature cleanupFeature;
     private TrashFeature trashFeature;
     private ProtectionFeature protectionFeature;
@@ -79,6 +81,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
     /** 启动插件并注册当前产物的平台能力。 */
     @Override
     public void onEnable() {
+        this.debugOutput = new DebugOutput(getLogger());
         BukkitLegacyConfigMigrator configMigrator = new BukkitLegacyConfigMigrator(this);
         configMigrator.migrateIfNeeded();
         saveDefaultConfigs();
@@ -89,6 +92,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         getLogger().info("Capability custom-model-data: "
                 + (customModelDataSupport.isSupported() ? "enabled (model-id parsed)" : "disabled (model-id skipped)"));
         this.configBundle = loadConfigBundle();
+        this.debugOutput.setEnabled(configBundle.isDebug());
         this.messageService = new BukkitMessageService(this);
         this.messageService.reload(configBundle.getLanguageFile());
         this.platform = new PaperPlatform(this);
@@ -106,10 +110,11 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         this.itemStackingFeature = createItemStackingFeature();
         PaymentService paymentService = VaultPaymentService.create(this);
         this.globalTrashService = new GlobalTrashService(this, configBundle.getTrashConfig().getGlobalTrash(),
-                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport);
+                messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(), customModelDataSupport,
+                debugOutput);
         this.personalTrashService = new PersonalTrashService(this, configBundle.getTrashConfig().getPersonalTrash(),
                 paymentService, messageService, platform.itemSnapshotMapper(), platform, apiHost.auditBridge(),
-                globalTrashService.getIdentityProvider(), customModelDataSupport);
+                globalTrashService.getIdentityProvider(), customModelDataSupport, debugOutput);
         this.personalTrashService.setItemDisplayNameResolver(currentItemDisplayNames());
         this.dropOwnerTracker = new DropOwnerTracker(platform);
         this.trashRouter = new WorldTrashRouter(
@@ -126,6 +131,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         this.cleanupFeature = new CleanupFeature(this, platform, configSupplier, trashRouter, globalTrashService,
                 personalTrashService, dropOwnerTracker, apiHost.auditBridge(),
                 itemStackingFeature == null ? null : itemStackingFeature.quantities());
+        this.cleanupFeature.setDebugOutput(debugOutput);
         this.protectionFeature = new ProtectionFeature(this, platform, configSupplier, messageService);
         this.banGuiFeature = new BanGuiFeature(this, configSupplier, trashRouter, messageService, new Runnable() {
             /** 刷新公共黑名单等运行期配置。 */
@@ -140,6 +146,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         featureRegistry.register(protectionFeature);
         featureRegistry.register(banGuiFeature);
         this.entityLimitFeature = new EntityLimitFeature(this, configSupplier, messageService);
+        this.entityLimitFeature.setDebugOutput(debugOutput);
         featureRegistry.register(entityLimitFeature);
         registerCommands();
         registerPlaceholderApi();
@@ -170,6 +177,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         new BukkitCurrentConfigUpdater(this).updateIfEnabled();
         reloadConfig();
         this.configBundle = loadConfigBundle();
+        this.debugOutput.setEnabled(configBundle.isDebug());
         if (messageService != null) {
             messageService.reload(configBundle.getLanguageFile());
         }
@@ -287,13 +295,15 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
             return null;
         }
         itemStackingUnavailableReason = "";
-        return new PaperItemStackingFeature(this, new Supplier<ItemStackingConfig>() {
+        PaperItemStackingFeature feature = new PaperItemStackingFeature(this, new Supplier<ItemStackingConfig>() {
             /** 每次重载返回统一配置文件的最新不可变快照。 */
             @Override
             public ItemStackingConfig get() {
                 return configBundle.getItemStackingConfig();
             }
         });
+        feature.setDebugOutput(debugOutput);
+        return feature;
     }
 
     /** 返回当前堆叠解析器；关闭态只加载总配置中的语言资源。 */
@@ -379,7 +389,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
         getLogger().info("Platform: " + platform.id());
         for (Capability capability : Capability.values()) {
             String state = platform.capabilities().has(capability) ? "enabled" : "disabled";
-            getLogger().info("Capability " + capability.name().toLowerCase().replace('_', '-') + ": " + state);
+            debugOutput.debug(() -> "Capability " + capability.name().toLowerCase().replace('_', '-') + ": " + state);
         }
     }
 
@@ -395,12 +405,13 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
 
     /** 测试用：向玩家发送所有 RGB 可见通道。 */
     public void debugRgb(Player player) {
-        BukkitRgbDebugSender.send(this, player);
+        BukkitRgbDebugSender.send(debugOutput, this, player);
     }
 
     /** 测试用：只向玩家发送聊天、ActionBar 和 Title RGB 可见通道。 */
     public void debugRgbChannels(Player player) {
         BukkitRgbDebugSender.sendChatActionTitle(player);
+        debugOutput.debug(() -> "[DebugRGB] channels player=" + player.getName());
     }
 
     /** 切换玩家防丢弃模式。 */
@@ -480,7 +491,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
             block.setType(Material.CHEST);
         }
         boolean saved = trashRouter.addWorldTrash(block, configBundle.getTrashConfig().getWorldTrash().getDefaultMaxCount());
-        getLogger().info("[Debug] debugWorldTrash player=" + player.getName()
+            debugOutput.debug(() -> "[Debug] debugWorldTrash player=" + player.getName()
                 + ", world=" + block.getWorld().getName()
                 + ", x=" + block.getX()
                 + ", y=" + block.getY()
@@ -493,7 +504,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
     public boolean debugRoute(Player player, TrashRoute route, Material material, int amount) {
         ItemStack itemStack = new ItemStack(material, amount);
         boolean routed = trashRouter.route(player.getWorld(), player.getUniqueId(), itemStack, route);
-        getLogger().info("[Debug] debugRoute player=" + player.getName()
+            debugOutput.debug(() -> "[Debug] debugRoute player=" + player.getName()
                 + ", route=" + route
                 + ", material=" + material.name()
                 + ", amount=" + amount
@@ -510,7 +521,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
             platform.itemSnapshotMapper().markOwner(item, player);
             trashFeature.trackDebugDrop(item, player);
         }
-        getLogger().info("[Debug] debugDrop player=" + player.getName()
+            debugOutput.debug(() -> "[Debug] debugDrop player=" + player.getName()
                 + ", material=" + material.name()
                 + ", amount=" + amount
                 + ", markOwner=" + markOwner);
@@ -520,7 +531,7 @@ public final class WorldListTrashCanPlugin extends JavaPlugin {
     /** 测试用：通过正式损坏事件验证玩家掉落物短期回收。 */
     public boolean debugDamageRecovery(Player player, Material material, int amount) {
         boolean recovered = trashFeature.debugDamageRecovery(player, material, amount);
-        getLogger().info("[Debug] debugDamageRecovery player=" + player.getName()
+            debugOutput.debug(() -> "[Debug] debugDamageRecovery player=" + player.getName()
                 + ", material=" + material.name()
                 + ", amount=" + amount
                 + ", recovered=" + recovered);

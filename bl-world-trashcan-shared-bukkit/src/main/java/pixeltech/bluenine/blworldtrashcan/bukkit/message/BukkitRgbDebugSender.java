@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 
 import java.util.Arrays;
 
@@ -31,11 +32,17 @@ public final class BukkitRgbDebugSender {
 
     /** 向目标玩家发送所有 RGB 可见通道。 */
     public static void send(Plugin plugin, Player player) {
+        send(DebugOutput.disabled(), plugin, player);
+    }
+
+    /** 向目标玩家发送所有 RGB 通道，并把调试记录交给统一输出器。 */
+    public static void send(DebugOutput debugOutput, Plugin plugin, Player player) {
         if (plugin == null || player == null) {
             return;
         }
+        DebugOutput output = debugOutput == null ? DebugOutput.disabled() : debugOutput;
         sendChatActionTitle(player);
-        sendBossBar(plugin, player);
+        sendBossBar(output, plugin, player);
         openInventory(player);
     }
 
@@ -50,7 +57,7 @@ public final class BukkitRgbDebugSender {
     }
 
     /** 发送带 RGB 标题的 BossBar，并在短延迟后移除。 */
-    private static void sendBossBar(Plugin plugin, Player player) {
+    private static void sendBossBar(DebugOutput debugOutput, Plugin plugin, Player player) {
         BossBar bossBar = Bukkit.createBossBar(RichTextRenderer.color(player, BOSS_BAR_MESSAGE), BarColor.PURPLE, BarStyle.SOLID);
         bossBar.setProgress(1.0D);
         bossBar.addPlayer(player);
@@ -63,9 +70,9 @@ public final class BukkitRgbDebugSender {
                 }
             }, 100L);
         } catch (RuntimeException error) {
-            plugin.getLogger().info("[DebugRGB] 当前平台不支持 Bukkit scheduler 延迟移除 BossBar，本轮调试 BossBar 将保留到玩家退出或插件重载。");
+            debugOutput.debug(() -> "[DebugRGB] 当前平台不支持 Bukkit scheduler 延迟移除 BossBar，本轮调试 BossBar 将保留到玩家退出或插件重载。");
         } catch (LinkageError error) {
-            plugin.getLogger().info("[DebugRGB] 当前平台不支持 Bukkit scheduler 延迟移除 BossBar，本轮调试 BossBar 将保留到玩家退出或插件重载。");
+            debugOutput.debug(() -> "[DebugRGB] 当前平台不支持 Bukkit scheduler 延迟移除 BossBar，本轮调试 BossBar 将保留到玩家退出或插件重载。");
         }
     }
 

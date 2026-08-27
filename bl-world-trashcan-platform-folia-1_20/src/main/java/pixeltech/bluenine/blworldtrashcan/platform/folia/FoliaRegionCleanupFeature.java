@@ -33,6 +33,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupFeature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.CleanupItemProtection;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
@@ -88,6 +89,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
     private final DropOwnerTracker dropOwnerTracker;
     private final DefaultWorldListTrashCanAuditBridge auditBridge;
     private final ItemRuleEvaluator itemRuleEvaluator;
+    private DebugOutput debugOutput = DebugOutput.disabled();
     private volatile ItemQuantityService itemQuantityService;
     private final AtomicBoolean cleanupRunning = new AtomicBoolean(false);
     private final Set<UUID> pendingWorldTrashItems = ConcurrentHashMap.newKeySet();
@@ -276,6 +278,11 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
         this.itemQuantityService = itemQuantityService;
     }
 
+    /** 更新 Folia 清理模块的调试输出开关。 */
+    public void setDebugOutput(DebugOutput debugOutput) {
+        this.debugOutput = debugOutput == null ? DebugOutput.disabled() : debugOutput;
+    }
+
     /** 测试用：在 Folia 全局区域按正式通知配置触发指定编号的清理通知。 */
     public boolean debugNotify(final int count) {
         try {
@@ -287,7 +294,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                     if (count == 0 || count == -4) {
                         logConsoleCleanupDetails(lastStats, count == -4);
                     }
-                    plugin.getLogger().info("[Debug] debugNotify count=" + count);
+                    debugOutput.debug(() -> "[Debug] debugNotify count=" + count);
                 }
             });
             return true;
@@ -550,7 +557,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
     private void finishGuardCountOnGlobalRegion(GuardCountTracker tracker, boolean timedOut) {
         CleanupFeature.CleanupStats stats = tracker.stats;
         stats.setGuardTargetEntities(tracker.targetEntities.get());
-        plugin.getLogger().info("[FoliaCleanup] guardScan="
+        debugOutput.debug(() -> "[FoliaCleanup] guardScan="
                 + "chunksScheduled=" + tracker.chunksScheduled.get()
                 + ", chunksDone=" + tracker.chunksDone.get()
                 + ", entitiesChecked=" + tracker.entitiesChecked.get()

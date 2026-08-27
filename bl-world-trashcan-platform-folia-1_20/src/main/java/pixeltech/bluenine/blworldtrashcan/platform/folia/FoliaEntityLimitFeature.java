@@ -20,6 +20,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.Feature;
 import pixeltech.bluenine.blworldtrashcan.bukkit.feature.entitylimit.LowOverheadEntityLimitEngine;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
+import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.config.ConfigBundle;
 import pixeltech.bluenine.blworldtrashcan.config.EntityLimitConfig;
 
@@ -46,6 +47,7 @@ public final class FoliaEntityLimitFeature implements Feature, Listener {
     private final Supplier<ConfigBundle> configSupplier;
     private final BukkitMessageService messages;
     private final LowOverheadEntityLimitEngine engine = new LowOverheadEntityLimitEngine();
+    private DebugOutput debugOutput = DebugOutput.disabled();
     private final Map<DensityNoticeKey, DensityRemovalNotice> pendingDensityNotices = new HashMap<>();
     private ExecutorService worker;
     private ScheduledTask scanTask;
@@ -82,6 +84,11 @@ public final class FoliaEntityLimitFeature implements Feature, Listener {
     @Override
     public void reload() {
         restartTasks();
+    }
+
+    /** 更新 Folia 实体限制模块的调试输出开关。 */
+    public void setDebugOutput(DebugOutput debugOutput) {
+        this.debugOutput = debugOutput == null ? DebugOutput.disabled() : debugOutput;
     }
 
     /** 释放监听器、任务和索引。 */
@@ -185,7 +192,7 @@ public final class FoliaEntityLimitFeature implements Feature, Listener {
                 flushDensityNotices();
             }
         }, NOTICE_FLUSH_INTERVAL_TICKS, NOTICE_FLUSH_INTERVAL_TICKS);
-        if (scanConfig.getLogSummarySeconds() > 0) {
+        if (debugOutput.isEnabled() && scanConfig.getLogSummarySeconds() > 0) {
             long period = scanConfig.getLogSummarySeconds() * 20L;
             summaryTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, new Consumer<ScheduledTask>() {
                 /** 周期性输出低占用扫描摘要。 */
@@ -576,9 +583,16 @@ public final class FoliaEntityLimitFeature implements Feature, Listener {
 
     /** 周期性输出扫描摘要到后台日志。 */
     private void logSummary() {
-        for (String line : debugStats()) {
-            plugin.getLogger().info(ChatColor.stripColor(line));
-        }
+        debugOutput.debug(() -> {
+            StringBuilder result = new StringBuilder();
+            for (String line : debugStats()) {
+                if (result.length() > 0) {
+                    result.append('\n');
+                }
+                result.append(ChatColor.stripColor(line));
+            }
+            return result.toString();
+        });
     }
 
     /** 返回实体密度扫描调试统计。 */
