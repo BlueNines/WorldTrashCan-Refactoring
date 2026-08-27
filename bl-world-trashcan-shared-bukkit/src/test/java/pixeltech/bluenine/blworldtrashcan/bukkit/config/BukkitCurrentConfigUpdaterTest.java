@@ -147,7 +147,7 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertEquals("next-page", yaml.getString("personal-trash.gui.layout.items.c.type"));
         assertTrue(updated.contains("7.4.1 公共桶准入白名单填写示例"));
         assertTrue(updated.contains("7.4.1 个人桶 actions/close 最小示例"));
-        assertTrue(updated.contains("7.5.1 个人桶通知双按钮示例"));
+        assertTrue(updated.contains("7.5.2 个人桶通知双按钮示例"));
         assertEquals("/wtc personal", yaml.getString("personal-trash.notify.personal-click-command"));
         assertEquals("/wtc global", yaml.getString("personal-trash.notify.global-click-command"));
         assertEquals(original, read(singleBackup()));
@@ -174,7 +174,7 @@ public final class BukkitCurrentConfigUpdaterTest {
         assertEquals("/custom-personal", yaml.getString("personal-trash.notify.click-command"));
         assertEquals("/wtc global", yaml.getString("personal-trash.notify.global-click-command"));
         assertFalse(yaml.contains("personal-trash.notify.personal-click-command"));
-        assertTrue(read(file).contains("7.5.1 个人桶通知双按钮示例"));
+        assertTrue(read(file).contains("7.5.2 个人桶通知双按钮示例"));
     }
 
     /** 验证非法 YAML 在创建备份和覆盖原文件之前终止。 */

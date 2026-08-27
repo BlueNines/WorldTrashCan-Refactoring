@@ -48,7 +48,7 @@ public final class BukkitCurrentConfigUpdater {
     private static final String PERSONAL_BUTTON_EXAMPLE_MARKER =
             "[WorldListTrashCan] 7.4.1 个人桶 actions/close 最小示例";
     private static final String PERSONAL_NOTIFY_EXAMPLE_MARKER =
-            "[WorldListTrashCan] 7.5.1 个人桶通知双按钮示例";
+            "[WorldListTrashCan] 7.5.2 个人桶通知双按钮示例";
     private static final String PERSONAL_NOTIFY_LEGACY_CLICK_COMMAND_PATH =
             "personal-trash.notify.click-command";
     private static final String PERSONAL_NOTIFY_PERSONAL_CLICK_COMMAND_PATH =

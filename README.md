@@ -175,7 +175,7 @@ items:
 - 玩家掉落标记放在掉落实体上，不写入物品本身，避免影响物品正常堆叠。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.1`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.2`。
 
 ### 性能优化估算
 
@@ -319,7 +319,7 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.5.1`
+- 版本：`7.5.2`
 - 文件：`WorldListTrashCan-universal.jar`
 - 文件大小：`962602` 字节
 - SHA-256：`21E944CC1785315030E3EC59EAAEDF82D5CD655DED9FE717F663A61AC3A5D825`
@@ -503,7 +503,7 @@ The switch and all detailed settings live in `item-stacking.yml`. The former `co
 - Unloaded chunks are not force-loaded by default for world trash cans, preventing sudden cleanup lag spikes.
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.1`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.2`.
 
 ### Estimated performance improvements
 
@@ -647,7 +647,7 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.5.1`
+- Version: `7.5.2`
 - File: `WorldListTrashCan-universal.jar`
 - File size: `962602` bytes
 - SHA-256: `21E944CC1785315030E3EC59EAAEDF82D5CD655DED9FE717F663A61AC3A5D825`
