@@ -405,8 +405,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             if (actual <= physical) {
                 return;
             }
-            // 原版实体只能理解物理 ItemStack；先交出一组合法数量，剩余数量继续由逻辑实体保存。
-                PickupPreparation preparation = prepareVanillaPickup(item, actual, physical,
+            // 原版实体只能理解物理 ItemStack；事务期间只暴露合法物理数量，收尾时再写回逻辑数量。
+            PickupPreparation preparation = prepareVanillaPickup(item, actual, physical,
                     event);
             if (preparation == null) {
                 event.setCancelled(true);
@@ -419,7 +419,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 }
                 pendingPickups.put(sourceId, preparation);
                 pendingPickupEntities.add(sourceId);
-                pendingPickupEntities.add(preparation.remainder.getUniqueId());
+                addPendingPickupEntity(preparation.remainder);
                 if (!schedulePickupReconciliation(item, new Runnable() {
                     /** 在原版拾取完成后的合法线程收尾事务。 */
                     @Override
@@ -435,7 +435,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 })) {
                     pendingPickups.remove(sourceId, preparation);
                     pendingPickupEntities.remove(sourceId);
-                    pendingPickupEntities.remove(preparation.remainder.getUniqueId());
+                    removePendingPickupEntity(preparation.remainder);
                     event.setCancelled(true);
                     rollbackVanillaPickup(preparation);
                 }
@@ -1037,7 +1037,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         return null;
     }
 
-    /** 为非玩家实体准备一组原版物理物品，并保留剩余逻辑数量。 */
+    /** 为非玩家实体准备原版可识别的物理数量，并按事件结果保留逻辑余量。 */
     private PickupPreparation prepareVanillaPickup(Item item, int actualAmount, int physicalAmount,
                                                    EntityPickupItemEvent event) {
         int expectedRemaining = event == null ? -1 : event.getRemaining();
@@ -1045,19 +1045,29 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 || expectedRemaining < 0 || expectedRemaining > physicalAmount) {
             return null;
         }
-        int remainingAmount = actualAmount - physicalAmount;
-        Item remainder = spawnPolicySplit(item, remainingAmount);
-        if (remainder == null) {
-            return null;
+        Item remainder = null;
+        if (expectedRemaining == 0) {
+            int logicalRemainder = actualAmount - physicalAmount;
+            if (logicalRemainder <= 0) {
+                return null;
+            }
+            remainder = spawnPolicySplit(item, logicalRemainder);
+            if (remainder == null) {
+                return null;
+            }
         }
         writePhysicalAmount(item, physicalAmount);
         restoreDisplay(item);
         if (usable(item) && physicalAmount(item) == physicalAmount
                 && getAmount(item) == physicalAmount && !isManaged(item)) {
+            int predictedLogicalRemaining = actualAmount + expectedRemaining - physicalAmount;
+            if (remainder == null && predictedLogicalRemaining > 0) {
+                updateDisplay(item, predictedLogicalRemaining);
+            }
             return new PickupPreparation(item, remainder, actualAmount, physicalAmount,
                     expectedRemaining, event);
         }
-        if (remainder.isValid()) {
+        if (remainder != null && remainder.isValid()) {
             remainder.remove();
         }
         if (usable(item)) {
@@ -1075,8 +1085,15 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消时源实体已失效，已将原逻辑数量转移到剩余实体: "
                         + remainder.getUniqueId());
             } else {
-                plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消但源实体和剩余实体均无法恢复: "
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消但源实体无法恢复，原版事件可能已移除物品: "
                         + (source == null ? "null" : source.getUniqueId()));
+            }
+            return;
+        }
+        if (remainder == null) {
+            if (!restoreLogicalAmount(source, preparation.originalAmount)) {
+                plugin.getLogger().warning("[ItemStacking] 非玩家拾取被取消但无法恢复原逻辑数量: "
+                        + source.getUniqueId());
             }
             return;
         }
@@ -1114,24 +1131,53 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             }
             Item source = preparation.source;
             if (!isLiveItem(source)) {
-                // 源实体已被原版成功移除，拆分实体已经保存未拾取的逻辑余量。
+                // 源实体只有在事件剩余为零时才会被原版移除，此时余量实体保存逻辑数量。
+                if (preparation.remainder == null) {
+                    plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾发现源实体意外失效，无法确认逻辑余量: "
+                            + source.getUniqueId());
+                }
                 return;
             }
             int observedPhysical = physicalAmount(source);
-            if (observedPhysical > preparation.physicalAmount) {
-                // 外部逻辑在事务窗口内增加了物理数量时不覆盖它，避免把并发变更误算成拾取结果。
-                plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾发现物理数量异常增加，已保留当前实体状态: "
-                        + source.getUniqueId() + ", prepared=" + preparation.physicalAmount
-                        + ", actual=" + observedPhysical);
+            if (preparation.remainder != null) {
+                // 余量实体已经保存了原逻辑余量；源实体若暂时仍有效，只能保留当前物理数量，不能再次写入逻辑标记。
+                // 否则原版延迟移除源实体时会同时留下“源逻辑数量 + 余量实体”的重复数量。
+                if (observedPhysical <= 0) {
+                    StackingChunkKey previousChunk = chunkKey(source);
+                    source.remove();
+                    if (!source.isValid()) {
+                        enqueue(previousChunk, 0L);
+                    }
+                } else {
+                    writePhysicalAmount(source, observedPhysical);
+                    restoreDisplay(source);
+                }
                 return;
             }
-            int remaining = observedPhysical;
+            if (observedPhysical < 0 || observedPhysical > preparation.physicalAmount) {
+                // 物理数量上升代表事务窗口有外部变更；按净变化计算，避免吞掉外部增加的物品。
+                int logicalRemaining = preparation.originalAmount
+                        + observedPhysical - preparation.physicalAmount;
+                if (logicalRemaining > 0 && writeLogicalPickupResult(source, logicalRemaining)) {
+                    plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾发现物理数量异常变化，已按净变化保留数量: "
+                            + source.getUniqueId() + ", prepared=" + preparation.physicalAmount
+                            + ", actual=" + observedPhysical + ", logical=" + logicalRemaining);
+                } else {
+                    plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾发现非法物理数量，无法安全对账: "
+                            + source.getUniqueId() + ", prepared=" + preparation.physicalAmount
+                            + ", actual=" + observedPhysical);
+                }
+                return;
+            }
+            int vanillaRemaining = observedPhysical;
             if (observedPhysical == preparation.physicalAmount
                     && preparation.expectedRemaining < observedPhysical) {
-                // 某些 Paper/实现的事件收尾可能暂时没有反映到 Bukkit 包装层，使用事件结果兜底校正。
-                remaining = preparation.expectedRemaining;
+                // 某些实现的事件收尾可能暂时没有反映到 Bukkit 包装层，使用事件结果兜底校正。
+                vanillaRemaining = preparation.expectedRemaining;
             }
-            if (remaining <= 0) {
+            int logicalRemaining = preparation.originalAmount + vanillaRemaining
+                    - preparation.physicalAmount;
+            if (logicalRemaining <= 0) {
                 StackingChunkKey previousChunk = chunkKey(source);
                 source.remove();
                 if (source.isValid()) {
@@ -1142,9 +1188,9 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
                 }
                 return;
             }
-            if (!writeVanillaPhysicalAmount(source, remaining)) {
+            if (!writeLogicalPickupResult(source, logicalRemaining)) {
                 plugin.getLogger().warning("[ItemStacking] 非玩家拾取收尾无法校正源实体物理数量: "
-                        + source.getUniqueId() + ", expected=" + remaining
+                        + source.getUniqueId() + ", expectedLogical=" + logicalRemaining
                         + ", actual=" + physicalAmount(source));
             }
         } finally {
@@ -1168,7 +1214,21 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     /** 释放源实体和拆分实体的拾取事务保护。 */
     private void releasePickupProtection(PickupPreparation preparation) {
         pendingPickupEntities.remove(preparation.source.getUniqueId());
-        pendingPickupEntities.remove(preparation.remainder.getUniqueId());
+        removePendingPickupEntity(preparation.remainder);
+    }
+
+    /** 将存在的拾取事务实体加入保护集合。 */
+    private void addPendingPickupEntity(Item item) {
+        if (item != null && item.getUniqueId() != null) {
+            pendingPickupEntities.add(item.getUniqueId());
+        }
+    }
+
+    /** 将存在的拾取事务实体移出保护集合。 */
+    private void removePendingPickupEntity(Item item) {
+        if (item != null && item.getUniqueId() != null) {
+            pendingPickupEntities.remove(item.getUniqueId());
+        }
     }
 
     /** 插件关闭时清理所有待处理事务，避免跨生命周期泄漏引用。 */
@@ -1180,13 +1240,46 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             } else {
                 // MONITOR 只代表事件派发完成，不代表原版已经扣减物理 ItemStack；
                 // 关闭时不能提前按 getRemaining() 对账，否则原版随后还会再次扣减。
-                // 保留“物理源 + 逻辑余量”的状态，让原版按自己的收尾流程完成拾取。
+                // 没有预先拆分余量的事务，要先物化逻辑余量，再解除保护，避免关闭时丢失 PDC 数量。
+                preserveAcceptedPickupOnDisable(preparation);
                 pendingPickups.remove(preparation.source.getUniqueId(), preparation);
                 releasePickupProtection(preparation);
             }
         }
         pendingPickups.clear();
         pendingPickupEntities.clear();
+    }
+
+    /** 插件关闭前把尚未拆分的逻辑余量放到独立实体，保持原版后续收尾安全。 */
+    private void preserveAcceptedPickupOnDisable(PickupPreparation preparation) {
+        if (preparation.remainder != null) {
+            return;
+        }
+        Item source = preparation.source;
+        int logicalRemainder = preparation.originalAmount - preparation.physicalAmount;
+        if (logicalRemainder <= 0 || !usable(source)) {
+            plugin.getLogger().warning("[ItemStacking] 插件关闭时无法物化非玩家拾取逻辑余量: "
+                    + (source == null ? "null" : source.getUniqueId())
+                    + ", remainder=" + logicalRemainder);
+            return;
+        }
+        Item remainder = spawnPolicySplit(source, logicalRemainder);
+        if (remainder != null) {
+            // 源实体只保留当前物理数量，不能继续显示拾取事务期间的预测逻辑数量。
+            restoreDisplay(source);
+            return;
+        }
+
+        // 生成实体失败时把当前物理源合并回逻辑数量，至少保证数量不被静默吞掉。
+        int observedPhysical = physicalAmount(source);
+        int logicalAmount = preparation.originalAmount + observedPhysical - preparation.physicalAmount;
+        if (logicalAmount > 0 && writeLogicalPickupResult(source, logicalAmount)) {
+            plugin.getLogger().warning("[ItemStacking] 插件关闭时无法生成逻辑余量实体，已回退为单实体保存: "
+                    + source.getUniqueId() + ", logical=" + logicalAmount);
+            return;
+        }
+        plugin.getLogger().severe("[ItemStacking] 插件关闭时无法安全保存非玩家拾取逻辑数量，需立即检查掉落实体: "
+                + source.getUniqueId());
     }
 
     /** 返回当前运行时是否提供实体 PDC 的复制方法。 */
@@ -1217,7 +1310,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         return !hasExternalEntityData(source);
     }
 
-    /** 记录一次等待事件最终结果的拾取拆分。 */
+    /** 记录一次等待事件最终结果的拾取事务。 */
     private final class PickupPreparation {
         private final Item source;
         private final Item remainder;
@@ -1227,7 +1320,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         private final EntityPickupItemEvent event;
         private volatile boolean cancelled;
 
-        /** 创建拾取拆分记录。 */
+        /** 创建拾取事务记录。 */
         private PickupPreparation(Item source, Item remainder, int originalAmount, int physicalAmount,
                                   int expectedRemaining, EntityPickupItemEvent event) {
             this.source = source;
@@ -1276,17 +1369,13 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         item.getPersistentDataContainer().remove(amountKey);
     }
 
-    /** 在原版拾取完成后可靠写入物理数量，并移除逻辑数量标记。 */
-    private boolean writeVanillaPhysicalAmount(Item item, int amount) {
-        if (!isLiveItem(item) || amount <= 0) {
+    /** 将非玩家拾取结果写回逻辑实体，物理数量始终保持原版合法范围。 */
+    private boolean writeLogicalPickupResult(Item item, int logicalAmount) {
+        if (!isLiveItem(item) || logicalAmount <= 0) {
             return false;
         }
-        ItemStack stack = item.getItemStack();
-        stack.setAmount(amount);
-        item.setItemStack(stack);
-        item.getPersistentDataContainer().remove(amountKey);
-        restoreDisplay(item);
-        return isLiveItem(item) && physicalAmount(item) == amount && !isManaged(item);
+        writeAmount(item, logicalAmount);
+        return usable(item) && getAmount(item) == logicalAmount;
     }
 
     /** 更新或恢复掉落物悬浮名称。 */

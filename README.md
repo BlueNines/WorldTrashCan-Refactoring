@@ -321,8 +321,8 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 - 版本：`7.5.2`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`962602` 字节
-- SHA-256：`21E944CC1785315030E3EC59EAAEDF82D5CD655DED9FE717F663A61AC3A5D825`
+- 文件大小：`978365` 字节
+- SHA-256：`A72AB22C2BA889F654BAF0E10977B34AE55826B1D93873F753266722DB5460FE`
 - 当前 SHA 已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证个人桶回收提示的共享名称链路：堆叠关闭且逐物品配置不存在时显示 `橡树树苗*8、小麦种子*14、泥土*7`；开启堆叠并配置独立名称后显示 `图鉴树苗*5、农作种子*30、建筑泥土*54`，两轮均未暴露原始 Material 枚举名。
 - 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证完整逐 Material 配置：圆石独立上限 `30`、金锭独立上限 `50`、钻石禁用接管、独立显示名，以及物品自身名称 `Item_Custom_Name x 80` 的最高优先级。另一次连续验收确认 `/wtc reload` 把逻辑数量 `80` 无损拆为最大 `30`，再禁用后保持总量 `80` 且受管实体归零。
 - 地面掉落物逻辑堆叠的数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由，已在翻译功能加入前使用同一套实现的历史 Universal 整包于 Paper 1.21.8 和 Folia 1.21.8 完成真实客户端全链路验收；这些历史业务证据不冒充当前 SHA 的重复全量验收。
@@ -332,6 +332,7 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 - 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
 - 个人垃圾桶统一容器已使用同一整包在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.8 完成匹配版本真实客户端验收，覆盖完整 `item-lore` 模板、空行、多行原 Lore 截断、隐藏原 Lore、重复 `{content}`、旧节点回退，以及紧凑/堆叠、翻页、玩家排序、actions、close、glow、PAPI、手动放入、取出、重载保留、容量策略和 UUID 隔离。
 - 三端各完成 600 次菜单打开压力检查，观测 TPS 分别为 `19.981`、`19.996`、`19.998`，服务端日志未发现本专项禁止异常。
+- 2026-08-28 修复现代逻辑堆叠物品被猪灵等非玩家实体拾取时的事务竞争：按事件后的实际物理余量对账逻辑数量，保护并发拾取实体，并在事件取消、调度失败、实体失效或插件关闭时回滚；当前最终 Universal 整包在 Paper 1.21.4 的 21 只猪灵压力验收达到 `128` 次有效拾取、`128` 次交易，初始 `128` 个逻辑物品最终全部守恒，另有 `14` 次竞争拾取被保护取消且无堆叠警告。四张原生客户端截图和完整服务端日志保存在本地 `wtc-piglin-paper-1214-20260828-fixed-r60` 证据目录。
 
 ## English
 
@@ -649,8 +650,8 @@ Final universal artifact information:
 
 - Version: `7.5.2`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `962602` bytes
-- SHA-256: `21E944CC1785315030E3EC59EAAEDF82D5CD655DED9FE717F663A61AC3A5D825`
+- File size: `978365` bytes
+- SHA-256: `A72AB22C2BA889F654BAF0E10977B34AE55826B1D93873F753266722DB5460FE`
 - This SHA was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the shared personal-trash item-name chain. With stacking disabled and no per-material file, the notification showed `橡树树苗*8, 小麦种子*14, 泥土*7`; after enabling stacking and configuring independent names, it showed `图鉴树苗*5, 农作种子*30, 建筑泥土*54`. Neither run exposed raw Material enum names.
 - This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the complete per-Material configuration: independent limits of `30` for cobblestone and `50` for gold ingots, disabled management for diamonds, independent display names, and highest precedence for the item's own `Item_Custom_Name x 80`. A second continuous run verified that `/wtc reload` losslessly split a logical amount of `80` to a maximum of `30`, then disabled management while preserving the total amount of `80` and reducing managed entities to zero.
 - Before the translation resources were added, the same stacking implementation completed real-client end-to-end verification on Paper 1.21.8 and Folia 1.21.8 for logical caps, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. Those historical business checks are not presented as a full rerun of the current SHA.
@@ -660,3 +661,4 @@ Final universal artifact information:
 - Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
 - The unified personal container was verified with the same universal JAR and matching real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.8. Coverage includes the complete `item-lore` template, blank lines, multi-line original Lore truncation, hidden original Lore, duplicate `{content}`, legacy-node fallback, compact/stacked modes, pagination, per-player sorting, actions, close, glow, PAPI, manual deposits, withdrawals, reload retention, capacity policies, and UUID isolation.
 - Each platform completed a 600-open menu stress check with observed TPS of `19.981`, `19.996`, and `19.998`; no forbidden runtime exceptions were found for this matrix.
+- On 2026-08-28, modern logical stacks picked up by piglins and other non-player entities were fixed to reconcile logical amounts with the post-event physical remainder, protect competing pickup transactions, and roll back on cancellation, scheduling failure, entity invalidation, or plugin shutdown. The current final universal JAR completed a Paper 1.21.4 pressure run with 21 piglins: `128` valid pickups and `128` trades from an initial logical amount of `128`; `14` competing pickups were protected and cancelled, with conservation preserved and no stacking warnings. Four native client screenshots and the complete server log are retained locally under the `wtc-piglin-paper-1214-20260828-fixed-r60` evidence directory.
