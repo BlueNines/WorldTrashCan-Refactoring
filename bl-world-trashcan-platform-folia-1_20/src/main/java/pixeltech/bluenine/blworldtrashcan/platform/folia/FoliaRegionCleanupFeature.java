@@ -37,6 +37,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.logging.DebugOutput;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.DroppedItemCommitGuard;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashCheck;
@@ -715,12 +716,12 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
         if (!tracker.isOpen()) {
             return;
         }
-        ItemStack itemStack = item.getItemStack();
-        if (itemStack == null) {
-            stats.addItemsSkipped(1);
+        DroppedItemCommitGuard.State initialState = DroppedItemCommitGuard.capture(item, itemQuantityService);
+        if (initialState == null) {
             return;
         }
-        int actualAmount = actualAmount(item);
+        ItemStack itemStack = initialState.getSample();
+        int actualAmount = initialState.getAmount();
         if (isMovingItemProtected(item, tracker.cleanupConfig)) {
             stats.addItemsSkipped(actualAmount);
             return;
@@ -782,10 +783,19 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 stats.addItemsSkipped(remainingAmount);
                 return;
             }
+            DroppedItemCommitGuard.State sourceState = DroppedItemCommitGuard.capture(item, itemQuantityService);
+            if (sourceState == null || sourceState.getAmount() != remainingAmount
+                    || !sourceState.hasSameType(itemStack)) {
+                stats.addItemsSkipped(remainingAmount);
+                return;
+            }
             if (route == TrashRoute.REMOVE) {
+                if (!DroppedItemCommitGuard.commitRemaining(item, sourceState, 0, itemQuantityService)) {
+                    stats.addItemsSkipped(remainingAmount);
+                    return;
+                }
                 forgetTrackedOwner(item);
-                item.remove();
-                recordItemAmount(tracker, itemStack, remainingAmount,
+                recordItemAmount(tracker, sourceState.getSample(), remainingAmount,
                         CleanupItemDestination.directRemove(), "");
                 stats.addItemsRemoved(remainingAmount);
                 return;
@@ -808,23 +818,25 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 return;
             }
             TrashRoutingResult virtualResult = routeVirtual(
-                    item, itemStack, remainingAmount, snapshot.getOwnerUuid(), route);
+                    item, sourceState.getSample(), remainingAmount, snapshot.getOwnerUuid(), route);
             if (virtualResult.isSuccess()) {
                 int acceptedAmount = Math.min(remainingAmount, virtualResult.getAcceptedAmount());
                 if (acceptedAmount <= 0) {
                     stats.addItemsSkipped(remainingAmount);
                     return;
                 }
-                if (!setRemainingAmount(item, remainingAmount, remainingAmount - acceptedAmount)) {
+                if (!DroppedItemCommitGuard.commitRemaining(
+                        item, sourceState, remainingAmount - acceptedAmount, itemQuantityService)) {
                     int rolledBack;
                     synchronized (trashRouter) {
-                        rolledBack = trashRouter.rollbackRouted(virtualResult, itemStack, acceptedAmount);
+                        rolledBack = trashRouter.rollbackRouted(
+                                virtualResult, sourceState.getSample(), acceptedAmount);
                     }
                     plugin.getLogger().severe("[FoliaCleanup] 地面数量提交失败，已回滚虚拟垃圾桶写入: route="
                             + route + ", accepted=" + acceptedAmount + ", rolledBack=" + rolledBack);
                     return;
                 }
-                recordItemAmount(tracker, itemStack, acceptedAmount,
+                recordItemAmount(tracker, sourceState.getSample(), acceptedAmount,
                         virtualResult.getDestination(), virtualResult.getTrackingKey());
                 stats.addItemsRouted(acceptedAmount, route);
                 if (route == TrashRoute.PERSONAL_TRASH) {
@@ -926,14 +938,23 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
             returnWorldTrashItem(item, transfer, tracker, null);
             return;
         }
-        int accepted = trashRouter.routeWorldTrashAtAmount(location, itemStack.clone(), actualAmount);
+        DroppedItemCommitGuard.State sourceState = DroppedItemCommitGuard.capture(item, itemQuantityService);
+        if (sourceState == null || sourceState.getAmount() != actualAmount
+                || !sourceState.hasSameType(itemStack)) {
+            returnWorldTrashItem(item, transfer, tracker, null);
+            return;
+        }
+        int accepted = trashRouter.routeWorldTrashAtAmount(
+                location, sourceState.getSample().clone(), actualAmount);
         if (accepted <= 0) {
             tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
                     stats, tracker, locations, index + 1, transfer);
             return;
         }
-        if (!setRemainingAmount(item, actualAmount, actualAmount - accepted)) {
-            int rolledBack = trashRouter.rollbackWorldTrashAtAmount(location, itemStack, accepted);
+        if (!DroppedItemCommitGuard.commitRemaining(
+                item, sourceState, actualAmount - accepted, itemQuantityService)) {
+            int rolledBack = trashRouter.rollbackWorldTrashAtAmount(
+                    location, sourceState.getSample(), accepted);
             plugin.getLogger().severe("[FoliaCleanup] 世界垃圾桶事务提交失败，已回滚容器: entity="
                     + item.getUniqueId() + ", expected=" + actualAmount + ", accepted=" + accepted
                     + ", rolledBack=" + rolledBack);
@@ -942,7 +963,8 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
         }
         if (tracker.isOpen()) {
             stats.addItemsRouted(accepted, TrashRoute.WORLD_TRASH);
-            recordItemAmount(tracker, itemStack, accepted, trashRouter.destination(location), "");
+            recordItemAmount(tracker, sourceState.getSample(), accepted,
+                    trashRouter.destination(location), "");
         }
         if (accepted >= actualAmount) {
             forgetTrackedOwner(item);
@@ -1081,25 +1103,6 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
         }
         return itemQuantityService == null
                 ? item.getItemStack().getAmount() : itemQuantityService.getAmount(item);
-    }
-
-    /** 按预期数量写入剩余；默认路径直接修改物理堆叠。 */
-    private boolean setRemainingAmount(Item item, int expectedAmount, int remainingAmount) {
-        if (itemQuantityService != null) {
-            return itemQuantityService.setRemaining(item, expectedAmount, remainingAmount);
-        }
-        if (item == null || item.getItemStack() == null
-                || item.getItemStack().getAmount() != expectedAmount || remainingAmount < 0) {
-            return false;
-        }
-        if (remainingAmount == 0) {
-            item.remove();
-            return true;
-        }
-        ItemStack remaining = item.getItemStack();
-        remaining.setAmount(remainingAmount);
-        item.setItemStack(remaining);
-        return true;
     }
 
     /** 按原版堆叠上限拆分并记录审计物品。 */

@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.BukkitMessageService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.message.RichTextRenderer;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.DroppedItemCommitGuard;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashService;
@@ -239,8 +240,12 @@ public final class TrashFeature implements Feature, Listener {
         if (ownerUuid == null) {
             return;
         }
-        ItemStack itemStack = item.getItemStack().clone();
-        int actualAmount = actualAmount(item);
+        DroppedItemCommitGuard.State sourceState = DroppedItemCommitGuard.capture(item, itemQuantityService);
+        if (sourceState == null) {
+            return;
+        }
+        ItemStack itemStack = sourceState.getSample();
+        int actualAmount = sourceState.getAmount();
         TrashRoute route = mode == TrashConfig.DamageRecoveryMode.GLOBAL_TRASH
                 ? TrashRoute.GLOBAL_TRASH
                 : TrashRoute.PERSONAL_TRASH;
@@ -248,7 +253,8 @@ public final class TrashFeature implements Feature, Listener {
                 item.getWorld(), ownerUuid, itemStack, actualAmount, route, false);
         int acceptedAmount = Math.min(actualAmount, result.getAcceptedAmount());
         if (result.isSuccess() && acceptedAmount > 0) {
-            if (!setRemainingAmount(item, actualAmount, actualAmount - acceptedAmount)) {
+            if (!DroppedItemCommitGuard.commitRemaining(
+                    item, sourceState, actualAmount - acceptedAmount, itemQuantityService)) {
                 int rolledBack = trashRouter.rollbackRouted(result, itemStack, acceptedAmount);
                 plugin.getLogger().severe("[DamageRecovery] 地面数量提交失败，已回滚垃圾桶写入: route="
                         + route + ", accepted=" + acceptedAmount + ", rolledBack=" + rolledBack);
@@ -274,25 +280,6 @@ public final class TrashFeature implements Feature, Listener {
         }
         return itemQuantityService == null
                 ? item.getItemStack().getAmount() : itemQuantityService.getAmount(item);
-    }
-
-    /** 按预期数量写入损坏回收后的地面剩余。 */
-    private boolean setRemainingAmount(Item item, int expectedAmount, int remainingAmount) {
-        if (itemQuantityService != null) {
-            return itemQuantityService.setRemaining(item, expectedAmount, remainingAmount);
-        }
-        if (item == null || item.getItemStack() == null
-                || item.getItemStack().getAmount() != expectedAmount || remainingAmount < 0) {
-            return false;
-        }
-        if (remainingAmount == 0) {
-            item.remove();
-            return true;
-        }
-        ItemStack remaining = item.getItemStack().clone();
-        remaining.setAmount(remainingAmount);
-        item.setItemStack(remaining);
-        return true;
     }
 
     /** 打开公共垃圾桶。 */

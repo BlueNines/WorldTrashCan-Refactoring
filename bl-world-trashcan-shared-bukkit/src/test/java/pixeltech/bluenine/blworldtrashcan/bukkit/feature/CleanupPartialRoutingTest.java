@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.junit.Assert;
 import org.junit.Test;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /** 验证扫地路由部分接收后会在同一轮继续处理剩余数量。 */
 public final class CleanupPartialRoutingTest {
@@ -65,12 +67,55 @@ public final class CleanupPartialRoutingTest {
         Assert.assertFalse(item.isRemoved());
     }
 
+    /** 目标桶写入后来源删除未生效时，必须撤销写入且不得增加清理统计。 */
+    @Test
+    public void failedSourceRemovalRollsBackDestinationWrite() throws Exception {
+        SequencedTrashRouter router = new SequencedTrashRouter(1);
+        MutableItem item = new MutableItem(1);
+        item.setRemovalEffective(false);
+        CleanupFeature.CleanupStats stats = new CleanupFeature.CleanupStats();
+        RecordingAuditSession audit = new RecordingAuditSession();
+
+        TrashRoutingDecision result = invokeRoute(item.proxy(), router, stats, audit);
+
+        Assert.assertEquals(TrashRoute.SKIP, result.getRoute());
+        Assert.assertEquals(1, router.getRolledBackAmount());
+        Assert.assertEquals(0, stats.getItemsRouted());
+        Assert.assertEquals(0, audit.getRecordedAmount());
+        Assert.assertFalse(item.isRemoved());
+    }
+
+    /** 目标桶写入完成后来源被玩家拾取时，必须回滚且不能生成第二份物品。 */
+    @Test
+    public void pickupAfterDestinationWriteRollsBackWithoutDuplication() throws Exception {
+        SequencedTrashRouter router = new SequencedTrashRouter(1);
+        MutableItem item = new MutableItem(1);
+        router.setAfterWrite(new Runnable() {
+            /** 模拟目标桶完成写入后，原版拾取立即使地面实体失效。 */
+            @Override
+            public void run() {
+                item.invalidate();
+            }
+        });
+        CleanupFeature.CleanupStats stats = new CleanupFeature.CleanupStats();
+        RecordingAuditSession audit = new RecordingAuditSession();
+
+        TrashRoutingDecision result = invokeRoute(item.proxy(), router, stats, audit);
+
+        Assert.assertEquals(TrashRoute.SKIP, result.getRoute());
+        Assert.assertEquals(1, router.getRolledBackAmount());
+        Assert.assertEquals(0, stats.getItemsRouted());
+        Assert.assertEquals(0, audit.getRecordedAmount());
+        Assert.assertTrue(item.isRemoved());
+    }
+
     /** 调用正式私有路由方法，避免为测试扩大生产代码可见范围。 */
     private TrashRoutingDecision invokeRoute(Item item, TrashRouter router,
                                              CleanupFeature.CleanupStats stats,
                                              CleanupAuditSession audit) throws Exception {
         ServerPlatform platform = proxy(ServerPlatform.class, new NullInvocationHandler());
-        CleanupFeature feature = new CleanupFeature(null, platform, null, router,
+        Plugin plugin = proxy(Plugin.class, new TestPluginInvocationHandler());
+        CleanupFeature feature = new CleanupFeature(plugin, platform, null, router,
                 null, null, null, null);
         Method method = CleanupFeature.class.getDeclaredMethod("routeWithFallback",
                 Item.class, ItemSnapshot.class, CleanupPolicy.class, TrashRoutingDecision.class,
@@ -80,6 +125,18 @@ public final class CleanupPartialRoutingTest {
                 null, null);
         return (TrashRoutingDecision) method.invoke(feature, item, snapshot, new GlobalThenRemovePolicy(),
                 new TrashRoutingDecision(TrashRoute.GLOBAL_TRASH, "test"), stats, audit);
+    }
+
+    /** 为测试插件提供日志对象，其余方法保持默认值。 */
+    private static final class TestPluginInvocationHandler implements InvocationHandler {
+        /** 处理测试插件调用。 */
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) {
+            if ("getLogger".equals(method.getName())) {
+                return Logger.getLogger(CleanupPartialRoutingTest.class.getName());
+            }
+            return new NullInvocationHandler().invoke(proxy, method, args);
+        }
     }
 
     /** 创建只实现本测试所需方法的接口代理。 */
@@ -111,6 +168,7 @@ public final class CleanupPartialRoutingTest {
         private final Item proxy;
         private ItemStack itemStack;
         private boolean removed;
+        private boolean removalEffective = true;
 
         /** 创建指定数量的掉落物代理。 */
         private MutableItem(int amount) {
@@ -133,6 +191,16 @@ public final class CleanupPartialRoutingTest {
             return removed;
         }
 
+        /** 设置 remove 是否真正移除测试实体。 */
+        private void setRemovalEffective(boolean removalEffective) {
+            this.removalEffective = removalEffective;
+        }
+
+        /** 模拟掉落物已被拾取并从世界中失效。 */
+        private void invalidate() {
+            removed = true;
+        }
+
         /** 实现数量读取、数量提交、世界读取和实体移除。 */
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) {
@@ -148,11 +216,19 @@ public final class CleanupPartialRoutingTest {
                 return CleanupPartialRoutingTest.proxy(World.class, new NullInvocationHandler());
             }
             if ("remove".equals(name)) {
-                removed = true;
+                if (removalEffective) {
+                    removed = true;
+                }
                 return null;
             }
             if ("getUniqueId".equals(name)) {
                 return UUID.fromString("00000000-0000-0000-0000-000000000001");
+            }
+            if ("isValid".equals(name)) {
+                return Boolean.valueOf(!removed);
+            }
+            if ("isDead".equals(name)) {
+                return Boolean.valueOf(removed);
             }
             return new NullInvocationHandler().invoke(proxy, method, args);
         }
@@ -163,6 +239,8 @@ public final class CleanupPartialRoutingTest {
         private final int[] acceptedAmounts;
         private final List<Integer> requests = new ArrayList<>();
         private int callIndex;
+        private int rolledBackAmount;
+        private Runnable afterWrite;
 
         /** 创建按顺序返回接收量的路由器。 */
         private SequencedTrashRouter(int... acceptedAmounts) {
@@ -172,6 +250,16 @@ public final class CleanupPartialRoutingTest {
         /** 返回收到的每次请求数量。 */
         private List<Integer> getRequests() {
             return requests;
+        }
+
+        /** 返回测试路由器累计回滚数量。 */
+        private int getRolledBackAmount() {
+            return rolledBackAmount;
+        }
+
+        /** 设置目标写入完成、来源提交开始前的测试动作。 */
+        private void setAfterWrite(Runnable afterWrite) {
+            this.afterWrite = afterWrite;
         }
 
         /** 测试不提供世界垃圾桶。 */
@@ -207,8 +295,21 @@ public final class CleanupPartialRoutingTest {
                                                        boolean cleanupSource) {
             requests.add(Integer.valueOf(requestedAmount));
             int accepted = callIndex < acceptedAmounts.length ? acceptedAmounts[callIndex++] : 0;
-            return accepted <= 0 ? TrashRoutingResult.failure() : TrashRoutingResult.success(
-                    CleanupItemDestination.globalTrash(), Math.min(accepted, requestedAmount), "test");
+            if (accepted <= 0) {
+                return TrashRoutingResult.failure();
+            }
+            if (afterWrite != null) {
+                afterWrite.run();
+            }
+            return TrashRoutingResult.success(CleanupItemDestination.globalTrash(),
+                    Math.min(accepted, requestedAmount), "test");
+        }
+
+        /** 记录来源提交失败后的目标桶回滚数量。 */
+        @Override
+        public int rollbackRouted(TrashRoutingResult result, ItemStack sample, int requestedAmount) {
+            rolledBackAmount += requestedAmount;
+            return requestedAmount;
         }
 
         /** 测试路由器没有外部数据需要重载。 */

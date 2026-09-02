@@ -18,6 +18,7 @@ import pixeltech.bluenine.blworldtrashcan.bukkit.api.DefaultWorldListTrashCanAud
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ServerPlatform;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.ItemRuleEvaluator;
 import pixeltech.bluenine.blworldtrashcan.bukkit.platform.TaskHandle;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.DroppedItemCommitGuard;
 import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.ItemQuantityService;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.DropOwnerTracker;
 import pixeltech.bluenine.blworldtrashcan.bukkit.trash.GlobalTrashCheck;
@@ -491,6 +492,9 @@ public final class CleanupFeature implements Feature {
     /** 清理单个掉落物实体。 */
     private void cleanItem(Item item, CleanupConfig cleanupConfig, CleanupPolicy policy, CleanupStats stats,
                            CleanupAuditSession auditSession) {
+        if (!DroppedItemCommitGuard.isLive(item)) {
+            return;
+        }
         if (isMovingItemProtected(item, cleanupConfig)) {
             stats.itemsSkipped++;
             return;
@@ -514,10 +518,14 @@ public final class CleanupFeature implements Feature {
         }
         TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats, auditSession);
         if (finalDecision.getRoute() == TrashRoute.REMOVE) {
-            ItemStack removedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
-            int removedAmount = actualAmount(item);
+            DroppedItemCommitGuard.State removeState = DroppedItemCommitGuard.capture(item, itemQuantityService);
+            if (removeState == null || !DroppedItemCommitGuard.commitRemaining(
+                    item, removeState, 0, itemQuantityService)) {
+                return;
+            }
+            ItemStack removedItemStack = removeState.getSample();
+            int removedAmount = removeState.getAmount();
             forgetTrackedOwner(item);
-            item.remove();
             recordItemAmount(auditSession, removedItemStack, removedAmount,
                     CleanupItemDestination.directRemove(), "");
             stats.addItemsRemoved(removedAmount);
@@ -563,16 +571,21 @@ public final class CleanupFeature implements Feature {
                 ? snapshot.isGlobalTrashAvailable()
                 : trashRouter.hasGlobalTrash(item.getItemStack());
         while (decision.getRoute() != TrashRoute.REMOVE && decision.getRoute() != TrashRoute.SKIP) {
-            ItemStack routedItemStack = item.getItemStack() == null ? null : item.getItemStack().clone();
-            int currentAmount = actualAmount(item);
+            DroppedItemCommitGuard.State sourceState = DroppedItemCommitGuard.capture(item, itemQuantityService);
+            if (sourceState == null) {
+                return new TrashRoutingDecision(TrashRoute.SKIP, "route-source-missing");
+            }
+            ItemStack routedItemStack = sourceState.getSample();
+            int currentAmount = sourceState.getAmount();
             TrashRoutingResult routed = trashRouter.routeDetailedAmount(item.getWorld(), snapshot.getOwnerUuid(),
-                    item.getItemStack(), currentAmount, decision.getRoute(), true);
+                    routedItemStack, currentAmount, decision.getRoute(), true);
             if (routed.isSuccess()) {
                 int acceptedAmount = Math.min(currentAmount, routed.getAcceptedAmount());
                 if (acceptedAmount <= 0) {
                     return new TrashRoutingDecision(TrashRoute.SKIP, "route-accepted-zero");
                 }
-                if (!setRemainingAmount(item, currentAmount, currentAmount - acceptedAmount)) {
+                if (!DroppedItemCommitGuard.commitRemaining(
+                        item, sourceState, currentAmount - acceptedAmount, itemQuantityService)) {
                     int rolledBack = trashRouter.rollbackRouted(routed, routedItemStack, acceptedAmount);
                     plugin.getLogger().severe("[Cleanup] 地面数量提交失败，已回滚垃圾桶写入: route="
                             + decision.getRoute() + ", accepted=" + acceptedAmount + ", rolledBack=" + rolledBack);
@@ -622,25 +635,6 @@ public final class CleanupFeature implements Feature {
         }
         return itemQuantityService == null
                 ? item.getItemStack().getAmount() : itemQuantityService.getAmount(item);
-    }
-
-    /** 按预期数量写入地面剩余；默认路径直接修改物理堆叠。 */
-    private boolean setRemainingAmount(Item item, int expectedAmount, int remainingAmount) {
-        if (itemQuantityService != null) {
-            return itemQuantityService.setRemaining(item, expectedAmount, remainingAmount);
-        }
-        if (item == null || item.getItemStack() == null
-                || item.getItemStack().getAmount() != expectedAmount || remainingAmount < 0) {
-            return false;
-        }
-        if (remainingAmount == 0) {
-            item.remove();
-            return true;
-        }
-        ItemStack remaining = item.getItemStack();
-        remaining.setAmount(remainingAmount);
-        item.setItemStack(remaining);
-        return true;
     }
 
     /** 按原版堆叠上限拆分审计快照，避免非法超上限 ItemStack。 */
