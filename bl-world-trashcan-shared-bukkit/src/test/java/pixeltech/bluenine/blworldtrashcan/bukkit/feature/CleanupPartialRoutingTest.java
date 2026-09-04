@@ -45,6 +45,8 @@ public final class CleanupPartialRoutingTest {
         Assert.assertEquals(TrashRoute.GLOBAL_TRASH, result.getRoute());
         Assert.assertEquals(Arrays.asList(Integer.valueOf(10), Integer.valueOf(3)), router.getRequests());
         Assert.assertEquals(10, stats.getItemsRouted());
+        Assert.assertEquals(1, stats.getItemEntitiesHandled());
+        Assert.assertEquals(1, stats.getItemEntitiesToGlobalTrash());
         Assert.assertEquals(10, audit.getRecordedAmount());
         Assert.assertTrue(item.isRemoved());
     }
@@ -62,6 +64,8 @@ public final class CleanupPartialRoutingTest {
         Assert.assertEquals(TrashRoute.REMOVE, result.getRoute());
         Assert.assertEquals(Arrays.asList(Integer.valueOf(20), Integer.valueOf(5)), router.getRequests());
         Assert.assertEquals(15, stats.getItemsRouted());
+        Assert.assertEquals(1, stats.getItemEntitiesHandled());
+        Assert.assertEquals(1, stats.getItemEntitiesToGlobalTrash());
         Assert.assertEquals(15, audit.getRecordedAmount());
         Assert.assertEquals(5, item.getAmount());
         Assert.assertFalse(item.isRemoved());
@@ -81,6 +85,8 @@ public final class CleanupPartialRoutingTest {
         Assert.assertEquals(TrashRoute.SKIP, result.getRoute());
         Assert.assertEquals(1, router.getRolledBackAmount());
         Assert.assertEquals(0, stats.getItemsRouted());
+        Assert.assertEquals(0, stats.getItemEntitiesHandled());
+        Assert.assertEquals(0, stats.getItemEntitiesToGlobalTrash());
         Assert.assertEquals(0, audit.getRecordedAmount());
         Assert.assertFalse(item.isRemoved());
     }
@@ -105,6 +111,8 @@ public final class CleanupPartialRoutingTest {
         Assert.assertEquals(TrashRoute.SKIP, result.getRoute());
         Assert.assertEquals(1, router.getRolledBackAmount());
         Assert.assertEquals(0, stats.getItemsRouted());
+        Assert.assertEquals(0, stats.getItemEntitiesHandled());
+        Assert.assertEquals(0, stats.getItemEntitiesToGlobalTrash());
         Assert.assertEquals(0, audit.getRecordedAmount());
         Assert.assertTrue(item.isRemoved());
     }
@@ -119,12 +127,14 @@ public final class CleanupPartialRoutingTest {
                 null, null, null, null);
         Method method = CleanupFeature.class.getDeclaredMethod("routeWithFallback",
                 Item.class, ItemSnapshot.class, CleanupPolicy.class, TrashRoutingDecision.class,
-                CleanupFeature.CleanupStats.class, CleanupAuditSession.class);
+                CleanupFeature.CleanupStats.class, CleanupAuditSession.class,
+                CleanupFeature.CleanupStats.ItemEntityCounter.class);
         method.setAccessible(true);
         ItemSnapshot snapshot = new ItemSnapshot("STONE", item.getItemStack().getAmount(), "",
                 null, null);
         return (TrashRoutingDecision) method.invoke(feature, item, snapshot, new GlobalThenRemovePolicy(),
-                new TrashRoutingDecision(TrashRoute.GLOBAL_TRASH, "test"), stats, audit);
+                new TrashRoutingDecision(TrashRoute.GLOBAL_TRASH, "test"), stats, audit,
+                stats.beginItemEntity());
     }
 
     /** 为测试插件提供日志对象，其余方法保持默认值。 */

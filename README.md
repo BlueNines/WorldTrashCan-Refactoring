@@ -166,6 +166,19 @@ items:
 
 所有详细参数与总开关都在 `item-stacking.yml`。旧位置 `config.yml -> features.item-stacking.enabled` 不再读取。`/wtc stacking status` 查看运行、排空、队列和数量统计；把 `enabled` 改回 `false` 后，插件会把已加载区块中的逻辑数量逐批拆回原版堆叠，未加载区块只在自然加载后处理，也可以使用 `/wtc stacking drain` 主动请求排空。
 
+### 扫地统计变量
+
+`cleanup.yml` 的聊天、控制台、ActionBar、BossBar、Title 和命令通知共用以下变量。旧变量保持旧版的掉落实体语义，新变量用于需要精确物品件数的场景：
+
+| 变量 | 含义 |
+| --- | --- |
+| `%DealItemSum%` | 成功处理的来源掉落实体数；三个各含 64 件物品的实体计为 `3` |
+| `%GlobalTrashAddSum%` | 至少有一件物品进入公共垃圾桶的来源掉落实体数；同一实体分批写入只计一次 |
+| `%DealItemAmount%` | 成功处理的实际物品件数；三个各含 64 件物品的实体计为 `192` |
+| `%GlobalTrashAddAmount%` | 实际进入公共垃圾桶的物品件数 |
+
+关闭 `item-stacking` 时，`Amount` 变量仍按原版 `ItemStack` 数量统计；开启后会读取逻辑实际数量。垃圾桶写入、防复制事务、个人通知和 Audit 始终使用实际件数，不受旧消息变量语义恢复影响。
+
 #### 兼容性和稳定性增强
 
 - 提供 `WorldListTrashCan-universal.jar`，高低版本和 Folia/Luminol 使用同一个整包；也保留轻量分版本 Jar。
@@ -497,6 +510,19 @@ items:
 `items` is a sparse override map: list only Bukkit Materials that need special behavior. Unlisted materials are enabled automatically and inherit `stack.max-logical-amount` plus the bundled locale name. `/wtc reload` applies per-item switches, limits, and names immediately: disabling a material drains its managed stacks back to vanilla entities under the normal processing budget, while lowering a limit losslessly splits oversized logical stacks without force-loading unloaded chunks. The development-only `item-stacking-items.yml` and the former `display.custom-name.overrides` node are not read or migrated and can be deleted.
 
 The switch and all detailed settings live in `item-stacking.yml`. The former `config.yml -> features.item-stacking.enabled` path is no longer read. `/wtc stacking status` shows runtime, draining, queue, and amount counters. Setting `enabled` back to `false` drains logical amounts in loaded chunks into vanilla stacks; unloaded chunks wait for natural loading. `/wtc stacking drain` can also request this explicitly.
+
+### Cleanup statistic variables
+
+Chat, console, ActionBar, BossBar, Title, and command notifications in `cleanup.yml` share these variables. Legacy variables retain their dropped-entity semantics, while the new variables expose precise item amounts:
+
+| Variable | Meaning |
+| --- | --- |
+| `%DealItemSum%` | Source dropped-item entities successfully handled; three entities containing 64 items each count as `3` |
+| `%GlobalTrashAddSum%` | Source dropped-item entities with at least one item accepted by global trash; partial writes count once |
+| `%DealItemAmount%` | Actual items successfully handled; three entities containing 64 items each count as `192` |
+| `%GlobalTrashAddAmount%` | Actual items accepted by global trash |
+
+With `item-stacking` disabled, the `Amount` variables still use the vanilla `ItemStack` amount. When enabled, they use the logical amount. Trash routing, duplication guards, personal notifications, and Audit always retain precise item amounts.
 
 #### Compatibility and stability improvements
 

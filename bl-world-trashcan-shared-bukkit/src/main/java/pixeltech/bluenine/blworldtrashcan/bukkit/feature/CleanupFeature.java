@@ -202,6 +202,8 @@ public final class CleanupFeature implements Feature {
                 + ", minOnlinePlayers=" + stats.getGuardMinOnlinePlayers()
                 + ", targetEntities=" + stats.getGuardTargetEntities()
                 + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
+                + ", itemEntitiesHandled=" + stats.itemEntitiesHandled
+                + ", itemEntitiesToGlobalTrash=" + stats.itemEntitiesToGlobalTrash
                 + ", itemsRouted=" + stats.itemsRouted
                 + ", itemsRemoved=" + stats.itemsRemoved
                 + ", itemsSkipped=" + stats.itemsSkipped
@@ -516,7 +518,9 @@ public final class CleanupFeature implements Feature {
             stats.addItemsSkipped(actualAmount(item));
             return;
         }
-        TrashRoutingDecision finalDecision = routeWithFallback(item, snapshot, policy, decision, stats, auditSession);
+        CleanupStats.ItemEntityCounter itemEntityCounter = stats.beginItemEntity();
+        TrashRoutingDecision finalDecision = routeWithFallback(
+                item, snapshot, policy, decision, stats, auditSession, itemEntityCounter);
         if (finalDecision.getRoute() == TrashRoute.REMOVE) {
             DroppedItemCommitGuard.State removeState = DroppedItemCommitGuard.capture(item, itemQuantityService);
             if (removeState == null || !DroppedItemCommitGuard.commitRemaining(
@@ -528,7 +532,7 @@ public final class CleanupFeature implements Feature {
             forgetTrackedOwner(item);
             recordItemAmount(auditSession, removedItemStack, removedAmount,
                     CleanupItemDestination.directRemove(), "");
-            stats.addItemsRemoved(removedAmount);
+            itemEntityCounter.recordRemoved(removedAmount);
         }
     }
 
@@ -560,7 +564,8 @@ public final class CleanupFeature implements Feature {
     /** 按核心决策尝试路由，失败后逐级降级到删除。 */
     private TrashRoutingDecision routeWithFallback(Item item, ItemSnapshot snapshot, CleanupPolicy policy,
                                                    TrashRoutingDecision firstDecision, CleanupStats stats,
-                                                   CleanupAuditSession auditSession) {
+                                                   CleanupAuditSession auditSession,
+                                                   CleanupStats.ItemEntityCounter itemEntityCounter) {
         TrashRoutingDecision decision = firstDecision;
         if (decision.getRoute() == TrashRoute.REMOVE || decision.getRoute() == TrashRoute.SKIP) {
             return decision;
@@ -593,7 +598,7 @@ public final class CleanupFeature implements Feature {
                 }
                 recordItemAmount(auditSession, routedItemStack, acceptedAmount,
                         routed.getDestination(), routed.getTrackingKey());
-                stats.addItemsRouted(acceptedAmount, decision.getRoute());
+                itemEntityCounter.recordRouted(acceptedAmount, decision.getRoute());
                 if (decision.getRoute() == TrashRoute.PERSONAL_TRASH) {
                     addPersonalTrashAmount(stats, snapshot.getOwnerUuid(), routedItemStack, acceptedAmount);
                 }
@@ -981,12 +986,9 @@ public final class CleanupFeature implements Feature {
 
     /** 替换通知中的统计占位符。 */
     private String applyStats(String message, CleanupStats stats) {
-        int dealItemSum = stats.getItemsRouted() + stats.getItemsRemoved();
         int clearEvery = configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups();
         int clearRemain = remainingGlobalClearCount(clearEvery);
-        return (message == null ? "" : message)
-                .replace("%DealItemSum%", String.valueOf(dealItemSum))
-                .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
+        return applyItemStats(message, stats)
                 .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
                 .replace("%CleanupSkipReason%", guardReasonText(stats))
                 .replace("%CleanupOnlinePlayers%", String.valueOf(stats.getGuardOnlinePlayers()))
@@ -995,6 +997,15 @@ public final class CleanupFeature implements Feature {
                 .replace("%CleanupMinTotalEntities%", String.valueOf(stats.getGuardMinTotalEntities()))
                 .replace("%ClearGlobalText%", clearGlobalText(clearEvery, clearRemain))
                 .replace("%ClearGlobalCount%", String.valueOf(clearRemain));
+    }
+
+    /** 替换兼容旧版实体数和新增实际件数的物品统计占位符。 */
+    public static String applyItemStats(String message, CleanupStats stats) {
+        return (message == null ? "" : message)
+                .replace("%DealItemSum%", String.valueOf(stats.getItemEntitiesHandled()))
+                .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemEntitiesToGlobalTrash()))
+                .replace("%DealItemAmount%", String.valueOf(stats.getItemsHandled()))
+                .replace("%GlobalTrashAddAmount%", String.valueOf(stats.getItemsToGlobalTrash()));
     }
 
     /** 返回扫地门禁原因文案。 */
@@ -1035,6 +1046,8 @@ public final class CleanupFeature implements Feature {
         private int itemsToGlobalTrash;
         private int itemsRemoved;
         private int itemsSkipped;
+        private int itemEntitiesHandled;
+        private int itemEntitiesToGlobalTrash;
         private int entitiesRemoved;
         private int entitiesSkipped;
         private boolean globalTrashRefreshed;
@@ -1071,6 +1084,16 @@ public final class CleanupFeature implements Feature {
         /** 返回本轮成功处理的物品实际数量。 */
         public synchronized int getItemsHandled() {
             return itemsRouted + itemsRemoved;
+        }
+
+        /** 返回本轮至少成功处理一件物品的掉落实体数量。 */
+        public synchronized int getItemEntitiesHandled() {
+            return itemEntitiesHandled;
+        }
+
+        /** 返回本轮至少有一件物品进入公共垃圾桶的来源掉落实体数量。 */
+        public synchronized int getItemEntitiesToGlobalTrash() {
+            return itemEntitiesToGlobalTrash;
         }
 
         /** 返回进入世界垃圾桶的物品数量。 */
@@ -1159,11 +1182,21 @@ public final class CleanupFeature implements Feature {
 
         /** 增加移除物品数量。 */
         public synchronized void addItemsRemoved(int amount) {
+            addItemsRemovedAmount(amount);
+        }
+
+        /** 在已经持有统计锁时增加移除物品的实际件数。 */
+        private void addItemsRemovedAmount(int amount) {
             itemsRemoved += Math.max(1, amount);
         }
 
         /** 增加路由成功物品数量。 */
         public synchronized void addItemsRouted(int amount, TrashRoute route) {
+            addItemsRoutedAmount(amount, route);
+        }
+
+        /** 在已经持有统计锁时增加入桶物品的实际件数。 */
+        private void addItemsRoutedAmount(int amount, TrashRoute route) {
             int safeAmount = Math.max(1, amount);
             itemsRouted += safeAmount;
             if (route == TrashRoute.WORLD_TRASH) {
@@ -1172,6 +1205,52 @@ public final class CleanupFeature implements Feature {
                 itemsToPersonalTrash += safeAmount;
             } else if (route == TrashRoute.GLOBAL_TRASH) {
                 itemsToGlobalTrash += safeAmount;
+            }
+        }
+
+        /** 为一个正在处理的掉落实体创建短生命周期计数器。 */
+        public ItemEntityCounter beginItemEntity() {
+            return new ItemEntityCounter(this);
+        }
+
+        /** 只在一个来源掉落实体内去重旧版实体计数，不保留 UUID 或跨轮状态。 */
+        public static final class ItemEntityCounter {
+            private final CleanupStats stats;
+            private boolean handled;
+            private boolean globalTrash;
+
+            /** 绑定本轮清理统计。 */
+            private ItemEntityCounter(CleanupStats stats) {
+                this.stats = stats;
+            }
+
+            /** 记录来源实体的一次成功入桶，同一路由分批写入只计一次。 */
+            public void recordRouted(int amount, TrashRoute route) {
+                synchronized (stats) {
+                    stats.addItemsRoutedAmount(amount, route);
+                    recordHandled();
+                    if (route == TrashRoute.GLOBAL_TRASH && !globalTrash) {
+                        stats.itemEntitiesToGlobalTrash++;
+                        globalTrash = true;
+                    }
+                }
+            }
+
+            /** 记录来源实体的一次成功直接删除。 */
+            public void recordRemoved(int amount) {
+                synchronized (stats) {
+                    stats.addItemsRemovedAmount(amount);
+                    recordHandled();
+                }
+            }
+
+            /** 保证一个来源掉落实体在旧版总数中最多出现一次。 */
+            private void recordHandled() {
+                if (handled) {
+                    return;
+                }
+                stats.itemEntitiesHandled++;
+                handled = true;
             }
         }
 

@@ -735,7 +735,9 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 snapshotWithTrackedOwner(item, platform.itemSnapshotMapper().toSnapshot(item)
                         .withAmount(actualAmount)), tracker.cleanupConfig);
         RouteState state = initialRouteState(item.getWorld(), snapshot, routedStack, tracker.cleanupConfig);
-        routeWithFallback(item, routedStack, actualAmount, snapshot, policy, state, stats, tracker);
+        CleanupFeature.CleanupStats.ItemEntityCounter itemEntityCounter = stats.beginItemEntity();
+        routeWithFallback(item, routedStack, actualAmount, snapshot, policy, state,
+                stats, tracker, itemEntityCounter);
     }
 
     /** 判断掉落物是否因当前速度达到阈值而在本轮扫地中受保护。 */
@@ -770,7 +772,8 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
     /** 按核心策略逐级路由或删除物品。 */
     private void routeWithFallback(Item item, ItemStack itemStack, int actualAmount,
                                    ItemSnapshot snapshot, CleanupPolicy policy,
-                                   RouteState state, CleanupFeature.CleanupStats stats, CompletionTracker tracker) {
+                                   RouteState state, CleanupFeature.CleanupStats stats, CompletionTracker tracker,
+                                   CleanupFeature.CleanupStats.ItemEntityCounter itemEntityCounter) {
         TrashRoutingDecision decision = policy.decideItem(snapshot, state.worldAvailable,
                 state.personalAvailable, state.globalAvailable, state.forceDirectRemove);
         int remainingAmount = actualAmount;
@@ -797,7 +800,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 forgetTrackedOwner(item);
                 recordItemAmount(tracker, sourceState.getSample(), remainingAmount,
                         CleanupItemDestination.directRemove(), "");
-                stats.addItemsRemoved(remainingAmount);
+                itemEntityCounter.recordRemoved(remainingAmount);
                 return;
             }
             if (route == TrashRoute.WORLD_TRASH) {
@@ -814,7 +817,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 }
                 WorldTrashTransfer transfer = new WorldTrashTransfer(item.getLocation().clone());
                 tryWorldTrash(item, itemStack, remainingAmount, snapshot, policy, state,
-                        stats, tracker, locations, 0, transfer);
+                        stats, tracker, locations, 0, transfer, itemEntityCounter);
                 return;
             }
             TrashRoutingResult virtualResult = routeVirtual(
@@ -838,7 +841,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 }
                 recordItemAmount(tracker, sourceState.getSample(), acceptedAmount,
                         virtualResult.getDestination(), virtualResult.getTrackingKey());
-                stats.addItemsRouted(acceptedAmount, route);
+                itemEntityCounter.recordRouted(acceptedAmount, route);
                 if (route == TrashRoute.PERSONAL_TRASH) {
                     addPersonalTrashAmount(stats, snapshot.getOwnerUuid(), itemStack, acceptedAmount);
                 }
@@ -869,21 +872,22 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                                final CleanupPolicy policy, final RouteState state,
                                final CleanupFeature.CleanupStats stats, final CompletionTracker tracker,
                                final List<TrashLocation> locations, final int index,
-                               final WorldTrashTransfer transfer) {
+                               final WorldTrashTransfer transfer,
+                               final CleanupFeature.CleanupStats.ItemEntityCounter itemEntityCounter) {
         if (!tracker.isOpen()) {
             returnWorldTrashItem(item, transfer, tracker, null);
             return;
         }
         if (index >= locations.size()) {
             returnForWorldTrashFallback(item, itemStack, actualAmount, snapshot,
-                    policy, state, stats, tracker, transfer);
+                    policy, state, stats, tracker, transfer, itemEntityCounter);
             return;
         }
         final TrashLocation location = locations.get(index);
         final World world = Bukkit.getWorld(location.getWorldName());
         if (world == null || !world.isChunkLoaded(location.getX() >> 4, location.getZ() >> 4)) {
             tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
-                    stats, tracker, locations, index + 1, transfer);
+                    stats, tracker, locations, index + 1, transfer, itemEntityCounter);
             return;
         }
         tracker.taskStarted();
@@ -907,10 +911,10 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                             if (error == null && Boolean.TRUE.equals(teleported)) {
                                 commitWorldTrashTransfer(item, itemStack, actualAmount, snapshot,
                                         policy, state, stats, tracker, locations, index,
-                                        location, transfer);
+                                        location, transfer, itemEntityCounter);
                             } else {
                                 tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
-                                        stats, tracker, locations, index + 1, transfer);
+                                        stats, tracker, locations, index + 1, transfer, itemEntityCounter);
                             }
                         }
                     }, "目标 region 提交任务未能执行");
@@ -921,7 +925,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                     + location.getWorldName() + "," + location.getX() + "," + location.getY() + "," + location.getZ()
                     + " - " + exception.getMessage());
             tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
-                    stats, tracker, locations, index + 1, transfer);
+                    stats, tracker, locations, index + 1, transfer, itemEntityCounter);
             tracker.taskDone();
         }
     }
@@ -933,7 +937,8 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                                           final CleanupFeature.CleanupStats stats,
                                            final CompletionTracker tracker,
                                            final List<TrashLocation> locations, final int index,
-                                           final TrashLocation location, final WorldTrashTransfer transfer) {
+                                           final TrashLocation location, final WorldTrashTransfer transfer,
+                                           final CleanupFeature.CleanupStats.ItemEntityCounter itemEntityCounter) {
         if (!tracker.isOpen()) {
             returnWorldTrashItem(item, transfer, tracker, null);
             return;
@@ -948,7 +953,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 location, sourceState.getSample().clone(), actualAmount);
         if (accepted <= 0) {
             tryWorldTrash(item, itemStack, actualAmount, snapshot, policy, state,
-                    stats, tracker, locations, index + 1, transfer);
+                    stats, tracker, locations, index + 1, transfer, itemEntityCounter);
             return;
         }
         if (!DroppedItemCommitGuard.commitRemaining(
@@ -962,7 +967,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
             return;
         }
         if (tracker.isOpen()) {
-            stats.addItemsRouted(accepted, TrashRoute.WORLD_TRASH);
+            itemEntityCounter.recordRouted(accepted, TrashRoute.WORLD_TRASH);
             recordItemAmount(tracker, sourceState.getSample(), accepted,
                     trashRouter.destination(location), "");
         }
@@ -972,7 +977,7 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
             return;
         }
         tryWorldTrash(item, itemStack, actualAmount - accepted, snapshot, policy, state,
-                stats, tracker, locations, index + 1, transfer);
+                stats, tracker, locations, index + 1, transfer, itemEntityCounter);
     }
 
     /** 世界垃圾桶全部不可用时先返回原位置，再执行个人、公共或删除降级。 */
@@ -981,14 +986,15 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                                              final CleanupPolicy policy, final RouteState state,
                                              final CleanupFeature.CleanupStats stats,
                                              final CompletionTracker tracker,
-                                             final WorldTrashTransfer transfer) {
+                                             final WorldTrashTransfer transfer,
+                                             final CleanupFeature.CleanupStats.ItemEntityCounter itemEntityCounter) {
         state.worldAvailable = false;
         returnWorldTrashItem(item, transfer, tracker, new Runnable() {
             /** 回到原 region 后继续原有降级决策。 */
             @Override
             public void run() {
                 routeWithFallback(item, itemStack, actualAmount,
-                        snapshot, policy, state, stats, tracker);
+                        snapshot, policy, state, stats, tracker, itemEntityCounter);
             }
         });
     }
@@ -1268,6 +1274,8 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
                 + ", minOnlinePlayers=" + stats.getGuardMinOnlinePlayers()
                 + ", targetEntities=" + stats.getGuardTargetEntities()
                 + ", minTotalEntities=" + stats.getGuardMinTotalEntities()
+                + ", itemEntitiesHandled=" + stats.getItemEntitiesHandled()
+                + ", itemEntitiesToGlobalTrash=" + stats.getItemEntitiesToGlobalTrash()
                 + ", itemsRouted=" + stats.getItemsRouted()
                 + ", itemsRemoved=" + stats.getItemsRemoved()
                 + ", itemsSkipped=" + stats.getItemsSkipped()
@@ -1634,12 +1642,9 @@ public final class FoliaRegionCleanupFeature implements Feature, Listener {
 
     /** 替换通知中的统计占位符。 */
     private String applyStats(String message, CleanupFeature.CleanupStats stats) {
-        int dealItemSum = stats.getItemsRouted() + stats.getItemsRemoved();
         int clearEvery = configSupplier.get().getTrashConfig().getGlobalTrash().getClearEveryCleanups();
         int clearRemain = remainingGlobalClearCount(clearEvery);
-        return (message == null ? "" : message)
-                .replace("%DealItemSum%", String.valueOf(dealItemSum))
-                .replace("%GlobalTrashAddSum%", String.valueOf(stats.getItemsToGlobalTrash()))
+        return CleanupFeature.applyItemStats(message, stats)
                 .replace("%EntitySum%", String.valueOf(stats.getEntitiesRemoved()))
                 .replace("%CleanupSkipReason%", guardReasonText(stats))
                 .replace("%CleanupOnlinePlayers%", String.valueOf(stats.getGuardOnlinePlayers()))

@@ -73,6 +73,22 @@ public final class DefaultResourceDocumentationTest {
         }
     }
 
+    /** 验证四套清理配置都写明旧实体数变量与新增实际件数变量。 */
+    @Test
+    public void cleanupItemCountPlaceholdersAreDocumented() throws Exception {
+        Path root = repositoryRoot();
+        for (String module : MODULES) {
+            String text = read(resources(root, module).resolve("cleanup.yml"));
+
+            assertTrue(module + " 缺少旧版处理实体数变量说明", text.contains("%DealItemSum%"));
+            assertTrue(module + " 缺少旧版公共桶实体数变量说明", text.contains("%GlobalTrashAddSum%"));
+            assertTrue(module + " 缺少实际处理件数变量说明", text.contains("%DealItemAmount%"));
+            assertTrue(module + " 缺少公共桶实际件数变量说明", text.contains("%GlobalTrashAddAmount%"));
+            assertTrue(module + " 缺少三组 64 计为 3 的兼容示例", text.contains("计为 3，保持旧版语义"));
+            assertTrue(module + " 缺少三组 64 计为 192 的精确件数示例", text.contains("计为 192"));
+        }
+    }
+
     /** 验证 trash.yml 的结构版本、关闭状态和两类布局示例。 */
     @Test
     public void trashDefaultsContainSafeUsageExamples() throws Exception {

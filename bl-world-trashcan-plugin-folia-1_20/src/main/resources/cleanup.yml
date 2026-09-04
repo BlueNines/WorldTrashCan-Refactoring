@@ -178,6 +178,11 @@ entities:
 
 # 清理通知配置。
 # 这些通知都属于扫地功能的一部分，因此统一放在 cleanup.yml 中维护。
+# 下列统计变量可用于聊天、控制台、ActionBar、BossBar、Title 和命令通知：
+# %DealItemSum% 是成功处理的掉落实体数；三个各含 64 件物品的掉落实体计为 3，保持旧版语义。
+# %GlobalTrashAddSum% 是至少有一件物品进入公共垃圾桶的来源掉落实体数，同一实体分批写入只计一次。
+# %DealItemAmount% 是成功处理的实际物品件数；上述三个掉落实体计为 192。
+# %GlobalTrashAddAmount% 是实际进入公共垃圾桶的物品件数；路由、存储和审计均使用这个精确数量。
 notify:
   # 聊天栏提醒。
   chat:
