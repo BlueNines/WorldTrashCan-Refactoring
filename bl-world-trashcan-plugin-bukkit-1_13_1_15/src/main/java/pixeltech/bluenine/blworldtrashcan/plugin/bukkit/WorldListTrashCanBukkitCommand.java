@@ -227,11 +227,11 @@ public final class WorldListTrashCanBukkitCommand implements CommandExecutor, Ta
                     "{minEntities}", String.valueOf(stats.getGuardMinTotalEntities())));
             return;
         }
-        sender.sendMessage(message("command.clear-success", "{prefix}&a清理完成: &f世界 {worlds}&a, 回收物品 {routed}&a, 移除物品 {items}&a, 移除实体 {entities}&a。",
+        sender.sendMessage(CleanupFeature.applyItemStats(message("command.clear-success", "{prefix}&a清理完成: &f世界 {worlds}&a, 回收物品 %DealItemSum%&a, 移除物品 {items}&a, 移除实体 {entities}&a。",
                 "{worlds}", String.valueOf(stats.getWorlds()),
                 "{routed}", String.valueOf(stats.getItemsRouted()),
                 "{items}", String.valueOf(stats.getItemsRemoved()),
-                "{entities}", String.valueOf(stats.getEntitiesRemoved())));
+                "{entities}", String.valueOf(stats.getEntitiesRemoved())), stats));
     }
 
     /** 返回扫地门禁原因文案。 */

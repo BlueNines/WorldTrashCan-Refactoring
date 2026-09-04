@@ -89,6 +89,31 @@ public final class DefaultResourceDocumentationTest {
         }
     }
 
+    /** 验证手动清理默认显示来源实体数，精确件数变量只作为可选注释提供。 */
+    @Test
+    public void manualCleanupDefaultsUseLegacyEntityCount() throws Exception {
+        Path root = repositoryRoot();
+        for (String module : MODULES) {
+            for (String language : LANGUAGES) {
+                Path file = resources(root, module).resolve("messages").resolve(language);
+                String text = read(file);
+                String message = load(file).getString("command.clear-success", "");
+
+                assertTrue(file + " 默认手动清理消息应使用旧实体数变量",
+                        message.contains("%DealItemSum%"));
+                assertFalse(file + " 默认手动清理消息不应使用实际处理件数变量",
+                        message.contains("%DealItemAmount%"));
+                assertFalse(file + " 默认手动清理消息不应使用公共桶实际件数变量",
+                        message.contains("%GlobalTrashAddAmount%"));
+                assertFalse(file + " 默认手动清理消息不应继续使用实际入桶件数占位符",
+                        message.contains("{routed}"));
+                assertTrue(file + " 注释应说明实际处理件数变量", text.contains("%DealItemAmount%"));
+                assertTrue(file + " 注释应说明公共桶实际件数变量", text.contains("%GlobalTrashAddAmount%"));
+                assertTrue(file + " 注释应保留旧 {routed} 兼容语义", text.contains("{routed}"));
+            }
+        }
+    }
+
     /** 验证 trash.yml 的结构版本、关闭状态和两类布局示例。 */
     @Test
     public void trashDefaultsContainSafeUsageExamples() throws Exception {

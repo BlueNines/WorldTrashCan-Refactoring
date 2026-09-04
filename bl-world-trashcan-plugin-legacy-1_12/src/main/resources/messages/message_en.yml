@@ -182,8 +182,9 @@ command:
   addon-failed: "{prefix}&#FF6B6BThe addon command failed &#64748B| &#C9D4E2Check the server log."
   # 重载成功提示。
   reload-success: "{prefix}&#5AC8FAWorldListTrashCan reloaded."
-  # 手动清理完成提示，{worlds} 世界数，{routed} 回收物品数，{items} 移除物品数，{entities} 移除实体数。
-  clear-success: "{prefix}&#5AC8FACleanup finished: &#C9D4E2worlds {worlds}&#5AC8FA, routed items {routed}&#5AC8FA, removed items {items}&#5AC8FA, removed entities {entities}&#5AC8FA."
+  # 手动清理默认用 %DealItemSum% 显示成功处理的来源掉落实体数；三个各含 64 件物品的实体计为 3。
+  # 可选精确件数变量：%DealItemAmount% 为实际处理件数，%GlobalTrashAddAmount% 为公共桶实际入桶件数；旧 {routed} 仍表示实际入桶件数。
+  clear-success: "{prefix}&#5AC8FACleanup finished: &#C9D4E2worlds {worlds}&#5AC8FA, routed item entities %DealItemSum%&#5AC8FA, removed items {items}&#5AC8FA, removed entities {entities}&#5AC8FA."
   # 手动清理 guards 参数错误时提示。
   clear-guard-usage: "{prefix}&#FFD166Usage: /wtc clear [true/false]. true ignores guards for this run; false obeys guards."
   # Folia 不支持当前清理扫描时提示。
