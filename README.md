@@ -189,7 +189,7 @@ items:
 - 扫地把物品写入任意垃圾桶前后都会轻量核对掉落实体、材质和数量；若玩家恰好完成拾取、实体删除失败或数量已变化，本次垃圾桶写入会按追踪键回滚，避免背包与垃圾桶同时获得同一份物品。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.3`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.4`。
 
 ### 性能优化估算
 
@@ -333,10 +333,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.5.3`
+- 版本：`7.5.4`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`982086` 字节
-- SHA-256：`849E0D68365C07B8E6C099D6F804ADF4650683A0D32A57947A7AB390746F2899`
+- 文件大小：`984538` 字节
+- SHA-256：`BAE4A9D5834FE11E43E954A3313094DDDB3374A9B942E0FDC541970AA68A53A2`
 - 当前 SHA 已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证个人桶回收提示的共享名称链路：堆叠关闭且逐物品配置不存在时显示 `橡树树苗*8、小麦种子*14、泥土*7`；开启堆叠并配置独立名称后显示 `图鉴树苗*5、农作种子*30、建筑泥土*54`，两轮均未暴露原始 Material 枚举名。
 - 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证完整逐 Material 配置：圆石独立上限 `30`、金锭独立上限 `50`、钻石禁用接管、独立显示名，以及物品自身名称 `Item_Custom_Name x 80` 的最高优先级。另一次连续验收确认 `/wtc reload` 把逻辑数量 `80` 无损拆为最大 `30`，再禁用后保持总量 `80` 且受管实体归零。
 - 当前 SHA 还在 Paper 1.21.4 与 Folia 1.21.8 使用双真实客户端验证扫地和拾取竞争：堆叠开启、关闭及正常个人桶路由均保持 `地面 + 双方背包 + 个人桶 + 公共桶 + 世界桶 = 初始数量`，未出现背包与垃圾桶同时获得同一份物品。
@@ -533,7 +533,7 @@ With `item-stacking` disabled, the `Amount` variables still use the vanilla `Ite
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Cleanup lightly rechecks the dropped entity, material, and amount around every trash destination write. If a player wins the pickup, entity removal fails, or the amount changes, the destination write is rolled back by its tracking key so the inventory and trash cannot both receive the same item.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.3`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.4`.
 
 ### Estimated performance improvements
 
@@ -677,10 +677,10 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.5.3`
+- Version: `7.5.4`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `982086` bytes
-- SHA-256: `849E0D68365C07B8E6C099D6F804ADF4650683A0D32A57947A7AB390746F2899`
+- File size: `984538` bytes
+- SHA-256: `BAE4A9D5834FE11E43E954A3313094DDDB3374A9B942E0FDC541970AA68A53A2`
 - This SHA was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the shared personal-trash item-name chain. With stacking disabled and no per-material file, the notification showed `橡树树苗*8, 小麦种子*14, 泥土*7`; after enabling stacking and configuring independent names, it showed `图鉴树苗*5, 农作种子*30, 建筑泥土*54`. Neither run exposed raw Material enum names.
 - This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the complete per-Material configuration: independent limits of `30` for cobblestone and `50` for gold ingots, disabled management for diamonds, independent display names, and highest precedence for the item's own `Item_Custom_Name x 80`. A second continuous run verified that `/wtc reload` losslessly split a logical amount of `80` to a maximum of `30`, then disabled management while preserving the total amount of `80` and reducing managed entities to zero.
 - This SHA was also verified on Paper 1.21.4 and Folia 1.21.8 with two real clients racing cleanup against pickup. Stacking enabled, stacking disabled, and normal personal-trash routing all preserved `ground + both inventories + personal + global + world = initial amount`, with no item appearing in both an inventory and trash.
