@@ -8,6 +8,11 @@ public interface ItemQuantityService {
     /** 返回掉落物代表的实际数量。 */
     int getAmount(Item item);
 
+    /** 判断物品是否正在等待原版拾取收尾，期间禁止其它业务提交数量。 */
+    default boolean isReserved(Item item) {
+        return false;
+    }
+
     /** 仅在当前数量仍等于预期值时写入剩余数量。 */
     boolean setRemaining(Item item, int expectedAmount, int remainingAmount);
 

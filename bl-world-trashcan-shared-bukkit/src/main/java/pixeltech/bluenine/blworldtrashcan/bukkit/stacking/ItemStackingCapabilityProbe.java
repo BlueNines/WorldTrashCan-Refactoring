@@ -23,6 +23,7 @@ public final class ItemStackingCapabilityProbe {
         Class<?> chunk = load(loader, "org.bukkit.Chunk", missing);
         Class<?> bukkit = load(loader, "org.bukkit.Bukkit", missing);
         Class<?> world = load(loader, "org.bukkit.World", missing);
+        Class<?> entity = load(loader, "org.bukkit.entity.Entity", missing);
         load(loader, "org.bukkit.event.entity.ItemSpawnEvent", missing);
         load(loader, "org.bukkit.event.world.ChunkLoadEvent", missing);
         load(loader, "org.bukkit.event.world.ChunkUnloadEvent", missing);
@@ -47,6 +48,7 @@ public final class ItemStackingCapabilityProbe {
             requireMethod(item, "getScheduler", missing);
             requireMethod(bukkit, "isOwnedByCurrentRegion",
                     new Class<?>[]{world, int.class, int.class}, missing);
+            requireMethod(bukkit, "isOwnedByCurrentRegion", new Class<?>[]{entity}, missing);
         }
         return new Result(missing);
     }

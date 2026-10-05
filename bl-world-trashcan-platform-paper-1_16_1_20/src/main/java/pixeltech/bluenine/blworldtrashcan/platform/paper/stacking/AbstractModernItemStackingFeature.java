@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -54,6 +55,7 @@ import java.util.function.Supplier;
 /** Paper 与 Folia 共用的现代掉落物数量规则和事件处理。 */
 public abstract class AbstractModernItemStackingFeature implements ItemStackingFeature, ItemQuantityService, Listener {
     private static final int MAX_DRAIN_STACKS_PER_ENTITY = 16;
+    private static final int MAX_PENDING_PICKUPS = 4096;
     private static final String WORLD_TRASH_TRANSFER_METADATA = "worldlisttrashcan_world_trash_transfer";
     private static final Method PDC_COPY_TO_METHOD = findPdcCopyToMethod();
     private static final Set<String> CONFLICT_PLUGIN_NAMES = new HashSet<>();
@@ -219,7 +221,7 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
     /** 使用预期数量保护扣减，剩余为零时移除实体。 */
     @Override
     public final boolean setRemaining(Item item, int expectedAmount, int remainingAmount) {
-        if (!usable(item) || getAmount(item) != expectedAmount || remainingAmount < 0) {
+        if (isPickupPending(item) || !usable(item) || getAmount(item) != expectedAmount || remainingAmount < 0) {
             return false;
         }
         if (remainingAmount == 0) {
@@ -238,6 +240,12 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
         enqueue(item, 0L);
         return true;
+    }
+
+    /** 向扫地和其它数量消费者暴露短期原版拾取占用。 */
+    @Override
+    public final boolean isReserved(Item item) {
+        return isPickupPending(item);
     }
 
     /** 把实际数量拆成原版合法物品快照。 */
@@ -265,6 +273,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         lines.add("§7- §f运行: §a" + enabled + " §7/ 排空: §e" + lifecycle.isDraining()
                 + " §7/ 新合并阻断: §e" + lifecycle.isMergeBlocked());
         lines.add("§7- §f冲突阻断: §e" + lifecycle.isConflictBlocked());
+        lines.add("§7- §f拾取事务: §a" + pendingPickups.size()
+                + " §7/ 保护实体: §a" + pendingPickupEntities.size());
         lines.add("§7- §f活动数据标记: §a" + activeState);
         lines.add("§7- §fdirty chunk: §a" + dirtyChunks.size()
                 + " §7/ 已知逻辑区块: §a" + knownStackChunks.size());
@@ -345,7 +355,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         mergeEvents.incrementAndGet();
         Item source = event.getEntity();
         Item target = event.getTarget();
-        if (isWorldTrashTransfer(source) || isWorldTrashTransfer(target)) {
+        if (isWorldTrashTransfer(source) || isWorldTrashTransfer(target)
+                || isPickupPending(source) || isPickupPending(target)) {
             event.setCancelled(true);
             return;
         }
@@ -408,37 +419,8 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
             // 原版实体只能理解物理 ItemStack；事务期间只暴露合法物理数量，收尾时再写回逻辑数量。
             PickupPreparation preparation = prepareVanillaPickup(item, actual, physical,
                     event);
-            if (preparation == null) {
+            if (preparation == null || !startPickupPreparation(preparation)) {
                 event.setCancelled(true);
-            } else {
-                UUID sourceId = item.getUniqueId();
-                if (sourceId == null) {
-                    event.setCancelled(true);
-                    rollbackVanillaPickup(preparation);
-                    return;
-                }
-                pendingPickups.put(sourceId, preparation);
-                pendingPickupEntities.add(sourceId);
-                addPendingPickupEntity(preparation.remainder);
-                if (!schedulePickupReconciliation(item, new Runnable() {
-                    /** 在原版拾取完成后的合法线程收尾事务。 */
-                    @Override
-                    public void run() {
-                        reconcileVanillaPickup(sourceId);
-                    }
-                }, new Runnable() {
-                    /** 调度实体失效时也要释放待处理事务。 */
-                    @Override
-                    public void run() {
-                        reconcileVanillaPickup(sourceId);
-                    }
-                })) {
-                    pendingPickups.remove(sourceId, preparation);
-                    pendingPickupEntities.remove(sourceId);
-                    removePendingPickupEntity(preparation.remainder);
-                    event.setCancelled(true);
-                    rollbackVanillaPickup(preparation);
-                }
             }
             return;
         }
@@ -479,11 +461,11 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
     }
 
-    /** 漏斗等库存拾取逻辑堆叠时每次最多转移一个原版堆叠。 */
+    /** 保留漏斗原版吸取、比较器更新和冷却，仅保护超出物理堆叠的逻辑余量。 */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public final void onInventoryPickup(InventoryPickupItemEvent event) {
         Item item = event.getItem();
-        if (isWorldTrashTransfer(item)) {
+        if (isWorldTrashTransfer(item) || isPickupPending(item)) {
             event.setCancelled(true);
             return;
         }
@@ -491,15 +473,22 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         if (!isManaged(item)) {
             return;
         }
-        event.setCancelled(true);
-        ItemStack sample = item.getItemStack();
-        int request = Math.min(actual, Math.max(1, sample.getMaxStackSize()));
-        InventoryInsertion insertion = insertIntoInventory(event.getInventory(), sample, request);
-        if (insertion.getAcceptedAmount() > 0
-                && setRemaining(item, actual, actual - insertion.getAcceptedAmount())) {
-            inventoryPickedItems.addAndGet(insertion.getAcceptedAmount());
-        } else {
-            insertion.rollback();
+        if (!hasInventorySpace(event.getInventory(), item.getItemStack())) {
+            event.setCancelled(true);
+            return;
+        }
+        PickupPreparation preparation = prepareInventoryPickup(item, actual, event);
+        if (preparation == null || !startPickupPreparation(preparation)) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** 记录所有插件完成漏斗事件派发后的取消结果，不把 MONITOR 当作吸取完成。 */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public final void onInventoryPickupMonitor(InventoryPickupItemEvent event) {
+        PickupPreparation preparation = pendingPickups.get(event.getItem().getUniqueId());
+        if (preparation != null && preparation.event == event) {
+            preparation.cancelled = event.isCancelled();
         }
     }
 
@@ -521,9 +510,13 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         dirtyChunks.remove(key);
     }
 
-    /** 自然消失后让所在区块再次核对状态。 */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    /** 短期拾取事务不允许自然消失；其它消失请求标记区块核对状态。 */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public final void onItemDespawn(ItemDespawnEvent event) {
+        if (isPickupPending(event.getEntity())) {
+            event.setCancelled(true);
+            return;
+        }
         enqueue(event.getEntity(), 0L);
     }
 
@@ -565,6 +558,11 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
 
     /** 判断当前平台是否允许在本次任务线程读取指定区块。 */
     protected boolean canReadChunk(World world, int chunkX, int chunkZ) {
+        return true;
+    }
+
+    /** 判断拾取收尾当前线程能否读取该实体；普通平台的主线程拥有全部实体。 */
+    protected boolean canAccessPickupItem(Item item) {
         return true;
     }
 
@@ -1037,6 +1035,70 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         return null;
     }
 
+    /** 满库存直接保留来源，避免每次失败吸取都生成一个临时余量实体。 */
+    private boolean hasInventorySpace(Inventory inventory, ItemStack sample) {
+        int maximum = Math.min(sample.getMaxStackSize(), inventory.getMaxStackSize());
+        for (ItemStack current : inventory.getStorageContents()) {
+            if (current == null || current.getType() == Material.AIR
+                    || (current.getAmount() < maximum && current.isSimilar(sample))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** 为漏斗暴露合法物理堆叠，并在原版可能移除来源之前保存超额余量。 */
+    private PickupPreparation prepareInventoryPickup(Item item, int actualAmount,
+                                                      InventoryPickupItemEvent event) {
+        int physical = physicalAmount(item);
+        if (!usable(item) || actualAmount < physical || physical <= 0
+                || pendingPickups.size() >= MAX_PENDING_PICKUPS) {
+            return null;
+        }
+        Item remainder = actualAmount > physical ? spawnPolicySplit(item, actualAmount - physical) : null;
+        if (actualAmount > physical && remainder == null) {
+            return null;
+        }
+        PickupPreparation preparation = new PickupPreparation(item, remainder, actualAmount,
+                physical, -1, event);
+        writePhysicalAmount(item, physical);
+        restoreDisplay(item);
+        if (usable(item) && physicalAmount(item) == physical
+                && getAmount(item) == physical && !isManaged(item)) {
+            return preparation;
+        }
+        rollbackVanillaPickup(preparation);
+        return null;
+    }
+
+    /** 注册有界短期事务并使用存活余量实体承接 Folia 的下一 tick 收尾。 */
+    private boolean startPickupPreparation(final PickupPreparation preparation) {
+        final UUID sourceId = preparation.source.getUniqueId();
+        if (sourceId == null || pendingPickups.size() >= MAX_PENDING_PICKUPS) {
+            rollbackVanillaPickup(preparation);
+            return false;
+        }
+        pendingPickups.put(sourceId, preparation);
+        pendingPickupEntities.add(sourceId);
+        addPendingPickupEntity(preparation.remainder);
+        Item anchor = preparation.event instanceof InventoryPickupItemEvent && preparation.remainder != null
+                ? preparation.remainder : preparation.source;
+        Runnable completion = new Runnable() {
+            /** 原版吸取结束或实体 retired 后，只消费一次对应事务。 */
+            @Override
+            public void run() {
+                reconcileVanillaPickup(sourceId);
+            }
+        };
+        if (schedulePickupReconciliation(anchor, completion, completion)) {
+            return true;
+        }
+        pendingPickups.remove(sourceId, preparation);
+        rollbackVanillaPickup(preparation);
+        releasePickupProtection(preparation);
+        return false;
+    }
+
     /** 为非玩家实体准备原版可识别的物理数量，并按事件结果保留逻辑余量。 */
     private PickupPreparation prepareVanillaPickup(Item item, int actualAmount, int physicalAmount,
                                                    EntityPickupItemEvent event) {
@@ -1120,13 +1182,50 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
 
     /** 在原版拾取完成后按事件结果校正源实体，并释放事务保护。 */
     private void reconcileVanillaPickup(UUID sourceId) {
-        PickupPreparation preparation = pendingPickups.remove(sourceId);
+        final PickupPreparation preparation = pendingPickups.get(sourceId);
         if (preparation == null) {
             return;
         }
+        if (preparation.event instanceof InventoryPickupItemEvent && preparation.source.isValid()
+                && !canAccessPickupItem(preparation.source)) {
+            // 余量跟随自己的 region，源实体可能已移动；最多转交一次到源实体所属线程。
+            if (preparation.handoffQueued.compareAndSet(false, true)) {
+                Runnable completion = new Runnable() {
+                    /** 在源实体所属 region 重新核对原版物理余量。 */
+                    @Override
+                    public void run() {
+                        reconcileVanillaPickup(preparation.source.getUniqueId());
+                    }
+                };
+                if (schedulePickupReconciliation(preparation.source, completion, completion)) {
+                    return;
+                }
+            }
+            if (pendingPickups.remove(sourceId, preparation)) {
+                releasePickupProtection(preparation);
+                plugin.getLogger().warning("[ItemStacking] 漏斗收尾无法转交源 region，已保留原版物理余量与逻辑余量: " + sourceId);
+            }
+            return;
+        }
+        if (!pendingPickups.remove(sourceId, preparation)) {
+            return;
+        }
         try {
-            if (preparation.cancelled) {
+            if (preparation.event instanceof InventoryPickupItemEvent && preparation.remainder != null
+                    && preparation.remainder.isValid() && !canAccessPickupItem(preparation.remainder)) {
+                // 两个实体分属不同 region 时不强行合并；它们已经分别保存正确的真实数量。
+                if (!preparation.cancelled && !preparation.event.isCancelled()) {
+                    int observed = isLiveItem(preparation.source) ? physicalAmount(preparation.source) : 0;
+                    inventoryPickedItems.addAndGet(Math.max(0, preparation.physicalAmount - observed));
+                }
+                return;
+            }
+            if (preparation.cancelled || preparation.event.isCancelled()) {
                 rollbackVanillaPickup(preparation);
+                return;
+            }
+            if (preparation.event instanceof InventoryPickupItemEvent) {
+                reconcileInventoryPickup(preparation);
                 return;
             }
             Item source = preparation.source;
@@ -1198,6 +1297,51 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
     }
 
+    /** 读取漏斗原版实际扣减，并把未吸取的物理数量与受保护余量无损合并。 */
+    private void reconcileInventoryPickup(PickupPreparation preparation) {
+        Item source = preparation.source;
+        Item remainder = preparation.remainder;
+        int observed = isLiveItem(source) ? Math.max(0, physicalAmount(source)) : 0;
+        int accepted = Math.max(0, preparation.physicalAmount - observed);
+        inventoryPickedItems.addAndGet(accepted);
+        if (observed == 0) {
+            if (isLiveItem(source)) {
+                source.remove();
+            }
+            if (usable(remainder)) {
+                enqueue(remainder, 0L);
+            }
+            return;
+        }
+        if (remainder == null) {
+            if (writeLogicalPickupResult(source, observed)) {
+                enqueue(source, 0L);
+            }
+            return;
+        }
+        if (!usable(remainder)) {
+            plugin.getLogger().warning("[ItemStacking] 漏斗吸取收尾时受保护余量已失效: " + source.getUniqueId());
+            return;
+        }
+        int logicalRemaining = getAmount(remainder) + observed;
+        if (writeLogicalPickupResult(source, logicalRemaining)) {
+            remainder.remove();
+            if (remainder.isValid()) {
+                // 余量移除失败时恢复拆分状态，防止重复保存同一批余量。
+                writePhysicalAmount(source, observed);
+                restoreDisplay(source);
+            }
+        } else {
+            // 写回失败时仍保留“原版未吸取数量 + 逻辑余量”的两个真实来源。
+            writePhysicalAmount(source, observed);
+            restoreDisplay(source);
+        }
+        enqueue(source, 0L);
+        if (usable(remainder)) {
+            enqueue(remainder, 0L);
+        }
+    }
+
     /** 判断掉落实体仍可读取和修改，即使它当前物理数量暂时为零。 */
     private boolean isLiveItem(Item item) {
         return item != null && item.isValid() && !item.isDead()
@@ -1257,7 +1401,10 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         }
         Item source = preparation.source;
         int logicalRemainder = preparation.originalAmount - preparation.physicalAmount;
-        if (logicalRemainder <= 0 || !usable(source)) {
+        if (logicalRemainder <= 0) {
+            return;
+        }
+        if (!usable(source)) {
             plugin.getLogger().warning("[ItemStacking] 插件关闭时无法物化非玩家拾取逻辑余量: "
                     + (source == null ? "null" : source.getUniqueId())
                     + ", remainder=" + logicalRemainder);
@@ -1317,12 +1464,13 @@ public abstract class AbstractModernItemStackingFeature implements ItemStackingF
         private final int originalAmount;
         private final int physicalAmount;
         private final int expectedRemaining;
-        private final EntityPickupItemEvent event;
+        private final Cancellable event;
         private volatile boolean cancelled;
+        private final AtomicBoolean handoffQueued = new AtomicBoolean(false);
 
         /** 创建拾取事务记录。 */
         private PickupPreparation(Item source, Item remainder, int originalAmount, int physicalAmount,
-                                  int expectedRemaining, EntityPickupItemEvent event) {
+                                  int expectedRemaining, Cancellable event) {
             this.source = source;
             this.remainder = remainder;
             this.originalAmount = originalAmount;

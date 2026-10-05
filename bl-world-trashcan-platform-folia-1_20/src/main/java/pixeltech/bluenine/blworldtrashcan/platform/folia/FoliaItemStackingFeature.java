@@ -81,6 +81,12 @@ public final class FoliaItemStackingFeature extends AbstractModernItemStackingFe
         }
     }
 
+    /** 拾取来源和临时余量各自随实体移动，读取前分别检查 region 所有权。 */
+    @Override
+    protected boolean canAccessPickupItem(org.bukkit.entity.Item item) {
+        return Bukkit.isOwnedByCurrentRegion(item);
+    }
+
     /** 只允许读取当前 Folia region 实际拥有的相邻区块。 */
     @Override
     protected boolean canReadChunk(World world, int chunkX, int chunkZ) {

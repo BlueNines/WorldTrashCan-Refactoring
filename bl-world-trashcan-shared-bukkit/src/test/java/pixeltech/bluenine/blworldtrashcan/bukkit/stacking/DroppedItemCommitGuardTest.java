@@ -86,6 +86,58 @@ public final class DroppedItemCommitGuardTest {
         Assert.assertEquals(Material.DIAMOND, item.stack().getType());
     }
 
+    /** 等待原版吸取的来源不能先写入垃圾桶再尝试扣减。 */
+    @Test
+    public void reservedPickupCannotBeCaptured() {
+        MutableItem item = new MutableItem(Material.DIAMOND, 64);
+        ReservedQuantityService quantities = new ReservedQuantityService();
+        quantities.reserved = true;
+
+        Assert.assertNull(DroppedItemCommitGuard.capture(item.proxy(), quantities));
+    }
+
+    /** 捕获后进入拾取事务时，旧扫地状态也必须失效。 */
+    @Test
+    public void pickupReservationInvalidatesPreviouslyCapturedState() {
+        MutableItem item = new MutableItem(Material.DIAMOND, 64);
+        ReservedQuantityService quantities = new ReservedQuantityService();
+        DroppedItemCommitGuard.State state = DroppedItemCommitGuard.capture(item.proxy(), quantities);
+        quantities.reserved = true;
+
+        Assert.assertFalse(DroppedItemCommitGuard.isCurrent(item.proxy(), state, quantities));
+        Assert.assertFalse(DroppedItemCommitGuard.commitRemaining(item.proxy(), state, 0, quantities));
+        Assert.assertTrue(item.isValid());
+    }
+
+    /** 只提供占用状态的数量服务，提交方法必须始终不被测试调用。 */
+    private static final class ReservedQuantityService implements ItemQuantityService {
+        private boolean reserved;
+
+        /** 返回当前物理数量。 */
+        @Override
+        public int getAmount(Item item) {
+            return item.getItemStack().getAmount();
+        }
+
+        /** 返回模拟的原版拾取占用。 */
+        @Override
+        public boolean isReserved(Item item) {
+            return reserved;
+        }
+
+        /** 被占用的来源不应到达数量提交。 */
+        @Override
+        public boolean setRemaining(Item item, int expectedAmount, int remainingAmount) {
+            Assert.fail("reserved pickup reached source commit");
+            return false;
+        }
+
+        /** 此专项不拆分审计样品。 */
+        @Override
+        public void forEachStack(ItemStack sample, int amount, ItemStackConsumer consumer) {
+        }
+    }
+
     /** 保存测试掉落物可变状态。 */
     private static final class MutableItem implements InvocationHandler {
         private final Item proxy;

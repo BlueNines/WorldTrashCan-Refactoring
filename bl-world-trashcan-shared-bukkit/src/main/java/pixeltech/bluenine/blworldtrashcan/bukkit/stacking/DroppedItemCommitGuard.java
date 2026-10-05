@@ -18,6 +18,9 @@ public final class DroppedItemCommitGuard {
             return null;
         }
         try {
+            if (quantities != null && quantities.isReserved(item)) {
+                return null;
+            }
             if (!item.isValid() || item.isDead()) {
                 return null;
             }
@@ -42,6 +45,9 @@ public final class DroppedItemCommitGuard {
             return false;
         }
         try {
+            if (quantities != null && quantities.isReserved(item)) {
+                return false;
+            }
             if (!item.isValid() || item.isDead()) {
                 return false;
             }

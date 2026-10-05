@@ -7,6 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import pixeltech.bluenine.blworldtrashcan.bukkit.stacking.DroppedItemCommitGuard;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -229,6 +232,249 @@ public final class ItemStackingTransactionTest {
 
         assertEquals(60, inventory.amountAt(0));
         assertNull(inventory.itemAt(1));
+    }
+
+    /** 漏斗事件保留原版处理，准备阶段不直接改写容器库存。 */
+    @Test
+    public void inventoryPickupLetsVanillaTransferOneLegalStack() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        FakeInventory inventory = new FakeInventory(5);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(inventory.proxy(), item.proxy());
+
+        feature.onInventoryPickup(event);
+
+        assertFalse(event.isCancelled());
+        assertNull(inventory.itemAt(0));
+        assertEquals(64, feature.getAmount(item.proxy()));
+        FakeItem remainder = world.spawnedItems().get(0);
+        assertEquals(192, feature.getAmount(remainder.proxy()));
+        inventory.set(0, new ItemStack(Material.COBBLESTONE, 64));
+        item.proxy().remove();
+        feature.onInventoryPickupMonitor(event);
+        feature.runPendingPickupTask();
+
+        assertEquals(256, inventory.amountAt(0) + feature.getAmount(remainder.proxy()));
+        assertFalse(feature.isReserved(remainder.proxy()));
+    }
+
+    /** 漏斗只吸取十个时，原版物理余量与逻辑余量合并为精确的二百四十六个。 */
+    @Test
+    public void inventoryPartialPickupKeepsExactLogicalRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        FakeInventory inventory = new FakeInventory(5);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(inventory.proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        item.setPhysicalAmount(54);
+        inventory.set(0, new ItemStack(Material.COBBLESTONE, 10));
+        feature.runPendingPickupTask();
+
+        assertEquals(246, feature.getAmount(item.proxy()));
+        assertFalse(remainder.isValid());
+        assertEquals(256, inventory.amountAt(0) + feature.getAmount(item.proxy()));
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 原版没有实际扣减时，下一 tick 恢复全部逻辑数量。 */
+    @Test
+    public void fullInventoryPickupDoesNotLoseAnyAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        feature.runPendingPickupTask();
+
+        assertEquals(256, feature.getAmount(item.proxy()));
+        assertFalse(world.spawnedItems().get(0).isValid());
+    }
+
+    /** 已满的漏斗提前取消，不创建短期实体或事务。 */
+    @Test
+    public void completelyFullInventoryDoesNotCreateTemporaryRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        FakeInventory inventory = new FakeInventory(5);
+        inventory.fill(new ItemStack(Material.COBBLESTONE, 64));
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(inventory.proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+
+        assertTrue(event.isCancelled());
+        assertEquals(256, feature.getAmount(item.proxy()));
+        assertTrue(world.spawnedItems().isEmpty());
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 取消事件必须恢复原堆叠；最后一个 MONITOR 的取消也不能被旧快照漏掉。 */
+    @Test
+    public void laterInventoryCancellationRollsBackOriginalStack() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        feature.onInventoryPickupMonitor(event);
+        event.setCancelled(true);
+        feature.runPendingPickupTask();
+
+        assertEquals(256, feature.getAmount(item.proxy()));
+        assertFalse(world.spawnedItems().get(0).isValid());
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 未超过一组的受管物品也需要清掉逻辑标记，再按原版实际余量结算。 */
+    @Test
+    public void smallManagedInventoryPickupUsesObservedRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 63);
+        item.pdcValues.put(FakeItem.key("stack_display_owned"), Byte.valueOf((byte) 1));
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+
+        assertFalse(event.isCancelled());
+        assertTrue(feature.isReserved(item.proxy()));
+        assertTrue(world.spawnedItems().isEmpty());
+        item.setPhysicalAmount(53);
+        feature.runPendingPickupTask();
+        assertEquals(53, feature.getAmount(item.proxy()));
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 准备窗口内禁止再次吸取、合并、自然消失和扫地提交，收尾后释放占用。 */
+    @Test
+    public void inventoryPreparationProtectsBothSourcesFromCompetingConsumers() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        FakeInventory inventory = new FakeInventory(5);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(inventory.proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        InventoryPickupItemEvent second = new InventoryPickupItemEvent(inventory.proxy(), remainder.proxy());
+        feature.onInventoryPickup(second);
+        ItemMergeEvent merge = new ItemMergeEvent(item.proxy(), remainder.proxy());
+        feature.onItemMerge(merge);
+        ItemDespawnEvent despawn = new ItemDespawnEvent(remainder.proxy(), remainder.proxy().getLocation());
+        feature.onItemDespawn(despawn);
+
+        assertTrue(second.isCancelled());
+        assertTrue(merge.isCancelled());
+        assertTrue(despawn.isCancelled());
+        assertNull(DroppedItemCommitGuard.capture(item.proxy(), feature));
+        assertNull(DroppedItemCommitGuard.capture(remainder.proxy(), feature));
+        assertFalse(feature.setRemaining(remainder.proxy(), 192, 0));
+        feature.runPendingPickupTask();
+        assertFalse(feature.isReserved(item.proxy()));
+        assertEquals(256, feature.getAmount(item.proxy()));
+    }
+
+    /** 调度失败必须取消原版事件并撤销准备，不留下悬空事务。 */
+    @Test
+    public void inventorySchedulingFailureRestoresOriginalStack() throws Exception {
+        TestFeature feature = feature(1024);
+        feature.pickupSchedulingSucceeds = false;
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+
+        assertTrue(event.isCancelled());
+        assertEquals(256, feature.getAmount(item.proxy()));
+        assertFalse(world.spawnedItems().get(0).isValid());
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 余量实体生成失败时保留原逻辑实体，不交给原版吞掉超额数量。 */
+    @Test
+    public void inventoryRemainderSpawnFailureLeavesSourceUntouched() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        world.failSpawn = true;
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+
+        assertTrue(event.isCancelled());
+        assertEquals(256, feature.getAmount(item.proxy()));
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 写回逻辑余量失败时保留两个真实来源，不能丢失或重复原版未吸取数量。 */
+    @Test
+    public void inventoryReconciliationWriteFailureKeepsSplitAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        item.setPhysicalAmount(54);
+        item.failNextLogicalWrite(246, 245);
+        feature.runPendingPickupTask();
+
+        assertEquals(246, feature.getAmount(item.proxy())
+                + feature.getAmount(world.spawnedItems().get(0).proxy()));
+        assertFalse(feature.isReserved(item.proxy()));
+    }
+
+    /** 移除临时余量失败时恢复拆分状态，禁止重复保存二百四十六与一百九十二。 */
+    @Test
+    public void inventoryRemainderRemovalFailureDoesNotDuplicateAmount() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        remainder.setRemovalSucceeds(false);
+        item.setPhysicalAmount(54);
+        feature.runPendingPickupTask();
+
+        assertEquals(246, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+        assertFalse(feature.isReserved(remainder.proxy()));
+    }
+
+    /** 分属两个 region 时先切回源实体线程，保留两个来源并释放占用，不跨 region 合并。 */
+    @Test
+    public void inventoryRegionHandoffKeepsSplitRemainder() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        item.setPhysicalAmount(54);
+        feature.inaccessiblePickupItem = item.proxy();
+        feature.runPendingPickupTask();
+        assertTrue(feature.isReserved(item.proxy()));
+        feature.inaccessiblePickupItem = remainder.proxy();
+        feature.runPendingPickupTask();
+
+        assertEquals(246, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+        assertFalse(feature.isReserved(item.proxy()));
+        assertFalse(feature.isReserved(remainder.proxy()));
+    }
+
+    /** 跨 region 的取消事件保留物理源与逻辑余量，总量仍为原来的二百五十六。 */
+    @Test
+    public void cancelledInventoryPickupAcrossRegionsPreservesTotal() throws Exception {
+        TestFeature feature = feature(1024);
+        SpawnTrackingWorld world = new SpawnTrackingWorld();
+        FakeItem item = new FakeItem(world.proxy(), Material.COBBLESTONE, 256);
+        InventoryPickupItemEvent event = new InventoryPickupItemEvent(new FakeInventory(5).proxy(), item.proxy());
+        feature.onInventoryPickup(event);
+        FakeItem remainder = world.spawnedItems().get(0);
+        event.setCancelled(true);
+        feature.inaccessiblePickupItem = remainder.proxy();
+        feature.runPendingPickupTask();
+
+        assertEquals(256, feature.getAmount(item.proxy()) + feature.getAmount(remainder.proxy()));
+        assertFalse(feature.isReserved(item.proxy()));
     }
 
     /** 非玩家拾取逻辑堆叠时只交给原版一组，并保留剩余逻辑数量。 */
@@ -909,6 +1155,13 @@ public final class ItemStackingTransactionTest {
         private Runnable pendingPickupTask;
         private Runnable pendingPickupRetiredTask;
         private boolean pickupSchedulingSucceeds = true;
+        private Item inaccessiblePickupItem;
+
+        /** 模拟源实体与余量分别位于不同 Folia region。 */
+        @Override
+        protected boolean canAccessPickupItem(Item item) {
+            return item != inaccessiblePickupItem;
+        }
 
         /** 测试同步保存小型状态。 */
         @Override
