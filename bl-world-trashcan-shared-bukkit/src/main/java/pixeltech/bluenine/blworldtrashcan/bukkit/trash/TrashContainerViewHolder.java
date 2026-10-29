@@ -8,6 +8,7 @@ import java.util.UUID;
 /** 标识一个垃圾容器的单玩家分页视图，不持有业务物品副本。 */
 final class TrashContainerViewHolder implements InventoryHolder {
     private final TrashContainerMenu menu;
+    private final Object loreToken = new Object();
     private final UUID playerId;
     private final int pageIndex;
     private final TrashContainerStore store;
@@ -32,6 +33,11 @@ final class TrashContainerViewHolder implements InventoryHolder {
     /** 判断视图是否属于指定菜单实例。 */
     boolean belongsTo(TrashContainerMenu target) {
         return menu == target;
+    }
+
+    /** 返回不含库存或玩家引用的发包会话令牌。 */
+    Object getLoreToken() {
+        return loreToken;
     }
 
     /** 返回查看玩家 UUID。 */

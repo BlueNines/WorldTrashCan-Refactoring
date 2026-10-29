@@ -77,6 +77,8 @@ global-trash:
 
 `compact.item-lore` 同时控制数量、原 Lore 和操作提示的完整顺序，公共桶与个人桶都可独立配置。`{content}` 展开经过 `max-original-lore-lines` 截断后的原 Lore；没有该行表示主动隐藏原 Lore，重复配置时只展开第一个并在重载时警告。固定空行可写 `""` 或 `"&7"`。普通模板行支持 RGB、传统颜色、页码/数量变量和 PlaceholderAPI。旧服已有的 `show-amount-lore`、`amount-lore`、`action-lore` 仍会按原顺序兼容，但新生成配置不再写出这些旧节点。
 
+已启用兼容的 PacketEvents 时，公共桶和个人桶会自动把 `{content}` 后的模板提示移到其它插件动态 Lore 后面；同时覆盖打开菜单和单槽数量更新。未安装、未启用或 API 不兼容时继续使用原有 Bukkit 展示，不影响扫地、存取及物品数据。此功能不需要额外配置，不会额外截断动态 Lore；其它插件若在更晚阶段再次改包，仍可能改变最终顺序。修改 Lore 模板后执行 `/wtc reload` 生效；安装或更换 PacketEvents 后请重启服务端。
+
 ### 配置文件保守更新
 
 当前重构版默认不会改写服主已有配置，旧配置节点会继续兼容读取。希望把受支持的旧写法整理为当前格式时，可以在 `config.yml` 主动开启：
@@ -193,7 +195,7 @@ items:
 - 扫地把物品写入任意垃圾桶前后都会轻量核对掉落实体、材质和数量；若玩家恰好完成拾取、实体删除失败或数量已变化，本次垃圾桶写入会按追踪键回滚，避免背包与垃圾桶同时获得同一份物品。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.5`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.6`。
 
 ### 性能优化估算
 
@@ -337,21 +339,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.5.5`
+- 版本：`7.5.6`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`986957` 字节
-- SHA-256：`9E14A708EE192E5AC1A4C1C8BB92E5DAF528FF125F12E3F75A5CFC36D42BE868`
-- 当前 SHA 已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证个人桶回收提示的共享名称链路：堆叠关闭且逐物品配置不存在时显示 `橡树树苗*8、小麦种子*14、泥土*7`；开启堆叠并配置独立名称后显示 `图鉴树苗*5、农作种子*30、建筑泥土*54`，两轮均未暴露原始 Material 枚举名。
-- 本次最终整包已在 Paper 1.21.8 使用真实 Fabric 1.21.8 客户端验证完整逐 Material 配置：圆石独立上限 `30`、金锭独立上限 `50`、钻石禁用接管、独立显示名，以及物品自身名称 `Item_Custom_Name x 80` 的最高优先级。另一次连续验收确认 `/wtc reload` 把逻辑数量 `80` 无损拆为最大 `30`，再禁用后保持总量 `80` 且受管实体归零。
-- 当前 SHA 还在 Paper 1.21.4 与 Folia 1.21.8 使用双真实客户端验证扫地和拾取竞争：堆叠开启、关闭及正常个人桶路由均保持 `地面 + 双方背包 + 个人桶 + 公共桶 + 世界桶 = 初始数量`，未出现背包与垃圾桶同时获得同一份物品。
-- 地面掉落物逻辑堆叠的数量上限、完整物品身份隔离、满背包部分拾取、漏斗转移、重启恢复、关闭排空和扫地路由，已在翻译功能加入前使用同一套实现的历史 Universal 整包于 Paper 1.21.8 和 Folia 1.21.8 完成真实客户端全链路验收；这些历史业务证据不冒充当前 SHA 的重复全量验收。
-- 个人垃圾桶通知双按钮已使用整包 JAR 在 Paper 1.21.4、Paper 1.12.2 和 Folia 1.21.8 的真实客户端中验证，覆盖正式扫地回收通知、左右按钮可见性，以及从客户端聊天输入两条命令后分别打开个人桶/公共桶 GUI；本轮未把鼠标实际点击计入通过项。
-- 公共垃圾桶排序已在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.4 使用真实客户端验证。
-- 自定义数据路由已在 Paper 1.12.2 验证 Raw NBT，在 Folia 1.21.8 验证 PDC、个人桶路由、留地、直删和公共桶准入。
-- 公共垃圾桶 `glow` 已使用同一整包在 Paper 1.12.2、Paper 1.20.4 和 Folia 1.21.8 完成真实客户端验证。
-- 个人垃圾桶统一容器已使用同一整包在 Paper 1.12.2、Paper 1.21.4 和 Folia 1.21.8 完成匹配版本真实客户端验收，覆盖完整 `item-lore` 模板、空行、多行原 Lore 截断、隐藏原 Lore、重复 `{content}`、旧节点回退，以及紧凑/堆叠、翻页、玩家排序、actions、close、glow、PAPI、手动放入、取出、重载保留、容量策略和 UUID 隔离。
-- 三端各完成 600 次菜单打开压力检查，观测 TPS 分别为 `19.981`、`19.996`、`19.998`，服务端日志未发现本专项禁止异常。
-- 2026-08-28 修复现代逻辑堆叠物品被猪灵等非玩家实体拾取时的事务竞争：按事件后的实际物理余量对账逻辑数量，保护并发拾取实体，并在事件取消、调度失败、实体失效或插件关闭时回滚；当前最终 Universal 整包在 Paper 1.21.4 的 21 只猪灵压力验收达到 `128` 次有效拾取、`128` 次交易，初始 `128` 个逻辑物品最终全部守恒，另有 `14` 次竞争拾取被保护取消且无堆叠警告。四张原生客户端截图和完整服务端日志保存在本地 `wtc-piglin-paper-1214-20260828-fixed-r60` 证据目录。
+- 文件大小：`998783` 字节
+- SHA-256：`651121D3A29257C465454C6BA9851382E61D18628319939DDD8B0C5D5AB95E10`
 
 ## English
 
@@ -427,6 +418,8 @@ global-trash:
 Compact mode does not split a batch into many duplicate display entries. For example, when `9980` items are stored and another `20` arrive, the remaining capacity is accepted and the entry becomes `9999`; any remainder follows the existing routing rules. Public trash contents are runtime data and are cleared on restart, matching the legacy behavior.
 
 `compact.item-lore` controls the complete order of the amount, original Lore, and operation hints. Global and personal trash can configure it independently. `{content}` expands original Lore after `max-original-lore-lines` truncation. Omitting it intentionally hides original Lore; duplicates expand only the first and produce one reload warning. Use `""` or `"&7"` for a fixed blank line. Normal template lines support RGB, legacy colors, page/amount variables, and PlaceholderAPI. Existing `show-amount-lore`, `amount-lore`, and `action-lore` settings remain compatible in their legacy order, but new defaults no longer emit them.
+
+With a compatible, enabled PacketEvents installation, global and personal trash menus automatically move template lines after `{content}` behind other plugins' dynamic Lore. Both full-window and single-slot updates are covered. Without PacketEvents, or when its API is unavailable, the existing Bukkit display remains fully functional; cleanup, storage, withdrawal, and real item data are unchanged. No extra setting is required, and dynamic Lore is not additionally truncated. Plugins modifying packets at a later stage can still change the final order. Run `/wtc reload` after changing Lore templates; restart the server after installing or replacing PacketEvents.
 
 ### Conservative configuration updates
 
@@ -541,7 +534,7 @@ Scheduled cleanup and `/wtc clear` messages in newly generated language files us
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Cleanup lightly rechecks the dropped entity, material, and amount around every trash destination write. If a player wins the pickup, entity removal fails, or the amount changes, the destination write is rolled back by its tracking key so the inventory and trash cannot both receive the same item.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.5`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.6`.
 
 ### Estimated performance improvements
 
@@ -685,18 +678,7 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.5.5`
+- Version: `7.5.6`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `986957` bytes
-- SHA-256: `9E14A708EE192E5AC1A4C1C8BB92E5DAF528FF125F12E3F75A5CFC36D42BE868`
-- This SHA was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the shared personal-trash item-name chain. With stacking disabled and no per-material file, the notification showed `橡树树苗*8, 小麦种子*14, 泥土*7`; after enabling stacking and configuring independent names, it showed `图鉴树苗*5, 农作种子*30, 建筑泥土*54`. Neither run exposed raw Material enum names.
-- This final universal JAR was verified on Paper 1.21.8 with a real Fabric 1.21.8 client for the complete per-Material configuration: independent limits of `30` for cobblestone and `50` for gold ingots, disabled management for diamonds, independent display names, and highest precedence for the item's own `Item_Custom_Name x 80`. A second continuous run verified that `/wtc reload` losslessly split a logical amount of `80` to a maximum of `30`, then disabled management while preserving the total amount of `80` and reducing managed entities to zero.
-- This SHA was also verified on Paper 1.21.4 and Folia 1.21.8 with two real clients racing cleanup against pickup. Stacking enabled, stacking disabled, and normal personal-trash routing all preserved `ground + both inventories + personal + global + world = initial amount`, with no item appearing in both an inventory and trash.
-- Before the translation resources were added, the same stacking implementation completed real-client end-to-end verification on Paper 1.21.8 and Folia 1.21.8 for logical caps, full item-identity isolation, partial pickup with a full inventory, hopper transfer, restart recovery, drain-on-disable, and cleanup routing. Those historical business checks are not presented as a full rerun of the current SHA.
-- Personal-trash dual notification buttons were verified with the universal JAR on real clients running Paper 1.21.4, Paper 1.12.2, and Folia 1.21.8. The evidence covers the cleanup notification, separate left/right button visibility, and opening the personal/global GUIs from commands entered in the client chat; physical mouse clicks are not claimed as passed.
-- Public trash-can sorting was verified with real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.4.
-- Custom-data routing was verified with Raw NBT on Paper 1.12.2 and with PDC, personal-only routing, keep-ground, direct removal, and public admission rules on Folia 1.21.8.
-- Public trash-can `glow` was verified with the same universal JAR on Paper 1.12.2, Paper 1.20.4, and Folia 1.21.8 using real clients.
-- The unified personal container was verified with the same universal JAR and matching real clients on Paper 1.12.2, Paper 1.21.4, and Folia 1.21.8. Coverage includes the complete `item-lore` template, blank lines, multi-line original Lore truncation, hidden original Lore, duplicate `{content}`, legacy-node fallback, compact/stacked modes, pagination, per-player sorting, actions, close, glow, PAPI, manual deposits, withdrawals, reload retention, capacity policies, and UUID isolation.
-- Each platform completed a 600-open menu stress check with observed TPS of `19.981`, `19.996`, and `19.998`; no forbidden runtime exceptions were found for this matrix.
-- On 2026-08-28, modern logical stacks picked up by piglins and other non-player entities were fixed to reconcile logical amounts with the post-event physical remainder, protect competing pickup transactions, and roll back on cancellation, scheduling failure, entity invalidation, or plugin shutdown. The current final universal JAR completed a Paper 1.21.4 pressure run with 21 piglins: `128` valid pickups and `128` trades from an initial logical amount of `128`; `14` competing pickups were protected and cancelled, with conservation preserved and no stacking warnings. Four native client screenshots and the complete server log are retained locally under the `wtc-piglin-paper-1214-20260828-fixed-r60` evidence directory.
+- File size: `998783` bytes
+- SHA-256: `651121D3A29257C465454C6BA9851382E61D18628319939DDD8B0C5D5AB95E10`

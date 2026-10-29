@@ -3,6 +3,7 @@ version: ${project.version}
 main: pixeltech.bluenine.blworldtrashcan.plugin.legacy.WorldListTrashCanLegacyPlugin
 author: BlueNine
 softdepend:
+  - packetevents
   - Vault
   - PlaceholderAPI
 commands:

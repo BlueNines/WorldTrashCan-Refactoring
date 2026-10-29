@@ -49,6 +49,9 @@ global-trash:
     shift-right-click-amount: 64
     # 最多保留多少行原始物品 Lore；-1 表示全部保留。
     max-original-lore-lines: 5
+    # 已启用且 API 可用的 PacketEvents 会自动将 {content} 后的模板提示移至动态 Lore 后。
+    # 无需安装前置也能正常显示；无前置或适配失败时保留 Bukkit 完整展示，不修改真实物品。
+    # 只整理模板尾部，不额外截断其它插件的动态描述；本行数上限仍只限制原物品 Lore。
     # 紧凑展示物的完整 Lore 模板，列表顺序就是游戏内顺序；支持 RGB、传统颜色和 PlaceholderAPI 变量。
     # {content} 必须独占一行，用于在当前位置展开原物品 Lore；没有它表示隐藏原 Lore，配置多个时只展开第一个。
     # 可使用 {amount}、{take-amount}、{shift-take-amount}、{right-take-amount}、{shift-right-take-amount}、{page}、{max-page}。
@@ -258,6 +261,8 @@ personal-trash:
     max-original-lore-lines: 5
     # 个人桶紧凑展示物的完整 Lore 模板；顺序、颜色和可用变量与公共桶相同。
     # {content} 必须独占一行；没有它会隐藏原 Lore，多个时只展开第一个。固定空行可填写 "" 或 "&7"。
+    # 启用兼容的 PacketEvents 时，{content} 后的模板提示会自动移到其它插件的动态 Lore 后面。
+    # 未安装前置或适配不可用时仍完整使用原 Bukkit 展示；不会额外截断其它插件的动态 Lore。
     item-lore:
       - "&#38BDF8数量：&#F5B82E{amount}"
       - "{content}"

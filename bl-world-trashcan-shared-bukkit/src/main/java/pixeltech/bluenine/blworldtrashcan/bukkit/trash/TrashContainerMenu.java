@@ -41,6 +41,7 @@ final class TrashContainerMenu {
     private final GlobalTrashActionExecutor actionExecutor;
     private final LayoutItemGlint layoutItemGlint;
     private final CustomModelDataSupport customModelDataSupport;
+    private final TrashMenuLoreRouter loreRouter;
     private final Map<Character, Material> layoutMaterials = new HashMap<>();
     private final Map<UUID, TrashContainerViewHolder> activeViews = new ConcurrentHashMap<>();
     private final Map<UUID, PlayerSortPreferences> sortPreferences = new ConcurrentHashMap<>();
@@ -60,6 +61,7 @@ final class TrashContainerMenu {
         this.layoutItemGlint = new LayoutItemGlint(plugin.getLogger());
         this.customModelDataSupport = customModelDataSupport == null
                 ? CustomModelDataSupport.unsupported(plugin.getLogger()) : customModelDataSupport;
+        this.loreRouter = TrashMenuLoreRouter.select(plugin, policy.getLogName());
     }
 
     /** 重载菜单配置并关闭旧视图，容器 Store 存量由调用方保留。 */
@@ -183,6 +185,7 @@ final class TrashContainerMenu {
             return false;
         }
         activeViews.remove(holder.getPlayerId(), holder);
+        loreRouter.closeView(holder.getPlayerId(), holder.getLoreToken());
         return true;
     }
 
@@ -191,12 +194,21 @@ final class TrashContainerMenu {
         if (playerId == null) {
             return;
         }
-        activeViews.remove(playerId);
+        TrashContainerViewHolder holder = activeViews.remove(playerId);
+        if (holder != null) {
+            loreRouter.closeView(playerId, holder.getLoreToken());
+        }
         sortPreferences.remove(playerId);
     }
 
     /** 关闭全部旧视图并释放菜单缓存。 */
     void close() {
+        closeViews();
+        loreRouter.close();
+    }
+
+    /** 清空容器时只关闭页面，保留可选路由供之后重新打开。 */
+    void closeViews() {
         closeCurrentViewers();
         activeViews.clear();
         sortPreferences.clear();
@@ -209,10 +221,17 @@ final class TrashContainerMenu {
         int pageIndex = Math.max(0, Math.min(requestedPage, pageCount - 1));
         TrashContainerViewHolder holder = new TrashContainerViewHolder(
                 this, player.getUniqueId(), pageIndex, store, snapshot);
+        if (config.getMode() == TrashConfig.GlobalTrashMode.COMPACT) {
+            loreRouter.beginView(player.getUniqueId(), holder.getLoreToken(), layout.getInventorySize());
+        }
         Inventory inventory = createViewPage(player, holder, pageIndex);
         holder.bind(inventory);
         activeViews.put(player.getUniqueId(), holder);
-        player.openInventory(inventory);
+        InventoryView opened = player.openInventory(inventory);
+        if (opened == null || !isViewingThisMenu(player)) {
+            activeViews.remove(player.getUniqueId(), holder);
+            loreRouter.closeView(player.getUniqueId(), holder.getLoreToken());
+        }
     }
 
     /** 创建指定页的只读展示库存。 */
@@ -232,7 +251,7 @@ final class TrashContainerMenu {
                         ? null : snapshot.getReference(pageIndex, contentIndex);
                 TrashContainerStore.DisplayItem display = holder.getStore().getDisplayItem(reference);
                 if (display != null) {
-                    inventory.setItem(slot, createContentItem(display, player, pageIndex, maxPages));
+                    inventory.setItem(slot, createContentItem(display, player, pageIndex, maxPages, holder, slot));
                 }
                 continue;
             }
@@ -403,8 +422,11 @@ final class TrashContainerMenu {
         int contentIndex = contentIndex(rawSlot);
         TrashContainerStore.DisplayReference reference = snapshot.getReference(holder.getPageIndex(), contentIndex);
         TrashContainerStore.DisplayItem display = holder.getStore().getDisplayItem(reference);
+        if (display == null) {
+            loreRouter.updateSlot(holder.getPlayerId(), holder.getLoreToken(), rawSlot, Collections.<String>emptyList());
+        }
         holder.getInventory().setItem(rawSlot, display == null ? null
-                : createContentItem(display, player, holder.getPageIndex(), snapshot.getPageCount()));
+                : createContentItem(display, player, holder.getPageIndex(), snapshot.getPageCount(), holder, rawSlot));
     }
 
     /** 切换当前模式排序并创建新快照。 */
@@ -513,7 +535,7 @@ final class TrashContainerMenu {
 
     /** 创建紧凑或堆叠模式内容展示物。 */
     private ItemStack createContentItem(TrashContainerStore.DisplayItem display, Player player,
-                                        int pageIndex, int maxPages) {
+                                        int pageIndex, int maxPages, TrashContainerViewHolder holder, int slot) {
         ItemStack itemStack = display.getSample();
         if (config.getMode() == TrashConfig.GlobalTrashMode.STACKED) {
             itemStack.setAmount(display.getDisplayAmount());
@@ -532,6 +554,11 @@ final class TrashContainerMenu {
         List<String> lore = new ArrayList<>(expandedLore.size());
         for (String line : expandedLore) {
             lore.add(resolveContentText(player, line, pageIndex, maxPages, display, 0));
+        }
+        if (loreRouter.isPacketRoute()) {
+            int tailSize = TrashMenuLoreRouter.tailSize(compact.getItemLore());
+            loreRouter.updateSlot(player.getUniqueId(), holder.getLoreToken(), slot,
+                    lore.subList(lore.size() - tailSize, lore.size()));
         }
         meta.setLore(lore.isEmpty() ? null : lore);
         if (meta.hasDisplayName()) {
@@ -748,6 +775,7 @@ final class TrashContainerMenu {
     private void closeCurrentViewers() {
         List<UUID> viewerIds = new ArrayList<>(activeViews.keySet());
         activeViews.clear();
+        loreRouter.clearViews();
         for (final UUID playerId : viewerIds) {
             if (platform == null) {
                 Player player = Bukkit.getPlayer(playerId);

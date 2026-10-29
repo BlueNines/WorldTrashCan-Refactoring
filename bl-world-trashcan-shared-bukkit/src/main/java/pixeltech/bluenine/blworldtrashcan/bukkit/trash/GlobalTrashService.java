@@ -289,7 +289,7 @@ public final class GlobalTrashService {
 
     /** 清空所有公共垃圾桶模型存量。 */
     public void clearContent() {
-        containerMenu.close();
+        containerMenu.closeViews();
         store.clear();
         recordMutation(TrashMutation.clear(CleanupItemDestination.globalTrash(),
                 TrashMutationReason.GLOBAL_REFRESH, System.currentTimeMillis()));

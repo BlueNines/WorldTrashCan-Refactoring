@@ -5,6 +5,7 @@ api-version: '1.20'
 folia-supported: true
 author: BlueNine
 softdepend:
+  - packetevents
   - Vault
   - PlaceholderAPI
   - RoseStacker
