@@ -383,13 +383,13 @@ final class TrashContainerMenu {
             sourceInventory.setItem(sourceSlot, remainder);
         }
         cleanItemStack.setAmount(accepted);
-        syncManualPutView(player, store, store.identityKey(cleanItemStack));
+        syncManualPutView(player, store);
         policy.afterManualPut(player, cleanItemStack, result.getTrackingKey(), accepted);
     }
 
-    /** 手动放入后重新发送当前页，兼容旧版服务端包装过的顶部库存对象。 */
-    private void syncManualPutView(Player player, TrashContainerStore store, String identityKey) {
-        if (player == null || store == null || identityKey == null) {
+    /** 手动放入与取出使用同一延迟刷新入口，不重开窗口或跳到其它页面。 */
+    private void syncManualPutView(Player player, TrashContainerStore store) {
+        if (player == null || store == null) {
             return;
         }
         TrashContainerViewHolder holder = activeViews.get(player.getUniqueId());
@@ -400,14 +400,7 @@ final class TrashContainerMenu {
         if (openView == null || !isViewingThisMenu(player)) {
             return;
         }
-        TrashContainerStore.ViewSnapshot previous = holder.getSnapshot();
-        TrashContainerStore.ViewSnapshot refreshed = store.refreshIdentityInSnapshot(
-                previous, identityKey);
-        int targetPage = store.findChangedIdentityPage(
-                previous, refreshed, identityKey, holder.getPageIndex());
-        holder.replaceSnapshot(refreshed);
-        int page = targetPage >= 0 ? targetPage : holder.getPageIndex();
-        openPage(player, store, page, refreshed);
+        scheduleContentSync(holder);
     }
 
     /** 点击结算后只校准操作者的当前页，同 Tick 连续操作合并为一次。 */
@@ -444,7 +437,7 @@ final class TrashContainerMenu {
         });
     }
 
-    /** 沿用本人的排序快照校准全部内容槽，只发送实际变化，不重开菜单。 */
+    /** 按本人的排序重排整个引用列表，只渲染当前页的变化，不刷新其他玩家。 */
     private void syncContentPage(Player player, TrashContainerViewHolder holder) {
         TrashContainerStore.ViewSnapshot snapshot = holder.getSnapshot();
         Inventory inventory = holder.getInventory();
@@ -454,6 +447,9 @@ final class TrashContainerMenu {
         List<Integer> slots = layout.getContentSlots();
         List<TrashContainerStore.DisplayItem> displays = new ArrayList<>(slots.size());
         synchronized (holder.getStore()) {
+            snapshot = holder.getStore().createViewSnapshot(snapshot.getSortType())
+                    .retainPageCount(snapshot.getPageCount());
+            holder.replaceSnapshot(snapshot);
             for (int contentIndex = 0; contentIndex < slots.size(); contentIndex++) {
                 TrashContainerStore.DisplayReference reference = snapshot.getReference(
                         holder.getPageIndex(), contentIndex);

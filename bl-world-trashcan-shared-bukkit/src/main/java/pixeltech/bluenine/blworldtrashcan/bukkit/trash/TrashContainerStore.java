@@ -10,6 +10,7 @@ import pixeltech.bluenine.blworldtrashcan.config.TrashConfig;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +26,8 @@ public class TrashContainerStore {
     private final String lifecycleId = UUID.randomUUID().toString();
     private final Map<String, StoredEntry> entries = new LinkedHashMap<>();
     private final Map<Long, StoredEntry> entriesById = new LinkedHashMap<>();
+    private final Map<TrashConfig.GlobalTrashSortType, ViewSnapshot> sortedSnapshots =
+            new EnumMap<>(TrashConfig.GlobalTrashSortType.class);
     private TrashConfig.TrashContainerConfig config;
     private int contentSlotsPerPage = 1;
     private long nextEntryId = 1L;
@@ -46,6 +49,7 @@ public class TrashContainerStore {
     public synchronized void configure(TrashConfig.TrashContainerConfig nextConfig, int contentSlots) {
         this.config = nextConfig;
         this.contentSlotsPerPage = Math.max(1, contentSlots);
+        sortedSnapshots.clear();
     }
 
     /** 返回固定的身份实现名称。 */
@@ -134,6 +138,7 @@ public class TrashContainerStore {
         } else {
             entry.amount += accepted;
         }
+        sortedSnapshots.clear();
         return TrashWriteResult.accepted((int) accepted, requested, entry.trackingKey, false);
     }
 
@@ -185,10 +190,14 @@ public class TrashContainerStore {
         return 0;
     }
 
-    /** 创建一次打开会话使用的稳定排序和分页引用快照。 */
+    /** 按排序方式复用当前库存的不可变引用快照，成功写入或扣减后才重新排序。 */
     public synchronized ViewSnapshot createViewSnapshot(TrashConfig.GlobalTrashSortType sortType) {
         TrashConfig.GlobalTrashSortType effectiveSort = sortType == null
                 ? TrashConfig.GlobalTrashSortType.INSERTION : sortType;
+        ViewSnapshot cached = sortedSnapshots.get(effectiveSort);
+        if (cached != null) {
+            return cached;
+        }
         List<StoredEntry> ordered = new ArrayList<>(entries.values());
         if (effectiveSort != TrashConfig.GlobalTrashSortType.INSERTION) {
             Collections.sort(ordered, comparator(effectiveSort));
@@ -208,7 +217,9 @@ public class TrashContainerStore {
         }
         int requiredPages = (references.size() + contentSlotsPerPage - 1) / contentSlotsPerPage;
         int pageCount = Math.max(configuredMaxPages(), Math.max(1, requiredPages));
-        return new ViewSnapshot(effectiveSort, contentSlotsPerPage, pageCount, references);
+        ViewSnapshot snapshot = new ViewSnapshot(effectiveSort, contentSlotsPerPage, pageCount, references);
+        sortedSnapshots.put(effectiveSort, snapshot);
+        return snapshot;
     }
 
     /** 只把指定物品身份缺少的引用补入旧快照，不移动任何仍有效的现有引用。 */
@@ -364,6 +375,7 @@ public class TrashContainerStore {
     public synchronized void clear() {
         entries.clear();
         entriesById.clear();
+        sortedSnapshots.clear();
     }
 
     /** 移除指定存储条目的数量并同步两个索引。 */
@@ -373,6 +385,7 @@ public class TrashContainerStore {
         }
         long removed = Math.min(requestedAmount, entry.amount);
         entry.amount -= removed;
+        sortedSnapshots.clear();
         if (entry.amount <= 0L) {
             entries.remove(entry.key);
             entriesById.remove(Long.valueOf(entry.entryId));
@@ -583,7 +596,7 @@ public class TrashContainerStore {
         }
     }
 
-    /** 一次打开公共垃圾桶时冻结的排序和分页引用。 */
+    /** 单次库存状态的不可变排序与分页引用；每名玩家独立选择何时替换。 */
     public static final class ViewSnapshot {
         private final TrashConfig.GlobalTrashSortType sortType;
         private final int contentSlotsPerPage;
@@ -597,6 +610,19 @@ public class TrashContainerStore {
             this.contentSlotsPerPage = contentSlotsPerPage;
             this.pageCount = pageCount;
             this.references = Collections.unmodifiableList(new ArrayList<>(references));
+        }
+
+        /** 沿用已打开窗口的页数，避免库存收缩令当前页失效；不复制引用数组。 */
+        ViewSnapshot retainPageCount(int minimumPages) {
+            return minimumPages <= pageCount ? this : new ViewSnapshot(this, minimumPages);
+        }
+
+        /** 为当前窗口共享排序引用，仅保留其已有的空白尾页。 */
+        private ViewSnapshot(ViewSnapshot source, int pageCount) {
+            this.sortType = source.sortType;
+            this.contentSlotsPerPage = source.contentSlotsPerPage;
+            this.pageCount = pageCount;
+            this.references = source.references;
         }
 
         /** 返回指定页和内容下标的稳定引用。 */

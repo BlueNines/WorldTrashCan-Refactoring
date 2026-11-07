@@ -11,6 +11,47 @@ import java.util.Collections;
 
 /** 验证公共与个人垃圾桶共用存储的容量、隔离和重试语义。 */
 public final class TrashContainerStoreTest {
+    /** 同库存与排序只生成一次快照，切换排序不污染其他玩家旧快照。 */
+    @Test
+    public void immutableSortCacheIsReusedAndInvalidatedOnMutation() {
+        TrashContainerStore store = store("cache", compactConfig(9999L, 2), 3);
+        store.add(new ItemStack(Material.STONE, 8), false);
+        store.add(new ItemStack(Material.DIRT, 5), false);
+        TrashContainerStore.ViewSnapshot first = store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC);
+        Assert.assertSame(first, store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC));
+        TrashContainerStore.ViewSnapshot ascending = store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_ASC);
+        Assert.assertNotSame(first, ascending);
+        Assert.assertSame(first, store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC));
+        Assert.assertEquals(0, store.remove("missing", 2));
+        Assert.assertSame(first, store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC));
+        store.remove(first.getReference(0, 0).getEntryId(), 7);
+        TrashContainerStore.ViewSnapshot next = store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC);
+        Assert.assertNotSame(first, next);
+        Assert.assertEquals(Material.DIRT, store.getDisplayItem(next.getReference(0, 0)).getSample().getType());
+        Assert.assertEquals(Material.STONE, store.getDisplayItem(first.getReference(0, 0)).getSample().getType());
+        store.add(new ItemStack(Material.STONE, 9), false);
+        Assert.assertNotSame(next, store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC));
+        store.clear();
+        Assert.assertEquals(0, store.createViewSnapshot(TrashConfig.GlobalTrashSortType.AMOUNT_DESC).getReferenceCount());
+    }
+
+    /** 重载模式和布局后缓存失效，旧快照仍只读；尾页可保留而不重复复制引用。 */
+    @Test
+    public void configureInvalidatesCacheAndOpenPageCountCanBeRetained() {
+        TrashContainerStore store = store("cache-layout", stackedConfig(2), 3);
+        store.add(new ItemStack(Material.STONE, 1), 128, true);
+        TrashContainerStore.ViewSnapshot old = store.createViewSnapshot(null);
+        Assert.assertEquals(2, old.getReferenceCount());
+        store.configure(compactConfig(9999L, 1), 1);
+        TrashContainerStore.ViewSnapshot compact = store.createViewSnapshot(null);
+        Assert.assertEquals(1, compact.getReferenceCount());
+        Assert.assertNotSame(old, compact);
+        TrashContainerStore.ViewSnapshot retained = compact.retainPageCount(2);
+        Assert.assertEquals(2, retained.getPageCount());
+        Assert.assertSame(compact.getReference(0, 0), retained.getReference(0, 0));
+        Assert.assertSame(compact, compact.retainPageCount(1));
+    }
+
     /** 未提交写入可按追踪键精确回滚，且不会误删同类后续数量。 */
     @Test
     public void rollbackUsesOpaqueTrackingKey() {

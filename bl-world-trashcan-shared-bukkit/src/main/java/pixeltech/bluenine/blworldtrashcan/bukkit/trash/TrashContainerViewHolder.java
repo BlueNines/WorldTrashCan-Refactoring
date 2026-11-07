@@ -56,12 +56,12 @@ final class TrashContainerViewHolder implements InventoryHolder {
         return store;
     }
 
-    /** 返回打开时冻结的视图快照。 */
+    /** 返回本玩家上次操作后使用的视图快照。 */
     TrashContainerStore.ViewSnapshot getSnapshot() {
         return snapshot;
     }
 
-    /** 替换为保持现有顺序的增量快照。 */
+    /** 仅替换本玩家按当前排序重建的快照，不影响其他视图。 */
     void replaceSnapshot(TrashContainerStore.ViewSnapshot nextSnapshot) {
         if (nextSnapshot != null) {
             this.snapshot = nextSnapshot;
