@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -165,7 +166,7 @@ final class TrashContainerMenu {
         int contentIndex = contentIndex(rawSlot);
         if (contentIndex >= 0) {
             takeItem(player, holder, contentIndex, clickType);
-            syncContentSlot(holder, rawSlot);
+            scheduleContentSync(holder);
         }
     }
 
@@ -409,24 +410,69 @@ final class TrashContainerMenu {
         openPage(player, store, page, refreshed);
     }
 
-    /** 只同步刚操作的内容槽，避免整页闪烁。 */
-    private void syncContentSlot(TrashContainerViewHolder holder, int rawSlot) {
-        if (holder == null || holder.getInventory() == null || !layout.isContentSlot(rawSlot)) {
+    /** 点击结算后只校准操作者的当前页，同 Tick 连续操作合并为一次。 */
+    private void scheduleContentSync(final TrashContainerViewHolder holder) {
+        if (!holder.queueContentSync()) {
             return;
         }
-        Player player = Bukkit.getPlayer(holder.getPlayerId());
+        Consumer<Player> action = new Consumer<Player>() {
+            /** 翻页、关闭或重载后的旧回调不得修改新视图。 */
+            @Override
+            public void accept(Player player) {
+                holder.clearContentSyncPending();
+                if (activeViews.get(holder.getPlayerId()) == holder && isViewingThisMenu(player)) {
+                    syncContentPage(player, holder);
+                }
+            }
+        };
+        if (platform != null) {
+            if (!platform.executeForPlayer(holder.getPlayerId(), action)) {
+                holder.clearContentSyncPending();
+            }
+            return;
+        }
+        Bukkit.getScheduler().runTask(plugin, new Runnable() {
+            /** 兼容无平台适配器的 Bukkit 下一 Tick 执行路径。 */
+            @Override
+            public void run() {
+                holder.clearContentSyncPending();
+                Player player = Bukkit.getPlayer(holder.getPlayerId());
+                if (player != null) {
+                    action.accept(player);
+                }
+            }
+        });
+    }
+
+    /** 沿用本人的排序快照校准全部内容槽，只发送实际变化，不重开菜单。 */
+    private void syncContentPage(Player player, TrashContainerViewHolder holder) {
         TrashContainerStore.ViewSnapshot snapshot = holder.getSnapshot();
-        if (player == null || snapshot == null) {
+        Inventory inventory = holder.getInventory();
+        if (snapshot == null || inventory == null) {
             return;
         }
-        int contentIndex = contentIndex(rawSlot);
-        TrashContainerStore.DisplayReference reference = snapshot.getReference(holder.getPageIndex(), contentIndex);
-        TrashContainerStore.DisplayItem display = holder.getStore().getDisplayItem(reference);
-        if (display == null) {
-            loreRouter.updateSlot(holder.getPlayerId(), holder.getLoreToken(), rawSlot, Collections.<String>emptyList());
+        List<Integer> slots = layout.getContentSlots();
+        List<TrashContainerStore.DisplayItem> displays = new ArrayList<>(slots.size());
+        synchronized (holder.getStore()) {
+            for (int contentIndex = 0; contentIndex < slots.size(); contentIndex++) {
+                TrashContainerStore.DisplayReference reference = snapshot.getReference(
+                        holder.getPageIndex(), contentIndex);
+                displays.add(holder.getStore().getDisplayItem(reference));
+            }
         }
-        holder.getInventory().setItem(rawSlot, display == null ? null
-                : createContentItem(display, player, holder.getPageIndex(), snapshot.getPageCount(), holder, rawSlot));
+        for (int contentIndex = 0; contentIndex < slots.size(); contentIndex++) {
+            int rawSlot = slots.get(contentIndex).intValue();
+            TrashContainerStore.DisplayItem display = displays.get(contentIndex);
+            if (display == null) {
+                loreRouter.updateSlot(holder.getPlayerId(), holder.getLoreToken(), rawSlot,
+                        Collections.<String>emptyList());
+            }
+            ItemStack next = display == null ? null : createContentItem(display, player,
+                    holder.getPageIndex(), snapshot.getPageCount(), holder, rawSlot);
+            if (!Objects.equals(inventory.getItem(rawSlot), next)) {
+                inventory.setItem(rawSlot, next);
+            }
+        }
     }
 
     /** 切换当前模式排序并创建新快照。 */

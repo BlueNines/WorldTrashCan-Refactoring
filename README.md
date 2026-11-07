@@ -110,6 +110,8 @@ entities:
 
 玩家在已打开的公共桶或个人桶中手动放入物品后，菜单会立即更新，不需要关闭后重新打开。同类物品的数量和 Lore 会留在当前页原地刷新；如果新物品或新堆叠只能进入后续页，菜单会自动切到新增内容所在页。该增量更新不会重新排序；下一次打开菜单或主动切换排序时才重新按所选规则排列。
 
+取出物品后，只校准操作者自己的当前页：更新数量和 Lore，清除已失效的展示格，不重新排序、不移动其他物品、不重开菜单。其他玩家空闲时保留各自原有画面；他们下一次点击内容区时才校准自己的当前页。菜单中的旧图标不代表额外库存，实际取出仍以共享库存剩余数量为准。
+
 公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
 
 ### 个人垃圾桶显示与容量
@@ -339,10 +341,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.5.6`
+- 版本：`7.5.7`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`998783` 字节
-- SHA-256：`651121D3A29257C465454C6BA9851382E61D18628319939DDD8B0C5D5AB95E10`
+- 文件大小：`1001600` 字节
+- SHA-256：`6DDAEFDA1A5D65087AD4C1D3ECA967B3AF94144DFF9FAFBA0CAD1666B8ECCC48`
 
 ## English
 
@@ -420,6 +422,8 @@ Compact mode does not split a batch into many duplicate display entries. For exa
 `compact.item-lore` controls the complete order of the amount, original Lore, and operation hints. Global and personal trash can configure it independently. `{content}` expands original Lore after `max-original-lore-lines` truncation. Omitting it intentionally hides original Lore; duplicates expand only the first and produce one reload warning. Use `""` or `"&7"` for a fixed blank line. Normal template lines support RGB, legacy colors, page/amount variables, and PlaceholderAPI. Existing `show-amount-lore`, `amount-lore`, and `action-lore` settings remain compatible in their legacy order, but new defaults no longer emit them.
 
 With a compatible, enabled PacketEvents installation, global and personal trash menus automatically move template lines after `{content}` behind other plugins' dynamic Lore. Both full-window and single-slot updates are covered. Without PacketEvents, or when its API is unavailable, the existing Bukkit display remains fully functional; cleanup, storage, withdrawal, and real item data are unchanged. No extra setting is required, and dynamic Lore is not additionally truncated. Plugins modifying packets at a later stage can still change the final order. Run `/wtc reload` after changing Lore templates; restart the server after installing or replacing PacketEvents.
+
+Withdrawals reconcile only the acting player's current page: quantities and Lore update, invalid display slots clear, and existing positions and sorting stay unchanged without reopening the menu. Idle viewers keep their own views until they click the content area themselves. Stale icons are not extra stock; actual withdrawals always use the remaining shared inventory.
 
 ### Conservative configuration updates
 
@@ -678,7 +682,7 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.5.6`
+- Version: `7.5.7`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `998783` bytes
-- SHA-256: `651121D3A29257C465454C6BA9851382E61D18628319939DDD8B0C5D5AB95E10`
+- File size: `1001600` bytes
+- SHA-256: `6DDAEFDA1A5D65087AD4C1D3ECA967B3AF94144DFF9FAFBA0CAD1666B8ECCC48`

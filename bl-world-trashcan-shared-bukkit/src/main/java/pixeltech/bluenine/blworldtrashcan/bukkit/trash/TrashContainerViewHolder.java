@@ -14,6 +14,7 @@ final class TrashContainerViewHolder implements InventoryHolder {
     private final TrashContainerStore store;
     private volatile TrashContainerStore.ViewSnapshot snapshot;
     private Inventory inventory;
+    private boolean contentSyncPending;
 
     /** 创建绑定具体 Store 和稳定快照的菜单视图。 */
     TrashContainerViewHolder(TrashContainerMenu menu, UUID playerId, int pageIndex,
@@ -65,6 +66,20 @@ final class TrashContainerViewHolder implements InventoryHolder {
         if (nextSnapshot != null) {
             this.snapshot = nextSnapshot;
         }
+    }
+
+    /** 所属玩家线程中合并下一 Tick 的内容校准，不影响其他玩家视图。 */
+    boolean queueContentSync() {
+        if (contentSyncPending) {
+            return false;
+        }
+        contentSyncPending = true;
+        return true;
+    }
+
+    /** 所属玩家线程中释放刷新标记，允许后续操作重新排队。 */
+    void clearContentSyncPending() {
+        contentSyncPending = false;
     }
 
     /** 返回当前 Bukkit 库存。 */
