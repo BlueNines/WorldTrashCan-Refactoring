@@ -45,6 +45,7 @@ final class TrashContainerMenu {
     private final TrashMenuLoreRouter loreRouter;
     private final Map<Character, Material> layoutMaterials = new HashMap<>();
     private final Map<UUID, TrashContainerViewHolder> activeViews = new ConcurrentHashMap<>();
+    private final Map<TrashContainerStore, Set<TrashContainerViewHolder>> stackedViewers = new ConcurrentHashMap<>();
     private final Map<UUID, PlayerSortPreferences> sortPreferences = new ConcurrentHashMap<>();
     private TrashConfig.TrashContainerConfig config;
     private TrashConfig.GlobalTrashLayoutConfig layout;
@@ -186,6 +187,7 @@ final class TrashContainerMenu {
             return false;
         }
         activeViews.remove(holder.getPlayerId(), holder);
+        unsubscribe(holder);
         loreRouter.closeView(holder.getPlayerId(), holder.getLoreToken());
         return true;
     }
@@ -197,6 +199,7 @@ final class TrashContainerMenu {
         }
         TrashContainerViewHolder holder = activeViews.remove(playerId);
         if (holder != null) {
+            unsubscribe(holder);
             loreRouter.closeView(playerId, holder.getLoreToken());
         }
         sortPreferences.remove(playerId);
@@ -227,11 +230,56 @@ final class TrashContainerMenu {
         }
         Inventory inventory = createViewPage(player, holder, pageIndex);
         holder.bind(inventory);
-        activeViews.put(player.getUniqueId(), holder);
+        TrashContainerViewHolder previous = activeViews.put(player.getUniqueId(), holder);
+        if (previous != null) {
+            unsubscribe(previous);
+        }
         InventoryView opened = player.openInventory(inventory);
         if (opened == null || !isViewingThisMenu(player)) {
             activeViews.remove(player.getUniqueId(), holder);
             loreRouter.closeView(player.getUniqueId(), holder.getLoreToken());
+        } else if (store.isStacked()) {
+            subscribe(holder);
+            scheduleContentSync(holder);
+        }
+    }
+
+    /** 按 Store 索引打开的单组菜单，只订阅同一桶而不扫描所有玩家。 */
+    private void subscribe(TrashContainerViewHolder holder) {
+        TrashContainerStore store = holder.getStore();
+        synchronized (store) {
+            Set<TrashContainerViewHolder> viewers = stackedViewers.get(store);
+            if (viewers == null) {
+                viewers = ConcurrentHashMap.newKeySet();
+                stackedViewers.put(store, viewers);
+            }
+            viewers.add(holder);
+            store.setChangeListener(this::scheduleStackedViewers);
+        }
+    }
+
+    /** 最后一名查看者离开时解除订阅，避免保留已关闭菜单或离线玩家。 */
+    private void unsubscribe(TrashContainerViewHolder holder) {
+        TrashContainerStore store = holder.getStore();
+        synchronized (store) {
+            Set<TrashContainerViewHolder> viewers = stackedViewers.get(store);
+            if (viewers != null) {
+                viewers.remove(holder);
+                if (viewers.isEmpty()) {
+                    stackedViewers.remove(store);
+                    store.setChangeListener(null);
+                }
+            }
+        }
+    }
+
+    /** 存储线程只向同桶查看者排队；实际更新分别回到各玩家合法线程。 */
+    private void scheduleStackedViewers(TrashContainerStore store) {
+        Set<TrashContainerViewHolder> viewers = stackedViewers.get(store);
+        if (viewers != null) {
+            for (TrashContainerViewHolder holder : viewers) {
+                scheduleContentSync(holder);
+            }
         }
     }
 
@@ -253,6 +301,9 @@ final class TrashContainerMenu {
                 TrashContainerStore.DisplayItem display = holder.getStore().getDisplayItem(reference);
                 if (display != null) {
                     inventory.setItem(slot, createContentItem(display, player, pageIndex, maxPages, holder, slot));
+                }
+                if (holder.getStore().isStacked()) {
+                    holder.markRendered(slot, reference, display == null ? 0 : display.getDisplayAmount());
                 }
                 continue;
             }
@@ -299,7 +350,7 @@ final class TrashContainerMenu {
             if (moved <= 0) {
                 return;
             }
-            int removed = store.remove(display.getEntryId(), moved);
+            int removed = store.remove(reference, moved);
             if (removed <= 0) {
                 return;
             }
@@ -439,6 +490,10 @@ final class TrashContainerMenu {
 
     /** 按本人的排序重排整个引用列表，只渲染当前页的变化，不刷新其他玩家。 */
     private void syncContentPage(Player player, TrashContainerViewHolder holder) {
+        if (holder.getStore().isStacked()) {
+            syncStackedPage(player, holder);
+            return;
+        }
         TrashContainerStore.ViewSnapshot snapshot = holder.getSnapshot();
         Inventory inventory = holder.getInventory();
         if (snapshot == null || inventory == null) {
@@ -468,6 +523,43 @@ final class TrashContainerMenu {
             if (!Objects.equals(inventory.getItem(rawSlot), next)) {
                 inventory.setItem(rawSlot, next);
             }
+        }
+    }
+
+    /** 单组不重排、不补位；只构造和写入当前页发生变化的组。 */
+    private void syncStackedPage(Player player, TrashContainerViewHolder holder) {
+        Inventory inventory = holder.getInventory();
+        TrashContainerStore.ViewSnapshot snapshot = holder.getSnapshot();
+        if (inventory == null || snapshot == null) {
+            return;
+        }
+        List<Integer> slots = layout.getContentSlots();
+        List<Integer> changedSlots = new ArrayList<>();
+        List<TrashContainerStore.DisplayItem> displays = new ArrayList<>();
+        List<TrashContainerStore.DisplayReference> references = new ArrayList<>();
+        synchronized (holder.getStore()) {
+            snapshot = holder.getStore().refreshStackedSnapshot(snapshot);
+            holder.replaceSnapshot(snapshot);
+            for (int index = 0; index < slots.size(); index++) {
+                int slot = slots.get(index);
+                TrashContainerStore.DisplayReference reference = snapshot.getReference(holder.getPageIndex(), index);
+                int amount = holder.getStore().getDisplayAmount(reference);
+                if (!holder.isRendered(slot, reference, amount)) {
+                    changedSlots.add(slot);
+                    references.add(reference);
+                    displays.add(holder.getStore().getDisplayItem(reference));
+                }
+            }
+        }
+        for (int index = 0; index < changedSlots.size(); index++) {
+            int slot = changedSlots.get(index);
+            TrashContainerStore.DisplayItem display = displays.get(index);
+            ItemStack next = display == null ? null : createContentItem(display, player,
+                    holder.getPageIndex(), snapshot.getPageCount(), holder, slot);
+            if (!Objects.equals(inventory.getItem(slot), next)) {
+                inventory.setItem(slot, next);
+            }
+            holder.markRendered(slot, references.get(index), display == null ? 0 : display.getDisplayAmount());
         }
     }
 
@@ -816,6 +908,9 @@ final class TrashContainerMenu {
     /** 在合法玩家线程关闭所有旧视图。 */
     private void closeCurrentViewers() {
         List<UUID> viewerIds = new ArrayList<>(activeViews.keySet());
+        for (TrashContainerViewHolder holder : activeViews.values()) {
+            unsubscribe(holder);
+        }
         activeViews.clear();
         loreRouter.clearViews();
         for (final UUID playerId : viewerIds) {

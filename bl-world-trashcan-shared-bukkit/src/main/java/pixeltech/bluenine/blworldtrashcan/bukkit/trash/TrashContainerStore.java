@@ -18,6 +18,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Iterator;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+import java.util.function.Consumer;
 
 /** 公共和个人垃圾桶共用的模型存储，不使用 Bukkit Inventory 保存业务状态。 */
 public class TrashContainerStore {
@@ -31,6 +35,9 @@ public class TrashContainerStore {
     private TrashConfig.TrashContainerConfig config;
     private int contentSlotsPerPage = 1;
     private long nextEntryId = 1L;
+    private long nextGroupId = 1L;
+    private final NavigableMap<Long, StackGroup> groups = new TreeMap<>();
+    private Consumer<TrashContainerStore> changeListener;
 
     /** 创建使用 global 追踪前缀的兼容容器存储。 */
     public TrashContainerStore(ItemIdentityProvider identityProvider) {
@@ -47,9 +54,63 @@ public class TrashContainerStore {
 
     /** 应用布局容量和模式配置，但保留当前运行期物品存量。 */
     public synchronized void configure(TrashConfig.TrashContainerConfig nextConfig, int contentSlots) {
+        boolean wasStacked = isStacked();
         this.config = nextConfig;
         this.contentSlotsPerPage = Math.max(1, contentSlots);
+        if (wasStacked != isStacked()) {
+            groups.clear();
+            for (StoredEntry entry : entries.values()) {
+                entry.groups.clear();
+                entry.partialGroups.clear();
+                if (isStacked()) {
+                    addGroups(entry, entry.amount);
+                }
+            }
+        }
         sortedSnapshots.clear();
+    }
+
+    /** 仅菜单打开期间订阅存储变更；回调只排队，不直接跨线程读写玩家。 */
+    synchronized void setChangeListener(Consumer<TrashContainerStore> listener) {
+        changeListener = listener;
+    }
+
+    /** 返回当前是否使用独立余量的单组索引。 */
+    synchronized boolean isStacked() {
+        return config != null && config.getMode() == TrashConfig.GlobalTrashMode.STACKED;
+    }
+
+    /** 统一失效排序缓存并通知单组视图，失败写入不通知。 */
+    private void changed() {
+        sortedSnapshots.clear();
+        if (isStacked() && changeListener != null) {
+            changeListener.accept(this);
+        }
+    }
+
+    /** 先补未满组，再批量创建新组；每组仅保存 ID 与数量，不复制物品数据。 */
+    private void addGroups(StoredEntry entry, long amount) {
+        int max = maxStackSize(entry.sample);
+        Iterator<StackGroup> partial = entry.partialGroups.values().iterator();
+        while (amount > 0 && partial.hasNext()) {
+            StackGroup group = partial.next();
+            int added = (int) Math.min(amount, max - group.amount);
+            group.amount += added;
+            amount -= added;
+            if (group.amount == max) {
+                partial.remove();
+            }
+        }
+        while (amount > 0) {
+            int added = (int) Math.min(amount, max);
+            StackGroup group = new StackGroup(nextGroupId++, entry.entryId, added);
+            groups.put(group.id, group);
+            entry.groups.put(group.id, group);
+            if (added < max) {
+                entry.partialGroups.put(group.id, group);
+            }
+            amount -= added;
+        }
     }
 
     /** 返回固定的身份实现名称。 */
@@ -138,7 +199,10 @@ public class TrashContainerStore {
         } else {
             entry.amount += accepted;
         }
-        sortedSnapshots.clear();
+        if (isStacked()) {
+            addGroups(entry, accepted);
+        }
+        changed();
         return TrashWriteResult.accepted((int) accepted, requested, entry.trackingKey, false);
     }
 
@@ -177,6 +241,27 @@ public class TrashContainerStore {
         return removeEntry(entriesById.get(Long.valueOf(entryId)), requestedAmount);
     }
 
+    /** 菜单只扣除被点击的独立组，不能从同类其它组补取。 */
+    public synchronized int remove(DisplayReference reference, long requestedAmount) {
+        if (reference == null || requestedAmount <= 0) {
+            return 0;
+        }
+        if (!isStacked()) {
+            return remove(reference.entryId, requestedAmount);
+        }
+        StackGroup group = groups.get(reference.groupId);
+        StoredEntry entry = entriesById.get(reference.entryId);
+        if (group == null || entry == null || group.entryId != entry.entryId) {
+            return 0;
+        }
+        int removed = (int) Math.min(requestedAmount, group.amount);
+        reduceGroup(entry, group, removed);
+        entry.amount -= removed;
+        removeEmptyEntry(entry);
+        changed();
+        return removed;
+    }
+
     /** 按不透明追踪键回滚一次尚未提交的写入；仅错误路径执行线性查找。 */
     public synchronized int rollback(String trackingKey, long requestedAmount) {
         if (trackingKey == null || trackingKey.isEmpty() || requestedAmount <= 0L) {
@@ -205,25 +290,26 @@ public class TrashContainerStore {
         List<DisplayReference> references = new ArrayList<>();
         for (StoredEntry entry : ordered) {
             if (config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT) {
-                references.add(new DisplayReference(entry.entryId, 0L, 1));
+                references.add(new DisplayReference(entry.entryId, 0L));
                 continue;
             }
-            int maxStack = maxStackSize(entry.sample);
-            long offset = 0L;
-            while (offset < entry.amount) {
-                references.add(new DisplayReference(entry.entryId, offset, maxStack));
-                offset += maxStack;
+            for (StackGroup group : entry.groups.values()) {
+                references.add(new DisplayReference(entry.entryId, group.id));
             }
         }
         int requiredPages = (references.size() + contentSlotsPerPage - 1) / contentSlotsPerPage;
         int pageCount = Math.max(configuredMaxPages(), Math.max(1, requiredPages));
-        ViewSnapshot snapshot = new ViewSnapshot(effectiveSort, contentSlotsPerPage, pageCount, references);
+        ViewSnapshot snapshot = new ViewSnapshot(effectiveSort, contentSlotsPerPage, pageCount, references,
+                nextGroupId - 1);
         sortedSnapshots.put(effectiveSort, snapshot);
         return snapshot;
     }
 
     /** 只把指定物品身份缺少的引用补入旧快照，不移动任何仍有效的现有引用。 */
     synchronized ViewSnapshot refreshIdentityInSnapshot(ViewSnapshot current, String identityKey) {
+        if (isStacked()) {
+            return refreshStackedSnapshot(current);
+        }
         if (current == null || config == null || identityKey == null) {
             return current;
         }
@@ -236,12 +322,12 @@ public class TrashContainerStore {
         for (int index = 0; index < current.references.size(); index++) {
             DisplayReference reference = current.references.get(index);
             StoredEntry referencedEntry = entriesById.get(Long.valueOf(reference.entryId));
-            if (referencedEntry == null || referencedEntry.amount <= reference.offset) {
+            if (referencedEntry == null) {
                 reusableIndexes.add(Integer.valueOf(index));
                 continue;
             }
             if (reference.entryId == changedEntry.entryId) {
-                referencedOffsets.add(Long.valueOf(reference.offset));
+                referencedOffsets.add(Long.valueOf(reference.groupId));
             }
         }
         List<DisplayReference> missing = missingReferences(changedEntry, referencedOffsets);
@@ -279,14 +365,14 @@ public class TrashContainerStore {
         int currentMatchPage = -1;
         for (int index = 0; index < refreshed.references.size(); index++) {
             DisplayReference reference = refreshed.references.get(index);
-            if (reference.entryId != changedEntry.entryId || changedEntry.amount <= reference.offset) {
+            if (reference.entryId != changedEntry.entryId || getDisplayAmount(reference) <= 0) {
                 continue;
             }
             int page = index / refreshed.contentSlotsPerPage;
             if (firstPage < 0) {
                 firstPage = page;
             }
-            if (!previousOffsets.contains(Long.valueOf(reference.offset))) {
+            if (!previousOffsets.contains(Long.valueOf(reference.groupId))) {
                 return page;
             }
             if (page == currentPage) {
@@ -304,7 +390,7 @@ public class TrashContainerStore {
         }
         for (DisplayReference reference : snapshot.references) {
             if (reference.entryId == entryId) {
-                offsets.add(Long.valueOf(reference.offset));
+                offsets.add(Long.valueOf(reference.groupId));
             }
         }
         return offsets;
@@ -315,14 +401,13 @@ public class TrashContainerStore {
         List<DisplayReference> missing = new ArrayList<>();
         if (config.getMode() == TrashConfig.GlobalTrashMode.COMPACT) {
             if (!referencedOffsets.contains(Long.valueOf(0L))) {
-                missing.add(new DisplayReference(entry.entryId, 0L, 1));
+                missing.add(new DisplayReference(entry.entryId, 0L));
             }
             return missing;
         }
-        int maxStack = maxStackSize(entry.sample);
-        for (long offset = 0L; offset < entry.amount; offset += maxStack) {
-            if (!referencedOffsets.contains(Long.valueOf(offset))) {
-                missing.add(new DisplayReference(entry.entryId, offset, maxStack));
+        for (StackGroup group : entry.groups.values()) {
+            if (!referencedOffsets.contains(Long.valueOf(group.id))) {
+                missing.add(new DisplayReference(entry.entryId, group.id));
             }
         }
         return missing;
@@ -334,13 +419,54 @@ public class TrashContainerStore {
             return null;
         }
         StoredEntry entry = entriesById.get(Long.valueOf(reference.entryId));
-        if (entry == null || entry.amount <= reference.offset) {
+        int displayAmount = getDisplayAmount(reference);
+        if (entry == null || displayAmount <= 0) {
             return null;
         }
-        int displayAmount = config == null || config.getMode() == TrashConfig.GlobalTrashMode.COMPACT
-                ? 1 : (int) Math.min((long) reference.maxDisplayAmount, entry.amount - reference.offset);
         return new DisplayItem(entry.entryId, entry.key, entry.trackingKey,
                 entry.sample, entry.amount, displayAmount);
+    }
+
+    /** 只读轻量组数量，未变槽位不克隆物品、不渲染 Lore。 */
+    synchronized int getDisplayAmount(DisplayReference reference) {
+        if (reference == null || !entriesById.containsKey(reference.entryId)) {
+            return 0;
+        }
+        if (!isStacked()) {
+            return 1;
+        }
+        StackGroup group = groups.get(reference.groupId);
+        return group == null || group.entryId != reference.entryId ? 0 : group.amount;
+    }
+
+    /** 只为打开后新增的组填空位；单纯取出无需复制或遍历整个快照。 */
+    synchronized ViewSnapshot refreshStackedSnapshot(ViewSnapshot current) {
+        if (current == null || current.lastGroupId == nextGroupId - 1) {
+            return current;
+        }
+        List<DisplayReference> refreshed = null;
+        int vacant = 0;
+        for (StackGroup group : groups.tailMap(current.lastGroupId, false).values()) {
+            if (refreshed == null) {
+                refreshed = new ArrayList<>(current.references);
+            }
+            while (vacant < refreshed.size() && getDisplayAmount(refreshed.get(vacant)) > 0) {
+                vacant++;
+            }
+            DisplayReference reference = new DisplayReference(group.entryId, group.id);
+            if (vacant < refreshed.size()) {
+                refreshed.set(vacant, reference);
+            } else {
+                refreshed.add(reference);
+            }
+            vacant++;
+        }
+        if (refreshed == null) {
+            return new ViewSnapshot(current, current.pageCount, nextGroupId - 1);
+        }
+        int requiredPages = (refreshed.size() + contentSlotsPerPage - 1) / contentSlotsPerPage;
+        return new ViewSnapshot(current.sortType, contentSlotsPerPage,
+                Math.max(current.pageCount, requiredPages), refreshed, nextGroupId - 1);
     }
 
     /** 读取指定页内容槽位置的插入顺序展示快照。 */
@@ -368,6 +494,9 @@ public class TrashContainerStore {
 
     /** 返回当前模式实际显示的物品堆叠数量。 */
     public synchronized int getStoredStackCount() {
+        if (isStacked()) {
+            return groups.size();
+        }
         return createViewSnapshot(TrashConfig.GlobalTrashSortType.INSERTION).getReferenceCount();
     }
 
@@ -375,7 +504,8 @@ public class TrashContainerStore {
     public synchronized void clear() {
         entries.clear();
         entriesById.clear();
-        sortedSnapshots.clear();
+        groups.clear();
+        changed();
     }
 
     /** 移除指定存储条目的数量并同步两个索引。 */
@@ -384,13 +514,37 @@ public class TrashContainerStore {
             return 0;
         }
         long removed = Math.min(requestedAmount, entry.amount);
+        long remaining = removed;
+        while (isStacked() && remaining > 0 && !entry.groups.isEmpty()) {
+            StackGroup group = entry.groups.values().iterator().next();
+            int reduction = (int) Math.min(remaining, group.amount);
+            reduceGroup(entry, group, reduction);
+            remaining -= reduction;
+        }
         entry.amount -= removed;
-        sortedSnapshots.clear();
+        removeEmptyEntry(entry);
+        changed();
+        return (int) Math.min(Integer.MAX_VALUE, removed);
+    }
+
+    /** 原地减少指定组并维护空组和未满组索引。 */
+    private void reduceGroup(StoredEntry entry, StackGroup group, int removed) {
+        group.amount -= removed;
+        if (group.amount == 0) {
+            groups.remove(group.id);
+            entry.groups.remove(group.id);
+            entry.partialGroups.remove(group.id);
+        } else {
+            entry.partialGroups.put(group.id, group);
+        }
+    }
+
+    /** 总量归零时移除业务条目，不复用旧 ID。 */
+    private void removeEmptyEntry(StoredEntry entry) {
         if (entry.amount <= 0L) {
             entries.remove(entry.key);
             entriesById.remove(Long.valueOf(entry.entryId));
         }
-        return (int) Math.min(Integer.MAX_VALUE, removed);
     }
 
     /** 返回不会在当前插件生命周期内重复的条目 ID。 */
@@ -504,15 +658,13 @@ public class TrashContainerStore {
     /** 计算旧堆叠模式中现有堆叠和空槽位的容量。 */
     private long stackedCapacity(String key, ItemStack incoming) {
         long totalSlots = (long) configuredMaxPages() * contentSlotsPerPage;
-        long usedSlots = 0L;
+        long usedSlots = groups.size();
         long freeInMatching = 0L;
-        for (StoredEntry entry : entries.values()) {
+        StoredEntry entry = entries.get(key);
+        if (entry != null) {
             int maxStack = maxStackSize(entry.sample);
-            long used = stackSlots(entry.amount, maxStack);
-            usedSlots += used;
-            if (entry.key.equals(key)) {
-                freeInMatching += used * maxStack - entry.amount;
-            }
+            long used = entry.groups.size();
+            freeInMatching = used * maxStack - entry.amount;
         }
         long emptySlots = Math.max(0L, totalSlots - usedSlots);
         long emptyCapacity = multiplySaturated(emptySlots, maxStackSize(incoming));
@@ -531,14 +683,6 @@ public class TrashContainerStore {
     /** 返回物品可以使用的最大堆叠数。 */
     private int maxStackSize(ItemStack itemStack) {
         return itemStack == null ? 1 : Math.max(1, itemStack.getMaxStackSize());
-    }
-
-    /** 计算一个逻辑物品需要的显示堆叠数。 */
-    private long stackSlots(long amount, int maxStack) {
-        if (amount <= 0L) {
-            return 0L;
-        }
-        return amount / maxStack + (amount % maxStack == 0L ? 0L : 1L);
     }
 
     /** 饱和计算乘法，避免无限存量导致溢出。 */
@@ -563,6 +707,8 @@ public class TrashContainerStore {
         private final String sortName;
         private final String materialName;
         private long amount;
+        private final Map<Long, StackGroup> groups = new LinkedHashMap<>();
+        private final Map<Long, StackGroup> partialGroups = new TreeMap<>();
 
         /** 创建带稳定 ID 和预计算排序字段的存储条目。 */
         private StoredEntry(long entryId, String key, String trackingKey, ItemStack sample, long amount,
@@ -577,22 +723,39 @@ public class TrashContainerStore {
         }
     }
 
+    /** 单组的运行期索引；真实物品样本和总量仍只保存在业务条目中。 */
+    private static final class StackGroup {
+        private final long id;
+        private final long entryId;
+        private int amount;
+
+        /** 创建不持有物品副本的稳定分组。 */
+        private StackGroup(long id, long entryId, int amount) {
+            this.id = id;
+            this.entryId = entryId;
+            this.amount = amount;
+        }
+    }
+
     /** 打开会话保存的轻量展示引用。 */
     public static final class DisplayReference {
         private final long entryId;
-        private final long offset;
-        private final int maxDisplayAmount;
+        private final long groupId;
 
         /** 创建不持有 ItemStack 的稳定条目引用。 */
-        private DisplayReference(long entryId, long offset, int maxDisplayAmount) {
+        private DisplayReference(long entryId, long groupId) {
             this.entryId = entryId;
-            this.offset = offset;
-            this.maxDisplayAmount = maxDisplayAmount;
+            this.groupId = groupId;
         }
 
         /** 返回引用的稳定条目 ID。 */
         public long getEntryId() {
             return entryId;
+        }
+
+        /** 返回稳定组 ID，紧凑模式为零。 */
+        long getGroupId() {
+            return groupId;
         }
     }
 
@@ -602,14 +765,22 @@ public class TrashContainerStore {
         private final int contentSlotsPerPage;
         private final int pageCount;
         private final List<DisplayReference> references;
+        private final long lastGroupId;
 
         /** 创建不复制 ItemStack 的不可变视图快照。 */
         private ViewSnapshot(TrashConfig.GlobalTrashSortType sortType, int contentSlotsPerPage,
                              int pageCount, List<DisplayReference> references) {
+            this(sortType, contentSlotsPerPage, pageCount, references, 0L);
+        }
+
+        /** 保存快照已见到的最大组序号，增量同步只查找其后新增组。 */
+        private ViewSnapshot(TrashConfig.GlobalTrashSortType sortType, int contentSlotsPerPage,
+                             int pageCount, List<DisplayReference> references, long lastGroupId) {
             this.sortType = sortType;
             this.contentSlotsPerPage = contentSlotsPerPage;
             this.pageCount = pageCount;
             this.references = Collections.unmodifiableList(new ArrayList<>(references));
+            this.lastGroupId = lastGroupId;
         }
 
         /** 沿用已打开窗口的页数，避免库存收缩令当前页失效；不复制引用数组。 */
@@ -619,10 +790,16 @@ public class TrashContainerStore {
 
         /** 为当前窗口共享排序引用，仅保留其已有的空白尾页。 */
         private ViewSnapshot(ViewSnapshot source, int pageCount) {
+            this(source, pageCount, source.lastGroupId);
+        }
+
+        /** 共享不可变引用，仅推进会话的已见序号或保留尾页。 */
+        private ViewSnapshot(ViewSnapshot source, int pageCount, long lastGroupId) {
             this.sortType = source.sortType;
             this.contentSlotsPerPage = source.contentSlotsPerPage;
             this.pageCount = pageCount;
             this.references = source.references;
+            this.lastGroupId = lastGroupId;
         }
 
         /** 返回指定页和内容下标的稳定引用。 */

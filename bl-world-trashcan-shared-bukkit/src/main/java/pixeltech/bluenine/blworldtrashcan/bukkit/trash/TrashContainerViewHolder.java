@@ -15,6 +15,8 @@ final class TrashContainerViewHolder implements InventoryHolder {
     private volatile TrashContainerStore.ViewSnapshot snapshot;
     private Inventory inventory;
     private boolean contentSyncPending;
+    private final long[] renderedGroups = new long[54];
+    private final int[] renderedAmounts = new int[54];
 
     /** 创建绑定具体 Store 和稳定快照的菜单视图。 */
     TrashContainerViewHolder(TrashContainerMenu menu, UUID playerId, int pageIndex,
@@ -69,7 +71,7 @@ final class TrashContainerViewHolder implements InventoryHolder {
     }
 
     /** 所属玩家线程中合并下一 Tick 的内容校准，不影响其他玩家视图。 */
-    boolean queueContentSync() {
+    synchronized boolean queueContentSync() {
         if (contentSyncPending) {
             return false;
         }
@@ -78,8 +80,20 @@ final class TrashContainerViewHolder implements InventoryHolder {
     }
 
     /** 所属玩家线程中释放刷新标记，允许后续操作重新排队。 */
-    void clearContentSyncPending() {
+    synchronized void clearContentSyncPending() {
         contentSyncPending = false;
+    }
+
+    /** 只在玩家所属线程比较已呈现的组与余量，未变槽位跳过物品构造。 */
+    boolean isRendered(int slot, TrashContainerStore.DisplayReference reference, int amount) {
+        return renderedGroups[slot] == (reference == null ? 0 : reference.getGroupId())
+                && renderedAmounts[slot] == amount;
+    }
+
+    /** 记录已实际呈现的单组版本，不持有物品副本。 */
+    void markRendered(int slot, TrashContainerStore.DisplayReference reference, int amount) {
+        renderedGroups[slot] = reference == null ? 0 : reference.getGroupId();
+        renderedAmounts[slot] = amount;
     }
 
     /** 返回当前 Bukkit 库存。 */

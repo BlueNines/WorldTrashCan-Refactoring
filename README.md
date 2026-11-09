@@ -106,11 +106,11 @@ entities:
 
 节点缺失、空列表或没有有效规则时直接跳过名称匹配。配置包含颜色时颜色参与匹配，`&c` 与 `§c` 等价；配置不含颜色时忽略实体名称中的颜色。白名单优先于所有黑名单，船内、带鞍和 Bukkit `Tameable` 主人保护继续保持更高优先级。`/wtc look` 右键实体后会把实体类型直接标记为 `type-patterns`，把配置颜色名称和去色名称标记为 `name-patterns`，结果可点击复制。若名称只由客户端发包、伪装或独立悬浮字显示而未写入 Bukkit `getCustomName()`，则不会命中本规则。
 
-公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。打开菜单、主动切换排序及本人取放操作后，按所选方式排列整个内容列表，当前页不同物品会一起补位，而不是只压缩被点击的同类物品。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
+公共垃圾桶默认底栏提供玩家独立排序按钮，支持进入顺序、数量升降序、名称 A-Z 和材质 A-Z。每名玩家的 `compact`、`stacked` 偏好分别保存在内存中，退出后释放，不写数据库，也不会改变公共存储的真实顺序。
 
-玩家在已打开的公共桶或个人桶中取出、手动放入物品后，菜单会在操作结算后更新数量、Lore 和排列，不关闭重开窗口，也不自动跳到其它页面。新物品按当前排序进入列表，不在当前页时可翻页查看。
+`stacked` 单组模式采用原版箱子式稳定位置：每组独立计数，取空后原格留空，其他组不移动。取出、手动放入和扫地入库后，同一桶正在查看的玩家会同步看见变化，但保留各自的排序、窗口和页码。新增物品优先补充同类未满组，再在各自视图的空位显示；打开菜单或主动点击排序按钮时才整理列表。仍沿用插件的点击取放规则，并非开放原版任意拖拽。
 
-只更新操作者自己的菜单，其他玩家空闲时保留原有画面，不会因别人操作或扫地入库突然刷新；他们下一次点击内容区时才按自己的排序更新。实际取出始终以共享库存剩余数量为准。同一 Tick 的刷新合并执行，相同库存状态和排序复用只读引用快照；只渲染当前页并写入变化的槽位，不做周期性全员刷新。
+`compact` 紧凑模式保持本人取放后整体重排的规则，只更新操作者，其他玩家下一次操作时才按自己的排序更新。两种模式都以共享库存实际余量校验取出，合并同 Tick 刷新，仅写入当前页变化槽位，不周期性全量刷新。单组未变化的槽位也不会重新克隆物品或渲染 Lore。
 
 公共垃圾桶布局展示物支持 `glow: true` 附魔光效，适用于翻页、背景、排序、actions 和关闭按钮。Minecraft 1.20.5 及以上使用 Bukkit 原生纯光效，不写入真实附魔；旧版本自动降级为隐藏附魔，Tooltip 不显示附魔名称。`type: content` 始终忽略该字段，不会修改真实垃圾物品。
 
@@ -341,10 +341,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.5.8`
+- 版本：`7.5.9`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`1001766` 字节
-- SHA-256：`2369ABA44F0EFE8CE52E8C1852FB2985FA643F33386707BA8C137FFBE5562B32`
+- 文件大小：`1006868` 字节
+- SHA-256：`441427A9F6C1C8ABEFDD9DD98609CD741F7D7F8029E379FFFC26FB5858979348`
 
 ## English
 
@@ -423,7 +423,7 @@ Compact mode does not split a batch into many duplicate display entries. For exa
 
 With a compatible, enabled PacketEvents installation, global and personal trash menus automatically move template lines after `{content}` behind other plugins' dynamic Lore. Both full-window and single-slot updates are covered. Without PacketEvents, or when its API is unavailable, the existing Bukkit display remains fully functional; cleanup, storage, withdrawal, and real item data are unchanged. No extra setting is required, and dynamic Lore is not additionally truncated. Plugins modifying packets at a later stage can still change the final order. Run `/wtc reload` after changing Lore templates; restart the server after installing or replacing PacketEvents.
 
-Withdrawals reconcile only the acting player's current page: quantities and Lore update, invalid display slots clear, and existing positions and sorting stay unchanged without reopening the menu. Idle viewers keep their own views until they click the content area themselves. Stale icons are not extra stock; actual withdrawals always use the remaining shared inventory.
+Stacked mode synchronizes changed groups to all active viewers of the same container without moving unrelated slots. Compact mode updates only the acting player's view and reapplies their selected order. Actual withdrawals always validate authoritative remaining stock; client icons are never additional inventory.
 
 ### Conservative configuration updates
 
@@ -452,9 +452,11 @@ entities:
 
 Missing, empty, or entirely invalid lists bypass name matching. Rules containing colors are color-sensitive, while `&c` and `§c` are equivalent; rules without colors compare against the color-stripped custom name. The whitelist wins over all blacklists, and boat, saddle, and Bukkit `Tameable` owner protections keep their higher priority. `/wtc look` labels the entity type as `type-patterns` and both custom-name forms as `name-patterns`; each value remains clickable. Names rendered only through client packets, disguises, or separate holograms cannot match unless they are also stored in Bukkit `getCustomName()`.
 
-The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Opening, switching sort, or taking/depositing items reapplies the player's selected order to the complete content list, closing gaps across all item types rather than only the clicked type. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
+The default footer includes per-player sorting for insertion order, amount ascending or descending, name A-Z, and material A-Z. Compact and stacked preferences are held separately in memory, released on quit, never written to a database, and never mutate the global storage order.
 
-Taking or manually depositing items updates only the acting player's open global or personal menu after the operation settles, without reopening the window or jumping pages. New items enter the selected order and may appear on another page. Idle viewers remain unchanged until their own content interaction; withdrawals always use authoritative shared stock. Same-tick refresh requests are coalesced, identical stock/sort combinations share immutable reference snapshots, and only changed slots on the current page are written. No periodic all-viewer refresh is used.
+In `stacked` mode, each stack has a stable identity and independent remaining quantity. Taking a stack leaves its slot empty instead of shifting other stacks. Withdrawals, deposits, and cleanup additions synchronize changed groups to all active viewers of that same container, preserving each viewer's order, window, and page. Additions fill matching partial groups before placing new groups in vacant view slots. Sorting occurs only on opening or explicitly selecting a sort. Existing plugin click-to-take/deposit controls remain; arbitrary vanilla dragging is not enabled.
+
+In `compact` mode, taking or depositing still reapplies the acting player's selected order without refreshing idle viewers. Both modes validate shared stock, coalesce same-tick updates, and write only changed current-page slots. Unchanged stacked slots skip item cloning and Lore rendering. No periodic whole-menu refresh is used.
 
 Layout display items support `glow: true` for page, background, sort, actions, and close buttons. Minecraft 1.20.5 and newer use Bukkit's native glint override without a real enchantment. Older versions automatically fall back to a hidden enchantment, so no enchantment name appears in the tooltip. `type: content` always ignores this option and never mutates stored trash items.
 
@@ -682,7 +684,7 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.5.8`
+- Version: `7.5.9`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `1001766` bytes
-- SHA-256: `2369ABA44F0EFE8CE52E8C1852FB2985FA643F33386707BA8C137FFBE5562B32`
+- File size: `1006868` bytes
+- SHA-256: `441427A9F6C1C8ABEFDD9DD98609CD741F7D7F8029E379FFFC26FB5858979348`

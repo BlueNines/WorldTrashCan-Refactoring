@@ -24,11 +24,11 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-/** 验证操作后整体重排只修改操作者视图，并合并刷新成本。 */
+/** 验证单组稳定槽位同步、紧凑独立重排与刷新合并。 */
 public final class TrashContainerMenuRefreshTest {
-    /** 取出首格后，当前页末尾失效的同类堆叠也必须立即清空。 */
+    /** 取空首组只清空原格，其它同类组和不同物品均不移动。 */
     @Test
-    public void stackedWithdrawalCompactsAllItemTypesOnPage() throws Exception {
+    public void stackedWithdrawalLeavesHoleAndPreservesOtherGroups() throws Exception {
         Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED);
         fixture.add(Material.STONE, 192);
         fixture.add(Material.DIRT, 7);
@@ -37,34 +37,34 @@ public final class TrashContainerMenuRefreshTest {
 
         fixture.sync(view);
 
-        assertEquals(64, view.items[0].getAmount());
+        assertNull(view.items[0]);
         assertEquals(64, view.items[1].getAmount());
-        assertEquals(Material.DIRT, view.items[2].getType());
-        assertNull(view.items[3]);
-        assertEquals(2, view.writes);
+        assertEquals(64, view.items[2].getAmount());
+        assertEquals(Material.DIRT, view.items[3].getType());
+        assertEquals(1, view.writes);
         assertEquals(135L, fixture.store.getStoredItemAmount());
     }
 
-    /** 部分堆叠扣减后，后续不同物品同样前移，不能只合并被点击的物品。 */
+    /** 部分扣减只减少指定组，后续同类组余量也不能变化。 */
     @Test
-    public void stackedPartialWithdrawalUpdatesAmountAndCompactsOtherItems() throws Exception {
+    public void stackedPartialWithdrawalOnlyUpdatesTargetGroup() throws Exception {
         Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED);
         fixture.add(Material.STONE, 65);
         fixture.add(Material.DIRT, 7);
         View view = fixture.view();
-        fixture.store.remove(view.holder.getSnapshot().getReference(0, 0).getEntryId(), 64);
+        fixture.store.remove(view.holder.getSnapshot().getReference(0, 0), 10);
 
         fixture.sync(view);
 
-        assertEquals(1, view.items[0].getAmount());
-        assertEquals(Material.DIRT, view.items[1].getType());
-        assertNull(view.items[2]);
-        assertEquals(3, view.writes);
+        assertEquals(54, view.items[0].getAmount());
+        assertEquals(1, view.items[1].getAmount());
+        assertEquals(Material.DIRT, view.items[2].getType());
+        assertEquals(1, view.writes);
     }
 
-    /** A 的操作不能刷新 B；B 自己操作时才校准其旧页面。 */
+    /** 单组两个视图同步后均原格清空，不补位。 */
     @Test
-    public void idleViewerRemainsUnchangedUntilOwnRefresh() throws Exception {
+    public void stackedViewersResolveSameGroupWithoutMovingOthers() throws Exception {
         Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED);
         fixture.add(Material.STONE, 192);
         View first = fixture.view();
@@ -73,11 +73,12 @@ public final class TrashContainerMenuRefreshTest {
 
         fixture.sync(first);
 
-        assertNull(first.items[2]);
+        assertNull(first.items[0]);
         assertNotNull(second.items[2]);
         assertEquals(0, second.writes);
         fixture.sync(second);
-        assertNull(second.items[2]);
+        assertNull(second.items[0]);
+        assertEquals(64, second.items[2].getAmount());
         assertEquals(1, second.writes);
     }
 
@@ -102,9 +103,9 @@ public final class TrashContainerMenuRefreshTest {
         assertEquals(2, first.holder.getSnapshot().getReferenceCount());
     }
 
-    /** 数量跨过其它条目后须按玩家选择重新排序，不停留在旧次序。 */
+    /** 单组数量变化后保留各自打开时的次序，不自动按数量重排。 */
     @Test
-    public void quantitySortIsReappliedAcrossDifferentItems() throws Exception {
+    public void stackedQuantitySortIsNotReappliedOnWithdrawal() throws Exception {
         Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED);
         fixture.add(Material.STONE, 65);
         fixture.add(Material.DIRT, 7);
@@ -114,16 +115,16 @@ public final class TrashContainerMenuRefreshTest {
 
         fixture.sync(view);
 
-        assertEquals(Material.DIRT, view.items[0].getType());
+        assertNull(view.items[0]);
         assertEquals(Material.STONE, view.items[1].getType());
         assertEquals(1, view.items[1].getAmount());
-        assertNull(view.items[2]);
+        assertEquals(Material.DIRT, view.items[2].getType());
         assertEquals(TrashConfig.GlobalTrashSortType.AMOUNT_DESC, view.holder.getSnapshot().getSortType());
     }
 
-    /** 操作者刷新全列表后，下一页物品补到当前页；页码和 Holder 不变。 */
+    /** 取空第一页的组不把第二页内容拉回，页码和 Holder 不变。 */
     @Test
-    public void reorderPullsNextPageContentIntoCurrentPage() throws Exception {
+    public void stackedWithdrawalDoesNotPullNextPageIntoCurrentPage() throws Exception {
         Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED);
         fixture.add(Material.STONE, 45 * 64);
         fixture.add(Material.DIRT, 7);
@@ -132,8 +133,9 @@ public final class TrashContainerMenuRefreshTest {
 
         fixture.sync(view);
 
-        assertEquals(Material.DIRT, view.items[44].getType());
-        assertNull(view.holder.getSnapshot().getReference(1, 0));
+        assertNull(view.items[0]);
+        assertEquals(Material.STONE, view.items[44].getType());
+        assertEquals(Material.DIRT, fixture.store.getDisplayItem(view.holder.getSnapshot().getReference(1, 0)).getSample().getType());
         assertEquals(0, view.holder.getPageIndex());
     }
 
@@ -206,6 +208,58 @@ public final class TrashContainerMenuRefreshTest {
         assertEquals(0, view.writes);
     }
 
+    /** 存储变更自动排队同桶两名查看者，关闭订阅后不再留存任务。 */
+    @Test
+    public void stackedMutationSchedulesOnlySubscribedViewersAndDetaches() throws Exception {
+        List<Consumer<Player>> callbacks = new ArrayList<>();
+        ServerPlatform platform = proxy(ServerPlatform.class, (object, method, arguments) -> {
+            if ("executeForPlayer".equals(method.getName())) {
+                @SuppressWarnings("unchecked")
+                Consumer<Player> callback = (Consumer<Player>) arguments[1];
+                callbacks.add(callback);
+                return true;
+            }
+            return null;
+        });
+        Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED, platform);
+        fixture.add(Material.STONE, 128);
+        View a = fixture.view();
+        View b = fixture.view();
+        fixture.subscription("subscribe", a);
+        fixture.subscription("subscribe", b);
+        fixture.store.remove(a.holder.getSnapshot().getReference(0, 0), 10);
+        fixture.store.remove(a.holder.getSnapshot().getReference(0, 0), 10);
+        assertEquals(2, callbacks.size());
+        fixture.sync(a);
+        fixture.sync(b);
+        assertEquals(44, a.items[0].getAmount());
+        assertEquals(44, b.items[0].getAmount());
+        assertEquals(1, a.writes);
+        assertEquals(1, b.writes);
+        fixture.subscription("unsubscribe", a);
+        fixture.subscription("unsubscribe", b);
+        callbacks.forEach(callback -> callback.accept(null));
+        fixture.add(Material.DIRT, 1);
+        assertEquals(2, callbacks.size());
+    }
+
+    /** 新组只填本人的空位，已有组引用和排序保持不变。 */
+    @Test
+    public void stackedNewGroupFillsHoleWithoutSortingOtherItems() throws Exception {
+        Fixture fixture = new Fixture(TrashConfig.GlobalTrashMode.STACKED);
+        fixture.add(Material.STONE, 128);
+        fixture.add(Material.DIRT, 7);
+        View view = fixture.view();
+        fixture.store.remove(view.holder.getSnapshot().getReference(0, 0), 64);
+        fixture.sync(view);
+        fixture.add(Material.GOLD_INGOT, 4);
+        fixture.sync(view);
+        assertEquals(Material.GOLD_INGOT, view.items[0].getType());
+        assertEquals(Material.STONE, view.items[1].getType());
+        assertEquals(Material.DIRT, view.items[2].getType());
+        assertEquals(2, view.writes);
+    }
+
     /** 提供不依赖运行服务端的真实菜单和存储组合。 */
     private static final class Fixture {
         private final TrashContainerStore store;
@@ -262,6 +316,7 @@ public final class TrashContainerMenuRefreshTest {
                     view.items[index] = display.getSample();
                     view.items[index].setAmount(display.getDisplayAmount());
                 }
+                holder.markRendered(index, snapshot.getReference(0, index), display == null ? 0 : display.getDisplayAmount());
             }
             return view;
         }
@@ -276,6 +331,13 @@ public final class TrashContainerMenuRefreshTest {
         /** 通过生产调度入口排队，不直接执行页面校准。 */
         private void schedule(View view) throws Exception {
             Method method = TrashContainerMenu.class.getDeclaredMethod("scheduleContentSync", TrashContainerViewHolder.class);
+            method.setAccessible(true);
+            method.invoke(menu, view.holder);
+        }
+
+        /** 通过正式订阅入口验证存储驱动的多查看者刷新。 */
+        private void subscription(String action, View view) throws Exception {
+            Method method = TrashContainerMenu.class.getDeclaredMethod(action, TrashContainerViewHolder.class);
             method.setAccessible(true);
             method.invoke(menu, view.holder);
         }

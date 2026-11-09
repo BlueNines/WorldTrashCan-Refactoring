@@ -14,6 +14,40 @@ import static org.junit.Assert.*;
 
 /** 本地容量基准：测量条目排序而非 NBT、GUI 渲染或网络耗时。 */
 public final class TrashContainerSortPerformanceTest {
+    /** 单组取出只校准当前页轻量余量；计时不含展示物、发包或玩家线程调度。 */
+    @Test
+    public void measureStableGroupWithdrawalWithoutSorting() {
+        for (int count : new int[]{1350, 10000}) {
+            TrashContainerStore store = new TrashContainerStore(new ItemIdentityProvider() {
+                /** 返回单组基准身份策略名。 */
+                @Override public String id() { return "stable-benchmark"; }
+                /** 单种物品生成许多独立组，隔离实体/NBT 成本。 */
+                @Override public String key(ItemStack item) { return "sample"; }
+            });
+            store.configure(new TrashConfig.PersonalTrashConfig(true, 0, true,
+                    TrashConfig.GlobalTrashLayoutConfig.defaultLayout(-1, -1, -1, null),
+                    TrashConfig.GlobalTrashMode.STACKED, TrashConfig.CompactGlobalTrashConfig.defaults(),
+                    new TrashConfig.StackedGlobalTrashConfig(1000), true, false, -1D,
+                    TrashConfig.DamageRecoveryMode.DISABLED, 6, true, 3), 45);
+            store.add(new Sample(), count * 64, false);
+            TrashContainerStore.ViewSnapshot snapshot = store.createViewSnapshot(null);
+            long[] nanos = new long[1000];
+            for (int index = -100; index < nanos.length; index++) {
+                long start = System.nanoTime();
+                assertEquals(1, store.remove(snapshot.getReference(0, 0), 1));
+                assertSame(snapshot, store.refreshStackedSnapshot(snapshot));
+                for (int slot = 0; slot < 45; slot++) store.getDisplayAmount(snapshot.getReference(0, slot));
+                long elapsed = System.nanoTime() - start;
+                assertEquals(1, store.add(new Sample(), 1, true).getAcceptedAmount());
+                if (index >= 0) nanos[index] = elapsed;
+            }
+            Arrays.sort(nanos);
+            System.out.printf(Locale.ROOT,
+                    "STABLE_GROUP_BENCH groups=%d medianMs=%.4f p95Ms=%.4f maxMs=%.4f%n",
+                    count, nanos[500] / 1e6, nanos[949] / 1e6, nanos[999] / 1e6);
+        }
+    }
+
     /** 分别覆盖中等容量与扩容场景，计时只做记录，避免按机器速度写脆弱断言。 */
     @Test
     public void measureChangedStockSortAndCachedReads() {
