@@ -197,7 +197,7 @@ items:
 - 扫地把物品写入任意垃圾桶前后都会轻量核对掉落实体、材质和数量；若玩家恰好完成拾取、实体删除失败或数量已变化，本次垃圾桶写入会按追踪键回滚，避免背包与垃圾桶同时获得同一份物品。
 - 旧版配置会被识别并隔离到 `old-version-config`，不直接拿旧配置启动新版逻辑。
 - 默认配置缺失项会补回，并且默认配置项带有中文注释。
-- bStats 已内置，服主不需要额外开关；插件版本为 `7.5.6`。
+- bStats 已内置，服主不需要额外开关；插件版本为 `7.6.6`。
 
 ### 性能优化估算
 
@@ -341,10 +341,10 @@ API v3 是破坏式更新，不兼容尚未发布的旧 Audit API/Jar。安装 A
 
 ### 当前通用整包
 
-- 版本：`7.5.9`
+- 版本：`7.6.6`
 - 文件：`WorldListTrashCan-universal.jar`
-- 文件大小：`1006868` 字节
-- SHA-256：`441427A9F6C1C8ABEFDD9DD98609CD741F7D7F8029E379FFFC26FB5858979348`
+- 文件大小：`1006859` 字节
+- SHA-256：`03230FE1AF820E9081FD6F990773DD98690353547DB5F50AAEA3BCE663B75FFC`
 
 ## English
 
@@ -540,7 +540,7 @@ Scheduled cleanup and `/wtc clear` messages in newly generated language files us
 - Player-drop ownership is stored on the dropped entity rather than inside the item stack, so normal item stacking is not affected.
 - Cleanup lightly rechecks the dropped entity, material, and amount around every trash destination write. If a player wins the pickup, entity removal fails, or the amount changes, the destination write is rolled back by its tracking key so the inventory and trash cannot both receive the same item.
 - Legacy configurations are detected and isolated in `old-version-config` instead of being used directly by the new implementation.
-- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.5.6`.
+- bStats is built in and has no plugin-level enable/disable switch; the plugin version is `7.6.6`.
 
 ### Estimated performance improvements
 
@@ -684,7 +684,7 @@ API v3 is a breaking update and does not retain compatibility with the unpublish
 
 Final universal artifact information:
 
-- Version: `7.5.9`
+- Version: `7.6.6`
 - File: `WorldListTrashCan-universal.jar`
-- File size: `1006868` bytes
-- SHA-256: `441427A9F6C1C8ABEFDD9DD98609CD741F7D7F8029E379FFFC26FB5858979348`
+- File size: `1006859` bytes
+- SHA-256: `03230FE1AF820E9081FD6F990773DD98690353547DB5F50AAEA3BCE663B75FFC`
